@@ -1,0 +1,1673 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.3 20210610//EN" "JATS-journalpublishing1-3.dtd">
+<article xml:lang="en" dtd-version="1.3" article-type="research-article" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mml="http://www.w3.org/1998/Math/MathML">
+  <front>
+    <journal-meta>
+      <journal-id journal-id-type="publisher-id">ATAIML</journal-id>
+      <journal-id journal-id-type="doi">10.56578</journal-id>
+      <journal-title-group>
+        <journal-title>Acadlore Transactions on AI and Machine Learning</journal-title>
+        <abbrev-journal-title abbrev-type="issn">Acadlore Trans. Mach. Learn.</abbrev-journal-title>
+        <abbrev-journal-title abbrev-type="publisher">ATAIML</abbrev-journal-title>
+      </journal-title-group>
+      <issn publication-format="electronic">2957-9570</issn>
+      <issn publication-format="print">2957-9562</issn>
+      <publisher>
+        <publisher-name>Acadlore</publisher-name>
+      </publisher>
+    </journal-meta>
+    <article-meta>
+      <article-id pub-id-type="publisher-id">AR-pYMYVdNKcVHKDBnEugqUcvZeSXRlsZXw</article-id>
+      <article-id pub-id-type="doi">10.56578/ataiml020105</article-id>
+      <title-group>
+        <article-title>Information Acquisition Method of Tomato Plug Seedlings Based on Cycle-Consistent Adversarial Network</article-title>
+      </title-group>
+      <contrib-group>
+        <contrib contrib-type="author">
+          <xref ref-type="aff" rid="1">1</xref>
+          <name>
+            <surname>Zhang</surname>
+            <given-names>Yong</given-names>
+          </name>
+          <contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0009-0007-1004-7792</contrib-id>
+          <email>zzxd@sdtbu.edu.cn</email>
+        </contrib>
+        <aff id="1">School of Information and Electronic Engineering, Shandong Technology and Business University, 264005 Yantai, China</aff>
+      </contrib-group>
+      <year>2023</year>
+      <volume>2</volume>
+      <issue>1</issue>
+      <fpage>46</fpage>
+      <lpage>54</lpage>
+      <page-range>46-54</page-range>
+      <history>
+        <date date-type="received">
+          <month>01</month>
+          <day>15</day>
+          <year>2023</year>
+        </date>
+        <date date-type="accepted">
+          <month>03</month>
+          <day>11</day>
+          <year>2023</year>
+        </date>
+        <date date-type="pub">
+          <month>03</month>
+          <day>27</day>
+          <year>2023</year>
+        </date>
+      </history>
+      <permissions>
+        <copyright-statement>©2023 by the authors</copyright-statement>
+        <copyright-year>2023</copyright-year>
+        <license>. Licensee Acadlore Publishing Services Limited, Hong Kong. This article can be downloaded for free, and reused and quoted with a citation of the original published version, under the <ext-link ext-link-type="uri" xlink:href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0 license</ext-link>.</license>
+      </permissions>
+      <abstract><p>In order to solve the interference caused by the overlapping and extrusion of adjacent plug seedlings, accurately obtain the information of tomato plug seedlings, and improve the transplanting effect of automatic tomato transplanters, this study proposes a seedling information acquisition method based on Cycle-Consistent Adversarial Network (CycleGAN). CycleGAN is a generative unsupervised deep learning method, which can realize the free conversion of the source-domain plug seedling image and the target-domain plug label image. It collects more than 500 images of tomato plug seedlings in different growth stages as a collection image set; follows certain principles to label the plug seedling images to obtain a label image set, and uses two image sets to train the CycleGAN network model. Finally, the trained model is used to process the images of tomato plug seedlings to obtain their label images. According to the labeling principle, the correct rate of model recognition is between 91% and 97%. The recognition results show that the CycleGAN model can recognize and judge whether the seedlings affected by the adjacent seedling holes are suitable for transplanting, so the application of this method can greatly improve the intelligence level of the automatic tomato transplanters.</p></abstract>
+      <kwd-group>
+        <kwd>Deep learning</kwd>
+        <kwd>Cycle-Consistent Adversarial Networks</kwd>
+        <kwd>Tomato transplanter</kwd>
+        <kwd>Plug seedling recognition</kwd>
+        <kwd>Label image</kwd>
+      </kwd-group>
+      <counts>
+        <count count-type="contributors">1</count>
+        <fig-count>7</fig-count>
+        <table-count>0</table-count>
+        <ref-count>19</ref-count>
+      </counts>
+    </article-meta>
+  </front>
+  <body>
+    <sec disp-level="level1" sec-type="intro">
+      <title>1. Introduction</title>
+      <p>China is one of the largest tomato producers in the world. Plug seedling transplanting is the main planting method of tomato production. With the increase of planting amount and the rise of labor costs, mechanical transplanting is being used more and more, but at present most of the transplanters used are semi-automatic transplanters for manual feeding of seedlings, which cannot fundamentally solve such problems as high labor intensity, low transplanting efficiency, and low transplanting accuracy. The automatic tomato transplanter automatically grabs the seedlings from the plug tray, and then plants them in the field. With the advantages of high transplanting efficiency and low labor intensity, it has become the research focus of relevant institutions. However, because of influencing factors such as seed germination rate and seedling raising environment, there will be phenomena such as lack of seedlings and weak seedlings in the plug tray. If automatic transplanters cannot identify the seedling holes that are not suitable for transplanting, and still transplant the seedling from the seedling hole regularly, the transplanting effect of automatic transplanters will be greatly affected, resulting in an increase in the rate of missed planting. Therefore, identifying and obtaining the tomato seedling information in each seedling hole of the plug tray is a key technology to improve the transplanting effect of automatic tomato transplanters.</p><p>Scholars and related institutions at home and abroad have conducted research on how to obtain information on plug seedlings. Tai et al. [<xref ref-type="bibr" rid="ref_1">1</xref>] developed an automatic transplanter assisted by machine vision. Based on the gray information of the image, the segmentation threshold was obtained through sampling to determine whether the seedling hole is empty. Ryu et al. [<xref ref-type="bibr" rid="ref_2">2</xref>] developed a seedbed transplanting robot with a vision system, which uses a pre-defined value for image segmentation to determine empty seedling holes so as to reduce transplanting time. The Futura high-end automatic transplanter from Ferrari, Italy, uses photoelectric technology to scan the plug seedlings to determine whether there is a lack of seedlings. Prasanna Kumar and Raheman [<xref ref-type="bibr" rid="ref_3">3</xref>] designed a vegetable transplanter based on a walking tractor, and Li et al. [<xref ref-type="bibr" rid="ref_4">4</xref>] and Yang et al. [<xref ref-type="bibr" rid="ref_5">5</xref>]. and Rahul [<xref ref-type="bibr" rid="ref_6">6</xref>] carried out kinematic analysis and research on the pot seedling picking mechanism and control system. The above research is involved with two types of detection methods. One is photoelectric sensor detection, which can only detect the lack of seedling information, with single function; and it is easy to be interfered by the size of the seedlings, the growth angle, and the seedlings in adjacent seedling holes, with a low level of intelligence. The other is the image processing method. The above image processing methods are all based on image segmentation. After the image segmentation, the continuity information of some stems and leaves of the seedlings will be lost. When the stems and leaves of adjacent seedling holes overlap and squeeze each other, there will be misjudgment phenomenon. Tomato seedling plants are relatively large, and the stems and leaves of seedlings in adjacent seedling holes have begun to overlap at about 20 days during the seedling cultivation period. In order to obtain the information of tomato plug seedlings correctly, it’s necessary to adopt more effective methods.</p><p>In recent years, Generative Adversarial Network (GAN) [<xref ref-type="bibr" rid="ref_7">7</xref>], [<xref ref-type="bibr" rid="ref_8">8</xref>], [<xref ref-type="bibr" rid="ref_9">9</xref>] has been widely used in image generation, image style transfer, image repair and other fields. It is a generative unsupervised deep learning model that can use a small amount of training data to generate target data sets, making up for the problem of insufficient training data [<xref ref-type="bibr" rid="ref_10">10</xref>]. One of the main disadvantages of GAN is that the training process is unstable. For this reason, various improved models have been proposed, such as Conditional Generative Adversarial Nets (CGAN) [<xref ref-type="bibr" rid="ref_11">11</xref>] and Deep Convolutional Generative Adversarial Networks (DCGAN) [<xref ref-type="bibr" rid="ref_12">12</xref>]. CycleGAN [<xref ref-type="bibr" rid="ref_13">13</xref>], proposed as a solution to image-to-image conversion, can generate images in both directions and realize the mutual conversion of images in any two domains. In this paper, CycleGAN is used to train the images of plug seedlings and label images, so as to realize the conversion from images of plug seedlings to label images. Through the labeling principle, it is possible to directly judge whether each seedling hole is suitable for transplanting. The ring network structure of CycleGAN makes it possible for the generator and the discriminator to have a stronger learning and discrimination ability, thus extracting more image characteristic information of plug seedlings and solving the mutual interference of seedlings in adjacent seedling holes.</p>
+    </sec>
+    <sec disp-level="level1" sec-type="">
+      <title>2. Structure and working principle of intelligent automatic tomato transplanters</title>
+      <p>Intelligent automatic tomato transplanters can transmit tomato plug seedlings, pick seedlings by the mechanical picking arm, feed seedlings, plant seedlings and complete other actions to realize fully automatic tomato transplanting. Its machine vision system can judge whether the plug seedlings are suitable for transplanting, thus improving the transplanting effect.</p>
+      
+        <fig id="fig_1">
+          <label>Figure 1</label>
+          <caption>Structure diagram of automatic seedling transplanter: 1. Transmission mechanism; 2. Seedling feeding mechanism; 3. Industrial camera; 4. Seedling tray frame; 5. Seedling picking mechanism; 6. Transverse seedling throwing mechanism; 7. Electrical control box; 8. Limit wheel; 9. Five-pole planting mechanism</caption>
+          <abstract/>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2023/2/img_fKHLjnng6LctA6BJ.jpeg"/>
+        </fig>
+      
+      <p>The automatic tomato transplanter is shown in <xref ref-type="fig" rid="fig_1">Figure 1</xref>. It mainly includes a vision system, a seedling feeding mechanism, a seedling picking mechanism, a transverse seedling throwing mechanism, a five-pole planting mechanism, a transmission mechanism, and a control box. The vision system consists of an industrial camera, an industrial control computer and a controller. The industrial camera is installed directly above the tray, and the industrial control computer and the controller are placed in the control box. During the transplanting operation, the operator removes the tray from the tray frame on the console and places it on the seedling feeding mechanism, which is driven by a stepping motor. The precise positioning of the tray is realized under the control of the controller. Three trays can be placed on the mechanism at the same time, of which the middle one stops directly under the industrial camera and is in a waiting state, and the rightmost one stops directly under the seedling picking mechanism for transplanting. The seedling picking mechanism includes six seedling picking hands, which reciprocate under the drive of the servo motor to take out seedlings from the tray and put them into the transverse seedling throwing mechanism. The transverse seedling throwing mechanism moves to the seedling throwing position and puts seedlings into the five-pole planting mechanism, which plants the seedlings into the field. When the tray in the middle of the seedling feeding mechanism is in the waiting state, pictures, taken by the camera triggered by a command issued by the controller, are transmitted to the industrial control computer for processing to obtain such information as lack of seedlings and weak seedlings in the tray, which is transmitted to the controller. Therefore, during transplantation of seedlings in the tray, the movement of seedling picking hands in the seedling picking mechanism is controlled to give up grabbing seedlings unsuitable for transplanting, and an audible and visual alarm message is sent to remind the operator of replenishing seedlings in time [<xref ref-type="bibr" rid="ref_14">14</xref>].</p>
+    </sec>
+    <sec disp-level="level1" sec-type="">
+      <title>3. Information acquisition method of plug seedlings based on cyclegan</title>
+      <p>In this paper, CycleGAN is used to obtain the information of plug seedlings. The processing flow includes two stages: the first stage is to use different colors to mark the seedling status of each hole in the image of the plug seedling. Green means that the seedlings in the hole are suitable for transplanting, while yellow indicates that the seedling hole is short of seedlings or the seedlings are weak and not suitable for transplanting, and the edge of the seedling hole is indicated by red. So the marked picture is the label image. In the second stage, the CycleGAN model is trained with images of plug seedlings and label images, and finally it is possible to realize the mutual conversion between the collected images of the plug seedlings and the label images. Based on label images and the labeling principle, it is easy to judge whether the plug seedlings are suitable for transplanting.</p>
+      
+        <sec disp-level="level2">
+          
+            <title>3.1. Network model for generating label images of plug seedlings</title>
+          
+          <p>CycleGAN contains two generators and two discriminators with parameters shared. The ring structure realizes the function of cycle consistency. It performs a two-step transformation on source domain images: first, it tries to map source domain images to the target domain through the first generator, and then return images to the source domain through the second generator to obtain secondary generated images. The generator network is not only responsible for generating the target image, but also constantly adjusts itself to make the generated image more like the real data set; while the discriminant model is responsible for identifying the authenticity of generated images or real images. If the image is false, the output label is 0, otherwise it is recorded as 1. According to the label, it is judged whether the image comes from the real sample or the generative model, so as to guide the generation process of the generative model. By matching the generator and the discriminator, the quality of the generated image can be greatly improved.</p><p>The collected image domain of plug seedlings is set as X, and the label image domain as Y. The essence of using the CycleGAN network model to obtain label images in this paper is to allow the network to realize the two mappings of X → Y’ and Y → X’ with the ring structure. <xref ref-type="fig" rid="fig_2">Figure 2</xref> shows the principle of using CycleGAN to obtain label images. It can be seen from <xref ref-type="fig" rid="fig_2">Figure 2</xref> that the CycleGAN network model includes two generative models of G<italic><sub>X</sub></italic> and G<italic><sub>Y</sub></italic> and two discriminant models of D<italic><sub>X</sub></italic> and D<italic><sub>Y</sub></italic>. The generator G<italic><sub>X</sub></italic> is defined to learn the mapping from X → Y’ and the generator G<italic><sub>Y</sub></italic> to learn the mapping from Y → X’. The discriminator D<italic><sub>X</sub></italic> is not only used to judge whether the image is from the real label image X or from the generated G<italic><sub>Y</sub></italic>(Y), but also to judge whether the image is the image G<italic><sub>Y</sub></italic>(G<italic><sub>X</sub></italic>(X)) generated by the generator G<italic><sub>Y</sub></italic> or the real label image; the discriminator D<italic><sub>Y</sub></italic> is used to judge whether the data comes from the real collected image Y or the generated G<italic><sub>X</sub></italic>(X), and also to judge whether the image is the image G<italic><sub>X</sub></italic>(G<italic><sub>Y</sub></italic>(Y’)) generated by G<italic><sub>X</sub></italic> or the real collected image.</p><p>The specific processing progress of network training can be described as follows: After images in the label image set X are input into the first generative model G<italic><sub>X</sub></italic>, G<italic><sub>X</sub></italic> generates an image similar to Y, denoted as <italic><inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mrow data-mjx-texclass="ORD">
+      <mover>
+        <mi>Y</mi>
+        <mo stretchy="false">~</mo>
+      </mover>
+    </mrow>
+  </math>
+</inline-formula></italic>. Then the discriminant model D<italic><sub>Y</sub></italic> classifies <italic><inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mrow data-mjx-texclass="ORD">
+      <mover>
+        <mi>Y</mi>
+        <mo stretchy="false">~</mo>
+      </mover>
+    </mrow>
+  </math>
+</inline-formula></italic>, judges whether <italic><inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mrow data-mjx-texclass="ORD">
+      <mover>
+        <mi>Y</mi>
+        <mo stretchy="false">~</mo>
+      </mover>
+    </mrow>
+  </math>
+</inline-formula></italic> comes from the real collected data set or the image generated by the generative model, and feedbacks the result to G<italic><sub>X</sub></italic> so as to strengthen G<italic><sub>X</sub></italic> and make G<italic><sub>X</sub></italic> generate more realistic images. Therefore, under the supervision of D<italic><sub>Y</sub></italic>, the gap between <italic><inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mrow data-mjx-texclass="ORD">
+      <mover>
+        <mi>Y</mi>
+        <mo stretchy="false">~</mo>
+      </mover>
+    </mrow>
+  </math>
+</inline-formula></italic> and the image in the data set Y’ can be continuously narrowed, that is, the generated color image should be as similar as possible to the real collected data set Y. After <italic><inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mrow data-mjx-texclass="ORD">
+      <mover>
+        <mi>Y</mi>
+        <mo stretchy="false">~</mo>
+      </mover>
+    </mrow>
+  </math>
+</inline-formula></italic> is input into the second generative model G<italic><sub>Y</sub></italic> again, another new label image X’ is generated, which should be as similar as possible to the original label image data set X. Conversely, after the image in Y is input into G<italic><sub>Y</sub></italic>, the image <italic><inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mrow data-mjx-texclass="ORD">
+      <mover>
+        <mi>X</mi>
+        <mo stretchy="false">~</mo>
+      </mover>
+    </mrow>
+  </math>
+</inline-formula></italic> generated should be as similar as possible to the image in X under the supervision of the discriminant model D<italic><sub>X</sub></italic>, and the new collected image Y’ generated by G<italic><sub>X</sub></italic> from <italic><inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mrow data-mjx-texclass="ORD">
+      <mover>
+        <mi>X</mi>
+        <mo stretchy="false">~</mo>
+      </mover>
+    </mrow>
+  </math>
+</inline-formula></italic> should be as similar as possible to the image in Y. That is to say, the generative model should not only transform X into Y, but also have the ability to restore from Y to X, and vice versa. This is the special ring structure of this model.</p><p>The fundamental principle of GAN is the mutual game between the generative model and the discriminant model. In the model of this paper, D<italic><sub>Y</sub></italic> trains G<italic><sub>X</sub></italic>, and D<italic><sub>X</sub></italic> trains G<italic><sub>Y</sub></italic>, so that the two generative models can generate more and more realistic images. And the generative models respectively train the discriminant model in return to continuously enhance the resolution ability. The generation process of the new label image X’ and the new collected image Y’, taken as a verification process, is to verify whether the generative model is well trained to generate enough just-as-good fake images. After the model training is completed, and the image of the plug seedlings in the collected data set Y is input, the generative model G<italic><sub>Y</sub></italic> can generate the corresponding label image, that is, transform Y into X’, and vice versa, so that it is possible to realize the transformation from the collected data set to the label data set. Although the transformation process from X to Y must exist for training the model, for practical needs, the output result only retains the transformation result from Y to X, that is <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mrow data-mjx-texclass="ORD">
+      <mover>
+        <mi>X</mi>
+        <mo stretchy="false">~</mo>
+      </mover>
+    </mrow>
+  </math>
+</inline-formula>, to realize the function of obtaining the label image.</p>
+          
+            <fig id="fig_2">
+              <label>Figure 2</label>
+              <caption>Principle of capturing label images by CycleGAN</caption>
+              <abstract/>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2023/2/img_mxMY7RFQknzrO2bK.png"/>
+            </fig>
+          
+          
+            <sec disp-level="level3">
+              
+                <title>3.1. 1 Generator network</title>
+              
+              <p>The generator network is to make the output as close as possible to the real samples. In this paper, two generator networks G<italic><sub>X</sub></italic> and G<italic><sub>Y</sub></italic> are used, and the network structures of G<italic><sub>X</sub></italic> and G<italic><sub>Y</sub></italic> are consistent. <xref ref-type="fig" rid="fig_3">Figure 3</xref> shows the structure of the generator network, which has 17 layers, including: 1 input layer, 3 convolution layers, 9 residual blocks, 2 deconvolution layers, 1 1×1 convolution layer and 1 output layer. The purpose of the convolution layer is to extract different features of the input image, and the output features of the convolution layer can be obtained by formula (1):</p>
+              
+                <disp-formula>
+                  <label>(1)</label>
+                  <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                    <mi>F</mi>
+                    <mi>X</mi>
+                    <mi>W</mi>
+                    <mi>b</mi>
+                    <mo>=</mo>
+                    <mo stretchy="false">(</mo>
+                    <mo>×</mo>
+                    <mo>+</mo>
+                    <mo stretchy="false">)</mo>
+                    <mrow data-mjx-texclass="ORD">
+                      <mi>R</mi>
+                      <mi>e</mi>
+                      <mi>L</mi>
+                      <mi>U</mi>
+                    </mrow>
+                  </math>
+                </disp-formula>
+              
+              <p>where, <italic>X</italic> represents the image matrix, <italic>W</italic> represents the convolution kernel, × represents the convolution computation, and <italic>b</italic> represents the bias value.</p><p>The activation function used here is a rectified linear unit (ReLU) [<xref ref-type="bibr" rid="ref_15">15</xref>]. It is faster and more accurate to train a convolutional neural network with the ReLU function. An image with a size of 111×76 is input into the generative model. The image features are extracted through three convolution layers, and then input into the residual block. The structure of the residual block is shown in <xref ref-type="fig" rid="fig_4">Figure 4</xref>. Each residual block layer contains 2 convolution layers, 1 Instance Normalization (IN) layer [<xref ref-type="bibr" rid="ref_16">16</xref>] and an activation function ReLU layer. The residual block directly adds part of the input to the output at the end, which can realize image conversion while protecting the integrity of the original image information. The residual block used here can not only solve the degradation problem caused by network deepening [<xref ref-type="bibr" rid="ref_17">17</xref>], improving the recognition accuracy of the model, but also enhance the translation ability of the network. Similar to convolution, deconvolution [<xref ref-type="bibr" rid="ref_18">18</xref>] uses the filter transposed in the convolution process. The feature vector of the image is restored to low-level features by the deconvolution layer. Compared to convolution, deconvolution processes the opposite operation in the direction and back propagation of the neural network architecture. The function of deconvolution is to achieve the effect of reconstructing the input from the output through reverse training. In this paper, two layers of deconvolution are used. The final convolution layer is used to convert the input data into a feature map with a dimension of 1×1, and finally the ReLU activation layer is used to process non-linear change to the feature map with a dimension of 1×1, thus generating a new image.</p><p>In order to achieve the normalization operation of a single image, IN is used for normalization after each convolution layer. Unlike BN (Batch Normalization) [<xref ref-type="bibr" rid="ref_19">19</xref>], IN is to obtain the mean and the standard deviation of all pixels of a single image, and the output calculation statistics are only related to the current picture itself. While BN calculates the mean and the standard deviation of all pixels in all pictures in the entire batch, and the output calculation statistics will be affected by other samples in the batch. Therefore, use of IN can improve the quality of generated images on the basis of accelerating model convergence and preventing gradient explosion.</p>
+              
+                <fig id="fig_3">
+                  <label>Figure 3</label>
+                  <caption>Structure of the generator network</caption>
+                  <abstract/>
+                  <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2023/2/img_XnLZQhPLcY9XBARg.png"/>
+                </fig>
+              
+              
+                <fig id="fig_4">
+                  <label>Figure 4</label>
+                  <caption>Residual block structure</caption>
+                  <abstract/>
+                  <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2023/2/img_am3m_T-eq_erSUhY.png"/>
+                </fig>
+              
+            </sec>
+          
+          
+            <sec disp-level="level3">
+              
+                <title>3.1. 2 Discriminator network</title>
+              
+              <p>The discriminator network is to supervise the generator and judge whether the pictures are generated by the generator or real pictures. <xref ref-type="fig" rid="fig_5">Figure 5</xref> shows the network structure of the discriminant model, which is a fully convolutional network composed of 7 convolution layers. The image features are extracted through 6 convolution layers, and then the judgment result is output through the last convolution layer so as to realize the judgment function. Except for the first and the last layers, other convolution layers all adopt LReLU for normalization.</p><p>The output result of the discriminant model is a one-dimensional vector. For the input label image, if the discriminator judges that the picture is an image generated by the generative model, it outputs 0; if the discriminator judges that the picture is a real image from the sample set, it outputs 1.</p>
+              
+                <fig id="fig_5">
+                  <label>Figure 5</label>
+                  <caption>Discriminant model network structure</caption>
+                  <abstract/>
+                  <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2023/2/img_yWyGr9Yh0q6EzSOj.png"/>
+                </fig>
+              
+            </sec>
+          
+        </sec>
+      
+      
+        <sec disp-level="level2">
+          
+            <title>3.2. Loss function</title>
+          
+          <p>In order to better train the neural network, and to convert the samples in the <italic>X</italic> space to the samples in the <italic>Y</italic> space with CycleGAN, according to the generator G<italic><sub>X</sub></italic> and the discriminator D<italic><sub>Y</sub></italic> in this paper, a generative discriminator loss function is constructed. When the back error propagation of the real samples and the generated samples are used to guide the learning of the generator G<italic><sub>X</sub></italic> and D<italic><sub>Y</sub></italic> network parameters, where the samples <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>x</mi>
+    <mo>∈</mo>
+    <mrow data-mjx-texclass="ORD">
+      <mi mathvariant="normal">X</mi>
+    </mrow>
+  </math>
+</inline-formula> and <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>y</mi>
+    <mi>Y</mi>
+    <mo>∈</mo>
+  </math>
+</inline-formula>, the function is expressed as:</p>
+          
+            <disp-formula>
+              <label>(2)</label>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <msub>
+                  <mi>L</mi>
+                  <mrow data-mjx-texclass="ORD">
+                    <msub>
+                      <mi>G</mi>
+                      <mi>X</mi>
+                    </msub>
+                  </mrow>
+                </msub>
+                <msub>
+                  <mi>E</mi>
+                  <mrow data-mjx-texclass="ORD">
+                    <mi>y</mi>
+                    <mi>y</mi>
+                    <mo>∼</mo>
+                    <mo stretchy="false">(</mo>
+                    <mo stretchy="false">)</mo>
+                    <msub>
+                      <mi>p</mi>
+                      <mrow data-mjx-texclass="ORD">
+                        <mtext>data </mtext>
+                      </mrow>
+                    </msub>
+                  </mrow>
+                </msub>
+                <msub>
+                  <mi>E</mi>
+                  <mrow data-mjx-texclass="ORD">
+                    <mi>x</mi>
+                    <mi>x</mi>
+                    <mo>∼</mo>
+                    <mo stretchy="false">(</mo>
+                    <mo stretchy="false">)</mo>
+                    <msub>
+                      <mi>p</mi>
+                      <mrow data-mjx-texclass="ORD">
+                        <mtext>data </mtext>
+                      </mrow>
+                    </msub>
+                  </mrow>
+                </msub>
+                <mrow data-mjx-texclass="INNER">
+                  <mo data-mjx-texclass="OPEN">(</mo>
+                  <mo>,</mo>
+                  <mo>,</mo>
+                  <mo>,</mo>
+                  <mo data-mjx-texclass="CLOSE">)</mo>
+                  <msub>
+                    <mi>G</mi>
+                    <mi>X</mi>
+                  </msub>
+                  <msub>
+                    <mi>D</mi>
+                    <mi>Y</mi>
+                  </msub>
+                  <mi>X</mi>
+                  <mi>Y</mi>
+                </mrow>
+                <mrow data-mjx-texclass="INNER">
+                  <mo data-mjx-texclass="OPEN">[</mo>
+                  <mo data-mjx-texclass="NONE">⁡</mo>
+                  <mo stretchy="false">(</mo>
+                  <mo stretchy="false">)</mo>
+                  <mo data-mjx-texclass="CLOSE">]</mo>
+                  <mi>log</mi>
+                  <mi>y</mi>
+                  <msub>
+                    <mi>D</mi>
+                    <mi>Y</mi>
+                  </msub>
+                </mrow>
+                <mrow data-mjx-texclass="INNER">
+                  <mo data-mjx-texclass="OPEN">[</mo>
+                  <mo data-mjx-texclass="NONE">⁡</mo>
+                  <mo data-mjx-texclass="CLOSE">]</mo>
+                  <mi>log</mi>
+                  <mrow data-mjx-texclass="INNER">
+                    <mo data-mjx-texclass="OPEN">(</mo>
+                    <mo>−</mo>
+                    <mo data-mjx-texclass="CLOSE">)</mo>
+                    <mn>1</mn>
+                    <msub>
+                      <mi>D</mi>
+                      <mi>Y</mi>
+                    </msub>
+                    <mrow data-mjx-texclass="INNER">
+                      <mo data-mjx-texclass="OPEN">(</mo>
+                      <mo stretchy="false">(</mo>
+                      <mo stretchy="false">)</mo>
+                      <mo data-mjx-texclass="CLOSE">)</mo>
+                      <msub>
+                        <mi>G</mi>
+                        <mi>X</mi>
+                      </msub>
+                      <mi>x</mi>
+                    </mrow>
+                  </mrow>
+                </mrow>
+                <mo>=</mo>
+                <mo>+</mo>
+              </math>
+            </disp-formula>
+          
+          <p>Conversely, when the CycleGAN training process needs to convert the samples in the <italic>Y </italic>space to the samples in the <italic>X</italic> space, and construct a generative discriminator loss function to guide the generator G<italic><sub>Y</sub></italic> and D<italic><sub>X</sub></italic> network parameter learning, the expression is:</p>
+          
+            <disp-formula>
+              <label>(3)</label>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <msub>
+                  <mi>L</mi>
+                  <mrow data-mjx-texclass="ORD">
+                    <msub>
+                      <mi>G</mi>
+                      <mi>Y</mi>
+                    </msub>
+                  </mrow>
+                </msub>
+                <msub>
+                  <mi>E</mi>
+                  <mrow data-mjx-texclass="ORD">
+                    <mi>x</mi>
+                    <mi>x</mi>
+                    <mo>∼</mo>
+                    <mo stretchy="false">(</mo>
+                    <mo stretchy="false">)</mo>
+                    <msub>
+                      <mi>P</mi>
+                      <mrow data-mjx-texclass="ORD">
+                        <mtext>data </mtext>
+                      </mrow>
+                    </msub>
+                  </mrow>
+                </msub>
+                <msub>
+                  <mi>E</mi>
+                  <mrow data-mjx-texclass="ORD">
+                    <mi>y</mi>
+                    <mi>y</mi>
+                    <mo>∼</mo>
+                    <mo stretchy="false">(</mo>
+                    <mo stretchy="false">)</mo>
+                    <msub>
+                      <mi>P</mi>
+                      <mrow data-mjx-texclass="ORD">
+                        <mtext>data </mtext>
+                      </mrow>
+                    </msub>
+                  </mrow>
+                </msub>
+                <mrow data-mjx-texclass="INNER">
+                  <mo data-mjx-texclass="OPEN">(</mo>
+                  <mo>,</mo>
+                  <mo>,</mo>
+                  <mo>,</mo>
+                  <mo data-mjx-texclass="CLOSE">)</mo>
+                  <msub>
+                    <mi>G</mi>
+                    <mi>Y</mi>
+                  </msub>
+                  <msub>
+                    <mi>D</mi>
+                    <mi>X</mi>
+                  </msub>
+                  <mi>Y</mi>
+                  <mi>X</mi>
+                </mrow>
+                <mrow data-mjx-texclass="INNER">
+                  <mo data-mjx-texclass="OPEN">[</mo>
+                  <mo data-mjx-texclass="NONE">⁡</mo>
+                  <mo stretchy="false">(</mo>
+                  <mo stretchy="false">)</mo>
+                  <mo data-mjx-texclass="CLOSE">]</mo>
+                  <mi>log</mi>
+                  <mi>x</mi>
+                  <msub>
+                    <mi>D</mi>
+                    <mi>X</mi>
+                  </msub>
+                </mrow>
+                <mrow data-mjx-texclass="INNER">
+                  <mo data-mjx-texclass="OPEN">[</mo>
+                  <mo data-mjx-texclass="NONE">⁡</mo>
+                  <mo data-mjx-texclass="CLOSE">]</mo>
+                  <mi>log</mi>
+                  <mrow data-mjx-texclass="INNER">
+                    <mo data-mjx-texclass="OPEN">(</mo>
+                    <mo>−</mo>
+                    <mo data-mjx-texclass="CLOSE">)</mo>
+                    <mn>1</mn>
+                    <msub>
+                      <mi>D</mi>
+                      <mi>X</mi>
+                    </msub>
+                    <mrow data-mjx-texclass="INNER">
+                      <mo data-mjx-texclass="OPEN">(</mo>
+                      <mo stretchy="false">(</mo>
+                      <mo stretchy="false">)</mo>
+                      <mo data-mjx-texclass="CLOSE">)</mo>
+                      <msub>
+                        <mi>G</mi>
+                        <mi>Y</mi>
+                      </msub>
+                      <mi>y</mi>
+                    </mrow>
+                  </mrow>
+                </mrow>
+                <mo>=</mo>
+                <mo>+</mo>
+              </math>
+            </disp-formula>
+          
+          <p>According to CycleGAN's description of the cycle consistency loss, that is, the image <italic>X</italic> is mapped to <italic>Y</italic>, and <italic>Y</italic> should be mapped back to <italic>X</italic> at the same time, the cycle consistency loss between the original image <italic>X</italic> and the mapped image is calculated, and the loss function is defined as:</p>
+          
+            <disp-formula>
+              <label>(4)</label>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <msub>
+                  <mi>L</mi>
+                  <mi>c</mi>
+                </msub>
+                <msub>
+                  <mi>E</mi>
+                  <mrow data-mjx-texclass="ORD">
+                    <mi>x</mi>
+                    <mi>y</mi>
+                    <mi>x</mi>
+                    <mo>∼</mo>
+                    <mo stretchy="false">(</mo>
+                    <msub>
+                      <mi>p</mi>
+                      <mrow data-mjx-texclass="ORD">
+                        <mtext>data </mtext>
+                      </mrow>
+                    </msub>
+                  </mrow>
+                </msub>
+                <msub>
+                  <mi>E</mi>
+                  <mrow data-mjx-texclass="ORD">
+                    <mi>y</mi>
+                    <mi>y</mi>
+                    <mo>∼</mo>
+                    <mo stretchy="false">(</mo>
+                    <mo stretchy="false">)</mo>
+                    <msub>
+                      <mi>p</mi>
+                      <mrow data-mjx-texclass="ORD">
+                        <mtext>data </mtext>
+                      </mrow>
+                    </msub>
+                  </mrow>
+                </msub>
+                <mrow data-mjx-texclass="INNER">
+                  <mo data-mjx-texclass="OPEN">(</mo>
+                  <mo>,</mo>
+                  <mo>,</mo>
+                  <mo>,</mo>
+                  <mo data-mjx-texclass="CLOSE">)</mo>
+                  <msub>
+                    <mi>G</mi>
+                    <mi>X</mi>
+                  </msub>
+                  <msub>
+                    <mi>G</mi>
+                    <mi>Y</mi>
+                  </msub>
+                  <mi>X</mi>
+                  <mi>Y</mi>
+                </mrow>
+                <mrow data-mjx-texclass="INNER">
+                  <mo data-mjx-texclass="OPEN">[</mo>
+                  <mo data-mjx-texclass="CLOSE">]</mo>
+                  <msub>
+                    <mrow data-mjx-texclass="INNER">
+                      <mo data-mjx-texclass="OPEN" symmetric="true">‖</mo>
+                      <mo>−</mo>
+                      <mo data-mjx-texclass="CLOSE" symmetric="true">‖</mo>
+                      <msub>
+                        <mi>G</mi>
+                        <mi>Y</mi>
+                      </msub>
+                      <mrow data-mjx-texclass="INNER">
+                        <mo data-mjx-texclass="OPEN">(</mo>
+                        <mo stretchy="false">(</mo>
+                        <mo stretchy="false">)</mo>
+                        <mo data-mjx-texclass="CLOSE">)</mo>
+                        <msub>
+                          <mi>G</mi>
+                          <mi>X</mi>
+                        </msub>
+                        <mi>x</mi>
+                      </mrow>
+                      <mi>x</mi>
+                    </mrow>
+                    <mn>1</mn>
+                  </msub>
+                </mrow>
+                <mrow data-mjx-texclass="INNER">
+                  <mo data-mjx-texclass="OPEN">[</mo>
+                  <mo data-mjx-texclass="CLOSE">]</mo>
+                  <msub>
+                    <mrow data-mjx-texclass="INNER">
+                      <mo data-mjx-texclass="OPEN" symmetric="true">‖</mo>
+                      <mo>−</mo>
+                      <mo data-mjx-texclass="CLOSE" symmetric="true">‖</mo>
+                      <msub>
+                        <mi>G</mi>
+                        <mi>X</mi>
+                      </msub>
+                      <mrow data-mjx-texclass="INNER">
+                        <mo data-mjx-texclass="OPEN">(</mo>
+                        <mo stretchy="false">(</mo>
+                        <mo stretchy="false">)</mo>
+                        <mo data-mjx-texclass="CLOSE">)</mo>
+                        <msub>
+                          <mi>G</mi>
+                          <mi>Y</mi>
+                        </msub>
+                        <mi>y</mi>
+                      </mrow>
+                      <mi>y</mi>
+                    </mrow>
+                    <mn>1</mn>
+                  </msub>
+                </mrow>
+                <mo>=</mo>
+                <mo>+</mo>
+              </math>
+            </disp-formula>
+          
+          <p>The total loss function consists of 3 parts: the generative discriminator loss function from <italic>X</italic> to <italic>Y</italic>, the generative discriminator loss function from <italic>Y</italic> to <italic>X</italic>, and the cycle consistency loss function. The total loss expression is:</p>
+          
+            <disp-formula>
+              <label>(5)</label>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <mi>L</mi>
+                <mi>λ</mi>
+                <mrow data-mjx-texclass="INNER">
+                  <mo data-mjx-texclass="OPEN">(</mo>
+                  <mo>,</mo>
+                  <mo>,</mo>
+                  <mo>,</mo>
+                  <mo data-mjx-texclass="CLOSE">)</mo>
+                  <msub>
+                    <mrow data-mjx-texclass="ORD">
+                      <mi mathvariant="normal">G</mi>
+                    </mrow>
+                    <mi>X</mi>
+                  </msub>
+                  <msub>
+                    <mrow data-mjx-texclass="ORD">
+                      <mi mathvariant="normal">G</mi>
+                    </mrow>
+                    <mi>Y</mi>
+                  </msub>
+                  <msub>
+                    <mrow data-mjx-texclass="ORD">
+                      <mi mathvariant="normal">D</mi>
+                    </mrow>
+                    <mi>X</mi>
+                  </msub>
+                  <msub>
+                    <mrow data-mjx-texclass="ORD">
+                      <mi mathvariant="normal">D</mi>
+                    </mrow>
+                    <mi>Y</mi>
+                  </msub>
+                </mrow>
+                <mrow data-mjx-texclass="INNER">
+                  <mo data-mjx-texclass="OPEN">(</mo>
+                  <mo>,</mo>
+                  <mo>,</mo>
+                  <mo>,</mo>
+                  <mo data-mjx-texclass="CLOSE">)</mo>
+                  <msub>
+                    <mi>G</mi>
+                    <mi>X</mi>
+                  </msub>
+                  <msub>
+                    <mi>D</mi>
+                    <mi>Y</mi>
+                  </msub>
+                  <mi>X</mi>
+                  <mi>Y</mi>
+                </mrow>
+                <mrow data-mjx-texclass="INNER">
+                  <mo data-mjx-texclass="OPEN">(</mo>
+                  <mo>,</mo>
+                  <mo>,</mo>
+                  <mo>,</mo>
+                  <mo data-mjx-texclass="CLOSE">)</mo>
+                  <msub>
+                    <mi>G</mi>
+                    <mi>Y</mi>
+                  </msub>
+                  <msub>
+                    <mi>D</mi>
+                    <mi>X</mi>
+                  </msub>
+                  <mi>Y</mi>
+                  <mi>X</mi>
+                </mrow>
+                <mrow data-mjx-texclass="INNER">
+                  <mo data-mjx-texclass="OPEN">(</mo>
+                  <mo>,</mo>
+                  <mo>,</mo>
+                  <mo>,</mo>
+                  <mo data-mjx-texclass="CLOSE">)</mo>
+                  <msub>
+                    <mi>G</mi>
+                    <mi>X</mi>
+                  </msub>
+                  <msub>
+                    <mi>G</mi>
+                    <mi>Y</mi>
+                  </msub>
+                  <mi>X</mi>
+                  <mi>Y</mi>
+                </mrow>
+                <mo>=</mo>
+                <mo>+</mo>
+                <mo>+</mo>
+                <msub>
+                  <mi>L</mi>
+                  <mrow data-mjx-texclass="ORD">
+                    <msub>
+                      <mi>G</mi>
+                      <mi>X</mi>
+                    </msub>
+                  </mrow>
+                </msub>
+                <msub>
+                  <mi>L</mi>
+                  <mrow data-mjx-texclass="ORD">
+                    <msub>
+                      <mrow data-mjx-texclass="ORD">
+                        <mi mathvariant="normal">G</mi>
+                      </mrow>
+                      <mi>Y</mi>
+                    </msub>
+                  </mrow>
+                </msub>
+                <msub>
+                  <mi>L</mi>
+                  <mi>c</mi>
+                </msub>
+              </math>
+            </disp-formula>
+          
+          <p>where, λ is a parameter that controls the weights for generative discriminator loss and cycle consistency loss objects.</p>
+        </sec>
+      
+      
+        <sec disp-level="level2">
+          
+            <title>3.3. Network training</title>
+          
+          <p>The network is trained through the loss function. In the training phase, the Adam optimizer is used to run 60 epochs, the learning rate of the first 30 is 1e-4, and the learning rate update strategy of the last 30 is:</p>
+          
+            <disp-formula>
+              <label>(6)</label>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <msub>
+                  <mi>α</mi>
+                  <mrow data-mjx-texclass="ORD">
+                    <mtext>epoch </mtext>
+                  </mrow>
+                </msub>
+                <mo>=</mo>
+                <mo>×</mo>
+                <mi>α</mi>
+                <mfrac>
+                  <mrow>
+                    <mn>60</mn>
+                    <mo>−</mo>
+                    <mi>e</mi>
+                    <mi>p</mi>
+                    <mi>o</mi>
+                    <mi>c</mi>
+                    <mi>h</mi>
+                  </mrow>
+                  <mn>30</mn>
+                </mfrac>
+              </math>
+            </disp-formula>
+          
+          <p>where, α<italic><sub>epoch</sub></italic> represents the learning rate of the current epoch, and α represents the initial learning rate.</p><p>The whole training process can be described as: first, the label image is input into G<italic><sub>X</sub></italic> and processed by the generator network to generate <italic><inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mrow data-mjx-texclass="ORD">
+      <mover>
+        <mi>Y</mi>
+        <mo stretchy="false">~</mo>
+      </mover>
+    </mrow>
+  </math>
+</inline-formula></italic>, then the discriminant model D<italic><sub>Y</sub></italic> is used to distinguish <italic><inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mrow data-mjx-texclass="ORD">
+      <mover>
+        <mi>Y</mi>
+        <mo stretchy="false">~</mo>
+      </mover>
+    </mrow>
+  </math>
+</inline-formula></italic> and the collected seedling tray image Y. Next, <italic><inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mrow data-mjx-texclass="ORD">
+      <mover>
+        <mi>Y</mi>
+        <mo stretchy="false">~</mo>
+      </mover>
+    </mrow>
+  </math>
+</inline-formula></italic> is input into the second generative model G<italic><sub>Y</sub></italic> to generate an image set X’ that is similar to the label image set X. Conversely, the collected seedling tray image set Y is input into GY to output <italic><inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mrow data-mjx-texclass="ORD">
+      <mover>
+        <mi>X</mi>
+        <mo>~</mo>
+      </mover>
+    </mrow>
+  </math>
+</inline-formula></italic>, and the discriminant model D<italic><sub>X</sub></italic> is used to distinguish <italic><inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mrow data-mjx-texclass="ORD">
+      <mover>
+        <mi>X</mi>
+        <mo>~</mo>
+      </mover>
+    </mrow>
+  </math>
+</inline-formula></italic> and label images, and then <italic><inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mrow data-mjx-texclass="ORD">
+      <mover>
+        <mi>X</mi>
+        <mo>~</mo>
+      </mover>
+    </mrow>
+  </math>
+</inline-formula></italic> is input into G<italic><sub>X</sub></italic> to generate an image Y’ similar to the collected seedling tray image. Only when the differences between <italic><inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mrow data-mjx-texclass="ORD">
+      <mover>
+        <mi>X</mi>
+        <mo>~</mo>
+      </mover>
+    </mrow>
+  </math>
+</inline-formula></italic> and X, <italic><inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mrow data-mjx-texclass="ORD">
+      <mover>
+        <mi>Y</mi>
+        <mo stretchy="false">~</mo>
+      </mover>
+    </mrow>
+  </math>
+</inline-formula></italic> and Y, X’ and X, and Y’ and Y reach the minimum value, that is to say, when D<italic><sub>X</sub></italic> and D<italic><sub>Y</sub></italic> cannot distinguish the real data set from the generated data set, the whole network training process shall finish.</p>
+        </sec>
+      
+    </sec>
+    <sec disp-level="level1" sec-type="">
+      <title>4. Experiment and result analysis</title>
+      
+        <sec disp-level="level2">
+          
+            <title>4.1. Experimental data</title>
+          
+          <p>As the information acquisition method of plug seedling based on CycleGAN requires image samples for training, three trays of tomato seedlings were cultivated in an artificial greenhouse. The temperature of the greenhouse was kept at 25°C during the day and 15℃ at night. The seedling substrate is composed of peat, vermiculite and nutrient soil, and the seedling tray adopts a 12×6 hole tray. The image acquisition device is shown in <xref ref-type="fig" rid="fig_6">Figure 6</xref>, which consists of a frame with the height of 50cm and a camera of Canon 550D SLR with 18 million pixels. The first tray of tomato seedlings was sown on October 8, 2018, and the remaining two trays were sown two days apart. On October 19, the shoots were taken at 9 angles such as directly above the seedling tray and in the middle, and under different light conditions. More than 500 images of tomato seedling trays were captured during the seedling stage of 12~30d. All images are compressed into the images with a pixel size of 256×256, which are used as a tomato seedling tray image sample set. In addition, label image sample sets are generated by labeling according to the labeling principle, which are used for the training of the CycleGAN network.</p>
+          
+            <fig id="fig_6">
+              <label>Figure 6</label>
+              <caption>Image acquisition device: 1. Tomato seedlings; 2. Frame; 3. Camera</caption>
+              <abstract/>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2023/2/img_tizzfhQ5nMLrXuD3.png"/>
+            </fig>
+          
+        </sec>
+      
+      
+        <sec disp-level="level2">
+          
+            <title>4.2. Experimental environment</title>
+          
+          <p>The environment used for the experimental operation is completed on a Dell Vostro 3470-R1328R desktop computer, with the configuration of 8th generation Core i7 Processor, 8G, and Windows10 operating system. The programming software used in the experiment is Anaconda, the framework is TensorFlowV1.2, and the programming language is Python3.5.</p>
+        </sec>
+      
+      
+        <sec disp-level="level2">
+          
+            <title>4.3. Evaluation indicators</title>
+          
+          <p>Recognition accuracy is an important index to evaluate the identification of plug seedlings, and it is calculated by the following formula:</p>
+          
+            <disp-formula>
+              <label>(7)</label>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <mi>P</mi>
+                <mi mathvariant="normal">%</mi>
+                <mo>=</mo>
+                <mo>×</mo>
+                <mfrac>
+                  <msub>
+                    <mi>A</mi>
+                    <mn>0</mn>
+                  </msub>
+                  <mi>A</mi>
+                </mfrac>
+                <mn>100</mn>
+              </math>
+            </disp-formula>
+          
+          <p>where, <italic>P</italic> is the recognition accuracy rate, <italic>A</italic> is the total number of seedling holes on the plug tray (take 72), <italic>A<sub>0</sub></italic> is the number of correctly identified hole information on the plug seedlings, and the number correctly recognized consists of two parts: for one part, the seedlings in holes in the actual image are suitable for transplanting, and the recognition results also show that they are suitable for transplanting; for the other part, seedlings in holes are lacked, lodged or weak in the real image, and the recognition results show that they are not suitable for transplanting. The higher the accuracy rate is, the stronger the recognition ability of the model, and the higher the probability that the plug seedling information is recognized correctly.</p>
+        </sec>
+      
+      
+        <sec disp-level="level2">
+          
+            <title>4.4. Experimental results and analysis</title>
+          
+          <p>The CycleGAN network recognizes tomato seedling images after image training samples are trained. <xref ref-type="fig" rid="fig_7">Figure 7</xref> shows 8 representative recognition results, which are composed of actual collected images and recognition results. The principle of displaying the recognition results is consistent with the labeling principle of the label image, of which green means it is suitable for transplanting, and yellow means it is not suitable for transplanting.</p><p>Subgraphs (a) to (d) of <xref ref-type="fig" rid="fig_7">Figure 7</xref> represent the early stages of tomato seedling cultivation. At this time, the stems and leaves of tomato seedlings are basically in their respective seedling holes, the seedlings in adjacent seedling holes have little influence, and the recognition accuracy rate is 94%~97%. The main reason of the wrong identification of seedling holes is that the seedlings just break through the soil and are small in size, and it is relatively close in color to the surrounding seedling substrate. In subgraphs (e) to (h) of <xref ref-type="fig" rid="fig_7">Figure 7</xref>, the leaves of the seedlings in adjacent seedling holes begin to overlap, the recognition accuracy is 91%~97%, and the misidentified seedling holes are mainly concentrated in a row near the edge. As seedlings are artificially sown, tomato seedlings of the row are not sown in the middle of the seedling hole, but leans to the outside, so most of the stems and leaves of the seedlings grow outside the plug seedling tray. While the label image used for training is bounded by the outer edge of the plug seedling tray, resulting that the judgment information of the seedlings in this part is lost.</p>
+          
+            <fig id="fig_7">
+              <label>Figure 7</label>
+              <caption>Recognition results</caption>
+              <abstract/>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2023/2/img_VILohkd0qL9nV3tl.png"/>
+            </fig>
+          
+        </sec>
+      
+    </sec>
+    <sec disp-level="level1" sec-type="conclusions">
+      <title>5. Conclusions</title>
+      <p>This paper designs an information acquisition method of plug seedlings based on CycleGAN. The model of this method is a ring network structure, including two generators and two discriminators with parameters shared, which is equivalent to an organic combination of two mirror-symmetric one-way GANs. This method eliminates the requirement of image matching in the target domain, which can greatly simplify the work in the training data preparation stage. The special ring structure enables the generator network to realize the bidirectional mapping between the tomato seedling image and the label image, and the discriminator network guides the generation process of the generator network. And through the matching of the generator and the discriminator, the generated image can be greatly improved. The experimental results show that, compared with the previous acquisition methods, the information acquisition method of plug seedlings based on CycleGAN can make more comprehensive use of the feature information of plug seedling images. And the generator model can obtain overlapping and extrusion features of seedling stems and leaves in adjacent holes, so as to identify and judge whether seedlings in the seedling holes affected by the surrounding seedling holes, and whether they are suitable for transplanting, thus greatly improving the intelligence level of automatic tomato transplanters.</p>
+    </sec>
+  </body>
+  <back>
+    <ack>
+      <title>Acknowledgments</title>
+      
+    </ack>
+    <app-group>
+      <app>
+        <title>Appendix</title>
+        
+      </app>
+    </app-group>
+    <notes>
+      <title>Author Contributions</title>
+      
+    </notes>
+    <notes>
+      <title>Funding</title>
+      <p></p>
+    </notes>
+    <notes>
+      <title>Informed Consent Statement</title>
+      
+    </notes>
+    <notes>
+      <title>Data Availability Statement</title>
+      <p>The data used to support the research findings are available from the corresponding author upon request.</p>
+    </notes>
+    <notes notes-type="COI-statement">
+      <title>Conflicts of Interest</title>
+      <p>The authors declare no conflict of interest.</p>
+    </notes>
+    <ref-list>
+      <title>References</title>
+      <ref id="ref_1">
+        <label>1.</label>
+        <element-citation publication-type="journal">
+          <person-group person-group-type="author">
+            <name>
+              <given-names>Y. W.</given-names>
+              <surname>Tai</surname>
+            </name>
+            <name>
+              <given-names>P. P.</given-names>
+              <surname>Ling</surname>
+            </name>
+            <name>
+              <given-names>K. C.</given-names>
+              <surname>Ting</surname>
+            </name>
+          </person-group>
+          <article-title>Machine vision assisted robotic seedling transplanting</article-title>
+          <source>Trans. ASAE.</source>
+          <year>1994</year>
+          <volume>37</volume>
+          <issue>2</issue>
+          <page-range>661-667</page-range>
+          <fpage>661</fpage>
+          <lpage>667</lpage>
+          <pub-id pub-id-type="doi">https://doi.org/10.13031/2013.28127</pub-id>
+          <pub-id pub-id-type="publisher-id"/>
+        </element-citation>
+      </ref>
+      <ref id="ref_2">
+        <label>2.</label>
+        <element-citation publication-type="journal">
+          <person-group person-group-type="author">
+            <name>
+              <given-names>K. H.</given-names>
+              <surname>Ryu</surname>
+            </name>
+            <name>
+              <given-names>G.</given-names>
+              <surname>Kim</surname>
+            </name>
+            <name>
+              <given-names>J. S.</given-names>
+              <surname>Han</surname>
+            </name>
+          </person-group>
+          <article-title>Development of a robotic transplanter for bedding plants</article-title>
+          <source>J. Agric. Eng. Res.</source>
+          <year>2001</year>
+          <volume>78</volume>
+          <issue>2</issue>
+          <page-range>141-146</page-range>
+          <fpage>141</fpage>
+          <lpage>146</lpage>
+          <pub-id pub-id-type="doi">https://doi.org/10.1006/jaer.2000.0656</pub-id>
+          <pub-id pub-id-type="publisher-id"/>
+        </element-citation>
+      </ref>
+      <ref id="ref_3">
+        <label>3.</label>
+        <element-citation publication-type="journal">
+          <person-group person-group-type="author">
+            <name>
+              <given-names>G. V.</given-names>
+              <surname>Prasanna Kumar</surname>
+            </name>
+            <name>
+              <given-names>H.</given-names>
+              <surname>Raheman</surname>
+            </name>
+          </person-group>
+          <article-title>Development of a walk-behind type hand tractor powered vegetable transplanter for paper pot seedlings</article-title>
+          <source>Biosyst. Eng.</source>
+          <year>2011</year>
+          <volume>110</volume>
+          <issue>2</issue>
+          <page-range>189-197</page-range>
+          <fpage>189</fpage>
+          <lpage>197</lpage>
+          <pub-id pub-id-type="doi">https://doi.org/10.1016/j.biosystemseng.2011.08.001</pub-id>
+          <pub-id pub-id-type="publisher-id"/>
+        </element-citation>
+      </ref>
+      <ref id="ref_4">
+        <label>4.</label>
+        <element-citation publication-type="journal">
+          <person-group person-group-type="author">
+            <name>
+              <given-names>H.</given-names>
+              <surname>Li</surname>
+            </name>
+            <name>
+              <given-names>W. B.</given-names>
+              <surname>Cao</surname>
+            </name>
+            <name>
+              <given-names>S. F.</given-names>
+              <surname>Li</surname>
+            </name>
+            <name>
+              <given-names>W.</given-names>
+              <surname>Fu</surname>
+            </name>
+            <name>
+              <given-names>K. Q.</given-names>
+              <surname>Liu</surname>
+            </name>
+          </person-group>
+          <article-title>Kinematic analysis and test on automatic pick-up mechanism for chili plug seedling</article-title>
+          <source>Trans. Chin. Soc. Agric. Eng.</source>
+          <year>2015</year>
+          <volume>31</volume>
+          <issue>3</issue>
+          <page-range>20-27</page-range>
+          <fpage>20</fpage>
+          <lpage>27</lpage>
+          <pub-id pub-id-type="doi"/>
+          <pub-id pub-id-type="publisher-id"/>
+        </element-citation>
+      </ref>
+      <ref id="ref_5">
+        <label>5.</label>
+        <element-citation publication-type="journal">
+          <person-group person-group-type="author">
+            <name>
+              <given-names>Q.</given-names>
+              <surname>Yang</surname>
+            </name>
+            <name>
+              <given-names>L.</given-names>
+              <surname>Xu</surname>
+            </name>
+            <name>
+              <given-names>X. Y.</given-names>
+              <surname>Shi</surname>
+            </name>
+            <name>
+              <given-names>A.</given-names>
+              <surname>Ibrar</surname>
+            </name>
+            <name>
+              <given-names>H. P.</given-names>
+              <surname>Mao</surname>
+            </name>
+            <name>
+              <given-names>J. P.</given-names>
+              <surname>Hu</surname>
+            </name>
+            <name>
+              <given-names>L. H.</given-names>
+              <surname>Han</surname>
+            </name>
+          </person-group>
+          <article-title>Design of seedlings separation device with reciprocating movement seedling cups and its controlling system of the full-automatic plug seedling transplanter</article-title>
+          <source>Comput. Electron. Agric.</source>
+          <year>2018</year>
+          <volume>147</volume>
+          <issue/>
+          <page-range>131-145</page-range>
+          <fpage>131</fpage>
+          <lpage>145</lpage>
+          <pub-id pub-id-type="doi">https://doi.org/10.1016/j.compag.2018.02.004</pub-id>
+          <pub-id pub-id-type="publisher-id"/>
+        </element-citation>
+      </ref>
+      <ref id="ref_6">
+        <label>6.</label>
+        <element-citation publication-type="journal">
+          <person-group person-group-type="author">
+            <name>
+              <given-names>K.</given-names>
+              <surname>Rahul</surname>
+            </name>
+            <name>
+              <given-names>H.</given-names>
+              <surname>Raheman</surname>
+            </name>
+            <name>
+              <given-names>V.</given-names>
+              <surname>Paradkar</surname>
+            </name>
+          </person-group>
+          <article-title>Design and development of a 5R 2DOF parallel robot arm for handling paper pot seedlings in a vegetable transplanter</article-title>
+          <source>Comput. Electron. Agric.</source>
+          <year>2019</year>
+          <volume>166</volume>
+          <issue/>
+          <page-range/>
+          <fpage/>
+          <lpage/>
+          <pub-id pub-id-type="doi">https://doi.org/10.1016/j.compag.2019.105014</pub-id>
+          <pub-id pub-id-type="publisher-id">105014</pub-id>
+        </element-citation>
+      </ref>
+      <ref id="ref_7">
+        <label>7.</label>
+        <element-citation publication-type="conf-paper">
+          <person-group person-group-type="author">
+            <name>
+              <given-names>I. J.</given-names>
+              <surname>Goodfellow</surname>
+            </name>
+            <name>
+              <given-names>J.</given-names>
+              <surname>Pouget-Adadie</surname>
+            </name>
+            <name>
+              <given-names>M.</given-names>
+              <surname>Mirza</surname>
+            </name>
+            <name>
+              <given-names>B.</given-names>
+              <surname>Xu</surname>
+            </name>
+            <name>
+              <given-names>D.</given-names>
+              <surname>Warde-Farley</surname>
+            </name>
+            <name>
+              <given-names>S.</given-names>
+              <surname>Ozair</surname>
+            </name>
+            <name>
+              <given-names>A.</given-names>
+              <surname>Courville</surname>
+            </name>
+            <name>
+              <given-names>Y.</given-names>
+              <surname>Bengio</surname>
+            </name>
+          </person-group>
+          <person-group person-group-type="editor"/>
+          <article-title>Generative Adversarial Nets</article-title>
+          <source/>
+          <publisher-loc>USA</publisher-loc>
+          <publisher-name>MIT Press</publisher-name>
+          <conf-name>Proceedings of the 27th International Conference on Neural Information Processing Systems, Cambridge, MA</conf-name>
+          <conf-acronym/>
+          <conf-loc>United States</conf-loc>
+          <conf-date>December 2014</conf-date>
+          <year>2014</year>
+          <volume/>
+          <issue/>
+          <page-range>2672-2680</page-range>
+          <fpage>2672</fpage>
+          <lpage>2680</lpage>
+          <pub-id pub-id-type="doi"/>
+          <pub-id pub-id-type="publisher-id"/>
+        </element-citation>
+      </ref>
+      <ref id="ref_8">
+        <label>8.</label>
+        <element-citation publication-type="journal">
+          <person-group person-group-type="author">
+            <name>
+              <given-names>A.</given-names>
+              <surname>Krizhevsky</surname>
+            </name>
+            <name>
+              <given-names>I.</given-names>
+              <surname>Sutskever</surname>
+            </name>
+            <name>
+              <given-names>G.</given-names>
+              <surname>Hinton</surname>
+            </name>
+          </person-group>
+          <article-title>ImageNet classification with deep convolutional neural networks</article-title>
+          <source>Commun. ACM.</source>
+          <year>2017</year>
+          <volume>60</volume>
+          <issue>6</issue>
+          <page-range>84-90</page-range>
+          <fpage>84</fpage>
+          <lpage>90</lpage>
+          <pub-id pub-id-type="doi">https://doi.org/10.1145/3065386</pub-id>
+          <pub-id pub-id-type="publisher-id"/>
+        </element-citation>
+      </ref>
+      <ref id="ref_9">
+        <label>9.</label>
+        <element-citation publication-type="journal">
+          <person-group person-group-type="author">
+            <name>
+              <given-names>S.</given-names>
+              <surname>Wen</surname>
+            </name>
+            <name>
+              <given-names>N. W.</given-names>
+              <surname>Shen</surname>
+            </name>
+            <name>
+              <given-names>J. T.</given-names>
+              <surname>Zhang</surname>
+            </name>
+            <name>
+              <given-names>Y. B.</given-names>
+              <surname>Lan</surname>
+            </name>
+            <name>
+              <given-names>J.</given-names>
+              <surname>Han</surname>
+            </name>
+            <name>
+              <given-names>X. C.</given-names>
+              <surname>Yin</surname>
+            </name>
+            <name>
+              <given-names>Q. Y.</given-names>
+              <surname>Zhang</surname>
+            </name>
+            <name>
+              <given-names>Y. F.</given-names>
+              <surname>Ge</surname>
+            </name>
+          </person-group>
+          <article-title>Single-rotor UAV flow field simulation using generative adversarial networks</article-title>
+          <source>Comput. Electron. Agric.</source>
+          <year>2019</year>
+          <volume>167</volume>
+          <issue/>
+          <page-range/>
+          <fpage/>
+          <lpage/>
+          <pub-id pub-id-type="doi">https://doi.org/10.1016/j.compag.2019.105004</pub-id>
+          <pub-id pub-id-type="publisher-id">105004</pub-id>
+        </element-citation>
+      </ref>
+      <ref id="ref_10">
+        <label>10.</label>
+        <element-citation publication-type="journal">
+          <person-group person-group-type="author">
+            <name>
+              <given-names>M. L.</given-names>
+              <surname>Zhou</surname>
+            </name>
+            <name>
+              <given-names>Y. Y.</given-names>
+              <surname>Shan</surname>
+            </name>
+            <name>
+              <given-names>X. L.</given-names>
+              <surname>Xue</surname>
+            </name>
+            <name>
+              <given-names>D. Q.</given-names>
+              <surname>Yin</surname>
+            </name>
+          </person-group>
+          <article-title>Theoretical analysis and development of a mechanism with punching device for transplanting potted vegetable seedlings</article-title>
+          <source>Int J. Agric. Biol. Eng.</source>
+          <year>2020</year>
+          <volume>13</volume>
+          <issue>4</issue>
+          <page-range>85-92</page-range>
+          <fpage>85</fpage>
+          <lpage>92</lpage>
+          <pub-id pub-id-type="doi">https://doi.org/10.25165/j.ijabe.20201304.5404</pub-id>
+          <pub-id pub-id-type="publisher-id"/>
+        </element-citation>
+      </ref>
+      <ref id="ref_11">
+        <label>11.</label>
+        <element-citation publication-type="journal">
+          <person-group person-group-type="author">
+            <name>
+              <given-names>M. N.</given-names>
+              <surname>Islam</surname>
+            </name>
+            <name>
+              <given-names>M. Z.</given-names>
+              <surname>Iqbal</surname>
+            </name>
+            <name>
+              <given-names>M.</given-names>
+              <surname>Ali</surname>
+            </name>
+            <name>
+              <given-names>M.</given-names>
+              <surname>Chowdhury</surname>
+            </name>
+            <name>
+              <given-names>M. S. N.</given-names>
+              <surname>Kabir</surname>
+            </name>
+            <name>
+              <given-names>T.</given-names>
+              <surname>Park</surname>
+            </name>
+            <name>
+              <given-names>Y. J.</given-names>
+              <surname>Kim</surname>
+            </name>
+            <name>
+              <given-names>S. O.</given-names>
+              <surname>Chung</surname>
+            </name>
+          </person-group>
+          <article-title>Kinematic analysis of a clamp-type picking device for an automatic pepper transplanter</article-title>
+          <source>Agriculture</source>
+          <year>2020</year>
+          <volume>10</volume>
+          <issue>2</issue>
+          <page-range/>
+          <fpage/>
+          <lpage/>
+          <pub-id pub-id-type="doi">https://doi.org/10.3390/agriculture10120627</pub-id>
+          <pub-id pub-id-type="publisher-id"/>
+        </element-citation>
+      </ref>
+      <ref id="ref_12">
+        <label>12.</label>
+        <element-citation publication-type="journal">
+          <person-group person-group-type="author">
+            <name>
+              <given-names>O. J.</given-names>
+              <surname>Jorg</surname>
+            </name>
+            <name>
+              <given-names>M.</given-names>
+              <surname>Sportelli</surname>
+            </name>
+            <name>
+              <given-names>M.</given-names>
+              <surname>Fontanelli</surname>
+            </name>
+            <name>
+              <given-names>C.</given-names>
+              <surname>Frasconi</surname>
+            </name>
+            <name>
+              <given-names>M.</given-names>
+              <surname>Raffaelli</surname>
+            </name>
+            <name>
+              <given-names>G.</given-names>
+              <surname>Fantoni</surname>
+            </name>
+          </person-group>
+          <article-title>Design, development and testing of feeding grippers for vegetable plug transplanters</article-title>
+          <source>AgriEngineering</source>
+          <year>2021</year>
+          <volume>3</volume>
+          <issue>3</issue>
+          <page-range>669-680</page-range>
+          <fpage>669</fpage>
+          <lpage>680</lpage>
+          <pub-id pub-id-type="doi">https://doi.org/10.3390/agriengineering3030043</pub-id>
+          <pub-id pub-id-type="publisher-id"/>
+        </element-citation>
+      </ref>
+      <ref id="ref_13">
+        <label>13.</label>
+        <element-citation publication-type="conf-paper">
+          <person-group person-group-type="author">
+            <name>
+              <given-names>V.</given-names>
+              <surname>Nair</surname>
+            </name>
+            <name>
+              <given-names>G. E.</given-names>
+              <surname>Hinton</surname>
+            </name>
+          </person-group>
+          <person-group person-group-type="editor"/>
+          <article-title>Rectified linear units improve restricted boltzmann machines</article-title>
+          <source/>
+          <publisher-loc>Israel</publisher-loc>
+          <publisher-name>Omnipress</publisher-name>
+          <conf-name>Proceedings of the 27th International Conference on International Conference on Machine Learning</conf-name>
+          <conf-acronym/>
+          <conf-loc>Haifa Israel</conf-loc>
+          <conf-date>June 21-24, 2010</conf-date>
+          <year>2010</year>
+          <volume/>
+          <issue/>
+          <page-range>807-814</page-range>
+          <fpage>807</fpage>
+          <lpage>814</lpage>
+          <pub-id pub-id-type="doi"/>
+          <pub-id pub-id-type="publisher-id"/>
+        </element-citation>
+      </ref>
+      <ref id="ref_14">
+        <label>14.</label>
+        <element-citation publication-type="journal">
+          <person-group person-group-type="author">
+            <name>
+              <given-names>T. M.</given-names>
+              <surname>Quan</surname>
+            </name>
+            <name>
+              <given-names>T.</given-names>
+              <surname>Nguyen-Duc</surname>
+            </name>
+            <name>
+              <given-names>W. K.</given-names>
+              <surname>Jeong</surname>
+            </name>
+          </person-group>
+          <article-title>Compressed sensing MRI reconstruction using a generative adversarial network with a cyclic loss</article-title>
+          <source>IEEE Trans. Med. Imaging</source>
+          <year>2018</year>
+          <volume>37</volume>
+          <issue>6</issue>
+          <page-range>1488-1497</page-range>
+          <fpage>1488</fpage>
+          <lpage>1497</lpage>
+          <pub-id pub-id-type="doi">https://doi.org/10.1109/TMI.2018.2820120</pub-id>
+          <pub-id pub-id-type="publisher-id"/>
+        </element-citation>
+      </ref>
+      <ref id="ref_15">
+        <label>15.</label>
+        <element-citation publication-type="conf-paper">
+          <person-group person-group-type="author">
+            <name>
+              <given-names>Y. P.</given-names>
+              <surname>Hu</surname>
+            </name>
+            <name>
+              <given-names>E.</given-names>
+              <surname>Gibson</surname>
+            </name>
+            <name>
+              <given-names>T.</given-names>
+              <surname>Vercauteren</surname>
+            </name>
+            <name>
+              <given-names>H. U.</given-names>
+              <surname>Ahmed</surname>
+            </name>
+            <name>
+              <given-names>M.</given-names>
+              <surname>Emberton</surname>
+            </name>
+            <name>
+              <given-names>C. M.</given-names>
+              <surname>Moore</surname>
+            </name>
+            <name>
+              <given-names>J. A.</given-names>
+              <surname>Noble</surname>
+            </name>
+            <name>
+              <given-names>D. C.</given-names>
+              <surname>Barratt</surname>
+            </name>
+          </person-group>
+          <person-group person-group-type="editor"/>
+          <article-title>Intraoperative organ motion models with an ensemble of conditional generative adversarial networks</article-title>
+          <source/>
+          <publisher-loc/>
+          <publisher-name>Springer, Cham</publisher-name>
+          <conf-name>International Conference on Medical Image Computing and Computer-Assisted Intervention, Quebec City, QC</conf-name>
+          <conf-acronym/>
+          <conf-loc>Canada</conf-loc>
+          <conf-date>September 10-14, 2017</conf-date>
+          <year>2017</year>
+          <volume/>
+          <issue/>
+          <page-range>368-376</page-range>
+          <fpage>368</fpage>
+          <lpage>376</lpage>
+          <pub-id pub-id-type="doi">https://doi.org/10.1007/978-3-319-66185-8_42.</pub-id>
+          <pub-id pub-id-type="publisher-id"/>
+        </element-citation>
+      </ref>
+      <ref id="ref_16">
+        <label>16.</label>
+        <element-citation publication-type="conf-paper">
+          <person-group person-group-type="author">
+            <name>
+              <given-names>M. D.</given-names>
+              <surname>Zeiler</surname>
+            </name>
+            <name>
+              <given-names>D.</given-names>
+              <surname>Krishnan</surname>
+            </name>
+            <name>
+              <given-names>G. W.</given-names>
+              <surname>Talor</surname>
+            </name>
+            <name>
+              <given-names>R.</given-names>
+              <surname>Fergus</surname>
+            </name>
+          </person-group>
+          <person-group person-group-type="editor"/>
+          <article-title>Deconvolutional networks</article-title>
+          <source/>
+          <publisher-loc>USA</publisher-loc>
+          <publisher-name>IEEE</publisher-name>
+          <conf-name>2010 IEEE Computer Society Conference on Computer Vision and Pattern Recognition, Francisco, CA</conf-name>
+          <conf-acronym/>
+          <conf-loc>USA</conf-loc>
+          <conf-date>June 13-18, 2010</conf-date>
+          <year>2010</year>
+          <volume/>
+          <issue/>
+          <page-range>2528-2535</page-range>
+          <fpage>2528</fpage>
+          <lpage>2535</lpage>
+          <pub-id pub-id-type="doi">https://doi.org/10.1109/CVPR.2010.5539957.</pub-id>
+          <pub-id pub-id-type="publisher-id"/>
+        </element-citation>
+      </ref>
+      <ref id="ref_17">
+        <label>17.</label>
+        <element-citation publication-type="journal">
+          <person-group person-group-type="author">
+            <name>
+              <given-names>E. A.</given-names>
+              <surname>Smirnov</surname>
+            </name>
+            <name>
+              <given-names>D. M.</given-names>
+              <surname>Timoshenko</surname>
+            </name>
+            <name>
+              <given-names>S. N.</given-names>
+              <surname>Andrianov</surname>
+            </name>
+          </person-group>
+          <article-title>Comparison of regularization methods for imagenet classification with deep convolutional neural networks</article-title>
+          <source>AASRI Proc.</source>
+          <year>2014</year>
+          <volume>6</volume>
+          <issue/>
+          <page-range>89-94</page-range>
+          <fpage>89</fpage>
+          <lpage>94</lpage>
+          <pub-id pub-id-type="doi">https://doi.org/10.1016/j.aasri.2014.05.013</pub-id>
+          <pub-id pub-id-type="publisher-id"/>
+        </element-citation>
+      </ref>
+      <ref id="ref_18">
+        <label>18.</label>
+        <element-citation publication-type="journal">
+          <person-group person-group-type="author">
+            <name>
+              <given-names>S.</given-names>
+              <surname>Kida</surname>
+            </name>
+            <name>
+              <given-names>S.</given-names>
+              <surname>Kaji</surname>
+            </name>
+            <name>
+              <given-names>K.</given-names>
+              <surname>Nawa</surname>
+            </name>
+            <name>
+              <given-names>T.</given-names>
+              <surname>Imae</surname>
+            </name>
+            <name>
+              <given-names>T.</given-names>
+              <surname>Nakamoto</surname>
+            </name>
+            <name>
+              <given-names>S.</given-names>
+              <surname>Ozaki</surname>
+            </name>
+            <name>
+              <given-names>T.</given-names>
+              <surname>Ohta</surname>
+            </name>
+            <name>
+              <given-names>Y.</given-names>
+              <surname>Nozawa</surname>
+            </name>
+            <name>
+              <given-names>K.</given-names>
+              <surname>Nakagawa</surname>
+            </name>
+          </person-group>
+          <article-title>Visual enhancement of Cone-beam CT by use of CycleGAN</article-title>
+          <source>Medical Physics</source>
+          <year>2019</year>
+          <volume>47</volume>
+          <issue>3</issue>
+          <page-range>998-1010</page-range>
+          <fpage>998</fpage>
+          <lpage>1010</lpage>
+          <pub-id pub-id-type="doi">https://doi.org/10.1002/mp.13963</pub-id>
+          <pub-id pub-id-type="publisher-id"/>
+        </element-citation>
+      </ref>
+      <ref id="ref_19">
+        <label>19.</label>
+        <element-citation publication-type="journal">
+          <person-group person-group-type="author">
+            <name>
+              <given-names>A.</given-names>
+              <surname>Koutsoukas</surname>
+            </name>
+            <name>
+              <given-names>K. J.</given-names>
+              <surname>Monaghan</surname>
+            </name>
+            <name>
+              <given-names>X.</given-names>
+              <surname>Li</surname>
+            </name>
+            <name>
+              <given-names>J.</given-names>
+              <surname>Huan</surname>
+            </name>
+          </person-group>
+          <article-title>Deep-learning: Investigating deep neural networks hyper-parameters and comparison of performance to shallow methods for modeling bioactivity data</article-title>
+          <source>J. Cheminform.</source>
+          <year>2017</year>
+          <volume>9</volume>
+          <issue>1</issue>
+          <page-range/>
+          <fpage/>
+          <lpage/>
+          <pub-id pub-id-type="doi"/>
+          <pub-id pub-id-type="publisher-id"/>
+        </element-citation>
+      </ref>
+    </ref-list>
+  </back>
+</article>
