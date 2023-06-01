@@ -1,0 +1,1492 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.3 20210610//EN" "JATS-journalpublishing1-3.dtd">
+<article xml:lang="en" dtd-version="1.3" article-type="research-article" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mml="http://www.w3.org/1998/Math/MathML">
+  <front>
+    <journal-meta>
+      <journal-id journal-id-type="publisher-id">JEMSE</journal-id>
+      <journal-id journal-id-type="doi">10.56578</journal-id>
+      <journal-title-group>
+        <journal-title>Journal of Engineering Management and Systems Engineering</journal-title>
+        <abbrev-journal-title abbrev-type="issn">J. Eng. Manag. Syst. Eng.</abbrev-journal-title>
+        <abbrev-journal-title abbrev-type="publisher">JEMSE</abbrev-journal-title>
+      </journal-title-group>
+      <issn publication-format="electronic">2958-3527</issn>
+      <issn publication-format="print">2958-3519</issn>
+      <publisher>
+        <publisher-name>Acadlore</publisher-name>
+      </publisher>
+    </journal-meta>
+    <article-meta>
+      <article-id pub-id-type="publisher-id">AR-32KSMNwnaxrTdGiEeu0schmLSdArtnXe</article-id>
+      <article-id pub-id-type="doi">10.56578/jemse010103</article-id>
+      <title-group>
+        <article-title>Integrated Scheduling of the Production and Maintenance of Parallel Machine Job-shop Considering Stochastic Machine Breakdowns</article-title>
+      </title-group>
+      <contrib-group>
+        <contrib contrib-type="author">
+          <xref ref-type="aff" rid="1">1</xref>
+          <name>
+            <surname>Zhao</surname>
+            <given-names>Zhiyuan</given-names>
+          </name>
+          <contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0000-0002-7350-1856</contrib-id>
+          <email>Zhao1ZY@163.com</email>
+        </contrib>
+        <contrib contrib-type="author">
+          <xref ref-type="aff" rid="1">1</xref>
+          <name>
+            <surname>Yuan</surname>
+            <given-names>Qilong</given-names>
+          </name>
+          <contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0000-0002-8944-1341</contrib-id>
+          <email>ccyxz@xaut.edu.cn</email>
+        </contrib>
+        <aff id="1">School of Mechanical and Precision Instrument Engineering, Xi'an University of Technology, 710048 Xi’an, China</aff>
+      </contrib-group>
+      <year>2022</year>
+      <volume>1</volume>
+      <issue>1</issue>
+      <fpage>15</fpage>
+      <lpage>22</lpage>
+      <page-range>15-22</page-range>
+      <history>
+        <date date-type="received">
+          <month>07</month>
+          <day>25</day>
+          <year>2022</year>
+        </date>
+        <date date-type="accepted">
+          <month>09</month>
+          <day>12</day>
+          <year>2022</year>
+        </date>
+        <date date-type="pub">
+          <month>11</month>
+          <day>29</day>
+          <year>2022</year>
+        </date>
+      </history>
+      <permissions>
+        <copyright-statement>©2022 by the authors</copyright-statement>
+        <copyright-year>2022</copyright-year>
+        <license>. Licensee Acadlore Publishing Services Limited, Hong Kong. This article can be downloaded for free, and reused and quoted with a citation of the original published version, under the <ext-link ext-link-type="uri" xlink:href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0 license</ext-link>.</license>
+      </permissions>
+      <abstract><p>The integrated scheduling of production and maintenance can make equipment maintenance in line with the production pace, so as to effectively prevent anormal interruptions of the production process due to equipment failure, and ensure the smooth implementation of the production scheduling plan. Aiming at the parallel machine job-shop environment, and considering stochastic machine failures and different degradation speeds of parallel machines, this paper introduced the minimal maintenance and preventive maintenance strategies to establish an integrated scheduling model for production and maintenance, designed a genetic algorithm based on process coding and binary hybrid coding to solve the model, and verified the correctness of the proposed model and the effectiveness of the algorithm through an instance. This study provided an effective decision-making method for parallel machine job-shop scheduling problems.</p></abstract>
+      <kwd-group>
+        <kwd>Integrated scheduling</kwd>
+        <kwd>Parallel machine job-shop</kwd>
+        <kwd>Preventive maintenance</kwd>
+        <kwd>Genetic algorithm</kwd>
+      </kwd-group>
+      <counts>
+        <count count-type="contributors">2</count>
+        <fig-count>5</fig-count>
+        <table-count>2</table-count>
+        <ref-count>20</ref-count>
+      </counts>
+    </article-meta>
+  </front>
+  <body>
+    <sec disp-level="level1" sec-type="intro">
+      <title>1. Introduction</title>
+      <p>A reasonable production scheduling plan can effectively improve the utilization rate of equipment and production efficiency of manufacturing job-shops, and a reasonable equipment maintenance strategy can effectively improve the reliability of equipment and ensure the smooth implementation of production [<xref ref-type="bibr" rid="ref_1">1</xref>], [<xref ref-type="bibr" rid="ref_2">2</xref>]. During the production process, the working conditions of a machine degrade continuously with the accumulation of processing time, so the machine may break down and need to be shut down for maintenance. Without any maintenance of the machine, the production scheduling cannot be carried out as planned [<xref ref-type="bibr" rid="ref_3">3</xref>], [<xref ref-type="bibr" rid="ref_4">4</xref>], [<xref ref-type="bibr" rid="ref_5">5</xref>]. Therefore, when making a production plan, one must also consider possible maintenance of equipment, and incorporate production and maintenance into scheduling, to effectively ensure that equipment maintenance will match the production pace and that the production scheduling plan will go smoothly.</p><p>Palacín et al. [<xref ref-type="bibr" rid="ref_6">6</xref>] used mixed the integer linear optimization and two-stage stochastic programming methods to solve the problem of when the equipment in the production job-shop should be maintained; Biondi et al. [<xref ref-type="bibr" rid="ref_7">7</xref>] proposed an industrial framework for the maintenance and production scheduling of an integrated process plant, which set the integrated maintenance and the production scheduling problem as mixed integer linear programming; For a single machine with failure uncertainty, Cui et al. [<xref ref-type="bibr" rid="ref_8">8</xref>] designed a three-stage heuristic algorithm to solve the active combined model of production scheduling and maintenance strategies; For the single-machine maintenance problem whose objective is to minimize the total weighted completion time, Luo and Liu [<xref ref-type="bibr" rid="ref_9">9</xref>] proposed a complete polynomial time approximation scheme to solve the single-machine sequencing problem dependent on the maintenance time. Beezão et al. [<xref ref-type="bibr" rid="ref_10">10</xref>] used the adaptive large neighborhood search meta-heuristic method to solve the parallel machine scheduling problem and the job sequencing and tool switching problems. Xiong et al. [<xref ref-type="bibr" rid="ref_11">11</xref>] modeled and solved the flexible job-shop scheduling problem through hybrid multi-objective evolutionary optimization. Regarding the resource-constrained scheduling problem in a job-shop with parallel machines, Chan et al. [<xref ref-type="bibr" rid="ref_12">12</xref>] took the minimum completion time of workpieces and the minimum idle cost of the machines as the optimization objectives, and used a scheduling method based on the genetic algorithm. This algorithm solves the allocation problem under resource constraints and the scheduling problem of a flexible job-shop. Regarding the scheduling problem of a sheet metal job-shop with multiple products and parallel machines, Chan and Choy [<xref ref-type="bibr" rid="ref_13">13</xref>] proposed a scheduling algorithm based on the genetic algorithm with the minimum completion time of workpieces as the scheduling objective. Chen et al. [<xref ref-type="bibr" rid="ref_14">14</xref>] designed a new scheduling algorithm based on the genetic algorithm and group genetic algorithm for the job-shop scheduling problem with parallel machines, and verified the performance of the algorithm by taking a weapon manufacturing plant as an example. Dalfard and Mohammadi [<xref ref-type="bibr" rid="ref_15">15</xref>] used the hybrid genetic algorithm and the simulated annealing algorithm to solve the multi-objective scheduling problem of a flexible job-shop with parallel machines.</p><p>Through review of the existing research, it can be found that most scholars mainly considered the situation of a single-machine job-shop when studying the maintenance strategies in the case of stochastic machine failures, and that when they switched to the scheduling problem of a job-shop with parallel machines, they did not consider the maintenance of machines [<xref ref-type="bibr" rid="ref_16">16</xref>], [<xref ref-type="bibr" rid="ref_17">17</xref>], [<xref ref-type="bibr" rid="ref_18">18</xref>]. Therefore, regarding the integrated scheduling problem of production and maintenance in a job-shop with parallel machines, this paper considered the different machine failure patterns of parallel machines, established an integrated mathematical scheduling model, designed a genetic algorithm to solve the problem, and verified the correctness of the proposed mathematical model and the effectiveness of the solving algorithm through an instance. This paper is organized as follows: Section 1 elaborates on the integrated scheduling problem of the production and maintenance in a job-shop with parallel machines; Section 2 establishes the mathematical model of the problem; Section 3 designs a genetic algorithm to solve the model; Section 4 verifies the model and the solving algorithm through an instance; and the final section gives a summary of this paper.</p>
+    </sec>
+    <sec disp-level="level1" sec-type="">
+      <title>2. Problem description</title>
+      <p>The integrated scheduling problem of preventive maintenance and production planning considering stochastic machine failures under the condition of parallel machine operation is described as follows: (1) given the workpieces to be processed and the machinery and equipment, each workpiece takes multiple processes, and each process needs to be carried out on a given machine uninterruptedly for a period of time. Each machine can only process one workpiece at a time, and each workpiece can only undergo one process at a time. For some processes, there are more than one machine available. (2) Considering that the working conditions of a machine continuously degrade with the processing time, the machine may encounter stochastic failures, and with the service life of the machine approaching its maximum service life before maintenance, the working conditions will further degrade, which may lead to a serious shutdown incident. In order to ensure the continuous availability of the machine during the production process, two maintenance strategies - minimal maintenance and preventive maintenance, are introduced to maintain the operational reliability of the machine. (3) As different parallel machines were purchased in different time periods, their models and performances may vary, and the working conditions may also degrade at different speeds. This paper considers two scenarios. First, the parallel machines degrade at the same speed. Specifically, the maximum service lives of the parallel machines before maintenance are the same, and preventive maintenance will be carried out when parallel machines reach the same maximum service life before maintenance. Second, the parallel machines degrade at different speeds, that is, the parallel machines have different maximum service lives before maintenance. The machine which degrades at a faster speed has a smaller maximum service life before maintenance, and reaches its maximum service life before maintenance faster and is subject to more frequent preventive maintenance; on the other hand, the one which degrades at a lower speed has a greater maximum service life before maintenance, and is subject to less frequent preventive maintenance. </p><p>The different degradation speeds of the parallel machines in the job-shop are shown in <xref ref-type="fig" rid="fig_1">Figure 1</xref>. Machine 1 and machine 2 have been used for a long time and are degrading at different speeds. In this paper, the scheduling scheme with the minimal completion time is determined as the optimal scheduling scheme.</p>
+      
+        <fig id="fig_1">
+          <label>Figure 1</label>
+          <caption>Parallel machines with different degradation speeds in a job-shop</caption>
+          <abstract/>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2022/11/img_nSDSAB7GVAIF7GWS.png"/>
+        </fig>
+      
+    </sec>
+    <sec disp-level="level1" sec-type="">
+      <title>3. Modelling</title>
+      <p><span style="color: rgb(0, 0, 0);">In order to build an integrated scheduling model for </span>the <span style="color: rgb(0, 0, 0);">production and maintenance in a job-shop with parallel machines, the following symbols are introduced:</span></p><p><italic>J</italic><sub><italic>i</italic></sub><sub>，</sub><italic>i</italic><span style="color: rgb(0, 0, 0);">=1,2,…,</span><italic>M</italic><span style="color: rgb(0, 0, 0);">: the workpiec</span>e set, where M<span style="color: rgb(0, 0, 0);"> is the number of all the workpieces;</span></p><p><italic>M</italic><sub><italic>j</italic></sub><span style="color: rgb(0, 0, 0); font-family: 宋体;">,</span><span style="color: rgb(0, 0, 0);"> </span><italic>j</italic><span style="color: rgb(0, 0, 0);">=1,2…,</span><italic>N</italic><span style="color: rgb(0, 0, 0);">: the machine set, where </span><italic>N</italic><span style="color: rgb(0, 0, 0);"> is the number of all the machines;</span></p><p><italic>Q</italic><span style="color: rgb(0, 0, 0);">={1,…,</span><italic>m</italic><span style="color: rgb(0, 0, 0);">}: the set of workpiece processes, where </span><span style="color: rgb(0, 0, 0);"><italic>m</italic></span><span style="color: rgb(0, 0, 0);"> is the number of all the processes;</span></p><p><italic>S</italic><sub><italic>JikMj</italic></sub><span style="color: rgb(0, 0, 0);">: </span>the processing start time of the<span style="color: rgb(0, 0, 0); font-family: 宋体;"> </span><italic>k</italic><span style="color: rgb(0, 0, 0);">-</span>th process of workpiece<span style="color: rgb(0, 0, 0); font-family: 宋体;"> </span><italic>J</italic><sub><italic>i</italic></sub><span style="color: rgb(0, 0, 0); font-family: 宋体;"> </span>on machine<span style="color: rgb(0, 0, 0); font-family: 宋体;"> </span><italic>M</italic><sub><italic>j</italic></sub>,<span style="color: rgb(0, 0, 0);"> </span>where<span style="color: rgb(0, 0, 0); font-family: 宋体;"> </span><italic>k</italic>∈<italic>Q</italic>;</p><p><italic>P</italic><sub><italic>JikMj</italic></sub>: the processing duration of the k-th process of workpiece<italic> J</italic><sub><italic>i</italic></sub> on machine<span style="color: rgb(0, 0, 0); font-family: 宋体;"> </span><italic>M</italic><sub><italic>j</italic></sub>,<span style="color: rgb(0, 0, 0); font-family: 宋体;"> </span><italic>k</italic>∈<italic>Q</italic>;</p><p><italic>O</italic><sub><italic>JikMj</italic></sub><span style="color: rgb(0, 0, 0);">: </span>the<span style="color: rgb(0, 0, 0); font-family: 宋体;"> </span><italic>k</italic><span style="color: rgb(0, 0, 0);">-</span>th process of workpiece<span style="color: rgb(0, 0, 0); font-family: 宋体;"> </span><italic>J</italic><sub><italic>i</italic></sub><span style="color: rgb(0, 0, 0); font-family: 宋体;"> </span>processed on machine<span style="color: rgb(0, 0, 0); font-family: 宋体;"> </span><italic>M</italic><sub><italic>j</italic></sub>,<italic> k</italic>∈<italic>Q</italic>;</p><p><italic>P</italic><sub><italic>Ji</italic></sub><span style="color: rgb(0, 0, 0);">={(</span><italic>O</italic><sub><italic>JikMj</italic></sub><sub>1</sub><span style="color: rgb(0, 0, 0);">,</span><italic> O</italic><sub><italic>JilMj</italic></sub><sub>2</sub><span style="color: rgb(0, 0, 0);">)｜: </span>the<span style="color: rgb(0, 0, 0); font-family: 宋体;"> </span><italic>k</italic><span style="color: rgb(0, 0, 0);">-</span>th process of workpiece<span style="color: rgb(0, 0, 0); font-family: 宋体;"> </span><italic>J</italic><sub><italic>i</italic></sub><span style="color: rgb(0, 0, 0); font-family: 宋体;"> </span>is prior to the<span style="color: rgb(0, 0, 0); font-family: 宋体;"> </span><italic>l</italic><span style="color: rgb(0, 0, 0);">-</span>th process,<span style="color: rgb(0, 0, 0); font-family: 宋体;"> </span><span style="color: rgb(0, 0, 0);">where </span><italic>l</italic>,<span style="color: rgb(0, 0, 0);"> and</span><span style="color: rgb(0, 0, 0); font-family: 宋体;"> </span><italic>k</italic>∈<italic>Q</italic>,<span style="color: rgb(0, 0, 0); font-family: 宋体;"> </span><italic>P</italic><sub><italic>Ji</italic></sub><span style="color: rgb(0, 0, 0); font-family: 宋体;"> </span>is the set of<span style="color: rgb(0, 0, 0); font-family: 宋体;"> </span><span style="color: rgb(0, 0, 0);">the </span>ordered process pairs of workpiece<span style="color: rgb(0, 0, 0); font-family: 宋体;"> </span><italic>J</italic><sub><italic>i</italic></sub>;</p><p><italic>R</italic><sub><italic>Mj</italic></sub><span style="color: rgb(0, 0, 0);">={(</span><italic>O</italic><sub><italic>JikMj</italic></sub><span style="color: rgb(0, 0, 0);">)｜:</span> all processes using machine<span style="color: rgb(0, 0, 0); font-family: 宋体;"> </span><italic>M</italic><sub><italic>j</italic></sub>,<span style="color: rgb(0, 0, 0); font-family: 宋体;"> </span><italic>k</italic>∈<italic>Q</italic>};</p><p><italic>l</italic><sub><italic>Mj</italic></sub><span style="color: rgb(0, 0, 0);">(t): the failure probability of machine </span><italic>M</italic><sub><italic>j</italic></sub><span style="color: rgb(0, 0, 0);">;</span></p><p><sub><italic><inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>∂</mi>
+    <mi>M</mi>
+    <mi>j</mi>
+  </math>
+</inline-formula></italic></sub><span style="color: rgb(0, 0, 0);">: the maximum service life before maintenanc</span>e, i.e., t<span style="color: rgb(0, 0, 0);">he maximum service life of machine </span><italic>M</italic><sub><italic>j</italic></sub><span style="color: rgb(0, 0, 0);"> before it needs to undergo preventive maintenance;</span></p><p><italic>w</italic><span style="color: rgb(0, 0, 0);">: the recovery coefficient of</span> the ma<span style="color: rgb(0, 0, 0);">chine service life after preventive maintenance is carried out;</span></p><p><italic>A</italic><sub><italic>JikMj</italic></sub><span style="color: rgb(0, 0, 0);">: </span>the service life after the<span style="color: rgb(0, 0, 0); font-family: 宋体;"> </span><italic>k</italic><span style="color: rgb(0, 0, 0);">-</span>th process of workpiece<span style="color: rgb(0, 0, 0); font-family: 宋体;"> </span><italic>J</italic><sub><italic>i</italic></sub><span style="color: rgb(0, 0, 0); font-family: 宋体;"> </span><span style="color: rgb(0, 0, 0);">on</span><span style="color: rgb(0, 0, 0); font-family: 宋体;"> </span>machine <italic>M</italic><sub><italic>j</italic></sub>, <italic>k</italic>∈<italic>Q</italic>;</p><p><italic>C</italic><sub><italic>Mj</italic></sub><span style="color: rgb(0, 0, 0);">: the time taken to complete the processing of all workpieces on machine </span><italic>M</italic><sub><italic>j</italic></sub><span style="color: rgb(0, 0, 0);">;</span></p><p><italic>C</italic><sub>max</sub><span style="color: rgb(0, 0, 0);">: the time taken to complete all workpieces;</span></p><p><span style="color: rgb(0, 0, 0);">The objective is to minimize the completion time of all workpieces:</span></p>
+      
+        <disp-formula>
+          <label>(1)</label>
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mi>Min</mi>
+            <mi>Max</mi>
+            <mrow data-mjx-texclass="INNER">
+              <mo data-mjx-texclass="OPEN">{</mo>
+              <mo data-mjx-texclass="CLOSE">}</mo>
+              <msub>
+                <mi>C</mi>
+                <mrow data-mjx-texclass="ORD">
+                  <mtext>max </mtext>
+                </mrow>
+              </msub>
+            </mrow>
+            <mrow data-mjx-texclass="INNER">
+              <mo data-mjx-texclass="OPEN">{</mo>
+              <mo>+</mo>
+              <mo>,</mo>
+              <mo>∈</mo>
+              <mo>,</mo>
+              <mo>∈</mo>
+              <mo>,</mo>
+              <mo>∈</mo>
+              <mo data-mjx-texclass="CLOSE">}</mo>
+              <msub>
+                <mi>S</mi>
+                <mrow data-mjx-texclass="ORD">
+                  <msub>
+                    <mi>J</mi>
+                    <mi>i</mi>
+                  </msub>
+                  <msub>
+                    <mi>M</mi>
+                    <mi>j</mi>
+                  </msub>
+                  <mi>k</mi>
+                </mrow>
+              </msub>
+              <msub>
+                <mi>P</mi>
+                <mrow data-mjx-texclass="ORD">
+                  <msub>
+                    <mi>J</mi>
+                    <mi>i</mi>
+                  </msub>
+                  <msub>
+                    <mi>M</mi>
+                    <mi>j</mi>
+                  </msub>
+                  <mi>k</mi>
+                </mrow>
+              </msub>
+              <mi mathvariant="normal">∀</mi>
+              <mi>i</mi>
+              <mi>M</mi>
+              <mi>k</mi>
+              <mi>Q</mi>
+              <mi>j</mi>
+              <mi>N</mi>
+            </mrow>
+            <msub>
+              <mi>C</mi>
+              <mrow data-mjx-texclass="ORD">
+                <mtext>max </mtext>
+              </mrow>
+            </msub>
+            <mo>=</mo>
+          </math>
+        </disp-formula>
+      
+      <p><span style="color: rgb(0, 0, 0);">The constraints are considered as follows:</span></p>
+      
+        <disp-formula>
+          <label>(2)</label>
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <msub>
+              <mi>S</mi>
+              <mrow data-mjx-texclass="ORD">
+                <msub>
+                  <mi>J</mi>
+                  <mi>i</mi>
+                </msub>
+                <msub>
+                  <mi>M</mi>
+                  <mrow data-mjx-texclass="ORD">
+                    <mi>j</mi>
+                    <mn>2</mn>
+                  </mrow>
+                </msub>
+                <mi>l</mi>
+              </mrow>
+            </msub>
+            <msub>
+              <mi>S</mi>
+              <mrow data-mjx-texclass="ORD">
+                <msub>
+                  <mi>J</mi>
+                  <mi>i</mi>
+                </msub>
+                <msub>
+                  <mi>M</mi>
+                  <mrow data-mjx-texclass="ORD">
+                    <mi>j</mi>
+                    <mn>1</mn>
+                  </mrow>
+                </msub>
+                <mi>k</mi>
+              </mrow>
+            </msub>
+            <msub>
+              <mi>P</mi>
+              <mrow data-mjx-texclass="ORD">
+                <msub>
+                  <mi>J</mi>
+                  <mi>i</mi>
+                </msub>
+                <msub>
+                  <mi>M</mi>
+                  <mrow data-mjx-texclass="ORD">
+                    <mi>j</mi>
+                    <mn>1</mn>
+                  </mrow>
+                </msub>
+                <mi>k</mi>
+              </mrow>
+            </msub>
+            <msub>
+              <mi>P</mi>
+              <mrow data-mjx-texclass="ORD">
+                <msub>
+                  <mi>J</mi>
+                  <mi>i</mi>
+                </msub>
+              </mrow>
+            </msub>
+            <mo>−</mo>
+            <mo>≥</mo>
+            <mo>,</mo>
+            <mo>∈</mo>
+            <mo>,</mo>
+            <mo>,</mo>
+            <mo>∈</mo>
+            <mrow data-mjx-texclass="INNER">
+              <mo data-mjx-texclass="OPEN">(</mo>
+              <mo>,</mo>
+              <mo data-mjx-texclass="CLOSE">)</mo>
+              <msub>
+                <mi>O</mi>
+                <mrow data-mjx-texclass="ORD">
+                  <msub>
+                    <mi>J</mi>
+                    <mi>i</mi>
+                  </msub>
+                  <msub>
+                    <mi>M</mi>
+                    <mrow data-mjx-texclass="ORD">
+                      <mi>j</mi>
+                      <mn>1</mn>
+                    </mrow>
+                  </msub>
+                  <mi>k</mi>
+                </mrow>
+              </msub>
+              <msub>
+                <mi>O</mi>
+                <mrow data-mjx-texclass="ORD">
+                  <msub>
+                    <mi>J</mi>
+                    <mi>i</mi>
+                  </msub>
+                  <msub>
+                    <mi>M</mi>
+                    <mrow data-mjx-texclass="ORD">
+                      <mi>j</mi>
+                      <mn>2</mn>
+                    </mrow>
+                  </msub>
+                  <mi>l</mi>
+                </mrow>
+              </msub>
+            </mrow>
+            <mi>l</mi>
+            <mi>k</mi>
+            <mi>Q</mi>
+          </math>
+        </disp-formula>
+      
+      
+        <disp-formula>
+          <label>(3)</label>
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mtable columnalign="" columnspacing="1em" rowspacing="4pt">
+              <mtr>
+                <mtd>
+                  <mi>f</mi>
+                  <msub>
+                    <mi>S</mi>
+                    <mrow data-mjx-texclass="ORD">
+                      <msub>
+                        <mi>J</mi>
+                        <mrow data-mjx-texclass="ORD">
+                          <msub>
+                            <mi>i</mi>
+                            <mn>1</mn>
+                          </msub>
+                        </mrow>
+                      </msub>
+                      <msub>
+                        <mi>M</mi>
+                        <mi>j</mi>
+                      </msub>
+                      <mi>k</mi>
+                    </mrow>
+                  </msub>
+                  <msub>
+                    <mi>S</mi>
+                    <mrow data-mjx-texclass="ORD">
+                      <msub>
+                        <mi>J</mi>
+                        <mrow data-mjx-texclass="ORD">
+                          <msub>
+                            <mi>i</mi>
+                            <mn>2</mn>
+                          </msub>
+                        </mrow>
+                      </msub>
+                      <mi>l</mi>
+                      <mi>M</mi>
+                      <mrow data-mjx-texclass="ORD">
+                        <mi>j</mi>
+                      </mrow>
+                    </mrow>
+                  </msub>
+                  <msub>
+                    <mi>S</mi>
+                    <mrow data-mjx-texclass="ORD">
+                      <msub>
+                        <mi>J</mi>
+                        <mrow data-mjx-texclass="ORD">
+                          <msup>
+                            <mi>h</mi>
+                            <mn>1</mn>
+                          </msup>
+                        </mrow>
+                      </msub>
+                      <msub>
+                        <mi>M</mi>
+                        <mi>j</mi>
+                      </msub>
+                      <mi>k</mi>
+                    </mrow>
+                  </msub>
+                  <msub>
+                    <mi>S</mi>
+                    <mrow data-mjx-texclass="ORD">
+                      <msub>
+                        <mi>J</mi>
+                        <mrow data-mjx-texclass="ORD">
+                          <msub>
+                            <mi>i</mi>
+                            <mn>2</mn>
+                          </msub>
+                        </mrow>
+                      </msub>
+                      <msub>
+                        <mi>M</mi>
+                        <mi>j</mi>
+                      </msub>
+                      <mi>l</mi>
+                    </mrow>
+                  </msub>
+                  <msub>
+                    <mi>P</mi>
+                    <mrow data-mjx-texclass="ORD">
+                      <msub>
+                        <mi>J</mi>
+                        <mrow data-mjx-texclass="ORD">
+                          <msup>
+                            <mi>i</mi>
+                            <mn>2</mn>
+                          </msup>
+                        </mrow>
+                      </msub>
+                      <msub>
+                        <mi>M</mi>
+                        <mi>j</mi>
+                      </msub>
+                      <mi>l</mi>
+                    </mrow>
+                  </msub>
+                  <mo>&gt;</mo>
+                  <mo>,</mo>
+                  <mo>−</mo>
+                  <mo>≥</mo>
+                </mtd>
+              </mtr>
+              <mtr>
+                <mtd>
+                  <mi>i</mi>
+                  <mi>f</mi>
+                  <msub>
+                    <mi>S</mi>
+                    <mrow data-mjx-texclass="ORD">
+                      <msub>
+                        <mi>J</mi>
+                        <mrow data-mjx-texclass="ORD">
+                          <msub>
+                            <mi>i</mi>
+                            <mn>1</mn>
+                          </msub>
+                        </mrow>
+                      </msub>
+                      <msub>
+                        <mi>M</mi>
+                        <mi>j</mi>
+                      </msub>
+                      <mi>k</mi>
+                    </mrow>
+                  </msub>
+                  <msub>
+                    <mi>S</mi>
+                    <mrow data-mjx-texclass="ORD">
+                      <msub>
+                        <mi>J</mi>
+                        <mrow data-mjx-texclass="ORD">
+                          <msub>
+                            <mi>i</mi>
+                            <mn>2</mn>
+                          </msub>
+                        </mrow>
+                      </msub>
+                      <msub>
+                        <mi>M</mi>
+                        <mi>j</mi>
+                      </msub>
+                      <mi>l</mi>
+                    </mrow>
+                  </msub>
+                  <msub>
+                    <mi>S</mi>
+                    <mrow data-mjx-texclass="ORD">
+                      <msub>
+                        <mi>J</mi>
+                        <mrow data-mjx-texclass="ORD">
+                          <msub>
+                            <mi>i</mi>
+                            <mn>2</mn>
+                          </msub>
+                        </mrow>
+                      </msub>
+                      <msub>
+                        <mi>M</mi>
+                        <mi>j</mi>
+                      </msub>
+                      <mi>l</mi>
+                    </mrow>
+                  </msub>
+                  <msub>
+                    <mi>S</mi>
+                    <mrow data-mjx-texclass="ORD">
+                      <msub>
+                        <mi>J</mi>
+                        <mrow data-mjx-texclass="ORD">
+                          <msub>
+                            <mi>i</mi>
+                            <mn>1</mn>
+                          </msub>
+                        </mrow>
+                      </msub>
+                      <msub>
+                        <mi>M</mi>
+                        <mi>j</mi>
+                      </msub>
+                      <mi>k</mi>
+                    </mrow>
+                  </msub>
+                  <msub>
+                    <mi>P</mi>
+                    <mrow data-mjx-texclass="ORD">
+                      <msub>
+                        <mi>J</mi>
+                        <mrow data-mjx-texclass="ORD">
+                          <msub>
+                            <mi>i</mi>
+                            <mn>1</mn>
+                          </msub>
+                        </mrow>
+                      </msub>
+                      <msub>
+                        <mi>M</mi>
+                        <mi>j</mi>
+                      </msub>
+                      <mi>k</mi>
+                    </mrow>
+                  </msub>
+                  <mo>&lt;</mo>
+                  <mo>,</mo>
+                  <mo>−</mo>
+                  <mo>≥</mo>
+                </mtd>
+              </mtr>
+              <mtr>
+                <mtd>
+                  <msub>
+                    <mi>O</mi>
+                    <mrow data-mjx-texclass="ORD">
+                      <msub>
+                        <mi>J</mi>
+                        <mrow data-mjx-texclass="ORD">
+                          <msub>
+                            <mi>i</mi>
+                            <mn>1</mn>
+                          </msub>
+                        </mrow>
+                      </msub>
+                      <msub>
+                        <mi>M</mi>
+                        <mi>j</mi>
+                      </msub>
+                      <mi>k</mi>
+                    </mrow>
+                  </msub>
+                  <msub>
+                    <mi>O</mi>
+                    <mrow data-mjx-texclass="ORD">
+                      <msub>
+                        <mi>J</mi>
+                        <mrow data-mjx-texclass="ORD">
+                          <msub>
+                            <mi>i</mi>
+                            <mn>2</mn>
+                          </msub>
+                        </mrow>
+                      </msub>
+                      <msub>
+                        <mi>M</mi>
+                        <mi>j</mi>
+                      </msub>
+                      <mi>l</mi>
+                    </mrow>
+                  </msub>
+                  <msub>
+                    <mi>R</mi>
+                    <mrow data-mjx-texclass="ORD">
+                      <msub>
+                        <mi>M</mi>
+                        <mi>j</mi>
+                      </msub>
+                    </mrow>
+                  </msub>
+                  <msub>
+                    <mi>J</mi>
+                    <mrow data-mjx-texclass="ORD">
+                      <msub>
+                        <mi>i</mi>
+                        <mn>1</mn>
+                      </msub>
+                    </mrow>
+                  </msub>
+                  <msub>
+                    <mi>J</mi>
+                    <mrow data-mjx-texclass="ORD">
+                      <msub>
+                        <mi>i</mi>
+                        <mn>2</mn>
+                      </msub>
+                    </mrow>
+                  </msub>
+                  <msub>
+                    <mi>J</mi>
+                    <mi>i</mi>
+                  </msub>
+                  <mo>,</mo>
+                  <mo>∈</mo>
+                  <mo>,</mo>
+                  <mo>,</mo>
+                  <mo>∈</mo>
+                  <mo>,</mo>
+                  <mo>,</mo>
+                  <mo>∈</mo>
+                  <mi>k</mi>
+                  <mi>l</mi>
+                  <mi>Q</mi>
+                </mtd>
+              </mtr>
+            </mtable>
+          </math>
+        </disp-formula>
+      
+      
+        <disp-formula>
+          <label>(4)</label>
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <msub>
+              <mi>A</mi>
+              <mrow data-mjx-texclass="ORD">
+                <msub>
+                  <mi>J</mi>
+                  <mi>i</mi>
+                </msub>
+                <msub>
+                  <mi>M</mi>
+                  <mi>j</mi>
+                </msub>
+                <mi>k</mi>
+              </mrow>
+            </msub>
+            <msub>
+              <mi>∂</mi>
+              <mrow data-mjx-texclass="ORD">
+                <msub>
+                  <mi>M</mi>
+                  <mi>j</mi>
+                </msub>
+              </mrow>
+            </msub>
+            <mo>≤</mo>
+            <mo>,</mo>
+            <mo>∈</mo>
+            <mi>k</mi>
+            <mi>Q</mi>
+          </math>
+        </disp-formula>
+      
+      
+        <disp-formula>
+          <label>(5)</label>
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <msubsup>
+              <mi>A</mi>
+              <mrow data-mjx-texclass="ORD">
+                <msub>
+                  <mi>J</mi>
+                  <mi>i</mi>
+                </msub>
+                <msub>
+                  <mi>M</mi>
+                  <mi>j</mi>
+                </msub>
+                <mi>k</mi>
+              </mrow>
+              <mrow data-mjx-texclass="ORD">
+                <mi data-mjx-alternate="1">′</mi>
+              </mrow>
+            </msubsup>
+            <mo>=</mo>
+            <mo>,</mo>
+            <mo>∈</mo>
+            <mo stretchy="false">[</mo>
+            <mo>,</mo>
+            <mo stretchy="false">]</mo>
+            <msup>
+              <mi>w</mi>
+              <mo>∗</mo>
+            </msup>
+            <msub>
+              <mi>A</mi>
+              <mrow data-mjx-texclass="ORD">
+                <msub>
+                  <mi>J</mi>
+                  <mi>j</mi>
+                </msub>
+                <msub>
+                  <mi>M</mi>
+                  <mi>j</mi>
+                </msub>
+                <mi>k</mi>
+              </mrow>
+            </msub>
+            <mi>w</mi>
+            <mn>0</mn>
+            <mn>1</mn>
+          </math>
+        </disp-formula>
+      
+      
+        <disp-formula>
+          <label>(6)</label>
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <msub>
+              <mi>λ</mi>
+              <mrow data-mjx-texclass="ORD">
+                <msub>
+                  <mi>M</mi>
+                  <mi>j</mi>
+                </msub>
+              </mrow>
+            </msub>
+            <mo stretchy="false">(</mo>
+            <mo stretchy="false">)</mo>
+            <mo>=</mo>
+            <mrow data-mjx-texclass="ORD">
+              <mi mathvariant="normal">t</mi>
+            </mrow>
+            <mfrac>
+              <mi>β</mi>
+              <mi>η</mi>
+            </mfrac>
+            <msup>
+              <mrow data-mjx-texclass="INNER">
+                <mo data-mjx-texclass="OPEN">(</mo>
+                <mo data-mjx-texclass="CLOSE">)</mo>
+                <mfrac>
+                  <mi>t</mi>
+                  <mi>η</mi>
+                </mfrac>
+              </mrow>
+              <mrow data-mjx-texclass="ORD">
+                <mi>β</mi>
+                <mo>−</mo>
+                <mn>1</mn>
+              </mrow>
+            </msup>
+          </math>
+        </disp-formula>
+      
+      <p>where, <span style="color: rgb(0, 0, 0);">(2) represents the constraint on the process sequence - different processes of the same workpiece cannot be processed at the same time; (3) represents the resource constraint - each machine can only process one workpiece at the same time; (4) represents that the service life of machine </span><italic>M</italic><sub><italic>j</italic></sub><span style="color: rgb(0, 0, 0);"> after finishing the </span><italic>k</italic><span style="color: rgb(0, 0, 0);">-th process of workpiece </span><italic>J</italic><sub><italic>i</italic></sub><span style="color: rgb(0, 0, 0);"> should not be greater than the maximum service life of machine </span><italic>M</italic><sub><italic>j</italic></sub><span style="color: rgb(0, 0, 0);"> before maintenance; (5) means that if machine </span><italic>M</italic><sub><italic>j </italic></sub>undergoes p<span style="color: rgb(0, 0, 0);">reventive maintenance after finishing the </span><italic>k-</italic><span style="color: rgb(0, 0, 0);">th process of workpiece </span><italic>J</italic><sub><italic>i</italic></sub><span style="color: rgb(0, 0, 0);">, the service life of the machine is </span><italic>w*A</italic><sub><italic>JikMj</italic></sub><span style="color: rgb(0, 0, 0);">, where </span><italic>w</italic><span style="color: rgb(0, 0, 0);"> is the restoration coefficient of the service life of the machine after preventive maintenance is performed. If </span><italic>w</italic><span style="color: rgb(0, 0, 0);">=0, it means that the preventive maintenance is</span><span style="color: rgb(0, 0, 0); font-family: 宋体;"> </span><span style="color: rgb(0, 0, 0);">perfectly performed, and that after the maintenance is performed, the service life of the machine becomes 0; otherwise, it means that the preventive maintenance is imperfect; (6) </span>in<span style="color: rgb(0, 0, 0);">dicates that the stochastic failure probability of machine </span><italic>M</italic><sub><italic>j</italic></sub><span style="color: rgb(0, 0, 0);"> obeys the Weibull distribution.</span></p>
+    </sec>
+    <sec disp-level="level1" sec-type="">
+      <title>4. Design of the genetic algorithm</title>
+      <p><span style="color: rgb(0, 0, 0);">The integrated scheduling problem of preventive maintenance under the operating conditions of parallel machines is highly complex. From the perspective of production scheduling, it is necessary to assign the workpiece process to the parallel machines, determine the process sequence of each workpiece, and then calculate the corresponding start time and completion time of the process; on the basis of production scheduling, it is also necessary to comprehensively consider the maintenance of the machines. Two maintenance strategies - preventive maintenance and minimal maintenance were introduced in this paper, which influence and restrict each other, further adding complexity to the problem. Considering the complexity, a genetic algorithm with significant parallelism and a powerful global optimization ability was used in this paper to solve the problem</span> [<xref ref-type="bibr" rid="ref_19">19</xref>], [<xref ref-type="bibr" rid="ref_20">20</xref>].</p><p>(1) Coding</p><p><span style="color: rgb(0, 0, 0);">A job-shop with parallel machines needs to consider how the workpieces</span> should be<span style="color: rgb(0, 0, 0);"> allocated to the parallel machines. The whole chromosome consists of two parts. The first part determines the order of the workpiece processes, and the second part determines how the workpiece processes should be allocated to the parallel machines.</span></p><p><span style="color: rgb(0, 0, 0);">Suppose that there are 6 workpieces, and each workpiece has 4 processes, which need to be performed on 4 machines, respectively. Machine 4 and machine 5 are two parallel machines. A feasible solution is designed as follows: [6 4 4 2 2 5 3 6 2 1 6 3 1 3 4 5 5 2 1 3 6 5 4 1 | 0 0 1 1 1 1], which is divided into two parts by a vertical line, and the part behind the vertical line is the chromosome code of the new workpiece process assigned to the parallel machines. The chromosome code of the second part is composed of 0 and 1, and from left to right are the codes of workpiece 1 to workpiece 6, respectively. If the workpiece is assigned to parallel machine 4, then the code is 0; and if it is assigned to parallel machine 5, then the code is 1. The code designed in this paper combines the scheme of assigning the proc</span>esses <span style="color: rgb(0, 0, 0);">of the workpieces to the parallel machines and the scheme of the processing sequence of each workpiece, which ensures that the two schemes can be bundled together, so that when the operators are selected to implement the elitism strategy, both schemes can be preserved to the next-generation population.</span></p><p>(2) Crossover operator</p><p><span style="color: rgb(0, 0, 0);">The crossover operation is performed in two steps. The first step is to perform the crossover operation on the chromosome part that determines the process sequence of each workpiece; and the second step is to perform the crossover operation on the chromosome part that determines how the workpiece pro</span>cesses<span style="color: rgb(0, 0, 0);"> are allocated to the parallel machines. The crossover operation adopts the double-point crossover method. Due to the characteristics of the code, there is no problem </span>of illeg<span style="color: rgb(0, 0, 0);">itimacy in the chromosomes after crossover, and therefore, there is no need to legitimate the chromosome. The crossover operation of the chromosome code to assign workpieces to the parallel machines is shown</span> in <xref ref-type="fig" rid="fig_2">Figure 2</xref>.</p>
+      
+        <fig id="fig_2">
+          <label>Figure 2</label>
+          <caption>Crossover operation of the chromosome code of allocating workpieces to the parallel machines</caption>
+          <abstract/>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2022/11/img_9Pz6y_eH3AaJ1UEQ.png"/>
+        </fig>
+      
+      <p>(3) Mutation operator</p><p><span style="color: rgb(0, 0, 0);">The mutation operation is performed in two steps. </span><span style="color: rgb(0, 0, 0); font-family: 宋体;">The</span><span style="color: rgb(0, 0, 0);"> first step is to perform the mutation operation on the chromosome part that determines the process sequence of each workpiece, and the second step is to perform the mutation operation on the chromosome part that determines how the workpiece processes are allocated to the parallel machine</span><span style="color: rgb(0, 0, 0); font-family: 宋体;">s</span><span style="color: rgb(0, 0, 0);">. The mutation operation method is the same – select two crossover points, and then cross the codes at the corresponding positions. This mutation operation method can ensure the legitimacy of the codes.</span></p><p>(4) Selection operator</p><p><span style="color: rgb(0, 0, 0);">The selection operator needs to keep the chromosomes with higher fitness value in the current generation of population to the next generation to ensure that the population evolves towards a better direction. Since the code of the genetic algorithm designed in this paper combines the code of assigning the processes of workpieces to the parallel machines and the code of process sequence, and the former will affect the latter, the result of the two schemes combined is finally expressed as the completion time of the workpieces. Therefore, the completion time of the workpieces is used as a fitness function.</span></p>
+    </sec>
+    <sec disp-level="level1" sec-type="">
+      <title>5. Instance analysis</title>
+      <p><span style="color: rgb(0, 0, 0);">The integrated scheduling problem of preventive maintenance under the</span> working <span style="color: rgb(0, 0, 0);">condition of parallel machines is described as follows: 6 workpieces and 5 machines, of which 2 are parallel machines, both of which can perform the corresponding workpiece processes. Each workpiece has 4 processes, and the 4 processes of the workpiece need to </span>be performed on<span style="color: rgb(0, 0, 0);"> 4 machines. The processing time of each process of the workpieces is evenly distributed in </span>[1,50<span style="color: rgb(0, 0, 0);">] min. The workpiece processes and corresponding processing time in the job-shop with parallel machines a</span>re shown in <xref ref-type="table" rid="table_1">Table 1</xref>.</p>
+      
+        <table-wrap id="table_1">
+          <label>Table 1</label>
+          <caption>Workpiece processes and corresponding processing time in the job-shop with parallel machines</caption>
+          <abstract/>
+          <table><tbody><tr><td colspan="1" rowspan="1"><p>Workpiece<italic> i</italic></p></td><td colspan="1" rowspan="1"><p>Processing sequence (machine sequence, processing time/min)</p></td></tr><tr><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>(3,27) (1,17) (2,22) (4/5,39)</p></td></tr><tr><td colspan="1" rowspan="1"><p>2</p></td><td colspan="1" rowspan="1"><p>(2, 7) (4/5,50) (1,25) (3,28)</p></td></tr><tr><td colspan="1" rowspan="1"><p>3</p></td><td colspan="1" rowspan="1"><p>(1,37) (2,44) (4/5,49) (3,14)</p></td></tr><tr><td colspan="1" rowspan="1"><p>4</p></td><td colspan="1" rowspan="1"><p>(1,38) (4/5,3) (3,27) (2,18)</p></td></tr><tr><td colspan="1" rowspan="1"><p>5</p></td><td colspan="1" rowspan="1"><p>(2,25) (3,34) (1,18) (4/5,11)</p></td></tr><tr><td colspan="1" rowspan="1"><p>6</p></td><td colspan="1" rowspan="1"><p>(3,28) (2,26) (4/5,20) (1,10)</p></td></tr></tbody></table>
+        </table-wrap>
+      
+      <p><span style="color: rgb(0, 0, 0);">The stochastic failure probability of a machine follows the Weibull distribution </span><inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msub>
+      <mi>λ</mi>
+      <mrow data-mjx-texclass="ORD">
+        <mi>M</mi>
+        <mi>j</mi>
+      </mrow>
+    </msub>
+    <mo stretchy="false">(</mo>
+    <mo stretchy="false">)</mo>
+    <mo>=</mo>
+    <mo stretchy="false">(</mo>
+    <mrow data-mjx-texclass="ORD">
+      <mi mathvariant="normal">t</mi>
+    </mrow>
+    <mrow data-mjx-texclass="ORD">
+      <mo>/</mo>
+    </mrow>
+    <mrow data-mjx-texclass="ORD">
+      <mo>/</mo>
+    </mrow>
+    <mi>β</mi>
+    <mi>t</mi>
+    <mi>η</mi>
+    <msup>
+      <mi>η</mi>
+      <mo>∗</mo>
+    </msup>
+    <msup>
+      <mo stretchy="false">)</mo>
+      <mrow data-mjx-texclass="ORD">
+        <mi>β</mi>
+        <mo>−</mo>
+        <mn>1</mn>
+      </mrow>
+    </msup>
+  </math>
+</inline-formula>,<span style="color: rgb(0, 0, 0);"> where <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>β</mi>
+    <mo>=</mo>
+    <mn>2</mn>
+  </math>
+</inline-formula>, and <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>η</mi>
+    <mo>=</mo>
+    <mn>125</mn>
+  </math>
+</inline-formula>. Suppose that when the cumulative number of stochastic failures of</span> a <span style="color: rgb(0, 0, 0);">machine reaches 0.6, the machine will encounter a stochastic failure, and that the minimum maintenance is performed, and that each maintenance takes 15 minutes. Except for parallel machines, the maximum service life before maintenance is 82 minutes. Preventive maintenance needs to be performed before the service life of the machine reaches the maximum service life before maintenance. The recovery coefficient </span><italic>w</italic><span style="color: rgb(0, 0, 0);"> of the machine’s service life after preventive maintenance is set at 0.5, and each preventive maintenance takes 10 minutes.</span></p><p>Two scena<span style="color: rgb(0, 0, 0);">rios were considered </span>in <span style="color: rgb(0, 0, 0);">this paper, that is, the scenario where the parallel machines degrade at the same speed and the one where the machines degrade at different speeds. In the former scenario, the maximum service lives of the parallel machines before maintenance </span>are t<span style="color: rgb(0, 0, 0);">he same - both are 82min; and in the latter scenario, the maximum service life of parallel machine 4 before maintenance is 82min, and that of parallel machine 5 is 60min.</span><span style="color: rgb(0, 0, 0); font-family: 宋体;"> </span><span style="color: rgb(0, 0, 0);">A job-shop without parallel machines was introduced as </span>the c<span style="color: rgb(0, 0, 0);">ontrol group. Except that parallel machines were not considered in the control group, and that the maximum service life before maintenance was 82 minutes, other parameters remained the same. The population size was 20, and the number of iterations 800. Each scheme was iterated 10 times to obtain the optimal value. The Gantt chart of the optimal scheduling scheme for the job-shop without parallel machines is shown in</span> <xref ref-type="fig" rid="fig_3">Figure 3</xref>, t<span style="color: rgb(0, 0, 0);">hat for the job-shop with the same degradation speed of parallel machines shown</span> in <xref ref-type="fig" rid="fig_4">Figure 4</xref>, and that the job-shop with different degradation speeds of parallel machines shown in <xref ref-type="fig" rid="fig_5">Figure 5</xref>. The integrated scheduling results of different parallel machine configurations are shown in <xref ref-type="table" rid="table_2">Table 2</xref>.</p>
+      
+        <fig id="fig_3">
+          <label>Figure 3</label>
+          <caption>Gantt chart of the optimal scheduling scheme for the job-shop with no parallel machines</caption>
+          <abstract/>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2022/11/img_Q0XDjK7YvCWEPjcG.png"/>
+        </fig>
+      
+      
+        <fig id="fig_4">
+          <label>Figure 4</label>
+          <caption>Gantt chart of the optimal scheduling scheme for the job-shop with parallel machines of the same degradation speeds</caption>
+          <abstract/>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2022/11/img_vTg3A8GSFVRmJ6YA.png"/>
+        </fig>
+      
+      
+        <fig id="fig_5">
+          <label>Figure 5</label>
+          <caption>Gantt chart of the optimal scheduling scheme for the job-shop with parallel machines of different degradation speeds</caption>
+          <abstract/>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2022/11/img_utoaf2nWJBTd1Xwr.png"/>
+        </fig>
+      
+      
+        <table-wrap id="table_2">
+          <label>Table 2</label>
+          <caption>Integrated scheduling results based on different parallel machine configurations</caption>
+          <abstract/>
+          <table><tbody><tr><td colspan="1" rowspan="1"><p>Workpiece set</p></td><td colspan="3" rowspan="1"><p>Parallel machine configurations</p></td></tr><tr><td colspan="1" rowspan="1"><p>6*4</p></td><td colspan="1" rowspan="1"><p>No parallel machine</p></td><td colspan="1" rowspan="1"><p>Same degradation speed</p></td><td colspan="1" rowspan="1"><p>Different degradation speeds</p></td></tr><tr><td colspan="1" rowspan="1"><p>Completion time</p></td><td colspan="1" rowspan="1"><p>233</p></td><td colspan="1" rowspan="1"><p>193</p></td><td colspan="1" rowspan="1"><p>193</p></td></tr></tbody></table>
+        </table-wrap>
+      
+      <p><span style="color: rgb(0, 0, 0);">From </span><xref ref-type="table" rid="table_2">Table 2</xref>, it can be seen that the integrated scheduling results of the job-shop with parallel machines were better than those of the job-shop without parallel machines. And from <xref ref-type="fig" rid="fig_3">Figure 3</xref> and <xref ref-type="fig" rid="fig_4">Figure 4</xref>, it ca<span style="color: rgb(0, 0, 0);">n be seen that the workpieces in the job-shop with parallel machines were assigned to different parallel machines, with increased flexibility in scheduling and less waiting time for the next process of each workpiece. At the same time, since the workpiece load of each parallel machine</span> was s<span style="color: rgb(0, 0, 0);">mall, the working conditions of each parallel machine degraded slowly, and the required maintenance time is shorter accordingly.</span><span style="color: rgb(0, 0, 0); font-family: 宋体;"> </span><span style="color: rgb(0, 0, 0);">Through comparison of the job-shop with the same degradation speed of parallel machines and the one with different degradation speeds of parallel machines, it was found that the integrated scheduling results were the same. From </span><xref ref-type="fig" rid="fig_4">Figure 4</xref> and <xref ref-type="fig" rid="fig_5">Figure 5</xref>, it<span style="color: rgb(0, 0, 0);"> can be seen that </span><span style="color: rgb(0, 0, 0); font-family: 宋体;">p</span><span style="color: rgb(0, 0, 0);">arallel machine 5 with a faster degradation speed underwent more frequent preventive maintenance because the service life of the machine reached the maximum service life before maintenance faster, but thanks to the small workpiece load on parallel machine 5, the longer preventive maintenance time of parallel machine 5 did not exert a great impact on the completion time of the workpieces.</span></p>
+    </sec>
+    <sec disp-level="level1" sec-type="">
+      <title>6. Conclusion</title>
+      <p>Considering t<span style="color: rgb(0, 0, 0);">he impact of parallel machines in a job-shop on production scheduling and equipment maintenance, this paper focused on studying the integrated scheduling problem of a job-shop with parallel machines in the manufacturing process. It took into account the different failure characteristics of parallel machines, adopted two maintenance strategies - minimal maintenance and preventive maintenance, and then established a mathematical model for the integrated scheduling of production and maintenance in a job-shop with parallel machines.</span><span style="color: rgb(0, 0, 0); font-family: 宋体;"> </span><span style="color: rgb(0, 0, 0);">According to the established mathematical model, a genetic algorithm based on process coding and binary coding was designed, and finally the correctness of the mathematical model and the effectiveness of the solving algorithm were verified through an instance. The results show that, the use of parallel machines drastically shortens the completion time of the integrated scheduling scheme, effectively relieves the loads of the machines, and greatly reduces the waiting time of the workpieces. At the same time, a parallel machine with a faster degradation speed needs to undergo more frequent preventive maintenance than one with a slower degradation speed.</span></p>
+    </sec>
+  </body>
+  <back>
+    <ack>
+      <title>Acknowledgments</title>
+      
+    </ack>
+    <app-group>
+      <app>
+        <title>Appendix</title>
+        
+      </app>
+    </app-group>
+    <notes>
+      <title>Author Contributions</title>
+      
+    </notes>
+    <notes>
+      <title>Funding</title>
+      <p></p>
+    </notes>
+    <notes>
+      <title>Informed Consent Statement</title>
+      
+    </notes>
+    <notes>
+      <title>Data Availability Statement</title>
+      <p><span style="color: rgb(0, 0, 0);">The data used to support the findings of this study are available from the corresponding author upon request.</span></p>
+    </notes>
+    <notes notes-type="COI-statement">
+      <title>Conflicts of Interest</title>
+      <p><span style="color: rgb(0, 0, 0);">The authors declare no conflict of interest. </span></p>
+    </notes>
+    <ref-list>
+      <title>References</title>
+      <ref id="ref_1">
+        <label>1.</label>
+        <element-citation publication-type="journal">
+          <person-group person-group-type="author">
+            <name>
+              <given-names>S.</given-names>
+              <surname>Chansombat</surname>
+            </name>
+            <name>
+              <given-names>P.</given-names>
+              <surname>Pongcharoen</surname>
+            </name>
+            <name>
+              <given-names>C.</given-names>
+              <surname>Hicks</surname>
+            </name>
+          </person-group>
+          <article-title>A mixed-integer linear programming model for integrated production and preventive maintenance scheduling in the capital goods industry</article-title>
+          <source>Int J. Prod. Res.</source>
+          <year>2019</year>
+          <volume>57</volume>
+          <issue>1</issue>
+          <page-range>61-82</page-range>
+          <fpage>61</fpage>
+          <lpage>82</lpage>
+          <pub-id pub-id-type="doi">https://doi.org/10.1080/00207543.2018.1459923</pub-id>
+          <pub-id pub-id-type="publisher-id"/>
+        </element-citation>
+      </ref>
+      <ref id="ref_2">
+        <label>2.</label>
+        <element-citation publication-type="journal">
+          <person-group person-group-type="author">
+            <name>
+              <given-names>J. Y. T.</given-names>
+              <surname>Leung</surname>
+            </name>
+            <name>
+              <given-names>C. L.</given-names>
+              <surname>Li</surname>
+            </name>
+          </person-group>
+          <article-title>Scheduling with processing set restrictions: A literature update</article-title>
+          <source>Int J. Prod. Econ.</source>
+          <year>2016</year>
+          <volume>175</volume>
+          <issue/>
+          <page-range>1-11</page-range>
+          <fpage>1</fpage>
+          <lpage>11</lpage>
+          <pub-id pub-id-type="doi">https://doi.org/10.1016/j.ijpe.2014.09.038</pub-id>
+          <pub-id pub-id-type="publisher-id"/>
+        </element-citation>
+      </ref>
+      <ref id="ref_3">
+        <label>3.</label>
+        <element-citation publication-type="journal">
+          <person-group person-group-type="author">
+            <name>
+              <given-names>W.</given-names>
+              <surname>Cui</surname>
+            </name>
+            <name>
+              <given-names>Z.</given-names>
+              <surname>Lu</surname>
+            </name>
+            <name>
+              <given-names>C.</given-names>
+              <surname>Li</surname>
+            </name>
+            <name>
+              <given-names>X.</given-names>
+              <surname>Han</surname>
+            </name>
+          </person-group>
+          <article-title>A proactive approach to solve integrated production scheduling and maintenance planning problem in flow shops</article-title>
+          <source>Comput. Ind. Eng.</source>
+          <year>2018</year>
+          <volume>115</volume>
+          <issue/>
+          <page-range>342-353</page-range>
+          <fpage>342</fpage>
+          <lpage>353</lpage>
+          <pub-id pub-id-type="doi">https://doi.org/10.1016/j.cie.2017.11.020</pub-id>
+          <pub-id pub-id-type="publisher-id"/>
+        </element-citation>
+      </ref>
+      <ref id="ref_4">
+        <label>4.</label>
+        <element-citation publication-type="journal">
+          <person-group person-group-type="author">
+            <name>
+              <given-names>M.</given-names>
+              <surname>Abedi</surname>
+            </name>
+            <name>
+              <given-names>R.</given-names>
+              <surname>Chiong</surname>
+            </name>
+            <name>
+              <given-names>N.</given-names>
+              <surname>Noman</surname>
+            </name>
+            <name>
+              <given-names>R.</given-names>
+              <surname>Zhang</surname>
+            </name>
+          </person-group>
+          <article-title>A multi-population, multi-objective memetic algorithm for energy-efficient job-shop scheduling with deteriorating machines</article-title>
+          <source>Expert Syst. Appl.</source>
+          <year>2020</year>
+          <volume>157</volume>
+          <issue/>
+          <page-range/>
+          <fpage/>
+          <lpage/>
+          <pub-id pub-id-type="doi">https://doi.org/10.1016/j.eswa.2020.113348</pub-id>
+          <pub-id pub-id-type="publisher-id">113348</pub-id>
+        </element-citation>
+      </ref>
+      <ref id="ref_5">
+        <label>5.</label>
+        <element-citation publication-type="journal">
+          <person-group person-group-type="author">
+            <name>
+              <given-names>Z.</given-names>
+              <surname>Lu</surname>
+            </name>
+            <name>
+              <given-names>W.</given-names>
+              <surname>Cui</surname>
+            </name>
+            <name>
+              <given-names>X.</given-names>
+              <surname>Han</surname>
+            </name>
+          </person-group>
+          <article-title>Integrated production and preventive maintenance scheduling for a single machine with failure uncertainty</article-title>
+          <source>Comput. Ind. Eng.</source>
+          <year>2015</year>
+          <volume>80</volume>
+          <issue/>
+          <page-range>236-244</page-range>
+          <fpage>236</fpage>
+          <lpage>244</lpage>
+          <pub-id pub-id-type="doi">https://doi.org/10.1080/10.1016/j.cie.2014.12.017</pub-id>
+          <pub-id pub-id-type="publisher-id"/>
+        </element-citation>
+      </ref>
+      <ref id="ref_6">
+        <label>6.</label>
+        <element-citation publication-type="journal">
+          <person-group person-group-type="author">
+            <name>
+              <given-names>C. G.</given-names>
+              <surname>Palacín</surname>
+            </name>
+            <name>
+              <given-names>J. L.</given-names>
+              <surname>Pitarch</surname>
+            </name>
+            <name>
+              <given-names>C.</given-names>
+              <surname>Jasch</surname>
+            </name>
+            <name>
+              <given-names>C. A.</given-names>
+              <surname>Méndez</surname>
+            </name>
+            <name>
+              <given-names>C.</given-names>
+              <surname>de Prada</surname>
+            </name>
+          </person-group>
+          <article-title>Robust integrated production-maintenance scheduling for an evaporation network</article-title>
+          <source>Comput. Chem. Eng.</source>
+          <year>2018</year>
+          <volume>110</volume>
+          <issue>2</issue>
+          <page-range>140-151</page-range>
+          <fpage>140</fpage>
+          <lpage>151</lpage>
+          <pub-id pub-id-type="doi">https://doi.org/10.1016/j.compchemeng.2017.12.005</pub-id>
+          <pub-id pub-id-type="publisher-id"/>
+        </element-citation>
+      </ref>
+      <ref id="ref_7">
+        <label>7.</label>
+        <element-citation publication-type="journal">
+          <person-group person-group-type="author">
+            <name>
+              <given-names>M.</given-names>
+              <surname>Biondi</surname>
+            </name>
+            <name>
+              <given-names>G.</given-names>
+              <surname>Sand</surname>
+            </name>
+            <name>
+              <given-names>I.</given-names>
+              <surname>Harjunkoski</surname>
+            </name>
+          </person-group>
+          <article-title>Optimization of multipurpose process plant operations: A multi-time-scale maintenance and production scheduling approach</article-title>
+          <source>Comput. Chem. Eng.</source>
+          <year>2017</year>
+          <volume>99</volume>
+          <issue>6</issue>
+          <page-range>325-339</page-range>
+          <fpage>325</fpage>
+          <lpage>339</lpage>
+          <pub-id pub-id-type="doi">https://doi.org/10.1016/j.compchemeng.2017.01.007</pub-id>
+          <pub-id pub-id-type="publisher-id"/>
+        </element-citation>
+      </ref>
+      <ref id="ref_8">
+        <label>8.</label>
+        <element-citation publication-type="journal">
+          <person-group person-group-type="author">
+            <name>
+              <given-names>W.</given-names>
+              <surname>Cui</surname>
+            </name>
+            <name>
+              <given-names>Z.</given-names>
+              <surname>Lu</surname>
+            </name>
+            <name>
+              <given-names>E.</given-names>
+              <surname>Pan</surname>
+            </name>
+          </person-group>
+          <article-title>Integrated production scheduling and maintenance policy for robustness in a single machine</article-title>
+          <source>Comput. Oper. Res.</source>
+          <year>2014</year>
+          <volume>47</volume>
+          <issue>6</issue>
+          <page-range>81-91</page-range>
+          <fpage>81</fpage>
+          <lpage>91</lpage>
+          <pub-id pub-id-type="doi">https://doi.org/10.1016/j.cor.2014.02.006</pub-id>
+          <pub-id pub-id-type="publisher-id"/>
+        </element-citation>
+      </ref>
+      <ref id="ref_9">
+        <label>9.</label>
+        <element-citation publication-type="journal">
+          <person-group person-group-type="author">
+            <name>
+              <given-names>W.</given-names>
+              <surname>Luo</surname>
+            </name>
+            <name>
+              <given-names>F.</given-names>
+              <surname>Liu</surname>
+            </name>
+          </person-group>
+          <article-title>On single-machine scheduling with workload-dependent maintenance duration</article-title>
+          <source>Omega</source>
+          <year>2017</year>
+          <volume>68</volume>
+          <issue>4</issue>
+          <page-range>119-122</page-range>
+          <fpage>119</fpage>
+          <lpage>122</lpage>
+          <pub-id pub-id-type="doi">https://doi.org/10.1016/j.omega.2016.06.008</pub-id>
+          <pub-id pub-id-type="publisher-id"/>
+        </element-citation>
+      </ref>
+      <ref id="ref_10">
+        <label>10.</label>
+        <element-citation publication-type="journal">
+          <person-group person-group-type="author">
+            <name>
+              <given-names>A. C.</given-names>
+              <surname>Beezão</surname>
+            </name>
+            <name>
+              <given-names>J. F.</given-names>
+              <surname>Cordeau</surname>
+            </name>
+            <name>
+              <given-names>G.</given-names>
+              <surname>Laporte</surname>
+            </name>
+            <name>
+              <given-names>H. H.</given-names>
+              <surname>Yanasse</surname>
+            </name>
+          </person-group>
+          <article-title>Scheduling identical parallel machines with tooling constraints</article-title>
+          <source>Eur. J. Oper. Res.</source>
+          <year>2017</year>
+          <volume>257</volume>
+          <issue>3</issue>
+          <page-range>834-844</page-range>
+          <fpage>834</fpage>
+          <lpage>844</lpage>
+          <pub-id pub-id-type="doi">https://doi.org/10.1016/j.ejor.2016.08.008</pub-id>
+          <pub-id pub-id-type="publisher-id"/>
+        </element-citation>
+      </ref>
+      <ref id="ref_11">
+        <label>11.</label>
+        <element-citation publication-type="journal">
+          <person-group person-group-type="author">
+            <name>
+              <given-names>J.</given-names>
+              <surname>Xiong</surname>
+            </name>
+            <name>
+              <given-names>X.</given-names>
+              <surname>Tan</surname>
+            </name>
+            <name>
+              <given-names>K.</given-names>
+              <surname>Yang</surname>
+            </name>
+            <name>
+              <given-names>L.</given-names>
+              <surname>Xing</surname>
+            </name>
+            <name>
+              <given-names>Y.</given-names>
+              <surname>Chen</surname>
+            </name>
+          </person-group>
+          <article-title>A hybrid multiobjective evolutionary approach for flexible job-shop scheduling problems</article-title>
+          <source>Math. Probl. Eng.</source>
+          <year>2012</year>
+          <volume>2012</volume>
+          <issue/>
+          <page-range/>
+          <fpage/>
+          <lpage/>
+          <pub-id pub-id-type="doi">https://doi.org/10.1155/2012/478981</pub-id>
+          <pub-id pub-id-type="publisher-id">478981</pub-id>
+        </element-citation>
+      </ref>
+      <ref id="ref_12">
+        <label>12.</label>
+        <element-citation publication-type="journal">
+          <person-group person-group-type="author">
+            <name>
+              <given-names>F. T. S.</given-names>
+              <surname>Chan</surname>
+            </name>
+            <name>
+              <given-names>T. C.</given-names>
+              <surname>Wong</surname>
+            </name>
+            <name>
+              <given-names>L. Y.</given-names>
+              <surname>Chan</surname>
+            </name>
+          </person-group>
+          <article-title>Flexible job-shop scheduling problem under resource constraints</article-title>
+          <source>Int J. Pro. Res.</source>
+          <year>2006</year>
+          <volume>44</volume>
+          <issue>1</issue>
+          <page-range>2071-2089</page-range>
+          <fpage>2071</fpage>
+          <lpage>2089</lpage>
+          <pub-id pub-id-type="doi">https://doi.org/10.1080/00207540500386012</pub-id>
+          <pub-id pub-id-type="publisher-id"/>
+        </element-citation>
+      </ref>
+      <ref id="ref_13">
+        <label>13.</label>
+        <element-citation publication-type="journal">
+          <person-group person-group-type="author">
+            <name>
+              <given-names>F. T. S.</given-names>
+              <surname>Chan</surname>
+            </name>
+            <name>
+              <given-names>K. L.</given-names>
+              <surname>Choy</surname>
+            </name>
+          </person-group>
+          <article-title>A genetic algorithm-based scheduler for multiproduct parallel machine sheet metal job shop</article-title>
+          <source>Expert Syst. Appl.</source>
+          <year>2011</year>
+          <volume>38</volume>
+          <issue>7</issue>
+          <page-range>8703-8715</page-range>
+          <fpage>8703</fpage>
+          <lpage>8715</lpage>
+          <pub-id pub-id-type="doi">https://doi.org/10.1016/j.eswa.2011.01.078</pub-id>
+          <pub-id pub-id-type="publisher-id"/>
+        </element-citation>
+      </ref>
+      <ref id="ref_14">
+        <label>14.</label>
+        <element-citation publication-type="journal">
+          <person-group person-group-type="author">
+            <name>
+              <given-names>J. C.</given-names>
+              <surname>Chen</surname>
+            </name>
+            <name>
+              <given-names>C. C.</given-names>
+              <surname>Wu</surname>
+            </name>
+            <name>
+              <given-names>C. W.</given-names>
+              <surname>Chen</surname>
+            </name>
+            <name>
+              <given-names>K. H.</given-names>
+              <surname>Chen</surname>
+            </name>
+          </person-group>
+          <article-title>Flexible job shop scheduling with parallel machines using Genetic Algorithm and Grouping Genetic Algorithm</article-title>
+          <source>Expert Syst. Appl.</source>
+          <year>2012</year>
+          <volume>39</volume>
+          <issue>1</issue>
+          <page-range>10016-10021</page-range>
+          <fpage>10016</fpage>
+          <lpage>10021</lpage>
+          <pub-id pub-id-type="doi">https://doi.org/10.1016/j.eswa.2012.01.211</pub-id>
+          <pub-id pub-id-type="publisher-id"/>
+        </element-citation>
+      </ref>
+      <ref id="ref_15">
+        <label>15.</label>
+        <element-citation publication-type="journal">
+          <person-group person-group-type="author">
+            <name>
+              <given-names>V. M.</given-names>
+              <surname>Dalfard</surname>
+            </name>
+            <name>
+              <given-names>G.</given-names>
+              <surname>Mohammadi</surname>
+            </name>
+          </person-group>
+          <article-title>Two meta-heuristic algorithms for solving multi-objective flexible job-shop scheduling with parallel machine and maintenance constraints</article-title>
+          <source>Comput. Math. Appl.</source>
+          <year>2012</year>
+          <volume>64</volume>
+          <issue>6</issue>
+          <page-range>2111-2117</page-range>
+          <fpage>2111</fpage>
+          <lpage>2117</lpage>
+          <pub-id pub-id-type="doi">https://doi.org/10.1016/j.camwa.2012.04.007</pub-id>
+          <pub-id pub-id-type="publisher-id"/>
+        </element-citation>
+      </ref>
+      <ref id="ref_16">
+        <label>16.</label>
+        <element-citation publication-type="journal">
+          <person-group person-group-type="author">
+            <name>
+              <given-names>X. G.</given-names>
+              <surname>Zhang</surname>
+            </name>
+            <name>
+              <given-names>Y. Q.</given-names>
+              <surname>Yin</surname>
+            </name>
+            <name>
+              <given-names>C. C.</given-names>
+              <surname>Wu</surname>
+            </name>
+          </person-group>
+          <article-title>Scheduling with non-decreasing deterioration jobs and variable maintenance activities on a single machine</article-title>
+          <source>Eng. Optimiz.</source>
+          <year>2017</year>
+          <volume>49</volume>
+          <issue>1</issue>
+          <page-range>84-97</page-range>
+          <fpage>84</fpage>
+          <lpage>97</lpage>
+          <pub-id pub-id-type="doi">https://doi.org/10.1080/0305215X.2016.1163629</pub-id>
+          <pub-id pub-id-type="publisher-id"/>
+        </element-citation>
+      </ref>
+      <ref id="ref_17">
+        <label>17.</label>
+        <element-citation publication-type="journal">
+          <person-group person-group-type="author">
+            <name>
+              <given-names>E. S.</given-names>
+              <surname>Pan</surname>
+            </name>
+            <name>
+              <given-names>W. Z.</given-names>
+              <surname>Liao</surname>
+            </name>
+            <name>
+              <given-names>L. F.</given-names>
+              <surname>Xi</surname>
+            </name>
+          </person-group>
+          <article-title>A joint model of production scheduling and predictive maintenance for minimizing job tardiness</article-title>
+          <source>Int. J. Adv. Manuf. Tech.</source>
+          <year>2012</year>
+          <volume>60</volume>
+          <issue>2</issue>
+          <page-range>1049-1061</page-range>
+          <fpage>1049</fpage>
+          <lpage>1061</lpage>
+          <pub-id pub-id-type="doi">https://doi.org/10.1007/s00170-011-3652-4</pub-id>
+          <pub-id pub-id-type="publisher-id"/>
+        </element-citation>
+      </ref>
+      <ref id="ref_18">
+        <label>18.</label>
+        <element-citation publication-type="journal">
+          <person-group person-group-type="author">
+            <name>
+              <given-names>Y.</given-names>
+              <surname>Li</surname>
+            </name>
+            <name>
+              <given-names>M. S.</given-names>
+              <surname>Yang</surname>
+            </name>
+            <name>
+              <given-names>X.</given-names>
+              <surname>Chen</surname>
+            </name>
+            <name>
+              <given-names>Z. P.</given-names>
+              <surname>Zhan</surname>
+            </name>
+            <name>
+              <given-names>E. B.</given-names>
+              <surname>Xu</surname>
+            </name>
+            <name>
+              <given-names>Y.</given-names>
+              <surname>Li</surname>
+            </name>
+          </person-group>
+          <article-title>Integrated optimization of predictive maintenance and production scheduling for flow-shop</article-title>
+          <source>Mech. Sci. Technol. Aerospace Eng.</source>
+          <year>2022</year>
+          <volume>41</volume>
+          <issue>7</issue>
+          <page-range>1055-1061</page-range>
+          <fpage>1055</fpage>
+          <lpage>1061</lpage>
+          <pub-id pub-id-type="doi"/>
+          <pub-id pub-id-type="publisher-id"/>
+        </element-citation>
+      </ref>
+      <ref id="ref_19">
+        <label>19.</label>
+        <element-citation publication-type="journal">
+          <person-group person-group-type="author">
+            <name>
+              <given-names>S. D.</given-names>
+              <surname>Dao</surname>
+            </name>
+            <name>
+              <given-names>K.</given-names>
+              <surname>Abhary</surname>
+            </name>
+            <name>
+              <given-names>R.</given-names>
+              <surname>Marian</surname>
+            </name>
+            <name>
+              <given-names>M.</given-names>
+              <surname>Goh</surname>
+            </name>
+          </person-group>
+          <article-title>Optimisation of production scheduling for multi-product orders in VCIM systems using GA</article-title>
+          <source>Soft Compu.</source>
+          <year>2019</year>
+          <volume>23</volume>
+          <issue>0</issue>
+          <page-range>10199-10224</page-range>
+          <fpage>10199</fpage>
+          <lpage>10224</lpage>
+          <pub-id pub-id-type="doi">https://doi.org/ 10.1007/s00500-018-3578-y</pub-id>
+          <pub-id pub-id-type="publisher-id"/>
+        </element-citation>
+      </ref>
+      <ref id="ref_20">
+        <label>20.</label>
+        <element-citation publication-type="journal">
+          <person-group person-group-type="author">
+            <name>
+              <given-names>A. J.</given-names>
+              <surname>Yu</surname>
+            </name>
+            <name>
+              <given-names>J.</given-names>
+              <surname>Seif</surname>
+            </name>
+          </person-group>
+          <article-title>Minimizing tardiness and maintenance costs in flow shop scheduling by a lower-bound-based GA</article-title>
+          <source>Comput. Ind. Eng.</source>
+          <year>2016</year>
+          <volume>97</volume>
+          <issue/>
+          <page-range>26-40</page-range>
+          <fpage>26</fpage>
+          <lpage>40</lpage>
+          <pub-id pub-id-type="doi">https://doi.org/10.1016/j.cie.2016.03.024</pub-id>
+          <pub-id pub-id-type="publisher-id"/>
+        </element-citation>
+      </ref>
+    </ref-list>
+  </back>
+</article>
