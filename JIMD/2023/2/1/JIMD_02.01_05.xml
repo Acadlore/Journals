@@ -1,0 +1,1399 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.3 20210610//EN" "JATS-journalpublishing1-3.dtd">
+<article xml:lang="en" dtd-version="1.3" article-type="research-article" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mml="http://www.w3.org/1998/Math/MathML">
+  <front>
+    <journal-meta>
+      <journal-id journal-id-type="publisher-id">JIMD</journal-id>
+      <journal-id journal-id-type="doi">10.56578</journal-id>
+      <journal-title-group>
+        <journal-title>Journal of Intelligent Management Decision</journal-title>
+        <abbrev-journal-title abbrev-type="issn">J. Intell. Manag. Decis.</abbrev-journal-title>
+        <abbrev-journal-title abbrev-type="publisher">JIMD</abbrev-journal-title>
+      </journal-title-group>
+      <issn publication-format="electronic">2958-0080</issn>
+      <issn publication-format="print">2958-0072</issn>
+      <publisher>
+        <publisher-name>Acadlore</publisher-name>
+      </publisher>
+    </journal-meta>
+    <article-meta>
+      <article-id pub-id-type="publisher-id">AR-2fEc10vrOC1ZDY1Apg-f-z_4mrrkmAxI</article-id>
+      <article-id pub-id-type="doi">10.56578/jimd020105</article-id>
+      <title-group>
+        <article-title>Dynamic Simulation of Differential Driving Cargo Transport Vehicle</article-title>
+      </title-group>
+      <contrib-group>
+        <contrib contrib-type="author">
+          <xref ref-type="aff" rid="1">1</xref>
+          <name>
+            <surname>Liu</surname>
+            <given-names>Senlin</given-names>
+          </name>
+          <contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0009-0007-7626-8731</contrib-id>
+          <email>2602490435@qq.com</email>
+        </contrib>
+        <contrib contrib-type="author">
+          <xref ref-type="aff" rid="1">1</xref>
+          <name>
+            <surname>Wang</surname>
+            <given-names>Yu</given-names>
+          </name>
+          <contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0000-0001-5147-7931</contrib-id>
+          <email>wangyu@mail.xhu.edu.cn</email>
+        </contrib>
+        <aff id="1">School of Mechanical Engineering, Xihua University, 611730 Chengdu, China</aff>
+      </contrib-group>
+      <year>2023</year>
+      <volume>2</volume>
+      <issue>1</issue>
+      <fpage>38</fpage>
+      <lpage>45</lpage>
+      <page-range>38-45</page-range>
+      <history>
+        <date date-type="received">
+          <month>12</month>
+          <day>04</day>
+          <year>2022</year>
+        </date>
+        <date date-type="accepted">
+          <month>02</month>
+          <day>24</day>
+          <year>2023</year>
+        </date>
+        <date date-type="pub">
+          <month>03</month>
+          <day>28</day>
+          <year>2023</year>
+        </date>
+      </history>
+      <permissions>
+        <copyright-statement>©2023 by the authors</copyright-statement>
+        <copyright-year>2023</copyright-year>
+        <license>. Licensee Acadlore Publishing Services Limited, Hong Kong. This article can be downloaded for free, and reused and quoted with a citation of the original published version, under the <ext-link ext-link-type="uri" xlink:href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0 license</ext-link>.</license>
+      </permissions>
+      <abstract><p>With the rapid development of industrial technology, the application fields of AGV are constantly expanding. In this article, a differential vehicle is selected to construct a dynamic model of differential vehicle and establish a co-simulation platform of MATLAB/Simulink and ADAMS, which fully considers the nonlinear friction between wheels and the ground, the body mass and its own moment of inertia during steering, simulates the actual motion trajectory of the vehicle under different paths, and compares the ideal trajectory with the actual ADAMS output, which is generally consistent with the theory, and the basic path trend tends to be consistent. The deviation between them also reflects that the differential vehicle is a multi-degree-of-freedom strong nonlinear system, so the platform can better simulate the actual motion process of the vehicle.</p></abstract>
+      <kwd-group>
+        <kwd>Differential driving</kwd>
+        <kwd>Fixed path</kwd>
+        <kwd>Co-simulation</kwd>
+      </kwd-group>
+      <counts>
+        <count count-type="contributors">2</count>
+        <fig-count>6</fig-count>
+        <table-count>2</table-count>
+        <ref-count>20</ref-count>
+      </counts>
+    </article-meta>
+  </front>
+  <body>
+    <sec disp-level="level1" sec-type="intro">
+      <title>1. Introduction</title>
+      <p>Automatic Guided Vehicle (AVG) is a kind of mobile intelligent autonomous or semi-autonomous robot, which has broad application prospects in modern logistics and warehousing, flexible manufacturing, military fields and operations in dangerous environments [<xref ref-type="bibr" rid="ref_1">1</xref>], its existence not only fills the work of humans in daily life, robots are also used in the industrial field, which can improve productivity and reduce labor costs [<xref ref-type="bibr" rid="ref_2">2</xref>]. In places with heavy workload and strong dynamics of cargo transportation, the transportation process always needs to be dynamically adjusted according to the demand in a dynamically changing environment [<xref ref-type="bibr" rid="ref_3">3</xref>]. Because of its automation, intelligence and flexibility, AGV can well meet the requirements of cargo transportation in the above occasions [<xref ref-type="bibr" rid="ref_4">4</xref>].</p><p>In this study, the dynamic model can be divided into mathematical model and simulation model, and the mathematical model involves Lagrange equation and Newton-Euler method. When there are nonholonomic constraints in Lagrange equation, the description of constraints must be attached; when Newton-Euler method is applied to modeling, although nonholonomic constraints can be directly integrated into the equation, the modeling process will become extremely cumbersome as the modeling object is a complex mechanical system [<xref ref-type="bibr" rid="ref_5">5</xref>]. Many researchers have studied the kinematics and dynamics model of two-wheeled differential mobile robot, and obtained many theoretical achievements. For example, reference [<xref ref-type="bibr" rid="ref_6">6</xref>] derives the nonlinear differential equation between velocity and torque of mobile robot, based on which the system state equation of mobile robot is obtained; reference [<xref ref-type="bibr" rid="ref_7">7</xref>] establishes the dynamic model of wheeled mobile robot by Newton-Euler method. Because the contact between wheels and the ground is highly nonlinear, and the whole vehicle model is a multi-degree-of-freedom strong nonlinear system, it is usually necessary to simplify the model analysis, which is difficult to be used in practice. In fact, the actual analysis will emphasize the establishment of mathematical model and theoretical derivation, and it is even more difficult to use direct and effective dynamic theory for analysis.</p><p>In order to solve the above problems well, based on kinematic analysis, this article uses the mature software ADAMS to construct the dynamic system of two-wheeled differential vehicle, and carries out the co-simulation with MATLAB/Simulink. In the process of establishing the system, the moment of inertia of the body mass and the nonlinear friction between the wheels and the ground are fully considered, and the actual motion of the vehicle under different paths is analyzed to verify the correctness of the dynamic system of the differential vehicle.</p>
+    </sec>
+    <sec disp-level="level1" sec-type="">
+      <title>2. Physical model and kinematic analysis</title>
+      
+        <sec disp-level="level2">
+          
+            <title>2.1. Physical model of differential vehicle</title>
+          
+          <p>At present, the common differential guide wheeled mobile robots are divided into three-wheeled, four-wheeled and six-wheeled mobile robots. In this article, the four-wheeled with strong bearing capacity are selected [<xref ref-type="bibr" rid="ref_8">8</xref>], and universal wheels, McNam wheels and orthogonal wheels are usually used in driving steering [<xref ref-type="bibr" rid="ref_9">9</xref>]. This article adopts the front and rear universal wheel steering and the form of left and right wheel differential driving; double differential driving wheel train can not only actively bear load, but also actively drive steering, thus realizing omni-directional motion forms such as straight, transverse, oblique, arbitrary curve motion and zero radius of gyration in two-dimensional plane [<xref ref-type="bibr" rid="ref_10">10</xref>], [<xref ref-type="bibr" rid="ref_11">11</xref>]. At present, the chassis is roughly divided into circular contour and rectangular contour. This article selects the circular contour, which has more application scenarios and can pass through narrow aisles, as shown in <xref ref-type="fig" rid="fig_1">Figure 1</xref>. Also, when describing the trajectory of the vehicle, it is usually determined by the trajectory of the center of gravity of the vehicle. In the circular contour selected, the axes of two differential wheels are completely parallel to one diameter of the circular contour in space. When the velocity of differential wheels is solved by inverse kinematics [<xref ref-type="bibr" rid="ref_12">12</xref>], the midpoint trajectory between two differential wheels is completely parallel to the trajectory of the center of gravity of the vehicle in space.</p>
+          
+            <fig id="fig_1">
+              <label>Figure 1</label>
+              <caption>Physical model of differential vehicle</caption>
+              <abstract>O-Gravity Center, I-Differential Driving Wheel, II-Front Guide Wheel, III-Rear Guide Whee</abstract>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2023/2/img__QtPYiW0eGn05s77.png"/>
+            </fig>
+          
+        </sec>
+      
+      
+        <sec disp-level="level2">
+          
+            <title>2.2. Kinematics analysis</title>
+          
+          <p>Firstly, the following assumptions are made for the research model [<xref ref-type="bibr" rid="ref_13">13</xref>]:</p><p>(1) Assume that the vehicle is a rigid structure, that is, the positions of its four wheels relative to the geometric center of AGV vehicle body will not change during the motion;</p><p>(2) Assume that the motion plane is flat, that is, there are no gullies and undulating terrain in the motion scene;</p><p>(3) The four wheels have the same size and do not deform during the motion, That is, the interaction of rigid wheels with rigid ground [<xref ref-type="bibr" rid="ref_14">14</xref>], [<xref ref-type="bibr" rid="ref_15">15</xref>], the load is evenly shared among the wheels, and the wheel surface is perpendicular to the contact surface and keeps point contact, ignoring the influence of all wheel thicknesses on the vehicle body;</p><p>(4) There is no axial sliding between the wheel and the contact surface, that is, the transverse drift is not considered, and only pure rolling around the axis direction of the wheel occurs;</p><p>(5) Assume that the radial friction between the universal wheel and the ground is small, which will not affect the steering of the guide wheel set.</p><p><xref ref-type="fig" rid="fig_2">Figure 2</xref> is a structural schematic diagram of the differential vehicle (only the key differential driving wheels are drawn in the figure).<italic> O<sub>l</sub></italic> and<italic> O<sub>r</sub></italic> are the wheel centers of the left wheel and the right wheel, the wheel spacing <italic>O<sub>l</sub>O<sub>r</sub></italic> is L, <italic>O<sub>c</sub></italic> is the center of<italic> O<sub>l</sub></italic> and <italic>O<sub>r</sub></italic> and the center of the whole circular contour differential vehicle in the two-dimensional plane, and <italic>V<sub>l</sub></italic>, <italic>V<sub>r</sub></italic> and <italic>V<sub>c</sub> </italic>are the linear velocities of the left wheel, the right wheel and the center of the vehicle body respectively. Assuming that the position coordinates of O<sub>c</sub> are (x, y), and its attitude angle is expressed by the angle between the center linear velocity <italic>V<sub>c</sub></italic> and the x axis, the position and pose of the differential vehicle on the earth is expressed by vectors (x, y, θ) [<xref ref-type="bibr" rid="ref_16">16</xref>], [<xref ref-type="bibr" rid="ref_17">17</xref>], [<xref ref-type="bibr" rid="ref_18">18</xref>].</p>
+          
+            <fig id="fig_2">
+              <label>Figure 2</label>
+              <caption>Kinematics model of differential vehicle</caption>
+              <abstract/>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2023/2/img_e4zsmKwYpovPaAKh.png"/>
+            </fig>
+          
+          <p>Considering the low-velocity motion, no centrifugal motion occurs, and the central linear velocity <italic>V<sub>c</sub></italic> can be obtained from kinematics knowledge as follows:</p>
+          
+            <disp-formula>
+              <label>(1)</label>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <msub>
+                  <mi>V</mi>
+                  <mi>c</mi>
+                </msub>
+                <mo>=</mo>
+                <mfrac>
+                  <mrow>
+                    <msub>
+                      <mi>V</mi>
+                      <mi>l</mi>
+                    </msub>
+                    <msub>
+                      <mi>V</mi>
+                      <mi>r</mi>
+                    </msub>
+                    <mo>+</mo>
+                  </mrow>
+                  <mn>2</mn>
+                </mfrac>
+              </math>
+            </disp-formula>
+          
+          <p>Assuming that the rotational angular velocity of the vehicle is <italic>w</italic>, the vehicle rotates counterclockwise as shown in <xref ref-type="fig" rid="fig_3">Figure 3</xref>, then:</p>
+          
+            <disp-formula>
+              <label>(2)</label>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <mrow data-mjx-texclass="INNER">
+                  <mo data-mjx-texclass="OPEN">{</mo>
+                  <mo data-mjx-texclass="CLOSE" fence="true" stretchy="true" symmetric="true"/>
+                  <mtable columnspacing="1em" rowspacing="4pt">
+                    <mtr>
+                      <mtd>
+                        <msub>
+                          <mi>V</mi>
+                          <mi>l</mi>
+                        </msub>
+                        <mo>=</mo>
+                        <mi>ω</mi>
+                        <mrow data-mjx-texclass="INNER">
+                          <mo data-mjx-texclass="OPEN">(</mo>
+                          <mo>−</mo>
+                          <mo data-mjx-texclass="CLOSE">)</mo>
+                          <mi>R</mi>
+                          <mfrac>
+                            <mi>L</mi>
+                            <mn>2</mn>
+                          </mfrac>
+                        </mrow>
+                      </mtd>
+                    </mtr>
+                    <mtr>
+                      <mtd>
+                        <msub>
+                          <mi>V</mi>
+                          <mi>l</mi>
+                        </msub>
+                        <mo>=</mo>
+                        <mi>ω</mi>
+                        <mrow data-mjx-texclass="INNER">
+                          <mo data-mjx-texclass="OPEN">(</mo>
+                          <mo>+</mo>
+                          <mo data-mjx-texclass="CLOSE">)</mo>
+                          <mi>R</mi>
+                          <mfrac>
+                            <mi>L</mi>
+                            <mn>2</mn>
+                          </mfrac>
+                        </mrow>
+                      </mtd>
+                    </mtr>
+                    <mtr>
+                      <mtd>
+                        <mi>ω</mi>
+                        <mo>=</mo>
+                        <mfrac>
+                          <mrow data-mjx-texclass="INNER">
+                            <mo data-mjx-texclass="OPEN">(</mo>
+                            <mo>−</mo>
+                            <mo data-mjx-texclass="CLOSE">)</mo>
+                            <msub>
+                              <mi>V</mi>
+                              <mi>r</mi>
+                            </msub>
+                            <msub>
+                              <mi>V</mi>
+                              <mi>l</mi>
+                            </msub>
+                          </mrow>
+                          <mi>L</mi>
+                        </mfrac>
+                      </mtd>
+                    </mtr>
+                  </mtable>
+                </mrow>
+              </math>
+            </disp-formula>
+          
+          <p>According to the principle of rigid body translation, the motion of the vehicle at any time can be regarded as the rotating motion of the vehicle around the instantaneous center point <italic>O</italic>, and the rotating radius <italic>R</italic> is:</p>
+          
+            <disp-formula>
+              <label>(3)</label>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <mi>R</mi>
+                <mo>=</mo>
+                <mo>=</mo>
+                <mfrac>
+                  <msub>
+                    <mi>V</mi>
+                    <mi>C</mi>
+                  </msub>
+                  <mi>ω</mi>
+                </mfrac>
+                <mfrac>
+                  <mi>L</mi>
+                  <mn>2</mn>
+                </mfrac>
+                <mfrac>
+                  <mrow>
+                    <msub>
+                      <mi>V</mi>
+                      <mi>r</mi>
+                    </msub>
+                    <msub>
+                      <mi>V</mi>
+                      <mi>l</mi>
+                    </msub>
+                    <mo>+</mo>
+                  </mrow>
+                  <mrow>
+                    <msub>
+                      <mi>V</mi>
+                      <mi>r</mi>
+                    </msub>
+                    <msub>
+                      <mi>V</mi>
+                      <mi>l</mi>
+                    </msub>
+                    <mo>−</mo>
+                  </mrow>
+                </mfrac>
+              </math>
+            </disp-formula>
+          
+          <p>The linear velocity of the left and right wheels determines the motion form of the vehicle:</p><p>(1) When <italic>V</italic><sub>l</sub>=<italic>V<sub>r</sub></italic>, <italic>R</italic>=∞, the vehicle moves in a straight line along the velocity direction;</p><p>(2) When <italic>V</italic><sub>l</sub>=<italic>V<sub>r</sub></italic>, <italic>R</italic>=0, the vehicle rotates around the center of the vehicle body;</p><p>(3) When <italic>V</italic><sub>l</sub><span style="font-family: 等线">&lt;</span><italic><span style="font-family: 等线">V</span></italic><sub><span style="font-family: 等线">r</span></sub>, the vehicle moves in counterclockwise arc, and the radius around the center of rotation:</p>
+          
+            <disp-formula>
+              <label>(4)</label>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <mi>R</mi>
+                <mo>=</mo>
+                <mfrac>
+                  <mi>L</mi>
+                  <mn>2</mn>
+                </mfrac>
+                <mfrac>
+                  <mrow>
+                    <msub>
+                      <mi>V</mi>
+                      <mi>r</mi>
+                    </msub>
+                    <msub>
+                      <mi>V</mi>
+                      <mi>l</mi>
+                    </msub>
+                    <mo>+</mo>
+                  </mrow>
+                  <mrow>
+                    <msub>
+                      <mi>V</mi>
+                      <mi>r</mi>
+                    </msub>
+                    <msub>
+                      <mi>V</mi>
+                      <mi>l</mi>
+                    </msub>
+                    <mo>−</mo>
+                  </mrow>
+                </mfrac>
+              </math>
+            </disp-formula>
+          
+          <p>(4) When <italic>V</italic><sub>l</sub>&gt;<italic>V<sub>r</sub></italic>, the vehicle moves in a clockwise arc, and the radius around the center of rotation:</p>
+          
+            <disp-formula>
+              <label>(5)</label>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <mi>R</mi>
+                <mo>=</mo>
+                <mfrac>
+                  <mi>L</mi>
+                  <mn>2</mn>
+                </mfrac>
+                <mfrac>
+                  <mrow>
+                    <msub>
+                      <mi>V</mi>
+                      <mi>r</mi>
+                    </msub>
+                    <msub>
+                      <mi>V</mi>
+                      <mi>l</mi>
+                    </msub>
+                    <mo>+</mo>
+                  </mrow>
+                  <mrow>
+                    <msub>
+                      <mi>V</mi>
+                      <mi>l</mi>
+                    </msub>
+                    <msub>
+                      <mi>V</mi>
+                      <mi>r</mi>
+                    </msub>
+                    <mo>−</mo>
+                  </mrow>
+                </mfrac>
+              </math>
+            </disp-formula>
+          
+          <p>Therefore, the kinematic equation of the whole vehicle can be expressed as [<xref ref-type="bibr" rid="ref_19">19</xref>]:</p>
+          
+            <disp-formula>
+              <label>(6)</label>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <mrow data-mjx-texclass="INNER">
+                  <mo data-mjx-texclass="OPEN">(</mo>
+                  <mo data-mjx-texclass="CLOSE">)</mo>
+                  <mtable columnspacing="1em" rowspacing="4pt">
+                    <mtr>
+                      <mtd>
+                        <msub>
+                          <mi>V</mi>
+                          <mi>c</mi>
+                        </msub>
+                      </mtd>
+                    </mtr>
+                    <mtr>
+                      <mtd>
+                        <mi>ω</mi>
+                      </mtd>
+                    </mtr>
+                  </mtable>
+                </mrow>
+                <mrow data-mjx-texclass="INNER">
+                  <mo data-mjx-texclass="OPEN">(</mo>
+                  <mo data-mjx-texclass="CLOSE">)</mo>
+                  <mtable columnalign="center center" columnspacing="1em" rowspacing="4pt">
+                    <mtr>
+                      <mtd>
+                        <mn>1</mn>
+                        <mn>2</mn>
+                        <mrow data-mjx-texclass="ORD">
+                          <mo>/</mo>
+                        </mrow>
+                      </mtd>
+                      <mtd>
+                        <mn>1</mn>
+                        <mn>2</mn>
+                        <mrow data-mjx-texclass="ORD">
+                          <mo>/</mo>
+                        </mrow>
+                      </mtd>
+                    </mtr>
+                    <mtr>
+                      <mtd>
+                        <mn>1</mn>
+                        <mrow data-mjx-texclass="ORD">
+                          <mo>/</mo>
+                        </mrow>
+                        <mi>L</mi>
+                      </mtd>
+                      <mtd>
+                        <mo>−</mo>
+                        <mn>1</mn>
+                        <mrow data-mjx-texclass="ORD">
+                          <mo>/</mo>
+                        </mrow>
+                        <mi>L</mi>
+                      </mtd>
+                    </mtr>
+                  </mtable>
+                </mrow>
+                <mrow data-mjx-texclass="INNER">
+                  <mo data-mjx-texclass="OPEN">(</mo>
+                  <mo data-mjx-texclass="CLOSE">)</mo>
+                  <mtable columnalign="left" columnspacing="1em" rowspacing="4pt">
+                    <mtr>
+                      <mtd>
+                        <msub>
+                          <mi>V</mi>
+                          <mi>r</mi>
+                        </msub>
+                      </mtd>
+                    </mtr>
+                    <mtr>
+                      <mtd>
+                        <msub>
+                          <mi>V</mi>
+                          <mi>l</mi>
+                        </msub>
+                      </mtd>
+                    </mtr>
+                  </mtable>
+                </mrow>
+                <mo>=</mo>
+              </math>
+            </disp-formula>
+          
+          
+            <disp-formula>
+              <label>(7)</label>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <mrow data-mjx-texclass="INNER">
+                  <mo data-mjx-texclass="OPEN">(</mo>
+                  <mo data-mjx-texclass="CLOSE">)</mo>
+                  <mtable columnspacing="1em" rowspacing="4pt">
+                    <mtr>
+                      <mtd>
+                        <msub>
+                          <mrow data-mjx-texclass="ORD">
+                            <mover>
+                              <mi>x</mi>
+                              <mo>˙</mo>
+                            </mover>
+                          </mrow>
+                          <mi>c</mi>
+                        </msub>
+                      </mtd>
+                    </mtr>
+                    <mtr>
+                      <mtd>
+                        <mrow data-mjx-texclass="ORD">
+                          <mover>
+                            <mi>y</mi>
+                            <mo>˙</mo>
+                          </mover>
+                        </mrow>
+                      </mtd>
+                    </mtr>
+                    <mtr>
+                      <mtd>
+                        <mrow data-mjx-texclass="ORD">
+                          <mover>
+                            <mi>θ</mi>
+                            <mo>˙</mo>
+                          </mover>
+                        </mrow>
+                      </mtd>
+                    </mtr>
+                  </mtable>
+                </mrow>
+                <mrow data-mjx-texclass="INNER">
+                  <mo data-mjx-texclass="OPEN">(</mo>
+                  <mo data-mjx-texclass="CLOSE">)</mo>
+                  <mtable columnalign="center center" columnspacing="1em" rowspacing="4pt">
+                    <mtr>
+                      <mtd>
+                        <mi>cos</mi>
+                        <mi>θ</mi>
+                        <mo data-mjx-texclass="NONE">⁡</mo>
+                      </mtd>
+                      <mtd>
+                        <mn>0</mn>
+                      </mtd>
+                    </mtr>
+                    <mtr>
+                      <mtd>
+                        <mi>sin</mi>
+                        <mi>θ</mi>
+                        <mo data-mjx-texclass="NONE">⁡</mo>
+                      </mtd>
+                      <mtd>
+                        <mn>0</mn>
+                      </mtd>
+                    </mtr>
+                    <mtr>
+                      <mtd>
+                        <mn>0</mn>
+                      </mtd>
+                      <mtd>
+                        <mn>1</mn>
+                      </mtd>
+                    </mtr>
+                  </mtable>
+                </mrow>
+                <mrow data-mjx-texclass="INNER">
+                  <mo data-mjx-texclass="OPEN">(</mo>
+                  <mo data-mjx-texclass="CLOSE">)</mo>
+                  <mtable columnalign="left" columnspacing="1em" rowspacing="4pt">
+                    <mtr>
+                      <mtd>
+                        <msub>
+                          <mi>V</mi>
+                          <mi>c</mi>
+                        </msub>
+                      </mtd>
+                    </mtr>
+                    <mtr>
+                      <mtd>
+                        <mi>ω</mi>
+                      </mtd>
+                    </mtr>
+                  </mtable>
+                </mrow>
+                <mo>=</mo>
+              </math>
+            </disp-formula>
+          
+          <p>In this article, inverse kinematics analysis is needed to obtain the velocity of left and right wheels as follows:</p>
+          
+            <disp-formula>
+              <label>(8)</label>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <mrow data-mjx-texclass="INNER">
+                  <mo data-mjx-texclass="OPEN">(</mo>
+                  <mo data-mjx-texclass="CLOSE">)</mo>
+                  <mtable columnalign="left" columnspacing="1em" rowspacing="4pt">
+                    <mtr>
+                      <mtd>
+                        <msub>
+                          <mi>V</mi>
+                          <mi>r</mi>
+                        </msub>
+                      </mtd>
+                    </mtr>
+                    <mtr>
+                      <mtd>
+                        <msub>
+                          <mi>V</mi>
+                          <mi>l</mi>
+                        </msub>
+                      </mtd>
+                    </mtr>
+                  </mtable>
+                </mrow>
+                <mrow data-mjx-texclass="INNER">
+                  <mo data-mjx-texclass="OPEN">(</mo>
+                  <mo data-mjx-texclass="CLOSE">)</mo>
+                  <mtable columnspacing="1em" rowspacing="4pt">
+                    <mtr>
+                      <mtd>
+                        <msub>
+                          <mi>V</mi>
+                          <mi>c</mi>
+                        </msub>
+                        <mo>+</mo>
+                        <mfrac>
+                          <mi>L</mi>
+                          <mn>2</mn>
+                        </mfrac>
+                        <mi>ω</mi>
+                      </mtd>
+                    </mtr>
+                    <mtr>
+                      <mtd>
+                        <msub>
+                          <mi>V</mi>
+                          <mi>c</mi>
+                        </msub>
+                        <mo>−</mo>
+                        <mfrac>
+                          <mi>L</mi>
+                          <mn>2</mn>
+                        </mfrac>
+                        <mi>ω</mi>
+                      </mtd>
+                    </mtr>
+                  </mtable>
+                </mrow>
+                <mrow data-mjx-texclass="INNER">
+                  <mo data-mjx-texclass="OPEN">(</mo>
+                  <mo data-mjx-texclass="CLOSE">)</mo>
+                  <mtable columnalign="center center" columnspacing="1em" rowspacing="4pt">
+                    <mtr>
+                      <mtd>
+                        <mn>1</mn>
+                      </mtd>
+                      <mtd>
+                        <mfrac>
+                          <mi>L</mi>
+                          <mn>2</mn>
+                        </mfrac>
+                      </mtd>
+                    </mtr>
+                    <mtr>
+                      <mtd>
+                        <mn>1</mn>
+                      </mtd>
+                      <mtd>
+                        <mo>−</mo>
+                        <mfrac>
+                          <mi>L</mi>
+                          <mn>2</mn>
+                        </mfrac>
+                      </mtd>
+                    </mtr>
+                  </mtable>
+                </mrow>
+                <mrow data-mjx-texclass="INNER">
+                  <mo data-mjx-texclass="OPEN">(</mo>
+                  <mo data-mjx-texclass="CLOSE">)</mo>
+                  <mtable columnalign="left" columnspacing="1em" rowspacing="4pt">
+                    <mtr>
+                      <mtd>
+                        <msub>
+                          <mi>V</mi>
+                          <mi>c</mi>
+                        </msub>
+                      </mtd>
+                    </mtr>
+                    <mtr>
+                      <mtd>
+                        <mi>ω</mi>
+                      </mtd>
+                    </mtr>
+                  </mtable>
+                </mrow>
+                <mo>=</mo>
+                <mo>=</mo>
+              </math>
+            </disp-formula>
+          
+          <p>where, the central velocity:</p>
+          
+            <disp-formula>
+              <label>(9)</label>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <msub>
+                  <mi>V</mi>
+                  <mi>c</mi>
+                </msub>
+                <mo>=</mo>
+                <msqrt>
+                  <mrow data-mjx-texclass="INNER">
+                    <mo data-mjx-texclass="OPEN">(</mo>
+                    <mo>+</mo>
+                    <mo data-mjx-texclass="CLOSE">)</mo>
+                    <msubsup>
+                      <mrow data-mjx-texclass="ORD">
+                        <mover>
+                          <mi>x</mi>
+                          <mo>˙</mo>
+                        </mover>
+                      </mrow>
+                      <mi>c</mi>
+                      <mn>2</mn>
+                    </msubsup>
+                    <msubsup>
+                      <mrow data-mjx-texclass="ORD">
+                        <mover>
+                          <mi>y</mi>
+                          <mo>˙</mo>
+                        </mover>
+                      </mrow>
+                      <mi>c</mi>
+                      <mn>2</mn>
+                    </msubsup>
+                  </mrow>
+                </msqrt>
+              </math>
+            </disp-formula>
+          
+          
+            <fig id="fig_3">
+              <label>Figure 3</label>
+              <caption>Dynamic simulation model</caption>
+              <abstract/>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2023/2/img_Vq06qKRulIVv_Fxh.png"/>
+            </fig>
+          
+          <p>From the above analysis, the differential driving vehicle selected in this article can control the center velocity and the rotational angular velocity of the vehicle. Because the guide wheel and the drive wheel of the vehicle are constrained by motion, the difference lies in that the guide wheel increases an extra degree of freedom compared with the latter. The rolling constraint of the wheel forces all the motions of the wheel in the plane direction to be accompanied by the wheel rolling, so there is pure rolling at the contact point, and any position and pose of the vehicle in the two-dimensional plane can be realized [<xref ref-type="bibr" rid="ref_20">20</xref>]. The relevant physical parameters obtained under the fixed path can be used as the input end of the vehicle, thus making the differential vehicle move according to the ideal fixed path.</p>
+        </sec>
+      
+    </sec>
+    <sec disp-level="level1" sec-type="">
+      <title>3. Construction of dynamic model of differential vehicle</title>
+      
+        <sec disp-level="level2">
+          
+            <title>3.1. Differential driving vehicle model</title>
+          
+          <p>The differential driving vehicle model selected in the above includes differential wheels on the left and right, and guide wheels on the front and back. The whole model is to better simulate the actual motion trajectory, so certain physical attributes including but not limited to mass, moment of inertia, etc. are given in ADAMS, as shown in <xref ref-type="table" rid="table_1">Table 1</xref>. The overall size of the whole vehicle is not large, and the order of magnitude is millimeter. The whole vehicle does not increase any related load, so it is simulated by actual no-load situation. Of course, these parameters can be slightly modified in the follow-up study.</p>
+          
+            <table-wrap id="table_1">
+              <label>Table 1</label>
+              <caption>Simulation parameters of differential vehicle</caption>
+              <abstract/>
+              <table><tbody><tr><td colspan="1" rowspan="1"><p style="text-align: center"><span>Simulation parameters</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span>Mass m/kg</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span>Moment of inertia J/(kgmm</span><sup><span>2</span></sup><span>)</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span>Distance between driving wheels L/mm</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span>Driving wheel radius</span></p><p style="text-align: center"><span>r/mm</span></p></td></tr><tr><td colspan="1" rowspan="1"><p style="text-align: center"><span>Numerical value</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span>1.36</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span>798.01</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span>60</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span>10</span></p></td></tr></tbody></table>
+            </table-wrap>
+          
+        </sec>
+      
+      
+        <sec disp-level="level2">
+          
+            <title>3.2. Co-simulation interface settings</title>
+          
+          <p>In order to realize the co-simulation of MATLAB/Simulink and ADAMS, it is necessary to set the input and output interfaces. Input and output variables are set as shown in <xref ref-type="table" rid="table_2">Table 2</xref>. The input and output in the table are relative to ADAMS, and the transverse and vertical are determined according to the global coordinate system, regardless of the local coordinate system.</p>
+          
+            <table-wrap id="table_2">
+              <label>Table 2</label>
+              <caption>Definitions of input and output variables</caption>
+              <abstract/>
+              <table><tbody><tr><td colspan="1" rowspan="1"><p style="text-align: center"><span>Input/output</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span>Variable name</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span>Variable meaning</span></p></td></tr><tr><td colspan="1" rowspan="2"><p style="text-align: center"><span>Input</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span>youve</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span>Right wheel rotation angular velocity</span></p></td></tr><tr><td colspan="1" rowspan="1"><p style="text-align: center"><span>zuove</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span>Left wheel rotation angular velocity</span></p></td></tr><tr><td colspan="1" rowspan="5"><p style="text-align: center"><span>Output</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span>Sx</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span>Trolley transverse displacement</span></p></td></tr><tr><td colspan="1" rowspan="1"><p style="text-align: center"><span>Sy</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span>Trolley longitudinal displacement</span></p></td></tr><tr><td colspan="1" rowspan="1"><p style="text-align: center"><span>Vx</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span>Trolley transverse velocity</span></p></td></tr><tr><td colspan="1" rowspan="1"><p style="text-align: center"><span>Vy</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span>Trolley longitudinal velocity</span></p></td></tr><tr><td colspan="1" rowspan="1"><p style="text-align: center"><span>w</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span>Trolley rotation angular velocity</span></p></td></tr></tbody></table>
+            </table-wrap>
+          
+          <p>The co-simulation model built by using the kinematics theory and simulation parameters mentioned above is shown in the figure. MATLAB/Simulink calculates the rotational velocity of the left and right wheels and inputs it into the ADAMS_SUB vehicle model. The output variables of ADAMS includes the actual transverse displacement velocity, the actual longitudinal displacement velocity, and the angular velocity of the local coordinate system rotation of the vehicle.</p>
+        </sec>
+      
+    </sec>
+    <sec disp-level="level1" sec-type="">
+      <title>4. Dynamic model verification</title>
+      
+        <sec disp-level="level2">
+          
+            <title>4.1. Linear motion without steering</title>
+          
+          <p>The dynamic model of two-wheeled differential vehicle constructed in this article mainly considers that it will keep certain steering function during the motion, and before that, it should consider the situation that the vehicle completes linear motion. Select X=20*t, and compare the displacement of the differential vehicle as shown in subgraph (c) of <xref ref-type="fig" rid="fig_4">Figure 4</xref>, the transverse velocity as shown in subgraph (a) of <xref ref-type="fig" rid="fig_4">Figure 4</xref> and the rotational angular velocity of the local coordinate system of the vehicle as shown in subgraph (b) of <xref ref-type="fig" rid="fig_4">Figure 4</xref>. As a whole, it is not difficult to see that the coordinate system of the whole vehicle with linear motion does not actually rotate, which accords with the condition of linear motion. From the forward velocity, it can be seen that although the actual velocity fluctuates up and down, the fluctuation range is not large and always fluctuates near the actual velocity curve. The displacement of the whole vehicle basically coincides and the forward direction is basically consistent.</p>
+          
+            <fig id="fig_4">
+              <label>Figure 4</label>
+              <caption>Simulation of linear motion trajectory</caption>
+              <abstract/>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2023/2/img_-i6QhfbNV6Kx1VbV.png"/>
+            </fig>
+          
+        </sec>
+      
+      
+        <sec disp-level="level2">
+          
+            <title>4.2. Ellipse</title>
+          
+          <p>In order to better explore the dynamic simulation of differential driving vehicle under the premise of linear motion, the article chooses the curve motion which is different from the straight line. Assuming that the given curve is ellipse, the major semi-axis is 100 and the half minor semi-axis is 80, and considering the initial position and pose of the trolley, the ideal transverse trajectory equation X=100 (cos (3π/2+t/8)), the ideal longitudinal trajectory Y=80 (sin (3π/2+t/8)), and the units of X and Y are mm. Compare the velocity, acceleration and trajectory under the dynamic simulation run built above as shown in <xref ref-type="fig" rid="fig_5">Figure 5</xref>. After fully considering the nonlinear friction between wheels and the ground, the acceleration of the whole vehicle will have a small peak value above and below the ideal acceleration at some time after Simulink filtering; the transverse and longitudinal velocity actually fluctuates slightly under the ideal state, and the overall trajectory trend of the vehicle is the same, forming a slightly deviated path at different positions but almost an ellipse.</p>
+          
+            <fig id="fig_5">
+              <label>Figure 5</label>
+              <caption>Simulation of elliptical motion trajectory</caption>
+              <abstract/>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2023/2/img_Od1NrQpZF6CS5A08.png"/>
+            </fig>
+          
+        </sec>
+      
+      
+        <sec disp-level="level2">
+          
+            <title>4.3. General curve</title>
+          
+          
+            <fig id="fig_6">
+              <label>Figure 6</label>
+              <caption>Simulation of general curve motion trajectory</caption>
+              <abstract/>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2023/2/img_BIrnLkNH4-DBRMEb.png"/>
+            </fig>
+          
+          <p>After verifying the straight line and closed curve models, in order to be more suitable for the simulation under each path, a general curve which is different from the first two curves is added. Set the curve Y=100/(1+e^(-(X/10-10))), select the appropriate transverse trajectory X= (t^2)/2, and compare simulated trajectory, velocity and acceleration according to the dynamic model constructed above, as shown in <xref ref-type="fig" rid="fig_6">Figure 6</xref>. From the motion trajectory alone, the trajectories in the first half are almost completely coincident, and there are some deviations in the second half, but the deviation is not large and the trend is consistent. The peak time of acceleration is different, but the difference between the first half and the second half is less than one second, and the contrast of acceleration is not large. The transverse and longitudinal velocity are almost the same as those mentioned above.</p>
+        </sec>
+      
+    </sec>
+    <sec disp-level="level1" sec-type="">
+      <title>5. Conclusion</title>
+      <p>In this article, the dynamic model of two-wheeled differential vehicle is constructed, and a co-simulation platform based on MATLAB/Simulink and ADAMS is established to verify the correctness of the dynamic model. The above simulation results show that, under the linear motion trajectory, the simulation comparison curves almost completely coincide, and the rotational angular velocity is almost negligible, which basically meet that complete linear motion trajectory. However, the actual transverse velocity, longitudinal velocity, acceleration and general motion trajectory of the two-wheeled differential vehicle model with elliptical trajectory and general curve trajectory are generally consistent with those in theory, and the basic direction of the path tends to be the same; although there is a deviation between them, the overall is not large, which also reflects that the differential vehicle is a multi-degree-of-freedom strong nonlinear system. In this article, the two-wheeled differential vehicle dynamics system based on ADAMS can better represent the motion state of the vehicle in a certain range.</p>
+    </sec>
+  </body>
+  <back>
+    <ack>
+      <title>Acknowledgments</title>
+      
+    </ack>
+    <app-group>
+      <app>
+        <title>Appendix</title>
+        
+      </app>
+    </app-group>
+    <notes>
+      <title>Author Contributions</title>
+      
+    </notes>
+    <notes>
+      <title>Funding</title>
+      <p></p>
+    </notes>
+    <notes>
+      <title>Informed Consent Statement</title>
+      
+    </notes>
+    <notes>
+      <title>Data Availability Statement</title>
+      <p>The data supporting our research results are included within the article or supplementary material.</p>
+    </notes>
+    <notes notes-type="COI-statement">
+      <title>Conflicts of Interest</title>
+      <p>The authors declare no conflict of interest.</p>
+    </notes>
+    <ref-list>
+      <title>References</title>
+      <ref id="ref_1">
+        <label>1.</label>
+        <element-citation publication-type="journal">
+          <person-group person-group-type="author">
+            <name>
+              <given-names>W. W.</given-names>
+              <surname>Tang</surname>
+            </name>
+          </person-group>
+          <article-title>Analysis on the application prospect of AGV in logistics field</article-title>
+          <source>Logist. Techn.</source>
+          <year>2021</year>
+          <volume>2001</volume>
+          <issue>3</issue>
+          <page-range>7-8</page-range>
+          <fpage>7</fpage>
+          <lpage>8</lpage>
+          <pub-id pub-id-type="doi">https://doi.org/10.3969/j.issn.1005-152X.2001.03.002</pub-id>
+          <pub-id pub-id-type="publisher-id"/>
+        </element-citation>
+      </ref>
+      <ref id="ref_2">
+        <label>2.</label>
+        <element-citation publication-type="journal">
+          <person-group person-group-type="author">
+            <name>
+              <given-names>I.</given-names>
+              <surname>Siradjuddin</surname>
+            </name>
+            <name>
+              <given-names>M.</given-names>
+              <surname>Syafaat</surname>
+            </name>
+            <name>
+              <given-names>T. S.</given-names>
+              <surname>Patma</surname>
+            </name>
+            <name>
+              <given-names>S.</given-names>
+              <surname>Adhisuwignjo</surname>
+            </name>
+            <name>
+              <given-names>T.</given-names>
+              <surname>Winarno</surname>
+            </name>
+            <name>
+              <given-names>A.</given-names>
+              <surname>Komarudin</surname>
+            </name>
+            <name>
+              <given-names>D.</given-names>
+              <surname>Widiatmoko</surname>
+            </name>
+          </person-group>
+          <article-title>PID controller for a differential drive robot balancing system</article-title>
+          <source>J. Phys: Conf. Ser.</source>
+          <year>2019</year>
+          <volume>1402</volume>
+          <issue>4</issue>
+          <page-range>44021-44021</page-range>
+          <fpage>44021</fpage>
+          <lpage>44021</lpage>
+          <pub-id pub-id-type="doi">https://doi.org/10.1088/1742-6596/1402/4/044021</pub-id>
+          <pub-id pub-id-type="publisher-id"/>
+        </element-citation>
+      </ref>
+      <ref id="ref_3">
+        <label>3.</label>
+        <element-citation publication-type="journal">
+          <person-group person-group-type="author">
+            <name>
+              <given-names>M.</given-names>
+              <surname>Siwek</surname>
+            </name>
+            <name>
+              <given-names>J.</given-names>
+              <surname>Panasiuk</surname>
+            </name>
+            <name>
+              <given-names>L.</given-names>
+              <surname>Baranowski</surname>
+            </name>
+            <name>
+              <given-names>W.</given-names>
+              <surname>Kaczmarek</surname>
+            </name>
+            <name>
+              <given-names>P.</given-names>
+              <surname>Prusaczyk</surname>
+            </name>
+            <name>
+              <given-names>S.</given-names>
+              <surname>Borys</surname>
+            </name>
+          </person-group>
+          <article-title>Identification of differential drive robot dynamic model parameters</article-title>
+          <source>Mater.</source>
+          <year>2023</year>
+          <volume>16</volume>
+          <issue>2</issue>
+          <page-range>683-683</page-range>
+          <fpage>683</fpage>
+          <lpage>683</lpage>
+          <pub-id pub-id-type="doi"/>
+          <pub-id pub-id-type="publisher-id"/>
+        </element-citation>
+      </ref>
+      <ref id="ref_4">
+        <label>4.</label>
+        <element-citation publication-type="journal">
+          <person-group person-group-type="author">
+            <name>
+              <given-names>X.</given-names>
+              <surname>Jin</surname>
+            </name>
+          </person-group>
+          <article-title>Development status and application trend of AGV car</article-title>
+          <source>J. Beijing Polytech.</source>
+          <year>2021</year>
+          <volume>20</volume>
+          <issue>1</issue>
+          <page-range>10-13</page-range>
+          <fpage>10</fpage>
+          <lpage>13</lpage>
+          <pub-id pub-id-type="doi">https://doi.org/10.3969/j.issn.1671-6558.2021.01.003</pub-id>
+          <pub-id pub-id-type="publisher-id"/>
+        </element-citation>
+      </ref>
+      <ref id="ref_5">
+        <label>5.</label>
+        <element-citation publication-type="journal">
+          <person-group person-group-type="author">
+            <name>
+              <given-names>Q.</given-names>
+              <surname>Niu</surname>
+            </name>
+          </person-group>
+          <article-title>Dynamic modeling and path tracking control of wheeled mobile robots</article-title>
+          <source>Mod. Mach.</source>
+          <year>2020</year>
+          <volume>2020</volume>
+          <issue>6</issue>
+          <page-range>20-23</page-range>
+          <fpage>20</fpage>
+          <lpage>23</lpage>
+          <pub-id pub-id-type="doi"/>
+          <pub-id pub-id-type="publisher-id"/>
+        </element-citation>
+      </ref>
+      <ref id="ref_6">
+        <label>6.</label>
+        <element-citation publication-type="journal">
+          <person-group person-group-type="author">
+            <name>
+              <given-names>X. P.</given-names>
+              <surname>Chen</surname>
+            </name>
+            <name>
+              <given-names>C. R.</given-names>
+              <surname>Li</surname>
+            </name>
+            <name>
+              <given-names>G. Y.</given-names>
+              <surname>Li</surname>
+            </name>
+            <name>
+              <given-names>Y. Y.</given-names>
+              <surname>Luo</surname>
+            </name>
+          </person-group>
+          <article-title>Motor control of wheeled mobile robot based on dynamics model</article-title>
+          <source>Robot</source>
+          <year>2008</year>
+          <volume>2008</volume>
+          <issue>4</issue>
+          <page-range>326-332</page-range>
+          <fpage>326</fpage>
+          <lpage>332</lpage>
+          <pub-id pub-id-type="doi">https://doi.org/10.3321/j.issn:1002-0446.2008.04.006</pub-id>
+          <pub-id pub-id-type="publisher-id"/>
+        </element-citation>
+      </ref>
+      <ref id="ref_7">
+        <label>7.</label>
+        <element-citation publication-type="journal">
+          <person-group person-group-type="author">
+            <name>
+              <given-names>H.</given-names>
+              <surname>Mei</surname>
+            </name>
+            <name>
+              <given-names>Y.</given-names>
+              <surname>Wang</surname>
+            </name>
+          </person-group>
+          <article-title>Dynamic modeling and tracking control of wheeled mobile robots</article-title>
+          <source>Mach. Tool. Hydraulics</source>
+          <year>2009</year>
+          <volume>37</volume>
+          <issue>9</issue>
+          <page-range>127-129</page-range>
+          <fpage>127</fpage>
+          <lpage>129</lpage>
+          <pub-id pub-id-type="doi">https://doi.org/10.3969/j.issn.1001-3881.2009.09.043</pub-id>
+          <pub-id pub-id-type="publisher-id"/>
+        </element-citation>
+      </ref>
+      <ref id="ref_8">
+        <label>8.</label>
+        <element-citation publication-type="journal">
+          <person-group person-group-type="author">
+            <name>
+              <given-names>Z.</given-names>
+              <surname>Hu</surname>
+            </name>
+          </person-group>
+          <article-title>Design and control of differential wheel automatically guided trans-port vehicle chassis</article-title>
+          <source>Int. Combust. En. Accessories</source>
+          <year>2021</year>
+          <volume>2021</volume>
+          <issue>7</issue>
+          <page-range>20-21</page-range>
+          <fpage>20</fpage>
+          <lpage>21</lpage>
+          <pub-id pub-id-type="doi">https://doi.org/10.3969/j.issn.1674-957X.2021.17.009</pub-id>
+          <pub-id pub-id-type="publisher-id"/>
+        </element-citation>
+      </ref>
+      <ref id="ref_9">
+        <label>9.</label>
+        <element-citation publication-type="journal">
+          <person-group person-group-type="author">
+            <name>
+              <given-names>X. L.</given-names>
+              <surname>Jin</surname>
+            </name>
+            <name>
+              <given-names>W. H.</given-names>
+              <surname>Gu</surname>
+            </name>
+            <name>
+              <given-names>D.</given-names>
+              <surname>Feng</surname>
+            </name>
+            <name>
+              <given-names>J. M.</given-names>
+              <surname>Li</surname>
+            </name>
+            <name>
+              <given-names>X. F.</given-names>
+              <surname>Xu</surname>
+            </name>
+          </person-group>
+          <article-title>Kinematic modeling and motion control of multi-differential drive heavy-duty AGV</article-title>
+          <source>Rob. Appl.</source>
+          <year>2020</year>
+          <volume>2020</volume>
+          <issue>1</issue>
+          <page-range>23-27</page-range>
+          <fpage>23</fpage>
+          <lpage>27</lpage>
+          <pub-id pub-id-type="doi"/>
+          <pub-id pub-id-type="publisher-id"/>
+        </element-citation>
+      </ref>
+      <ref id="ref_10">
+        <label>10.</label>
+        <element-citation publication-type="journal">
+          <person-group person-group-type="author">
+            <name>
+              <given-names>J. M.</given-names>
+              <surname>Zhang</surname>
+            </name>
+            <name>
+              <given-names>P.</given-names>
+              <surname>Wei</surname>
+            </name>
+            <name>
+              <given-names>Q.</given-names>
+              <surname>Han</surname>
+            </name>
+            <name>
+              <given-names>X.</given-names>
+              <surname>Wu</surname>
+            </name>
+          </person-group>
+          <article-title>Research on double differential drive AGV collaborative handling technology</article-title>
+          <source>Mach.</source>
+          <year>2022</year>
+          <volume>49</volume>
+          <issue>5</issue>
+          <page-range>61-67</page-range>
+          <fpage>61</fpage>
+          <lpage>67</lpage>
+          <pub-id pub-id-type="doi"/>
+          <pub-id pub-id-type="publisher-id"/>
+        </element-citation>
+      </ref>
+      <ref id="ref_11">
+        <label>11.</label>
+        <element-citation publication-type="journal">
+          <person-group person-group-type="author">
+            <name>
+              <given-names>W. H.</given-names>
+              <surname>Gu</surname>
+            </name>
+          </person-group>
+          <article-title>Trajectory optimization of multi-differential driving heavy duty AGVs</article-title>
+          <source>Equip. Manuf. Technol.</source>
+          <year>2021</year>
+          <volume>2021</volume>
+          <issue>6</issue>
+          <page-range>9-15</page-range>
+          <fpage>9</fpage>
+          <lpage>15</lpage>
+          <pub-id pub-id-type="doi">https://doi.org/10.3969/j.issn.1672-545X.2021.06.003</pub-id>
+          <pub-id pub-id-type="publisher-id"/>
+        </element-citation>
+      </ref>
+      <ref id="ref_12">
+        <label>12.</label>
+        <element-citation publication-type="journal">
+          <person-group person-group-type="author">
+            <name>
+              <given-names>W. X.</given-names>
+              <surname>Wang</surname>
+            </name>
+          </person-group>
+          <article-title>Kinematics Analysis and control of a two-wheeled differential robot</article-title>
+          <source>Mod. Electron. Technol.</source>
+          <year>2012</year>
+          <volume>35</volume>
+          <issue>0</issue>
+          <page-range>93-96</page-range>
+          <fpage>93</fpage>
+          <lpage>96</lpage>
+          <pub-id pub-id-type="doi">https://doi.org/10.3969/j.issn.1004-373X.2012.10.030</pub-id>
+          <pub-id pub-id-type="publisher-id"/>
+        </element-citation>
+      </ref>
+      <ref id="ref_13">
+        <label>13.</label>
+        <element-citation publication-type="journal">
+          <person-group person-group-type="author">
+            <name>
+              <given-names>T.</given-names>
+              <surname>Xia</surname>
+            </name>
+            <name>
+              <given-names>Y. Z.</given-names>
+              <surname>Li</surname>
+            </name>
+            <name>
+              <given-names>C.</given-names>
+              <surname>Jin</surname>
+            </name>
+            <name>
+              <given-names>J. J.</given-names>
+              <surname>Bai</surname>
+            </name>
+          </person-group>
+          <article-title>AGV dynamic analysis and simulation of Differ-ENTIAL steering</article-title>
+          <source>Coal Mine Mach.</source>
+          <year>2012</year>
+          <volume>33</volume>
+          <issue>3</issue>
+          <page-range>63-64</page-range>
+          <fpage>63</fpage>
+          <lpage>64</lpage>
+          <pub-id pub-id-type="doi">https://doi.org/10.3969/j.issn.1003-0794.2012.03.029</pub-id>
+          <pub-id pub-id-type="publisher-id"/>
+        </element-citation>
+      </ref>
+      <ref id="ref_14">
+        <label>14.</label>
+        <element-citation publication-type="journal">
+          <person-group person-group-type="author">
+            <name>
+              <given-names>A.</given-names>
+              <surname>Albagul</surname>
+            </name>
+            <name>
+              <given-names>M.</given-names>
+              <surname>Wahyudi</surname>
+            </name>
+          </person-group>
+          <article-title>Dynamic modelling and adaptive traction control for mobile robots</article-title>
+          <source>Int. J. Adv. Robot. Syst.</source>
+          <year>2008</year>
+          <volume>1</volume>
+          <issue>3</issue>
+          <page-range/>
+          <fpage/>
+          <lpage/>
+          <pub-id pub-id-type="doi">https://doi.org/10.1109/IECON.2004.1433379</pub-id>
+          <pub-id pub-id-type="publisher-id"/>
+        </element-citation>
+      </ref>
+      <ref id="ref_15">
+        <label>15.</label>
+        <element-citation publication-type="journal">
+          <person-group person-group-type="author">
+            <name>
+              <given-names>E. O. C.</given-names>
+              <surname>Torres</surname>
+            </name>
+            <name>
+              <given-names>P. R.</given-names>
+              <surname>Pagilla</surname>
+            </name>
+            <name>
+              <given-names>S.</given-names>
+              <surname>Konduri</surname>
+            </name>
+          </person-group>
+          <article-title>Dynamics and control of a differential drive robot with wheel slip: Application to coordination of multiple robots</article-title>
+          <source>J. Dyn. Syst. Meas. Control.</source>
+          <year>2016</year>
+          <volume>139</volume>
+          <issue>1</issue>
+          <page-range/>
+          <fpage/>
+          <lpage/>
+          <pub-id pub-id-type="doi"/>
+          <pub-id pub-id-type="publisher-id"/>
+        </element-citation>
+      </ref>
+      <ref id="ref_16">
+        <label>16.</label>
+        <element-citation publication-type="journal">
+          <person-group person-group-type="author">
+            <name>
+              <given-names>P.</given-names>
+              <surname>Wu</surname>
+            </name>
+            <name>
+              <given-names>X. F.</given-names>
+              <surname>Meng</surname>
+            </name>
+            <name>
+              <given-names>Y. F.</given-names>
+              <surname>Kou</surname>
+            </name>
+          </person-group>
+          <article-title>The utility model relates to a differential drive car curve walking method</article-title>
+          <source>Mod. Electron. Technol.</source>
+          <year>2012</year>
+          <volume>35</volume>
+          <issue>9</issue>
+          <page-range>115-118</page-range>
+          <fpage>115</fpage>
+          <lpage>118</lpage>
+          <pub-id pub-id-type="doi"/>
+          <pub-id pub-id-type="publisher-id"/>
+        </element-citation>
+      </ref>
+      <ref id="ref_17">
+        <label>17.</label>
+        <element-citation publication-type="book">
+          <person-group person-group-type="author">
+            <name>
+              <given-names>Q. Y.</given-names>
+              <surname>Ma</surname>
+            </name>
+          </person-group>
+          <person-group person-group-type="editor"/>
+          <article-title/>
+          <source>Research on motion model of two-wheel differential driving mobile robot</source>
+          <publisher-loc>China</publisher-loc>
+          <publisher-name>Chongqing University</publisher-name>
+          <year>2013</year>
+          <volume/>
+          <issue/>
+          <page-range/>
+          <fpage/>
+          <lpage/>
+          <pub-id pub-id-type="doi"/>
+          <pub-id pub-id-type="publisher-id"/>
+        </element-citation>
+      </ref>
+      <ref id="ref_18">
+        <label>18.</label>
+        <element-citation publication-type="journal">
+          <person-group person-group-type="author">
+            <name>
+              <given-names>H. H.</given-names>
+              <surname>Guo</surname>
+            </name>
+            <name>
+              <given-names>F.</given-names>
+              <surname>Ren</surname>
+            </name>
+            <name>
+              <given-names>X. Y.</given-names>
+              <surname>Pang</surname>
+            </name>
+            <name>
+              <given-names>Z.</given-names>
+              <surname>Jin</surname>
+            </name>
+          </person-group>
+          <article-title>Research on differential drive AGV modeling and trajectory tracking control</article-title>
+          <source>Mech. Des. Manuf.</source>
+          <year>2021</year>
+          <volume>2021</volume>
+          <issue>7</issue>
+          <page-range>276-280</page-range>
+          <fpage>276</fpage>
+          <lpage>280</lpage>
+          <pub-id pub-id-type="doi"/>
+          <pub-id pub-id-type="publisher-id"/>
+        </element-citation>
+      </ref>
+      <ref id="ref_19">
+        <label>19.</label>
+        <element-citation publication-type="journal">
+          <person-group person-group-type="author">
+            <name>
+              <given-names>A. P. R.</given-names>
+              <surname>Lauer</surname>
+            </name>
+            <name>
+              <given-names>N.</given-names>
+              <surname>Uchiyama</surname>
+            </name>
+            <name>
+              <given-names>O.</given-names>
+              <surname>Sawodny</surname>
+            </name>
+          </person-group>
+          <article-title>Design and experimental verification of two-dimensional rate limiters in trajectory generation for differential drive robots</article-title>
+          <source>IFAC-PapersOnLine</source>
+          <year>2020</year>
+          <volume>53</volume>
+          <issue>2</issue>
+          <page-range>9664-9669</page-range>
+          <fpage>9664</fpage>
+          <lpage>9669</lpage>
+          <pub-id pub-id-type="doi"/>
+          <pub-id pub-id-type="publisher-id"/>
+        </element-citation>
+      </ref>
+      <ref id="ref_20">
+        <label>20.</label>
+        <element-citation publication-type="journal">
+          <person-group person-group-type="author">
+            <name>
+              <given-names>Y.</given-names>
+              <surname>Yao</surname>
+            </name>
+            <name>
+              <given-names>Y.</given-names>
+              <surname>Sun</surname>
+            </name>
+          </person-group>
+          <article-title>AGV vehicle differential drive model</article-title>
+          <source>J. Phys. Conf. Ser.</source>
+          <year>2020</year>
+          <volume>1941</volume>
+          <issue>1</issue>
+          <page-range/>
+          <fpage/>
+          <lpage/>
+          <pub-id pub-id-type="doi">https://doi.org/10.1088/1742-6596/1941/1/012031</pub-id>
+          <pub-id pub-id-type="publisher-id"/>
+        </element-citation>
+      </ref>
+    </ref-list>
+  </back>
+</article>
