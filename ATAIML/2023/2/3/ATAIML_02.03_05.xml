@@ -1,0 +1,4726 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.3 20210610//EN" "JATS-journalpublishing1-3.dtd">
+<article xml:lang="en" dtd-version="1.3" article-type="research-article" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mml="http://www.w3.org/1998/Math/MathML">
+  <front>
+    <journal-meta>
+      <journal-id journal-id-type="publisher-id">ATAIML</journal-id>
+      <journal-id journal-id-type="doi">10.56578</journal-id>
+      <journal-title-group>
+        <journal-title>Acadlore Transactions on AI and Machine Learning</journal-title>
+        <abbrev-journal-title abbrev-type="issn">Acadlore Trans. Mach. Learn.</abbrev-journal-title>
+        <abbrev-journal-title abbrev-type="publisher">ATAIML</abbrev-journal-title>
+      </journal-title-group>
+      <issn publication-format="electronic">2957-9570</issn>
+      <issn publication-format="print">2957-9562</issn>
+      <publisher>
+        <publisher-name>Acadlore</publisher-name>
+      </publisher>
+    </journal-meta>
+    <article-meta>
+      <article-id pub-id-type="publisher-id">AR-0NsrhU1fDfBHdXeCfE1i8wCggnTAfNVQ</article-id>
+      <article-id pub-id-type="doi">10.56578/ataiml020305</article-id>
+      <title-group>
+        <article-title>Convolutional Neural Network-Assisted Scattering Inversion in Diverse Noise Environments</article-title>
+      </title-group>
+      <contrib-group>
+        <contrib contrib-type="author">
+          <xref ref-type="aff" rid="1">1</xref>
+          <name>
+            <surname>Zhuang</surname>
+            <given-names>Jiabao</given-names>
+          </name>
+          <contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0009-0002-5015-3497</contrib-id>
+          <email>2021100023@mails.cust.edu.cn</email>
+        </contrib>
+        <contrib contrib-type="author">
+          <xref ref-type="aff" rid="1">1</xref>
+          <name>
+            <surname>Meng</surname>
+            <given-names>Pinchao</given-names>
+          </name>
+          <contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0000-0002-3780-0197</contrib-id>
+          <email>mengpc@cust.edu.cn</email>
+        </contrib>
+        <aff id="1">School of Mathematics and Statistics, Changchun University of Science and Technology, 130012 Changchun, China</aff>
+      </contrib-group>
+      <year>2023</year>
+      <volume>2</volume>
+      <issue>3</issue>
+      <fpage>170</fpage>
+      <lpage>181</lpage>
+      <page-range>170-181</page-range>
+      <history>
+        <date date-type="received">
+          <month>08</month>
+          <day>22</day>
+          <year>2023</year>
+        </date>
+        <date date-type="accepted">
+          <month>09</month>
+          <day>18</day>
+          <year>2023</year>
+        </date>
+        <date date-type="pub">
+          <month>09</month>
+          <day>25</day>
+          <year>2023</year>
+        </date>
+      </history>
+      <permissions>
+        <copyright-statement>©2023 by the authors</copyright-statement>
+        <copyright-year>2023</copyright-year>
+        <license>. Licensee Acadlore Publishing Services Limited, Hong Kong. This article can be downloaded for free, and reused and quoted with a citation of the original published version, under the <ext-link ext-link-type="uri" xlink:href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0 license</ext-link>.</license>
+      </permissions>
+      <abstract><p>In addressing the challenge of obstacle scattering inversion amidst intricate noise conditions, a model predicated on convolutional neural networks (CNN) has been proposed, demonstrating high precision. Five distinct noise scenarios, encompassing Gaussian white noise, uniform distribution noise, Poisson distribution noise, Laplace noise, and impulse noise, were evaluated. Far-field data paired with the Fourier coefficients of obstacle boundary curves were employed as network input and output, respectively. Through the convolutional processes inherent to the CNN, salient features within the far-field data related to obstacles were adeptly identified. Concurrently, the statistical characteristics of the noise were assimilated, and its perturbing effects were diminished, thus facilitating the inversion of obstacle shape parameters. The intrinsic capacity of CNNs to intuitively learn and differentiate salient features from data eradicates the necessity for external intervention or manually designed feature extractors. This adaptability confers upon CNNs a significant edge in tackling obstacle scattering inversion challenges, particularly in light of fluctuating data distributions and feature variability. Numerical experiments have substantiated that the aforementioned CNN model excels in addressing scattering inversion complications within multifaceted noise conditions, consistently delivering solutions with remarkable precision.</p></abstract>
+      <kwd-group>
+        <kwd>Obstacle scattering inversion</kwd>
+        <kwd>Intricate noise environments</kwd>
+        <kwd>Convolutional neural networks</kwd>
+        <kwd>Far-field data</kwd>
+        <kwd>Noise distributions</kwd>
+      </kwd-group>
+      <counts>
+        <count count-type="contributors">2</count>
+        <fig-count>7</fig-count>
+        <table-count>7</table-count>
+        <ref-count>22</ref-count>
+      </counts>
+    </article-meta>
+  </front>
+  <body>
+    <sec disp-level="level1" sec-type="intro">
+      <title>1. Introduction</title>
+      <p>The problem of obstacle scattering inversion has been recognized as a pivotal topic within mathematical-physical inverse problems, finding relevance in diverse fields such as geological exploration, non-destructive testing, and medical imaging [<xref ref-type="bibr" rid="ref_1">1</xref>], [<xref ref-type="bibr" rid="ref_2">2</xref>], [<xref ref-type="bibr" rid="ref_3">3</xref>], [<xref ref-type="bibr" rid="ref_4">4</xref>]. The necessity of acquiring precise and dependable data for this challenge is underscored, yet real-world situations present numerous complexities. It has been observed that measurement environments and instrument conditions often introduce significant errors and unwanted data. The inherent non-linearity and ill-posed nature of the obstacle scattering inversion problem are further exacerbated in real-world conditions where varied forms of noise interfere with data collection and transmission, making the accurate deduction and reconstruction of obstacle geometric features problematic [<xref ref-type="bibr" rid="ref_5">5</xref>], [<xref ref-type="bibr" rid="ref_6">6</xref>], [<xref ref-type="bibr" rid="ref_7">7</xref>].</p><p>Machine learning's profound self-learning capabilities have been extensively highlighted in recent literature, pointing towards its potential efficacy in diminishing noise impacts and aptly managing the scattering inversion challenge [<xref ref-type="bibr" rid="ref_8">8</xref>], [<xref ref-type="bibr" rid="ref_9">9</xref>], [<xref ref-type="bibr" rid="ref_10">10</xref>]. In an attempt to tackle the scattering inversion problem, a synthesis of neural networks with the Tikhonov regularization strategy, termed NEET, was introduced by Li et al., displaying promising outcomes in sparse data environments [<xref ref-type="bibr" rid="ref_11">11</xref>]. A distinct model, the fully connected neural network (FCNN) elucidated by Gao et al., demonstrated proficiency in handling obstacle scattering inversion amidst data tainted by Gaussian white noise [<xref ref-type="bibr" rid="ref_12">12</xref>]. Relying on a blend of neural networks and gating concepts, an acoustic scattering model for obstacle shape elucidation named SPIMNNG was proposed by Meng et al., which accommodated a plethora of conditions, notably data affected by Gaussian white noise [<xref ref-type="bibr" rid="ref_13">13</xref>]. A comprehensive review of related studies can be found in references [<xref ref-type="bibr" rid="ref_14">14</xref>], [<xref ref-type="bibr" rid="ref_15">15</xref>], [<xref ref-type="bibr" rid="ref_16">16</xref>], [<xref ref-type="bibr" rid="ref_17">17</xref>]. Despite the concentration of these studies on Gaussian white noise, real-world applications often encounter noise of a multifaceted nature, distinguished by diverse statistical attributes and spectral distributions. This includes Gaussian white noise as well as other noise forms such as uniform distribution noise, Poisson distribution noise, Laplace noise, and impulse noise [<xref ref-type="bibr" rid="ref_18">18</xref>], [<xref ref-type="bibr" rid="ref_19">19</xref>], [<xref ref-type="bibr" rid="ref_20">20</xref>]. In such complex noise settings, noise possessing varied statistical and spectral characteristics intermingles with pivotal information, thereby obstructing the precise extraction of obstacle data from observed samples. This confluence can result in inversion outcomes marked by instability and inaccuracy. Furthermore, the inherent uncertainties present in these intricate noise conditions can make the estimation of model parameters daunting.</p><p>To adeptly address the intricate challenges posed by diverse noise scenarios, a model rooted in CNN for the obstacle scattering inversion problem has been proposed. Leveraging the intrinsic adaptive learning and noise attenuation capacities of CNNs, an effective approach to the obstacle scattering inversion problem, even under adverse noise conditions, is presented. In scenarios contaminated with noise, CNNs, utilizing multi-scale feature extraction, are found to discern the statistical traits of the noise, suppressing its effects and consequently refining the precision of obstacle imaging.</p>
+    </sec>
+    <sec disp-level="level1" sec-type="">
+      <title>2. The obstacle scattering inversion problem</title>
+      <p>The direct scattering problem associated with incident plane waves related to acoustically soft obstacles is initially introduced. It is assumed that <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>D</mi>
+    <mi>n</mi>
+    <mo>⊂</mo>
+    <mo stretchy="false">(</mo>
+    <mo>=</mo>
+    <mo>,</mo>
+    <mo stretchy="false">)</mo>
+    <msup>
+      <mrow data-mjx-texclass="ORD">
+        <mi mathvariant="double-struck">R</mi>
+      </mrow>
+      <mi>n</mi>
+    </msup>
+    <mn>2</mn>
+    <mn>3</mn>
+  </math>
+</inline-formula> represents an impenetrable obstacle within a uniform background medium, while <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>k</mi>
+    <mi>w</mi>
+    <mi>c</mi>
+    <mo>∈</mo>
+    <mo>∈</mo>
+    <mrow data-mjx-texclass="ORD">
+      <mo>/</mo>
+    </mrow>
+    <msup>
+      <mrow data-mjx-texclass="ORD">
+        <mi mathvariant="double-struck">R</mi>
+      </mrow>
+      <mrow data-mjx-texclass="ORD">
+        <mo>+</mo>
+      </mrow>
+    </msup>
+  </math>
+</inline-formula> stands for the wavenumber of the plane incident wave, determined jointly by the wave frequency <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>w</mi>
+    <mo>∈</mo>
+    <msup>
+      <mrow data-mjx-texclass="ORD">
+        <mi mathvariant="double-struck">R</mi>
+      </mrow>
+      <mrow data-mjx-texclass="ORD">
+        <mo>+</mo>
+      </mrow>
+    </msup>
+  </math>
+</inline-formula> and wave speed <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>c</mi>
+    <mo>∈</mo>
+    <msup>
+      <mrow data-mjx-texclass="ORD">
+        <mi mathvariant="double-struck">R</mi>
+      </mrow>
+      <mrow data-mjx-texclass="ORD">
+        <mo>+</mo>
+      </mrow>
+    </msup>
+  </math>
+</inline-formula> of the background field. Consequently, the incident field <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msup>
+      <mi>u</mi>
+      <mi>i</mi>
+    </msup>
+  </math>
+</inline-formula> is defined as a plane wave and takes the form:</p>
+      
+        <disp-formula>
+          <label>(1)</label>
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <msup>
+              <mi>u</mi>
+              <mi>i</mi>
+            </msup>
+            <msup>
+              <mi>u</mi>
+              <mi>i</mi>
+            </msup>
+            <msup>
+              <mi>e</mi>
+              <mrow data-mjx-texclass="ORD">
+                <mi>i</mi>
+                <mi>k</mi>
+                <mi>x</mi>
+                <mi>d</mi>
+                <mo>⋅</mo>
+              </mrow>
+            </msup>
+            <mo stretchy="false">(</mo>
+            <mo stretchy="false">)</mo>
+            <mo>:=</mo>
+            <mo>=</mo>
+            <mi>x</mi>
+            <mrow data-mjx-texclass="INNER">
+              <mo data-mjx-texclass="OPEN">(</mo>
+              <mo>,</mo>
+              <mo>,</mo>
+              <mo data-mjx-texclass="CLOSE">)</mo>
+              <mi>x</mi>
+              <mi>k</mi>
+              <msub>
+                <mi>d</mi>
+                <mrow data-mjx-texclass="ORD">
+                  <mi>i</mi>
+                  <mi>n</mi>
+                </mrow>
+              </msub>
+            </mrow>
+          </math>
+        </disp-formula>
+      
+      <p> where, <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msub>
+      <mi>d</mi>
+      <mrow data-mjx-texclass="ORD">
+        <mi>i</mi>
+        <mi>n</mi>
+      </mrow>
+    </msub>
+    <mo>∈</mo>
+    <msup>
+      <mi>S</mi>
+      <mrow data-mjx-texclass="ORD">
+        <mi>n</mi>
+        <mo>−</mo>
+        <mn>1</mn>
+      </mrow>
+    </msup>
+  </math>
+</inline-formula> denotes the direction of the incident wave and <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>i</mi>
+    <mo>=</mo>
+    <msqrt>
+      <mo>−</mo>
+      <mn>1</mn>
+    </msqrt>
+  </math>
+</inline-formula> represents the imaginary unit. The Helmholtz equation, a partial differential equation describing wave phenomena, is commonly utilized to characterize acoustic and electromagnetic wave problems [<xref ref-type="bibr" rid="ref_21">21</xref>]. In the context of the obstacle scattering inversion problem, the behavior of waves propagating within intricate media is described by the Helmholtz equation. Interactions and subsequent generation of the scattering field <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msup>
+      <mi>u</mi>
+      <mi>s</mi>
+    </msup>
+  </math>
+</inline-formula> occur when the incident wave contacts the obstacle, with the direct scattering problem represented by the following Helmholtz equation:</p>
+      
+        <disp-formula>
+          <label>(2)</label>
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mrow data-mjx-texclass="INNER">
+              <mo data-mjx-texclass="OPEN">{</mo>
+              <mo data-mjx-texclass="CLOSE" fence="true" stretchy="true" symmetric="true"/>
+              <mtable columnalign="center center" columnspacing="1em" rowspacing="4pt">
+                <mtr>
+                  <mtd>
+                    <mi mathvariant="normal">Δ</mi>
+                    <mi>u</mi>
+                    <mi>u</mi>
+                    <mo>+</mo>
+                    <mo>=</mo>
+                    <msup>
+                      <mi>k</mi>
+                      <mn>2</mn>
+                    </msup>
+                    <mn>0</mn>
+                  </mtd>
+                  <mtd>
+                    <mtext> in </mtext>
+                    <msup>
+                      <mi>R</mi>
+                      <mi>n</mi>
+                    </msup>
+                    <mi mathvariant="normal">∖</mi>
+                    <mrow data-mjx-texclass="ORD">
+                      <mover>
+                        <mi>D</mi>
+                        <mo stretchy="false">¯</mo>
+                      </mover>
+                    </mrow>
+                    <mo>,</mo>
+                  </mtd>
+                </mtr>
+                <mtr>
+                  <mtd>
+                    <msup>
+                      <mi>u</mi>
+                      <mi>s</mi>
+                    </msup>
+                    <msup>
+                      <mi>u</mi>
+                      <mi>i</mi>
+                    </msup>
+                    <mo>+</mo>
+                    <mo>=</mo>
+                    <mn>0</mn>
+                  </mtd>
+                  <mtd>
+                    <mtext> on </mtext>
+                    <mi>∂</mi>
+                    <mi>D</mi>
+                    <mo>,</mo>
+                  </mtd>
+                </mtr>
+                <mtr>
+                  <mtd>
+                    <munder>
+                      <mo data-mjx-texclass="OP" movablelimits="true">lim</mo>
+                      <mrow data-mjx-texclass="ORD">
+                        <mi>r</mi>
+                        <mi mathvariant="normal">∞</mi>
+                        <mo stretchy="false">→</mo>
+                      </mrow>
+                    </munder>
+                    <msup>
+                      <mi>r</mi>
+                      <mrow data-mjx-texclass="ORD">
+                        <mo stretchy="false">(</mo>
+                        <mo>−</mo>
+                        <mo stretchy="false">)</mo>
+                        <mi>n</mi>
+                        <mn>1</mn>
+                        <mn>2</mn>
+                        <mrow data-mjx-texclass="ORD">
+                          <mo>/</mo>
+                        </mrow>
+                      </mrow>
+                    </msup>
+                    <mrow data-mjx-texclass="INNER">
+                      <mo data-mjx-texclass="OPEN">(</mo>
+                      <mo>−</mo>
+                      <mo data-mjx-texclass="CLOSE">)</mo>
+                      <mfrac>
+                        <mrow>
+                          <mi>∂</mi>
+                          <msup>
+                            <mi>u</mi>
+                            <mi>s</mi>
+                          </msup>
+                        </mrow>
+                        <mrow>
+                          <mi>∂</mi>
+                          <mi>r</mi>
+                        </mrow>
+                      </mfrac>
+                      <mi>i</mi>
+                      <mi>k</mi>
+                      <msup>
+                        <mi>u</mi>
+                        <mi>s</mi>
+                      </msup>
+                    </mrow>
+                    <mo>=</mo>
+                    <mn>0</mn>
+                  </mtd>
+                  <mtd>
+                    <mi>r</mi>
+                    <mi>x</mi>
+                    <mo>:=</mo>
+                    <mo>,</mo>
+                    <mrow data-mjx-texclass="ORD">
+                      <mo stretchy="false">|</mo>
+                    </mrow>
+                    <mrow data-mjx-texclass="ORD">
+                      <mo stretchy="false">|</mo>
+                    </mrow>
+                  </mtd>
+                </mtr>
+              </mtable>
+            </mrow>
+          </math>
+        </disp-formula>
+      
+      <p> where, <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>u</mi>
+    <mo>:=</mo>
+    <mo>+</mo>
+    <msup>
+      <mi>u</mi>
+      <mi>i</mi>
+    </msup>
+    <msup>
+      <mi>u</mi>
+      <mi>s</mi>
+    </msup>
+  </math>
+</inline-formula> is the total wave field. The homogeneous Dirichlet boundary condition on <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>∂</mi>
+    <mi>D</mi>
+  </math>
+</inline-formula> serves as a mathematical condition employed to depict boundary constraints in wave problems, signifying that $D<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>i</mi>
+    <mi>s</mi>
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>a</mi>
+    <mi>c</mi>
+    <mi>o</mi>
+    <mi>u</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>c</mi>
+    <mi>a</mi>
+    <mi>l</mi>
+    <mi>l</mi>
+    <mi>y</mi>
+    <mi>s</mi>
+    <mi>o</mi>
+    <mi>f</mi>
+    <mi>t</mi>
+    <mi>o</mi>
+    <mi>b</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>a</mi>
+    <mi>c</mi>
+    <mi>l</mi>
+    <mi>e</mi>
+    <mi>S</mi>
+    <mi>u</mi>
+    <mi>c</mi>
+    <mi>h</mi>
+    <mi>a</mi>
+    <mi>c</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>d</mi>
+    <mi>i</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>a</mi>
+    <mi>i</mi>
+    <mi>d</mi>
+    <mi>s</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>d</mi>
+    <mi>e</mi>
+    <mi>l</mi>
+    <mi>i</mi>
+    <mi>m</mi>
+    <mi>i</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>g</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>u</mi>
+    <mi>m</mi>
+    <mi>e</mi>
+    <mi>r</mi>
+    <mi>i</mi>
+    <mi>c</mi>
+    <mi>a</mi>
+    <mi>l</mi>
+    <mi>s</mi>
+    <mi>o</mi>
+    <mi>l</mi>
+    <mi>u</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>d</mi>
+    <mi>o</mi>
+    <mi>m</mi>
+    <mi>a</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>d</mi>
+    <mi>c</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>r</mi>
+    <mi>a</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>g</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>b</mi>
+    <mi>e</mi>
+    <mi>h</mi>
+    <mi>a</mi>
+    <mi>v</mi>
+    <mi>i</mi>
+    <mi>o</mi>
+    <mi>r</mi>
+    <mi>o</mi>
+    <mi>f</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>w</mi>
+    <mi>a</mi>
+    <mi>v</mi>
+    <mi>e</mi>
+    <mi>f</mi>
+    <mi>i</mi>
+    <mi>e</mi>
+    <mi>l</mi>
+    <mi>d</mi>
+    <mi>f</mi>
+    <mi>a</mi>
+    <mi>c</mi>
+    <mi>i</mi>
+    <mi>l</mi>
+    <mi>i</mi>
+    <mi>t</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>g</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>f</mi>
+    <mi>o</mi>
+    <mi>r</mi>
+    <mi>m</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>r</mi>
+    <mi>e</mi>
+    <mi>t</mi>
+    <mi>r</mi>
+    <mi>i</mi>
+    <mi>e</mi>
+    <mi>v</mi>
+    <mi>a</mi>
+    <mi>l</mi>
+    <mi>a</mi>
+    <mi>b</mi>
+    <mi>o</mi>
+    <mi>u</mi>
+    <mi>t</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>o</mi>
+    <mi>b</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>a</mi>
+    <mi>c</mi>
+    <mi>l</mi>
+    <mi>e</mi>
+    <mi>T</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>l</mi>
+    <mi>a</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>e</mi>
+    <mi>q</mi>
+    <mi>u</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>e</mi>
+    <mi>m</mi>
+    <mi>b</mi>
+    <mi>o</mi>
+    <mi>d</mi>
+    <mi>i</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>S</mi>
+    <mi>o</mi>
+    <mi>m</mi>
+    <mi>m</mi>
+    <mi>e</mi>
+    <mi>r</mi>
+    <mi>f</mi>
+    <mi>e</mi>
+    <mi>l</mi>
+    <mi>d</mi>
+    <mi>r</mi>
+    <mi>a</mi>
+    <mi>d</mi>
+    <mi>i</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>c</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>d</mi>
+    <mi>i</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>t</mi>
+    <mi>r</mi>
+    <mi>a</mi>
+    <mi>d</mi>
+    <mi>i</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>a</mi>
+    <mi>l</mi>
+    <mi>l</mi>
+    <mi>y</mi>
+    <mi>u</mi>
+    <mi>s</mi>
+    <mi>e</mi>
+    <mi>d</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>o</mi>
+    <mi>b</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>a</mi>
+    <mi>c</mi>
+    <mi>l</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>c</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>t</mi>
+    <mi>e</mi>
+    <mi>r</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>g</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>v</mi>
+    <mi>e</mi>
+    <mi>r</mi>
+    <mi>s</mi>
+    <mi>i</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>p</mi>
+    <mi>r</mi>
+    <mi>o</mi>
+    <mi>b</mi>
+    <mi>l</mi>
+    <mi>e</mi>
+    <mi>m</mi>
+    <mi>t</mi>
+    <mi>o</mi>
+    <mi>e</mi>
+    <mi>m</mi>
+    <mi>u</mi>
+    <mi>l</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>e</mi>
+    <mi>w</mi>
+    <mi>a</mi>
+    <mi>v</mi>
+    <mi>e</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>t</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>u</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>b</mi>
+    <mi>e</mi>
+    <mi>h</mi>
+    <mi>a</mi>
+    <mi>v</mi>
+    <mi>i</mi>
+    <mi>o</mi>
+    <mi>r</mi>
+    <mi>s</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>f</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>i</mi>
+    <mi>t</mi>
+    <mi>y</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>s</mi>
+    <mi>u</mi>
+    <mi>r</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>g</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>w</mi>
+    <mi>e</mi>
+    <mi>l</mi>
+    <mi>l</mi>
+    <mi>d</mi>
+    <mi>e</mi>
+    <mi>f</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>i</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>o</mi>
+    <mi>f</mi>
+    <mi>b</mi>
+    <mi>o</mi>
+    <mi>u</mi>
+    <mi>n</mi>
+    <mi>d</mi>
+    <mi>a</mi>
+    <mi>r</mi>
+    <mi>y</mi>
+    <mi>p</mi>
+    <mi>r</mi>
+    <mi>o</mi>
+    <mi>b</mi>
+    <mi>l</mi>
+    <mi>e</mi>
+    <mi>m</mi>
+    <mi>s</mi>
+    <mi>S</mi>
+    <mi>p</mi>
+    <mi>e</mi>
+    <mi>c</mi>
+    <mi>i</mi>
+    <mi>f</mi>
+    <mi>i</mi>
+    <mi>c</mi>
+    <mi>a</mi>
+    <mi>l</mi>
+    <mi>l</mi>
+    <mi>y</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>S</mi>
+    <mi>o</mi>
+    <mi>m</mi>
+    <mi>m</mi>
+    <mi>e</mi>
+    <mi>r</mi>
+    <mi>f</mi>
+    <mi>e</mi>
+    <mi>l</mi>
+    <mi>d</mi>
+    <mi>r</mi>
+    <mi>a</mi>
+    <mi>d</mi>
+    <mi>i</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>c</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>d</mi>
+    <mi>i</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>m</mi>
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>d</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>w</mi>
+    <mi>a</mi>
+    <mi>v</mi>
+    <mi>e</mi>
+    <mi>f</mi>
+    <mi>u</mi>
+    <mi>n</mi>
+    <mi>c</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>o</mi>
+    <mi>r</mi>
+    <mi>i</mi>
+    <mi>t</mi>
+    <mi>s</mi>
+    <mi>d</mi>
+    <mi>e</mi>
+    <mi>r</mi>
+    <mi>i</mi>
+    <mi>v</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>v</mi>
+    <mi>e</mi>
+    <mi>a</mi>
+    <mi>p</mi>
+    <mi>p</mi>
+    <mi>r</mi>
+    <mi>o</mi>
+    <mi>a</mi>
+    <mi>c</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>z</mi>
+    <mi>e</mi>
+    <mi>r</mi>
+    <mi>o</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>f</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>i</mi>
+    <mi>t</mi>
+    <mi>y</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>d</mi>
+    <mi>i</mi>
+    <mi>c</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>g</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>g</mi>
+    <mi>r</mi>
+    <mi>a</mi>
+    <mi>d</mi>
+    <mi>u</mi>
+    <mi>a</mi>
+    <mi>l</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>t</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>u</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>o</mi>
+    <mi>f</mi>
+    <mi>w</mi>
+    <mi>a</mi>
+    <mi>v</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>a</mi>
+    <mi>r</mi>
+    <mi>e</mi>
+    <mi>a</mi>
+    <mi>s</mi>
+    <mi>d</mi>
+    <mi>i</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>t</mi>
+    <mi>f</mi>
+    <mi>r</mi>
+    <mi>o</mi>
+    <mi>m</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>o</mi>
+    <mi>b</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>a</mi>
+    <mi>c</mi>
+    <mi>l</mi>
+    <mi>e</mi>
+    <mi>T</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>a</mi>
+    <mi>p</mi>
+    <mi>p</mi>
+    <mi>l</mi>
+    <mi>i</mi>
+    <mi>c</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>o</mi>
+    <mi>f</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>S</mi>
+    <mi>o</mi>
+    <mi>m</mi>
+    <mi>m</mi>
+    <mi>e</mi>
+    <mi>r</mi>
+    <mi>f</mi>
+    <mi>e</mi>
+    <mi>l</mi>
+    <mi>d</mi>
+    <mi>r</mi>
+    <mi>a</mi>
+    <mi>d</mi>
+    <mi>i</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>c</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>d</mi>
+    <mi>i</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>i</mi>
+    <mi>s</mi>
+    <mi>b</mi>
+    <mi>e</mi>
+    <mi>l</mi>
+    <mi>i</mi>
+    <mi>e</mi>
+    <mi>v</mi>
+    <mi>e</mi>
+    <mi>d</mi>
+    <mi>t</mi>
+    <mi>o</mi>
+    <mi>a</mi>
+    <mi>f</mi>
+    <mi>f</mi>
+    <mi>i</mi>
+    <mi>r</mi>
+    <mi>m</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>v</mi>
+    <mi>a</mi>
+    <mi>l</mi>
+    <mi>i</mi>
+    <mi>d</mi>
+    <mi>i</mi>
+    <mi>t</mi>
+    <mi>y</mi>
+    <mi>o</mi>
+    <mi>f</mi>
+    <mi>n</mi>
+    <mi>u</mi>
+    <mi>m</mi>
+    <mi>e</mi>
+    <mi>r</mi>
+    <mi>i</mi>
+    <mi>c</mi>
+    <mi>a</mi>
+    <mi>l</mi>
+    <mi>s</mi>
+    <mi>i</mi>
+    <mi>m</mi>
+    <mi>u</mi>
+    <mi>l</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>s</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>p</mi>
+    <mi>e</mi>
+    <mi>c</mi>
+    <mi>i</mi>
+    <mi>a</mi>
+    <mi>l</mi>
+    <mi>l</mi>
+    <mi>y</mi>
+    <mi>w</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>r</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>o</mi>
+    <mi>l</mi>
+    <mi>v</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>g</mi>
+    <mi>w</mi>
+    <mi>a</mi>
+    <mi>v</mi>
+    <mi>e</mi>
+    <mi>p</mi>
+    <mi>r</mi>
+    <mi>o</mi>
+    <mi>b</mi>
+    <mi>l</mi>
+    <mi>e</mi>
+    <mi>m</mi>
+    <mi>s</mi>
+    <mi>w</mi>
+    <mi>i</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>f</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>i</mi>
+    <mi>t</mi>
+    <mi>e</mi>
+    <mi>c</mi>
+    <mi>o</mi>
+    <mi>m</mi>
+    <mi>p</mi>
+    <mi>u</mi>
+    <mi>t</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>a</mi>
+    <mi>l</mi>
+    <mi>d</mi>
+    <mi>o</mi>
+    <mi>m</mi>
+    <mi>a</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>s</mi>
+    <mi>T</mi>
+    <mi>h</mi>
+    <mi>r</mi>
+    <mi>o</mi>
+    <mi>u</mi>
+    <mi>g</mi>
+    <mi>h</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>e</mi>
+    <mi>c</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>d</mi>
+    <mi>i</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>s</mi>
+    <mi>w</mi>
+    <mi>a</mi>
+    <mi>v</mi>
+    <mi>e</mi>
+    <mi>b</mi>
+    <mi>e</mi>
+    <mi>h</mi>
+    <mi>a</mi>
+    <mi>v</mi>
+    <mi>i</mi>
+    <mi>o</mi>
+    <mi>r</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>d</mi>
+    <mi>i</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>c</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>f</mi>
+    <mi>a</mi>
+    <mi>r</mi>
+    <mi>f</mi>
+    <mi>r</mi>
+    <mi>o</mi>
+    <mi>m</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>o</mi>
+    <mi>b</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>a</mi>
+    <mi>c</mi>
+    <mi>l</mi>
+    <mi>e</mi>
+    <mi>c</mi>
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>b</mi>
+    <mi>e</mi>
+    <mi>e</mi>
+    <mi>f</mi>
+    <mi>f</mi>
+    <mi>e</mi>
+    <mi>c</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>v</mi>
+    <mi>e</mi>
+    <mi>l</mi>
+    <mi>y</mi>
+    <mi>s</mi>
+    <mi>i</mi>
+    <mi>m</mi>
+    <mi>u</mi>
+    <mi>l</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>e</mi>
+    <mi>d</mi>
+    <mi>w</mi>
+    <mi>i</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>o</mi>
+    <mi>u</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>t</mi>
+    <mi>r</mi>
+    <mi>o</mi>
+    <mi>d</mi>
+    <mi>u</mi>
+    <mi>c</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>g</mi>
+    <mi>u</mi>
+    <mi>n</mi>
+    <mi>n</mi>
+    <mi>e</mi>
+    <mi>c</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>s</mi>
+    <mi>a</mi>
+    <mi>r</mi>
+    <mi>y</mi>
+    <mi>n</mi>
+    <mi>u</mi>
+    <mi>m</mi>
+    <mi>e</mi>
+    <mi>r</mi>
+    <mi>i</mi>
+    <mi>c</mi>
+    <mi>a</mi>
+    <mi>l</mi>
+    <mi>o</mi>
+    <mi>s</mi>
+    <mi>c</mi>
+    <mi>i</mi>
+    <mi>l</mi>
+    <mi>l</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>s</mi>
+    <mi>o</mi>
+    <mi>r</mi>
+    <mi>r</mi>
+    <mi>e</mi>
+    <mi>f</mi>
+    <mi>l</mi>
+    <mi>e</mi>
+    <mi>c</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>s</mi>
+    <mi>p</mi>
+    <mi>p</mi>
+    <mi>A</mi>
+    <mi>r</mi>
+    <mi>e</mi>
+    <mi>l</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>s</mi>
+    <mi>h</mi>
+    <mi>i</mi>
+    <mi>p</mi>
+    <mi>o</mi>
+    <mi>f</mi>
+    <mi>a</mi>
+    <mi>s</mi>
+    <mi>y</mi>
+    <mi>m</mi>
+    <mi>p</mi>
+    <mi>t</mi>
+    <mi>o</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>c</mi>
+    <mi>n</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>u</mi>
+    <mi>r</mi>
+    <mi>e</mi>
+    <mi>i</mi>
+    <mi>s</mi>
+    <mi>b</mi>
+    <mi>e</mi>
+    <mi>l</mi>
+    <mi>i</mi>
+    <mi>e</mi>
+    <mi>v</mi>
+    <mi>e</mi>
+    <mi>d</mi>
+    <mi>t</mi>
+    <mi>o</mi>
+    <mi>e</mi>
+    <mi>x</mi>
+    <mi>i</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>b</mi>
+    <mi>e</mi>
+    <mi>t</mi>
+    <mi>w</mi>
+    <mi>e</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>c</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>t</mi>
+    <mi>e</mi>
+    <mi>r</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>g</mi>
+    <mi>f</mi>
+    <mi>i</mi>
+    <mi>e</mi>
+    <mi>l</mi>
+    <mi>d</mi>
+    <mo>.</mo>
+    <mo>,</mo>
+    <mo>.</mo>
+    <mo stretchy="false">(</mo>
+    <mo stretchy="false">)</mo>
+    <mo>,</mo>
+    <mo>,</mo>
+    <mo>−</mo>
+    <mo>.</mo>
+    <mo>,</mo>
+    <mo>,</mo>
+    <mo>.</mo>
+    <mo>,</mo>
+    <mo stretchy="false">[</mo>
+    <mo stretchy="false">]</mo>
+    <mo>.</mo>
+    <mo>,</mo>
+    <mo>.</mo>
+    <mo>&amp;lt;</mo>
+    <mo>&amp;gt;&amp;lt;</mo>
+    <mo>&amp;gt;</mo>
+    <mn>2.2</mn>
+    <mn>22</mn>
+    <mrow data-mjx-texclass="ORD">
+      <mo>/</mo>
+    </mrow>
+  </math>
+</inline-formula>u^s<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>d</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>f</mi>
+    <mi>a</mi>
+    <mi>r</mi>
+    <mi>f</mi>
+    <mi>i</mi>
+    <mi>e</mi>
+    <mi>l</mi>
+    <mi>d</mi>
+  </math>
+</inline-formula>u^{\infty}<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo>,</mo>
+    <mi>w</mi>
+    <mi>i</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>a</mi>
+    <mi>s</mi>
+    <mi>y</mi>
+    <mi>m</mi>
+    <mi>p</mi>
+    <mi>t</mi>
+    <mi>o</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>c</mi>
+    <mi>e</mi>
+    <mi>x</mi>
+    <mi>p</mi>
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>s</mi>
+    <mi>i</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>o</mi>
+    <mi>f</mi>
+  </math>
+</inline-formula>u^s$ described as:</p>
+      
+        <disp-formula>
+          <label>(3)</label>
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <msup>
+              <mi>u</mi>
+              <mi>s</mi>
+            </msup>
+            <mrow data-mjx-texclass="INNER">
+              <mo data-mjx-texclass="OPEN">(</mo>
+              <mo>;</mo>
+              <mo>,</mo>
+              <mo data-mjx-texclass="CLOSE">)</mo>
+              <mi>D</mi>
+              <mi>x</mi>
+              <msub>
+                <mi>d</mi>
+                <mrow data-mjx-texclass="ORD">
+                  <mi>o</mi>
+                  <mi>b</mi>
+                </mrow>
+              </msub>
+            </mrow>
+            <mrow data-mjx-texclass="INNER">
+              <mo data-mjx-texclass="OPEN">(</mo>
+              <mo>+</mo>
+              <mo data-mjx-texclass="CLOSE">)</mo>
+              <msup>
+                <mi>u</mi>
+                <mrow data-mjx-texclass="ORD">
+                  <mi mathvariant="normal">∞</mi>
+                </mrow>
+              </msup>
+              <mrow data-mjx-texclass="INNER">
+                <mo data-mjx-texclass="OPEN">(</mo>
+                <mo>;</mo>
+                <mo>,</mo>
+                <mo data-mjx-texclass="CLOSE">)</mo>
+                <mi>D</mi>
+                <mrow data-mjx-texclass="ORD">
+                  <mover>
+                    <mi>x</mi>
+                    <mo stretchy="false">^</mo>
+                  </mover>
+                </mrow>
+                <msub>
+                  <mi>d</mi>
+                  <mrow data-mjx-texclass="ORD">
+                    <mi>o</mi>
+                    <mi>b</mi>
+                  </mrow>
+                </msub>
+              </mrow>
+              <mrow data-mjx-texclass="INNER">
+                <mo data-mjx-texclass="OPEN">(</mo>
+                <mo data-mjx-texclass="CLOSE">)</mo>
+                <mfrac>
+                  <mn>1</mn>
+                  <mi>r</mi>
+                </mfrac>
+              </mrow>
+              <mi>O</mi>
+            </mrow>
+            <mo>=</mo>
+            <mo stretchy="false">→</mo>
+            <mfrac>
+              <msup>
+                <mi>e</mi>
+                <mrow data-mjx-texclass="ORD">
+                  <mi>i</mi>
+                  <mi>k</mi>
+                  <mi>r</mi>
+                </mrow>
+              </msup>
+              <msup>
+                <mi>r</mi>
+                <mrow data-mjx-texclass="ORD">
+                  <mo stretchy="false">(</mo>
+                  <mo>−</mo>
+                  <mo stretchy="false">)</mo>
+                  <mi>n</mi>
+                  <mn>1</mn>
+                  <mn>2</mn>
+                  <mrow data-mjx-texclass="ORD">
+                    <mo>/</mo>
+                  </mrow>
+                </mrow>
+              </msup>
+            </mfrac>
+            <mstyle scriptlevel="0">
+              <mspace width="1em"/>
+            </mstyle>
+            <mi>r</mi>
+            <mi mathvariant="normal">∞</mi>
+          </math>
+        </disp-formula>
+      
+      <p> where, <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mrow data-mjx-texclass="ORD">
+      <mover>
+        <mi>x</mi>
+        <mo stretchy="false">^</mo>
+      </mover>
+    </mrow>
+    <mo>=</mo>
+    <mo>∈</mo>
+    <mfrac>
+      <mi>x</mi>
+      <mi>r</mi>
+    </mfrac>
+    <msup>
+      <mi>S</mi>
+      <mrow data-mjx-texclass="ORD">
+        <mi>n</mi>
+        <mo>−</mo>
+        <mn>1</mn>
+      </mrow>
+    </msup>
+  </math>
+</inline-formula> represents the unit direction vector, and Eq. (3) is valid for all directions with <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msub>
+      <mi>d</mi>
+      <mrow data-mjx-texclass="ORD">
+        <mi>o</mi>
+        <mi>b</mi>
+      </mrow>
+    </msub>
+    <mo>∈</mo>
+    <msup>
+      <mi>S</mi>
+      <mrow data-mjx-texclass="ORD">
+        <mi>n</mi>
+        <mo>−</mo>
+        <mn>1</mn>
+      </mrow>
+    </msup>
+  </math>
+</inline-formula> indicating the observation direction.</p><p>The obstacle scattering inversion problem of interest involves the reconstruction of the obstacle's shape based on received far-field data:</p>
+      
+        <disp-formula>
+          <label>(4)</label>
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mi>F</mi>
+            <mi>∂</mi>
+            <mi>D</mi>
+            <mrow data-mjx-texclass="INNER">
+              <mo data-mjx-texclass="OPEN">(</mo>
+              <mo data-mjx-texclass="CLOSE">)</mo>
+              <msup>
+                <mi>u</mi>
+                <mrow data-mjx-texclass="ORD">
+                  <mi mathvariant="normal">∞</mi>
+                </mrow>
+              </msup>
+              <mrow data-mjx-texclass="INNER">
+                <mo data-mjx-texclass="OPEN">(</mo>
+                <mo>;</mo>
+                <mo>,</mo>
+                <mo data-mjx-texclass="CLOSE">)</mo>
+                <mi>D</mi>
+                <mrow data-mjx-texclass="ORD">
+                  <mover>
+                    <mi>x</mi>
+                    <mo stretchy="false">^</mo>
+                  </mover>
+                </mrow>
+                <msub>
+                  <mi>d</mi>
+                  <mrow data-mjx-texclass="ORD">
+                    <mi>o</mi>
+                    <mi>b</mi>
+                  </mrow>
+                </msub>
+              </mrow>
+            </mrow>
+            <mo stretchy="false">→</mo>
+          </math>
+        </disp-formula>
+      
+      <p> where, <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msup>
+      <mi>u</mi>
+      <mrow data-mjx-texclass="ORD">
+        <mi mathvariant="normal">∞</mi>
+      </mrow>
+    </msup>
+  </math>
+</inline-formula> pertains to the far-field data associated with Eq. (3).</p>
+    </sec>
+    <sec disp-level="level1" sec-type="">
+      <title>3. Convolutional neural network model and noise types</title>
+      <p>Initially, based on the inverse problem (4), the following assumptions were presented for future reference:</p><p>Assumption 2.1: The incident field <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msup>
+      <mi>u</mi>
+      <mi>i</mi>
+    </msup>
+    <mo stretchy="false">(</mo>
+    <mo stretchy="false">)</mo>
+    <mi>x</mi>
+  </math>
+</inline-formula> refers to the initial wave field or wavefront in wave problems. This wave propagates from external space into the scattering region containing the obstacle. Interactions between its characteristics and the obstacle in the scattering region lead to wave phenomena. It was assumed that the incident field is a plane wave, with the unit incident direction being <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msub>
+      <mi>d</mi>
+      <mrow data-mjx-texclass="ORD">
+        <mi>i</mi>
+        <mi>n</mi>
+      </mrow>
+    </msub>
+    <mo>=</mo>
+    <mo stretchy="false">(</mo>
+    <mo data-mjx-texclass="NONE">⁡</mo>
+    <mo stretchy="false">(</mo>
+    <mo stretchy="false">)</mo>
+    <mo>,</mo>
+    <mo data-mjx-texclass="NONE">⁡</mo>
+    <mo stretchy="false">(</mo>
+    <mo stretchy="false">)</mo>
+    <mo stretchy="false">)</mo>
+    <mi>sin</mi>
+    <mi>α</mi>
+    <mi>cos</mi>
+    <mi>α</mi>
+  </math>
+</inline-formula>. The incident angles <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>α</mi>
+  </math>
+</inline-formula> are uniformly distributed over <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo stretchy="false">[</mo>
+    <mo>,</mo>
+    <mo stretchy="false">)</mo>
+    <mn>0</mn>
+    <mn>2</mn>
+    <mi>π</mi>
+  </math>
+</inline-formula>:</p>
+      
+        <disp-formula>
+          <label>(5)</label>
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mi>α</mi>
+            <mo>=</mo>
+            <mrow data-mjx-texclass="INNER">
+              <mo data-mjx-texclass="OPEN">{</mo>
+              <mo>,</mo>
+              <mo>,</mo>
+              <mo>⋯</mo>
+              <mo>,</mo>
+              <mo data-mjx-texclass="CLOSE">}</mo>
+              <mn>0</mn>
+              <mfrac>
+                <mrow>
+                  <mn>2</mn>
+                  <mi>π</mi>
+                </mrow>
+                <msub>
+                  <mi>s</mi>
+                  <mrow data-mjx-texclass="ORD">
+                    <mi>i</mi>
+                    <mi>n</mi>
+                  </mrow>
+                </msub>
+              </mfrac>
+              <mfrac>
+                <mrow>
+                  <mn>2</mn>
+                  <mn>1</mn>
+                  <mo stretchy="false">(</mo>
+                  <mo>−</mo>
+                  <mo stretchy="false">)</mo>
+                  <mi>n</mi>
+                  <mi>π</mi>
+                </mrow>
+                <msub>
+                  <mi>s</mi>
+                  <mrow data-mjx-texclass="ORD">
+                    <mi>i</mi>
+                    <mi>n</mi>
+                  </mrow>
+                </msub>
+              </mfrac>
+            </mrow>
+          </math>
+        </disp-formula>
+      
+      <p> where, <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msub>
+      <mi>s</mi>
+      <mrow data-mjx-texclass="ORD">
+        <mi>i</mi>
+        <mi>n</mi>
+      </mrow>
+    </msub>
+  </math>
+</inline-formula> denotes the quantity of incident directions.</p><p>Assumption 2.2: In the scenario of <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msub>
+      <mi>s</mi>
+      <mrow data-mjx-texclass="ORD">
+        <mi>i</mi>
+        <mi>n</mi>
+      </mrow>
+    </msub>
+  </math>
+</inline-formula> incident directions and <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msub>
+      <mi>s</mi>
+      <mrow data-mjx-texclass="ORD">
+        <mi>o</mi>
+        <mi>b</mi>
+      </mrow>
+    </msub>
+  </math>
+</inline-formula> observation directions, the received far-field data is represented as:</p>
+      
+        <disp-formula>
+          <label>(6)</label>
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mi>X</mi>
+            <mo>=</mo>
+            <mo>∈</mo>
+            <mrow data-mjx-texclass="INNER">
+              <mo data-mjx-texclass="OPEN">(</mo>
+              <mo>,</mo>
+              <mo>,</mo>
+              <mo>⋯</mo>
+              <mo>,</mo>
+              <mo>,</mo>
+              <mo>,</mo>
+              <mo>⋯</mo>
+              <mo>,</mo>
+              <mo>,</mo>
+              <mo>,</mo>
+              <mo>⋯</mo>
+              <mo data-mjx-texclass="CLOSE">)</mo>
+              <msub>
+                <mi>x</mi>
+                <mrow data-mjx-texclass="ORD">
+                  <mn>11</mn>
+                </mrow>
+              </msub>
+              <msub>
+                <mi>x</mi>
+                <mrow data-mjx-texclass="ORD">
+                  <mn>12</mn>
+                </mrow>
+              </msub>
+              <msub>
+                <mi>x</mi>
+                <mrow data-mjx-texclass="ORD">
+                  <mn>1</mn>
+                  <msub>
+                    <mi>s</mi>
+                    <mrow data-mjx-texclass="ORD">
+                      <mi>o</mi>
+                      <mi>b</mi>
+                    </mrow>
+                  </msub>
+                </mrow>
+              </msub>
+              <msub>
+                <mi>x</mi>
+                <mrow data-mjx-texclass="ORD">
+                  <mn>21</mn>
+                </mrow>
+              </msub>
+              <msub>
+                <mi>x</mi>
+                <mrow data-mjx-texclass="ORD">
+                  <mn>22</mn>
+                </mrow>
+              </msub>
+              <msub>
+                <mi>x</mi>
+                <mrow data-mjx-texclass="ORD">
+                  <mn>2</mn>
+                  <msub>
+                    <mi>s</mi>
+                    <mrow data-mjx-texclass="ORD">
+                      <mi>o</mi>
+                      <mi>b</mi>
+                    </mrow>
+                  </msub>
+                </mrow>
+              </msub>
+              <msub>
+                <mi>x</mi>
+                <mrow data-mjx-texclass="ORD">
+                  <msub>
+                    <mi>s</mi>
+                    <mrow data-mjx-texclass="ORD">
+                      <mi>i</mi>
+                      <mi>n</mi>
+                    </mrow>
+                  </msub>
+                  <mn>1</mn>
+                </mrow>
+              </msub>
+              <msub>
+                <mi>x</mi>
+                <mrow data-mjx-texclass="ORD">
+                  <msub>
+                    <mi>s</mi>
+                    <mrow data-mjx-texclass="ORD">
+                      <mi>i</mi>
+                      <mi>n</mi>
+                    </mrow>
+                  </msub>
+                  <mn>2</mn>
+                </mrow>
+              </msub>
+              <msub>
+                <mi>x</mi>
+                <mrow data-mjx-texclass="ORD">
+                  <msub>
+                    <mi>s</mi>
+                    <mrow data-mjx-texclass="ORD">
+                      <mi>i</mi>
+                      <mi>n</mi>
+                    </mrow>
+                  </msub>
+                  <msub>
+                    <mi>s</mi>
+                    <mrow data-mjx-texclass="ORD">
+                      <mi>o</mi>
+                      <mi>b</mi>
+                    </mrow>
+                  </msub>
+                </mrow>
+              </msub>
+            </mrow>
+            <msup>
+              <mi>C</mi>
+              <mrow data-mjx-texclass="ORD">
+                <msub>
+                  <mi>s</mi>
+                  <mrow data-mjx-texclass="ORD">
+                    <mi>i</mi>
+                    <mi>n</mi>
+                  </mrow>
+                </msub>
+                <msub>
+                  <mi>s</mi>
+                  <mrow data-mjx-texclass="ORD">
+                    <mi>o</mi>
+                    <mi>b</mi>
+                  </mrow>
+                </msub>
+              </mrow>
+            </msup>
+          </math>
+        </disp-formula>
+      
+      <p>Herein, the data represents $i<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>c</mi>
+    <mi>i</mi>
+    <mi>d</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>t</mi>
+    <mi>d</mi>
+    <mi>i</mi>
+    <mi>r</mi>
+    <mi>e</mi>
+    <mi>c</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>s</mi>
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>d</mi>
+  </math>
+</inline-formula>j<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>o</mi>
+    <mi>b</mi>
+    <mi>s</mi>
+    <mi>e</mi>
+    <mi>r</mi>
+    <mi>v</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>d</mi>
+    <mi>i</mi>
+    <mi>r</mi>
+    <mi>e</mi>
+    <mi>c</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>s</mi>
+    <mi>I</mi>
+    <mi>n</mi>
+    <mi>p</mi>
+    <mi>r</mi>
+    <mi>a</mi>
+    <mi>c</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>c</mi>
+    <mi>a</mi>
+    <mi>l</mi>
+    <mi>s</mi>
+    <mi>c</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>a</mi>
+    <mi>r</mi>
+    <mi>i</mi>
+    <mi>o</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>f</mi>
+    <mi>a</mi>
+    <mi>r</mi>
+    <mi>f</mi>
+    <mi>i</mi>
+    <mi>e</mi>
+    <mi>l</mi>
+    <mi>d</mi>
+    <mi>d</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>a</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>c</mi>
+    <mi>o</mi>
+    <mi>m</mi>
+    <mi>p</mi>
+    <mi>l</mi>
+    <mi>e</mi>
+    <mi>x</mi>
+    <mi>d</mi>
+    <mi>o</mi>
+    <mi>m</mi>
+    <mi>a</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>i</mi>
+    <mi>s</mi>
+    <mi>r</mi>
+    <mi>e</mi>
+    <mi>p</mi>
+    <mi>r</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>t</mi>
+    <mi>e</mi>
+    <mi>d</mi>
+    <mi>a</mi>
+    <mi>s</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>w</mi>
+    <mi>o</mi>
+    <mi>d</mi>
+    <mi>i</mi>
+    <mi>m</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>s</mi>
+    <mi>i</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>a</mi>
+    <mi>l</mi>
+    <mi>r</mi>
+    <mi>e</mi>
+    <mi>a</mi>
+    <mi>l</mi>
+    <mi>a</mi>
+    <mi>r</mi>
+    <mi>r</mi>
+    <mi>a</mi>
+    <mi>y</mi>
+    <mo>.</mo>
+    <mo>,</mo>
+    <mo>−</mo>
+    <mo>−</mo>
+  </math>
+</inline-formula>x_{i j}=\left(a_{i j}, b_{i j}\right)^T<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo>,</mo>
+    <mi>w</mi>
+    <mi>i</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>a</mi>
+    <mi>r</mi>
+    <mi>e</mi>
+    <mi>a</mi>
+    <mi>l</mi>
+    <mi>p</mi>
+    <mi>a</mi>
+    <mi>r</mi>
+    <mi>t</mi>
+    <mi>d</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>o</mi>
+    <mi>t</mi>
+    <mi>e</mi>
+    <mi>d</mi>
+    <mi>b</mi>
+    <mi>y</mi>
+  </math>
+</inline-formula>a_{i j}<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>d</mi>
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>i</mi>
+    <mi>m</mi>
+    <mi>a</mi>
+    <mi>g</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>a</mi>
+    <mi>r</mi>
+    <mi>y</mi>
+    <mi>p</mi>
+    <mi>a</mi>
+    <mi>r</mi>
+    <mi>t</mi>
+    <mi>d</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>o</mi>
+    <mi>t</mi>
+    <mi>e</mi>
+    <mi>d</mi>
+    <mi>b</mi>
+    <mi>y</mi>
+  </math>
+</inline-formula>b_{i j}<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo>.</mo>
+    <mo>&amp;lt;</mo>
+    <mo>&amp;gt;&amp;lt;</mo>
+    <mo>&amp;gt;</mo>
+    <mo>:</mo>
+    <mrow data-mjx-texclass="ORD">
+      <mo>/</mo>
+    </mrow>
+    <mi>p</mi>
+    <mi>p</mi>
+    <mi>A</mi>
+    <mi>s</mi>
+    <mi>s</mi>
+    <mi>u</mi>
+    <mi>m</mi>
+    <mi>p</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>T</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>b</mi>
+    <mi>o</mi>
+    <mi>u</mi>
+    <mi>n</mi>
+    <mi>d</mi>
+    <mi>a</mi>
+    <mi>r</mi>
+    <mi>y</mi>
+    <mi>c</mi>
+    <mi>u</mi>
+    <mi>r</mi>
+    <mi>v</mi>
+    <mi>e</mi>
+    <mn>2.3</mn>
+  </math>
+</inline-formula>\partial D_2$ of the two-dimensional obstacle was parameterized as follows:</p>
+      
+        <disp-formula>
+          <label>(7)</label>
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mtable displaystyle="true" columnalign="right left" columnspacing="0em" rowspacing="3pt">
+              <mtr>
+                <mtd/>
+                <mtd>
+                  <msub>
+                    <mi>F</mi>
+                    <mn>2</mn>
+                  </msub>
+                  <mo stretchy="false">(</mo>
+                  <mo stretchy="false">)</mo>
+                  <mo>=</mo>
+                  <mo>,</mo>
+                  <mo>≤</mo>
+                  <mo>≤</mo>
+                  <mi>t</mi>
+                  <mi>t</mi>
+                  <mi>π</mi>
+                  <mrow data-mjx-texclass="INNER">
+                    <mo data-mjx-texclass="OPEN">(</mo>
+                    <mo stretchy="false">(</mo>
+                    <mo stretchy="false">)</mo>
+                    <mo>,</mo>
+                    <mo stretchy="false">(</mo>
+                    <mo stretchy="false">)</mo>
+                    <mo data-mjx-texclass="CLOSE">)</mo>
+                    <msub>
+                      <mi>f</mi>
+                      <mn>1</mn>
+                    </msub>
+                    <msub>
+                      <mi>f</mi>
+                      <mn>2</mn>
+                    </msub>
+                    <mi>t</mi>
+                    <mi>t</mi>
+                  </mrow>
+                  <mstyle scriptlevel="0">
+                    <mspace width="1em"/>
+                  </mstyle>
+                  <mn>0</mn>
+                  <mn>2</mn>
+                </mtd>
+              </mtr>
+              <mtr>
+                <mtd/>
+                <mtd>
+                  <mrow data-mjx-texclass="INNER">
+                    <mo data-mjx-texclass="OPEN">{</mo>
+                    <mo data-mjx-texclass="CLOSE" fence="true" stretchy="true" symmetric="true"/>
+                    <mtable columnspacing="1em" rowspacing="4pt">
+                      <mtr>
+                        <mtd>
+                          <msub>
+                            <mi>f</mi>
+                            <mn>1</mn>
+                          </msub>
+                          <msub>
+                            <mi>a</mi>
+                            <mn>0</mn>
+                          </msub>
+                          <msub>
+                            <mi>a</mi>
+                            <mi>i</mi>
+                          </msub>
+                          <msub>
+                            <mi>b</mi>
+                            <mi>i</mi>
+                          </msub>
+                          <mo stretchy="false">(</mo>
+                          <mo stretchy="false">)</mo>
+                          <mo>=</mo>
+                          <mo>+</mo>
+                          <mo data-mjx-texclass="NONE">⁡</mo>
+                          <mo stretchy="false">(</mo>
+                          <mo>⋅</mo>
+                          <mo stretchy="false">)</mo>
+                          <mo>+</mo>
+                          <mo data-mjx-texclass="NONE">⁡</mo>
+                          <mo stretchy="false">(</mo>
+                          <mo>⋅</mo>
+                          <mo stretchy="false">)</mo>
+                          <mi>t</mi>
+                          <mi>cos</mi>
+                          <mi>i</mi>
+                          <mi>t</mi>
+                          <mi>sin</mi>
+                          <mi>i</mi>
+                          <mi>t</mi>
+                          <munderover>
+                            <mo data-mjx-texclass="OP">∑</mo>
+                            <mrow data-mjx-texclass="ORD">
+                              <mi>i</mi>
+                              <mo>=</mo>
+                              <mn>1</mn>
+                            </mrow>
+                            <mi>I</mi>
+                          </munderover>
+                          <munderover>
+                            <mo data-mjx-texclass="OP">∑</mo>
+                            <mrow data-mjx-texclass="ORD">
+                              <mi>i</mi>
+                              <mo>=</mo>
+                              <mn>1</mn>
+                            </mrow>
+                            <mi>I</mi>
+                          </munderover>
+                        </mtd>
+                      </mtr>
+                      <mtr>
+                        <mtd>
+                          <msub>
+                            <mi>f</mi>
+                            <mn>2</mn>
+                          </msub>
+                          <msub>
+                            <mi>b</mi>
+                            <mn>0</mn>
+                          </msub>
+                          <msub>
+                            <mi>c</mi>
+                            <mi>i</mi>
+                          </msub>
+                          <msub>
+                            <mi>d</mi>
+                            <mi>i</mi>
+                          </msub>
+                          <mo stretchy="false">(</mo>
+                          <mo stretchy="false">)</mo>
+                          <mo>=</mo>
+                          <mo>+</mo>
+                          <mo data-mjx-texclass="NONE">⁡</mo>
+                          <mo stretchy="false">(</mo>
+                          <mo>⋅</mo>
+                          <mo stretchy="false">)</mo>
+                          <mo>+</mo>
+                          <mo data-mjx-texclass="NONE">⁡</mo>
+                          <mo stretchy="false">(</mo>
+                          <mo>⋅</mo>
+                          <mo stretchy="false">)</mo>
+                          <mi>t</mi>
+                          <mi>cos</mi>
+                          <mi>i</mi>
+                          <mi>t</mi>
+                          <mi>sin</mi>
+                          <mi>i</mi>
+                          <mi>t</mi>
+                          <munderover>
+                            <mo data-mjx-texclass="OP">∑</mo>
+                            <mrow data-mjx-texclass="ORD">
+                              <mi>i</mi>
+                              <mo>=</mo>
+                              <mn>1</mn>
+                            </mrow>
+                            <mi>I</mi>
+                          </munderover>
+                          <munderover>
+                            <mo data-mjx-texclass="OP">∑</mo>
+                            <mrow data-mjx-texclass="ORD">
+                              <mi>i</mi>
+                              <mo>=</mo>
+                              <mn>1</mn>
+                            </mrow>
+                            <mi>I</mi>
+                          </munderover>
+                        </mtd>
+                      </mtr>
+                    </mtable>
+                  </mrow>
+                </mtd>
+              </mtr>
+            </mtable>
+          </math>
+        </disp-formula>
+      
+      <p> where, <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msub>
+      <mi>a</mi>
+      <mn>0</mn>
+    </msub>
+    <msub>
+      <mi>b</mi>
+      <mn>0</mn>
+    </msub>
+    <msub>
+      <mi>a</mi>
+      <mi>i</mi>
+    </msub>
+    <msub>
+      <mi>b</mi>
+      <mi>i</mi>
+    </msub>
+    <msub>
+      <mi>c</mi>
+      <mi>i</mi>
+    </msub>
+    <mo>,</mo>
+    <mo>,</mo>
+    <mo>,</mo>
+    <mo>,</mo>
+  </math>
+</inline-formula>, and <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msub>
+      <mi>d</mi>
+      <mi>i</mi>
+    </msub>
+  </math>
+</inline-formula> are elements of the ordered expression, and <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>I</mi>
+    <mo>∈</mo>
+    <msub>
+      <mi>N</mi>
+      <mrow data-mjx-texclass="ORD">
+        <mo>+</mo>
+      </mrow>
+    </msub>
+  </math>
+</inline-formula> and <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msub>
+      <mi>Y</mi>
+      <mn>2</mn>
+    </msub>
+    <mo>=</mo>
+    <mrow data-mjx-texclass="INNER">
+      <mo data-mjx-texclass="OPEN">(</mo>
+      <mo>,</mo>
+      <mo>,</mo>
+      <mo>⋯</mo>
+      <mo data-mjx-texclass="CLOSE">)</mo>
+      <msub>
+        <mi>y</mi>
+        <mn>1</mn>
+      </msub>
+      <msub>
+        <mi>y</mi>
+        <mn>2</mn>
+      </msub>
+      <msub>
+        <mi>y</mi>
+        <mi>m</mi>
+      </msub>
+    </mrow>
+  </math>
+</inline-formula>, <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>m</mi>
+    <mi>I</mi>
+    <mo>=</mo>
+    <mo>+</mo>
+    <mn>4</mn>
+    <mn>2</mn>
+  </math>
+</inline-formula> signifies the parameter vector of the two-dimensional curve.</p>
+      
+        <sec disp-level="level2">
+          
+            <title>3.1. Network model</title>
+          
+          <p>At the heart of the obstacle inverse scattering problem based on (4) lies the pursuit of the relationship between far-field data and obstacle shape parameters. A CNN network efficient in addressing the inverse scattering issue was constructed. This model encompasses several convolutional layers, pooling layers, and fully connected layers. Features are extracted from the input data by the convolutional layers. The pooling layers serve to reduce the spatial dimensions of the feature maps, and the fully connected layers are responsible for generating the final inversion results. Techniques such as batch normalization and activation functions have been employed to enhance model performance. Specifically, the network model is composed of a preprocessor, a stager, and a postprocessor, as illustrated in <xref ref-type="fig" rid="fig_1">Figure 1</xref>.</p>
+          
+            <fig id="fig_1">
+              <label>Figure 1</label>
+              <caption>The schematic illustration of CNN</caption>
+              <abstract/>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2023/8/img_Ffa90pUBNY8zCt6t.png"/>
+            </fig>
+          
+          <p>Given that data in complex noise environments often contain substantial noise, a preprocessor is utilized to handle raw far-field data, which then gets relayed to the first stage. In the preprocessor stage, the input data undergoes normalization and preliminary feature extraction. This step ensures large magnitude disparities in input variables do not adversely affect the efficacy of the solution algorithm and that noise can be better countered during model training. Additionally, a vast array of synthetic data was generated, covering various noise types and intensities, to enrich the training set and boost the model's generalization capabilities. The postprocessor treats the output from the network's last stage and then forwards the results. It comprises a pooling layer and a fully connected layer. In this setup, each feature's spatial size can be independently reduced by the pooling layer, retaining its depth dimension, to minimize computational requirements. The fully connected layer maps the previously learned feature space to the sample label space. Furthermore, the backpropagation algorithm and the stochastic gradient descent optimizer have been employed to minimize the loss function. This loss function encapsulates the discrepancies between the inversion results and true data, along with regularization terms, optimizing model stability and generalization performance.</p><p>Beyond this, the remaining parts of the CNN are divided into two stages. Each stage consists of two CNNBlocks linked in succession, and within a stage, the feature size remains constant. A transition layer has been incorporated between the two stages to adjust dimensions, simplifying network learning issues and suppressing lower-response information. The CNNBlock contains two mappings: An identity mapping and a mapping $F<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>c</mi>
+    <mi>o</mi>
+    <mi>m</mi>
+    <mi>p</mi>
+    <mi>o</mi>
+    <mi>s</mi>
+    <mi>e</mi>
+    <mi>d</mi>
+    <mi>o</mi>
+    <mi>f</mi>
+    <mi>t</mi>
+    <mi>w</mi>
+    <mi>o</mi>
+    <mi>c</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>v</mi>
+    <mi>o</mi>
+    <mi>l</mi>
+    <mi>u</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>a</mi>
+    <mi>l</mi>
+    <mi>l</mi>
+    <mi>a</mi>
+    <mi>y</mi>
+    <mi>e</mi>
+    <mi>r</mi>
+    <mi>s</mi>
+    <mi>w</mi>
+    <mi>i</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>a</mi>
+    <mi>m</mi>
+    <mi>e</mi>
+    <mi>w</mi>
+    <mi>e</mi>
+    <mi>i</mi>
+    <mi>g</mi>
+    <mi>h</mi>
+    <mi>t</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>w</mi>
+    <mi>o</mi>
+    <mi>a</mi>
+    <mi>c</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>v</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>f</mi>
+    <mi>u</mi>
+    <mi>n</mi>
+    <mi>c</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>s</mi>
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>d</mi>
+    <mi>t</mi>
+    <mi>w</mi>
+    <mi>o</mi>
+    <mi>B</mi>
+    <mi>N</mi>
+    <mi>l</mi>
+    <mi>a</mi>
+    <mi>y</mi>
+    <mi>e</mi>
+    <mi>r</mi>
+    <mi>s</mi>
+    <mi>W</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>C</mi>
+    <mi>N</mi>
+    <mi>N</mi>
+    <mi>B</mi>
+    <mi>l</mi>
+    <mi>o</mi>
+    <mi>c</mi>
+    <mi>k</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>p</mi>
+    <mi>u</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>s</mi>
+    <mi>d</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>o</mi>
+    <mi>t</mi>
+    <mi>e</mi>
+    <mi>d</mi>
+    <mi>b</mi>
+    <mi>y</mi>
+    <mo>,</mo>
+    <mo>,</mo>
+    <mo>.</mo>
+  </math>
+</inline-formula>y_i<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>d</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>o</mi>
+    <mi>u</mi>
+    <mi>t</mi>
+    <mi>p</mi>
+    <mi>u</mi>
+    <mi>t</mi>
+    <mi>b</mi>
+    <mi>y</mi>
+  </math>
+</inline-formula>y_{i+1}$, the CNNBlock computational expression is represented as:</p>
+          
+            <disp-formula>
+              <label>(8)</label>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <msub>
+                  <mrow data-mjx-texclass="ORD">
+                    <mi>y</mi>
+                  </mrow>
+                  <mrow data-mjx-texclass="ORD">
+                    <mi>i</mi>
+                    <mo>+</mo>
+                    <mn>1</mn>
+                  </mrow>
+                </msub>
+                <mo>=</mo>
+                <mi>σ</mi>
+                <mrow data-mjx-texclass="INNER">
+                  <mo data-mjx-texclass="OPEN">(</mo>
+                  <mo>+</mo>
+                  <mo data-mjx-texclass="CLOSE">)</mo>
+                  <msub>
+                    <mrow data-mjx-texclass="ORD">
+                      <mi>y</mi>
+                    </mrow>
+                    <mi>i</mi>
+                  </msub>
+                  <mi>F</mi>
+                  <mrow data-mjx-texclass="INNER">
+                    <mo data-mjx-texclass="OPEN">(</mo>
+                    <mo>,</mo>
+                    <mo data-mjx-texclass="CLOSE">)</mo>
+                    <msub>
+                      <mrow data-mjx-texclass="ORD">
+                        <mi>y</mi>
+                      </mrow>
+                      <mi>i</mi>
+                    </msub>
+                    <msub>
+                      <mi>W</mi>
+                      <mi>i</mi>
+                    </msub>
+                  </mrow>
+                </mrow>
+              </math>
+            </disp-formula>
+          
+          <p>where, <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>F</mi>
+    <mrow data-mjx-texclass="INNER">
+      <mo data-mjx-texclass="OPEN">(</mo>
+      <mo>,</mo>
+      <mo data-mjx-texclass="CLOSE">)</mo>
+      <msub>
+        <mrow data-mjx-texclass="ORD">
+          <mi>y</mi>
+        </mrow>
+        <mi>i</mi>
+      </msub>
+      <msub>
+        <mrow data-mjx-texclass="ORD">
+          <mi>W</mi>
+        </mrow>
+        <mi>i</mi>
+      </msub>
+    </mrow>
+  </math>
+</inline-formula> indicates the convolution operation, <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msub>
+      <mrow data-mjx-texclass="ORD">
+        <mi>W</mi>
+      </mrow>
+      <mi>i</mi>
+    </msub>
+  </math>
+</inline-formula> denotes the weight parameters of the convolution kernel in the CNNBlock, <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>σ</mi>
+    <mo stretchy="false">(</mo>
+    <mo>∙</mo>
+    <mo stretchy="false">)</mo>
+  </math>
+</inline-formula> represents the activation function, and <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>B</mi>
+    <mi>N</mi>
+    <mo stretchy="false">(</mo>
+    <mo>⋅</mo>
+    <mo stretchy="false">)</mo>
+  </math>
+</inline-formula> signifies the batch normalization operation. Ultimately, a correspondence between far-field data and obstacle shape parameters has been established by the CNN model, allowing for the inversion of obstacle shape parameters <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msub>
+      <mi>Y</mi>
+      <mn>2</mn>
+    </msub>
+    <mo>=</mo>
+    <mrow data-mjx-texclass="INNER">
+      <mo data-mjx-texclass="OPEN">(</mo>
+      <mo>,</mo>
+      <mo>,</mo>
+      <mo>⋯</mo>
+      <mo data-mjx-texclass="CLOSE">)</mo>
+      <msub>
+        <mi>y</mi>
+        <mn>1</mn>
+      </msub>
+      <msub>
+        <mi>y</mi>
+        <mn>2</mn>
+      </msub>
+      <msub>
+        <mi>y</mi>
+        <mi>m</mi>
+      </msub>
+    </mrow>
+  </math>
+</inline-formula> from far-field data $X$.</p><p>Remarkable advantages of this CNN model in addressing the obstacle inverse scattering problem over traditional methods or general neural network approaches have been observed. Firstly, CNNs inherently possess potent feature extraction capabilities. Through the combination of convolutional and pooling layers, multi-scale features within the data can be autonomously discerned by CNNs. This capability is crucial for intricate obstacle inverse scattering challenges. While traditional methods typically require manual feature extractor design, CNNs can adaptively extract features, capturing shape and positional details of obstacles more effectively. Secondly, when grappling with large-scale data, CNNs demonstrate remarkable computational efficiency. Traditional approaches might consume vast computational resources when navigating complex inverse scattering issues, but the parallel computing capability and parameter sharing mechanism of CNNs allow them to efficiently handle extensive data sets. Additionally, the noise suppression and generalization capabilities of CNNs stand out. In multifaceted noise scenarios, multi-scale feature extraction of data under various noise conditions allows CNNs to learn statistical characteristics of noise, enhancing obstacle imaging clarity and accuracy. Coupled with vast data training, the robust generalization ability of CNNs is evident, applicable across diverse obstacle types and noise distributions without frequent model readjustments. Lastly, the end-to-end learning approach of CNNs streamlines problem modeling and solving processes. While traditional methods necessitate intricate physical model and solver design, CNNs, by learning directly from data, aptly navigate the complexity of obstacle inverse scattering challenges, making problem modeling less arduous.</p><p>In summation, by virtue of their feature extraction capabilities, computational efficiency, noise suppression, generalization ability, and end-to-end learning approach, CNNs manifest evident advantages in handling obstacle inverse scattering challenges when compared to traditional or general neural network methods. Such tools offer powerful solutions for real-world complex noise scenarios in obstacle imaging.</p>
+        </sec>
+      
+      
+        <sec disp-level="level2">
+          
+            <title>3.2. Types of noise</title>
+          
+          <p>Experimental simulations were used to collect far-field data under five different noise scenarios, including Gaussian white noise, uniform distribution noise, Poisson distribution noise, Laplace noise, and impulse noise. This data encompasses various situations in complex noise environments. Normalization and preliminary feature extraction were applied to the data, ensuring consistent magnitudes and thereby mitigating the impact on the solution algorithm (as shown in <xref ref-type="fig" rid="fig_2">Figure 2</xref>).</p>
+          
+            <fig id="fig_2">
+              <label>Figure 2</label>
+              <caption>Scattering problems of obstacles in complex noise environments</caption>
+              <abstract/>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2023/8/img_F5ZHMsZprVwqPJwP.jpeg"/>
+            </fig>
+          
+          <p>Gaussian white noise serves as a prevalent random signal model and finds extensive application in fields such as communication systems, signal processing, and image processing. This noise is characterized by a zero mean, indicating an equilibrium between its positive and negative components over extended periods; a constant variance, signifying a consistent noise intensity over time; and adherence to the Gaussian or normal distribution, evident from its bell-shaped curve. It can be mathematically expressed as:</p>
+          
+            <disp-formula>
+              <label>(9)</label>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <mi>X</mi>
+                <mi>t</mi>
+                <mi>A</mi>
+                <mi>cos</mi>
+                <mi>π</mi>
+                <mi>f</mi>
+                <mi>t</mi>
+                <mi>ϕ</mi>
+                <mo stretchy="false">(</mo>
+                <mo stretchy="false">)</mo>
+                <mo>=</mo>
+                <mo>⋅</mo>
+                <mo data-mjx-texclass="NONE">⁡</mo>
+                <mo stretchy="false">(</mo>
+                <mo>+</mo>
+                <mo stretchy="false">)</mo>
+                <mn>2</mn>
+              </math>
+            </disp-formula>
+          
+          <p> where, <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>X</mi>
+    <mi>t</mi>
+    <mo stretchy="false">(</mo>
+    <mo stretchy="false">)</mo>
+  </math>
+</inline-formula> represents the noise value at time $t<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo>,</mo>
+  </math>
+</inline-formula>A<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>i</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>a</mi>
+    <mi>m</mi>
+    <mi>p</mi>
+    <mi>l</mi>
+    <mi>i</mi>
+    <mi>t</mi>
+    <mi>u</mi>
+    <mi>d</mi>
+    <mi>e</mi>
+    <mo>,</mo>
+  </math>
+</inline-formula>f<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>i</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>f</mi>
+    <mi>r</mi>
+    <mi>e</mi>
+    <mi>q</mi>
+    <mi>u</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>c</mi>
+    <mi>y</mi>
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>d</mi>
+    <mo>,</mo>
+  </math>
+</inline-formula>\phi<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>i</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>p</mi>
+    <mi>h</mi>
+    <mi>a</mi>
+    <mi>s</mi>
+    <mi>e</mi>
+    <mi>I</mi>
+    <mi>n</mi>
+    <mi>G</mi>
+    <mi>a</mi>
+    <mi>u</mi>
+    <mi>s</mi>
+    <mi>s</mi>
+    <mi>i</mi>
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>w</mi>
+    <mi>h</mi>
+    <mi>i</mi>
+    <mi>t</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>o</mi>
+    <mi>i</mi>
+    <mi>s</mi>
+    <mi>e</mi>
+    <mi>e</mi>
+    <mi>a</mi>
+    <mi>c</mi>
+    <mi>h</mi>
+    <mi>n</mi>
+    <mi>o</mi>
+    <mi>i</mi>
+    <mi>s</mi>
+    <mi>e</mi>
+    <mi>v</mi>
+    <mi>a</mi>
+    <mi>l</mi>
+    <mi>u</mi>
+    <mi>e</mi>
+    <mo>.</mo>
+    <mo>,</mo>
+  </math>
+</inline-formula>X(t)<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>a</mi>
+    <mi>g</mi>
+    <mi>i</mi>
+    <mi>v</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>m</mi>
+    <mi>e</mi>
+    <mi>i</mi>
+    <mi>s</mi>
+    <mi>a</mi>
+    <mi>r</mi>
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>d</mi>
+    <mi>o</mi>
+    <mi>m</mi>
+    <mi>v</mi>
+    <mi>a</mi>
+    <mi>r</mi>
+    <mi>i</mi>
+    <mi>a</mi>
+    <mi>b</mi>
+    <mi>l</mi>
+    <mi>e</mi>
+    <mi>f</mi>
+    <mi>o</mi>
+    <mi>l</mi>
+    <mi>l</mi>
+    <mi>o</mi>
+    <mi>w</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>g</mi>
+    <mi>a</mi>
+    <mi>G</mi>
+    <mi>a</mi>
+    <mi>u</mi>
+    <mi>s</mi>
+    <mi>s</mi>
+    <mi>i</mi>
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>d</mi>
+    <mi>i</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>r</mi>
+    <mi>i</mi>
+    <mi>b</mi>
+    <mi>u</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>w</mi>
+    <mi>i</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>m</mi>
+    <mi>e</mi>
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>d</mi>
+    <mi>v</mi>
+    <mi>a</mi>
+    <mi>r</mi>
+    <mi>i</mi>
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>c</mi>
+    <mi>e</mi>
+  </math>
+</inline-formula>\sigma^2$. Introducing Gaussian white noise in backscattering problems contributes randomness, resulting in an amalgamation of obstacle signals with noise signals in the observed data. This amalgamation can lead to blurred imaging of obstacles, as noise obscures the genuine signals.</p><p>Uniform distribution noise is distinguished by equal probabilities of its values occurring within a given interval. It lacks any specific trends or biases and is sometimes referred to as rectangular or average distribution in statistics. It possesses a uniform probability density function, indicating an equal chance of all values within a specified range. It can be mathematically expressed as:</p>
+          
+            <disp-formula>
+              <label>(10)</label>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <mi>f</mi>
+                <mi>x</mi>
+                <mo stretchy="false">(</mo>
+                <mo stretchy="false">)</mo>
+                <mo>=</mo>
+                <mrow data-mjx-texclass="INNER">
+                  <mo data-mjx-texclass="OPEN">{</mo>
+                  <mo data-mjx-texclass="CLOSE" fence="true" stretchy="true" symmetric="true"/>
+                  <mtable columnalign="center left" columnspacing="1em" rowspacing="4pt">
+                    <mtr>
+                      <mtd>
+                        <mfrac>
+                          <mn>1</mn>
+                          <mrow>
+                            <mi>b</mi>
+                            <mi>a</mi>
+                            <mo>−</mo>
+                          </mrow>
+                        </mfrac>
+                        <mo>,</mo>
+                      </mtd>
+                      <mtd>
+                        <mi>a</mi>
+                        <mi>x</mi>
+                        <mi>b</mi>
+                        <mo>≤</mo>
+                        <mo>≤</mo>
+                      </mtd>
+                    </mtr>
+                    <mtr>
+                      <mtd>
+                        <mn>0</mn>
+                        <mo>,</mo>
+                      </mtd>
+                      <mtd>
+                        <mtext> otherwise </mtext>
+                      </mtd>
+                    </mtr>
+                  </mtable>
+                </mrow>
+              </math>
+            </disp-formula>
+          
+          <p>where, <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>f</mi>
+    <mi>x</mi>
+    <mo stretchy="false">(</mo>
+    <mo stretchy="false">)</mo>
+  </math>
+</inline-formula> is the probability density function for random variable $x<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo>.</mo>
+    <mi>W</mi>
+    <mi>i</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>t</mi>
+    <mi>e</mi>
+    <mi>r</mi>
+    <mi>v</mi>
+    <mi>a</mi>
+    <mi>l</mi>
+  </math>
+</inline-formula>[a,b]<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo>,</mo>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>p</mi>
+    <mi>r</mi>
+    <mi>o</mi>
+    <mi>b</mi>
+    <mi>a</mi>
+    <mi>b</mi>
+    <mi>i</mi>
+    <mi>l</mi>
+    <mi>i</mi>
+    <mi>t</mi>
+    <mi>y</mi>
+    <mi>d</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>s</mi>
+    <mi>i</mi>
+    <mi>t</mi>
+    <mi>y</mi>
+    <mi>f</mi>
+    <mi>u</mi>
+    <mi>n</mi>
+    <mi>c</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>r</mi>
+    <mi>e</mi>
+    <mi>m</mi>
+    <mi>a</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>s</mi>
+    <mi>c</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>t</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+  </math>
+</inline-formula>\frac{1}{b-a}$, denoting an equal chance of all values in this range. Outside this interval, the probability density is zero. This uniform signal distribution means that every value within the defined interval has an equal chance of occurrence, potentially leading to periodic disturbances in the data. Hence, such noise can blur the signal boundaries, affecting the precise imaging of obstacles.</p><p>Poisson distribution noise serves as another commonly employed random signal model, representing the number of discrete events occurring within a certain time or spatial frame. Considering it from a noise perspective, it signifies the number of times a random event arrives or occurs within a certain duration or space. Specifically, when the amplitude of noise signal is a non-negative integer, it can be expressed mathematically as:</p>
+          
+            <disp-formula>
+              <label>(11)</label>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <mi>P</mi>
+                <mi>k</mi>
+                <mi>λ</mi>
+                <mo stretchy="false">(</mo>
+                <mo>;</mo>
+                <mo stretchy="false">)</mo>
+                <mo>=</mo>
+                <mfrac>
+                  <mrow>
+                    <msup>
+                      <mi>e</mi>
+                      <mrow data-mjx-texclass="ORD">
+                        <mo>−</mo>
+                        <mi>λ</mi>
+                      </mrow>
+                    </msup>
+                    <msup>
+                      <mi>λ</mi>
+                      <mi>k</mi>
+                    </msup>
+                    <mo>⋅</mo>
+                  </mrow>
+                  <mrow>
+                    <mi>k</mi>
+                    <mo>!</mo>
+                  </mrow>
+                </mfrac>
+              </math>
+            </disp-formula>
+          
+          <p>where, <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>P</mi>
+    <mi>k</mi>
+    <mi>λ</mi>
+    <mo stretchy="false">(</mo>
+    <mo>;</mo>
+    <mo stretchy="false">)</mo>
+  </math>
+</inline-formula> denotes the probability that the amplitude of the noise signal is $k<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>g</mi>
+    <mi>i</mi>
+    <mi>v</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>p</mi>
+    <mi>a</mi>
+    <mi>r</mi>
+    <mi>a</mi>
+    <mi>m</mi>
+    <mi>e</mi>
+    <mi>t</mi>
+    <mi>e</mi>
+    <mi>r</mi>
+  </math>
+</inline-formula>\lambda<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo>.</mo>
+  </math>
+</inline-formula>\lambda$ is a parameter of the Poisson distribution, representing the average number of events occurring per unit time or unit space. In backscattering problems, Poisson noise may elevate the data's volatility, especially in low signal-to-noise ratio scenarios, causing unstable imaging of obstacles.</p><p>Laplace noise is often used in real-world applications to simulate random noises exhibiting peak and heavy-tail characteristics, such as edge detection in image processing or channel noise modeling in communication systems. This noise, given its mean and scale parameters, displays amplitude variations with sharp peaks and heavy tails, making it suitable for characterizing some non-Gaussian random signals. Its mathematical expression is:</p>
+          
+            <disp-formula>
+              <label>(12)</label>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <mi>f</mi>
+                <mi>x</mi>
+                <mi>μ</mi>
+                <mi>b</mi>
+                <mo stretchy="false">(</mo>
+                <mo>;</mo>
+                <mo>,</mo>
+                <mo stretchy="false">)</mo>
+                <mo>=</mo>
+                <mo>⋅</mo>
+                <mfrac>
+                  <mn>1</mn>
+                  <mrow>
+                    <mn>2</mn>
+                    <mi>b</mi>
+                  </mrow>
+                </mfrac>
+                <msup>
+                  <mi>e</mi>
+                  <mrow data-mjx-texclass="ORD">
+                    <mo>−</mo>
+                    <mfrac>
+                      <mrow>
+                        <mo stretchy="false">|</mo>
+                        <mo>−</mo>
+                        <mo stretchy="false">|</mo>
+                        <mi>x</mi>
+                        <mi>μ</mi>
+                      </mrow>
+                      <mi>b</mi>
+                    </mfrac>
+                  </mrow>
+                </msup>
+              </math>
+            </disp-formula>
+          
+          <p> where, <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>f</mi>
+    <mi>x</mi>
+    <mi>μ</mi>
+    <mi>b</mi>
+    <mo stretchy="false">(</mo>
+    <mo>;</mo>
+    <mo>,</mo>
+    <mo stretchy="false">)</mo>
+  </math>
+</inline-formula> represents the probability density function of the noise signal taking a value $x<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>u</mi>
+    <mi>n</mi>
+    <mi>d</mi>
+    <mi>e</mi>
+    <mi>r</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>g</mi>
+    <mi>i</mi>
+    <mi>v</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>p</mi>
+    <mi>a</mi>
+    <mi>r</mi>
+    <mi>a</mi>
+    <mi>m</mi>
+    <mi>e</mi>
+    <mi>t</mi>
+    <mi>e</mi>
+    <mi>r</mi>
+    <mi>s</mi>
+  </math>
+</inline-formula>\mu<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>d</mi>
+  </math>
+</inline-formula>b<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo>.</mo>
+  </math>
+</inline-formula>\mu<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>i</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>m</mi>
+    <mi>e</mi>
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>p</mi>
+    <mi>a</mi>
+    <mi>r</mi>
+    <mi>a</mi>
+    <mi>m</mi>
+    <mi>e</mi>
+    <mi>t</mi>
+    <mi>e</mi>
+    <mi>r</mi>
+    <mi>o</mi>
+    <mi>f</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>L</mi>
+    <mi>a</mi>
+    <mi>p</mi>
+    <mi>l</mi>
+    <mi>a</mi>
+    <mi>c</mi>
+    <mi>e</mi>
+    <mi>d</mi>
+    <mi>i</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>r</mi>
+    <mi>i</mi>
+    <mi>b</mi>
+    <mi>u</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>d</mi>
+    <mi>i</mi>
+    <mi>c</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>g</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>c</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>t</mi>
+    <mi>r</mi>
+    <mi>a</mi>
+    <mi>l</mi>
+    <mi>p</mi>
+    <mi>o</mi>
+    <mi>s</mi>
+    <mi>i</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>o</mi>
+    <mi>f</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>o</mi>
+    <mi>i</mi>
+    <mi>s</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>i</mi>
+    <mi>g</mi>
+    <mi>n</mi>
+    <mi>a</mi>
+    <mi>l</mi>
+    <mi>w</mi>
+    <mi>h</mi>
+    <mi>i</mi>
+    <mi>l</mi>
+    <mi>e</mi>
+    <mo>,</mo>
+    <mo>,</mo>
+  </math>
+</inline-formula>b$ is the scale parameter, controlling the amplitude variation of the noise signal. Noise of the Laplace distribution, characterized by sharp peaks, might introduce pronounced spikes or steep noise components in the data concerning backscatter problems. Such noise disrupts the smoothness of the signal, complicating the detection and imaging of obstacle boundaries.</p><p>Impulse noise, a discrete random signal, is characterized by its abrupt and transient amplitude perturbations. The timing and amplitude of these pulses can be adjusted based on specific application contexts. Widely used in communication systems and sensor signals, impulse noise can be described using the probability distribution of pulse sequences, mathematically expressed as:</p>
+          
+            <disp-formula>
+              <label>(13)</label>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <mi>P</mi>
+                <mi>x</mi>
+                <mi>δ</mi>
+                <mo stretchy="false">(</mo>
+                <mo stretchy="false">)</mo>
+                <mo>=</mo>
+                <mo>⋅</mo>
+                <munderover>
+                  <mo data-mjx-texclass="OP">∑</mo>
+                  <mrow data-mjx-texclass="ORD">
+                    <mi>i</mi>
+                    <mo>=</mo>
+                    <mn>1</mn>
+                  </mrow>
+                  <mi>N</mi>
+                </munderover>
+                <msub>
+                  <mi>p</mi>
+                  <mi>i</mi>
+                </msub>
+                <mrow data-mjx-texclass="INNER">
+                  <mo data-mjx-texclass="OPEN">(</mo>
+                  <mo>−</mo>
+                  <mo data-mjx-texclass="CLOSE">)</mo>
+                  <mi>x</mi>
+                  <msub>
+                    <mi>t</mi>
+                    <mi>i</mi>
+                  </msub>
+                </mrow>
+              </math>
+            </disp-formula>
+          
+          <p> where, <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>P</mi>
+    <mi>x</mi>
+    <mo stretchy="false">(</mo>
+    <mo stretchy="false">)</mo>
+  </math>
+</inline-formula> denotes the probability density function of the impulse noise when taking a value of $x<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo>.</mo>
+  </math>
+</inline-formula>\delta(x)<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>r</mi>
+    <mi>e</mi>
+    <mi>p</mi>
+    <mi>r</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>t</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>D</mi>
+    <mi>i</mi>
+    <mi>r</mi>
+    <mi>a</mi>
+    <mi>c</mi>
+  </math>
+</inline-formula>\delta<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo>−</mo>
+    <mo>,</mo>
+    <mi>f</mi>
+    <mi>u</mi>
+    <mi>n</mi>
+    <mi>c</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>w</mi>
+    <mi>h</mi>
+    <mi>i</mi>
+    <mi>c</mi>
+    <mi>h</mi>
+    <mi>b</mi>
+    <mi>e</mi>
+    <mi>c</mi>
+    <mi>o</mi>
+    <mi>m</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>f</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>i</mi>
+    <mi>t</mi>
+    <mi>e</mi>
+    <mi>l</mi>
+    <mi>y</mi>
+    <mi>l</mi>
+    <mi>a</mi>
+    <mi>r</mi>
+    <mi>g</mi>
+    <mi>e</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+  </math>
+</inline-formula>x=0<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>d</mi>
+    <mi>i</mi>
+    <mi>s</mi>
+    <mi>z</mi>
+    <mi>e</mi>
+    <mi>r</mi>
+    <mi>o</mi>
+    <mi>e</mi>
+    <mi>l</mi>
+    <mi>s</mi>
+    <mi>e</mi>
+    <mi>w</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>r</mi>
+    <mi>e</mi>
+    <mo>.</mo>
+  </math>
+</inline-formula>t_i<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>d</mi>
+    <mi>i</mi>
+    <mi>c</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>m</mi>
+    <mi>e</mi>
+    <mi>p</mi>
+    <mi>o</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>t</mi>
+    <mi>o</mi>
+    <mi>f</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+  </math>
+</inline-formula>i<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>i</mi>
+    <mi>m</mi>
+    <mi>p</mi>
+    <mi>u</mi>
+    <mi>l</mi>
+    <mi>s</mi>
+    <mi>e</mi>
+    <mi>w</mi>
+    <mi>h</mi>
+    <mi>i</mi>
+    <mi>l</mi>
+    <mi>e</mi>
+    <mo>,</mo>
+  </math>
+</inline-formula>p_i<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>d</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>i</mi>
+    <mi>g</mi>
+    <mi>n</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>a</mi>
+    <mi>m</mi>
+    <mi>p</mi>
+    <mi>l</mi>
+    <mi>i</mi>
+    <mi>t</mi>
+    <mi>u</mi>
+    <mi>d</mi>
+    <mi>e</mi>
+    <mi>o</mi>
+    <mi>f</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+  </math>
+</inline-formula>i$th impulse. Impulse noise might introduce prominently anomalous values in backscatter problems. These anomalies could mislead backscattering algorithms, resulting in incorrect imaging of obstacles.</p>
+        </sec>
+      
+    </sec>
+    <sec disp-level="level1" sec-type="">
+      <title>4. Numerical experiments</title>
+      <p>Consideration was given to solving the obstacle backscattering problem of the Helmholtz equation in a two-dimensional context, with the kite-shaped obstacle defined by the following function:</p>
+      
+        <disp-formula>
+          <label>(14)</label>
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mo fence="false" stretchy="false">{</mo>
+            <mo stretchy="false">(</mo>
+            <mo>,</mo>
+            <mo stretchy="false">)</mo>
+            <mo>:</mo>
+            <mo>=</mo>
+            <mo data-mjx-texclass="NONE">⁡</mo>
+            <mo stretchy="false">(</mo>
+            <mo stretchy="false">)</mo>
+            <mo>+</mo>
+            <mo data-mjx-texclass="NONE">⁡</mo>
+            <mo stretchy="false">(</mo>
+            <mo>⋅</mo>
+            <mo stretchy="false">)</mo>
+            <mo>,</mo>
+            <mo>=</mo>
+            <mo>⋅</mo>
+            <mo data-mjx-texclass="NONE">⁡</mo>
+            <mo stretchy="false">(</mo>
+            <mo stretchy="false">)</mo>
+            <mo>,</mo>
+            <mo>≤</mo>
+            <mo>≤</mo>
+            <mo fence="false" stretchy="false">}</mo>
+            <mi>x</mi>
+            <mi>y</mi>
+            <mi>x</mi>
+            <mi>a</mi>
+            <mi>cos</mi>
+            <mi>t</mi>
+            <mi>b</mi>
+            <mi>cos</mi>
+            <mi>t</mi>
+            <mi>y</mi>
+            <mi>c</mi>
+            <mi>sin</mi>
+            <mi>t</mi>
+            <mi>t</mi>
+            <mi>π</mi>
+            <mn>2</mn>
+            <mn>0</mn>
+            <mn>2</mn>
+          </math>
+        </disp-formula>
+      
+      <p>An initial classification of the received far-field data was conducted to gain prior information about the category to which the obstacle belongs. Relevant experiments can be referred to in the study [<xref ref-type="bibr" rid="ref_13">13</xref>]. For the training of the network model and the inversion of obstacle shape parameters, a dataset (X, Y) containing both the far-field data and the Fourier coefficients of the truncated obstacle boundary curve equation was utilized. The dataset was divided into training and testing sets at a ratio of 8:2. <xref ref-type="table" rid="table_1">Table 1</xref> presents the hyperparameter settings for the network model, chosen based on extensive numerical experiments and literature references.</p>
+      
+        <table-wrap id="table_1">
+          <label>Table 1</label>
+          <caption>Experimental parameters</caption>
+          <abstract/>
+          <table><tbody><tr><td colspan="1" rowspan="1"><p>Parameter</p></td><td colspan="1" rowspan="1"><p>$J<math>
+  <mo>&amp;lt;</mo>
+  <mo>&amp;gt;&amp;lt;</mo>
+  <mo>&amp;gt;&amp;lt;</mo>
+  <mo>=</mo>
+  <mo>=</mo>
+  <mo>&amp;gt;&amp;lt;</mo>
+  <mo>&amp;gt;</mo>
+  <mrow data-mjx-texclass="ORD">
+    <mo>/</mo>
+  </mrow>
+  <mrow data-mjx-texclass="ORD">
+    <mo>/</mo>
+  </mrow>
+  <mrow data-mjx-texclass="ORD">
+    <mo data-mjx-pseudoscript="true">"</mo>
+  </mrow>
+  <mrow data-mjx-texclass="ORD">
+    <mo data-mjx-pseudoscript="true">"</mo>
+  </mrow>
+  <mrow data-mjx-texclass="ORD">
+    <mo data-mjx-pseudoscript="true">"</mo>
+  </mrow>
+  <mrow data-mjx-texclass="ORD">
+    <mo data-mjx-pseudoscript="true">"</mo>
+  </mrow>
+  <mi>p</mi>
+  <mi>t</mi>
+  <mi>d</mi>
+  <mi>t</mi>
+  <mi>d</mi>
+  <mi>c</mi>
+  <mi>o</mi>
+  <mi>l</mi>
+  <mi>s</mi>
+  <mi>p</mi>
+  <mi>a</mi>
+  <mi>n</mi>
+  <mi>r</mi>
+  <mi>o</mi>
+  <mi>w</mi>
+  <mi>s</mi>
+  <mi>p</mi>
+  <mi>a</mi>
+  <mi>n</mi>
+  <mi>p</mi>
+  <mn>1</mn>
+  <mn>1</mn>
+</math>v<math>
+  <mo>&amp;lt;</mo>
+  <mo>&amp;gt;&amp;lt;</mo>
+  <mo>&amp;gt;&amp;lt;</mo>
+  <mo>=</mo>
+  <mo>=</mo>
+  <mo>&amp;gt;&amp;lt;</mo>
+  <mo>&amp;gt;</mo>
+  <mrow data-mjx-texclass="ORD">
+    <mo>/</mo>
+  </mrow>
+  <mrow data-mjx-texclass="ORD">
+    <mo>/</mo>
+  </mrow>
+  <mrow data-mjx-texclass="ORD">
+    <mo data-mjx-pseudoscript="true">"</mo>
+  </mrow>
+  <mrow data-mjx-texclass="ORD">
+    <mo data-mjx-pseudoscript="true">"</mo>
+  </mrow>
+  <mrow data-mjx-texclass="ORD">
+    <mo data-mjx-pseudoscript="true">"</mo>
+  </mrow>
+  <mrow data-mjx-texclass="ORD">
+    <mo data-mjx-pseudoscript="true">"</mo>
+  </mrow>
+  <mi>p</mi>
+  <mi>t</mi>
+  <mi>d</mi>
+  <mi>t</mi>
+  <mi>d</mi>
+  <mi>c</mi>
+  <mi>o</mi>
+  <mi>l</mi>
+  <mi>s</mi>
+  <mi>p</mi>
+  <mi>a</mi>
+  <mi>n</mi>
+  <mi>r</mi>
+  <mi>o</mi>
+  <mi>w</mi>
+  <mi>s</mi>
+  <mi>p</mi>
+  <mi>a</mi>
+  <mi>n</mi>
+  <mi>p</mi>
+  <mn>1</mn>
+  <mn>1</mn>
+</math>m<math>
+  <mo>&amp;lt;</mo>
+  <mo>&amp;gt;&amp;lt;</mo>
+  <mo>&amp;gt;&amp;lt;</mo>
+  <mo>=</mo>
+  <mo>=</mo>
+  <mo>&amp;gt;&amp;lt;</mo>
+  <mo>&amp;gt;</mo>
+  <mrow data-mjx-texclass="ORD">
+    <mo>/</mo>
+  </mrow>
+  <mrow data-mjx-texclass="ORD">
+    <mo>/</mo>
+  </mrow>
+  <mrow data-mjx-texclass="ORD">
+    <mo data-mjx-pseudoscript="true">"</mo>
+  </mrow>
+  <mrow data-mjx-texclass="ORD">
+    <mo data-mjx-pseudoscript="true">"</mo>
+  </mrow>
+  <mrow data-mjx-texclass="ORD">
+    <mo data-mjx-pseudoscript="true">"</mo>
+  </mrow>
+  <mrow data-mjx-texclass="ORD">
+    <mo data-mjx-pseudoscript="true">"</mo>
+  </mrow>
+  <mi>p</mi>
+  <mi>t</mi>
+  <mi>d</mi>
+  <mi>t</mi>
+  <mi>d</mi>
+  <mi>c</mi>
+  <mi>o</mi>
+  <mi>l</mi>
+  <mi>s</mi>
+  <mi>p</mi>
+  <mi>a</mi>
+  <mi>n</mi>
+  <mi>r</mi>
+  <mi>o</mi>
+  <mi>w</mi>
+  <mi>s</mi>
+  <mi>p</mi>
+  <mi>a</mi>
+  <mi>n</mi>
+  <mi>p</mi>
+  <mn>1</mn>
+  <mn>1</mn>
+</math>\eta<math>
+  <mo>&amp;lt;</mo>
+  <mo>&amp;gt;&amp;lt;</mo>
+  <mo>&amp;gt;&amp;lt;</mo>
+  <mo>=</mo>
+  <mo>=</mo>
+  <mo>&amp;gt;&amp;lt;</mo>
+  <mo>&amp;gt;</mo>
+  <mrow data-mjx-texclass="ORD">
+    <mo>/</mo>
+  </mrow>
+  <mrow data-mjx-texclass="ORD">
+    <mo>/</mo>
+  </mrow>
+  <mrow data-mjx-texclass="ORD">
+    <mo data-mjx-pseudoscript="true">"</mo>
+  </mrow>
+  <mrow data-mjx-texclass="ORD">
+    <mo data-mjx-pseudoscript="true">"</mo>
+  </mrow>
+  <mrow data-mjx-texclass="ORD">
+    <mo data-mjx-pseudoscript="true">"</mo>
+  </mrow>
+  <mrow data-mjx-texclass="ORD">
+    <mo data-mjx-pseudoscript="true">"</mo>
+  </mrow>
+  <mi>p</mi>
+  <mi>t</mi>
+  <mi>d</mi>
+  <mi>t</mi>
+  <mi>d</mi>
+  <mi>c</mi>
+  <mi>o</mi>
+  <mi>l</mi>
+  <mi>s</mi>
+  <mi>p</mi>
+  <mi>a</mi>
+  <mi>n</mi>
+  <mi>r</mi>
+  <mi>o</mi>
+  <mi>w</mi>
+  <mi>s</mi>
+  <mi>p</mi>
+  <mi>a</mi>
+  <mi>n</mi>
+  <mi>p</mi>
+  <mn>1</mn>
+  <mn>1</mn>
+</math>e$</p></td></tr><tr><td colspan="1" rowspan="1"><p>Value</p></td><td colspan="1" rowspan="1"><p>5000</p></td><td colspan="1" rowspan="1"><p>50</p></td><td colspan="1" rowspan="1"><p>16</p></td><td colspan="1" rowspan="1"><p>0.001</p></td><td colspan="1" rowspan="1"><p>500</p></td></tr></tbody></table>
+        </table-wrap>
+      
+      <p>Further quantitative evaluations were made on the reliability of the obstacle shape parameters predicted based on the entire test set. Two commonly used performance metrics were adopted, namely the relative error (RE), root mean square error (RMSE), and the correlation coefficient R, defined as follows:</p>
+      
+        <disp-formula>
+          <label>(15)</label>
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mrow data-mjx-texclass="INNER">
+              <mo data-mjx-texclass="OPEN">{</mo>
+              <mo data-mjx-texclass="CLOSE" fence="true" stretchy="true" symmetric="true"/>
+              <mtable columnalign="left" columnspacing="1em" rowspacing="4pt">
+                <mtr>
+                  <mtd>
+                    <mi>R</mi>
+                    <mi>E</mi>
+                    <mi mathvariant="normal">%</mi>
+                    <mo>=</mo>
+                    <mo>×</mo>
+                    <mrow data-mjx-texclass="INNER">
+                      <mo data-mjx-texclass="OPEN">|</mo>
+                      <mo data-mjx-texclass="CLOSE">|</mo>
+                      <mfrac>
+                        <mrow>
+                          <msub>
+                            <mrow data-mjx-texclass="ORD">
+                              <mover>
+                                <mi>Y</mi>
+                                <mo stretchy="false">~</mo>
+                              </mover>
+                            </mrow>
+                            <mi>i</mi>
+                          </msub>
+                          <msub>
+                            <mover>
+                              <mrow data-mjx-texclass="ORD">
+                                <mover>
+                                  <mi>Y</mi>
+                                  <mo stretchy="false">~</mo>
+                                </mover>
+                              </mrow>
+                              <mo accent="true">―</mo>
+                            </mover>
+                            <mrow data-mjx-texclass="ORD">
+                              <mi>i</mi>
+                              <mi>i</mi>
+                            </mrow>
+                          </msub>
+                          <mo>−</mo>
+                        </mrow>
+                        <msub>
+                          <mrow data-mjx-texclass="ORD">
+                            <mover>
+                              <mi>Y</mi>
+                              <mo stretchy="false">~</mo>
+                            </mover>
+                          </mrow>
+                          <mi>i</mi>
+                        </msub>
+                      </mfrac>
+                    </mrow>
+                    <mn>100</mn>
+                  </mtd>
+                </mtr>
+                <mtr>
+                  <mtd>
+                    <mi>R</mi>
+                    <mi>M</mi>
+                    <mi>S</mi>
+                    <mi>E</mi>
+                    <mo>=</mo>
+                    <msqrt>
+                      <mfrac>
+                        <mn>1</mn>
+                        <mi>N</mi>
+                      </mfrac>
+                      <munderover>
+                        <mo data-mjx-texclass="OP">∑</mo>
+                        <mrow data-mjx-texclass="ORD">
+                          <mi>i</mi>
+                          <mo>=</mo>
+                          <mn>1</mn>
+                        </mrow>
+                        <mi>N</mi>
+                      </munderover>
+                      <msup>
+                        <mrow data-mjx-texclass="INNER">
+                          <mo data-mjx-texclass="OPEN">(</mo>
+                          <mo>−</mo>
+                          <mo data-mjx-texclass="CLOSE">)</mo>
+                          <msub>
+                            <mi>Y</mi>
+                            <mi>i</mi>
+                          </msub>
+                          <msub>
+                            <mrow data-mjx-texclass="ORD">
+                              <mover>
+                                <mi>Y</mi>
+                                <mo stretchy="false">~</mo>
+                              </mover>
+                            </mrow>
+                            <mi>i</mi>
+                          </msub>
+                        </mrow>
+                        <mn>2</mn>
+                      </msup>
+                    </msqrt>
+                  </mtd>
+                </mtr>
+                <mtr>
+                  <mtd>
+                    <mi>R</mi>
+                    <mo>=</mo>
+                    <mfrac>
+                      <mrow>
+                        <munderover>
+                          <mo data-mjx-texclass="OP">∑</mo>
+                          <mrow data-mjx-texclass="ORD">
+                            <mi>i</mi>
+                            <mo>=</mo>
+                            <mn>1</mn>
+                          </mrow>
+                          <mi>N</mi>
+                        </munderover>
+                        <mrow data-mjx-texclass="INNER">
+                          <mo data-mjx-texclass="OPEN">[</mo>
+                          <mo data-mjx-texclass="CLOSE">]</mo>
+                          <mrow data-mjx-texclass="INNER">
+                            <mo data-mjx-texclass="OPEN">(</mo>
+                            <mo>−</mo>
+                            <mo data-mjx-texclass="CLOSE">)</mo>
+                            <msub>
+                              <mrow data-mjx-texclass="ORD">
+                                <mover>
+                                  <mi>Y</mi>
+                                  <mo stretchy="false">~</mo>
+                                </mover>
+                              </mrow>
+                              <mi>i</mi>
+                            </msub>
+                            <msub>
+                              <mover>
+                                <mrow data-mjx-texclass="ORD">
+                                  <mover>
+                                    <mi>Y</mi>
+                                    <mo stretchy="false">~</mo>
+                                  </mover>
+                                </mrow>
+                                <mo accent="true">―</mo>
+                              </mover>
+                              <mi>i</mi>
+                            </msub>
+                          </mrow>
+                          <mrow data-mjx-texclass="INNER">
+                            <mo data-mjx-texclass="OPEN">(</mo>
+                            <mo>−</mo>
+                            <mo data-mjx-texclass="CLOSE">)</mo>
+                            <msub>
+                              <mi>Y</mi>
+                              <mi>i</mi>
+                            </msub>
+                            <mrow data-mjx-texclass="ORD">
+                              <mover>
+                                <mi>Y</mi>
+                                <mo stretchy="false">¯</mo>
+                              </mover>
+                            </mrow>
+                          </mrow>
+                        </mrow>
+                      </mrow>
+                      <mrow>
+                        <msqrt>
+                          <munderover>
+                            <mo data-mjx-texclass="OP">∑</mo>
+                            <mrow data-mjx-texclass="ORD">
+                              <mi>i</mi>
+                              <mo>=</mo>
+                              <mn>1</mn>
+                            </mrow>
+                            <mi>N</mi>
+                          </munderover>
+                          <msup>
+                            <mrow data-mjx-texclass="INNER">
+                              <mo data-mjx-texclass="OPEN">(</mo>
+                              <mo>−</mo>
+                              <mo data-mjx-texclass="CLOSE">)</mo>
+                              <msub>
+                                <mrow data-mjx-texclass="ORD">
+                                  <mover>
+                                    <mi>Y</mi>
+                                    <mo stretchy="false">~</mo>
+                                  </mover>
+                                </mrow>
+                                <mi>i</mi>
+                              </msub>
+                              <msub>
+                                <mover>
+                                  <mrow data-mjx-texclass="ORD">
+                                    <mover>
+                                      <mi>Y</mi>
+                                      <mo stretchy="false">~</mo>
+                                    </mover>
+                                  </mrow>
+                                  <mo accent="true">―</mo>
+                                </mover>
+                                <mi>i</mi>
+                              </msub>
+                            </mrow>
+                            <mn>2</mn>
+                          </msup>
+                        </msqrt>
+                        <msqrt>
+                          <munderover>
+                            <mo data-mjx-texclass="OP">∑</mo>
+                            <mrow data-mjx-texclass="ORD">
+                              <mi>i</mi>
+                              <mo>=</mo>
+                              <mn>1</mn>
+                            </mrow>
+                            <mi>N</mi>
+                          </munderover>
+                          <msup>
+                            <mrow data-mjx-texclass="INNER">
+                              <mo data-mjx-texclass="OPEN">(</mo>
+                              <mo>−</mo>
+                              <mo data-mjx-texclass="CLOSE">)</mo>
+                              <msub>
+                                <mi>Y</mi>
+                                <mi>i</mi>
+                              </msub>
+                              <msub>
+                                <mrow data-mjx-texclass="ORD">
+                                  <mover>
+                                    <mi>Y</mi>
+                                    <mo stretchy="false">¯</mo>
+                                  </mover>
+                                </mrow>
+                                <mi>i</mi>
+                              </msub>
+                            </mrow>
+                            <mn>2</mn>
+                          </msup>
+                        </msqrt>
+                      </mrow>
+                    </mfrac>
+                  </mtd>
+                </mtr>
+              </mtable>
+            </mrow>
+          </math>
+        </disp-formula>
+      
+      <p>where, <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mrow data-mjx-texclass="ORD">
+      <mover>
+        <msub>
+          <mrow data-mjx-texclass="ORD">
+            <mi>Y</mi>
+          </mrow>
+          <mi>i</mi>
+        </msub>
+        <mo stretchy="false">¯</mo>
+      </mover>
+    </mrow>
+  </math>
+</inline-formula> and <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msub>
+      <mrow data-mjx-texclass="ORD">
+        <mover>
+          <mrow data-mjx-texclass="ORD">
+            <mrow data-mjx-texclass="ORD">
+              <mover>
+                <mi>Y</mi>
+                <mo stretchy="false">~</mo>
+              </mover>
+            </mrow>
+          </mrow>
+          <mo stretchy="false">¯</mo>
+        </mover>
+      </mrow>
+      <mi>i</mi>
+    </msub>
+  </math>
+</inline-formula> represent the mean values of the actual and predicted values, respectively, and <italic>N</italic> denotes the number of test data.</p>
+      
+        <sec disp-level="level2">
+          
+            <title>4.1. Far-field data with gaussian white noise</title>
+          
+          <p>In this experiment, consideration was given to a single incident direction with settings of 16 observation directions. Gaussian white noise, with a mean of 0 and standard deviations of 0.05, 0.1, and 0.2, was added to the far-field data, respectively. The reconstruction effects of the obstacle by the network model under different levels of Gaussian white noise were subsequently analyzed.</p>
+          
+            <table-wrap id="table_2">
+              <label>Table 2</label>
+              <caption>Experimental results under Gaussian white noise in far-field data</caption>
+              <abstract/>
+              <table><tbody><tr><td colspan="1" rowspan="1"><p></p></td><td colspan="1" rowspan="1"><p>0.05</p></td><td colspan="1" rowspan="1"><p>0.1</p></td><td colspan="1" rowspan="1"><p>0.2</p></td></tr><tr><td colspan="1" rowspan="1"><p>R</p></td><td colspan="1" rowspan="1"><p>0.9089</p></td><td colspan="1" rowspan="1"><p>0.7571</p></td><td colspan="1" rowspan="1"><p>0.4940</p></td></tr><tr><td colspan="1" rowspan="1"><p>Loss</p></td><td colspan="1" rowspan="1"><p>0.0064</p></td><td colspan="1" rowspan="1"><p>0.0157</p></td><td colspan="1" rowspan="1"><p>0.0296</p></td></tr><tr><td colspan="1" rowspan="1"><p>RE</p></td><td colspan="1" rowspan="1"><p>3.3572%</p></td><td colspan="1" rowspan="1"><p>5.5418%</p></td><td colspan="1" rowspan="1"><p>8.3111%</p></td></tr><tr><td colspan="1" rowspan="1"><p>RMSE</p></td><td colspan="1" rowspan="1"><p>0.0837</p></td><td colspan="1" rowspan="1"><p>0.1369</p></td><td colspan="1" rowspan="1"><p>0.2010</p></td></tr></tbody></table>
+            </table-wrap>
+          
+          <p>The experimental data displayed in <xref ref-type="table" rid="table_2">Table 2</xref> represent average results from 100 experiments conducted under different random seed scenarios. From the results in <xref ref-type="table" rid="table_2">Table 2</xref>, it can be observed that as the mean of the Gaussian white noise increases, the inversion effects deteriorate progressively. This deterioration is attributed to the randomness introduced by the Gaussian white noise, which reduces the signal-to-noise ratio of the original data, making it challenging for the model to differentiate between useful information and noise. This is further illustrated in <xref ref-type="fig" rid="fig_3">Figure 3</xref>.</p>
+          
+            <fig id="fig_3">
+              <label>Figure 3</label>
+              <caption>Experimental results under Gaussian white noise in far-field data</caption>
+              <abstract/>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2023/8/img_m9NRnIg3Q3t0Qs4L.jpeg"/>
+            </fig>
+          
+        </sec>
+      
+      
+        <sec disp-level="level2">
+          
+            <title>4.2. Far-field data with uniform distribution noise</title>
+          
+          <p>For this experiment, a single incident direction was considered, set with 16 observation directions. Uniform noise distributed within the range (-n, n), where n took values of 0.1, 0.2, and 0.3, was introduced to the far-field data. The reconstruction effects of obstacles by the network model under various levels of uniformly distributed noise were then analyzed.</p>
+          <p>Based on the experimental data, <xref ref-type="table" rid="table_3">Table 3</xref> presents the average outcomes from 100 trials conducted under diverse random seed scenarios. The findings from <xref ref-type="table" rid="table_3">Table 3</xref> indicate that as the mean value of the uniformly distributed noise increased from 0.1 to 0.3, the inversion outcomes progressively worsened. This trend is explicitly portrayed in <xref ref-type="fig" rid="fig_4">Figure 4</xref>. Such degradation arises because the uniform distribution noise introduces a heightened degree of uncertainty, increasing the intricacy of the data. This complexity challenges the model's capacity to distinguish between noise and pertinent information. To address the scenario with uniformly distributed noise, the consideration of additional data augmentation techniques, such as data smoothing and feature selection, might be beneficial. Such techniques could mitigate the cyclical disturbances introduced by uniform distribution noise, enhancing the model's sensitivity to valuable information.</p>
+          
+            <table-wrap id="table_3">
+              <label>Table 3</label>
+              <caption>Experimental results under uniform distribution noise in far-field data</caption>
+              <abstract/>
+              <table><tbody><tr><td colspan="1" rowspan="1"><p></p></td><td colspan="1" rowspan="1"><p>0.1</p></td><td colspan="1" rowspan="1"><p>0.2</p></td><td colspan="1" rowspan="1"><p>0.3</p></td></tr><tr><td colspan="1" rowspan="1"><p>R</p></td><td colspan="1" rowspan="1"><p>0.8873</p></td><td colspan="1" rowspan="1"><p>0.7051</p></td><td colspan="1" rowspan="1"><p>0.5454</p></td></tr><tr><td colspan="1" rowspan="1"><p>RE</p></td><td colspan="1" rowspan="1"><p>3.7720%</p></td><td colspan="1" rowspan="1"><p>6.2518%</p></td><td colspan="1" rowspan="1"><p>7.9077%</p></td></tr><tr><td colspan="1" rowspan="1"><p>RMSE</p></td><td colspan="1" rowspan="1"><p>0.0935</p></td><td colspan="1" rowspan="1"><p>0.1536</p></td><td colspan="1" rowspan="1"><p>0.1920</p></td></tr></tbody></table>
+            </table-wrap>
+          
+          
+            <fig id="fig_4">
+              <label>Figure 4</label>
+              <caption>Experimental results under uniform distribution noise in far-field data</caption>
+              <abstract/>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2023/8/img_TP8HzA7fYOYKd0PC.jpeg"/>
+            </fig>
+          
+        </sec>
+      
+      
+        <sec disp-level="level2">
+          
+            <title>4.3. Far-field data with poisson distribution noise</title>
+          
+          <p>In this study, a single incident direction, along with 16 observation directions, was considered. Poisson-distributed noise, taking non-negative integer values and multiplied by a factor of n, was introduced into the far-field data, with n having values of 0.05, 0.1, and 0.2. The reconstruction effects of obstacles by the network model under varying levels of Poisson-distributed noise were subsequently examined.</p>
+          <p>Based on the compiled data, <xref ref-type="table" rid="table_4">Table 4</xref> presents the average results of 100 trials conducted under distinct random seed situations. A noticeable trend, evident from <xref ref-type="table" rid="table_4">Table 4</xref>, is that as the mean value of the Poisson-distributed noise increased, the inversion outcomes progressively deteriorated. This trend is elucidated in <xref ref-type="fig" rid="fig_5">Figure 5</xref>. Such decline can be attributed to the intrinsic instability exhibited by Poisson-distributed noise, especially under conditions of low signal-to-noise ratio, leading to heightened sensitivity of the model to noise.</p>
+          
+            <table-wrap id="table_4">
+              <label>Table 4</label>
+              <caption>Experimental results under Poisson distribution noise in far-field data</caption>
+              <abstract/>
+              <table><tbody><tr><td colspan="1" rowspan="1"><p></p></td><td colspan="1" rowspan="1"><p>0.05</p></td><td colspan="1" rowspan="1"><p>0.1</p></td><td colspan="1" rowspan="1"><p>0.2</p></td></tr><tr><td colspan="1" rowspan="1"><p>R</p></td><td colspan="1" rowspan="1"><p>0.9130</p></td><td colspan="1" rowspan="1"><p>0.7570</p></td><td colspan="1" rowspan="1"><p>0.4846</p></td></tr><tr><td colspan="1" rowspan="1"><p>RE</p></td><td colspan="1" rowspan="1"><p>3.3153%</p></td><td colspan="1" rowspan="1"><p>5.5655%</p></td><td colspan="1" rowspan="1"><p>8.3057%</p></td></tr><tr><td colspan="1" rowspan="1"><p>RMSE</p></td><td colspan="1" rowspan="1"><p>0.0825</p></td><td colspan="1" rowspan="1"><p>0.1362</p></td><td colspan="1" rowspan="1"><p>0.2007</p></td></tr></tbody></table>
+            </table-wrap>
+          
+          
+            <fig id="fig_5">
+              <label>Figure 5</label>
+              <caption>Experimental results under Poisson distribution noise in far-field data</caption>
+              <abstract/>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2023/8/img_aN4H_w4uo_WIyhA9.jpeg"/>
+            </fig>
+          
+        </sec>
+      
+      
+        <sec disp-level="level2">
+          
+            <title>4.4. Far-field data with laplace distribution noise</title>
+          
+          <p>In this study, the context was a single incident direction accompanied by 16 observation directions. Laplace-distributed noise with a mean of 0 and standard deviations of 0.02, 0.05, and 0.1 was introduced into the far-field data. The impact of varying levels of Laplace-distributed noise on the reconstruction effects of obstacles by the network model was subsequently assessed.</p>
+          <p>From the data presented in <xref ref-type="table" rid="table_5">Table 5</xref>, it can be discerned that, under different random seed situations, after conducting 100 trials, the inversion outcomes deteriorated progressively as the mean value of the Laplace-distributed noise increased. This observable trend is further elucidated in <xref ref-type="fig" rid="fig_6">Figure 6</xref>. Such decline can likely be attributed to the peak and heavy-tail characteristics of the Laplace distribution noise, where high amplitude noise might have introduced significant disturbances to the model, leading to the degradation of inversion results.</p>
+          
+            <table-wrap id="table_5">
+              <label>Table 5</label>
+              <caption>Experimental results under Laplace distribution noise in far-field data</caption>
+              <abstract/>
+              <table><tbody><tr><td colspan="1" rowspan="1"><p></p></td><td colspan="1" rowspan="1"><p>0.02</p></td><td colspan="1" rowspan="1"><p>0.05</p></td><td colspan="1" rowspan="1"><p>0.1</p></td></tr><tr><td colspan="1" rowspan="1"><p>R</p></td><td colspan="1" rowspan="1"><p>0.9591</p></td><td colspan="1" rowspan="1"><p>0.8517</p></td><td colspan="1" rowspan="1"><p>0.6573</p></td></tr><tr><td colspan="1" rowspan="1"><p>RE</p></td><td colspan="1" rowspan="1"><p>2.0956%</p></td><td colspan="1" rowspan="1"><p>4.2427%</p></td><td colspan="1" rowspan="1"><p>6.6307%</p></td></tr><tr><td colspan="1" rowspan="1"><p>RMSE</p></td><td colspan="1" rowspan="1"><p>0.0527</p></td><td colspan="1" rowspan="1"><p>0.1053</p></td><td colspan="1" rowspan="1"><p>0.1625</p></td></tr></tbody></table>
+            </table-wrap>
+          
+          
+            <fig id="fig_6">
+              <label>Figure 6</label>
+              <caption>Experimental results under Laplace distribution noise in far-field data</caption>
+              <abstract/>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2023/8/img_YlIxQ0LwRVsmKaH0.jpeg"/>
+            </fig>
+          
+        </sec>
+      
+      
+        <sec disp-level="level2">
+          
+            <title>4.5. Far-field data with impulse noise</title>
+          
+          <p>In this experiment, a single incident direction was considered, along with 16 observation directions. Impulse noise was introduced into the far-field data by incorporating Laplace distribution noise, meaning that n signal information points were randomly disrupted and replaced with Gaussian white noise with a standard deviation of 0.1. The effects of varying levels of impulse noise on the network model's reconstruction of obstacles were then assessed.</p><p>The data presented in <xref ref-type="table" rid="table_6">Table 6</xref>, obtained from 100 trials under different random seed scenarios, indicates that as the level of impulse noise increases, the far-field data tends to lose characteristic information regarding obstacles, thereby affecting the reconstruction results of the obstacle shapes. The spontaneous and irregular nature of impulse noise renders it challenging to handle. To address impulse noise, the development of more intricate outlier processing techniques to refine the network model can be considered, aiming to mitigate the effects of impulse noise. Detailed outcomes are illustrated in <xref ref-type="fig" rid="fig_7">Figure 7</xref>.</p>
+          
+            <table-wrap id="table_6">
+              <label>Table 6</label>
+              <caption>Experimental results under impulse noise in far-field data</caption>
+              <abstract/>
+              <table><tbody><tr><td colspan="1" rowspan="1"><p></p></td><td colspan="1" rowspan="1"><p>2</p></td><td colspan="1" rowspan="1"><p>4</p></td><td colspan="1" rowspan="1"><p>8</p></td></tr><tr><td colspan="1" rowspan="1"><p>R</p></td><td colspan="1" rowspan="1"><p>0.7973</p></td><td colspan="1" rowspan="1"><p>0.6527</p></td><td colspan="1" rowspan="1"><p>0.4138</p></td></tr><tr><td colspan="1" rowspan="1"><p>RE</p></td><td colspan="1" rowspan="1"><p>3.7906%</p></td><td colspan="1" rowspan="1"><p>5.5535%</p></td><td colspan="1" rowspan="1"><p>7.8988%</p></td></tr><tr><td colspan="1" rowspan="1"><p>RMSE</p></td><td colspan="1" rowspan="1"><p>0.0950</p></td><td colspan="1" rowspan="1"><p>0.1378</p></td><td colspan="1" rowspan="1"><p>0.1955</p></td></tr></tbody></table>
+            </table-wrap>
+          
+          
+            <fig id="fig_7">
+              <label>Figure 7</label>
+              <caption>Experimental results under impulse noise in far-field data</caption>
+              <abstract/>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2023/8/img_jJw4yKjmt17zAXvU.jpeg"/>
+            </fig>
+          
+        </sec>
+      
+      
+        <sec disp-level="level2">
+          
+            <title>4.6. Comparative experiment</title>
+          
+          <p>In the exploration of backscatter tasks from obstacles in complex noise environments, the proposed CNN model was first studied. A detailed comparison was then conducted between CNN and two other machine learning models: Fully Connected Neural Network (FCNN) and Long Short-Term Memory Network (LSTM). For the comparative experiments, settings for the different network models were kept consistent, and the same dataset was utilized. Furthermore, identical hyperparameters were employed, including a learning rate of 1e-4, training cycles set at 500 rounds, batch sizes of 50, and activation functions all being LeakyReLU. The same evaluation metrics were also used to quantify the inversion performance of different models under complex noise conditions. Detailed outcomes have been summarized in <xref ref-type="table" rid="table_7">Table 7</xref>. It is noteworthy that the experimental results, being based on various random seeds, may have slight variations.</p>
+          
+            <table-wrap id="table_7">
+              <label>Table 7</label>
+              <caption>Experimental results under impulse noise in far-field data</caption>
+              <abstract/>
+              <table><tbody><tr><td colspan="2" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif"> </span></p></td><td colspan="3" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">CNN</span></p></td><td colspan="3" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">FCNN</span></p></td><td colspan="3" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">LSTM</span></p></td></tr><tr><td colspan="2" rowspan="1"><p></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">R</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">RE</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">RMSE</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">R</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">RE</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">RMSE</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">R</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">RE</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">RMSE</span></p></td></tr><tr><td colspan="1" rowspan="3"><p style="text-align: center"><span style="font-family: Times New Roman, serif">Gaussian Distribution</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.05</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.9089</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">3.36%</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.0837</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.9036</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">3.79%</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.0801</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.7002</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">5.12%</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.1303</span></p></td></tr><tr><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.1</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.7571</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">5.54%</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.1369</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.6228</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">6.40%</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.1413</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.6518</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">5.84%</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.1462</span></p></td></tr><tr><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.2</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.4940</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">8.31%</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.2010</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.2991</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">7.65%</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.2646</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.5092</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">7.19%</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.2075</span></p></td></tr><tr><td colspan="1" rowspan="3"><p style="text-align: center"><span style="font-family: Times New Roman, serif">Uniform Distribution</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.1</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.8873</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">3.77%</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.0935</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.9082</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">3.19%</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.0883</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.5862</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">7.21%</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.2011</span></p></td></tr><tr><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.2</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.7051</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">6.25%</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.1536</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.6815</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">6.46%</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.1455</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.3909</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">9.35%</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.2181</span></p></td></tr><tr><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.3</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.5454</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">7.91%</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.1920</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.3908</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">9.22%</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.1902</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.2947</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">10.45%</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.2394</span></p></td></tr><tr><td colspan="1" rowspan="3"><p style="text-align: center"><span style="font-family: Times New Roman, serif">Poisson Distribution</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.05</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.9130</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">3.32%</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.0825</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.9305</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">3.17%</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.0605</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.6316</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">6.45%</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.1585</span></p></td></tr><tr><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.1</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.7570</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">5.57%</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.1362</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.7660</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">5.43%</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.1095</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.4638</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">8.29%</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.1959</span></p></td></tr><tr><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.2</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.4846</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">8.31%</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.2007</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.1351</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">9.91%</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.2546</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.3476</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">9.77%</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.2237</span></p></td></tr><tr><td colspan="1" rowspan="3"><p style="text-align: center"><span style="font-family: Times New Roman, serif">Laplace Distribution</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.02</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.9591</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">2.10%</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.0527</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.9738</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">1.61%</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.0389</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.6866</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">5.38%</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.1367</span></p></td></tr><tr><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.05</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.8517</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">4.24%</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.1053</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.8813</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">4.10%</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.0785</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.5834</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">6.89%</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.1687</span></p></td></tr><tr><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.1</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.6573</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">6.63%</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.1625</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.5806</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">5.77%</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.1439</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.4468</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">8.46%</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.2003</span></p></td></tr><tr><td colspan="1" rowspan="3"><p style="text-align: center"><span style="font-family: Times New Roman, serif">Impulse</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">2</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.7973</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">3.79%</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.0950</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.3866</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">9.37%</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.1312</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.6169</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">5.82%</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.1461</span></p></td></tr><tr><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">4</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.6527</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">5.55%</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.1378</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">-0.2552</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">11.90%</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.1958</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.5221</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">6.92%</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.1691</span></p></td></tr><tr><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">8</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.4138</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">7.90%</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.1955</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">-1.6825</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">14.79%</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.2939</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.3828</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">9.39%</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.2019</span></p></td></tr></tbody></table>
+            </table-wrap>
+          
+          <p>In <xref ref-type="table" rid="table_7">Table 7</xref>, the best experimental results under each noise condition are emphasized in bold. It can be observed that the performance of CNN, when handling backscatter problems under complex noise conditions, surpassed both FCNN and LSTM. Specifically, in Gaussian, Uniform, Poisson, and Laplace noise scenarios, CNN achieved either the best or the second-best results. Under impulse noise conditions, CNN demonstrated a significant performance improvement compared to the other models. Notably, even when CNN's performance was not optimal, the gap between it and the best result remained minimal.</p><p>On the other hand, FCNN typically excelled in low-noise Uniform, Poisson, and Laplace scenarios but faltered under high-noise conditions, often underperforming LSTM. Especially under impulse noise conditions, its inversion outcomes were less than satisfactory. Compared to FCNN and LSTM, CNN possesses the ability to autonomously extract features to enhance network robustness and prevent overfitting. This renders CNN less sensitive to irrelevant variations in input data, achieving superior inversion performance.</p>
+        </sec>
+      
+    </sec>
+    <sec disp-level="level1" sec-type="">
+      <title>5. Conclusion</title>
+      <p>In the research presented, the challenge of obstacle backscattering in complex noise environments was scrutinized. A convolutional neural network-based model, designed for high-precision obstacle shape inversion, was introduced. Numerical experiments, conducted across varied data noise types such as Gaussian white noise and uniform noise, evidenced the distinct impact of each noise type on the inversion task. The collective influence of these noise forms posed significant tests to the model's stability and performance. Results from these experiments indicate commendable resilience of the model to diverse noise disturbances. Under modest interference, R-values were observed to approximate 0.7, RMSE values hovered around 0.09, and RE values remained below 3.8%. In scenarios of intensified interference, R-values approached 0.5, RMSE registered near 0.2, and RE values were confined below 9%. The efficacy of the proposed algorithm in intricate noise contexts became manifest through these findings.</p><p>Contrasted with conventional methodologies, the devised algorithm not only demonstrated proficiency in navigating the complexities of the obstacle backscattering issue amid intricate noise situations but also showcased innate adaptability in feature learning. This inherent adaptability rendered manual feature extractor designs obsolete, thereby amplifying the algorithm's precision and adaptability.</p><p>The model's applicability extends across sectors, encompassing geological exploration, non-destructive testing, medical imaging, and material science. Within the realm of geological exploration, when seismic wave data are amassed, noise interference with geological information can be discerned and nullified, thereby bolstering exploration efficacy and precision. Such advancements lead to tangible benefits, including diminished costs and risks alongside optimized resource allocation.</p><p>However, it must be emphasized that despite the valuable insights yielded by the experimental results, inherent limitations persist. The noise models employed within the experiments operated on distinct distribution assumptions, such as Gaussian white noise and uniform distribution noise. Yet, in real-world settings, signals may be compromised by a confluence of noise types. Hence, the integration of apt noise suppression and data augmentation methodologies may prove indispensable for confronting the backscattering challenge shaped by multifaceted noise distributions. While this study furnishes pivotal insights into the obstacle backscattering dilemma, the nature of obstacles and specific noise distribution must be judiciously weighed prior to model application, ensuring performance and robustness remain unhampered. Future endeavors might venture into broader and more intricate scenarios, with an aspiration to augment the model's generalizability and dependability.</p>
+    </sec>
+  </body>
+  <back>
+    <ack>
+      <title>Acknowledgments</title>
+      
+    </ack>
+    <app-group>
+      <app>
+        <title>Appendix</title>
+        
+      </app>
+    </app-group>
+    <notes>
+      <title>Author Contributions</title>
+      
+    </notes>
+    <notes>
+      <title>Funding</title>
+      <p></p>
+    </notes>
+    <notes>
+      <title>Informed Consent Statement</title>
+      
+    </notes>
+    <notes>
+      <title>Data Availability Statement</title>
+      <p>The data used to support the findings of this study are available from the corresponding author upon request.</p>
+    </notes>
+    <notes notes-type="COI-statement">
+      <title>Conflicts of Interest</title>
+      <p>The authors declare that they have no conflicts of interest.</p>
+    </notes>
+    <ref-list>
+      <title>References</title>
+      <ref id="ref_1">
+        <label>1.</label>
+        <element-citation publication-type="book">
+          <person-group person-group-type="author">
+            <name>
+              <given-names>C. R.</given-names>
+              <surname>Vogel</surname>
+            </name>
+          </person-group>
+          <article-title/>
+          <source>Computational Methods for Inverse Problems</source>
+          <publisher-loc/>
+          <publisher-name>PA, USA: Society for Industrial and Applied Mathematics</publisher-name>
+          <year>2002</year>
+          <volume/>
+          <issue/>
+          <page-range/>
+          <fpage/>
+          <lpage/>
+          <pub-id/>
+        </element-citation>
+      </ref>
+      <ref id="ref_2">
+        <label>2.</label>
+        <element-citation publication-type="book">
+          <volume/>
+          <page-range>15-36</page-range>
+          <issue/>
+          <year>2013</year>
+          <publisher-name/>
+          <person-group person-group-type="author">
+            <name>
+              <given-names>L.</given-names>
+              <surname>Beilina</surname>
+            </name>
+            <name>
+              <given-names>V.</given-names>
+              <surname>Michael  Klibanov</surname>
+            </name>
+          </person-group>
+          <person-group person-group-type="editor"/>
+          <pub-id pub-id-type="doi">10.1007/978-1-4614-7816-4_2</pub-id>
+          <article-title>Approximate global convergence in imaging of land mines from backscattered data</article-title>
+          <source>Applied Inverse Problems, Springer Proceedings in Mathematics &amp; Statistics (Select Contributions from the First Annual Workshop on Inverse Problems), Gothenburg, Sweden</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_3">
+        <label>3.</label>
+        <element-citation publication-type="book">
+          <person-group person-group-type="author">
+            <name>
+              <given-names>F.</given-names>
+              <surname>Cakoni</surname>
+            </name>
+            <name>
+              <given-names>D.</given-names>
+              <surname>Colton</surname>
+            </name>
+            <name>
+              <given-names>H.</given-names>
+              <surname>Haddar</surname>
+            </name>
+          </person-group>
+          <article-title/>
+          <source>Inverse Scattering Theory and Transmission Eigenvalues</source>
+          <publisher-loc/>
+          <publisher-name>PA, USA: Society for Industrial and Applied Mathematics</publisher-name>
+          <year>2022</year>
+          <volume/>
+          <issue/>
+          <page-range/>
+          <fpage/>
+          <lpage/>
+          <pub-id/>
+        </element-citation>
+      </ref>
+      <ref id="ref_4">
+        <label>4.</label>
+        <element-citation publication-type="book">
+          <person-group person-group-type="author">
+            <name>
+              <given-names>A.</given-names>
+              <surname>Tarantola</surname>
+            </name>
+          </person-group>
+          <article-title/>
+          <source>Inverse Problem Theory and Methods for Model Parameter Estimation</source>
+          <publisher-loc/>
+          <publisher-name>PA, USA: Society for Industrial and Applied Mathematics</publisher-name>
+          <year>2005</year>
+          <volume/>
+          <issue/>
+          <page-range/>
+          <fpage/>
+          <lpage/>
+          <pub-id/>
+        </element-citation>
+      </ref>
+      <ref id="ref_5">
+        <label>5.</label>
+        <element-citation publication-type="journal">
+          <volume>29</volume>
+          <page-range>054011</page-range>
+          <issue>5</issue>
+          <year>2013</year>
+          <person-group person-group-type="author">
+            <name>
+              <given-names>L.</given-names>
+              <surname>Borcea</surname>
+            </name>
+            <name>
+              <given-names>T.</given-names>
+              <surname>Callaghan</surname>
+            </name>
+            <name>
+              <given-names>G.</given-names>
+              <surname>Papanicolaou</surname>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1088/0266-5611/29/5/054011</pub-id>
+          <pub-id pub-id-type="publisher"/>
+          <article-title>Motion estimation and imaging of complex scenes with synthetic aperture radar</article-title>
+          <source>Inverse Probl.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_6">
+        <label>6.</label>
+        <element-citation publication-type="journal">
+          <volume>28</volume>
+          <page-range>1-174</page-range>
+          <issue/>
+          <year>2019</year>
+          <person-group person-group-type="author">
+            <name>
+              <given-names>S.</given-names>
+              <surname>Arridge</surname>
+            </name>
+            <name>
+              <given-names>P.</given-names>
+              <surname>Maass</surname>
+            </name>
+            <name>
+              <given-names>O.</given-names>
+              <surname>Öktem</surname>
+            </name>
+            <name>
+              <given-names>C. B.</given-names>
+              <surname>Schönlieb</surname>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1017/S0962492919000059</pub-id>
+          <pub-id pub-id-type="publisher"/>
+          <article-title>Solving inverse problems using data-driven models</article-title>
+          <source>Acta Numer.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_7">
+        <label>7.</label>
+        <element-citation publication-type="journal">
+          <volume>41</volume>
+          <page-range>4082-4124</page-range>
+          <issue>6</issue>
+          <year>2000</year>
+          <person-group person-group-type="author">
+            <name>
+              <given-names>P. C.</given-names>
+              <surname>Sabatier</surname>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1063/1.533336</pub-id>
+          <pub-id pub-id-type="publisher"/>
+          <article-title>Past and future of inverse problems</article-title>
+          <source>J. Math. Phys.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_8">
+        <label>8.</label>
+        <element-citation publication-type="journal">
+          <volume>284</volume>
+          <page-range>102-125</page-range>
+          <issue/>
+          <year>2021</year>
+          <person-group person-group-type="author">
+            <name>
+              <given-names>L.X.</given-names>
+              <surname>Feng</surname>
+            </name>
+            <name>
+              <given-names>H.B.</given-names>
+              <surname>Wang</surname>
+            </name>
+            <name>
+              <given-names>L.</given-names>
+              <surname>Zhang</surname>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.jde.2021.02.049</pub-id>
+          <pub-id pub-id-type="publisher"/>
+          <article-title>The forward and inverse problems for the scattering of obliquely incident electromagnetic waves in a chiral medium</article-title>
+          <source>J. Differ. Equ.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_9">
+        <label>9.</label>
+        <element-citation publication-type="journal">
+          <volume>417</volume>
+          <page-range>109594</page-range>
+          <issue/>
+          <year>2020</year>
+          <person-group person-group-type="author">
+            <name>
+              <given-names>W. S.</given-names>
+              <surname>Yin</surname>
+            </name>
+            <name>
+              <given-names>W. H.</given-names>
+              <surname>Yang</surname>
+            </name>
+            <name>
+              <given-names>H. Y.</given-names>
+              <surname>Liu</surname>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.jcp.2020.109594</pub-id>
+          <pub-id pub-id-type="publisher"/>
+          <article-title>A neural network scheme for recovering scattering obstacles with limited phaseless far-field data</article-title>
+          <source>J. Comput. Phys.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_10">
+        <label>10.</label>
+        <element-citation publication-type="journal">
+          <volume>2</volume>
+          <page-range>1-127</page-range>
+          <issue>1</issue>
+          <year>2009</year>
+          <person-group person-group-type="author">
+            <name>
+              <given-names>Y.</given-names>
+              <surname>Bengio</surname>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1561/2200000006</pub-id>
+          <pub-id pub-id-type="publisher"/>
+          <article-title>Learning deep architectures for AI</article-title>
+          <source>Found. Trends® Mach. Learn.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_11">
+        <label>11.</label>
+        <element-citation publication-type="journal">
+          <volume>36</volume>
+          <page-range>065005</page-range>
+          <issue>6</issue>
+          <year>2020</year>
+          <person-group person-group-type="author">
+            <name>
+              <given-names>H. S.</given-names>
+              <surname>Li</surname>
+            </name>
+            <name>
+              <given-names>J.</given-names>
+              <surname>Schwab</surname>
+            </name>
+            <name>
+              <given-names>S.</given-names>
+              <surname>Antholzer</surname>
+            </name>
+            <name>
+              <given-names>M.</given-names>
+              <surname>Haltmeier</surname>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1088/1361-6420/ab6d57</pub-id>
+          <pub-id pub-id-type="publisher"/>
+          <article-title>NETT: Solving inverse problems with deep neural networks</article-title>
+          <source>Inverse Probl.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_12">
+        <label>12.</label>
+        <element-citation publication-type="journal">
+          <volume>448</volume>
+          <page-range>110771</page-range>
+          <issue/>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <given-names>Y.</given-names>
+              <surname>Gao</surname>
+            </name>
+            <name>
+              <given-names>H. Y.</given-names>
+              <surname>Liu</surname>
+            </name>
+            <name>
+              <given-names>X. C.</given-names>
+              <surname>Wang</surname>
+            </name>
+            <name>
+              <given-names>K.</given-names>
+              <surname>Zhang</surname>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.jcp.2021.110771</pub-id>
+          <pub-id pub-id-type="publisher"/>
+          <article-title>On an artificial neural network for inverse scattering problems</article-title>
+          <source>J. Comput. Phys.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_13">
+        <label>13.</label>
+        <element-citation publication-type="journal">
+          <volume>59</volume>
+          <page-range>1451-1462</page-range>
+          <issue>3</issue>
+          <year>2020</year>
+          <person-group person-group-type="author">
+            <name>
+              <given-names>P. C.</given-names>
+              <surname>Meng</surname>
+            </name>
+            <name>
+              <given-names>L.</given-names>
+              <surname>Su</surname>
+            </name>
+            <name>
+              <given-names>W. S.</given-names>
+              <surname>Yin</surname>
+            </name>
+            <name>
+              <given-names>S.</given-names>
+              <surname>Zhang</surname>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.aej.2020.03.047</pub-id>
+          <pub-id pub-id-type="publisher"/>
+          <article-title>Solving a kind of inverse scattering problem of acoustic waves based on linear sampling method and neural network</article-title>
+          <source>Alexandria Eng. J.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_14">
+        <label>14.</label>
+        <element-citation publication-type="journal">
+          <volume>35</volume>
+          <page-range>631-638</page-range>
+          <issue>4</issue>
+          <year>2011</year>
+          <person-group person-group-type="author">
+            <name>
+              <given-names>A.</given-names>
+              <surname>Karageorghis</surname>
+            </name>
+            <name>
+              <given-names>D.</given-names>
+              <surname>Lesnic</surname>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.enganabound.2010.11.010</pub-id>
+          <pub-id pub-id-type="publisher"/>
+          <article-title>Application of the MFS to inverse obstacle scattering problems</article-title>
+          <source>Eng. Anal. Bound. Elem.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_15">
+        <label>15.</label>
+        <element-citation publication-type="journal">
+          <volume>7</volume>
+          <page-range>757-775</page-range>
+          <issue>3</issue>
+          <year>2013</year>
+          <person-group person-group-type="author">
+            <name>
+              <given-names>J. Z.</given-names>
+              <surname>Li</surname>
+            </name>
+            <name>
+              <given-names>J.</given-names>
+              <surname>Zou</surname>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3934/ipi.2013.7.757</pub-id>
+          <pub-id pub-id-type="publisher"/>
+          <article-title>A direct sampling method for inverse scattering using far-field data</article-title>
+          <source>Inverse Probl. Imaging</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_16">
+        <label>16.</label>
+        <element-citation publication-type="journal">
+          <volume>34</volume>
+          <page-range>104005</page-range>
+          <issue>10</issue>
+          <year>2018</year>
+          <person-group person-group-type="author">
+            <name>
+              <given-names>B.</given-names>
+              <surname>Zhang</surname>
+            </name>
+            <name>
+              <given-names>H. W.</given-names>
+              <surname>Zhang</surname>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1088/1361-6420/aad81f</pub-id>
+          <pub-id pub-id-type="publisher"/>
+          <article-title>Fast imaging of scattering obstacles from phaseless far-field measurements at a fixed frequency</article-title>
+          <source>Inverse Probl.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_17">
+        <label>17.</label>
+        <element-citation publication-type="journal">
+          <volume>145</volume>
+          <page-range>915-971</page-range>
+          <issue/>
+          <year>2020</year>
+          <person-group person-group-type="author">
+            <name>
+              <given-names>C.</given-names>
+              <surname>Schillings</surname>
+            </name>
+            <name>
+              <given-names>B.</given-names>
+              <surname>Sprungk</surname>
+            </name>
+            <name>
+              <given-names>P.</given-names>
+              <surname>Wacker</surname>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1007/s00211-020-01131-1</pub-id>
+          <pub-id pub-id-type="publisher"/>
+          <article-title>On the convergence of the Laplace approximation and noise-level-robustness of Laplace-based Monte Carlo methods for Bayesian inverse problems</article-title>
+          <source>Numer. Math.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_18">
+        <label>18.</label>
+        <element-citation publication-type="journal">
+          <volume>116</volume>
+          <page-range>949-957</page-range>
+          <issue>2</issue>
+          <year>2004</year>
+          <person-group person-group-type="author">
+            <name>
+              <given-names>H. M.</given-names>
+              <surname>Miedema</surname>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1121/1.1766305</pub-id>
+          <pub-id pub-id-type="publisher"/>
+          <article-title>Relationship between exposure to multiple noise sources and noise annoyance</article-title>
+          <source>J. Acoust. Soc. Am.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_19">
+        <label>19.</label>
+        <element-citation publication-type="book">
+          <person-group person-group-type="author">
+            <name>
+              <given-names>S. A.</given-names>
+              <surname>Kassam</surname>
+            </name>
+          </person-group>
+          <article-title/>
+          <source>Signal Detection in Non-Gaussian Noise</source>
+          <publisher-loc/>
+          <publisher-name>New York, USA: Springer Science &amp; Business Media</publisher-name>
+          <year>2012</year>
+          <volume/>
+          <issue/>
+          <page-range/>
+          <fpage/>
+          <lpage/>
+          <pub-id/>
+        </element-citation>
+      </ref>
+      <ref id="ref_20">
+        <label>20.</label>
+        <element-citation publication-type="journal">
+          <volume>31</volume>
+          <page-range>514-521</page-range>
+          <issue>4</issue>
+          <year>1959</year>
+          <person-group person-group-type="author">
+            <name>
+              <given-names>J. A.</given-names>
+              <surname>Swets</surname>
+            </name>
+            <name>
+              <given-names>E. F.</given-names>
+              <surname>Shipley</surname>
+            </name>
+            <name>
+              <given-names>M. J.</given-names>
+              <surname>McKey</surname>
+            </name>
+            <name>
+              <given-names>D. M.</given-names>
+              <surname>Green</surname>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1121/1.1907745</pub-id>
+          <pub-id pub-id-type="publisher"/>
+          <article-title>Multiple observations of signals in noise</article-title>
+          <source>J. Acoust. Soc. Am.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_21">
+        <label>21.</label>
+        <element-citation publication-type="journal">
+          <volume>15</volume>
+          <page-range>1503</page-range>
+          <issue>5</issue>
+          <year>1982</year>
+          <person-group person-group-type="author">
+            <name>
+              <given-names>W.</given-names>
+              <surname>Sarlet</surname>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1088/0305-4470/15/5/013</pub-id>
+          <pub-id pub-id-type="publisher"/>
+          <article-title>The Helmholtz conditions revisited. A new approach to the inverse problem of Lagrangian dynamics</article-title>
+          <source>J. Phys. A: Math. Gen.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_22">
+        <label>22.</label>
+        <element-citation publication-type="book">
+          <person-group person-group-type="author">
+            <name>
+              <given-names>C. W.</given-names>
+              <surname>Groetsch</surname>
+            </name>
+          </person-group>
+          <article-title/>
+          <source>Inverse Problems in the Mathematical Sciences</source>
+          <publisher-loc/>
+          <publisher-name>Wiesbaden, Germany: Vieweg+Teubner Verlag</publisher-name>
+          <year>1993</year>
+          <volume/>
+          <issue/>
+          <page-range/>
+          <fpage/>
+          <lpage/>
+          <pub-id/>
+        </element-citation>
+      </ref>
+    </ref-list>
+  </back>
+</article>
