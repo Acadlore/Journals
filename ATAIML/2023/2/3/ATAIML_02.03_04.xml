@@ -1,0 +1,4013 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.3 20210610//EN" "JATS-journalpublishing1-3.dtd">
+<article xml:lang="en" dtd-version="1.3" article-type="research-article" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mml="http://www.w3.org/1998/Math/MathML">
+  <front>
+    <journal-meta>
+      <journal-id journal-id-type="publisher-id">ATAIML</journal-id>
+      <journal-id journal-id-type="doi">10.56578</journal-id>
+      <journal-title-group>
+        <journal-title>Acadlore Transactions on AI and Machine Learning</journal-title>
+        <abbrev-journal-title abbrev-type="issn">Acadlore Trans. Mach. Learn.</abbrev-journal-title>
+        <abbrev-journal-title abbrev-type="publisher">ATAIML</abbrev-journal-title>
+      </journal-title-group>
+      <issn publication-format="electronic">2957-9570</issn>
+      <issn publication-format="print">2957-9562</issn>
+      <publisher>
+        <publisher-name>Acadlore</publisher-name>
+      </publisher>
+    </journal-meta>
+    <article-meta>
+      <article-id pub-id-type="publisher-id">AR-tQ7rdypHTPHQv2F7SG6X_ib-LjbBZmk1</article-id>
+      <article-id pub-id-type="doi">10.56578/ataiml020304</article-id>
+      <title-group>
+        <article-title>Multi-Variable Time Series Decoding with Long Short-Term Memory and Mixture Attention</article-title>
+      </title-group>
+      <contrib-group>
+        <contrib contrib-type="author">
+          <xref ref-type="aff" rid="1">1</xref>
+          <name>
+            <surname>Seddik</surname>
+            <given-names>Soukaina</given-names>
+          </name>
+          <contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0009-0009-7074-4017</contrib-id>
+          <email>seddik.soukaina@etu.uae.ac.ma</email>
+        </contrib>
+        <contrib contrib-type="author">
+          <xref ref-type="aff" rid="1">1</xref>
+          <name>
+            <surname>Routaib</surname>
+            <given-names>Hayat</given-names>
+          </name>
+          <contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0000-0003-4461-8868</contrib-id>
+          <email>hroutaib@uae.ac.ma</email>
+        </contrib>
+        <contrib contrib-type="author">
+          <xref ref-type="aff" rid="1">1</xref>
+          <name>
+            <surname>Elhaddadi</surname>
+            <given-names>Anass</given-names>
+          </name>
+          <contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0000-0002-3338-2477</contrib-id>
+          <email>a.elhaddadi@uae.ac.ma</email>
+        </contrib>
+        <aff id="1">Applied Science Laboratory LSA, ENSAH, Abdelmalek Essaadi University, 32000 Al Hoceima, Morocco</aff>
+      </contrib-group>
+      <year>2023</year>
+      <volume>2</volume>
+      <issue>3</issue>
+      <fpage>154</fpage>
+      <lpage>169</lpage>
+      <page-range>154-169</page-range>
+      <history>
+        <date date-type="received">
+          <month>08</month>
+          <day>17</day>
+          <year>2023</year>
+        </date>
+        <date date-type="accepted">
+          <month>09</month>
+          <day>15</day>
+          <year>2023</year>
+        </date>
+        <date date-type="pub">
+          <month>09</month>
+          <day>21</day>
+          <year>2023</year>
+        </date>
+      </history>
+      <permissions>
+        <copyright-statement>©2023 by the authors</copyright-statement>
+        <copyright-year>2023</copyright-year>
+        <license>. Licensee Acadlore Publishing Services Limited, Hong Kong. This article can be downloaded for free, and reused and quoted with a citation of the original published version, under the <ext-link ext-link-type="uri" xlink:href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0 license</ext-link>.</license>
+      </permissions>
+      <abstract><p>The task of interpreting multi-variable time series data, while also forecasting outcomes accurately, is an ongoing challenge within the machine learning domain. This study presents an advanced method of utilizing Long Short-Term Memory (LSTM) recurrent neural networks in the analysis of such data, with specific attention to both target and exogenous variables. The novel approach aims to extract hidden states that are unique to individual variables, thereby capturing the distinctive dynamics inherent in multi-variable time series and allowing the elucidation of each variable's contribution to predictive outcomes. A pioneering mixture attention mechanism is introduced, which, by leveraging the aforementioned variable-specific hidden states, characterizes the generative process of the target variable. The study further enhances this methodology by formulating associated training techniques that permit concurrent learning of network parameters, variable interactions, and temporal significance with respect to the target prediction. The effectiveness of this approach is empirically validated through rigorous experimentation on three real-world datasets, including the 2022 closing prices of three major stocks - Apple (AAPL), Amazon (AMZN), and Microsoft (MSFT). The results demonstrated superior predictive performance, attributable to the successful encapsulation of the diverse dynamics of different variables. Furthermore, the study provides a comprehensive evaluation of the interpretability outcomes, both qualitatively and quantitatively. The presented framework thus holds substantial promise as a comprehensive solution that not only enhances prediction accuracy but also aids in the extraction of valuable insights from complex multi-variable datasets.</p></abstract>
+      <kwd-group>
+        <kwd>Neural network</kwd>
+        <kwd>Deep learning</kwd>
+        <kwd>Long Short-Term Memory</kwd>
+        <kwd>Interpretable Multi-Variable Long Short-Term Memory</kwd>
+        <kwd>Prediction</kwd>
+      </kwd-group>
+      <counts>
+        <count count-type="contributors">3</count>
+        <fig-count>7</fig-count>
+        <table-count>4</table-count>
+        <ref-count>27</ref-count>
+      </counts>
+    </article-meta>
+  </front>
+  <body>
+    <sec disp-level="level1" sec-type="intro">
+      <title>1. Introduction</title>
+      <p>Over recent years, Recurrent Neural Networks (RNNs) have emerged as potent instruments for the analysis of time series data, encompassing both target and exogenous variables [<xref ref-type="bibr" rid="ref_1">1</xref>]. The objectives of such investigations have expanded beyond mere predictive accuracy to encompass the extraction of discernible insights into the underlying patterns governing these intricate temporal datasets [<xref ref-type="bibr" rid="ref_2">2</xref>], [<xref ref-type="bibr" rid="ref_3">3</xref>].</p><p>The scrutiny of time series data has garnered considerable attention, propelled by the necessity to decipher meaningful insights from complex temporal patterns [<xref ref-type="bibr" rid="ref_4">4</xref>], [<xref ref-type="bibr" rid="ref_5">5</xref>]. RNNs have surfaced as a cornerstone in this domain, facilitating the modeling of sequential dependencies across varied applications, from natural language processing to financial forecasting [<xref ref-type="bibr" rid="ref_6">6</xref>]. In particular, Long Short-Term Memory (LSTM) networks have exhibited extraordinary competencies in capturing long-range dependencies and alleviating the vanishing gradient problem [<xref ref-type="bibr" rid="ref_7">7</xref>].</p><p>Further, the incorporation of exogenous variables into LSTM-based models, known as LSTM with exogenous inputs or LSTM with input, memory, and output gates for Variable Specific Hidden State (termed as Interpretable Multi-Variable LSTM or LSTM-IMV), has augmented their applicability to numerous real-world scenarios [<xref ref-type="bibr" rid="ref_8">8</xref>], [<xref ref-type="bibr" rid="ref_9">9</xref>]. This introduction offers an overview of LSTM-IMV models, underlining their importance and recent advancements.</p><p>The utility of LSTM RNNs in time series analysis has gained prominence due to their capacity to encapsulate long-range dependencies and intricate temporal associations [<xref ref-type="bibr" rid="ref_10">10</xref>], [<xref ref-type="bibr" rid="ref_11">11</xref>], [<xref ref-type="bibr" rid="ref_12">12</xref>]. Capitalizing on this potential, this research introduces an innovative mixture attention mechanism specifically designed to elucidate the generative process of the target variable. This novel approach transcends conventional attention mechanisms by providing insights into the complex interplay between variables, thereby enhancing the interpretability of predictions.</p><p>The study delves into the architecture of LSTM RNNs, with the aim of uncovering hidden states that are specific to individual variables within multi-variable time series data. In doing so, it seeks to capture the distinct dynamics that are intrinsic to each variable and discern their contributions to predictive outcomes.</p><p>To enable the proposed approach, this study develops sophisticated training techniques that facilitate the concurrent learning of network parameters, variable interactions, and temporal significance in relation to the target prediction. This comprehensive learning framework shows promise in providing a thorough understanding of the complex dynamics at play within multi-variable time series. The research aims to encapsulate the diverse dynamics exhibited by different variables, striving to enhance predictive performance across an array of three real-world datasets, including the closing prices of three stocks - Apple (AAPL), Amazon (AMZN), and Microsoft (MSFT). The efficacy of the proposed approach is appraised through extensive experimentation across several real-world datasets. By effectively capturing the intricate dynamics within multi-variable time series, the framework demonstrates improved predictive performance. Furthermore, this study conducts an exhaustive evaluation of the interpretability outcomes, utilizing both qualitative and quantitative measures. This assessment underscores the potential of the framework as a dual-purpose solution: facilitating accurate forecasting while enabling the extraction of meaningful insights from complex multi-variable datasets.</p><p>This research contributes to the evolving field of time series analysis by introducing a novel LSTM-based approach with an emphasis on capturing variable-specific dynamics and elucidating their contributions to predictive outcomes. The remainder of this paper delves into the technical details of the proposed methodology, the formulation of training techniques, experimental setups, and the presentation of results. Through this comprehensive investigation, the study aims to establish the proposed framework as a valuable asset for researchers and practitioners working with multi-variable time series data.</p><p>In summary, the principal contributions and discoveries of this paper can be encapsulated as follows:</p><p>• Introduction of a cutting-edge Drift-Adaptive Long Short-Term Memory (DA-LSTM) framework for interval load forecasting.</p><p>• Innovative integration of a mixture attention mechanism and drift adaptation techniques.</p><p>• An adaptive LSTM network that swiftly adopts emerging consumption trends while retaining previous knowledge.</p><p>• Rigorous evaluation demonstrates superior performance in interval load forecasting.</p><p>• Advancements in interpretable multi-variable time series analysis through the synergy of techniques.</p><p>The research undertaken within a Python-powered environment, leveraging the capabilities of Jupyter Notebook and the TensorFlow Keras library, yielded profound insights into the realm of time series forecasting, specifically in the context of stock price prediction. The study meticulously analyzed historical stock price data from three industry giants, namely, Apple Inc. (AAPL), Amazon.com Inc. (AMZN), and Microsoft Corporation (MSFT), spanning from January 1, 2020, to January 1, 2023. The analysis hinged on the ‘Close’ prices of these stocks, which served as the primary feature for scrutiny.</p><p>The creation and utilization of Interpretable Multi-Variable LSTM models for each stock demonstrated their ability to effectively encapsulate temporal patterns and enhance interpretability via self-attention mechanisms. These models were trained by minimizing evaluative criteria such as Mean Squared Error (MSE), Root Mean Squared Error (RMSE), and Mean Absolute Percentage Error (MAPE), leading to a consistent decline in loss values and signifying an enhancement in predictive precision with each training epoch.</p><p>One notable facet of this research was the visual interpretation of attention weights, represented as heatmaps. This provided an illuminating perspective into the portions of data the model prioritized during its predictive process. These visualizations served as a key tool in understanding the temporal relationships and dependencies that guided the model's predictive decision-making.</p><p>Further, the study facilitated a comparative analysis of the actual versus the forecasted closing prices for AAPL, MSFT, and AMZN stocks in 2022. A range of LSTM model approaches, including IMV-Full-P, IMV-Tensor-P, and others, were utilized, providing a panoramic view of their predictive prowess.</p><p>In terms of performance, the IMV-Tensor approach outshone its counterparts, highlighting the potential of independent variable-wise hidden states. In addition, the study introduced an innovative ranking method based on the Pearson correlation coefficient, which prioritized variables having the highest correlations with the target variable, thereby augmenting predictive accuracy.</p><p>This study serves as a significant contribution to the arena of time series forecasting, especially in the sphere of financial analytics. It underscores the efficacy of Interpretable Multi-Variable LSTM models and their attention mechanisms in the accurate prediction of stock prices. The insights gleaned from this research are invaluable for financial decision-making and portfolio management, emphasizing the potential of advanced, interpretive, and accurate forecasting models.</p><p>The subsequent sections of this paper are organized as follows: Section 2 provides an exhaustive review of Interpretable Machine Learning and Multi-Variable Time Series Forecasting, spotlighting their respective contributions towards the overarching theme of Interpretable Time Series Forecasting. Section 3 elucidates the methodology underpinning our Interpretable Multi-Variable (IMV) LSTM model, encompassing aspects such as data acquisition, training regimen, and the predictive framework. Section 4 introduces the simulation setup and engages in a detailed discussion of the results, serving to illustrate the superior predictive prowess and interpretability offered by the IMV-LSTM model. Finally, Section 5 brings the paper to a close by encapsulating the salient contributions, emphasizing the novelty of our mixture attention mechanism, and underscoring the exceptional predictive precision and interpretative clarity achieved by the IMV-LSTM model.</p>
+    </sec>
+    <sec disp-level="level1" sec-type="">
+      <title>2. Literature review</title>
+      <p>Rooting this research in its wider context necessitates an appreciation for the landmark work in the fields of LSTM networks, time series forecasting, and interpretable machine learning. Unquestionably, the pioneering efforts of individuals like Hochreiter and Schmidhuber [<xref ref-type="bibr" rid="ref_13">13</xref>] have shaped the role of LSTM networks in time series forecasting. Simultaneously, the vast realm of interpretable machine learning techniques has been meticulously explored by thought leaders such as Ribeiro et al. [<xref ref-type="bibr" rid="ref_14">14</xref>] and Lundberg and Lee [<xref ref-type="bibr" rid="ref_15">15</xref>]. Standing at the crossroads of these domains, this study leverages prior research as a springboard, introducing an innovative methodology that not only boosts predictive performance but also unveils invaluable insights into the underlying dynamics of multi-variable time series data [<xref ref-type="bibr" rid="ref_16">16</xref>].</p>
+      
+        <sec disp-level="level2">
+          
+            <title>2.1. Interpretable time series forecasting</title>
+          
+          <p>While LSTM networks have demonstrated exceptional predictive capabilities, their intricate nature often cloaks them in opacity. This has led researchers to embark on the quest for techniques that can infuse transparency into these models, particularly in the domain of time series prediction. An example of this is Dal et al. [<xref ref-type="bibr" rid="ref_17">17</xref>] who devised a methodology that elucidates the predictions of any classifier, LSTM-based models included. Their approach generates locally interpretable explanations by approximating complex models with simpler, more comprehensible ones [<xref ref-type="bibr" rid="ref_18">18</xref>]. Such initiatives have laid the foundation for the application of interpretable machine learning to time series forecasting, thereby facilitating model comprehension and validation.</p>
+        </sec>
+      
+      
+        <sec disp-level="level2">
+          
+            <title>2.2. Multi-variable time series forecasting</title>
+          
+          <p>In the landscape of real-world data, time series often encompass multiple variables that interact in complex, intricate patterns. LSTM networks have been adapted to accommodate multi-variable time series forecasting, where the goal is to predict one variable based on the historical data of multiple variables. Chen et al. [<xref ref-type="bibr" rid="ref_18">18</xref>] pioneered the Network of multi-input LSTM for Predicting Financial Time Series. However, the challenge of discerning the individual contributions of various variables to the prediction persists as a critical issue. The imperative to offer interpretable insights into the dynamics of different variables in a multi-variable setting calls for innovative methodologies.</p>
+          
+            <table-wrap id="table_1">
+              <label>Table 1</label>
+              <caption>Previous LSTM based models in literature</caption>
+              <abstract/>
+              <table><tbody><tr><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">Year</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">Authors</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">Proposed Model</span></p></td></tr><tr><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">2022</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">Zhao et al. [<xref ref-type="bibr" rid="ref_19">19</xref>]</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">LSTM-VAE</span></p></td></tr><tr><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">2022</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">Zha et al. [<xref ref-type="bibr" rid="ref_20">20</xref>]</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">CNN-LSTM</span></p></td></tr><tr><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">2021</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">Fan et al. [<xref ref-type="bibr" rid="ref_21">21</xref>]</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">ARIMA-LSTM</span></p></td></tr><tr><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">2017</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">Zhu et al. [<xref ref-type="bibr" rid="ref_22">22</xref>]</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Cambria Math, serif">Time-LSTM</span></p></td></tr><tr><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">2017</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">Zheng et al. [<xref ref-type="bibr" rid="ref_23">23</xref>]</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">EMD-LSTM</span></p></td></tr><tr><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">2021</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">Shi and Chehade [<xref ref-type="bibr" rid="ref_24">24</xref>]</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">Dual-LSTM</span></p></td></tr><tr><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">2020</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">Istiake Sunny et al. [<xref ref-type="bibr" rid="ref_25">25</xref>]</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">Bi-Directional LSTM</span></p></td></tr></tbody></table>
+            </table-wrap>
+          
+          <p>The demand for interpretable machine learning has surged as complex models, such as deep neural networks, find increasing application in contexts requiring critical decision making. Interpretable machine learning strives to provide transparency into the internal workings of these models, aiming to render their predictions more comprehensible and trustworthy. <xref ref-type="table" rid="table_1">Table 1</xref> shows the implementation of LSTM via techniques like LSTM Variational AutoEncoder (LSTM-VAE) [<xref ref-type="bibr" rid="ref_19">19</xref>] and a CNN-LSTM network that employs both convolutional and LSTM layers to extract knowledge from the training data. Zha et al. [<xref ref-type="bibr" rid="ref_20">20</xref>] devised models to elucidate the features driving the predictions.</p><p>In the realm of time series prediction, Fan et al. [<xref ref-type="bibr" rid="ref_21">21</xref>] utilized an ARIMA-LSTM model, while Zhu et al. [<xref ref-type="bibr" rid="ref_22">22</xref>] employed the TIME-LSTM model, which focuses on temporal dynamics by accentuating the sequential dependencies in time series data. By customizing LSTM architectures to capture these temporal elements, the model aspires to provide clearer insights into time-evolving patterns.</p><p>Zheng et al. [<xref ref-type="bibr" rid="ref_23">23</xref>] used the EMD-LSTM (Empirical Mode Decomposition - LSTM) model, which integrates LSTM Networks with Empirical Mode Decomposition (EMD). EMD is employed to extract intrinsic oscillatory modes from data, which are then fed into the LSTM for forecasting. This strategy aims to offer interpretable insights by decomposing complex signals.</p><p>Shi and Chehade [<xref ref-type="bibr" rid="ref_24">24</xref>] introduced the Dual-LSTM model, implementing a dual structure that comprises two separate LSTM networks. This architecture aims to enhance interpretability by explicitly capturing the influence of exogenous variables and endogenous factors on the forecasting process.</p><p>Istiake Sunny et al. [<xref ref-type="bibr" rid="ref_25">25</xref>] developed the Bi-Directional LSTM model that enhances LSTM architectures by processing input sequences in both forward and reverse directions. This bidirectional analysis aims to capture intricate relationships between variables and provide more comprehensive insights for forecasting.</p><p>The merger of LSTM recurrent neural networks with interpretability techniques holds the promise to significantly transform multi-variable time series forecasting. This study, grounded in the fundamentals of LSTM networks and the advancements in interpretable machine learning, introduces an innovative mixture attention mechanism to glean insights into the dynamics of individual variables. This approach not only amplifies the accuracy of predictions but also provides decision-makers with understandable explanations. The exploration of this convergence is anticipated to bridge the divide between prediction precision and interpretability, paving the way for applications across a multitude of domains.</p><p>In this paper, our focus is centered on deploying the Interpretable Multi-Variable LSTM (IMV-LSTM) to manage multiple input variables concurrently, as exemplified by our work with the closing prices of three stocks—AAPL, AMZN, and MSFT. IMV-LSTM models are engineered to address some of the limitations of traditional LSTM models in time series forecasting by offering enhanced interpretability and potential performance improvements. This model can help address the gaps or limitations inherent in LSTM-based time series forecasting, as outlined in the subsequent <xref ref-type="table" rid="table_2">Table 2</xref>.</p>
+          
+            <table-wrap id="table_2">
+              <label>Table 2</label>
+              <caption>The comparison between LSTM &amp;amp; IVM-LSTM</caption>
+              <abstract/>
+              <table><tbody><tr><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">LSTM Limitations</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">IVM-LSTM Overcoming</span></p></td></tr><tr><td colspan="1" rowspan="1"><p style="text-align: center"><span>Interpretability</span></p></td><td colspan="1" rowspan="1"><p><span style="font-family: Times New Roman, serif">IMV-LSTM models enhance interpretability through mechanisms like attention and feature importance analysis, overcoming the black-box nature of traditional LSTMs. This transparency is vital in financial forecasting, enabling better risk assessment and informed decision-making by providing insights into the reasoning behind predictions.</span></p></td></tr><tr><td colspan="1" rowspan="1"><p style="text-align: center"><span>Incorporating Multiple Variables</span></p></td><td colspan="1" rowspan="1"><p><span style="font-family: Times New Roman, serif">IMV-LSTM models excel in handling multiple input variables concurrently, a crucial advantage in stock price forecasting where prices are influenced by diverse factors like market sentiment, economic indicators, and news events. This capability goes beyond the traditional LSTM approach, which often focuses solely on historical prices, leading to enhanced forecasting accuracy.</span></p></td></tr><tr><td colspan="1" rowspan="1"><p style="text-align: center"><span>Handling Non-Stationarity</span></p></td><td colspan="1" rowspan="1"><p><span style="font-family: Times New Roman, serif">IMV-LSTM models can incorporate additional features or transformations to handle non-stationary data effectively. This is important in financial forecasting, as stock prices often exhibit non-stationary behavior.</span></p></td></tr><tr><td colspan="1" rowspan="1"><p style="text-align: center"><span>Uncertainty Estimation</span></p></td><td colspan="1" rowspan="1"><p><span style="font-family: Times New Roman, serif">IMV-LSTM models can provide insights into prediction uncertainty. This addresses the limitation of traditional LSTMs, which typically offer point forecasts. Knowing the degree of uncertainty associated with predictions is essential in risk management and portfolio optimization.</span></p></td></tr><tr><td colspan="1" rowspan="1"><p style="text-align: center"><span>Anomaly Detection</span></p></td><td colspan="1" rowspan="1"><p><span style="font-family: Times New Roman, serif">IMV-LSTM models can be enhanced to detect anomalies or outlier data points in time series data. This is valuable in financial forecasting to identify abnormal market behavior or exceptional events that may impact stock prices.</span></p></td></tr><tr><td colspan="1" rowspan="1"><p style="text-align: center"><span>Incorporating External Data</span></p></td><td colspan="1" rowspan="1"><p><span style="font-family: Times New Roman, serif">IMV-LSTM models can easily incorporate external data sources, such as news sentiment analysis or macroeconomic indicators, to improve forecasting accuracy and robustness. This addresses the limitation of traditional LSTMs, which often rely solely on historical price data.</span></p></td></tr><tr><td colspan="1" rowspan="1"><p style="text-align: center"><span>Regularization Techniques</span></p></td><td colspan="1" rowspan="1"><p><span style="font-family: Times New Roman, serif">IMV-LSTM models may introduce novel regularization techniques to mitigate overfitting, a common challenge in financial forecasting when dealing with limited historical data.</span></p></td></tr><tr><td colspan="1" rowspan="1"><p style="text-align: center"><span>Model Robustness</span></p></td><td colspan="1" rowspan="1"><p><span style="font-family: Times New Roman, serif">By considering multiple variables and providing interpretability, IMV-LSTM models can potentially be more robust to changing market conditions and external factors.</span></p></td></tr></tbody></table>
+            </table-wrap>
+          
+          <p>To further substantiate our work, we have compared our model with those developed by other researchers, leading to the following insights:</p><p>• LSTM-VAE marries LSTM and VAE, yielding probabilistic and interpretable forecasting.</p><p>• CNN-LSTM amalgamates CNN and LSTM, facilitating spatial-temporal pattern recognition.</p><p>• ARIMA-LSTM merges ARIMA and LSTM, equipping the model to address linear trends and complex dependencies.</p><p>• Time-LSTM is a specialized LSTM variant tailored for efficient time series modeling.</p><p>• EMD-LSTM leverages Empirical Mode Decomposition before LSTM to handle non-stationary data.</p><p>• Dual-LSTM utilizes two parallel LSTM layers to boost bidirectional understanding.</p><p>• Bi-Directional LSTM processes data in both forward and backward directions in time, providing bidirectional insights.</p><p>Conversely, IMV-LSTM concentrates on enhancing interpretability and accuracy in time series forecasting. It encompasses multiple variables, tackles non-stationarity, delivers uncertainty estimates, and ensures transparency in model predictions. Therefore, the choice of model largely depends on the specific characteristics of the time series data and the objectives of forecasting. The most appropriate model may vary across different applications, thereby underscoring the need to consider factors such as data type, dimensionality, seasonality, and the demand for interpretability when selecting a model for time series forecasting. </p>
+        </sec>
+      
+    </sec>
+    <sec disp-level="level1" sec-type="">
+      <title>3. Methodology</title>
+      <p>Crafting an “Interpretable Multi-Variable (IMV) LSTM” necessitates the integration of LSTM architecture with methods that bolster interpretability. This can be accomplished by leveraging attention mechanisms and visualization techniques, which illuminate the process through which the model navigates different variables over time.</p>
+      
+        <sec disp-level="level2">
+          
+            <title>3.1. Imv-lstm</title>
+          
+          <p>In this section, we delineate the formulation of the IMV-LSTM architecture, amalgamating the prowess of LSTM networks with interpretable attention mechanisms to augment predictive precision and provide insights into the contributions of individual variables. We kick-off by outlining the standard LSTM equations, subsequently introducing the innovative mixture attention mechanism.</p><p>LSTM [<xref ref-type="bibr" rid="ref_26">26</xref>] is classified under the umbrella of recurrent neural networks (RNNs), yet it stands apart due to its extended long-term memory capabilities. This contrasts with traditional RNNs, which utilize recurrent cells such as sigma, which can be depicted as [<xref ref-type="bibr" rid="ref_27">27</xref>]:</p>
+          
+            <disp-formula>
+              <label>(1)</label>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <msub>
+                  <mi>h</mi>
+                  <mrow data-mjx-texclass="ORD">
+                    <mi>t</mi>
+                    <mo>=</mo>
+                  </mrow>
+                </msub>
+                <mi>σ</mi>
+                <mrow data-mjx-texclass="INNER">
+                  <mo data-mjx-texclass="OPEN">(</mo>
+                  <mo>+</mo>
+                  <mo>+</mo>
+                  <mo data-mjx-texclass="CLOSE">)</mo>
+                  <mi>Z</mi>
+                  <mi>P</mi>
+                  <mi>b</mi>
+                  <msub>
+                    <mi>h</mi>
+                    <mrow data-mjx-texclass="ORD">
+                      <mi>t</mi>
+                      <mo>−</mo>
+                      <mn>1</mn>
+                    </mrow>
+                  </msub>
+                  <msub>
+                    <mi>x</mi>
+                    <mi>t</mi>
+                  </msub>
+                </mrow>
+              </math>
+            </disp-formula>
+          
+          <p>where, <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msub>
+      <mi>x</mi>
+      <mi>t</mi>
+    </msub>
+  </math>
+</inline-formula> represents the input, while <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msub>
+      <mi>h</mi>
+      <mi>t</mi>
+    </msub>
+  </math>
+</inline-formula> and <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msub>
+      <mi>y</mi>
+      <mi>t</mi>
+    </msub>
+  </math>
+</inline-formula> denote the recurrent information and cell output at a specific time $t<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo>,</mo>
+    <mo>.</mo>
+    <mo>,</mo>
+    <mi>r</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>p</mi>
+    <mi>e</mi>
+    <mi>c</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>v</mi>
+    <mi>e</mi>
+    <mi>l</mi>
+    <mi>y</mi>
+    <mi>T</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>w</mi>
+    <mi>e</mi>
+    <mi>i</mi>
+    <mi>g</mi>
+    <mi>h</mi>
+    <mi>t</mi>
+    <mi>s</mi>
+    <mi>r</mi>
+    <mi>e</mi>
+    <mi>p</mi>
+    <mi>r</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>t</mi>
+    <mi>e</mi>
+    <mi>d</mi>
+    <mi>b</mi>
+    <mi>y</mi>
+  </math>
+</inline-formula>Z<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>d</mi>
+  </math>
+</inline-formula>P<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo>,</mo>
+    <mi>a</mi>
+    <mi>l</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>g</mi>
+    <mi>w</mi>
+    <mi>i</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>b</mi>
+    <mi>i</mi>
+    <mi>a</mi>
+    <mi>s</mi>
+  </math>
+</inline-formula>b<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo>,</mo>
+    <mo>.</mo>
+    <mo>,</mo>
+    <mo>−</mo>
+    <mo>.</mo>
+    <mo>,</mo>
+    <mo>,</mo>
+    <mo stretchy="false">[</mo>
+    <mo stretchy="false">]</mo>
+    <mo>.</mo>
+    <mo>.</mo>
+    <mo>,</mo>
+    <mo>,</mo>
+    <mo>,</mo>
+    <mo>.</mo>
+    <mo>.</mo>
+    <mo>:&amp;lt;</mo>
+    <mo>&amp;gt;&amp;lt;</mo>
+    <mo>&amp;gt;</mo>
+    <mi>c</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>t</mi>
+    <mi>r</mi>
+    <mi>i</mi>
+    <mi>b</mi>
+    <mi>u</mi>
+    <mi>t</mi>
+    <mi>e</mi>
+    <mi>t</mi>
+    <mi>o</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>e</mi>
+    <mi>c</mi>
+    <mi>o</mi>
+    <mi>m</mi>
+    <mi>p</mi>
+    <mi>u</mi>
+    <mi>t</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>s</mi>
+    <mi>W</mi>
+    <mi>h</mi>
+    <mi>i</mi>
+    <mi>l</mi>
+    <mi>e</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>u</mi>
+    <mi>s</mi>
+    <mi>a</mi>
+    <mi>g</mi>
+    <mi>e</mi>
+    <mi>o</mi>
+    <mi>f</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>d</mi>
+    <mi>a</mi>
+    <mi>r</mi>
+    <mi>d</mi>
+    <mi>R</mi>
+    <mi>N</mi>
+    <mi>N</mi>
+    <mi>c</mi>
+    <mi>e</mi>
+    <mi>l</mi>
+    <mi>l</mi>
+    <mi>s</mi>
+    <mi>h</mi>
+    <mi>a</mi>
+    <mi>s</mi>
+    <mi>d</mi>
+    <mi>e</mi>
+    <mi>m</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>r</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>e</mi>
+    <mi>d</mi>
+    <mi>s</mi>
+    <mi>u</mi>
+    <mi>c</mi>
+    <mi>c</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>s</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>a</mi>
+    <mi>p</mi>
+    <mi>p</mi>
+    <mi>l</mi>
+    <mi>i</mi>
+    <mi>c</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>s</mi>
+    <mi>s</mi>
+    <mi>u</mi>
+    <mi>c</mi>
+    <mi>h</mi>
+    <mi>a</mi>
+    <mi>s</mi>
+    <mi>s</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>m</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>t</mi>
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>a</mi>
+    <mi>l</mi>
+    <mi>y</mi>
+    <mi>s</mi>
+    <mi>i</mi>
+    <mi>s</mi>
+    <mi>o</mi>
+    <mi>r</mi>
+    <mi>i</mi>
+    <mi>m</mi>
+    <mi>a</mi>
+    <mi>g</mi>
+    <mi>e</mi>
+    <mi>c</mi>
+    <mi>l</mi>
+    <mi>a</mi>
+    <mi>s</mi>
+    <mi>s</mi>
+    <mi>i</mi>
+    <mi>f</mi>
+    <mi>i</mi>
+    <mi>c</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>y</mi>
+    <mi>f</mi>
+    <mi>r</mi>
+    <mi>e</mi>
+    <mi>q</mi>
+    <mi>u</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>t</mi>
+    <mi>l</mi>
+    <mi>y</mi>
+    <mi>f</mi>
+    <mi>a</mi>
+    <mi>c</mi>
+    <mi>e</mi>
+    <mi>d</mi>
+    <mi>i</mi>
+    <mi>f</mi>
+    <mi>f</mi>
+    <mi>i</mi>
+    <mi>c</mi>
+    <mi>u</mi>
+    <mi>l</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>a</mi>
+    <mi>d</mi>
+    <mi>e</mi>
+    <mi>q</mi>
+    <mi>u</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>e</mi>
+    <mi>l</mi>
+    <mi>y</mi>
+    <mi>h</mi>
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>d</mi>
+    <mi>l</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>g</mi>
+    <mi>l</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>g</mi>
+    <mi>t</mi>
+    <mi>e</mi>
+    <mi>r</mi>
+    <mi>m</mi>
+    <mi>d</mi>
+    <mi>e</mi>
+    <mi>p</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>d</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>c</mi>
+    <mi>i</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>I</mi>
+    <mi>n</mi>
+    <mi>c</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>t</mi>
+    <mi>r</mi>
+    <mi>a</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>L</mi>
+    <mi>S</mi>
+    <mi>T</mi>
+    <mi>M</mi>
+    <mi>n</mi>
+    <mi>e</mi>
+    <mi>t</mi>
+    <mi>w</mi>
+    <mi>o</mi>
+    <mi>r</mi>
+    <mi>k</mi>
+    <mi>s</mi>
+    <mi>e</mi>
+    <mi>x</mi>
+    <mi>c</mi>
+    <mi>e</mi>
+    <mi>l</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>p</mi>
+    <mi>r</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>e</mi>
+    <mi>r</mi>
+    <mi>v</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>g</mi>
+    <mi>v</mi>
+    <mi>a</mi>
+    <mi>l</mi>
+    <mi>u</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>f</mi>
+    <mi>r</mi>
+    <mi>o</mi>
+    <mi>m</mi>
+    <mi>e</mi>
+    <mi>a</mi>
+    <mi>r</mi>
+    <mi>l</mi>
+    <mi>i</mi>
+    <mi>e</mi>
+    <mi>r</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>a</mi>
+    <mi>g</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>f</mi>
+    <mi>o</mi>
+    <mi>r</mi>
+    <mi>f</mi>
+    <mi>u</mi>
+    <mi>t</mi>
+    <mi>u</mi>
+    <mi>r</mi>
+    <mi>e</mi>
+    <mi>u</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>l</mi>
+    <mi>i</mi>
+    <mi>z</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>a</mi>
+    <mi>d</mi>
+    <mi>d</mi>
+    <mi>r</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>s</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>g</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>c</mi>
+    <mi>h</mi>
+    <mi>a</mi>
+    <mi>l</mi>
+    <mi>l</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>g</mi>
+    <mi>e</mi>
+    <mi>o</mi>
+    <mi>f</mi>
+    <mi>v</mi>
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>i</mi>
+    <mi>s</mi>
+    <mi>h</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>g</mi>
+    <mi>g</mi>
+    <mi>r</mi>
+    <mi>a</mi>
+    <mi>d</mi>
+    <mi>i</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>t</mi>
+    <mi>s</mi>
+    <mi>T</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>v</mi>
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>i</mi>
+    <mi>s</mi>
+    <mi>h</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>g</mi>
+    <mi>g</mi>
+    <mi>r</mi>
+    <mi>a</mi>
+    <mi>d</mi>
+    <mi>i</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>t</mi>
+    <mi>p</mi>
+    <mi>r</mi>
+    <mi>o</mi>
+    <mi>b</mi>
+    <mi>l</mi>
+    <mi>e</mi>
+    <mi>m</mi>
+    <mi>a</mi>
+    <mi>r</mi>
+    <mi>i</mi>
+    <mi>s</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>w</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>g</mi>
+    <mi>r</mi>
+    <mi>a</mi>
+    <mi>d</mi>
+    <mi>i</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>f</mi>
+    <mi>o</mi>
+    <mi>r</mi>
+    <mi>m</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>f</mi>
+    <mi>a</mi>
+    <mi>i</mi>
+    <mi>l</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>o</mi>
+    <mi>p</mi>
+    <mi>r</mi>
+    <mi>o</mi>
+    <mi>p</mi>
+    <mi>a</mi>
+    <mi>g</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>e</mi>
+    <mi>b</mi>
+    <mi>a</mi>
+    <mi>c</mi>
+    <mi>k</mi>
+    <mi>t</mi>
+    <mi>o</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>m</mi>
+    <mi>o</mi>
+    <mi>d</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>p</mi>
+    <mi>u</mi>
+    <mi>t</mi>
+    <mi>l</mi>
+    <mi>a</mi>
+    <mi>y</mi>
+    <mi>e</mi>
+    <mi>r</mi>
+    <mi>s</mi>
+    <mi>d</mi>
+    <mi>u</mi>
+    <mi>e</mi>
+    <mi>t</mi>
+    <mi>o</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>c</mi>
+    <mi>h</mi>
+    <mi>a</mi>
+    <mi>r</mi>
+    <mi>a</mi>
+    <mi>c</mi>
+    <mi>t</mi>
+    <mi>e</mi>
+    <mi>r</mi>
+    <mi>i</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>c</mi>
+    <mi>s</mi>
+    <mi>o</mi>
+    <mi>f</mi>
+    <mi>a</mi>
+    <mi>c</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>v</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>f</mi>
+    <mi>u</mi>
+    <mi>n</mi>
+    <mi>c</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>s</mi>
+    <mi>F</mi>
+    <mi>o</mi>
+    <mi>r</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>c</mi>
+    <mi>e</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>i</mi>
+    <mi>g</mi>
+    <mi>m</mi>
+    <mi>o</mi>
+    <mi>i</mi>
+    <mi>d</mi>
+    <mi>f</mi>
+    <mi>u</mi>
+    <mi>n</mi>
+    <mi>c</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>m</mi>
+    <mi>a</mi>
+    <mi>p</mi>
+    <mi>s</mi>
+    <mi>s</mi>
+    <mi>i</mi>
+    <mi>g</mi>
+    <mi>n</mi>
+    <mi>i</mi>
+    <mi>f</mi>
+    <mi>i</mi>
+    <mi>c</mi>
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>p</mi>
+    <mi>u</mi>
+    <mi>t</mi>
+    <mi>v</mi>
+    <mi>a</mi>
+    <mi>l</mi>
+    <mi>u</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>o</mi>
+    <mi>a</mi>
+    <mi>r</mi>
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>g</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>p</mi>
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>n</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>g</mi>
+    <mi>f</mi>
+    <mi>r</mi>
+    <mi>o</mi>
+    <mi>m</mi>
+    <mi>t</mi>
+    <mi>o</mi>
+    <mi>A</mi>
+    <mi>s</mi>
+    <mi>a</mi>
+    <mi>r</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>u</mi>
+    <mi>l</mi>
+    <mi>t</mi>
+    <mi>s</mi>
+    <mi>u</mi>
+    <mi>b</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>a</mi>
+    <mi>l</mi>
+    <mi>c</mi>
+    <mi>h</mi>
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>g</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>p</mi>
+    <mi>u</mi>
+    <mi>t</mi>
+    <mi>l</mi>
+    <mi>e</mi>
+    <mi>a</mi>
+    <mi>d</mi>
+    <mi>t</mi>
+    <mi>o</mi>
+    <mi>m</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>o</mi>
+    <mi>r</mi>
+    <mi>a</mi>
+    <mi>d</mi>
+    <mi>j</mi>
+    <mi>u</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>m</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>t</mi>
+    <mi>s</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>o</mi>
+    <mi>u</mi>
+    <mi>t</mi>
+    <mi>p</mi>
+    <mi>u</mi>
+    <mi>t</mi>
+    <mi>r</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>u</mi>
+    <mi>l</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>g</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>d</mi>
+    <mi>i</mi>
+    <mi>m</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>i</mi>
+    <mi>s</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>d</mi>
+    <mi>d</mi>
+    <mi>e</mi>
+    <mi>r</mi>
+    <mi>i</mi>
+    <mi>v</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>v</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>m</mi>
+    <mi>a</mi>
+    <mi>y</mi>
+    <mi>e</mi>
+    <mi>v</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>v</mi>
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>i</mi>
+    <mi>s</mi>
+    <mi>h</mi>
+    <mi>T</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>L</mi>
+    <mi>S</mi>
+    <mi>T</mi>
+    <mi>M</mi>
+    <mi>n</mi>
+    <mi>e</mi>
+    <mi>t</mi>
+    <mi>w</mi>
+    <mi>o</mi>
+    <mi>r</mi>
+    <mi>k</mi>
+    <mi>i</mi>
+    <mi>s</mi>
+    <mi>c</mi>
+    <mi>o</mi>
+    <mi>m</mi>
+    <mi>p</mi>
+    <mi>o</mi>
+    <mi>s</mi>
+    <mi>e</mi>
+    <mi>d</mi>
+    <mi>o</mi>
+    <mi>f</mi>
+    <mi>m</mi>
+    <mi>e</mi>
+    <mi>m</mi>
+    <mi>o</mi>
+    <mi>r</mi>
+    <mi>y</mi>
+    <mi>c</mi>
+    <mi>e</mi>
+    <mi>l</mi>
+    <mi>l</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>r</mi>
+    <mi>e</mi>
+    <mi>t</mi>
+    <mi>a</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>f</mi>
+    <mi>o</mi>
+    <mi>r</mi>
+    <mi>m</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>a</mi>
+    <mi>c</mi>
+    <mi>r</mi>
+    <mi>o</mi>
+    <mi>s</mi>
+    <mi>s</mi>
+    <mi>v</mi>
+    <mi>a</mi>
+    <mi>r</mi>
+    <mi>y</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>g</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>m</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>e</mi>
+    <mi>p</mi>
+    <mi>s</mi>
+    <mi>T</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>c</mi>
+    <mi>o</mi>
+    <mi>m</mi>
+    <mi>p</mi>
+    <mi>u</mi>
+    <mi>t</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>w</mi>
+    <mi>i</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>L</mi>
+    <mi>S</mi>
+    <mi>T</mi>
+    <mi>M</mi>
+    <mi>c</mi>
+    <mi>e</mi>
+    <mi>l</mi>
+    <mi>l</mi>
+    <mi>i</mi>
+    <mi>s</mi>
+    <mi>g</mi>
+    <mi>o</mi>
+    <mi>v</mi>
+    <mi>e</mi>
+    <mi>r</mi>
+    <mi>n</mi>
+    <mi>e</mi>
+    <mi>d</mi>
+    <mi>b</mi>
+    <mi>y</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>f</mi>
+    <mi>o</mi>
+    <mi>l</mi>
+    <mi>l</mi>
+    <mi>o</mi>
+    <mi>w</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>g</mi>
+    <mi>e</mi>
+    <mi>q</mi>
+    <mi>u</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>s</mi>
+    <mi>p</mi>
+    <mi>p</mi>
+    <mn>13</mn>
+    <mn>0</mn>
+    <mn>1.</mn>
+    <msup>
+      <mi>l</mi>
+      <mo data-mjx-alternate="1">′</mo>
+    </msup>
+    <mrow data-mjx-texclass="ORD">
+      <mo>/</mo>
+    </mrow>
+  </math>
+</inline-formula>\rightarrow<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo>&amp;lt;</mo>
+    <mo>&amp;gt;</mo>
+    <mo stretchy="false">(</mo>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>r</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>g</mi>
+    <mi>T</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>p</mi>
+    <mi>u</mi>
+    <mi>t</mi>
+    <mi>g</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>e</mi>
+  </math>
+</inline-formula>i<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo stretchy="false">)</mo>
+    <mo>&amp;lt;</mo>
+    <mo>&amp;gt;</mo>
+    <mrow data-mjx-texclass="ORD">
+      <mo>/</mo>
+    </mrow>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>r</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>g</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>t</mi>
+    <mi>e</mi>
+    <mi>g</mi>
+    <mi>r</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>c</mi>
+    <mi>u</mi>
+    <mi>r</mi>
+    <mi>r</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>p</mi>
+    <mi>u</mi>
+    <mi>t</mi>
+  </math>
+</inline-formula>x_t<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>p</mi>
+    <mi>r</mi>
+    <mi>o</mi>
+    <mi>d</mi>
+    <mi>u</mi>
+    <mi>c</mi>
+    <mi>e</mi>
+    <mi>d</mi>
+    <mi>f</mi>
+    <mi>r</mi>
+    <mi>o</mi>
+    <mi>m</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>p</mi>
+    <mi>r</mi>
+    <mi>e</mi>
+    <mi>v</mi>
+    <mi>i</mi>
+    <mi>o</mi>
+    <mi>u</mi>
+    <mi>s</mi>
+    <mi>L</mi>
+    <mi>S</mi>
+    <mi>T</mi>
+    <mi>M</mi>
+    <mi>c</mi>
+    <mi>e</mi>
+    <mi>l</mi>
+    <mi>l</mi>
+  </math>
+</inline-formula>h_{t-1}<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>d</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>c</mi>
+    <mi>e</mi>
+    <mi>l</mi>
+    <mi>l</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>e</mi>
+  </math>
+</inline-formula>C_{t-1}$ The process is captured by the equation:</p>
+          
+            <disp-formula>
+              <label>(2)</label>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <msub>
+                  <mi>i</mi>
+                  <mi>t</mi>
+                </msub>
+                <mo>=</mo>
+                <mi>σ</mi>
+                <mrow data-mjx-texclass="INNER">
+                  <mo data-mjx-texclass="OPEN">(</mo>
+                  <mo>+</mo>
+                  <mo>+</mo>
+                  <mo>⊙</mo>
+                  <mo>+</mo>
+                  <mo data-mjx-texclass="CLOSE">)</mo>
+                  <msub>
+                    <mi>P</mi>
+                    <mi>i</mi>
+                  </msub>
+                  <msub>
+                    <mi>x</mi>
+                    <mi>t</mi>
+                  </msub>
+                  <msub>
+                    <mi>Z</mi>
+                    <mi>i</mi>
+                  </msub>
+                  <msub>
+                    <mi>h</mi>
+                    <mrow data-mjx-texclass="ORD">
+                      <mi>t</mi>
+                      <mo>−</mo>
+                      <mn>1</mn>
+                    </mrow>
+                  </msub>
+                  <msub>
+                    <mi>W</mi>
+                    <mrow data-mjx-texclass="ORD">
+                      <mi>c</mi>
+                      <mi>i</mi>
+                    </mrow>
+                  </msub>
+                  <msub>
+                    <mi>c</mi>
+                    <mrow data-mjx-texclass="ORD">
+                      <mi>t</mi>
+                      <mo>−</mo>
+                      <mn>1</mn>
+                    </mrow>
+                  </msub>
+                  <msub>
+                    <mi>b</mi>
+                    <mi>i</mi>
+                  </msub>
+                </mrow>
+              </math>
+            </disp-formula>
+          
+          <p>Here, the <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo>⊙</mo>
+  </math>
+</inline-formula> sign represents element-wise multiplication between vectors. <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msub>
+      <mi>P</mi>
+      <mi>i</mi>
+    </msub>
+  </math>
+</inline-formula>, <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msub>
+      <mi>Z</mi>
+      <mi>i</mi>
+    </msub>
+  </math>
+</inline-formula> and <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msub>
+      <mi>W</mi>
+      <mrow data-mjx-texclass="ORD">
+        <mi>c</mi>
+        <mi>i</mi>
+      </mrow>
+    </msub>
+  </math>
+</inline-formula> are the respective weights related to <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msub>
+      <mi>x</mi>
+      <mi>t</mi>
+    </msub>
+  </math>
+</inline-formula>, <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msub>
+      <mi>h</mi>
+      <mrow data-mjx-texclass="ORD">
+        <mi>t</mi>
+        <mo>−</mo>
+        <mn>1</mn>
+      </mrow>
+    </msub>
+  </math>
+</inline-formula> and <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msub>
+      <mi>C</mi>
+      <mrow data-mjx-texclass="ORD">
+        <mi>t</mi>
+        <mo>−</mo>
+        <mn>1</mn>
+      </mrow>
+    </msub>
+  </math>
+</inline-formula> Additionally, the bias vector bi is linked with this element. The information retained within the cell states <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msub>
+      <mi>c</mi>
+      <mi>t</mi>
+    </msub>
+  </math>
+</inline-formula> is influenced by the LSTM layer that comes before.</p><p><inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo stretchy="false">→</mo>
+  </math>
+</inline-formula> Forget Gate ($f<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo stretchy="false">)</mo>
+    <mi>i</mi>
+    <mi>s</mi>
+    <mi>r</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>p</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>s</mi>
+    <mi>i</mi>
+    <mi>b</mi>
+    <mi>l</mi>
+    <mi>e</mi>
+    <mi>f</mi>
+    <mi>o</mi>
+    <mi>r</mi>
+    <mi>d</mi>
+    <mi>e</mi>
+    <mi>c</mi>
+    <mi>i</mi>
+    <mi>d</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>g</mi>
+    <mi>w</mi>
+    <mi>h</mi>
+    <mi>i</mi>
+    <mi>c</mi>
+    <mi>h</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>f</mi>
+    <mi>o</mi>
+    <mi>r</mi>
+    <mi>m</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>n</mi>
+    <mi>e</mi>
+    <mi>e</mi>
+    <mi>d</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>o</mi>
+    <mi>b</mi>
+    <mi>e</mi>
+    <mi>d</mi>
+    <mi>i</mi>
+    <mi>s</mi>
+    <mi>c</mi>
+    <mi>a</mi>
+    <mi>r</mi>
+    <mi>d</mi>
+    <mi>e</mi>
+    <mi>d</mi>
+    <mi>f</mi>
+    <mi>r</mi>
+    <mi>o</mi>
+    <mi>m</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>p</mi>
+    <mi>r</mi>
+    <mi>e</mi>
+    <mi>v</mi>
+    <mi>i</mi>
+    <mi>o</mi>
+    <mi>u</mi>
+    <mi>s</mi>
+    <mi>c</mi>
+    <mi>e</mi>
+    <mi>l</mi>
+    <mi>l</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+  </math>
+</inline-formula>C_{t-1}<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo>.</mo>
+    <mo>,</mo>
+    <mi>A</mi>
+    <mi>s</mi>
+    <mi>a</mi>
+    <mi>r</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>u</mi>
+    <mi>l</mi>
+    <mi>t</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>c</mi>
+    <mi>o</mi>
+    <mi>m</mi>
+    <mi>p</mi>
+    <mi>u</mi>
+    <mi>t</mi>
+    <mi>e</mi>
+    <mi>d</mi>
+    <mi>a</mi>
+    <mi>c</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>v</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>v</mi>
+    <mi>a</mi>
+    <mi>l</mi>
+    <mi>u</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>f</mi>
+    <mi>t</mi>
+    <mi>u</mi>
+    <mi>s</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>g</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>p</mi>
+    <mi>r</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>p</mi>
+    <mi>u</mi>
+    <mi>t</mi>
+  </math>
+</inline-formula>x_t<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo>,</mo>
+  </math>
+</inline-formula>h_{t-1}<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>p</mi>
+    <mi>r</mi>
+    <mi>e</mi>
+    <mi>v</mi>
+    <mi>i</mi>
+    <mi>o</mi>
+    <mi>u</mi>
+    <mi>s</mi>
+    <mi>o</mi>
+    <mi>u</mi>
+    <mi>t</mi>
+    <mi>p</mi>
+    <mi>u</mi>
+    <mi>t</mi>
+    <mi>s</mi>
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>d</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>m</mi>
+    <mi>e</mi>
+    <mi>m</mi>
+    <mi>o</mi>
+    <mi>r</mi>
+    <mi>y</mi>
+    <mi>c</mi>
+    <mi>e</mi>
+    <mi>l</mi>
+    <mi>l</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>e</mi>
+    <mi>o</mi>
+    <mi>f</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>m</mi>
+    <mi>e</mi>
+    <mi>m</mi>
+    <mi>o</mi>
+    <mi>r</mi>
+    <mi>y</mi>
+    <mi>c</mi>
+    <mi>e</mi>
+    <mi>l</mi>
+    <mi>l</mi>
+    <mi>s</mi>
+  </math>
+</inline-formula>C_{t-1}<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>p</mi>
+    <mi>r</mi>
+    <mi>e</mi>
+    <mi>v</mi>
+    <mi>i</mi>
+    <mi>o</mi>
+    <mi>u</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>m</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>e</mi>
+    <mi>p</mi>
+  </math>
+</inline-formula>h_{t-1}$.</p>
+          
+            <disp-formula>
+              <label>(3)</label>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <msub>
+                  <mi>f</mi>
+                  <mrow data-mjx-texclass="ORD">
+                    <mrow data-mjx-texclass="ORD">
+                      <mi mathvariant="normal">t</mi>
+                    </mrow>
+                  </mrow>
+                </msub>
+                <mo>=</mo>
+                <mi>σ</mi>
+                <mrow data-mjx-texclass="INNER">
+                  <mo data-mjx-texclass="OPEN">(</mo>
+                  <mo>+</mo>
+                  <mo>+</mo>
+                  <mo>⊙</mo>
+                  <mo>+</mo>
+                  <mo data-mjx-texclass="CLOSE">)</mo>
+                  <msub>
+                    <mi>W</mi>
+                    <mi>f</mi>
+                  </msub>
+                  <msub>
+                    <mi>x</mi>
+                    <mi>t</mi>
+                  </msub>
+                  <msub>
+                    <mi>W</mi>
+                    <mrow data-mjx-texclass="ORD">
+                      <mi>h</mi>
+                      <mi>f</mi>
+                    </mrow>
+                  </msub>
+                  <msub>
+                    <mi>h</mi>
+                    <mrow data-mjx-texclass="ORD">
+                      <mi>t</mi>
+                      <mo>−</mo>
+                      <mn>1</mn>
+                    </mrow>
+                  </msub>
+                  <msub>
+                    <mi>W</mi>
+                    <mrow data-mjx-texclass="ORD">
+                      <mrow data-mjx-texclass="ORD">
+                        <mi mathvariant="normal">c</mi>
+                      </mrow>
+                      <mi>f</mi>
+                    </mrow>
+                  </msub>
+                  <msub>
+                    <mi>c</mi>
+                    <mrow data-mjx-texclass="ORD">
+                      <mi>t</mi>
+                      <mo>−</mo>
+                      <mn>1</mn>
+                    </mrow>
+                  </msub>
+                  <msub>
+                    <mi>b</mi>
+                    <mi>f</mi>
+                  </msub>
+                </mrow>
+              </math>
+            </disp-formula>
+          
+          <p>where, <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msub>
+      <mi>W</mi>
+      <mi>f</mi>
+    </msub>
+  </math>
+</inline-formula>, <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msub>
+      <mi>W</mi>
+      <mrow data-mjx-texclass="ORD">
+        <mi>h</mi>
+        <mi>f</mi>
+      </mrow>
+    </msub>
+  </math>
+</inline-formula>, and <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msub>
+      <mi>W</mi>
+      <mrow data-mjx-texclass="ORD">
+        <mi>c</mi>
+        <mi>f</mi>
+      </mrow>
+    </msub>
+  </math>
+</inline-formula> correspond to the weights linked with <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msub>
+      <mi>x</mi>
+      <mi>t</mi>
+    </msub>
+  </math>
+</inline-formula>, <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msub>
+      <mi>h</mi>
+      <mrow data-mjx-texclass="ORD">
+        <mi>t</mi>
+        <mo>−</mo>
+        <mn>1</mn>
+      </mrow>
+    </msub>
+  </math>
+</inline-formula> and <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msub>
+      <mi>C</mi>
+      <mrow data-mjx-texclass="ORD">
+        <mi>t</mi>
+        <mo>−</mo>
+        <mn>1</mn>
+      </mrow>
+    </msub>
+  </math>
+</inline-formula>, in that order. Additionally, <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msub>
+      <mi>b</mi>
+      <mi>f</mi>
+    </msub>
+  </math>
+</inline-formula> signifies the bias vector.</p><p><inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo stretchy="false">→</mo>
+  </math>
+</inline-formula> Cell State ($c<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo stretchy="false">)</mo>
+    <mi>m</mi>
+    <mi>e</mi>
+    <mi>r</mi>
+    <mi>g</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>p</mi>
+    <mi>u</mi>
+    <mi>t</mi>
+    <mi>v</mi>
+    <mi>a</mi>
+    <mi>l</mi>
+    <mi>u</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>f</mi>
+    <mi>r</mi>
+    <mi>o</mi>
+    <mi>m</mi>
+  </math>
+</inline-formula>Y_t<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo>,</mo>
+  </math>
+</inline-formula>i_t<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>p</mi>
+    <mi>u</mi>
+    <mi>t</mi>
+    <mi>g</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>e</mi>
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>d</mi>
+    <mo>,</mo>
+  </math>
+</inline-formula>f_t$ the forget gate, along with the preceding cell value:</p>
+          
+            <disp-formula>
+              <label>(4)</label>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <msub>
+                  <mi>c</mi>
+                  <mrow data-mjx-texclass="ORD">
+                    <mrow data-mjx-texclass="ORD">
+                      <mi mathvariant="normal">t</mi>
+                    </mrow>
+                  </mrow>
+                </msub>
+                <msub>
+                  <mi>f</mi>
+                  <mrow data-mjx-texclass="ORD">
+                    <mrow data-mjx-texclass="ORD">
+                      <mi mathvariant="normal">t</mi>
+                    </mrow>
+                  </mrow>
+                </msub>
+                <msub>
+                  <mi>c</mi>
+                  <mrow data-mjx-texclass="ORD">
+                    <mi>t</mi>
+                    <mo>−</mo>
+                    <mn>1</mn>
+                  </mrow>
+                </msub>
+                <msub>
+                  <mi>i</mi>
+                  <mi>t</mi>
+                </msub>
+                <msub>
+                  <mi>Y</mi>
+                  <mrow data-mjx-texclass="ORD">
+                    <mrow data-mjx-texclass="ORD">
+                      <mi mathvariant="normal">t</mi>
+                    </mrow>
+                  </mrow>
+                </msub>
+                <mo>=</mo>
+                <mo>⊙</mo>
+                <mo>+</mo>
+                <mo>⊙</mo>
+              </math>
+            </disp-formula>
+          
+          <p>where,</p>
+          
+            <disp-formula>
+              <label>(5)</label>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <msub>
+                  <mi>Y</mi>
+                  <mrow data-mjx-texclass="ORD">
+                    <mrow data-mjx-texclass="ORD">
+                      <mi mathvariant="normal">t</mi>
+                    </mrow>
+                  </mrow>
+                </msub>
+                <mo>=</mo>
+                <mo data-mjx-texclass="NONE">⁡</mo>
+                <mi>tanh</mi>
+                <mrow data-mjx-texclass="INNER">
+                  <mo data-mjx-texclass="OPEN">(</mo>
+                  <mo>+</mo>
+                  <mo>+</mo>
+                  <mo data-mjx-texclass="CLOSE">)</mo>
+                  <msub>
+                    <mi>W</mi>
+                    <mrow data-mjx-texclass="ORD">
+                      <mi>x</mi>
+                      <mi>c</mi>
+                    </mrow>
+                  </msub>
+                  <msub>
+                    <mi>x</mi>
+                    <mi>t</mi>
+                  </msub>
+                  <msub>
+                    <mi>W</mi>
+                    <mrow data-mjx-texclass="ORD">
+                      <mi>h</mi>
+                      <mi>c</mi>
+                    </mrow>
+                  </msub>
+                  <msub>
+                    <mi>h</mi>
+                    <mrow data-mjx-texclass="ORD">
+                      <mi>t</mi>
+                      <mo>−</mo>
+                      <mn>1</mn>
+                    </mrow>
+                  </msub>
+                  <msub>
+                    <mi>b</mi>
+                    <mi>c</mi>
+                  </msub>
+                </mrow>
+              </math>
+            </disp-formula>
+          
+          <p><inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo stretchy="false">→</mo>
+  </math>
+</inline-formula> Output Gate ($o<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo stretchy="false">)</mo>
+    <mo>&amp;lt;</mo>
+    <mo>&amp;gt;</mo>
+    <mrow data-mjx-texclass="ORD">
+      <mo>/</mo>
+    </mrow>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>r</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>g</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>t</mi>
+    <mi>e</mi>
+    <mi>g</mi>
+    <mi>r</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>p</mi>
+    <mi>r</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>p</mi>
+    <mi>u</mi>
+    <mi>t</mi>
+  </math>
+</inline-formula>x_t<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo>,</mo>
+  </math>
+</inline-formula>h_{t-1}$ the output from the previous unit, and the cell value from the previous iteration:</p>
+          
+            <disp-formula>
+              <label>(6)</label>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <msub>
+                  <mi>o</mi>
+                  <mi>t</mi>
+                </msub>
+                <mo>=</mo>
+                <mi>σ</mi>
+                <mrow data-mjx-texclass="INNER">
+                  <mo data-mjx-texclass="OPEN">(</mo>
+                  <mo>+</mo>
+                  <mo>+</mo>
+                  <mo>⊙</mo>
+                  <mo>+</mo>
+                  <mo data-mjx-texclass="CLOSE">)</mo>
+                  <msub>
+                    <mi>P</mi>
+                    <mi>o</mi>
+                  </msub>
+                  <msub>
+                    <mi>x</mi>
+                    <mi>t</mi>
+                  </msub>
+                  <msub>
+                    <mi>Z</mi>
+                    <mi>o</mi>
+                  </msub>
+                  <msub>
+                    <mi>h</mi>
+                    <mrow data-mjx-texclass="ORD">
+                      <mi>t</mi>
+                      <mo>−</mo>
+                      <mn>1</mn>
+                    </mrow>
+                  </msub>
+                  <msub>
+                    <mi>W</mi>
+                    <mrow data-mjx-texclass="ORD">
+                      <mi>c</mi>
+                      <mi>o</mi>
+                    </mrow>
+                  </msub>
+                  <msub>
+                    <mi>c</mi>
+                    <mi>t</mi>
+                  </msub>
+                  <msub>
+                    <mi>b</mi>
+                    <mi>o</mi>
+                  </msub>
+                </mrow>
+              </math>
+            </disp-formula>
+          
+          <p>where, <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msub>
+      <mi>P</mi>
+      <mi>o</mi>
+    </msub>
+  </math>
+</inline-formula>, <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msub>
+      <mi>Z</mi>
+      <mi>o</mi>
+    </msub>
+  </math>
+</inline-formula>, <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msub>
+      <mi>W</mi>
+      <mrow data-mjx-texclass="ORD">
+        <mi>c</mi>
+        <mi>o</mi>
+      </mrow>
+    </msub>
+  </math>
+</inline-formula> represent the weights connected to <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msub>
+      <mi>x</mi>
+      <mi>t</mi>
+    </msub>
+  </math>
+</inline-formula>, <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msub>
+      <mi>h</mi>
+      <mrow data-mjx-texclass="ORD">
+        <mi>t</mi>
+        <mo>−</mo>
+        <mn>1</mn>
+      </mrow>
+    </msub>
+  </math>
+</inline-formula> and <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msub>
+      <mi>c</mi>
+      <mi>t</mi>
+    </msub>
+  </math>
+</inline-formula>, respectively, while <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msub>
+      <mi>b</mi>
+      <mi>o</mi>
+    </msub>
+  </math>
+</inline-formula> indicates the bias weight vector.</p><p><inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo stretchy="false">→</mo>
+  </math>
+</inline-formula> Hidden State ($h<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo stretchy="false">)</mo>
+    <mo>&amp;lt;</mo>
+    <mo>&amp;gt;&amp;lt;</mo>
+    <mo>&amp;gt;</mo>
+    <mo>,</mo>
+    <mrow data-mjx-texclass="ORD">
+      <mo>/</mo>
+    </mrow>
+    <mi>p</mi>
+    <mi>p</mi>
+    <mi>T</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>c</mi>
+    <mi>a</mi>
+    <mi>l</mi>
+    <mi>c</mi>
+    <mi>u</mi>
+    <mi>l</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>o</mi>
+    <mi>f</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>h</mi>
+    <mi>i</mi>
+    <mi>d</mi>
+    <mi>d</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>e</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>a</mi>
+    <mi>p</mi>
+    <mi>a</mi>
+    <mi>r</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>c</mi>
+    <mi>u</mi>
+    <mi>l</mi>
+    <mi>a</mi>
+    <mi>r</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>m</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>e</mi>
+    <mi>p</mi>
+    <mi>d</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>o</mi>
+    <mi>t</mi>
+    <mi>e</mi>
+    <mi>d</mi>
+    <mi>a</mi>
+    <mi>s</mi>
+  </math>
+</inline-formula>h_t$ is represented as follow:</p>
+          
+            <disp-formula>
+              <label>(7)</label>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <msub>
+                  <mi>h</mi>
+                  <mi>t</mi>
+                </msub>
+                <msub>
+                  <mi>o</mi>
+                  <mi>t</mi>
+                </msub>
+                <mo>=</mo>
+                <mo>∗</mo>
+                <mo data-mjx-texclass="NONE">⁡</mo>
+                <mi>tanh</mi>
+                <mrow data-mjx-texclass="INNER">
+                  <mo data-mjx-texclass="OPEN">(</mo>
+                  <mo data-mjx-texclass="CLOSE">)</mo>
+                  <msub>
+                    <mi>c</mi>
+                    <mi>t</mi>
+                  </msub>
+                </mrow>
+              </math>
+            </disp-formula>
+          
+          <p><inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msub>
+      <mi>o</mi>
+      <mi>t</mi>
+    </msub>
+  </math>
+</inline-formula> refers to the output gate at the current time step. tanh (<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msub>
+      <mi>c</mi>
+      <mi>t</mi>
+    </msub>
+  </math>
+</inline-formula>) corresponds to the hyperbolic tangent activation applied to the cell state at the current time step, denoted as <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msub>
+      <mi>c</mi>
+      <mi>t</mi>
+    </msub>
+  </math>
+</inline-formula>. The cell state carries information over time, and applying the tanh function helps regulate the values within a certain range, typically between -1 and 1. This step is important for maintaining the gradient flow during training. So, the expression <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msub>
+      <mi>h</mi>
+      <mi>t</mi>
+    </msub>
+  </math>
+</inline-formula>=<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msub>
+      <mi>o</mi>
+      <mi>t</mi>
+    </msub>
+  </math>
+</inline-formula>*tanh (<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msub>
+      <mi>c</mi>
+      <mi>t</mi>
+    </msub>
+  </math>
+</inline-formula>) means that <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msub>
+      <mi>h</mi>
+      <mi>t</mi>
+    </msub>
+  </math>
+</inline-formula> the hidden state at the current time step is calculated by multiplying the output gate <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msub>
+      <mi>o</mi>
+      <mi>t</mi>
+    </msub>
+  </math>
+</inline-formula> with the hyperbolic tangent of the cell state <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msub>
+      <mi>c</mi>
+      <mi>t</mi>
+    </msub>
+  </math>
+</inline-formula>. This effectively determines how much information is allowed to pass through to the output based on the output gate's value and how the cell state's information is transformed using the tanh function.</p>
+          
+            <sec disp-level="level3">
+              
+                <title>3.1. 1 Mixture attention mechanism</title>
+              
+              <p>To imbue our model with interpretability, we introduce a novel mixture attention mechanism into the LSTM architecture. The objective is to spotlight the significance of each variable within the multi-variable time series data. This mechanism is actualized via the following equation:</p>
+              
+                <disp-formula>
+                  <label>(8)</label>
+                  <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                    <msub>
+                      <mi>A</mi>
+                      <mi>t</mi>
+                    </msub>
+                    <mo>=</mo>
+                    <mi>softmax</mi>
+                    <mrow data-mjx-texclass="INNER">
+                      <mo data-mjx-texclass="OPEN">(</mo>
+                      <mo>∗</mo>
+                      <mo data-mjx-texclass="CLOSE">)</mo>
+                      <msub>
+                        <mi>W</mi>
+                        <mrow data-mjx-texclass="ORD">
+                          <mtext>att </mtext>
+                        </mrow>
+                      </msub>
+                      <mrow data-mjx-texclass="INNER">
+                        <mo data-mjx-texclass="OPEN">[</mo>
+                        <mo>,</mo>
+                        <mo data-mjx-texclass="CLOSE">]</mo>
+                        <msub>
+                          <mi>x</mi>
+                          <mi>t</mi>
+                        </msub>
+                        <msub>
+                          <mi>h</mi>
+                          <mrow data-mjx-texclass="ORD">
+                            <mi>t</mi>
+                            <mo>−</mo>
+                            <mn>1</mn>
+                          </mrow>
+                        </msub>
+                      </mrow>
+                    </mrow>
+                  </math>
+                </disp-formula>
+              
+              <p>where, <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msub>
+      <mi>A</mi>
+      <mi>t</mi>
+    </msub>
+  </math>
+</inline-formula> is the attention vector at time step $t<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo>,</mo>
+  </math>
+</inline-formula>W_{\text {att }}<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>i</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>t</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>w</mi>
+    <mi>e</mi>
+    <mi>i</mi>
+    <mi>g</mi>
+    <mi>h</mi>
+    <mi>t</mi>
+    <mi>m</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>r</mi>
+    <mi>i</mi>
+    <mi>x</mi>
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>d</mi>
+    <mi>s</mi>
+    <mi>o</mi>
+    <mi>f</mi>
+    <mi>t</mi>
+    <mi>m</mi>
+    <mi>a</mi>
+    <mi>x</mi>
+    <mi>i</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>o</mi>
+    <mi>f</mi>
+    <mi>t</mi>
+    <mi>m</mi>
+    <mi>a</mi>
+    <mi>x</mi>
+    <mi>a</mi>
+    <mi>c</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>v</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>f</mi>
+    <mi>u</mi>
+    <mi>n</mi>
+    <mi>c</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>T</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>t</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>v</mi>
+    <mi>e</mi>
+    <mi>c</mi>
+    <mi>t</mi>
+    <mi>o</mi>
+    <mi>r</mi>
+    <mo>,</mo>
+    <mo>.</mo>
+  </math>
+</inline-formula>A_t$ assigns different weights to the individual variables based on their relevance to the prediction at the current time step.</p>
+            </sec>
+          
+          
+            <sec disp-level="level3">
+              
+                <title>3.1. 2 Interpretable multi-variable lstm</title>
+              
+              <p>The Interpretable Multi-Variable LSTM combines the LSTM cell computations with the mixture attention mechanism. The hidden state <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msub>
+      <mi>h</mi>
+      <mi>t</mi>
+    </msub>
+  </math>
+</inline-formula> is calculated as:</p>
+              
+                <disp-formula>
+                  <label>(9)</label>
+                  <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                    <msub>
+                      <mi>h</mi>
+                      <mi>t</mi>
+                    </msub>
+                    <msub>
+                      <mi>A</mi>
+                      <mi>t</mi>
+                    </msub>
+                    <msub>
+                      <mi>h</mi>
+                      <mi>t</mi>
+                    </msub>
+                    <mo>=</mo>
+                    <mo>∗</mo>
+                  </math>
+                </disp-formula>
+              
+              <p>This adjustment, as illustrated in <xref ref-type="fig" rid="fig_1">Figure 1</xref> of LSTM with hidden vectors, ensures that the hidden state is modulated by the attention weights, accentuating the contributions of different variables based on their relevance to the prediction task. In this section, we have delineated the Interpretable Multi-Variable LSTM architecture, marrying the foundational LSTM computations with an innovative mixture attention mechanism. This formulation amplifies both predictive accuracy and interpretability, empowering the model to yield insights into the dynamics of individual variables within a multi-variable time series context.</p>
+              
+                <fig id="fig_1">
+                  <label>Figure 1</label>
+                  <caption>LSTM with hidden vectors</caption>
+                  <abstract/>
+                  <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2023/8/img_e-ErZRqgFMPkQrkp.png"/>
+                </fig>
+              
+            </sec>
+          
+        </sec>
+      
+      
+        <sec disp-level="level2">
+          
+            <title>3.2. Network architecture</title>
+          
+          <p> <xref ref-type="fig" rid="fig_2">Figure 2</xref> showcases the network architecture of the IMV-LSTM model. This architectural diagram encapsulates the organization of various layers and components that form the IMV-LSTM model, providing a glimpse into its structural composition. Starting from the left, the input data is introduced to the model via the initial input layer. The data then proceeds to flow into the Long Short-Term Memory (LSTM) layer.</p>
+          
+            <fig id="fig_2">
+              <label>Figure 2</label>
+              <caption>Network architecture IMV-LSTM</caption>
+              <abstract/>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2023/8/img_khgRQUFRVDnEjw5h.png"/>
+            </fig>
+          
+          <p>This layer plays a pivotal role in capturing temporal dependencies and patterns within the input sequence, making it a vital component in time-series data analysis. As we traverse the network, an attention layer follows the LSTM layer. The attention mechanism integrated at this juncture serves to elevate the model's interpretability. It assigns varying levels of importance to different time steps in the input sequence, thus enabling the model to focus on the most relevant data for prediction purposes. The attention layer's output is then channeled to the final output layer, where predictions are formulated. This layer assimilates the processed information from preceding layers to generate predictions mirroring the desired outcome, which, in this scenario, is stock price prediction.</p><p>We delve into the equations governing the LSTM cell, which employs input, forget, and output gates to regulate information flow across time steps. We also scrutinize the equations of the attention mechanism, which attribute attention scores to each time step and leverage them to compute a context vector encapsulating relevant information. Furthermore, we examine the output layer, where the context vector is harnessed to yield final predictions. While the equations provide a fundamental understanding of how the model processes data, implementing these components in a deep learning framework like TensorFlow or Keras necessitates factoring in practical aspects such as hyperparameters, data preprocessing, and model training. By amalgamating the strength of LSTM networks with attention mechanisms and the potential for interpretability, we strive to bridge the gap between predictive performance and comprehension. This approach paves the path for more transparent and insightful machine learning models.</p>
+        </sec>
+      
+      
+        <sec disp-level="level2">
+          
+            <title>3.3. Attention mechanism</title>
+          
+          <p>The attention mechanism calculates attention scores for each time step in the sequence, and amalgamates them to construct a context vector. Here's a streamlined version of the attention mechanism:</p><p>Attention Scores:</p>
+          
+            <disp-formula>
+              <label>(10)</label>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <msub>
+                  <mi>e</mi>
+                  <mrow data-mjx-texclass="ORD">
+                    <mi>i</mi>
+                    <mi>j</mi>
+                  </mrow>
+                </msub>
+                <msub>
+                  <mi>h</mi>
+                  <mi>j</mi>
+                </msub>
+                <mo>=</mo>
+                <mo>=</mo>
+                <mi>Score</mi>
+                <mrow data-mjx-texclass="INNER">
+                  <mo data-mjx-texclass="OPEN">(</mo>
+                  <mo>,</mo>
+                  <mo data-mjx-texclass="CLOSE">)</mo>
+                  <msub>
+                    <mi>h</mi>
+                    <mi>i</mi>
+                  </msub>
+                  <msub>
+                    <mi>h</mi>
+                    <mi>j</mi>
+                  </msub>
+                </mrow>
+                <msubsup>
+                  <mi>h</mi>
+                  <mi>i</mi>
+                  <mi>T</mi>
+                </msubsup>
+              </math>
+            </disp-formula>
+          
+          <p>Attention Weights: </p>
+          
+            <disp-formula>
+              <label>(11)</label>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <msub>
+                  <mi>a</mi>
+                  <mrow data-mjx-texclass="ORD">
+                    <mi>i</mi>
+                    <mi>j</mi>
+                  </mrow>
+                </msub>
+                <mo>=</mo>
+                <mfrac>
+                  <mrow>
+                    <mi>exp</mi>
+                    <mo data-mjx-texclass="NONE">⁡</mo>
+                    <mrow data-mjx-texclass="INNER">
+                      <mo data-mjx-texclass="OPEN">(</mo>
+                      <mo data-mjx-texclass="CLOSE">)</mo>
+                      <msub>
+                        <mi>e</mi>
+                        <mrow data-mjx-texclass="ORD">
+                          <mi>i</mi>
+                          <mi>j</mi>
+                        </mrow>
+                      </msub>
+                    </mrow>
+                  </mrow>
+                  <mrow>
+                    <munder>
+                      <mo data-mjx-texclass="OP">∑</mo>
+                      <mi>k</mi>
+                    </munder>
+                    <mi>exp</mi>
+                    <mo data-mjx-texclass="NONE">⁡</mo>
+                    <mrow data-mjx-texclass="INNER">
+                      <mo data-mjx-texclass="OPEN">(</mo>
+                      <mo data-mjx-texclass="CLOSE">)</mo>
+                      <msub>
+                        <mi>e</mi>
+                        <mrow data-mjx-texclass="ORD">
+                          <mi>i</mi>
+                          <mi>j</mi>
+                        </mrow>
+                      </msub>
+                    </mrow>
+                  </mrow>
+                </mfrac>
+              </math>
+            </disp-formula>
+          
+          <p>Context Vector:</p>
+          
+            <disp-formula>
+              <label>(12)</label>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <msub>
+                  <mi>c</mi>
+                  <mi>i</mi>
+                </msub>
+                <msub>
+                  <mi>a</mi>
+                  <mrow data-mjx-texclass="ORD">
+                    <mi>i</mi>
+                    <mi>j</mi>
+                  </mrow>
+                </msub>
+                <msub>
+                  <mi>h</mi>
+                  <mi>j</mi>
+                </msub>
+                <mo>=</mo>
+                <munder>
+                  <mo data-mjx-texclass="OP">∑</mo>
+                  <mi>j</mi>
+                </munder>
+              </math>
+            </disp-formula>
+          
+          <p>where,</p><p><inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo stretchy="false">→</mo>
+    <msub>
+      <mi>h</mi>
+      <mi>i</mi>
+    </msub>
+  </math>
+</inline-formula> and <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msub>
+      <mi>h</mi>
+      <mi>j</mi>
+    </msub>
+  </math>
+</inline-formula> are the hidden states of the LSTM at time steps $i<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>d</mi>
+  </math>
+</inline-formula>j<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo>.</mo>
+    <mo>&amp;lt;</mo>
+    <mo>&amp;gt;&amp;lt;</mo>
+    <mo>&amp;gt;</mo>
+    <mrow data-mjx-texclass="ORD">
+      <mo>/</mo>
+    </mrow>
+    <mi>p</mi>
+    <mi>p</mi>
+  </math>
+</inline-formula>\rightarrow e_{i j}<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>r</mi>
+    <mi>e</mi>
+    <mi>p</mi>
+    <mi>r</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>t</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>t</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>s</mi>
+    <mi>c</mi>
+    <mi>o</mi>
+    <mi>r</mi>
+    <mi>e</mi>
+    <mi>b</mi>
+    <mi>e</mi>
+    <mi>t</mi>
+    <mi>w</mi>
+    <mi>e</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>m</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>e</mi>
+    <mi>p</mi>
+    <mi>s</mi>
+  </math>
+</inline-formula>i<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>d</mi>
+  </math>
+</inline-formula>j<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo>.</mo>
+    <mo>&amp;lt;</mo>
+    <mo>&amp;gt;&amp;lt;</mo>
+    <mo>&amp;gt;</mo>
+    <mrow data-mjx-texclass="ORD">
+      <mo>/</mo>
+    </mrow>
+    <mi>p</mi>
+    <mi>p</mi>
+  </math>
+</inline-formula>\rightarrow a_{i j}<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>a</mi>
+    <mi>r</mi>
+    <mi>e</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>t</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>w</mi>
+    <mi>e</mi>
+    <mi>i</mi>
+    <mi>g</mi>
+    <mi>h</mi>
+    <mi>t</mi>
+    <mi>s</mi>
+    <mi>f</mi>
+    <mi>o</mi>
+    <mi>r</mi>
+    <mi>e</mi>
+    <mi>a</mi>
+    <mi>c</mi>
+    <mi>h</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>e</mi>
+    <mi>p</mi>
+    <mi>p</mi>
+    <mi>p</mi>
+    <mo>.</mo>
+    <mo>&amp;lt;</mo>
+    <mo>&amp;gt;&amp;lt;</mo>
+    <mo>&amp;gt;</mo>
+    <mrow data-mjx-texclass="ORD">
+      <mo>/</mo>
+    </mrow>
+  </math>
+</inline-formula>\rightarrow c_i<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>i</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>c</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>t</mi>
+    <mi>e</mi>
+    <mi>x</mi>
+    <mi>t</mi>
+    <mi>v</mi>
+    <mi>e</mi>
+    <mi>c</mi>
+    <mi>t</mi>
+    <mi>o</mi>
+    <mi>r</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>m</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>e</mi>
+    <mi>p</mi>
+  </math>
+</inline-formula>i$.</p><p>The output layer takes the context vector from the attention mechanism and generates the final prediction:</p>
+          
+            <disp-formula>
+              <label>(13)</label>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <mi>y</mi>
+                <mi>Output</mi>
+                <mo>=</mo>
+                <mo>=</mo>
+                <mo>+</mo>
+                <mrow data-mjx-texclass="INNER">
+                  <mo data-mjx-texclass="OPEN">(</mo>
+                  <mo data-mjx-texclass="CLOSE">)</mo>
+                  <msub>
+                    <mi>c</mi>
+                    <mi>i</mi>
+                  </msub>
+                </mrow>
+                <msub>
+                  <mi>W</mi>
+                  <mrow data-mjx-texclass="ORD">
+                    <mtext>out </mtext>
+                  </mrow>
+                </msub>
+                <msub>
+                  <mi>c</mi>
+                  <mi>i</mi>
+                </msub>
+                <msub>
+                  <mi>b</mi>
+                  <mrow data-mjx-texclass="ORD">
+                    <mtext>out </mtext>
+                  </mrow>
+                </msub>
+              </math>
+            </disp-formula>
+          
+          <p>where,</p><p><inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo stretchy="false">→</mo>
+    <msub>
+      <mi>c</mi>
+      <mi>i</mi>
+    </msub>
+  </math>
+</inline-formula> is the context vector.</p><p><inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo stretchy="false">→</mo>
+    <msub>
+      <mi>W</mi>
+      <mrow data-mjx-texclass="ORD">
+        <mtext>out </mtext>
+      </mrow>
+    </msub>
+  </math>
+</inline-formula> and <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msub>
+      <mi>b</mi>
+      <mrow data-mjx-texclass="ORD">
+        <mtext>out </mtext>
+      </mrow>
+    </msub>
+  </math>
+</inline-formula> are the weight matrix and bias term for the output layer.</p>
+        </sec>
+      
+      
+        <sec disp-level="level2">
+          
+            <title>3.4. Error metrics</title>
+          
+          <p>We formulate a multi-variable LSTM model that integrates an attention mechanism to accentuate specific time steps within the sequence during predictions. The model is compiled and trained, and its performance is evaluated using Mean Squared Error (MSE), Root Mean Square Error (RMSE), and Mean Absolute Percentage Error (MAPE) as loss metrics. These loss metrics quantify the model's predictive precision by measuring the average squared difference between the predicted and actual values.</p>
+          
+            <disp-formula>
+              <label>(14)</label>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <mi>M</mi>
+                <mi>S</mi>
+                <mi>E</mi>
+                <mo>=</mo>
+                <mo data-mjx-texclass="OP">∑</mo>
+                <mfrac>
+                  <mn>1</mn>
+                  <mi>n</mi>
+                </mfrac>
+                <msup>
+                  <mrow data-mjx-texclass="INNER">
+                    <mo data-mjx-texclass="OPEN">(</mo>
+                    <mo>−</mo>
+                    <mo data-mjx-texclass="CLOSE">)</mo>
+                    <msub>
+                      <mi>p</mi>
+                      <mi>i</mi>
+                    </msub>
+                    <msub>
+                      <mrow data-mjx-texclass="ORD">
+                        <mover>
+                          <mi>p</mi>
+                          <mo stretchy="false">^</mo>
+                        </mover>
+                      </mrow>
+                      <mi>i</mi>
+                    </msub>
+                  </mrow>
+                  <mn>2</mn>
+                </msup>
+              </math>
+            </disp-formula>
+          
+          
+            <disp-formula>
+              <label>(15)</label>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <mi>M</mi>
+                <mi>A</mi>
+                <mi>P</mi>
+                <mi>E</mi>
+                <mo>=</mo>
+                <mo>∗</mo>
+                <mfrac>
+                  <mn>1</mn>
+                  <mi>n</mi>
+                </mfrac>
+                <munderover>
+                  <mo data-mjx-texclass="OP">∑</mo>
+                  <mrow data-mjx-texclass="ORD">
+                    <mi>t</mi>
+                    <mo>=</mo>
+                    <mn>1</mn>
+                  </mrow>
+                  <mi>n</mi>
+                </munderover>
+                <mrow data-mjx-texclass="INNER">
+                  <mo data-mjx-texclass="OPEN">|</mo>
+                  <mo data-mjx-texclass="CLOSE">|</mo>
+                  <mfrac>
+                    <mrow>
+                      <msub>
+                        <mi>p</mi>
+                        <mi>i</mi>
+                      </msub>
+                      <msub>
+                        <mrow data-mjx-texclass="ORD">
+                          <mover>
+                            <mi>p</mi>
+                            <mo stretchy="false">^</mo>
+                          </mover>
+                        </mrow>
+                        <mi>i</mi>
+                      </msub>
+                      <mo>−</mo>
+                    </mrow>
+                    <msub>
+                      <mi>p</mi>
+                      <mi>i</mi>
+                    </msub>
+                  </mfrac>
+                </mrow>
+                <mn>100</mn>
+              </math>
+            </disp-formula>
+          
+          
+            <disp-formula>
+              <label>(16)</label>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <mi>R</mi>
+                <mi>M</mi>
+                <mi>S</mi>
+                <mi>E</mi>
+                <mo>=</mo>
+                <msqrt>
+                  <mfrac>
+                    <mn>1</mn>
+                    <mi>n</mi>
+                  </mfrac>
+                  <munderover>
+                    <mo data-mjx-texclass="OP">∑</mo>
+                    <mrow data-mjx-texclass="ORD">
+                      <mi>t</mi>
+                      <mo>=</mo>
+                      <mn>1</mn>
+                    </mrow>
+                    <mi>n</mi>
+                  </munderover>
+                  <msup>
+                    <mrow data-mjx-texclass="INNER">
+                      <mo data-mjx-texclass="OPEN">(</mo>
+                      <mo>−</mo>
+                      <mo data-mjx-texclass="CLOSE">)</mo>
+                      <msub>
+                        <mi>p</mi>
+                        <mi>i</mi>
+                      </msub>
+                      <msub>
+                        <mrow data-mjx-texclass="ORD">
+                          <mover>
+                            <mi>p</mi>
+                            <mo stretchy="false">^</mo>
+                          </mover>
+                        </mrow>
+                        <mi>i</mi>
+                      </msub>
+                    </mrow>
+                    <mn>2</mn>
+                  </msup>
+                </msqrt>
+              </math>
+            </disp-formula>
+          
+          <p>where,</p><p><inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo stretchy="false">→</mo>
+    <mi>n</mi>
+  </math>
+</inline-formula> represents the number of data points in the dataset.</p><p><inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo stretchy="false">→</mo>
+    <msub>
+      <mi>p</mi>
+      <mi>i</mi>
+    </msub>
+  </math>
+</inline-formula> represents the actual values of the data point.</p><p><inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo stretchy="false">→</mo>
+    <msub>
+      <mrow data-mjx-texclass="ORD">
+        <mover>
+          <mi>p</mi>
+          <mo stretchy="false">^</mo>
+        </mover>
+      </mrow>
+      <mi>i</mi>
+    </msub>
+  </math>
+</inline-formula> represents the predicted values of the data.</p>
+        </sec>
+      
+    </sec>
+    <sec disp-level="level1" sec-type="results">
+      <title>4. Results</title>
+      <p>Our research was conducted within a Python-based environment, specifically using Jupyter Notebook. The TensorFlow Keras library was instrumental in our investigation, offering essential functionalities for data manipulation and in-depth analysis. We employed several key techniques and methods throughout the experiment:</p><p><inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>✓</mi>
+  </math>
+</inline-formula> Multi-Variable Input Sequences: We designed our input data as multivariate sequences where each time step in the sequence comprised observations from multiple variables, including the closing prices of three stocks (AAPL, AMZN, and MSFT). This allowed our model to consider the intricate interactions and dependencies among these variables, thereby enabling the capture of their unique dynamics.</p><p><inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>✓</mi>
+  </math>
+</inline-formula> LSTM Architecture: We opted for a Long Short-Term Memory (LSTM) neural network architecture, ideal for recognizing temporal patterns. LSTMs are particularly suitable for time series data, given their ability to capture and remember sequential dependencies across long periods.</p><p><inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>✓</mi>
+  </math>
+</inline-formula> Hidden State Tensor: Within the LSTM layer, we incorporated a hidden state tensor (<italic>H<sub>t</sub>)</italic> of dimensions N x d, where <italic>N</italic> represented the number of input variables (in this case, three stocks), and d signified the number of units in the LSTM layer. Each element (<italic>h<sub>t</sub></italic>) in <italic>H<sub>t</sub> </italic>was specific to one input variable, thus enabling the model to maintain separate representations for each variable's dynamics.</p><p><inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>✓</mi>
+  </math>
+</inline-formula> Transition Tensors: We utilized transition tensors, specifically the input-to-hidden transition tensor (<italic>W<sub>x</sub></italic>) and the hidden-to-hidden transition tensor (<italic>W<sub>h</sub></italic>). These tensors encoded the influence of input data and previous hidden states on the current hidden state. By having separate tensors for each input variable, we allowed the model to adjust its weights in response to different variables' respective contributions.</p><p><inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>✓</mi>
+  </math>
+</inline-formula> Gate Mechanisms: The LSTM gate mechanisms, namely the input gate, forget gate, and output gate, were instrumental. These gates, computed based on the cross-correlation between input variables, were designed to control the information flow. The gates enabled the model to learn which variables were most influential at each time step, hence discerning their respective contributions.</p><p><inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>✓</mi>
+  </math>
+</inline-formula> Mixture Attention Mechanism: Our architecture incorporated a mixture attention mechanism, inspired by previous research. This mechanism enhanced model interpretability by ensuring that each element of the hidden state tensor (<italic>H<sub>t</sub></italic>) encapsulated information exclusively from a specific input variable. It introduced a flexible temporal and variable attention mechanism on top of the hidden states, allowing the model to focus on specific variables and time steps when predicting.</p><p><inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>✓</mi>
+  </math>
+</inline-formula> Memory Cell Update: The memory cell vector (<italic>c<sub>t</sub></italic>) was updated using a blend of the previous cell state (<italic>c<sub>t</sub></italic><sub>-</sub><italic><sub>1</sub></italic>) and the cell update matrix (<italic>J<sub>t</sub></italic>). This update process enabled the model to retain pertinent information while discarding irrelevant details from each input variable.</p><p><inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>✓</mi>
+  </math>
+</inline-formula> Activation Functions: We employed the Rectified Linear Unit (ReLU) activation function within the LSTM layer. ReLU introduced non-linearity to the model, enabling it to capture complex patterns in the input data.</p><p>By utilizing these techniques and methods, our LSTM model was equipped to understand the unique dynamics of each input variable and discern their contributions to predictive outcomes. This approach not only facilitated accurate forecasting but also enhanced interpretability by explicitly highlighting the temporal relationships and dependencies that the model leveraged. We retrieved historical stock price data for three prominent companies, namely Apple Inc. (AAPL), Amazon.com Inc. (AMZN), and Microsoft Corporation (MSFT) from Yahoo Finance. This data spanned a period from January 1, 2020, to January 1, 2023. We specifically extracted the ‘Close’ prices for each trading day as a representative feature for analysis. We utilized the Yahoo Finance API to gather a comprehensive dataset that encapsulates the daily closing prices of these three renowned companies, as depicted in <xref ref-type="fig" rid="fig_3">Figure 3</xref>.</p>
+      
+        <fig id="fig_3">
+          <label>Figure 3</label>
+          <caption>Historical closing prices of AAPL, MSFT, and AMZN</caption>
+          <abstract/>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2023/8/img_t4miJtdGrJ_XZjNE.png"/>
+        </fig>
+      
+      <p>In the context of our research, we conducted a specific experiment leveraging the power of an advanced Interpretable Multi-Variable Long Short-Term Memory (IMV-LSTM) architecture. The aim was to predict the stock prices of three leading corporations: Apple Inc. (AAPL), Amazon.com Inc. (AMZN), and Microsoft Corporation (MSFT). This experiment was executed within a Python environment, utilizing Jupyter Notebook as the platform for coding and analysis. We implemented the TensorFlow Keras library to design and analyze the machine learning model, thereby enhancing the effectiveness and accuracy of our stock price forecasts.</p><p>Here are the key findings of our experiment:</p><p>Model Architecture:</p><p>We implemented an IMV-LSTM model with attention weights as follows:</p><p><inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>✓</mi>
+  </math>
+</inline-formula> Input Layer: We designed the input layer to accept sequences of historical ‘Close' prices for each stock.</p><p><inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>✓</mi>
+  </math>
+</inline-formula> LSTM Layers: Our IMV-LSTM model consisted of two LSTM layers, each with 64 LSTM units to capture temporal patterns.</p><p><inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>✓</mi>
+  </math>
+</inline-formula> Attention Mechanism: We incorporated an attention mechanism between the LSTM layers to weigh the importance of different time steps in the sequence.</p><p><inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>✓</mi>
+  </math>
+</inline-formula> Dense Layer: Following the LSTM layers, we included a dense layer for the final prediction.</p><p><inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>✓</mi>
+  </math>
+</inline-formula> Output Layer: The output layer consisted of a single unit to predict the next day's stock price.</p><p>Hyperparameter Tuning:</p><p>We conducted hyperparameter tuning to optimize the model's performance:</p><p><inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>✓</mi>
+  </math>
+</inline-formula> Number of LSTM Layers: After experimenting with different configurations, we found that two LSTM layers provided a good balance of complexity and performance.</p><p><inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>✓</mi>
+  </math>
+</inline-formula> Number of LSTM Units: Each LSTM layer contained 64 units, which proved effective in capturing stock price patterns.</p><p><inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>✓</mi>
+  </math>
+</inline-formula> Attention Mechanism: The attention mechanism significantly improved the model's ability to focus on relevant time steps.</p><p><inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>✓</mi>
+  </math>
+</inline-formula> Batch Size: We used a batch size of 32 for training efficiency.</p><p><inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>✓</mi>
+  </math>
+</inline-formula> Learning Rate: The learning rate was set to 0.001 for stable training.</p><p>The Activation Function: the function used within the LSTM layer is Rectified Linear Unit (ReLU). ReLU that is widely adopted in neural networks. Knowing its ability to capture non-linear patterns effectively.</p><p>Model Evaluation:</p><p>We evaluated the IMV-LSTM model's performance using Mean Squared Error (MSE), Root Mean Square Error (RMSE), and Mean Absolute Percentage Error (MAPE) as the evaluation metrics the results are shown in <xref ref-type="table" rid="table_3">Table 3</xref>.</p>
+      
+        <table-wrap id="table_3">
+          <label>Table 3</label>
+          <caption>RMSE, MSE, and MAE values of IMV-LSTM</caption>
+          <abstract/>
+          <table><tbody><tr><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">Datasets</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">Metric</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">Baseline LSTM</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">Active LSTM (Epoch=1/10)</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">Active LSTM (Epoch=5/10)</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">Active LSTM (Epoch=10/10)</span></p></td></tr><tr><td colspan="1" rowspan="3"><p style="text-align: center"><span style="font-family: Times New Roman, serif">AAPL</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">MSE</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.2254</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.0328</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.0050</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.0028</span></p></td></tr><tr><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">MAPE</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.3458</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.1263</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.0159</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.0091</span></p></td></tr><tr><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">RMSE</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.4747</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.1811</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.0707</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.0529</span></p></td></tr><tr><td colspan="1" rowspan="3"><p style="text-align: center"><span style="font-family: Times New Roman, serif">MSFT</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">MSE</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.3428</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.2137</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.0092</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.0037</span></p></td></tr><tr><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">MAPE</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.4529</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.2581</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.01378</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.0084</span></p></td></tr><tr><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">RMSE</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.6537</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.6237</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.0178</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.0524</span></p></td></tr><tr><td colspan="1" rowspan="3"><p style="text-align: center"><span style="font-family: Times New Roman, serif">AmZn</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">MSE</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.3591</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.1059</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.0076</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.0057</span></p></td></tr><tr><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">MAPE</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.5126</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.1573</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.0954</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.0083</span></p></td></tr><tr><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">RMSE</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.7689</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.2379</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.0145</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">0.0138</span></p></td></tr></tbody></table>
+        </table-wrap>
+      
+      
+        <sec disp-level="level2">
+          
+            <title>4.1. Mixture attention mechanism</title>
+          
+          <p>An integral part of our IMV-LSTM architecture was the mixture attention mechanism, which played a pivotal role in enhancing both model interpretability and prediction accuracy:</p><p><inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>✓</mi>
+  </math>
+</inline-formula> Hidden State Tensor: At each time step, we constructed a hidden state tensor, denoted as <italic>H<sub>t</sub></italic>, with dimensions N x d, where <italic>N</italic> represented the number of input variables (in this case, three stocks: AAPL, AMZN, and MSFT), and <italic>d </italic>indicated the number of units in the LSTM layer. Each element, <italic>h<sub>t</sub></italic>, within <italic>H<sub>t</sub></italic> was a hidden state vector specific to one of the input variables.</p><p><inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>✓</mi>
+  </math>
+</inline-formula> Transition Tensors: We incorporated two transition tensors: a) Input-to-Hidden Transition Tensor (<italic>W<sub>x</sub></italic>) withsized N x d, encoded the impact of the input data on the hidden states and Hidden-to-Hidden Transition Tensor (<italic>W<sub>h</sub></italic>): With dimensions N x d x d, this tensor captured the influence of the previous hidden states on the current ones.</p><p><inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>✓</mi>
+  </math>
+</inline-formula> Cell Update Matrix: The cell update matrix, <italic>J<sub>t</sub></italic>, sized N x d, represented the update for each input variable at each time step. It was computed by applying tensor-dot operations between <italic>W<sub>h</sub></italic> and <italic>H<sub>t-1</sub></italic> (the previous hidden states) and element-wise multiplication between <italic>W<sub>x</sub></italic> and the current input (<italic>x<sub>t</sub></italic>).</p><p><inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>✓</mi>
+  </math>
+</inline-formula> Gate Mechanisms: We employed LSTM gate mechanisms, including the input gate, forget gate, and output gate, to regulate the flow of information through the model. These gates were vectors of dimension <italic>D</italic>, where <italic>D</italic> represented the overall size of the layer. They were computed based on the cross-correlation between input variables, enabling the model to consider the relationships between them.</p><p><inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>✓</mi>
+  </math>
+</inline-formula> Memory Cell Update: The memory cell vector, <italic>c<sub>t</sub></italic>, was updated by combining the previous cell state (<italic>c<sub>t</sub></italic><sub>-</sub><italic><sub>1</sub></italic>) with the cell update matrix, <italic>J<sub>t</sub></italic>, through element-wise multiplication (denoted as <span style="font-family: Cambria Math, serif">⊙</span>).</p><p><inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>✓</mi>
+  </math>
+</inline-formula> New Hidden State: The new hidden state matrix at each time step was derived by taking the hyperbolic tangent (tanh) of <italic>c<sub>t</sub> </italic>and weighting it with the output gate (<italic>o<sub>t</sub></italic>). This step controlled which information was propagated to the final prediction.</p><p>The unique mixture attention mechanism we employed ensured that every element in the hidden state tensor integrated information solely from a specific input variable. This approach substantially enhanced the interpretability of the model's predictions, granting us a deeper insight into the decision-making process of the model. In conclusion, this experiment underscored the efficacy of our IMV-LSTM architecture in forecasting stock prices for several corporations. It spotlighted the crucial role of the LSTM layer, its associated hyperparameters, and the mixture attention mechanism in recognizing temporal patterns and generating comprehensible and interpretable predictions. This highlights the potential of such models in complex financial forecasting scenarios.</p>
+          <p>Each epoch in our process involves handling the dataset in batches and updating the model's weights to reduce the loss, which in this scenario is indicated by the Mean Squared Error (MSE), Root Mean Squared Error (RMSE), and Mean Absolute Percentage Error (MAPE). The loss value signifies the degree of alignment between the model's predictions and the actual target values. Lower loss values represent a more accurate correspondence between predictions and actual values. Overall, the diminishing trend in loss values demonstrates that the model is effectively learning from the data and incrementally improving its predictive accuracy with each epoch. The training process is geared towards optimizing the model's parameters to decrease the divergence between predicted and actual values. The final loss values, represented by MSE, MAPE, and RMSE, suggest that the model has successfully recognized meaningful patterns within the data and is generating increasingly precise predictions. This indicates that our IMV-LSTM model provides a more reliable prediction and estimation compared to the traditional LSTM models. This outcome holds significant implications in the field of financial forecasting, risk management, and portfolio optimization. It underscores the potential of using advanced machine learning models like IMV-LSTM to drive more accurate and insightful decision-making in these areas.</p>
+          <p>For each stock, we constructed an Interpretable Multi-Variable LSTM model using TensorFlow and Keras. The model architecture includes an input layer, followed by an LSTM layer, an attention layer, and finally an output layer. The LSTM layer is responsible for capturing temporal patterns, while the attention mechanism significantly enhances the model's interpretability. During the training phase, attention weights are calculated and visualized, providing us with insights into which time steps the model prioritizes when making predictions. <xref ref-type="fig" rid="fig_4">Figure 4</xref> showcases the attention weights for AAPL, MSFT, and AMZN. Once trained, these models are utilized to predict outcomes on the test data. These predictions are subsequently inverse-transformed back to their original scale using the inverse scaler. We then calculate the Mean Absolute Percentage Error (MAPE), Mean Square Error (MSE), and Root Mean Squared Error (RMSE) to evaluate the model's performance in comparison to the actual test data. In essence, this code demonstrates the complete process of retrieving, preprocessing, training, and evaluating Interpretable Multi-Variable LSTM models for three distinct stocks. It offers insights into their attention mechanisms and predictive performance. <xref ref-type="fig" rid="fig_4">Figure 4</xref>, generated by this code, illustrates the attention weights of the Interpretable Multi-Variable LSTM models for each stock. These attention weights provide insight into how the model assigns importance to different time steps when forming predictions. Here's how to interpret the figures:</p><p>a) Attention Weights Visualization: Each figure represents a heatmap. The color intensity at the intersection of two time steps indicates the attention weight assigned to the respective combination of time steps.</p><p>b) Patterns and Interpretability: By observing the heatmap patterns, you can gain insights into which time steps contribute more to the model's predictions. Darker bands or clusters can reveal segments of the input sequence that are particularly influential for making accurate predictions.</p><p>c) Interpretability Enhancement: The attention mechanism enhances the model's interpretability by explicitly highlighting the temporal relationships and dependencies that the model is utilizing. This can help in understanding why the model makes certain predictions.</p><p>Hence, these visualizations of attention weights offer rich insights into the inner workings of the Interpretable Multi-Variable LSTM models, elucidating which time steps and interactions the model deems important. This aspect effectively tackles the ‘black-box’ problem often associated with traditional LSTM models, as it allows us to comprehend how and why our model makes specific predictions. Such understanding is particularly crucial when applied to predicting stock prices, risk assessment, and decision-making. By knowing which factors the model prioritizes, stakeholders can make more informed and confident decisions based on the model's predictions. This opens up new possibilities for leveraging machine learning in financial forecasting and risk management, making these processes more transparent and efficient.</p>
+          
+            <fig id="fig_4">
+              <label>Figure 4</label>
+              <caption>Heat map for attention weights of AAPL, MSFT, and AMZN</caption>
+              <abstract/>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2023/8/img_vpHqBBuXpfL7wLmW.png"/>
+            </fig>
+          
+          
+            <fig id="fig_5">
+              <label>Figure 5</label>
+              <caption>Actual vs. predicted AAPL closing prices actual AAPL Copse price, predicted (IMV-Full, IMV-Tensor, IMV-Full-P, IMV-Tensor-P) model AAPL close price</caption>
+              <abstract/>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2023/8/img_4mPEB-TW862rW7J4.png"/>
+            </fig>
+          
+          
+            <fig id="fig_6">
+              <label>Figure 6</label>
+              <caption>Actual vs. predicted MSFT closing prices actual MSFT Copse price, predicted (IMV-Full, IMV-Tensor, IMV-Full-P, IMV-Tensor-P) model MSFT close price</caption>
+              <abstract/>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2023/8/img_E9yGLhvrvI4N_kaQ.png"/>
+            </fig>
+          
+          
+            <fig id="fig_7">
+              <label>Figure 7</label>
+              <caption>Actual vs. predicted AMZN closing prices actual AMZN Copse price, predicted (IMV-Full, IMV-Tensor, IMV-Full-P, IMV-Tensor-P) model AMZN close price</caption>
+              <abstract/>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2023/8/img_KDbexNH5TiqeqSyT.png"/>
+            </fig>
+          
+          <p>Within the scope of our analysis, <xref ref-type="fig" rid="fig_5">Figure 5</xref>, <xref ref-type="fig" rid="fig_6">Figure 6</xref>, and <xref ref-type="fig" rid="fig_7">Figure 7</xref> provide a compelling comparison between the actual and projected closing prices for AAPL, MSFT, and AMZN stocks respectively, over the duration of the year 2020. The x-axis neatly chronicles the progression of time through individual time steps, while the y-axis depicts the closing prices in a normalized manner. This visual representation portrays various predictive scenarios through the use of distinct lines. Here's how these can be interpreted:</p><p><inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>✓</mi>
+  </math>
+</inline-formula> <span>Predicted Full Model MSFT Close Price:</span><span> The line depicting predicted closing prices originates from the IMV-Full-P LSTM model. This forecast illustrates how well this model captures the inherent dynamics of MSFT stock prices.</span></p><p><inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>✓</mi>
+  </math>
+</inline-formula> <span>Predicted Tensor Model MSFT Close Price:</span><span> The line that traces the predicted closing prices emanates from the IMV-Tensor-P LSTM model. Its trajectory signifies the predictions generated by this alternative approach.</span></p><p><inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>✓</mi>
+  </math>
+</inline-formula> <span>Predicted Full-P Model MSFT Close Price:</span><span> The curve signifying the projected closing prices, as forecasted by the IMV-Full-P LSTM model from an alternative perspective, contributes another layer of insight.</span></p><p><inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>✓</mi>
+  </math>
+</inline-formula> <span>Predicted Tensor-P Model MSFT Close Price:</span><span> The line representing the projected closing prices, derived from the IMV-Tensor-P LSTM model's predictions, adds yet another dimension to our understanding.</span></p><p>Hence, this visual interpretation serves as a powerful tool for evaluating the effectiveness of various LSTM models in forecasting the closing prices of MSFT stock. It offers a comprehensive view of the alignment between each model's predictions and the actual data, fostering a deeper understanding of their predictive capabilities. This insight can be instrumental in refining model selection and improving future forecasting efforts.</p><p>In terms of performance, as depicted in <xref ref-type="table" rid="table_4">Table 4</xref>, the IMV-Tensor approach delivers the highest performance due to its amalgamation of independent variable-wise hidden states. However, it's crucial to note that both IMV-Full and IMV-Tensor maintain a single network structure. In contrast to the composite network architectures found in the baseline methods, the implementation of well-structured variable-wise hidden states in IMV-LSTM results in enhanced predictive performance. This improvement is crucial in bolstering interpretability, as demonstrated in the subsequent analysis. Within the framework of each specific approach, our process incorporates a unique methodology for ranking variables. This procedure includes assessing the significance of variables within the IMV-LSTM context, measuring the attention given to variables within the IMV-Full model, and evaluating variable attention within the IMV-Tensor model. Furthermore, we introduce an additional set of models for comparison, specifically IMV-Full-P and IMV-Tensor-P. The distinguishing feature here is the suffix “-P,” which indicates that we utilize Pearson correlation as the mechanism for sorting variables. In particular, we concentrate on those variables that display the highest absolute correlation values with the target variable. The data derived from this Pearson correlation-based ranking is then judiciously selected for use. It is transformed into the input data that is subsequently integrated into the IMV-LSTM framework. This selection process ensures that the chosen variables possess a substantial correlation with the target variable, thereby heightening the potential accuracy and relevance of the predictions made within the IMV-LSTM context. From this table, we infer that our IMV-LSTM model might be more resilient to changing market conditions and external factors for these three stocks (AAPL, MSFT, AMZN) by considering multiple variables and providing interpretability. This adaptability is an essential factor in the rapidly evolving world of stock market forecasting.</p>
+          
+            <table-wrap id="table_4">
+              <label>Table 4</label>
+              <caption>IMV-Full, IMV-Tensor IMV-Full-P, IMV-Tensor-P MSE, MAPE, and RMSE values for different datasets</caption>
+              <abstract/>
+              <table><tbody><tr><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">Datasets</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">AAPL</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">MSFT</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">AMZN</span></p></td></tr><tr><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">IMV-Full-P</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">MSE: 0.0047</span></p><p style="text-align: center"><span style="font-family: Times New Roman, serif">MAPE: 0.0098</span></p><p style="text-align: center"><span style="font-family: Times New Roman, serif">RMSE: 0.0820</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">MSE: 0.0054</span></p><p style="text-align: center"><span style="font-family: Times New Roman, serif">MAPE: 0.0115</span></p><p style="text-align: center"><span style="font-family: Times New Roman, serif">RMSE: 0.0701</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">MSE: 0.0082</span></p><p style="text-align: center"><span style="font-family: Times New Roman, serif">MAPE: 0.0158</span></p><p style="text-align: center"><span style="font-family: Times New Roman, serif">RMSE: 0.0201</span></p></td></tr><tr><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">IMV-Tensor-P</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">MSE :0.0045</span></p><p style="text-align: center"><span style="font-family: Times New Roman, serif">MAPE: 0.0091</span></p><p style="text-align: center"><span style="font-family: Times New Roman, serif">RMSE: 0.0726</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">MSE: 0.0050</span></p><p style="text-align: center"><span style="font-family: Times New Roman, serif">MAPE: 0.0098</span></p><p style="text-align: center"><span style="font-family: Times New Roman, serif">RMSE: 0.0672</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">MSE: 0.0079</span></p><p style="text-align: center"><span style="font-family: Times New Roman, serif">MAPE: 0.0136</span></p><p style="text-align: center"><span style="font-family: Times New Roman, serif">RMSE: 0.0199</span></p></td></tr><tr><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">IMV-Full</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">MSE: 0.0041</span></p><p style="text-align: center"><span style="font-family: Times New Roman, serif">MAPE: 0.0087</span></p><p style="text-align: center"><span style="font-family: Times New Roman, serif">RMSE: 0.0689</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">MSE: 0.0045</span></p><p style="text-align: center"><span style="font-family: Times New Roman, serif">MAPE: 0.0091</span></p><p style="text-align: center"><span style="font-family: Times New Roman, serif">RMSE: 0.0605</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">MSE: 0.0073</span></p><p style="text-align: center"><span style="font-family: Times New Roman, serif">MAPE: 0.0130</span></p><p style="text-align: center"><span style="font-family: Times New Roman, serif">RMSE: 0.0198</span></p></td></tr><tr><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">IMV-Tensor</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">MSE: 0.0038</span></p><p style="text-align: center"><span style="font-family: Times New Roman, serif">MAPE: 0.0081</span></p><p style="text-align: center"><span style="font-family: Times New Roman, serif">RMSE: 0.0630</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">MSE: 0.0042</span></p><p style="text-align: center"><span style="font-family: Times New Roman, serif">MAPE: 0.0089</span></p><p style="text-align: center"><span style="font-family: Times New Roman, serif">RMSE: 0.0589</span></p></td><td colspan="1" rowspan="1"><p style="text-align: center"><span style="font-family: Times New Roman, serif">MSE: 0.0067</span></p><p style="text-align: center"><span style="font-family: Times New Roman, serif">MAPE: 0.0126</span></p><p style="text-align: center"><span style="font-family: Times New Roman, serif">RMSE: 0.0195</span></p></td></tr></tbody></table>
+            </table-wrap>
+          
+        </sec>
+      
+    </sec>
+    <sec disp-level="level1" sec-type="discussion">
+      <title>5. Discussion</title>
+      <p>In this study, the real-world stock prices of AAPL, AMZN, and MSFT serve as classic examples of non-stationary data, as they often display trends and seasonality that evolve over time. In non-stationary data, the mean, variance, or other statistical properties aren't constant but instead change over time. Our IMV-LSTM models are designed to effectively handle such non-stationary data, capable of incorporating additional features or transformations as described in our prior model. This ability to manage and interpret non-stationary data is particularly crucial in the context of financial markets, where data properties are frequently subject to change. Moreover, the highly dynamic nature of these three stock prices is continually influenced by various factors, including economic events, geopolitical developments, and shifts in investor sentiment. By considering multiple variables and understanding their impact on forecasts, our IMV-LSTM model is better equipped to adapt to these changing market conditions. As demonstrated by our previous results, these models can capture the influence of external factors and adjust their predictions accordingly. This adaptability makes them potentially more resilient in the face of market volatility and uncertainty, thereby offering a more robust and reliable tool for financial forecasting.</p>
+    </sec>
+    <sec disp-level="level1" sec-type="conclusions">
+      <title>6. Conclusions</title>
+      <p>Within the scope of this paper, we delve into the complex inner workings of Long Short-Term Memory (LSTM) networks. Our key aim is to utilize the potential of LSTMs for forecasting multi-variable time series data while ensuring high interpretability. In this series of experiments, we methodically evaluate the efficacy of variable importance in the context of prediction tasks, with particular focus on the IMV-LSTM family of methods. These methods leverage the power of multiple variables and interpretability to offer robust and adaptable forecasts amidst the dynamic and complex environment of three different stocks. These methods aid stakeholders in navigating shifting market conditions and making informed decisions, ultimately enhancing financial forecasting and risk management processes.</p><p>Building on the matrix of hidden states, we present two unique realizations: IMV-Full and IMV-Tensor. These realizations possess the exceptional ability to not only deduce but also quantify the importance of individual variables. In addition, they illuminate the temporal significance of each variable with respect to the target variable. Our endeavor is strengthened by a series of rigorous experiments. Through these experiments, we acquire valuable insights into the methods that underlie superior predictive performance. Furthermore, our proposed approach excels in providing meaningful interpretations concerning the significance of different variables, underscoring the model's transparency and explanatory power it brings to LSTM-based predictions.</p><p>Moving forward, we plan to extend the IMV-Full and IMV-Tensor approaches to capture more intricate interactions and relationships between variables. This could involve investigating higher-order dependencies and integrating techniques from graph neural networks or attention mechanisms. This direction holds promise for further enhancing the accuracy and interpretability of our models, paving the way for more advanced and reliable financial forecasting methods.</p>
+    </sec>
+  </body>
+  <back>
+    <ack>
+      <title>Acknowledgments</title>
+      
+    </ack>
+    <app-group>
+      <app>
+        <title>Appendix</title>
+        
+      </app>
+    </app-group>
+    <notes>
+      <title>Author Contributions</title>
+      <p>Conceptualization, S.S., H.R. and A.E.; methodology, S.S., H.R. and A.E.; software, S.S.; validation, H.R. and A.E.; formal analysis, S.S., H.R. and A.E.; investigation, S.S.; resources, S.S.; data curation, S.S.; writing—original draft preparation, S.S.; writing—review and editing, S.S., H.R.; visualization, H.R., A.E.; supervision, A.E.; project administration, A.E.; funding acquisition, S.S. and A.E.</p>
+    </notes>
+    <notes>
+      <title>Funding</title>
+      <p></p>
+    </notes>
+    <notes>
+      <title>Informed Consent Statement</title>
+      
+    </notes>
+    <notes>
+      <title>Data Availability Statement</title>
+      <p>The code used in our experiment fetches historical stock price data for three companies (AAPL, MSFT, and AMZN) from Yahoo Finance and stores it in a dictionary called stock_data. Here is a breakdown of the data source and how it is utilized in the code:</p><p>1.<span style="font-family: Times New Roman"> </span>Data Source: The data source used in this code is Yahoo Finance. Yahoo Finance provides historical stock price data for various publicly traded companies.</p><p>2.<span style="font-family: Times New Roman"> </span>Data Retrieval: The code uses the yfinance library (imported as yf) to download historical stock price data for the specified stocks. It fetches data from January 1, 2022, to January 1, 2023, for the three stocks (AAPL, MSFT, and AMZN).</p><p>3.<span style="font-family: Times New Roman"> </span>stock_data=yf.download (ticker, start='2022-01-01', end='2023-01-01')</p><p>4.<span style="font-family: Times New Roman"> </span>Data Storage: The fetched data is stored in the stock_data dictionary, where each key represents a stock ticker (e.g., 'AAPL') and the corresponding value is a DataFrame containing historical stock price data.</p><p>5.<span style="font-family: Times New Roman"> </span>Data Selection: The code then selects the 'Close' prices as the feature of interest for each stock. This data is stored in a new dictionary called data.</p><p>For each stock, it extracts the 'Close' prices and stores them as a NumPy array in the data dictionary.</p><p>In summary, the data source in this code is Yahoo Finance, and it is used to fetch historical stock price data for specific companies. The 'Close' prices for each stock are then selected and organized into a dictionary for further processing and analysis.</p>
+    </notes>
+    <notes notes-type="COI-statement">
+      <title>Conflicts of Interest</title>
+      <p>The authors declare no conflict of interest.</p>
+    </notes>
+    <ref-list>
+      <title>References</title>
+      <ref id="ref_1">
+        <label>1.</label>
+        <element-citation publication-type="journal">
+          <volume>27</volume>
+          <page-range>100296</page-range>
+          <issue/>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <given-names>J. J.</given-names>
+              <surname>Wang</surname>
+            </name>
+            <name>
+              <given-names>X. L.</given-names>
+              <surname>Li</surname>
+            </name>
+            <name>
+              <given-names>J. Z.</given-names>
+              <surname>Li</surname>
+            </name>
+            <name>
+              <given-names>Q. H.</given-names>
+              <surname>Sun</surname>
+            </name>
+            <name>
+              <given-names>H. Y.</given-names>
+              <surname>Wang</surname>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.bdr.2021.100296</pub-id>
+          <pub-id pub-id-type="publisher"/>
+          <article-title>NGCU: A new RNN model for time-series data prediction</article-title>
+          <source>Big Data Res.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_2">
+        <label>2.</label>
+        <element-citation publication-type="journal">
+          <volume>83</volume>
+          <page-range>101555</page-range>
+          <issue/>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <given-names>Imran</given-names>
+              <surname>Sheikh</surname>
+            </name>
+            <name>
+              <given-names>Emmanuel</given-names>
+              <surname>Vincent</surname>
+            </name>
+            <name>
+              <given-names>Irina</given-names>
+              <surname>Illina</surname>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.csl.2023.101555</pub-id>
+          <pub-id pub-id-type="publisher"/>
+          <article-title>Training RNN language models on uncertain ASR hypotheses in limited data scenarios</article-title>
+          <source>Comput. Speech Lang.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_3">
+        <label>3.</label>
+        <element-citation publication-type="journal">
+          <volume>9</volume>
+          <page-range>e13182</page-range>
+          <issue/>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <given-names>F. L.</given-names>
+              <surname>Peng</surname>
+            </name>
+            <name>
+              <given-names>Y. K.</given-names>
+              <surname>Qiao</surname>
+            </name>
+            <name>
+              <given-names>C.</given-names>
+              <surname>Yang</surname>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.heliyon.2023.e13182</pub-id>
+          <pub-id pub-id-type="publisher"/>
+          <article-title>A LSTM-RNN based intelligent control approach for temperature and humidity environment of urban utility tunnels</article-title>
+          <source>Heliyon</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_4">
+        <label>4.</label>
+        <element-citation publication-type="journal">
+          <volume>207</volume>
+          <page-range>255-264</page-range>
+          <issue/>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <given-names>J.</given-names>
+              <surname>Olbrys</surname>
+            </name>
+            <name>
+              <given-names>E.</given-names>
+              <surname>Majewska</surname>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.procs.2022.09.058</pub-id>
+          <pub-id pub-id-type="publisher"/>
+          <article-title>Approximate entropy and sample entropy algorithms in financial time series analyses</article-title>
+          <source>Procedia Comput. Sci.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_5">
+        <label>5.</label>
+        <element-citation publication-type="journal">
+          <volume>159</volume>
+          <page-range>112026</page-range>
+          <issue/>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <given-names>X. Y.</given-names>
+              <surname>Wang</surname>
+            </name>
+            <name>
+              <given-names>X. J.</given-names>
+              <surname>Han</surname>
+            </name>
+            <name>
+              <given-names>Z. Y.</given-names>
+              <surname>Chen</surname>
+            </name>
+            <name>
+              <given-names>Q. S.</given-names>
+              <surname>Bi</surname>
+            </name>
+            <name>
+              <given-names>S. G.</given-names>
+              <surname>Guan</surname>
+            </name>
+            <name>
+              <given-names>Y.</given-names>
+              <surname>Zou</surname>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.chaos.2022.112026</pub-id>
+          <pub-id pub-id-type="publisher"/>
+          <article-title>Multi-scale transition network approaches for nonlinear time series analysis</article-title>
+          <source>Chaos Solit. Fractals</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_6">
+        <label>6.</label>
+        <element-citation publication-type="journal">
+          <volume>166</volume>
+          <page-range>112-124</page-range>
+          <issue/>
+          <year>2019</year>
+          <person-group person-group-type="author">
+            <name>
+              <given-names>C.</given-names>
+              <surname>Zheng</surname>
+            </name>
+            <name>
+              <given-names>S. R.</given-names>
+              <surname>Wang</surname>
+            </name>
+            <name>
+              <given-names>Y. L.</given-names>
+              <surname>Liu</surname>
+            </name>
+            <name>
+              <given-names>C. X.</given-names>
+              <surname>Liu</surname>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.epsr.2018.09.006</pub-id>
+          <pub-id pub-id-type="publisher"/>
+          <article-title>A novel RNN based load modelling method with measurement data in active distribution system</article-title>
+          <source>Electr. Power Syst. Res.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_7">
+        <label>7.</label>
+        <element-citation publication-type="journal">
+          <volume>171</volume>
+          <page-range>465-474</page-range>
+          <issue/>
+          <year>2020</year>
+          <person-group person-group-type="author">
+            <name>
+              <given-names>M.</given-names>
+              <surname>Dua</surname>
+            </name>
+            <name>
+              <given-names>R.</given-names>
+              <surname>Yadav</surname>
+            </name>
+            <name>
+              <given-names>D.</given-names>
+              <surname>Mamgai</surname>
+            </name>
+            <name>
+              <given-names>S.</given-names>
+              <surname>Brodiya</surname>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.procs.2020.04.049</pub-id>
+          <pub-id pub-id-type="publisher"/>
+          <article-title>An improved RNN-LSTM based novel approach for sheet music generation</article-title>
+          <source>Procedia Comput. Sci.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_8">
+        <label>8.</label>
+        <element-citation publication-type="journal">
+          <volume>175</volume>
+          <page-range>114794</page-range>
+          <issue/>
+          <year>2021</year>
+          <person-group person-group-type="author">
+            <name>
+              <given-names>I.</given-names>
+              <surname>Koc</surname>
+            </name>
+            <name>
+              <given-names>E.</given-names>
+              <surname>Arslan</surname>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.eswa.2021.114794</pub-id>
+          <pub-id pub-id-type="publisher"/>
+          <article-title>Dynamic ticket pricing of airlines using variant batch size interpretable multi-variable long short-term memory</article-title>
+          <source>Expert Syst. Appl.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_9">
+        <label>9.</label>
+        <element-citation publication-type="journal">
+          <volume>83</volume>
+          <page-range>102654</page-range>
+          <issue/>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <given-names>H. M.</given-names>
+              <surname>Ni</surname>
+            </name>
+            <name>
+              <given-names>Y.</given-names>
+              <surname>Xue</surname>
+            </name>
+            <name>
+              <given-names>L. Y.</given-names>
+              <surname>Ma</surname>
+            </name>
+            <name>
+              <given-names>Q.</given-names>
+              <surname>Zhang</surname>
+            </name>
+            <name>
+              <given-names>S. X.</given-names>
+              <surname>Li</surname>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.media.2022.102654</pub-id>
+          <pub-id pub-id-type="publisher"/>
+          <article-title>Semi-supervised body parsing and pose estimation for enhancing infant general movement assessment</article-title>
+          <source>Med. Image Anal.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_10">
+        <label>10.</label>
+        <element-citation publication-type="journal">
+          <volume>168</volume>
+          <page-range>113097</page-range>
+          <issue/>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <given-names>S.</given-names>
+              <surname>Chaturvedi</surname>
+            </name>
+            <name>
+              <given-names>E.</given-names>
+              <surname>Rajasekar</surname>
+            </name>
+            <name>
+              <given-names>S.</given-names>
+              <surname>Natarajan</surname>
+            </name>
+            <name>
+              <given-names>N.</given-names>
+              <surname>McCullen</surname>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.enpol.2022.113097</pub-id>
+          <pub-id pub-id-type="publisher"/>
+          <article-title>A comparative assessment of SARIMA, LSTM RNN and Fb Prophet models to forecast total and peak monthly energy demand for India</article-title>
+          <source>En. Pol.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_11">
+        <label>11.</label>
+        <element-citation publication-type="journal">
+          <volume>30</volume>
+          <page-range>101285</page-range>
+          <issue/>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <given-names>N.</given-names>
+              <surname>Singh</surname>
+            </name>
+            <name>
+              <given-names>R.</given-names>
+              <surname>Nath</surname>
+            </name>
+            <name>
+              <given-names>D. B.</given-names>
+              <surname>Singh</surname>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.bbrep.2022.101285</pub-id>
+          <pub-id pub-id-type="publisher"/>
+          <article-title>Splice-site identification for exon prediction using bidirectional LSTM-RNN approach</article-title>
+          <source>Biochem. Biophys. Rep.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_12">
+        <label>12.</label>
+        <element-citation publication-type="journal">
+          <volume>142</volume>
+          <page-range>110314</page-range>
+          <issue/>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <given-names>P. B.</given-names>
+              <surname>Weerakody</surname>
+            </name>
+            <name>
+              <given-names>K. W.</given-names>
+              <surname>Wong</surname>
+            </name>
+            <name>
+              <given-names>G. J.</given-names>
+              <surname>Wang</surname>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.asoc.2023.110314</pub-id>
+          <pub-id pub-id-type="publisher"/>
+          <article-title>Policy gradient empowered LSTM with dynamic skips for irregular time series data</article-title>
+          <source>Appl. Soft Comput.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_13">
+        <label>13.</label>
+        <element-citation publication-type="journal">
+          <volume>9</volume>
+          <page-range>1735-1780</page-range>
+          <issue>8</issue>
+          <year>1997</year>
+          <person-group person-group-type="author">
+            <name>
+              <given-names>S.</given-names>
+              <surname>Hochreiter</surname>
+            </name>
+            <name>
+              <given-names>J.</given-names>
+              <surname>Schmidhuber</surname>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1162/neco.1997.9.8.1735</pub-id>
+          <pub-id pub-id-type="publisher"/>
+          <article-title>Long short-term memory</article-title>
+          <source>Neural Comput.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_14">
+        <label>14.</label>
+        <element-citation publication-type="conf-paper">
+          <volume/>
+          <page-range>97-101</page-range>
+          <issue/>
+          <year>2016</year>
+          <person-group person-group-type="author">
+            <name>
+              <given-names>M.</given-names>
+              <surname>Ribeiro</surname>
+            </name>
+            <name>
+              <given-names>S.</given-names>
+              <surname>Singh</surname>
+            </name>
+            <name>
+              <given-names>C.</given-names>
+              <surname>Guestrin</surname>
+            </name>
+          </person-group>
+          <person-group person-group-type="editor"/>
+          <pub-id pub-id-type="doi"/>
+          <article-title>Why should I trust you?: Explaining the predictions of any classifier</article-title>
+          <source>Proceedings of the 2016 Conference of the North American Chapter of the Association for Computational Linguistics: Demonstrations, San Diego, California</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_15">
+        <label>15.</label>
+        <element-citation publication-type="conf-paper">
+          <volume/>
+          <page-range>4765-4774</page-range>
+          <issue/>
+          <year>2017</year>
+          <person-group person-group-type="author">
+            <name>
+              <given-names>S. M.</given-names>
+              <surname>Lundberg</surname>
+            </name>
+            <name>
+              <given-names>S. I.</given-names>
+              <surname>Lee</surname>
+            </name>
+          </person-group>
+          <person-group person-group-type="editor"/>
+          <pub-id pub-id-type="doi"/>
+          <article-title>A unified approach to interpreting model predictions</article-title>
+          <source>Proceedings of the 31st International Conference on Neural Information Processing Systems, Long Beach California USA</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_16">
+        <label>16.</label>
+        <element-citation publication-type="journal">
+          <volume>360</volume>
+          <page-range>6783-6803</page-range>
+          <issue>10</issue>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <given-names>Umang</given-names>
+              <surname>Goswami</surname>
+            </name>
+            <name>
+              <given-names>Jyoti</given-names>
+              <surname>Rani</surname>
+            </name>
+            <name>
+              <given-names>Hariprasad</given-names>
+              <surname>Kodamana</surname>
+            </name>
+            <name>
+              <given-names>Sandeep</given-names>
+              <surname>Kumar</surname>
+            </name>
+            <name>
+              <given-names>Prakash Kumar</given-names>
+              <surname>Tamboli</surname>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.jfranklin.2023.04.030</pub-id>
+          <pub-id pub-id-type="publisher"/>
+          <article-title>Fault detection and isolation of multi-variate time series data using spectral weighted graph auto-encoders</article-title>
+          <source>J. Franklin Inst.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_17">
+        <label>17.</label>
+        <element-citation publication-type="journal">
+          <volume>86</volume>
+          <page-range>105837</page-range>
+          <issue/>
+          <year>2020</year>
+          <person-group person-group-type="author">
+            <name>
+              <given-names>M. H.</given-names>
+              <surname>Dal</surname>
+            </name>
+            <name>
+              <given-names>M.</given-names>
+              <surname>Ribeiro</surname>
+            </name>
+            <name>
+              <given-names>L. D. S.</given-names>
+              <surname>Coelho</surname>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.asoc.2019.105837</pub-id>
+          <pub-id pub-id-type="publisher"/>
+          <article-title>Ensemble approach based on bagging, boosting and stacking for short-term prediction in agribusiness time series</article-title>
+          <source>Appl. Soft Comput.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_18">
+        <label>18.</label>
+        <element-citation publication-type="journal">
+          <volume>19</volume>
+          <page-range>1205-1213</page-range>
+          <issue>7</issue>
+          <year>2009</year>
+          <person-group person-group-type="author">
+            <name>
+              <given-names>X. S.</given-names>
+              <surname>Chen</surname>
+            </name>
+            <name>
+              <given-names>J.</given-names>
+              <surname>Yang</surname>
+            </name>
+            <name>
+              <given-names>S. H.</given-names>
+              <surname>Li</surname>
+            </name>
+            <name>
+              <given-names>Q.</given-names>
+              <surname>Li</surname>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.jprocont.2009.02.004</pub-id>
+          <pub-id pub-id-type="publisher"/>
+          <article-title>Disturbance observer based multi-variable control of ball mill grinding circuits</article-title>
+          <source>J. Process Control</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_19">
+        <label>19.</label>
+        <element-citation publication-type="journal">
+          <volume>24</volume>
+          <page-range>1613</page-range>
+          <issue>11</issue>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <given-names>Y.</given-names>
+              <surname>Zhao</surname>
+            </name>
+            <name>
+              <given-names>X. G.</given-names>
+              <surname>Zhang</surname>
+            </name>
+            <name>
+              <given-names>Z. J.</given-names>
+              <surname>Shang</surname>
+            </name>
+            <name>
+              <given-names>Z. Y.</given-names>
+              <surname>Cao</surname>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3390/e24111613</pub-id>
+          <pub-id pub-id-type="publisher"/>
+          <article-title>DA-LSTM-VAE: Dual-stage attention-based LSTM-VAE for KPI anomaly detection</article-title>
+          <source>Entropy</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_20">
+        <label>20.</label>
+        <element-citation publication-type="journal">
+          <volume>260</volume>
+          <page-range/>
+          <issue/>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <given-names>Wenshu</given-names>
+              <surname>Zha</surname>
+            </name>
+            <name>
+              <given-names>Yuping</given-names>
+              <surname>Liu</surname>
+            </name>
+            <name>
+              <given-names>Yujin</given-names>
+              <surname>Wan</surname>
+            </name>
+            <name>
+              <given-names>Ruilan</given-names>
+              <surname>Luo</surname>
+            </name>
+            <name>
+              <given-names>Daolun</given-names>
+              <surname>Li</surname>
+            </name>
+            <name>
+              <given-names>Shan</given-names>
+              <surname>Yang</surname>
+            </name>
+            <name>
+              <given-names>Yanmei</given-names>
+              <surname>Xu</surname>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.energy.2022.124889</pub-id>
+          <pub-id pub-id-type="publisher"/>
+          <article-title>Forecasting monthly gas field production based on the CNN-LSTM model</article-title>
+          <source>Energy</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_21">
+        <label>21.</label>
+        <element-citation publication-type="journal">
+          <volume>220</volume>
+          <page-range/>
+          <issue/>
+          <year>2021</year>
+          <person-group person-group-type="author">
+            <name>
+              <given-names>Dong Yan</given-names>
+              <surname>Fan</surname>
+            </name>
+            <name>
+              <given-names>Hai</given-names>
+              <surname>Sun</surname>
+            </name>
+            <name>
+              <given-names>Jun</given-names>
+              <surname>Yao</surname>
+            </name>
+            <name>
+              <given-names>Kai</given-names>
+              <surname>Zhang</surname>
+            </name>
+            <name>
+              <given-names>Xia</given-names>
+              <surname>Yan</surname>
+            </name>
+            <name>
+              <given-names>Zhi Xue</given-names>
+              <surname>Sun</surname>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.energy.2020.119708</pub-id>
+          <pub-id pub-id-type="publisher"/>
+          <article-title>Well production forecasting based on ARIMA-LSTM model considering manual operations</article-title>
+          <source>Energy</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_22">
+        <label>22.</label>
+        <element-citation publication-type="conf-paper">
+          <volume/>
+          <page-range/>
+          <issue/>
+          <year>2017</year>
+          <person-group person-group-type="author">
+            <name>
+              <given-names>Y.</given-names>
+              <surname>Zhu</surname>
+            </name>
+            <name>
+              <given-names>H.</given-names>
+              <surname>Li</surname>
+            </name>
+            <name>
+              <given-names>Y. K.</given-names>
+              <surname>Liao</surname>
+            </name>
+            <name>
+              <given-names>B. D.</given-names>
+              <surname>Wang</surname>
+            </name>
+            <name>
+              <given-names>Z. Y.</given-names>
+              <surname>Guan</surname>
+            </name>
+            <name>
+              <given-names>H. F.</given-names>
+              <surname>Liu</surname>
+            </name>
+            <name>
+              <given-names>D.</given-names>
+              <surname>Cai</surname>
+            </name>
+          </person-group>
+          <person-group person-group-type="editor"/>
+          <pub-id pub-id-type="doi"/>
+          <article-title>What to do next: Modeling user behaviors by time-LSTM</article-title>
+          <source>Proceedings of the Twenty-Sixth International Joint Conference on Artificial Intelligence (IJCAI-17)</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_23">
+        <label>23.</label>
+        <element-citation publication-type="journal">
+          <volume>10</volume>
+          <page-range>1168</page-range>
+          <issue>8</issue>
+          <year>2017</year>
+          <person-group person-group-type="author">
+            <name>
+              <given-names>H. T.</given-names>
+              <surname>Zheng</surname>
+            </name>
+            <name>
+              <given-names>J. B.</given-names>
+              <surname>Yuan</surname>
+            </name>
+            <name>
+              <given-names>L.</given-names>
+              <surname>Chen</surname>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3390/en10081168</pub-id>
+          <pub-id pub-id-type="publisher"/>
+          <article-title>Short-term load forecasting using EMD-LSTM neural networks with a Xgboost algorithm for feature importance evaluation</article-title>
+          <source>Energies</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_24">
+        <label>24.</label>
+        <element-citation publication-type="journal">
+          <volume>205</volume>
+          <page-range>107257</page-range>
+          <issue/>
+          <year>2021</year>
+          <person-group person-group-type="author">
+            <name>
+              <given-names>Z.</given-names>
+              <surname>Shi</surname>
+            </name>
+            <name>
+              <given-names>A.</given-names>
+              <surname>Chehade</surname>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.ress.2020.107257</pub-id>
+          <pub-id pub-id-type="publisher"/>
+          <article-title>A Dual-LSTM framework combining change point detection and remaining useful life prediction</article-title>
+          <source>Reliab. Eng. Syst. Saf.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_25">
+        <label>25.</label>
+        <element-citation publication-type="conf-paper">
+          <volume/>
+          <page-range>87-92</page-range>
+          <issue/>
+          <year>2020</year>
+          <person-group person-group-type="author">
+            <name>
+              <given-names>M. A.</given-names>
+              <surname>Istiake Sunny</surname>
+            </name>
+            <name>
+              <given-names>M. M. S.</given-names>
+              <surname>Maswood</surname>
+            </name>
+            <name>
+              <given-names>A. G.</given-names>
+              <surname>Alharbi</surname>
+            </name>
+          </person-group>
+          <person-group person-group-type="editor"/>
+          <pub-id pub-id-type="doi">10.1109/NILES50944.2020.9257950</pub-id>
+          <article-title>Deep learning-based stock price prediction using LSTM and bi-directional LSTM model</article-title>
+          <source>2020 2nd Novel Intelligent and Leading Emerging Sciences Conference (NILES), Giza, Egypt</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_26">
+        <label>26.</label>
+        <element-citation publication-type="journal">
+          <volume>28</volume>
+          <page-range>888-902</page-range>
+          <issue>4</issue>
+          <year>2014</year>
+          <person-group person-group-type="author">
+            <name>
+              <given-names>F.</given-names>
+              <surname>Weninger</surname>
+            </name>
+            <name>
+              <given-names>J.</given-names>
+              <surname>Geiger</surname>
+            </name>
+            <name>
+              <given-names>M.</given-names>
+              <surname>Wöllmer</surname>
+            </name>
+            <name>
+              <given-names>B.</given-names>
+              <surname>Schuller</surname>
+            </name>
+            <name>
+              <given-names>G.</given-names>
+              <surname>Rigoll</surname>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.csl.2014.01.001</pub-id>
+          <pub-id pub-id-type="publisher"/>
+          <article-title>Feature enhancement by deep LSTM networks for ASR in reverberant multisource environments</article-title>
+          <source>Comput. Speech Lang.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_27">
+        <label>27.</label>
+        <element-citation publication-type="journal">
+          <volume>51</volume>
+          <page-range>485-489</page-range>
+          <issue>13</issue>
+          <year>2018</year>
+          <person-group person-group-type="author">
+            <name>
+              <given-names>J.</given-names>
+              <surname>Gonzalez</surname>
+            </name>
+            <name>
+              <given-names>W.</given-names>
+              <surname>Yu</surname>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.ifacol.2018.07.326</pub-id>
+          <pub-id pub-id-type="publisher"/>
+          <article-title>Non-linear system modeling using LSTM neural networks</article-title>
+          <source>IFAC-PapersOnLine</source>
+        </element-citation>
+      </ref>
+    </ref-list>
+  </back>
+</article>
