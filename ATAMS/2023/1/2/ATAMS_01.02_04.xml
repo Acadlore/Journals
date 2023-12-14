@@ -1,0 +1,2379 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.3 20210610//EN" "JATS-journalpublishing1-3.dtd">
+<article xml:lang="en" dtd-version="1.3" article-type="research-article" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mml="http://www.w3.org/1998/Math/MathML">
+  <front>
+    <journal-meta>
+      <journal-id journal-id-type="publisher-id">ATAMS</journal-id>
+      <journal-id journal-id-type="doi">10.56578</journal-id>
+      <journal-title-group>
+        <journal-title>Acadlore Transactions on Applied Mathematics and Statistics</journal-title>
+        <abbrev-journal-title abbrev-type="issn">Acadlore Trans. Appl Math. Stat.</abbrev-journal-title>
+        <abbrev-journal-title abbrev-type="publisher">ATAMS</abbrev-journal-title>
+      </journal-title-group>
+      <issn publication-format="electronic">2959-4065</issn>
+      <issn publication-format="print">2959-4057</issn>
+      <publisher>
+        <publisher-name>Acadlore</publisher-name>
+      </publisher>
+    </journal-meta>
+    <article-meta>
+      <article-id pub-id-type="publisher-id">AR-QnuZz-s5erZn8ymrcMBKr_njtORT_fGx</article-id>
+      <article-id pub-id-type="doi">10.56578/atams010204</article-id>
+      <title-group>
+        <article-title>Optimal Vehicle Routing in Consumer Goods Distribution: A GNU Linear Programming Kit-Based Analysis</article-title>
+      </title-group>
+      <contrib-group>
+        <contrib contrib-type="author">
+          <xref ref-type="aff" rid="1">1</xref>
+          <name>
+            <surname>Dedović</surname>
+            <given-names>Uroš</given-names>
+          </name>
+          <contrib-id contrib-id-type="orcid" authenticated="true"> </contrib-id>
+          <email>u.dedovic@gmail.com</email>
+        </contrib>
+        <contrib contrib-type="author">
+          <xref ref-type="aff" rid="2">2</xref>
+          <name>
+            <surname>GušAvac</surname>
+            <given-names>Bisera Andrić</given-names>
+          </name>
+          <contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0000-0001-9438-5906</contrib-id>
+          <email>bisera.andric.gusavac@fon.bg.ac.rs</email>
+        </contrib>
+        <aff id="1">Profi Soft, Francuska 1, 34300 Arandjelovac, Serbia</aff>
+        <aff id="2">Department of Operations Research and Statistics, University of Belgrade, Faculty of Organizational Sciences, 11000 Belgrade, Serbia</aff>
+      </contrib-group>
+      <year>2023</year>
+      <volume>1</volume>
+      <issue>2</issue>
+      <fpage>87</fpage>
+      <lpage>95</lpage>
+      <page-range>87-95</page-range>
+      <history>
+        <date date-type="received">
+          <month>08</month>
+          <day>10</day>
+          <year>2023</year>
+        </date>
+        <date date-type="accepted">
+          <month>09</month>
+          <day>16</day>
+          <year>2023</year>
+        </date>
+        <date date-type="pub">
+          <month>09</month>
+          <day>21</day>
+          <year>2023</year>
+        </date>
+      </history>
+      <permissions>
+        <copyright-statement>©2023 by the authors</copyright-statement>
+        <copyright-year>2023</copyright-year>
+        <license>. Licensee Acadlore Publishing Services Limited, Hong Kong. This article can be downloaded for free, and reused and quoted with a citation of the original published version, under the <ext-link ext-link-type="uri" xlink:href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0 license</ext-link>.</license>
+      </permissions>
+      <abstract>In businesses entailing the distribution of goods, the vehicle routing problem (VRP) critically influences the minimization of distribution costs and the curtailment of excessive vehicle utilization. This study delves into the formulation of the VRP within a firm specializing in the distribution of appliances and consumer goods, emphasizing the firm's unique operational characteristics. A mathematical model addressing the vehicle routing issue is meticulously crafted and subsequently resolved, yielding exact solutions through the application of the GNU Linear Programming Kit (GLPK). Comparative insights into the pre-existing and newly devised routing methodologies within the firm are elucidated. Owing to the dynamism in customer demands and daily deliveries, the propounded model has been designed for facile adaptability and frequent utilization. It demonstrates a marked enhancement over the conventional routing paradigms prevalent within the company. Recognizing potential avenues for advancement, considerations such as multi-warehouse integration and the introduction of customer-specific time windows, wherein goods must be dispatched within stipulated intervals, are acknowledged as prospects for future research and implementation.</abstract>
+      <kwd-group>
+        <kwd>Vehicle routing problem</kwd>
+        <kwd>Consumer goods distribution</kwd>
+        <kwd>Mathematical formulation</kwd>
+        <kwd>Optimal routes</kwd>
+        <kwd>GLPK</kwd>
+        <kwd>Exact solutions</kwd>
+      </kwd-group>
+      <counts>
+        <count count-type="contributors">2</count>
+        <fig-count>4</fig-count>
+        <table-count>2</table-count>
+        <ref-count>14</ref-count>
+      </counts>
+    </article-meta>
+  </front>
+  <body>
+    <sec disp-level="level1" sec-type="intro">
+      <title>1. Introduction</title>
+      <p>In a 2020 report by the United States Environmental Protection Agency (EPA), it was highlighted that the transportation sector contributed to the largest proportion (27%) of greenhouse gas emissions (<xref ref-type="fig" rid="fig_1">Figure 1</xref>) [<xref ref-type="bibr" rid="ref_1">1</xref>]. A staggering 90% of the fuel employed for transportation has been found to be petroleum-based, encompassing chiefly gasoline and diesel. Predominantly, these transportation-associated greenhouse gas emissions emanate from the combustion of petroleum-based products in internal combustion engines.</p><p>The VRP has been identified as having a pivotal role in minimizing distribution costs and underscoring the environmental repercussions stemming from excessive vehicle usage and fuel combustion [<xref ref-type="bibr" rid="ref_2">2</xref>]. The actual cost incurred by a vehicle transiting between two points has been determined to be contingent on various factors, including vehicle load, per-kilometer fuel consumption, fuel price, time expenditure, distance traversed, and depreciation.</p><p>Critical to distribution companies is the effective management of their vehicle fleets. It has been posited that resolving the "routing and scheduling problem" is essential to this end [<xref ref-type="bibr" rid="ref_2">2</xref>]. Decisions concerning the spatial configuration of vehicle routes within transportation networks often give rise to a myriad of challenges and stipulations that have been categorized under the umbrella term "routing problems".</p><p>The significance of the VRP is underscored by its prevalence in academic literature, with over 550,000 results retrieved on Google Scholar upon querying the term VRP [<xref ref-type="bibr" rid="ref_3">3</xref>]. Additionally, in recent years, more than 71,600 articles addressing the topic have been documented. It has been observed that with the evolution of corporate functions, increasing complexity of distributions, technological advancements, and the emergence of novel problem-solving tools, a variety of VRP modifications and optimizations have surfaced. Application areas for VRP have diversified, even spanning domains such as agriculture [<xref ref-type="bibr" rid="ref_4">4</xref>], [<xref ref-type="bibr" rid="ref_5">5</xref>].</p><p>Central to VRP is the delineation of the most efficient route conglomerate, all while adhering to operational constraints. Often, these constraints are informed by the nature of the freight, service quality benchmarks, and vehicular features [<xref ref-type="bibr" rid="ref_6">6</xref>]. Standard limitations encompass route duration, vehicular load constraints, specific customer requirements for goods delivery or pickup, and designated service timeframes.</p>
+      
+        <fig id="fig_1">
+          <label>Figure 1</label>
+          <caption>Representation of the routing problem with a singular depot [<xref ref-type="bibr" rid="ref_1">1</xref>]</caption>
+          <abstract/>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2023/8/img_Ze-WMAh3KDQJZnIH.png"/>
+        </fig>
+      
+      <p> <xref ref-type="fig" rid="fig_2">Figure 2</xref> shows the vehicle routing problem with one depot and a set of routes that include all customers. Each branch in the route has a weight coefficient associated with it.</p>
+      
+        <fig id="fig_2">
+          <label>Figure 2</label>
+          <caption>Percentage share of each sector in the emission of greenhouse-effect gases [<xref ref-type="bibr" rid="ref_6">6</xref>]</caption>
+          <abstract/>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2023/8/img_1x42BkYCDn6Ys48O.png"/>
+        </fig>
+      
+      <p>In literature, the VRP has been characterized by certain authors [<xref ref-type="bibr" rid="ref_7">7</xref>] as the quest for route designs that minimize costs, with each route originating and culminating at a centralized depot, and a fleet tasked with goods delivery to geographically dispersed clientele. It has been emphasized that each client ought to be serviced once, and the cumulative delivery should not breach vehicle capacity constraints.</p><p>Recognized as a combinatorial optimization and integer programming challenge, VRP has been established as a tool for deducing the most propitious routes to facilitate goods and services delivery to a constrained client set [<xref ref-type="bibr" rid="ref_8">8</xref>]. Defined succinctly, VRP encompasses the route sets those vehicles, tasked with goods delivery, adopt to serve clients, with each client being serviced once and vehicles returning to their point of origin [<xref ref-type="bibr" rid="ref_9">9</xref>].</p><p>In recent decades, the adoption of optimization tools for the effective orchestration of goods procurement and delivery in distribution networks has witnessed an upswing. Concurrently, the environmental implications, particularly the deteriorative impact on the ecological milieu due to transportation vehicle activities, have garnered significant attention. Notwithstanding advancements in the integration of eco-friendly technologies aimed at curtailing greenhouse gas emissions, it has been observed that the quantum of pollutants, especially carbon dioxide equivalents CO<sub>2</sub>, has escalated, thereby exacerbating public health concerns [<xref ref-type="bibr" rid="ref_10">10</xref>].</p>
+    </sec>
+    <sec disp-level="level1" sec-type="">
+      <title>2. Methodology</title>
+      <p>For the resolution of the routing conundrum, a collection of routes that aspires to minimize the total distance traversed is sought. Such a collection must adhere to the following criteria:</p><p>•All users or customers are encompassed within the formulated routes.</p><p>•Every user or customer is to be approached only once.</p><p>•Commencement and conclusion of each route occur at the depot.</p><p>Applications of the VRP have been observed across diverse industries, particularly those reliant on varied vehicle types to execute specific tasks. Given a complete graph <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>G</mi>
+    <mi>N</mi>
+    <mi>E</mi>
+    <mo>=</mo>
+    <mo stretchy="false">(</mo>
+    <mo>,</mo>
+    <mo stretchy="false">)</mo>
+  </math>
+</inline-formula>, where <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>N</mi>
+    <mi>n</mi>
+    <mo>=</mo>
+    <mo fence="false" stretchy="false">{</mo>
+    <mo>,</mo>
+    <mo>,</mo>
+    <mo>…</mo>
+    <mo>,</mo>
+    <mo fence="false" stretchy="false">}</mo>
+    <mn>0</mn>
+    <mn>1</mn>
+  </math>
+</inline-formula> and <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>E</mi>
+    <mi>i</mi>
+    <mi>j</mi>
+    <mi>i</mi>
+    <mi>N</mi>
+    <mi>j</mi>
+    <mi>N</mi>
+    <mo>⊆</mo>
+    <mo fence="false" stretchy="false">{</mo>
+    <mo stretchy="false">(</mo>
+    <mo>,</mo>
+    <mo stretchy="false">)</mo>
+    <mo>∣</mo>
+    <mo>∈</mo>
+    <mo>,</mo>
+    <mo>∈</mo>
+    <mo fence="false" stretchy="false">}</mo>
+  </math>
+</inline-formula>, node 0 symbolizes the depot. C, which is depicted as <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>C</mi>
+    <mi>N</mi>
+    <mi mathvariant="normal">∖</mi>
+    <mo>∈</mo>
+    <mo fence="false" stretchy="false">{</mo>
+    <mo fence="false" stretchy="false">}</mo>
+    <mn>0</mn>
+  </math>
+</inline-formula>, denotes the cluster of users or customers, excluding the depot. To construct the mathematical model, a specific notation was introduced [<xref ref-type="bibr" rid="ref_11">11</xref>]:</p><p style="text-align: center"><inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msub>
+      <mi>x</mi>
+      <mrow data-mjx-texclass="ORD">
+        <mi>i</mi>
+        <mi>j</mi>
+      </mrow>
+    </msub>
+    <mo>=</mo>
+    <mrow data-mjx-texclass="INNER">
+      <mo data-mjx-texclass="OPEN">{</mo>
+      <mo>,</mo>
+      <mo>,</mo>
+      <mo>∈</mo>
+      <mo data-mjx-texclass="CLOSE" fence="true" stretchy="true" symmetric="true"/>
+      <mtable columnalign="left" columnspacing="1em" rowspacing="4pt">
+        <mtr>
+          <mtd>
+            <mn>1</mn>
+            <mo>,</mo>
+            <mo stretchy="false">(</mo>
+            <mo>,</mo>
+            <mo stretchy="false">)</mo>
+            <mtext> arc </mtext>
+            <mtext> belongs to the route </mtext>
+            <mi>i</mi>
+            <mi>j</mi>
+          </mtd>
+        </mtr>
+        <mtr>
+          <mtd>
+            <mn>0</mn>
+            <mo>,</mo>
+            <mtext> otherwise </mtext>
+          </mtd>
+        </mtr>
+      </mtable>
+      <mi>i</mi>
+      <mi>j</mi>
+      <mi>N</mi>
+    </mrow>
+  </math>
+</inline-formula>,</p><p style="text-align: center"><inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msub>
+      <mi>c</mi>
+      <mrow data-mjx-texclass="ORD">
+        <mi>i</mi>
+        <mi>j</mi>
+      </mrow>
+    </msub>
+    <msub>
+      <mi>c</mi>
+      <mrow data-mjx-texclass="ORD">
+        <mi>i</mi>
+        <mi>j</mi>
+      </mrow>
+    </msub>
+    <msub>
+      <mi>c</mi>
+      <mrow data-mjx-texclass="ORD">
+        <mi>j</mi>
+        <mi>i</mi>
+      </mrow>
+    </msub>
+    <mtext> - length of arc </mtext>
+    <mo stretchy="false">(</mo>
+    <mo>,</mo>
+    <mo stretchy="false">)</mo>
+    <mo>∈</mo>
+    <mo>,</mo>
+    <mo>=</mo>
+    <mi>i</mi>
+    <mi>j</mi>
+    <mi>E</mi>
+  </math>
+</inline-formula>,</p><p>Subsequently, the mathematical formulation for the VRP, as proposed by Miller et al. [<xref ref-type="bibr" rid="ref_11">11</xref>], 1960, was adopted:</p>
+      
+        <disp-formula>
+          <label>(1)</label>
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mo data-mjx-texclass="OP" movablelimits="true">min</mo>
+            <munder>
+              <mo data-mjx-texclass="OP">∑</mo>
+              <mrow data-mjx-texclass="ORD">
+                <mo stretchy="false">(</mo>
+                <mo>,</mo>
+                <mo stretchy="false">)</mo>
+                <mo>∈</mo>
+                <mi>i</mi>
+                <mi>j</mi>
+                <mi>E</mi>
+              </mrow>
+            </munder>
+            <msub>
+              <mi>c</mi>
+              <mrow data-mjx-texclass="ORD">
+                <mi>i</mi>
+                <mi>j</mi>
+              </mrow>
+            </msub>
+            <msub>
+              <mi>x</mi>
+              <mrow data-mjx-texclass="ORD">
+                <mi>i</mi>
+                <mi>j</mi>
+              </mrow>
+            </msub>
+          </math>
+        </disp-formula>
+      
+      <p>Subject to</p>
+      
+        <disp-formula>
+          <label>(2)</label>
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <munder>
+              <mo data-mjx-texclass="OP">∑</mo>
+              <mrow data-mjx-texclass="ORD">
+                <mi>i</mi>
+                <mi>N</mi>
+                <mo>∈</mo>
+              </mrow>
+            </munder>
+            <msub>
+              <mi>x</mi>
+              <mrow data-mjx-texclass="ORD">
+                <mi>i</mi>
+                <mi>j</mi>
+              </mrow>
+            </msub>
+            <mo>=</mo>
+            <mo>,</mo>
+            <mo>∈</mo>
+            <mn>1</mn>
+            <mi mathvariant="normal">∀</mi>
+            <mi>j</mi>
+            <mi>C</mi>
+          </math>
+        </disp-formula>
+      
+      
+        <disp-formula>
+          <label>(3)</label>
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <munder>
+              <mo data-mjx-texclass="OP">∑</mo>
+              <mrow data-mjx-texclass="ORD">
+                <mi>j</mi>
+                <mi>N</mi>
+                <mo>∈</mo>
+              </mrow>
+            </munder>
+            <msub>
+              <mi>x</mi>
+              <mrow data-mjx-texclass="ORD">
+                <mi>i</mi>
+                <mi>j</mi>
+              </mrow>
+            </msub>
+            <mo>=</mo>
+            <mo>,</mo>
+            <mo>∈</mo>
+            <mn>1</mn>
+            <mi mathvariant="normal">∀</mi>
+            <mi>i</mi>
+            <mi>C</mi>
+          </math>
+        </disp-formula>
+      
+      
+        <disp-formula>
+          <label>(4)</label>
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <msub>
+              <mi>u</mi>
+              <mi>i</mi>
+            </msub>
+            <msub>
+              <mi>u</mi>
+              <mi>j</mi>
+            </msub>
+            <msub>
+              <mi>x</mi>
+              <mrow data-mjx-texclass="ORD">
+                <mi>i</mi>
+                <mi>j</mi>
+              </mrow>
+            </msub>
+            <mo>−</mo>
+            <mo>+</mo>
+            <mo>≤</mo>
+            <mo>−</mo>
+            <mo>,</mo>
+            <mo stretchy="false">(</mo>
+            <mo>,</mo>
+            <mo stretchy="false">)</mo>
+            <mo>∈</mo>
+            <mo>,</mo>
+            <mo>,</mo>
+            <mo>≠</mo>
+            <mi>n</mi>
+            <mi>n</mi>
+            <mi mathvariant="normal">∀</mi>
+            <mi>i</mi>
+            <mi>j</mi>
+            <mi>E</mi>
+            <mi>i</mi>
+            <mi>j</mi>
+            <mn>1</mn>
+            <mn>0</mn>
+            <mstyle scriptlevel="0">
+              <mspace width="1em"/>
+            </mstyle>
+          </math>
+        </disp-formula>
+      
+      
+        <disp-formula>
+          <label>(5)</label>
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <msub>
+              <mi>x</mi>
+              <mrow data-mjx-texclass="ORD">
+                <mi>i</mi>
+                <mi>j</mi>
+              </mrow>
+            </msub>
+            <mo>∈</mo>
+            <mo fence="false" stretchy="false">{</mo>
+            <mo>,</mo>
+            <mo fence="false" stretchy="false">}</mo>
+            <mo>,</mo>
+            <mo stretchy="false">(</mo>
+            <mo>,</mo>
+            <mo stretchy="false">)</mo>
+            <mo>∈</mo>
+            <mn>0</mn>
+            <mn>1</mn>
+            <mstyle scriptlevel="0">
+              <mspace width="1em"/>
+            </mstyle>
+            <mi mathvariant="normal">∀</mi>
+            <mi>i</mi>
+            <mi>j</mi>
+            <mi>E</mi>
+          </math>
+        </disp-formula>
+      
+      <p>The goal function, represented by Eq. (1), aims at minimizing the cumulative distance. Constraints depicted by (2) and (3) confirm that every customer gets a singular visit. Constraints labeled as (4) are purposed for sub contour elimination that lacks a depot. Here, auxiliary real variables, denoted as <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msub>
+      <mi>u</mi>
+      <mi>i</mi>
+    </msub>
+  </math>
+</inline-formula>, are designated for every node, sparing the depot. These variables epitomize the aggregate number of all users on the identical route to user $i$.</p>
+      
+        <sec disp-level="level2">
+          
+            <title>2.1. Capacitated vrp</title>
+          
+          <p>Within the Capacitated VRP (CVRP) domain, the introduction of vehicles bearing confined capacities is noteworthy. These vehicles are mandated to approach users at their specific locales, ensuring the service remains within the predefined capacity [<xref ref-type="bibr" rid="ref_6">6</xref>]. This framework seeks to unveil a collection of routes that strives to minimize the comprehensive distance traversed.</p><p>Given the extended variant of the foundational VRP model, the introduction of supplementary variables becomes imperative:</p><p><inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msub>
+      <mi>q</mi>
+      <mi>i</mi>
+    </msub>
+  </math>
+</inline-formula> - demand of the $i<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo>−</mo>
+    <mo>,</mo>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>u</mi>
+    <mi>s</mi>
+    <mi>e</mi>
+    <mi>r</mi>
+  </math>
+</inline-formula>i \in N \backslash\{0\}<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo>,</mo>
+    <mo>&amp;lt;</mo>
+    <mo>&amp;gt;&amp;lt;</mo>
+    <mo>&amp;gt;</mo>
+    <mrow data-mjx-texclass="ORD">
+      <mo>/</mo>
+    </mrow>
+    <mi>p</mi>
+    <mi>p</mi>
+  </math>
+</inline-formula>Q$ - denotes the vehicular capacity.</p><p>The mathematical formulation for the CVRP [<xref ref-type="bibr" rid="ref_6">6</xref>] is as follows:</p>
+          
+            <disp-formula>
+              <label>(6)</label>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <mo data-mjx-texclass="OP" movablelimits="true">min</mo>
+                <munder>
+                  <mo data-mjx-texclass="OP">∑</mo>
+                  <mrow data-mjx-texclass="ORD">
+                    <mo stretchy="false">(</mo>
+                    <mo>,</mo>
+                    <mo stretchy="false">)</mo>
+                    <mo>∈</mo>
+                    <mi>i</mi>
+                    <mi>j</mi>
+                    <mi>E</mi>
+                  </mrow>
+                </munder>
+                <msub>
+                  <mi>c</mi>
+                  <mrow data-mjx-texclass="ORD">
+                    <mi>i</mi>
+                    <mi>j</mi>
+                  </mrow>
+                </msub>
+                <msub>
+                  <mi>x</mi>
+                  <mrow data-mjx-texclass="ORD">
+                    <mi>i</mi>
+                    <mi>j</mi>
+                  </mrow>
+                </msub>
+              </math>
+            </disp-formula>
+          
+          <p>Subject to</p>
+          
+            <disp-formula>
+              <label>(7)</label>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <munder>
+                  <mo data-mjx-texclass="OP">∑</mo>
+                  <mrow data-mjx-texclass="ORD">
+                    <mi>i</mi>
+                    <mi>N</mi>
+                    <mo>∈</mo>
+                  </mrow>
+                </munder>
+                <msub>
+                  <mi>x</mi>
+                  <mrow data-mjx-texclass="ORD">
+                    <mi>i</mi>
+                    <mi>j</mi>
+                  </mrow>
+                </msub>
+                <mo>=</mo>
+                <mo>,</mo>
+                <mo>∈</mo>
+                <mn>1</mn>
+                <mi mathvariant="normal">∀</mi>
+                <mi>j</mi>
+                <mi>C</mi>
+              </math>
+            </disp-formula>
+          
+          
+            <disp-formula>
+              <label>(8)</label>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <munder>
+                  <mo data-mjx-texclass="OP">∑</mo>
+                  <mrow data-mjx-texclass="ORD">
+                    <mi>j</mi>
+                    <mi>N</mi>
+                    <mo>∈</mo>
+                  </mrow>
+                </munder>
+                <msub>
+                  <mi>x</mi>
+                  <mrow data-mjx-texclass="ORD">
+                    <mi>i</mi>
+                    <mi>j</mi>
+                  </mrow>
+                </msub>
+                <mo>=</mo>
+                <mo>,</mo>
+                <mo>∈</mo>
+                <mn>1</mn>
+                <mi mathvariant="normal">∀</mi>
+                <mi>i</mi>
+                <mi>C</mi>
+              </math>
+            </disp-formula>
+          
+          
+            <disp-formula>
+              <label>(9)</label>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <msub>
+                  <mi>u</mi>
+                  <mi>i</mi>
+                </msub>
+                <msub>
+                  <mi>u</mi>
+                  <mi>j</mi>
+                </msub>
+                <msub>
+                  <mi>x</mi>
+                  <mrow data-mjx-texclass="ORD">
+                    <mi>i</mi>
+                    <mi>j</mi>
+                  </mrow>
+                </msub>
+                <msub>
+                  <mi>q</mi>
+                  <mi>j</mi>
+                </msub>
+                <mo>−</mo>
+                <mo>+</mo>
+                <mo>≤</mo>
+                <mo>−</mo>
+                <mo>,</mo>
+                <mo stretchy="false">(</mo>
+                <mo>,</mo>
+                <mo stretchy="false">)</mo>
+                <mo>∈</mo>
+                <mo>,</mo>
+                <mo>,</mo>
+                <mo>≠</mo>
+                <mi>Q</mi>
+                <mi>Q</mi>
+                <mi mathvariant="normal">∀</mi>
+                <mi>i</mi>
+                <mi>j</mi>
+                <mi>E</mi>
+                <mi>i</mi>
+                <mi>j</mi>
+                <mstyle scriptlevel="0">
+                  <mspace width="1em"/>
+                </mstyle>
+                <mn>0</mn>
+              </math>
+            </disp-formula>
+          
+          
+            <disp-formula>
+              <label>(10)</label>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <msub>
+                  <mi>x</mi>
+                  <mrow data-mjx-texclass="ORD">
+                    <mi>i</mi>
+                    <mi>j</mi>
+                  </mrow>
+                </msub>
+                <mo>∈</mo>
+                <mo fence="false" stretchy="false">{</mo>
+                <mo>,</mo>
+                <mo fence="false" stretchy="false">}</mo>
+                <mo>,</mo>
+                <mo stretchy="false">(</mo>
+                <mo>,</mo>
+                <mo stretchy="false">)</mo>
+                <mo>∈</mo>
+                <mn>0</mn>
+                <mn>1</mn>
+                <mstyle scriptlevel="0">
+                  <mspace width="1em"/>
+                </mstyle>
+                <mi mathvariant="normal">∀</mi>
+                <mi>i</mi>
+                <mi>j</mi>
+                <mi>E</mi>
+              </math>
+            </disp-formula>
+          
+          <p>Constraints (7) and (8) ensure that every user is visited precisely once. Constraint (9) certifies that the maximum capacity isn't transgressed while simultaneously eliminating sub contours lacking a depot. Auxiliary variables are expressed as <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msub>
+      <mi>u</mi>
+      <mi>i</mi>
+    </msub>
+  </math>
+</inline-formula> and are allocated to every node, barring the warehouse. These variables embody the cumulative count of all users following the same route to user $i<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo>.</mo>
+    <mo>,</mo>
+    <mo>:</mo>
+    <mi>I</mi>
+    <mi>n</mi>
+    <mi>a</mi>
+    <mi>d</mi>
+    <mi>d</mi>
+    <mi>i</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>t</mi>
+    <mi>o</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>e</mi>
+    <mi>c</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>r</mi>
+    <mi>a</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>t</mi>
+    <mi>s</mi>
+    <mi>i</mi>
+    <mi>t</mi>
+    <mi>b</mi>
+    <mi>e</mi>
+    <mi>c</mi>
+    <mi>o</mi>
+    <mi>m</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>c</mi>
+    <mi>r</mi>
+    <mi>u</mi>
+    <mi>c</mi>
+    <mi>i</mi>
+    <mi>a</mi>
+    <mi>l</mi>
+    <mi>t</mi>
+    <mi>o</mi>
+    <mi>s</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>s</mi>
+    <mi>f</mi>
+    <mi>y</mi>
+  </math>
+</inline-formula>q_i \leq u_i \leq Q, i \in C$.</p>
+        </sec>
+      
+    </sec>
+    <sec disp-level="level1" sec-type="results">
+      <title>3. Results</title>
+      <p>In the examined distribution process, upon making a purchase either in-store or online, the customer requests home delivery of the acquired goods. Subsequently, the enterprise initiates the delivery process. Based on the day's orders, a comprehensive document encompassing all pertinent product and customer details is generated. Excluding Sundays and Mondays, goods are dispatched daily.</p><p>At present, 14 distribution routes, primarily crafted based on the insights from the logistics and warehouse staff, are utilized without any optimization model's intervention. Every route emanates from the central warehouse, situated in Arandjelovac, Serbia. <xref ref-type="fig" rid="fig_3">Figure 3</xref> delineates the various cities encompassed within these distribution routes.</p><p>Distances to customers in the cities, as illustrated in <xref ref-type="fig" rid="fig_3">Figure 3</xref>, were ascertained using data retrieved from Google Maps [<xref ref-type="bibr" rid="ref_12">12</xref>]. On the depicted Serbian geographic map (<xref ref-type="fig" rid="fig_3">Figure 3</xref>), cities either with a populace exceeding 20,000 or those not in proximity to such populated cities are highlighted. For this study, cities were categorized in a specific manner: customers in smaller cities were allocated to adjacent larger cities (within a 20 km radius). Such an approach was adopted owing to the challenges associated with obtaining precise data concerning smaller cities and villages. In instances where a smaller locale did not lie near a major city, it was individually considered as a distinct user, exemplified by Svilajnac.</p>
+      
+        <fig id="fig_3">
+          <label>Figure 3</label>
+          <caption>Geographic representation of Serbia with the analyzed cities marked</caption>
+          <abstract/>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2023/8/img_KIoLMCinfTij09Iv.png"/>
+        </fig>
+      
+      <p>Outlined requirements for addressing the vehicle routing challenge include:</p><p>•Restricting routes where inter-city distances surpass 150 km due to unprofitability (e.g., arcs between Subotica and Niš would be non-existent). This stipulation serves to diminish the arc count.</p><p>•The emphasis on minimizing fuel expenditures serves as the predominant criterion. The fuel costs for each arc were determined for every vehicle type, using the fuel (diesel) pricing data dated 06.09.2022 (valued at 218 dinars per liter).</p><p>•The enterprise's fleet consists of diverse vehicle types: four smaller vans of 9.31<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msup>
+      <mrow data-mjx-texclass="ORD">
+        <mi mathvariant="normal">m</mi>
+      </mrow>
+      <mn>3</mn>
+    </msup>
+  </math>
+</inline-formula> volume, five vans of 17<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msup>
+      <mrow data-mjx-texclass="ORD">
+        <mi mathvariant="normal">m</mi>
+      </mrow>
+      <mn>3</mn>
+    </msup>
+  </math>
+</inline-formula>, and a singular truck with a 50<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msup>
+      <mrow data-mjx-texclass="ORD">
+        <mi mathvariant="normal">m</mi>
+      </mrow>
+      <mn>3</mn>
+    </msup>
+  </math>
+</inline-formula> volume.</p><p>•Stipulations dictate that vehicle occupancy must oscillate between 40% and 90%.</p><p>•The DIF parameter (Difference in Price) is monitored, referencing the profit margin from product sales. A vehicle will continue its distribution until the cumulative DIF for the loaded commodities surpasses a predetermined threshold, ensuring profitability.</p><p>Given the extensive product range, exceeding 60,000 distinct items, a holistic examination of each remains infeasible. As a solution, the study categorizes products into three volume-based groups (<xref ref-type="table" rid="table_1">Table 1</xref>). Small products encompass items whose volume, inclusive of packaging, remains below 0.1<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msup>
+      <mrow data-mjx-texclass="ORD">
+        <mi mathvariant="normal">m</mi>
+      </mrow>
+      <mn>3</mn>
+    </msup>
+  </math>
+</inline-formula>. Medium products are characterized by volumes ranging between 0.1<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msup>
+      <mrow data-mjx-texclass="ORD">
+        <mi mathvariant="normal">m</mi>
+      </mrow>
+      <mn>3</mn>
+    </msup>
+  </math>
+</inline-formula> and 0.23<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msup>
+      <mrow data-mjx-texclass="ORD">
+        <mi mathvariant="normal">m</mi>
+      </mrow>
+      <mn>3</mn>
+    </msup>
+  </math>
+</inline-formula>, whereas large products are those exceeding a volume of 0.23<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msup>
+      <mrow data-mjx-texclass="ORD">
+        <mi mathvariant="normal">m</mi>
+      </mrow>
+      <mn>3</mn>
+    </msup>
+  </math>
+</inline-formula>.</p>
+      
+        <table-wrap id="table_1">
+          <label>Table 1</label>
+          <caption>Categorization of product types by volume</caption>
+          <abstract/>
+          <table><tbody><tr><td colspan="1" rowspan="1"><p>Product Group</p></td><td colspan="1" rowspan="1"><p>Product Types</p></td></tr><tr><td colspan="1" rowspan="1"><p>Small size products</p></td><td colspan="1" rowspan="1"><p style="text-align: justify">Shackles, tape insulators, packing tapes, lacquers, paints for wood and metal, hair dryers, cameras, irons, small kitchen appliances, car audio equipment, ice machines, tablet computers, monitors, laptops, irrigation pumps, sinks, electronic tools, and more.</p></td></tr><tr><td colspan="1" rowspan="1"><p>Medium size products</p></td><td colspan="1" rowspan="1"><p style="text-align: justify">Cookers, toilet bowls, desktop computers, microwave ovens, aggregates for electricity, aspirators, motor trimmers, cooling fans, motor drills, vacuum cleaners, televisions, electric tools (drills, grinders...), air conditioners, chainsaws, and more.</p></td></tr><tr><td colspan="1" rowspan="1"><p>Large size products</p></td><td colspan="1" rowspan="1"><p style="text-align: justify">Laminates and parquets, motorized sprayers, garden grills and ovens, dishwashers, bathroom furniture (cabinets, mirrors), carpentry, boilers, motor cultivators, parasols and stands, washing machines, swimming pools, wooden ladders, motor mowers, aluminum ladders, freezers, refrigerators, garden furniture, and more.</p></td></tr></tbody></table>
+        </table-wrap>
+      
+      
+        <sec disp-level="level2">
+          
+            <title>3.1. Mathematical formulation of the distribution problem</title>
+          
+          <p>For the distribution problem of appliances and consumer goods, a mathematical model was established encompassing a set of constraints. The notations introduced are as follows:</p><p>•$N<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo>−</mo>
+    <mo>,</mo>
+    <mo>.</mo>
+    <mo>&amp;lt;</mo>
+    <mo>&amp;gt;&amp;lt;</mo>
+    <mo>&amp;gt;</mo>
+    <mo>•</mo>
+    <mi>R</mi>
+    <mi>e</mi>
+    <mi>p</mi>
+    <mi>r</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>t</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>e</mi>
+    <mi>t</mi>
+    <mi>o</mi>
+    <mi>f</mi>
+    <mi>n</mi>
+    <mi>o</mi>
+    <mi>d</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>c</mi>
+    <mi>l</mi>
+    <mi>u</mi>
+    <mi>s</mi>
+    <mi>i</mi>
+    <mi>v</mi>
+    <mi>e</mi>
+    <mi>o</mi>
+    <mi>f</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>d</mi>
+    <mi>e</mi>
+    <mi>p</mi>
+    <mi>o</mi>
+    <mi>t</mi>
+    <mi>p</mi>
+    <mi>p</mi>
+    <mrow data-mjx-texclass="ORD">
+      <mo>/</mo>
+    </mrow>
+  </math>
+</inline-formula>S<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo>−</mo>
+    <mo>,</mo>
+    <mo>.</mo>
+    <mo>&amp;lt;</mo>
+    <mo>&amp;gt;&amp;lt;</mo>
+    <mo>&amp;gt;</mo>
+    <mo>•</mo>
+    <mo>−</mo>
+    <mo>.</mo>
+    <mo>&amp;lt;</mo>
+    <mo>&amp;gt;&amp;lt;</mo>
+    <mo>&amp;gt;</mo>
+    <mo>•</mo>
+    <mi>D</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>o</mi>
+    <mi>t</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>e</mi>
+    <mi>t</mi>
+    <mi>o</mi>
+    <mi>f</mi>
+    <mi>n</mi>
+    <mi>o</mi>
+    <mi>d</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>e</mi>
+    <mi>x</mi>
+    <mi>c</mi>
+    <mi>l</mi>
+    <mi>u</mi>
+    <mi>d</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>g</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>d</mi>
+    <mi>e</mi>
+    <mi>p</mi>
+    <mi>o</mi>
+    <mi>t</mi>
+    <mi>p</mi>
+    <mi>p</mi>
+    <mi>D</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>i</mi>
+    <mi>g</mi>
+    <mi>n</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>d</mi>
+    <mi>e</mi>
+    <mi>p</mi>
+    <mi>o</mi>
+    <mi>t</mi>
+    <mi>n</mi>
+    <mi>o</mi>
+    <mi>d</mi>
+    <mi>e</mi>
+    <mi>p</mi>
+    <mi>p</mi>
+    <mrow data-mjx-texclass="ORD">
+      <mo>/</mo>
+    </mrow>
+    <mrow data-mjx-texclass="ORD">
+      <mo>/</mo>
+    </mrow>
+    <mn>0</mn>
+  </math>
+</inline-formula>V<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo>−</mo>
+    <mo>.</mo>
+    <mo>&amp;lt;</mo>
+    <mo>&amp;gt;&amp;lt;</mo>
+    <mo>&amp;gt;</mo>
+    <mo>•</mo>
+    <mi>R</mi>
+    <mi>e</mi>
+    <mi>p</mi>
+    <mi>r</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>t</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>e</mi>
+    <mi>t</mi>
+    <mi>o</mi>
+    <mi>f</mi>
+    <mi>v</mi>
+    <mi>e</mi>
+    <mi>h</mi>
+    <mi>i</mi>
+    <mi>c</mi>
+    <mi>l</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>p</mi>
+    <mi>p</mi>
+    <mrow data-mjx-texclass="ORD">
+      <mo>/</mo>
+    </mrow>
+  </math>
+</inline-formula>Q_k<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo>−</mo>
+    <mi>D</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>o</mi>
+    <mi>t</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>c</mi>
+    <mi>a</mi>
+    <mi>p</mi>
+    <mi>a</mi>
+    <mi>c</mi>
+    <mi>i</mi>
+    <mi>t</mi>
+    <mi>y</mi>
+    <mi>o</mi>
+    <mi>f</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+  </math>
+</inline-formula>k<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo>−</mo>
+    <mo>.</mo>
+    <mo>&amp;lt;</mo>
+    <mo>&amp;gt;&amp;lt;</mo>
+    <mo>&amp;gt;</mo>
+    <mo>•</mo>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>v</mi>
+    <mi>e</mi>
+    <mi>h</mi>
+    <mi>i</mi>
+    <mi>c</mi>
+    <mi>l</mi>
+    <mi>e</mi>
+    <mi>p</mi>
+    <mi>p</mi>
+    <mrow data-mjx-texclass="ORD">
+      <mo>/</mo>
+    </mrow>
+  </math>
+</inline-formula>g<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo>−</mo>
+    <mo>.</mo>
+    <mo>&amp;lt;</mo>
+    <mo>&amp;gt;&amp;lt;</mo>
+    <mo>&amp;gt;</mo>
+    <mo>•</mo>
+    <mi>S</mi>
+    <mi>t</mi>
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>d</mi>
+    <mi>s</mi>
+    <mi>f</mi>
+    <mi>o</mi>
+    <mi>r</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>f</mi>
+    <mi>u</mi>
+    <mi>e</mi>
+    <mi>l</mi>
+    <mi>p</mi>
+    <mi>r</mi>
+    <mi>i</mi>
+    <mi>c</mi>
+    <mi>e</mi>
+    <mi>p</mi>
+    <mi>p</mi>
+    <mrow data-mjx-texclass="ORD">
+      <mo>/</mo>
+    </mrow>
+  </math>
+</inline-formula>p_k<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo>−</mo>
+    <mi>R</mi>
+    <mi>e</mi>
+    <mi>f</mi>
+    <mi>e</mi>
+    <mi>r</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>o</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>f</mi>
+    <mi>u</mi>
+    <mi>e</mi>
+    <mi>l</mi>
+    <mi>c</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>s</mi>
+    <mi>u</mi>
+    <mi>m</mi>
+    <mi>p</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>o</mi>
+    <mi>f</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+  </math>
+</inline-formula>k<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo>−</mo>
+    <mo>.</mo>
+    <mo>&amp;lt;</mo>
+    <mo>&amp;gt;&amp;lt;</mo>
+    <mo>&amp;gt;</mo>
+    <mo>•</mo>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>v</mi>
+    <mi>e</mi>
+    <mi>h</mi>
+    <mi>i</mi>
+    <mi>c</mi>
+    <mi>l</mi>
+    <mi>e</mi>
+    <mi>p</mi>
+    <mi>p</mi>
+    <mrow data-mjx-texclass="ORD">
+      <mo>/</mo>
+    </mrow>
+  </math>
+</inline-formula>c_{i j k}<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo>−</mo>
+    <mo>,</mo>
+    <mi>R</mi>
+    <mi>e</mi>
+    <mi>p</mi>
+    <mi>r</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>t</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>l</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>g</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>o</mi>
+    <mi>f</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>a</mi>
+    <mi>r</mi>
+    <mi>c</mi>
+    <mi>w</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>r</mi>
+    <mi>e</mi>
+  </math>
+</inline-formula>c_{i j k}=c_{j i k}<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>f</mi>
+    <mi>o</mi>
+    <mi>r</mi>
+    <mi>e</mi>
+    <mi>v</mi>
+    <mi>e</mi>
+    <mi>r</mi>
+    <mi>y</mi>
+  </math>
+</inline-formula>k \in V<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo>.</mo>
+    <mo>&amp;lt;</mo>
+    <mo>&amp;gt;&amp;lt;</mo>
+    <mo>&amp;gt;</mo>
+    <mo>•</mo>
+    <mrow data-mjx-texclass="ORD">
+      <mo>/</mo>
+    </mrow>
+    <mi>p</mi>
+    <mi>p</mi>
+  </math>
+</inline-formula>q_i<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo>−</mo>
+    <mi>D</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>o</mi>
+    <mi>t</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>d</mi>
+    <mi>e</mi>
+    <mi>m</mi>
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>d</mi>
+    <mi>o</mi>
+    <mi>f</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+  </math>
+</inline-formula>i<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo>−</mo>
+    <mo>,</mo>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>c</mi>
+    <mi>u</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>o</mi>
+    <mi>m</mi>
+    <mi>e</mi>
+    <mi>r</mi>
+    <mi>w</mi>
+    <mi>i</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+  </math>
+</inline-formula>i \in N\{0\}<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo>.</mo>
+    <mo>&amp;lt;</mo>
+    <mo>&amp;gt;&amp;lt;</mo>
+    <mo>&amp;gt;</mo>
+    <mo>•</mo>
+    <mrow data-mjx-texclass="ORD">
+      <mo>/</mo>
+    </mrow>
+    <mi>p</mi>
+    <mi>p</mi>
+  </math>
+</inline-formula>Q_{m i n_k}<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo>−</mo>
+    <mi>S</mi>
+    <mi>t</mi>
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>d</mi>
+    <mi>s</mi>
+    <mi>f</mi>
+    <mi>o</mi>
+    <mi>r</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>m</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>i</mi>
+    <mi>m</mi>
+    <mi>a</mi>
+    <mi>l</mi>
+    <mi>c</mi>
+    <mi>a</mi>
+    <mi>p</mi>
+    <mi>a</mi>
+    <mi>c</mi>
+    <mi>i</mi>
+    <mi>t</mi>
+    <mi>y</mi>
+    <mi>o</mi>
+    <mi>f</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+  </math>
+</inline-formula>k<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo>−</mo>
+    <mo stretchy="false">(</mo>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>v</mi>
+    <mi>e</mi>
+    <mi>h</mi>
+    <mi>i</mi>
+    <mi>c</mi>
+    <mi>l</mi>
+    <mi>e</mi>
+    <mn>40</mn>
+  </math>
+</inline-formula>Q_{m a x_k}<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo>−</mo>
+    <mi>R</mi>
+    <mi>e</mi>
+    <mi>p</mi>
+    <mi>r</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>t</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>m</mi>
+    <mi>a</mi>
+    <mi>x</mi>
+    <mi>i</mi>
+    <mi>m</mi>
+    <mi>a</mi>
+    <mi>l</mi>
+    <mi>c</mi>
+    <mi>a</mi>
+    <mi>p</mi>
+    <mi>a</mi>
+    <mi>c</mi>
+    <mi>i</mi>
+    <mi>t</mi>
+    <mi>y</mi>
+    <mi>o</mi>
+    <mi>f</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+  </math>
+</inline-formula>k<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo>−</mo>
+    <mo stretchy="false">(</mo>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>v</mi>
+    <mi>e</mi>
+    <mi>h</mi>
+    <mi>i</mi>
+    <mi>c</mi>
+    <mi>l</mi>
+    <mi>e</mi>
+    <mn>90</mn>
+  </math>
+</inline-formula>m_i<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo>−</mo>
+    <mi>R</mi>
+    <mi>e</mi>
+    <mi>f</mi>
+    <mi>e</mi>
+    <mi>r</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>o</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>m</mi>
+    <mi>a</mi>
+    <mi>r</mi>
+    <mi>g</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>f</mi>
+    <mi>o</mi>
+    <mi>r</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+  </math>
+</inline-formula>i<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo>−</mo>
+    <mo>,</mo>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>u</mi>
+    <mi>s</mi>
+    <mi>e</mi>
+    <mi>r</mi>
+    <mi>w</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>r</mi>
+    <mi>e</mi>
+  </math>
+</inline-formula>i \in S<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo>.</mo>
+    <mo>&amp;lt;</mo>
+    <mo>&amp;gt;&amp;lt;</mo>
+    <mo>&amp;gt;</mo>
+    <mo>•</mo>
+    <mrow data-mjx-texclass="ORD">
+      <mo>/</mo>
+    </mrow>
+    <mi>p</mi>
+    <mi>p</mi>
+  </math>
+</inline-formula>M_k<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo>−</mo>
+    <mi>I</mi>
+    <mi>n</mi>
+    <mi>d</mi>
+    <mi>i</mi>
+    <mi>c</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>m</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>i</mi>
+    <mi>m</mi>
+    <mi>a</mi>
+    <mi>l</mi>
+    <mi>m</mi>
+    <mi>a</mi>
+    <mi>r</mi>
+    <mi>g</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>f</mi>
+    <mi>o</mi>
+    <mi>r</mi>
+    <mi>e</mi>
+    <mi>v</mi>
+    <mi>e</mi>
+    <mi>r</mi>
+    <mi>y</mi>
+    <mi>r</mi>
+    <mi>o</mi>
+    <mi>u</mi>
+    <mi>t</mi>
+    <mi>e</mi>
+    <mi>w</mi>
+    <mi>i</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+  </math>
+</inline-formula>k<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo>−</mo>
+    <mo>.</mo>
+    <mo>&amp;lt;</mo>
+    <mo>&amp;gt;&amp;lt;</mo>
+    <mo>&amp;gt;</mo>
+    <mo>•</mo>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>v</mi>
+    <mi>e</mi>
+    <mi>h</mi>
+    <mi>i</mi>
+    <mi>c</mi>
+    <mi>l</mi>
+    <mi>e</mi>
+    <mi>p</mi>
+    <mi>p</mi>
+    <mrow data-mjx-texclass="ORD">
+      <mo>/</mo>
+    </mrow>
+  </math>
+</inline-formula>x_{i j k}<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo>−</mo>
+    <mo>:</mo>
+    <mi>D</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>i</mi>
+    <mi>g</mi>
+    <mi>n</mi>
+    <mi>a</mi>
+    <mi>t</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>a</mi>
+    <mi>b</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>a</mi>
+    <mi>r</mi>
+    <mi>y</mi>
+    <mi>d</mi>
+    <mi>e</mi>
+    <mi>c</mi>
+    <mi>i</mi>
+    <mi>s</mi>
+    <mi>i</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>v</mi>
+    <mi>a</mi>
+    <mi>r</mi>
+    <mi>i</mi>
+    <mi>a</mi>
+    <mi>b</mi>
+    <mi>l</mi>
+    <mi>e</mi>
+    <mi>i</mi>
+    <mi>f</mi>
+    <mi>a</mi>
+    <mi>r</mi>
+    <mi>c</mi>
+    <mn>1</mn>
+  </math>
+</inline-formula>(i, j)<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>i</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>r</mi>
+    <mi>a</mi>
+    <mi>v</mi>
+    <mi>e</mi>
+    <mi>r</mi>
+    <mi>s</mi>
+    <mi>e</mi>
+    <mi>d</mi>
+    <mi>b</mi>
+    <mi>y</mi>
+    <mi>v</mi>
+    <mi>e</mi>
+    <mi>h</mi>
+    <mi>i</mi>
+    <mi>c</mi>
+    <mi>l</mi>
+    <mi>e</mi>
+  </math>
+</inline-formula>k$, and 0 otherwise.</p><p>The mathematical model derived is given by:</p>
+          
+            <disp-formula>
+              <label>(11)</label>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <mo data-mjx-texclass="OP" movablelimits="true">min</mo>
+                <mi>g</mi>
+                <munder>
+                  <mo data-mjx-texclass="OP">∑</mo>
+                  <mrow data-mjx-texclass="ORD">
+                    <mi>k</mi>
+                    <mi>V</mi>
+                    <mo>∈</mo>
+                  </mrow>
+                </munder>
+                <munder>
+                  <mo data-mjx-texclass="OP">∑</mo>
+                  <mrow data-mjx-texclass="ORD">
+                    <mi>i</mi>
+                    <mi>N</mi>
+                    <mo>∈</mo>
+                  </mrow>
+                </munder>
+                <munder>
+                  <mo data-mjx-texclass="OP">∑</mo>
+                  <mrow data-mjx-texclass="ORD">
+                    <mi>j</mi>
+                    <mi>N</mi>
+                    <mo>∈</mo>
+                  </mrow>
+                </munder>
+                <msub>
+                  <mi>p</mi>
+                  <mi>k</mi>
+                </msub>
+                <msub>
+                  <mi>c</mi>
+                  <mrow data-mjx-texclass="ORD">
+                    <mi>i</mi>
+                    <mi>j</mi>
+                    <mi>k</mi>
+                  </mrow>
+                </msub>
+                <msub>
+                  <mi>x</mi>
+                  <mrow data-mjx-texclass="ORD">
+                    <mi>i</mi>
+                    <mi>j</mi>
+                    <mi>k</mi>
+                  </mrow>
+                </msub>
+              </math>
+            </disp-formula>
+          
+          <p>Subject to</p>
+          
+            <disp-formula>
+              <label>(12)</label>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <munder>
+                  <mo data-mjx-texclass="OP">∑</mo>
+                  <mrow data-mjx-texclass="ORD">
+                    <mi>k</mi>
+                    <mi>V</mi>
+                    <mo>∈</mo>
+                  </mrow>
+                </munder>
+                <munder>
+                  <mo data-mjx-texclass="OP">∑</mo>
+                  <mrow data-mjx-texclass="ORD">
+                    <mi>j</mi>
+                    <mi>N</mi>
+                    <mo>∈</mo>
+                  </mrow>
+                </munder>
+                <msub>
+                  <mi>x</mi>
+                  <mrow data-mjx-texclass="ORD">
+                    <mi>i</mi>
+                    <mi>j</mi>
+                    <mi>k</mi>
+                  </mrow>
+                </msub>
+                <mo>=</mo>
+                <mo>,</mo>
+                <mo>∈</mo>
+                <mn>1</mn>
+                <mi mathvariant="normal">∀</mi>
+                <mi>i</mi>
+                <mi>N</mi>
+              </math>
+            </disp-formula>
+          
+          
+            <disp-formula>
+              <label>(13)</label>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <munder>
+                  <mo data-mjx-texclass="OP">∑</mo>
+                  <mrow data-mjx-texclass="ORD">
+                    <mi>i</mi>
+                    <mi>S</mi>
+                    <mo>∈</mo>
+                  </mrow>
+                </munder>
+                <mrow data-mjx-texclass="INNER">
+                  <mo data-mjx-texclass="OPEN">(</mo>
+                  <mo data-mjx-texclass="CLOSE">)</mo>
+                  <msub>
+                    <mi>q</mi>
+                    <mi>i</mi>
+                  </msub>
+                  <msub>
+                    <mi>x</mi>
+                    <mrow data-mjx-texclass="ORD">
+                      <mi>i</mi>
+                      <mi>j</mi>
+                      <mi>k</mi>
+                    </mrow>
+                  </msub>
+                  <munder>
+                    <mo data-mjx-texclass="OP">∑</mo>
+                    <mrow data-mjx-texclass="ORD">
+                      <mi>j</mi>
+                      <mi>N</mi>
+                      <mo>∈</mo>
+                    </mrow>
+                  </munder>
+                </mrow>
+                <mo>≥</mo>
+                <mo>,</mo>
+                <mo>∈</mo>
+                <msub>
+                  <mrow data-mjx-texclass="INNER">
+                    <mo data-mjx-texclass="OPEN">(</mo>
+                    <mo data-mjx-texclass="CLOSE">)</mo>
+                    <msub>
+                      <mi>Q</mi>
+                      <mrow data-mjx-texclass="ORD">
+                        <mo data-mjx-texclass="OP" movablelimits="true">min</mo>
+                      </mrow>
+                    </msub>
+                  </mrow>
+                  <mi>k</mi>
+                </msub>
+                <mi mathvariant="normal">∀</mi>
+                <mi>k</mi>
+                <mi>V</mi>
+              </math>
+            </disp-formula>
+          
+          
+            <disp-formula>
+              <label>(14)</label>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <munder>
+                  <mo data-mjx-texclass="OP">∑</mo>
+                  <mrow data-mjx-texclass="ORD">
+                    <mi>i</mi>
+                    <mi>S</mi>
+                    <mo>∈</mo>
+                  </mrow>
+                </munder>
+                <mrow data-mjx-texclass="INNER">
+                  <mo data-mjx-texclass="OPEN">(</mo>
+                  <mo data-mjx-texclass="CLOSE">)</mo>
+                  <msub>
+                    <mi>q</mi>
+                    <mi>i</mi>
+                  </msub>
+                  <msub>
+                    <mi>x</mi>
+                    <mrow data-mjx-texclass="ORD">
+                      <mi>i</mi>
+                      <mi>j</mi>
+                      <mi>k</mi>
+                    </mrow>
+                  </msub>
+                  <munder>
+                    <mo data-mjx-texclass="OP">∑</mo>
+                    <mrow data-mjx-texclass="ORD">
+                      <mi>j</mi>
+                      <mi>N</mi>
+                      <mo>∈</mo>
+                    </mrow>
+                  </munder>
+                </mrow>
+                <mo>≤</mo>
+                <mo>,</mo>
+                <mo>∈</mo>
+                <msub>
+                  <mrow data-mjx-texclass="INNER">
+                    <mo data-mjx-texclass="OPEN">(</mo>
+                    <mo data-mjx-texclass="CLOSE">)</mo>
+                    <msub>
+                      <mi>Q</mi>
+                      <mrow data-mjx-texclass="ORD">
+                        <mo data-mjx-texclass="OP" movablelimits="true">max</mo>
+                      </mrow>
+                    </msub>
+                  </mrow>
+                  <mi>k</mi>
+                </msub>
+                <mi mathvariant="normal">∀</mi>
+                <mi>k</mi>
+                <mi>V</mi>
+              </math>
+            </disp-formula>
+          
+          
+            <disp-formula>
+              <label>(15)</label>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <munder>
+                  <mo data-mjx-texclass="OP">∑</mo>
+                  <mrow data-mjx-texclass="ORD">
+                    <mi>i</mi>
+                    <mi>S</mi>
+                    <mo>∈</mo>
+                  </mrow>
+                </munder>
+                <mrow data-mjx-texclass="INNER">
+                  <mo data-mjx-texclass="OPEN">(</mo>
+                  <mo data-mjx-texclass="CLOSE">)</mo>
+                  <msub>
+                    <mi>m</mi>
+                    <mi>i</mi>
+                  </msub>
+                  <msub>
+                    <mi>x</mi>
+                    <mrow data-mjx-texclass="ORD">
+                      <mi>i</mi>
+                      <mi>j</mi>
+                      <mi>k</mi>
+                    </mrow>
+                  </msub>
+                  <munder>
+                    <mo data-mjx-texclass="OP">∑</mo>
+                    <mrow data-mjx-texclass="ORD">
+                      <mi>j</mi>
+                      <mi>N</mi>
+                      <mo>∈</mo>
+                    </mrow>
+                  </munder>
+                </mrow>
+                <mo>≥</mo>
+                <mo>,</mo>
+                <mo>∈</mo>
+                <msub>
+                  <mi>M</mi>
+                  <mi>k</mi>
+                </msub>
+                <mi mathvariant="normal">∀</mi>
+                <mi>k</mi>
+                <mi>V</mi>
+              </math>
+            </disp-formula>
+          
+          
+            <disp-formula>
+              <label>(16)</label>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <munder>
+                  <mo data-mjx-texclass="OP">∑</mo>
+                  <mrow data-mjx-texclass="ORD">
+                    <mi>j</mi>
+                    <mi>N</mi>
+                    <mo>∈</mo>
+                  </mrow>
+                </munder>
+                <msub>
+                  <mi>x</mi>
+                  <mrow data-mjx-texclass="ORD">
+                    <mn>0</mn>
+                    <mi>j</mi>
+                    <mi>k</mi>
+                  </mrow>
+                </msub>
+                <mo>=</mo>
+                <mo>,</mo>
+                <mo>∈</mo>
+                <mn>1</mn>
+                <mi mathvariant="normal">∀</mi>
+                <mi>k</mi>
+                <mi>V</mi>
+              </math>
+            </disp-formula>
+          
+          
+            <disp-formula>
+              <label>(17)</label>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <munder>
+                  <mo data-mjx-texclass="OP">∑</mo>
+                  <mrow data-mjx-texclass="ORD">
+                    <mi>i</mi>
+                    <mi>N</mi>
+                    <mo>∈</mo>
+                  </mrow>
+                </munder>
+                <munder>
+                  <mo data-mjx-texclass="OP">∑</mo>
+                  <mrow data-mjx-texclass="ORD">
+                    <mi>j</mi>
+                    <mi>N</mi>
+                    <mo>∈</mo>
+                  </mrow>
+                </munder>
+                <msub>
+                  <mi>x</mi>
+                  <mrow data-mjx-texclass="ORD">
+                    <mi>i</mi>
+                    <mi>h</mi>
+                    <mi>k</mi>
+                  </mrow>
+                </msub>
+                <msub>
+                  <mi>x</mi>
+                  <mrow data-mjx-texclass="ORD">
+                    <mi>h</mi>
+                    <mi>j</mi>
+                    <mi>k</mi>
+                  </mrow>
+                </msub>
+                <mo>−</mo>
+                <mo>=</mo>
+                <mo>,</mo>
+                <mo>∈</mo>
+                <mo>,</mo>
+                <mo>∈</mo>
+                <mn>0</mn>
+                <mi mathvariant="normal">∀</mi>
+                <mi>h</mi>
+                <mi>S</mi>
+                <mi mathvariant="normal">∀</mi>
+                <mi>k</mi>
+                <mi>V</mi>
+              </math>
+            </disp-formula>
+          
+          
+            <disp-formula>
+              <label>(18)</label>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <munder>
+                  <mo data-mjx-texclass="OP">∑</mo>
+                  <mrow data-mjx-texclass="ORD">
+                    <mi>i</mi>
+                    <mi>N</mi>
+                    <mo>∈</mo>
+                  </mrow>
+                </munder>
+                <msub>
+                  <mi>x</mi>
+                  <mrow data-mjx-texclass="ORD">
+                    <mi>i</mi>
+                    <mi>k</mi>
+                    <mn>0</mn>
+                  </mrow>
+                </msub>
+                <mo>=</mo>
+                <mo>,</mo>
+                <mo>∈</mo>
+                <mn>1</mn>
+                <mi mathvariant="normal">∀</mi>
+                <mi>k</mi>
+                <mi>V</mi>
+              </math>
+            </disp-formula>
+          
+          
+            <disp-formula>
+              <label>(19)</label>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <msub>
+                  <mi>u</mi>
+                  <mi>i</mi>
+                </msub>
+                <msub>
+                  <mi>u</mi>
+                  <mi>j</mi>
+                </msub>
+                <msub>
+                  <mi>x</mi>
+                  <mrow data-mjx-texclass="ORD">
+                    <mi>i</mi>
+                    <mi>j</mi>
+                    <mi>k</mi>
+                  </mrow>
+                </msub>
+                <mo>−</mo>
+                <mo>+</mo>
+                <mo>≤</mo>
+                <mo>−</mo>
+                <mo>,</mo>
+                <mo stretchy="false">(</mo>
+                <mo>,</mo>
+                <mo stretchy="false">)</mo>
+                <mo>∈</mo>
+                <mo>,</mo>
+                <mo>,</mo>
+                <mo>≠</mo>
+                <mo>,</mo>
+                <mo>∈</mo>
+                <mi>n</mi>
+                <mi>n</mi>
+                <mi mathvariant="normal">∀</mi>
+                <mi>i</mi>
+                <mi>j</mi>
+                <mi>E</mi>
+                <mi>i</mi>
+                <mi>j</mi>
+                <mi mathvariant="normal">∀</mi>
+                <mi>k</mi>
+                <mi>V</mi>
+                <mn>1</mn>
+                <mn>0</mn>
+              </math>
+            </disp-formula>
+          
+          
+            <disp-formula>
+              <label>(20)</label>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <msub>
+                  <mi>x</mi>
+                  <mrow data-mjx-texclass="ORD">
+                    <mi>i</mi>
+                    <mi>j</mi>
+                    <mi>k</mi>
+                  </mrow>
+                </msub>
+                <mo>∈</mo>
+                <mo fence="false" stretchy="false">{</mo>
+                <mo>,</mo>
+                <mo fence="false" stretchy="false">}</mo>
+                <mo>,</mo>
+                <mo>,</mo>
+                <mo>∈</mo>
+                <mo>,</mo>
+                <mo>∈</mo>
+                <mn>0</mn>
+                <mn>1</mn>
+                <mi mathvariant="normal">∀</mi>
+                <mi>i</mi>
+                <mi>j</mi>
+                <mi>N</mi>
+                <mi mathvariant="normal">∀</mi>
+                <mi>k</mi>
+                <mi>V</mi>
+              </math>
+            </disp-formula>
+          
+          <p>Objective function aims to minimize the overall distribution costs. Constraint (1) ensures that every customer is serviced once. Constraints (2) and (3) dictate the minimum and maximum vehicle occupancy limits. Constraint (4) caters to the company's need to achieve a minimum margin on each route. Constraints (5) and (7) specify that every route starts and concludes at the depot. Constraint (6) enforces a route's integrity by confirming entry and exit at each customer node. Finally, Constraint (8) eliminates sub-routes that bypass the depot.</p><p>Certain assumptions were made for the real-world problem evaluated:</p><p>•Each vehicle is limited to one route daily.</p><p>•The routing problem undergoes daily resolutions due to fluctuating customer locations.</p><p>•Vehicles should be loaded between 40-90% of their total capacity.</p><p>•Given the daily problem-solving frequency, fiscal costs (depreciation, salaries) are not integrated into the model.</p><p>•Deliveries that demand multiple vehicles for one customer, when orders surpass a single vehicle's capacity, remain unaddressed in this model.</p>
+        </sec>
+      
+      
+        <sec disp-level="level2">
+          
+            <title>3.2. Distribution routes optimization for appliances and consumer goods</title>
+          
+          <p>For the proposed mathematical model, the GNU Linear Programming Kit (GLPK) package was employed [<xref ref-type="bibr" rid="ref_13">13</xref>]. This solver is designed for tackling problems associated with linear programming, mixed integer programming, and related challenges. The development environment utilized was GUSEK (GLPK Under Scite Extended Kit) [<xref ref-type="bibr" rid="ref_14">14</xref>], a freely accessible program that adheres to the stipulations of the GNU General Public License as published by the Free Software Foundation.</p><p>The mathematical model, elucidated in the preceding section, was examined under varied permutations of orders, customers, and vehicles. An exemplar solution, comprising 20 cities and 3 vehicles with a cumulative volume of 9.31<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msup>
+      <mrow data-mjx-texclass="ORD">
+        <mi mathvariant="normal">m</mi>
+      </mrow>
+      <mn>3</mn>
+    </msup>
+  </math>
+</inline-formula>, was illuminated, with the associated parameters delineated in <xref ref-type="table" rid="table_2">Table 2</xref>.</p>
+          
+            <table-wrap id="table_2">
+              <label>Table 2</label>
+              <caption>Parameters characterizing a chosen instance of the addressed problem</caption>
+              <abstract/>
+              <table><tbody><tr><td colspan="1" rowspan="1"><p>Customer (city)</p></td><td colspan="1" rowspan="1"><p>Demand</p></td><td colspan="1" rowspan="1"><p>Margin</p></td><td colspan="1" rowspan="1"><p>Customer (city)</p></td><td colspan="1" rowspan="1"><p>Demand</p></td><td colspan="1" rowspan="1"><p>Margin</p></td><td colspan="1" rowspan="1"><p>Customer (city)</p></td><td colspan="1" rowspan="1"><p>Demand</p></td><td colspan="1" rowspan="1"><p>Margin</p></td></tr><tr><td colspan="1" rowspan="1"><p><span>Aleksinac</span></p></td><td colspan="1" rowspan="1"><p><span>1,258</span></p></td><td colspan="1" rowspan="1"><p><span>51997</span></p></td><td colspan="1" rowspan="1"><p><span>Boljevac</span></p></td><td colspan="1" rowspan="1"><p><span>1,329</span></p></td><td colspan="1" rowspan="1"><p><span>51651</span></p></td><td colspan="1" rowspan="1"><p><span>Jagodina</span></p></td><td colspan="1" rowspan="1"><p><span>0,600</span></p></td><td colspan="1" rowspan="1"><p><span>6852</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span>Apatin</span></p></td><td colspan="1" rowspan="1"><p><span>1,818</span></p></td><td colspan="1" rowspan="1"><p><span>33136</span></p></td><td colspan="1" rowspan="1"><p><span>Bor</span></p></td><td colspan="1" rowspan="1"><p><span>2,135</span></p></td><td colspan="1" rowspan="1"><p><span>39251</span></p></td><td colspan="1" rowspan="1"><p><span>Kikinda</span></p></td><td colspan="1" rowspan="1"><p><span>0,728</span></p></td><td colspan="1" rowspan="1"><p><span>13719</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span>Arilje</span></p></td><td colspan="1" rowspan="1"><p><span>1,177</span></p></td><td colspan="1" rowspan="1"><p><span>38890</span></p></td><td colspan="1" rowspan="1"><p><span>Čačak</span></p></td><td colspan="1" rowspan="1"><p><span>2,055</span></p></td><td colspan="1" rowspan="1"><p><span>30784</span></p></td><td colspan="1" rowspan="1"><p><span>Kladovo</span></p></td><td colspan="1" rowspan="1"><p><span>0,992</span></p></td><td colspan="1" rowspan="1"><p><span>23515</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span>Bačka Palanka</span></p></td><td colspan="1" rowspan="1"><p><span>1,077</span></p></td><td colspan="1" rowspan="1"><p><span>32087</span></p></td><td colspan="1" rowspan="1"><p><span>Golubac</span></p></td><td colspan="1" rowspan="1"><p><span>0,939</span></p></td><td colspan="1" rowspan="1"><p><span>56431</span></p></td><td colspan="1" rowspan="1"><p><span>Knjaževac</span></p></td><td colspan="1" rowspan="1"><p><span>1,088</span></p></td><td colspan="1" rowspan="1"><p><span>28110</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span>Bajina Bašta</span></p></td><td colspan="1" rowspan="1"><p><span>1,500</span></p></td><td colspan="1" rowspan="1"><p><span>19660</span></p></td><td colspan="1" rowspan="1"><p><span>Gornji Milanovac</span></p></td><td colspan="1" rowspan="1"><p><span>0,849</span></p></td><td colspan="1" rowspan="1"><p><span>32572</span></p></td><td colspan="1" rowspan="1"><p><span>Kragujevac</span></p></td><td colspan="1" rowspan="1"><p><span>0,948</span></p></td><td colspan="1" rowspan="1"><p><span>22626</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span>Bečej</span></p></td><td colspan="1" rowspan="1"><p><span>0,877</span></p></td><td colspan="1" rowspan="1"><p><span>23811</span></p></td><td colspan="1" rowspan="1"><p><span>Inđija</span></p></td><td colspan="1" rowspan="1"><p><span>0,525</span></p></td><td colspan="1" rowspan="1"><p><span>39433</span></p></td><td colspan="1" rowspan="1"><p><span>Kraljevo</span></p></td><td colspan="1" rowspan="1"><p><span>0,276</span></p></td><td colspan="1" rowspan="1"><p><span>15447</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span>Beograd</span></p></td><td colspan="1" rowspan="1"><p><span>1,536</span></p></td><td colspan="1" rowspan="1"><p><span>86550</span></p></td><td colspan="1" rowspan="1"><p><span>Ivanjica</span></p></td><td colspan="1" rowspan="1"><p><span>0,854</span></p></td><td colspan="1" rowspan="1"><p><span>37427</span></p></td><td colspan="1" rowspan="1"><p><span> </span></p></td><td colspan="1" rowspan="1"><p><span> </span></p></td><td colspan="1" rowspan="1"><p><span> </span></p></td></tr></tbody></table>
+            </table-wrap>
+          
+          <p>Upon computation, three optimal routes were generated, utilizing three distinct vehicle categories. The initial route, depicted in blue in <xref ref-type="fig" rid="fig_4">Figure 4</xref>, traversed the following cities: Aranđelovac - Knjaževac - Boljevac - Bor - Kladovo - Golubac - Aranđelovac. Subsequently, the second route, portrayed in green in <xref ref-type="fig" rid="fig_4">Figure 4</xref>, comprised the cities: Aranđelovac - Inđija - Bačka Palanka - Apatin - Bečej - Kikinda - Belgrade - Aranđelovac. Lastly, the third route, illustrated in brown in <xref ref-type="fig" rid="fig_4">Figure 4</xref>, included: Aranđelovac - Gornji Milanovac - Čačak - Bajina Bašta - Arilje - Ivanjica - Kraljevo - Kragujevac - Aranđelovac.</p>
+          
+            <fig id="fig_4">
+              <label>Figure 4</label>
+              <caption>Optimal route configurations for the 20-city exemplar instance</caption>
+              <abstract/>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2023/8/img_F4_az-2pCKAB-GKj.png"/>
+            </fig>
+          
+          <p>A distinction between the acquired optimal routes and the company’s pre-existing routes was observed. Apart from disparities in the city sequences, the optimal methodology necessitated the deployment of 3 vehicles, in contrast to the 5 employed in authentic scenarios. A reduction in vehicle utilization implies a diminution in total mileage, thereby inferring that the expenses deduced from the model are inferior to tangible expenditures.</p><p>Multiple experiments, with diverse instances, were conducted. The formulated mathematical model was tested for user groups of 4, 5, 10, 15, 20, and 25, with the intention of discerning alterations in total expenses, requisite routes, and vehicle commitments. Upon data incorporation, it was ascertained that a maximum of 3 vehicles were requisitioned for user sets of up to 20; the introduction of a fourth vehicle became pertinent when the user count exceeded this threshold.</p><p>A noticeable augmentation in computational time was discerned as the number of users and vehicles increased. For smaller models (encompassing up to 15 users), the duration to derive the optimal solution was approximately 5 minutes. Yet, for 20 users, this period extended to 18 minutes. Disturbingly, serving 25 users with 4 vehicles demanded in excess of an hour. Given these elongations, it was inferred that for extensive problems, encompassing a vast number of cities necessitating visits, exact methods may not yield the optimal solution within a feasible timeframe. Consequently, the recommendation leans towards formulating a specialized heuristic, capable of delivering a satisfactorily efficient solution in a diminished duration.</p>
+        </sec>
+      
+    </sec>
+    <sec disp-level="level1" sec-type="conclusions">
+      <title>4. Conclusions</title>
+      <p>The challenge of vehicle routing within a distribution firm has been delineated and scrutinized. By leveraging specific data encompassing user or customer locations, varied vehicle types and dimensions, and the products ordered, a model was systematically formulated, and an optimal route configuration was subsequently derived. It was observed that the focal distribution firm, being of modest scale, has not previously employed any optimization models to address its distribution conundrums. Given the daily fluctuation in customer composition, the proffered model was discerned to not only provide a more efficient solution but also to be amenable to the company's operational nuances. Moreover, inter-city distances, integral for potential vehicular visits, were computed and archived in a format primed for future utilizations.</p><p>Authentic company data were harnessed to construct and decipher the presented model. Several avenues for prospective refinements and directional shifts have been identified:</p><p>•Should the need arise to incorporate multiple storage facilities or depots, the model stands ready for appropriate recalibration.</p><p>•In circumstances where specific customers mandate service within designated time brackets, provisions for time windows can be seamlessly integrated into the model.</p><p>It has been posited that this model is calibrated for diurnal applications, given the dynamic nature of deliveries and customer requisitions. Prior to each delivery cycle, critical input data - encompassing ordered product specifics (like computed product volume and price variations), vehicular availability metrics (enumeration and capacity), prevailing fuel price points, as well as the targeted margin for each route - would necessitate careful logging.</p><p>In future research endeavors, it might be prudent to probe the elasticity of this model when subjected to varied operational constraints, further enhancing its adaptability and efficiency in diverse logistical scenarios.</p>
+    </sec>
+  </body>
+  <back>
+    <ack>
+      <title>Acknowledgments</title>
+      
+    </ack>
+    <app-group>
+      <app>
+        <title>Appendix</title>
+        
+      </app>
+    </app-group>
+    <notes>
+      <title>Author Contributions</title>
+      
+    </notes>
+    <notes>
+      <title>Funding</title>
+      <p></p>
+    </notes>
+    <notes>
+      <title>Informed Consent Statement</title>
+      
+    </notes>
+    <notes>
+      <title>Data Availability Statement</title>
+      <p>The data used to support the findings of this study are available from the corresponding author upon request.</p>
+    </notes>
+    <notes notes-type="COI-statement">
+      <title>Conflicts of Interest</title>
+      <p>The authors declare that they have no conflicts of interest.</p>
+    </notes>
+    <ref-list>
+      <title>References</title>
+      <ref id="ref_1">
+        <label>1.</label>
+        <element-citation publication-type="webpage">
+          <article-title>Inventory of U.S. Greenhouse Gas Emissions and Sinks</article-title>
+          <source>, https://www.epa.gov/ghgemissions/inventory-us-greenhouse-gas-emissions-and-sinks</source>
+          <year>2022</year>
+          <uri/>
+        </element-citation>
+      </ref>
+      <ref id="ref_2">
+        <label>2.</label>
+        <element-citation publication-type="book">
+          <volume>2007</volume>
+          <page-range>62-71</page-range>
+          <issue/>
+          <year>2007</year>
+          <publisher-name>Springer Berlin Heidelberg</publisher-name>
+          <person-group person-group-type="author">
+            <name>
+              <given-names>I.</given-names>
+              <surname>Kara</surname>
+            </name>
+            <name>
+              <given-names>B. Y.</given-names>
+              <surname>Kara</surname>
+            </name>
+            <name>
+              <given-names>M. K.</given-names>
+              <surname>Yetis</surname>
+            </name>
+          </person-group>
+          <person-group person-group-type="editor"/>
+          <pub-id pub-id-type="doi">10.1007/978-3-540-73556-4_9</pub-id>
+          <article-title>Energy Minimizing Vehicle Routing Problem</article-title>
+          <source>Combinatorial Optimization and Applications</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_3">
+        <label>3.</label>
+        <element-citation publication-type="webpage">
+          <article-title/>
+          <source>, https://scholar.google.com/</source>
+          <year>2022</year>
+          <uri/>
+        </element-citation>
+      </ref>
+      <ref id="ref_4">
+        <label>4.</label>
+        <element-citation publication-type="journal">
+          <volume>65</volume>
+          <page-range>569-578</page-range>
+          <issue>12</issue>
+          <year>2019</year>
+          <person-group person-group-type="author">
+            <name>
+              <given-names>B.</given-names>
+              <surname>Andric Gusavac</surname>
+            </name>
+            <name>
+              <given-names>M.</given-names>
+              <surname>Stanojevic</surname>
+            </name>
+            <name>
+              <given-names>M.</given-names>
+              <surname>Cangalovic</surname>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.17221/134/2019-agricecon</pub-id>
+          <pub-id pub-id-type="publisher"/>
+          <article-title>Optimal treatment of agricultural land - special multi-depot vehicle routing problem</article-title>
+          <source>Agric. Econ. Czech</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_5">
+        <label>5.</label>
+        <element-citation publication-type="journal">
+          <volume>157</volume>
+          <page-range>488-499</page-range>
+          <issue/>
+          <year>2019</year>
+          <person-group person-group-type="author">
+            <name>
+              <given-names>M. S. A.</given-names>
+              <surname>Mahmud</surname>
+            </name>
+            <name>
+              <given-names>M. S. Z.</given-names>
+              <surname>Abidin</surname>
+            </name>
+            <name>
+              <given-names>Z.</given-names>
+              <surname>Mohamed</surname>
+            </name>
+            <name>
+              <given-names>M. K. I. A.</given-names>
+              <surname>Rahman</surname>
+            </name>
+            <name>
+              <given-names>M.</given-names>
+              <surname>Iida</surname>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.compag.2019.01.016</pub-id>
+          <pub-id pub-id-type="publisher"/>
+          <article-title>Multi-objective path planner for an agricultural mobile robot in a virtual greenhouse environment</article-title>
+          <source>Comput. Electron. Agric.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_6">
+        <label>6.</label>
+        <element-citation publication-type="book">
+          <person-group person-group-type="author">
+            <name>
+              <given-names>P.</given-names>
+              <surname>Toth</surname>
+            </name>
+            <name>
+              <given-names>D.</given-names>
+              <surname>Vigo</surname>
+            </name>
+          </person-group>
+          <article-title/>
+          <source>The Vehicle Routing Problem</source>
+          <publisher-loc/>
+          <publisher-name>Society for Industrial and Applied Mathematics, Philadelphia, PA, USA</publisher-name>
+          <year>2001</year>
+          <volume/>
+          <issue/>
+          <page-range/>
+          <fpage/>
+          <lpage/>
+          <pub-id/>
+        </element-citation>
+      </ref>
+      <ref id="ref_7">
+        <label>7.</label>
+        <element-citation publication-type="journal">
+          <volume>53</volume>
+          <page-range>977-984</page-range>
+          <issue>9</issue>
+          <year>2002</year>
+          <person-group person-group-type="author">
+            <name>
+              <given-names>I. D.</given-names>
+              <surname>Giosa</surname>
+            </name>
+            <name>
+              <given-names>I. L.</given-names>
+              <surname>Tansini</surname>
+            </name>
+            <name>
+              <given-names>I. O.</given-names>
+              <surname>Viera</surname>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1057/palgrave.jors.2601426</pub-id>
+          <pub-id pub-id-type="publisher"/>
+          <article-title>New assignment algorithms for the multi-depot vehicle routing problem</article-title>
+          <source>J. Operational Res. Soc.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_8">
+        <label>8.</label>
+        <element-citation publication-type="book">
+          <person-group person-group-type="author">
+            <name>
+              <given-names>B. L.</given-names>
+              <surname>Golden</surname>
+            </name>
+            <name>
+              <given-names>S.</given-names>
+              <surname>Raghavan</surname>
+            </name>
+            <name>
+              <given-names>E. A.</given-names>
+              <surname>Wasil</surname>
+            </name>
+          </person-group>
+          <article-title/>
+          <source>The Vehicle Routing Problem: Latest Advances and New Challenges</source>
+          <publisher-loc/>
+          <publisher-name>Springer, New York, USA</publisher-name>
+          <year>2008</year>
+          <volume/>
+          <issue/>
+          <page-range/>
+          <fpage/>
+          <lpage/>
+          <pub-id/>
+        </element-citation>
+      </ref>
+      <ref id="ref_9">
+        <label>9.</label>
+        <element-citation publication-type="journal">
+          <volume>7</volume>
+          <page-range>310–327</page-range>
+          <issue>3</issue>
+          <year>2019</year>
+          <person-group person-group-type="author">
+            <name>
+              <given-names>A. A.</given-names>
+              <surname>Ibrahim</surname>
+            </name>
+            <name>
+              <given-names>N.</given-names>
+              <surname>Lo</surname>
+            </name>
+            <name>
+              <given-names>R. O.</given-names>
+              <surname>Abdulaziz</surname>
+            </name>
+            <name>
+              <given-names>J. A.</given-names>
+              <surname>Ishaya</surname>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi"/>
+          <pub-id pub-id-type="publisher"/>
+          <article-title>Capacitated vehicle routing problem</article-title>
+          <source>Int. J. Res. Granth.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_10">
+        <label>10.</label>
+        <element-citation publication-type="journal">
+          <volume>279</volume>
+          <page-range>123691</page-range>
+          <issue/>
+          <year>2021</year>
+          <person-group person-group-type="author">
+            <name>
+              <given-names>R.</given-names>
+              <surname>Moghdani</surname>
+            </name>
+            <name>
+              <given-names>K.</given-names>
+              <surname>Salimifard</surname>
+            </name>
+            <name>
+              <given-names>E.</given-names>
+              <surname>Demir</surname>
+            </name>
+            <name>
+              <given-names>A.</given-names>
+              <surname>Benyettou</surname>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.jclepro.2020.123691</pub-id>
+          <pub-id pub-id-type="publisher"/>
+          <article-title>The green vehicle routing problem: A systematic literature review</article-title>
+          <source>J. Clean. Prod.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_11">
+        <label>11.</label>
+        <element-citation publication-type="journal">
+          <volume>7</volume>
+          <page-range>326-329</page-range>
+          <issue>4</issue>
+          <year>1960</year>
+          <person-group person-group-type="author">
+            <name>
+              <given-names>C. E.</given-names>
+              <surname>Miller</surname>
+            </name>
+            <name>
+              <given-names>A. W.</given-names>
+              <surname>Tucker</surname>
+            </name>
+            <name>
+              <given-names>R. A.</given-names>
+              <surname>Zemlin</surname>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1145/321043.321046</pub-id>
+          <pub-id pub-id-type="publisher"/>
+          <article-title>Integer programming formulation of traveling salesman problems</article-title>
+          <source>J. ACM</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_12">
+        <label>12.</label>
+        <element-citation publication-type="webpage">
+          <article-title/>
+          <source>, https://www.google.com/maps</source>
+          <year>2022</year>
+          <uri/>
+        </element-citation>
+      </ref>
+      <ref id="ref_13">
+        <label>13.</label>
+        <element-citation publication-type="webpage">
+          <article-title>GLPK (GNU Linear Programming Kit) – Introduction to GLPK</article-title>
+          <source>, https://www.gnu.org/software/glpk/</source>
+          <year>2022</year>
+          <uri/>
+        </element-citation>
+      </ref>
+      <ref id="ref_14">
+        <label>14.</label>
+        <element-citation publication-type="webpage">
+          <article-title>Gusek (GLPK Under Scite Extended Kit)</article-title>
+          <source/>
+          <year>2022</year>
+          <uri/>
+        </element-citation>
+      </ref>
+    </ref-list>
+  </back>
+</article>
