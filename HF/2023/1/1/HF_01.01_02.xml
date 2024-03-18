@@ -78,9 +78,9 @@
         </date>
       </history>
       <permissions>
-        <copyright-statement>©2023 by the authors</copyright-statement>
+        <copyright-statement>©2023 by the author(s)</copyright-statement>
         <copyright-year>2023</copyright-year>
-        <license>. Licensee Acadlore Publishing Services Limited, Hong Kong. This article can be downloaded for free, and reused and quoted with a citation of the original published version, under the <ext-link ext-link-type="uri" xlink:href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0 license</ext-link>.</license>
+        <license>. Published by Acadlore Publishing Services Limited, Hong Kong. This article is available for free download and can be reused and cited, provided that the original published version is credited, under the <a href='https://creativecommons.org/licenses/by/4.0/' target='_blank' class='text-yellow-700 hover:underline'>CC BY 4.0 license</a>.</license>
       </permissions>
       <abstract>In the field of computer-aided diagnostics, the segmentation and classification of biomedical images play a pivotal role. This study introduces a novel approach employing a Self-Augmented Multistage Deep Learning Network (SAMNetwork) and Deep Belief Networks (DBNs) optimized by Coot Optimization Algorithms (COAs) for the analysis of dermoscopy images. The unique challenges posed by dermoscopy images, including complex detection backgrounds and lesion characteristics, necessitate advanced techniques for accurate lesion recognition. Traditional methods have predominantly focused on utilizing larger, more complex models to increase detection accuracy, yet have often neglected the significant intraclass variability and inter-class similarity of lesion traits. This oversight has led to challenges in algorithmic application to larger models. The current research addresses these limitations by leveraging SAM, which, although not yielding immediate high-quality segmentation for medical image data, provides valuable masks, features, and stability scores for developing and training enhanced medical images. Subsequently, DBNs, aided by COAs to fine-tune their hyper-parameters, perform the classification task. The effectiveness of this methodology was assessed through comprehensive experimental comparisons and feature visualization analyses. The results demonstrated the superiority of the proposed approach over the current state-of-the-art deep learning-based methods across three datasets: ISBI 2017, ISBI 2018, and the PH2 dataset. In the experimental evaluations, the Multi-class Dilated D-Net (MD2N) model achieved a Matthew’s Correlation Coefficient (MCC) of 0.86201, the Deep convolutional neural networks (DCNN) model 0.84111, the standalone DBN 0.91157, the autoencoder (AE) model 0.88662, and the DBN-COA model 0.93291, respectively. These findings highlight the enhanced performance and potential of integrating SAM with optimized DBNs in the detection and classification of skin cancer in dermoscopy images, marking a significant advancement in the field of medical image analysis.</abstract>
       <kwd-group>
@@ -120,8 +120,8 @@
               <label>Figure 1</label>
               <caption>Sample dermoscopic images from (a) ISBI 2017, (b) PH2, and (c) ISBI 2018 datasets</caption>
               <abstract/>
-              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2023/11/img_4w51jsUiFKxKJepD.png"/>
-              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2023/11/img_4w51jsUiFKxKJepD.png"/>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2024/0/img_p_JvHjqzUbA0WkPx.png"/>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2024/0/img_u1XdClC4D63wiKUp.png"/>
             </fig>
           
         </sec>
@@ -167,7 +167,7 @@
           
             <sec disp-level="level3">
               
-                <title>3.3. 1 Augmenting input images</title>
+                <title>3.3.1 Augmenting input images</title>
               
               <p style="text-align: justify">Post-creation of the prior maps, these were employed to augment the input image <italic>x</italic>. The augmentation method chosen for this study involved adding the prior maps directly to the raw image. Medical image segmentation tasks often entail a three-class segmentation job: the background, ROIs, and boundaries between ROIs and the background. In the augmented image, the segmentation prior map was superimposed on the second channel, while the boundary prior map was placed on the third. For grayscale images, a three-channel image was constructed with the raw image, segmentation prior map, and boundary prior map as the first, second, and third channels, respectively. This process resulted in an augmented version <italic>x<sub>aug</sub> = Aug(prior<sub>seg</sub>, prior<sub>boundary</sub>, x)</italic> of each image <italic>x</italic> in the training set.</p>
             </sec>
@@ -175,7 +175,7 @@
           
             <sec disp-level="level3">
               
-                <title>3.3. 2 Model training with sam-augmented images</title>
+                <title>3.3.2 Model training with sam-augmented images</title>
               
               <p style="text-align: justify">The self-attention mechanism is an integral component of deep neural networks, notably in Transformer models, which have extended their applications beyond natural language processing to include computer vision. SAM is pivotal in capturing long-range dependencies and contextual information within images, especially for image segmentation tasks. It serves as an alternative to convolutional layers, effectively capturing spatial relationships between pixels or regions. The central element of SAM is the computation of attention weights, signifying the significance of various regions or pixels relative to a query. These weights are calculated using a similarity function, typically the dot product, between the query and key for all query-key pairs, followed by the application of a softmax function to yield the attention weights.</p><p style="text-align: justify">Once attention weights are determined, they are utilized to aggregate information from the values, proportionally to the relevance of each region to the query.</p><p style="text-align: justify">With the augmented training set <inline-formula>
   <math xmlns="http://www.w3.org/1998/Math/MathML">
@@ -326,7 +326,7 @@
                   </math>
                 </disp-formula>
               
-              <p style="text-align: justify">This objective focused solely on training with augmented images. During model testing, the trained model received only SAM-augmented images. In scenarios where SAM did not provide plausible prior maps, consideration was given to training a segmentation model using both raw and SAM-augmented images. The new objective function for the model M was defined as:</p>
+              <p style="text-align: justify">This objective focused solely on training with augmented images. During model testing, the trained model received only SAM-augmented images. In scenarios where SAM did not provide plausible prior maps, consideration was given to training a segmentation model using both raw and SAM-augmented images. The new objective function for the model <italic>M</italic> was defined as:</p>
               
                 <disp-formula>
                   <label>(3)</label>
@@ -393,7 +393,7 @@
           
             <sec disp-level="level3">
               
-                <title>3.3. 3 Model deployment with sam-augmented images</title>
+                <title>3.3.3 Model deployment with sam-augmented images</title>
               
               <p style="text-align: justify">In scenarios where the model is exclusively trained on SAM-augmented images, the deployment (testing) phase mandates the use of SAM-augmented images as input. The deployment of the model can be mathematically represented as:</p>
               
@@ -428,7 +428,7 @@
                   </math>
                 </disp-formula>
               
-              <p style="text-align: justify">In this equation, τ denotes an output activation function, such as a sigmoid or softmax function,  and <inline-formula>
+              <p style="text-align: justify">In this equation, τ denotes an output activation function, such as a sigmoid or softmax function, and <inline-formula>
   <math xmlns="http://www.w3.org/1998/Math/MathML">
     <msup>
       <mi>x</mi>
@@ -439,7 +439,7 @@
       </mrow>
     </msup>
   </math>
-</inline-formula> is a SAM-augmented image. However, when the segmentation model M is trained on both raw and SAM-augmented images, additional opportunities emerge at inference time to harness the full potential of the trained model. A practical approach involves dual inference for each test sample: initially using the raw image <italic>x </italic>as input, followed by the SAM-augmented image. The final segmentation output is derived as an average ensemble of these two outputs, formally expressed as:</p>
+</inline-formula> is a SAM-augmented image. However, when the segmentation model <italic>M</italic> is trained on both raw and SAM-augmented images, additional opportunities emerge at inference time to harness the full potential of the trained model. A practical approach involves dual inference for each test sample: initially using the raw image <italic>x </italic>as input, followed by the SAM-augmented image. The final segmentation output is derived as an average ensemble of these two outputs, formally expressed as:</p>
               
                 <disp-formula>
                   <label>(5)</label>
@@ -1551,7 +1551,7 @@
           
             <sec disp-level="level3">
               
-                <title>3.4. 1 Training dbn model with coa</title>
+                <title>3.4.1 Training dbn model with coa</title>
               
               <p style="text-align: justify">The optimization of the DBN model is achieved through the application of the COA, an innovative optimization technique derived from the behavioral patterns of coots, as detailed in (<xref ref-type="bibr" rid="ref_9">Houssein et al., 2022</xref>). The COA emulates the synchronized activities of a coot flock on water, encompassing behaviors such as aimless roving, chain walking, position adjustments relative to leaders, and guiding the flock to optimal areas. These behaviors are mathematically modeled to enable their implementation in the optimization process.</p><p style="text-align: justify">Initially, a population of coots is generated randomly, given a problem of D-dimensions. Utilizing Eq. (26), a population (<italic>N</italic>)<italic> </italic>of coots is created within the constraints of upper boundaries (UB):</p>
               
@@ -1950,7 +1950,7 @@
           
             <title>4.1. Segmentation analysis</title>
           
-          <p style="text-align: justify">In evaluating the segmentation performance, metrics such as accuracy (ACC), specificity (SPE), and sensitivity (SEN), alongside the Jaccard and Dice similarity coefficients (JSC and DSC, respectively), were employed. These metrics are pivotal in assessing the effectiveness of the segmentation method. The true positive (TP) rate was determined by identifying the overlapping area between the segmented region and the ground truth, denoted as <italic>y</italic> and <italic>x</italic>, respectively. This intersection is represented mathematically as <italic>TP = yx</italic>. Conversely, the false positive (FP) rate was defined as <italic>FP = yx</italic>, which represents the segmented region in x not corresponding to y. The false negative (FN) rate, indicating the proportion of incorrect predictions, was calculated as <italic>FN = yx</italic>. The true negative (TN) set, representing the complement of the segmented and ground truth regions, is described as <inline-formula>
+          <p style="text-align: justify">In evaluating the segmentation performance, metrics such as accuracy (ACC), specificity (SPE), and sensitivity (SEN), alongside the Jaccard and Dice similarity coefficients (JSC and DSC, respectively), were employed. These metrics are pivotal in assessing the effectiveness of the segmentation method. The true positive (TP) rate was determined by identifying the overlapping area between the segmented region and the ground truth, denoted as <italic>y</italic> and <italic>x</italic>, respectively. This intersection is represented mathematically as <italic>TP = yx</italic>. Conversely, the false positive (FP) rate was defined as <italic>FP = yx</italic>, which represents the segmented region in <italic>x</italic> not corresponding to <italic>y</italic>. The false negative (FN) rate, indicating the proportion of incorrect predictions, was calculated as <italic>FN = yx</italic>. The true negative (TN) set, representing the complement of the segmented and ground truth regions, is described as <inline-formula>
   <math xmlns="http://www.w3.org/1998/Math/MathML">
     <mi>T</mi>
     <mi>N</mi>
