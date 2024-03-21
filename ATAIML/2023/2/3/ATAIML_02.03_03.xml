@@ -19,22 +19,31 @@
     <article-meta>
       <article-id pub-id-type="publisher-id">AR-fi6662MOBuV64_gaYeOqxYgNDmF1rW3t</article-id>
       <article-id pub-id-type="doi">10.56578/ataiml020303</article-id>
+      <article-categories>
+        <subj-group>
+          <subject>Articles</subject>
+        </subj-group>
+      </article-categories>
       <title-group>
         <article-title>An Efficient Descriptor-Based Approach for Dominant Point Detection in Shape Contours</article-title>
       </title-group>
       <contrib-group>
         <contrib contrib-type="author">
-          <xref ref-type="aff" rid="1">1</xref>
+          <contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0000-0001-9033-014X</contrib-id>
           <name>
             <surname>Parvez</surname>
             <given-names>Mohammad T.</given-names>
           </name>
-          <contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0000-0001-9033-014X</contrib-id>
           <email>m.parvez@qu.edu.sa</email>
+          <xref ref-type="aff" rid="aff_1">1</xref>
         </contrib>
-        <aff id="1">Department of Computer Engineering, Qassim University, 51477 Qassim, Saudi Arabia</aff>
+        <aff id="aff_1">Department of Computer Engineering, Qassim University, 51477 Qassim, Saudi Arabia</aff>
       </contrib-group>
-      <year>2023</year>
+      <pub-date publication-format="electronic" date-type="pub">
+        <day>20</day>
+        <month>09</month>
+        <year>2023</year>
+      </pub-date>
       <volume>2</volume>
       <issue>3</issue>
       <fpage>142</fpage>
@@ -42,25 +51,22 @@
       <page-range>142-153</page-range>
       <history>
         <date date-type="received">
-          <month>08</month>
           <day>19</day>
+          <month>07</month>
           <year>2023</year>
         </date>
         <date date-type="accepted">
-          <month>09</month>
           <day>14</day>
-          <year>2023</year>
-        </date>
-        <date date-type="pub">
           <month>09</month>
-          <day>20</day>
           <year>2023</year>
         </date>
       </history>
       <permissions>
-        <copyright-statement>©2023 by the authors</copyright-statement>
+        <copyright-statement>©2023 by the author(s)</copyright-statement>
         <copyright-year>2023</copyright-year>
-        <license>. Licensee Acadlore Publishing Services Limited, Hong Kong. This article can be downloaded for free, and reused and quoted with a citation of the original published version, under the <ext-link ext-link-type="uri" xlink:href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0 license</ext-link>.</license>
+        <license license-type="open-access" xlink:href="https://creativecommons.org/licenses/by/4.0/">
+          <license-p> Published by Acadlore Publishing Services Limited, Hong Kong. This article is available for free download and can be reused and cited, provided that the original published version is credited, under the CC BY 4.0 license.</license-p>
+        </license>
       </permissions>
       <abstract><p>Dominant points, or control points, represent areas of high curvature on shape contours and are extensively utilized in the representation of shape outlines. Herein, we introduce a novel, descriptor-based approach for the efficient detection of these pivotal points. Each point on a shape contour is evaluated and mapped to an invariant descriptor set, accomplished through the use of point-neighborhood. These descriptors are then harnessed to discern whether a point qualifies as a dominant one. Our proposed methodology eliminates the need for costly computations typically associated with evaluating candidate dominant points. Furthermore, our algorithm significantly outperforms its predecessors in terms of speed, relying solely on integer operations and obviating the necessity for an optimization phase. Experimental outcomes, derived from the widely used MPEG7_CE-Shape-1_Part_B, denote a minimum enhancement of 2.3 times in terms of running time. This implies that the proposed methodology is particularly suitable for real-time applications or scenarios managing shapes comprising a substantial number of points.</p></abstract>
       <kwd-group>
@@ -71,28 +77,29 @@
         <kwd>Point suppression</kwd>
       </kwd-group>
       <counts>
-        <count count-type="contributors">1</count>
-        <fig-count>10</fig-count>
-        <table-count>5</table-count>
-        <ref-count>30</ref-count>
+        <count count-type="contributors" count="1"/>
+        <fig-count count="10"/>
+        <table-count count="5"/>
+        <ref-count count="30"/>
       </counts>
     </article-meta>
   </front>
   <body>
-    <sec disp-level="level1" sec-type="intro">
+    <sec sec-type="intro">
       <title>1. Introduction</title>
       <p>Dominant points, also referred to as control points, are instrumental in delineating the contours of digital planar shapes [<xref ref-type="bibr" rid="ref_1">1</xref>], [<xref ref-type="bibr" rid="ref_2">2</xref>]. When connected via straight lines, these points generate a sequence of line segments that approximate an image's outline. This form of approximation, known as polygonal approximation (illustrated in <xref ref-type="fig" rid="fig_1">Figure 1</xref>), is employed in various applications, including shape modeling [<xref ref-type="bibr" rid="ref_3">3</xref>] and recognition [<xref ref-type="bibr" rid="ref_4">4</xref>]. The primary rationale behind utilizing this approximation-based modeling approach is its proficiency in effectively managing contour noise [<xref ref-type="bibr" rid="ref_3">3</xref>], [<xref ref-type="bibr" rid="ref_5">5</xref>]. Furthermore, polygonal approximation offers a more concise representation of the contour [<xref ref-type="bibr" rid="ref_1">1</xref>]. As a result, there has been a considerable amount of research over several decades dedicated to developing efficient algorithms for polygonal approximation [<xref ref-type="bibr" rid="ref_3">3</xref>],  [<xref ref-type="bibr" rid="ref_5">5</xref>], [<xref ref-type="bibr" rid="ref_6">6</xref>], [<xref ref-type="bibr" rid="ref_7">7</xref>], [<xref ref-type="bibr" rid="ref_8">8</xref>], [<xref ref-type="bibr" rid="ref_9">9</xref>], [<xref ref-type="bibr" rid="ref_10">10</xref>], [<xref ref-type="bibr" rid="ref_11">11</xref>], [<xref ref-type="bibr" rid="ref_12">12</xref>], [<xref ref-type="bibr" rid="ref_13">13</xref>], [<xref ref-type="bibr" rid="ref_14">14</xref>], [<xref ref-type="bibr" rid="ref_15">15</xref>], [<xref ref-type="bibr" rid="ref_16">16</xref>], [<xref ref-type="bibr" rid="ref_17">17</xref>], [<xref ref-type="bibr" rid="ref_18">18</xref>], [<xref ref-type="bibr" rid="ref_19">19</xref>].</p>
       
         <fig id="fig_1">
           <label>Figure 1</label>
-          <caption>Illustration of dominant points extraction for a planar shape outline</caption>
-          <abstract/>
+          <caption>
+            <title>Illustration of dominant points extraction for a planar shape outline</title>
+          </caption>
           <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2023/8/img_XEYy8q_ScWLl6Ywa.png"/>
         </fig>
       
       <p>Numerous polygonal approximation algorithms have been developed with the primary goal of identifying dominant points situated along the contour of a shape. These dominant points subsequently function as vertices in the construction of the approximating polygon [<xref ref-type="bibr" rid="ref_5">5</xref>], [<xref ref-type="bibr" rid="ref_10">10</xref>]. Typically, these approximation methodologies aim to minimize specific error criteria, such as the weighted mean squared error [<xref ref-type="bibr" rid="ref_8">8</xref>], [<xref ref-type="bibr" rid="ref_14">14</xref>], [<xref ref-type="bibr" rid="ref_20">20</xref>].</p><p>A prevalent approach shared by these algorithms involves establishing a significance measure for each point along the contour [<xref ref-type="bibr" rid="ref_18">18</xref>]. This measure is instrumental in guiding the selection of a subset of contour points, either by emphasizing the most significant ones [<xref ref-type="bibr" rid="ref_7">7</xref>], [<xref ref-type="bibr" rid="ref_17">17</xref>] or by systematically eliminating less significant, redundant points [<xref ref-type="bibr" rid="ref_3">3</xref>], [<xref ref-type="bibr" rid="ref_5">5</xref>], [<xref ref-type="bibr" rid="ref_10">10</xref>].</p><p>The selection process necessitates a definition of the relative importance of contour points. This importance level can be determined using a predefined threshold [<xref ref-type="bibr" rid="ref_10">10</xref>] or by optimizing error measurements. It is noteworthy that research indicates optimization methods generally surpass threshold-based approaches in performance [<xref ref-type="bibr" rid="ref_3">3</xref>], [<xref ref-type="bibr" rid="ref_5">5</xref>]. The primary goal of these algorithms is to yield an accurate and efficient polygonal approximation that effectively encapsulates the fundamental characteristics of the shape contour.</p><p>This study aims to advance the current state-of-the-art in dominant point detection. Rather than relying on thresholds or costly optimization methods to select dominant points, it proposes employing intuitive, human-like heuristics. Humans often examine a point and its neighborhood to determine whether it is a dominant point. We aim to replicate this process algorithmically. Our method involves examining a point on a shape contour, using its neighborhood to ascertain whether it is part of a curve or a straight line. If the point is identified as part of a curve, it is retained for further investigation. If not, it is classified as a non-dominant point in a process we term ‘point suppression’.</p><p>To this end, we have developed novel rotation-invariant shape descriptors that effectively encapsulate the shape outline. These descriptors can be computed without recourse to expensive computational operations. As a result, descriptor-based point suppression paves the way for a highly efficient dominant point detection algorithm, albeit at the cost of slightly less optimized approximation. To the best of our knowledge, this is the first study to use descriptors for dominant point detection in offline shapes.</p><p>The novelty of the proposed approach can be summarized as follows:</p><p>i. Innovative point suppression method using shape descriptors.</p><p>ii. Rapid algorithm that avoids costly optimizations compared to other methods.</p><p>iii. Utilization of adaptive local and global features for dominant point detection.</p><p>The paper is structured as follows: Section 2 gives an overview of the existing research on dominant point detection. Section 3 details the proposed algorithm. Section 4 provides a comprehensive analysis of the experimental results, and finally, Section 5 presents our conclusions.</p>
     </sec>
-    <sec disp-level="level1" sec-type="">
+    <sec sec-type="">
       <title>2. Related works</title>
       <p>Numerous algorithms have been proposed for the detection of dominant points in digital planar curves, falling broadly into two main categories. The first category includes algorithms that strive to minimize the number of edges or vertices required to approximate the curve, subject to defined error criteria [<xref ref-type="bibr" rid="ref_21">21</xref>], [<xref ref-type="bibr" rid="ref_22">22</xref>], [<xref ref-type="bibr" rid="ref_23">23</xref>]. The second category, by contrast, comprises algorithms that pinpoint specific points along the curve as dominant points [<xref ref-type="bibr" rid="ref_3">3</xref>], [<xref ref-type="bibr" rid="ref_5">5</xref>], [<xref ref-type="bibr" rid="ref_7">7</xref>], [<xref ref-type="bibr" rid="ref_10">10</xref>], [<xref ref-type="bibr" rid="ref_11">11</xref>], [<xref ref-type="bibr" rid="ref_12">12</xref>],  [<xref ref-type="bibr" rid="ref_14">14</xref>], [<xref ref-type="bibr" rid="ref_16">16</xref>], [<xref ref-type="bibr" rid="ref_17">17</xref>], [<xref ref-type="bibr" rid="ref_24">24</xref>].</p><p>Algorithms in the first category aim to achieve optimal digital curve approximations. However, these methodologies are often parametric, necessitating the determination of parameters such as the initial vertex or the maximum allowable error prior to generating an approximation. For instance, the method presented in the study [<xref ref-type="bibr" rid="ref_21">21</xref>] approximates a contour using a polygon with the minimum number of vertices, ensuring a predefined acceptable approximation error and an initial vertex. This algorithm iteratively identifies the smallest set of vertices for the polygonal approximation, commencing with a preselected initial vertex [<xref ref-type="bibr" rid="ref_18">18</xref>].</p><p>In contrast, algorithms in the second category typically exhibit increased robustness when applied to a variety of shapes. Given the plethora of dominant point detection algorithms chronicled in existing literature, our focus will be directed towards the more recent and relevant approaches [<xref ref-type="bibr" rid="ref_18">18</xref>]. Comprehensive evaluations of various dominant point detection algorithms can be found in the study [<xref ref-type="bibr" rid="ref_25">25</xref>].</p><p>A substantial number of dominant point detection algorithms initiate the process by applying filters to contour points based on various criteria. These may include orientation-specific predefined masks [<xref ref-type="bibr" rid="ref_7">7</xref>] or the detection of break-points [<xref ref-type="bibr" rid="ref_3">3</xref>],  [<xref ref-type="bibr" rid="ref_10">10</xref>], [<xref ref-type="bibr" rid="ref_11">11</xref>]. Following this initial screening, each point on the contour, $C<inline-formula>
   <math xmlns="http://www.w3.org/1998/Math/MathML">
@@ -1094,11 +1101,11 @@
   </math>
 </inline-formula>p_i$. Consequently, less significant points can be removed from the set of dominant points, using the process call point-suppression [<xref ref-type="bibr" rid="ref_3">3</xref>], [<xref ref-type="bibr" rid="ref_10">10</xref>], [<xref ref-type="bibr" rid="ref_24">24</xref>].</p><p>The concept of point suppression was originally introduced by Marji and Siy [<xref ref-type="bibr" rid="ref_10">10</xref>]. Their approach, however, is constrained by a fixed suppression threshold. Carmona-Poyato et al. [<xref ref-type="bibr" rid="ref_24">24</xref>] refined this method by incorporating an optimization procedure to determine the threshold value for collinear-points suppression. Building upon their work, Carmona-Poyato et al. [<xref ref-type="bibr" rid="ref_5">5</xref>] further improved their technique by iteratively removing dominant points until a specific condition was met. Nonetheless, the performance of their algorithm can fluctuate significantly depending on the chosen final condition [<xref ref-type="bibr" rid="ref_18">18</xref>].</p><p>Both algorithms presented in studies [<xref ref-type="bibr" rid="ref_5">5</xref>],  [<xref ref-type="bibr" rid="ref_24">24</xref>] fall into the realm of global optimization techniques and employ a single suppression parameter applicable to the entire contour. Conversely, the method presented in the study [<xref ref-type="bibr" rid="ref_3">3</xref>] highlighted the advantages of a local optimization strategy. This approach involves using distinct, adaptively estimated suppression thresholds for different segments of the contour, effectively taking into account the varying levels of detail within the contour [<xref ref-type="bibr" rid="ref_18">18</xref>].</p><p>Most of the algorithms discussed above determine the significance of a point based on its distance to the approximate straight line. This approach carries two primary disadvantages: firstly, the process of computing the significance in this manner is computationally intensive; secondly, a threshold is required to establish the cut-off distance. This study aims to circumvent these drawbacks by adopting a completely different approach: The significance measure of a point is estimated based on the shape formed around the point under consideration. As demonstrated in the experimental results section, this approach leads to a highly efficient dominant point detection algorithm.</p>
     </sec>
-    <sec disp-level="level1" sec-type="">
+    <sec sec-type="">
       <title>3. Algorithm</title>
       <p>The methodology proposed in this study is rooted in the use of invariant shape descriptors to characterize segments of a shape contour. We first elucidate how a shape can be represented using these descriptors. Following this, we discuss how these descriptors can be employed to suppress points along the shape outline.</p>
       
-        <sec disp-level="level2">
+        <sec>
           
             <title>3.1. Segment descriptors</title>
           
@@ -4094,40 +4101,45 @@
           
             <table-wrap id="table_1">
               <label>Table 1</label>
-              <caption>Rotation-invariant shape descriptors used in this work</caption>
-              <abstract/>
+              <caption>
+                <title>Rotation-invariant shape descriptors used in this work</title>
+              </caption>
               <table><tbody><tr><td colspan="1" rowspan="1"><p style="text-align: center">Straight Line (straight_line)</p></td><td colspan="1" rowspan="1"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAG4AAAAqCAYAAABSkm6BAAAA1ElEQVR4nO3asQ2DMBQA0W/kKRiDihU8uCehp0NUQEKXSKliInTRPcmtZfn8O6fjKYTT3X0AfcdwUIaDMhyU4aAMB2U4KMNBGQ7KcFCGgzIclOGgDAdlOCjDQTWFm6YphmGIlJLrwyqlxLIsV7V648RBNYXb9z22bbvqLH/nvJtf/QxJLX9O1nWNWmvM8xxd5/C+Oh913/cxjmPknC/fvymc7uOYQBkOynBQhoMyHJThoAwHZTgow0EZDspwUIaDMhyU4aAMB2U4KMNBGQ7KcFCGg3oAgF4r9oZqMu0AAAAASUVORK5CYII=" width="100px" height="auto" style="margin: 0 auto"></td></tr><tr><td colspan="1" rowspan="1"><p style="text-align: center">Counter-clock-wise Curve (ccw_curve)</p></td><td colspan="1" rowspan="1"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAD4AAAA2BAMAAABtvDcaAAAAG1BMVEX///8EBARRUVHj4+MpKSmtra3ExMR4eHiQkJDXhbzvAAAA7klEQVQ4y82TvQrCQBCEF43RdhIlKRMEa/HnAU5RLI0EtFQRbA36AIrgc3v+YXM3V6TQbQL5bnfn5nZFfhB9B08PFFdV0KUHdpjwAil4hzqcHaas/uoEnK10qaBjbMHD9EHRtAjYaza65Wib8QIIruLbHNoCM01yJEbcAzr6U0NkxDX1xLIx26dtfbmSxRbT3v+Ha2N1BGvm+QVHhhuI6ZMVmPP0Fk3PeLqveLrnmLgioNi3jsunPFUnl8ixUaFwc7h6r8nXJYscC8/bVy3j+pXHb18Blzfg5svGIT/jby9F6Lg+f1xRSTmOkvyP4w6UlBxJ9+SJiAAAAABJRU5ErkJggg==" width="100px" height="auto" style="margin: 0 auto"></td></tr><tr><td colspan="1" rowspan="1"><p style="text-align: center"></p><p style="text-align: center">Clock-wise Curve (cw_curve)</p></td><td colspan="1" rowspan="1"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEoAAAA5BAMAAABjSKAtAAAAG1BMVEX///8FBQXn5+ckJCRLS0vS0tJ1dXW1tbWZmZnR6DKiAAAA4ElEQVRIx92TMQ8BQRCFN8se7bNrKa9C6RKO9iIXLef0iEIpuUKLu/jdhN684gqx9ZeZN9/MKvVPb8tAI3uWIZMwVIGlDA3gQxFqJU7up0t4eUQTAZNTJme3QHyXckX2sYCTsNwehkcRM4kPTQVp0hyp0hXi79b03r+NpIL9ObNNnX02NWMOqARxGi9zPaZYQRabMsVuLiSoADumWELl31imZZts2aVaOoZqYkVQOuKCdRhq7algVlHGqPik1zF1PdyQfYZq1KgiACeMOcQWpdVQn1LjWhuluEVemBl//z0BNn8fTJsLY48AAAAASUVORK5CYII=" width="100px" height="auto" style="margin: 0 auto"></td></tr></tbody></table>
             </table-wrap>
           
           
             <fig id="fig_2">
               <label>Figure 2</label>
-              <caption>Illustration of the process of modeling shape segment with descriptor</caption>
-              <abstract>Note: Images taken from widely used MPEG7_CE-Shape-1_Part_B database [<xref ref-type="bibr" rid="ref_26">26</xref>].</abstract>
+              <caption>
+                <title>Illustration of the process of modeling shape segment with descriptor</title>
+              </caption>
               <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2023/8/img_msSJr72S82z02LXS.png"/>
             </fig>
           
           
             <fig id="fig_3">
               <label>Figure 3</label>
-              <caption>Illustration of space subdivision to identify the type of descriptor to which a segment match</caption>
-              <abstract>Note: The segment matched is the one from subgraph (d) of Figure 2.</abstract>
+              <caption>
+                <title>Illustration of space subdivision to identify the type of descriptor to which a segment match</title>
+              </caption>
               <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2023/8/img_3L_VUq1PiRBhba2K.png"/>
             </fig>
           
           
             <fig id="fig_4">
               <label>Figure 4</label>
-              <caption>A stroke composed of five segments, with each segment corresponding to an invariant descriptor</caption>
-              <abstract/>
+              <caption>
+                <title>A stroke composed of five segments, with each segment corresponding to an invariant descriptor</title>
+              </caption>
               <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2023/8/img_HzXtHVGGD8YSTwN8.png"/>
             </fig>
           
           
             <table-wrap id="table_2">
               <label>Table 2</label>
-              <caption>Fitting criteria for the three rotation-invariant shape descriptors [<xref ref-type="bibr" rid="ref_27">27</xref>]</caption>
-              <abstract/>
+              <caption>
+                <title>Fitting criteria for the three rotation-invariant shape descriptors [<xref ref-type="bibr" rid="ref_27">27</xref>]</title>
+              </caption>
               <table><tbody><tr><td colspan="1" rowspan="1"><p>Descriptor</p></td><td colspan="1" rowspan="1"><p>Symbol</p></td><td colspan="1" rowspan="1"><p>Fitting Criteria</p></td></tr><tr><td colspan="1" rowspan="1"><p style="text-align: center">straight_line</p></td><td colspan="1" rowspan="1"><p>S</p></td><td colspan="1" rowspan="1"><p>pos(<italic>ep<sub>i</sub></italic><sub>+1</sub>)=pos(<italic>ep<sub>i</sub></italic>)+4, mod 8</p></td></tr><tr><td colspan="1" rowspan="1"><p style="text-align: center">cw_curve</p></td><td colspan="1" rowspan="1"><p>C</p></td><td colspan="1" rowspan="1"><p><math>
   <mi mathvariant="normal">¬</mi>
   <mi>loc</mi>
@@ -4182,7 +4194,7 @@
         </sec>
       
       
-        <sec disp-level="level2">
+        <sec>
           
             <title>3.2. Point suppression</title>
           
@@ -5399,8 +5411,9 @@
           
             <fig id="fig_5">
               <label>Figure 5</label>
-              <caption>Illustration of points suppression by distance threshold</caption>
-              <abstract/>
+              <caption>
+                <title>Illustration of points suppression by distance threshold</title>
+              </caption>
               <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2023/8/img_9dful5Py1qClJljw.png"/>
             </fig>
           
@@ -8034,7 +8047,7 @@
         </sec>
       
       
-        <sec disp-level="level2">
+        <sec>
           
             <title>3.3. Dominant point detection</title>
           
@@ -9872,19 +9885,20 @@
           
             <fig id="fig_6">
               <label>Figure 6</label>
-              <caption>Block diagram of dominant point detection algorithm with an illustrated example</caption>
-              <abstract>Note: The original image (‘spoon’) with 518 contour points is approximated with 26 dominant points.</abstract>
+              <caption>
+                <title>Block diagram of dominant point detection algorithm with an illustrated example</title>
+              </caption>
               <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2023/8/img_aWH6NeHQex7mvxHf.png"/>
             </fig>
           
         </sec>
       
     </sec>
-    <sec disp-level="level1" sec-type="">
+    <sec sec-type="">
       <title>4. Experimental results</title>
       <p>The proposed method has been extensively evaluated to estimate the quality of approximations and the efficiency of the algorithm. The results have proven to be very promising, especially considering the significant reduction in running time for the MPEG7_CE-Shape-1_Part_B database [<xref ref-type="bibr" rid="ref_24">24</xref>]. In the subsequent sections, we first describe some quality measures commonly used by researchers to estimate the quality of detected dominant points. Following that, we present our experimental results.</p>
       
-        <sec disp-level="level2">
+        <sec>
           
             <title>4.1. Quality measures</title>
           
@@ -12070,15 +12084,16 @@
           
             <fig id="fig_7">
               <label>Figure 7</label>
-              <caption>Illustration of the effects of the number of dominant points on $W E_x$ measures</caption>
-              <abstract/>
+              <caption>
+                <title>Illustration of the effects of the number of dominant points on $W E_x$ measures</title>
+              </caption>
               <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2023/8/img_X7NUtKzs7K4l_bJj.png"/>
             </fig>
           
         </sec>
       
       
-        <sec disp-level="level2">
+        <sec>
           
             <title>4.2. Results on basic shapes</title>
           
@@ -12086,8 +12101,9 @@
           
             <fig id="fig_8">
               <label>Figure 8</label>
-              <caption>Polygonal approximations by the proposed method for four popular shapes</caption>
-              <abstract/>
+              <caption>
+                <title>Polygonal approximations by the proposed method for four popular shapes</title>
+              </caption>
               <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2023/8/img_-gWshat-mVGScUD3.png"/>
             </fig>
           
@@ -12111,15 +12127,16 @@
           
             <table-wrap id="table_3">
               <label>Table 3</label>
-              <caption>Comparative approximation results for basic shapes</caption>
-              <abstract>Note: The best results for WEx measures are marked as bold.</abstract>
+              <caption>
+                <title>Comparative approximation results for basic shapes</title>
+              </caption>
               <table><tbody><tr><td colspan="1" rowspan="1"><p><span>Shape</span></p></td><td colspan="1" rowspan="1"><p><span>Method</span></p></td><td colspan="1" rowspan="1"><p><italic><span>n</span><sub><span>d</span></sub></italic></p></td><td colspan="1" rowspan="1"><p><italic><span>CR</span></italic></p></td><td colspan="1" rowspan="1"><p><italic><span>ISE</span></italic></p></td><td colspan="1" rowspan="1"><p><italic><span>WE</span></italic></p></td><td colspan="1" rowspan="1"><p><italic><span>WE</span></italic><sub><span>2</span></sub></p></td><td colspan="1" rowspan="1"><p><italic><span>WE</span></italic><sub><span>3</span></sub></p></td></tr><tr><td colspan="1" rowspan="9"><p><span>Chromosome (</span><italic><span>n</span></italic><span>=60)</span></p></td><td colspan="1" rowspan="1"><p><span>Marji and Siy [<xref ref-type="bibr" rid="ref_10">10</xref>]</span></p></td><td colspan="1" rowspan="1"><p><span>10</span></p></td><td colspan="1" rowspan="1"><p><span>6.00</span></p></td><td colspan="1" rowspan="1"><p><span>10.01</span></p></td><td colspan="1" rowspan="1"><p><span>1.66</span></p></td><td colspan="1" rowspan="1"><p><span>0.277</span></p></td><td colspan="1" rowspan="1"><p><span>0.046</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span>Carmona-Poyato et al. [<xref ref-type="bibr" rid="ref_24">24</xref>]</span></p></td><td colspan="1" rowspan="1"><p><span>11</span></p></td><td colspan="1" rowspan="1"><p><span>5.36</span></p></td><td colspan="1" rowspan="1"><p><span>9.60</span></p></td><td colspan="1" rowspan="1"><p><span>1.79</span></p></td><td colspan="1" rowspan="1"><p><span>0.334</span></p></td><td colspan="1" rowspan="1"><p><span>0.062</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span>Masood [<xref ref-type="bibr" rid="ref_11">11</xref>]</span></p></td><td colspan="1" rowspan="1"><p><span>15</span></p></td><td colspan="1" rowspan="1"><p><span>4.00</span></p></td><td colspan="1" rowspan="1"><p><span>3.88</span></p></td><td colspan="1" rowspan="1"><p><span>0.97</span></p></td><td colspan="1" rowspan="1"><p><span>0.243</span></p></td><td colspan="1" rowspan="1"><p><span>0.061</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span>Carmona-Poyato et al. [<xref ref-type="bibr" rid="ref_5">5</xref>]</span></p></td><td colspan="1" rowspan="1"><p><span>15</span></p></td><td colspan="1" rowspan="1"><p><span>4.00</span></p></td><td colspan="1" rowspan="1"><p><span>4.27</span></p></td><td colspan="1" rowspan="1"><p><span>1.07</span></p></td><td colspan="1" rowspan="1"><p><span>0.267</span></p></td><td colspan="1" rowspan="1"><p><span>0.067</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span>Parvez and Mahmoud [<xref ref-type="bibr" rid="ref_4">4</xref>]</span></p></td><td colspan="1" rowspan="1"><p><span>10</span></p></td><td colspan="1" rowspan="1"><p><span>6.00</span></p></td><td colspan="1" rowspan="1"><p><span>14.34</span></p></td><td colspan="1" rowspan="1"><p><span>2.39</span></p></td><td colspan="1" rowspan="1"><p><span>0.398</span></p></td><td colspan="1" rowspan="1"><p><span>0.066</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span>Nguyen and Debled-Rennesson [<xref ref-type="bibr" rid="ref_13">13</xref>]</span></p></td><td colspan="1" rowspan="1"><p><span>18</span></p></td><td colspan="1" rowspan="1"><p><span>3.33</span></p></td><td colspan="1" rowspan="1"><p><span>4.06</span></p></td><td colspan="1" rowspan="1"><p><span>1.22</span></p></td><td colspan="1" rowspan="1"><p><span>0.366</span></p></td><td colspan="1" rowspan="1"><p><span>0.110</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span>Parvez [<xref ref-type="bibr" rid="ref_18">18</xref>]</span></p></td><td colspan="1" rowspan="1"><p><span>11</span></p></td><td colspan="1" rowspan="1"><p><span>5.46</span></p></td><td colspan="1" rowspan="1"><p><span>7.09</span></p></td><td colspan="1" rowspan="1"><p><span>1.30</span></p></td><td colspan="1" rowspan="1"><p><span>0.238</span></p></td><td colspan="1" rowspan="1"><p><span>0.044</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span>Parvez [<xref ref-type="bibr" rid="ref_19">19</xref>]</span></p></td><td colspan="1" rowspan="1"><p><span>10</span></p></td><td colspan="1" rowspan="1"><p><span>6.10</span></p></td><td colspan="1" rowspan="1"><p><span>33.54</span></p></td><td colspan="1" rowspan="1"><p><span>5.50</span></p></td><td colspan="1" rowspan="1"><p><span>0.901</span></p></td><td colspan="1" rowspan="1"><p><span>0.148</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span>Proposed</span></p></td><td colspan="1" rowspan="1"><p><span>10</span></p></td><td colspan="1" rowspan="1"><p><span>6.10</span></p></td><td colspan="1" rowspan="1"><p><span>15.70</span></p></td><td colspan="1" rowspan="1"><p><span>2.57</span></p></td><td colspan="1" rowspan="1"><p><span>0.422</span></p></td><td colspan="1" rowspan="1"><p><span>0.069</span></p></td></tr><tr><td colspan="1" rowspan="9"><p><span>Leaf (</span><italic><span>n</span></italic><span>=120)</span></p></td><td colspan="1" rowspan="1"><p><span>Marji and Siy [<xref ref-type="bibr" rid="ref_10">10</xref>]</span></p></td><td colspan="1" rowspan="1"><p><span>17</span></p></td><td colspan="1" rowspan="1"><p><span>7.06</span></p></td><td colspan="1" rowspan="1"><p><span>28.67</span></p></td><td colspan="1" rowspan="1"><p><span>4.06</span></p></td><td colspan="1" rowspan="1"><p><span>0.575</span></p></td><td colspan="1" rowspan="1"><p><span>0.081</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span>Carmona-Poyato et al. [<xref ref-type="bibr" rid="ref_24">24</xref>]</span></p></td><td colspan="1" rowspan="1"><p><span>17</span></p></td><td colspan="1" rowspan="1"><p><span>7.00</span></p></td><td colspan="1" rowspan="1"><p><span>37.36</span></p></td><td colspan="1" rowspan="1"><p><span>5.33</span></p></td><td colspan="1" rowspan="1"><p><span>0.761</span></p></td><td colspan="1" rowspan="1"><p><span>0.109</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span>Masood [<xref ref-type="bibr" rid="ref_11">11</xref>]</span></p></td><td colspan="1" rowspan="1"><p><span>23</span></p></td><td colspan="1" rowspan="1"><p><span>5.22</span></p></td><td colspan="1" rowspan="1"><p><span>9.46</span></p></td><td colspan="1" rowspan="1"><p><span>1.81</span></p></td><td colspan="1" rowspan="1"><p><span>0.347</span></p></td><td colspan="1" rowspan="1"><p><span>0.067</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span>Carmona-Poyato et al. [<xref ref-type="bibr" rid="ref_5">5</xref>]</span></p></td><td colspan="1" rowspan="1"><p><span>23</span></p></td><td colspan="1" rowspan="1"><p><span>5.22</span></p></td><td colspan="1" rowspan="1"><p><span>10.68</span></p></td><td colspan="1" rowspan="1"><p><span>2.05</span></p></td><td colspan="1" rowspan="1"><p><span>0.391</span></p></td><td colspan="1" rowspan="1"><p><span>0.075</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span>Parvez and Mahmoud [<xref ref-type="bibr" rid="ref_4">4</xref>]</span></p></td><td colspan="1" rowspan="1"><p><span>21</span></p></td><td colspan="1" rowspan="1"><p><span>5.71</span></p></td><td colspan="1" rowspan="1"><p><span>13.82</span></p></td><td colspan="1" rowspan="1"><p><span>2.42</span></p></td><td colspan="1" rowspan="1"><p><span>0.423</span></p></td><td colspan="1" rowspan="1"><p><span>0.074</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span>Nguyen and Debled-Rennesson [<xref ref-type="bibr" rid="ref_13">13</xref>]</span></p></td><td colspan="1" rowspan="1"><p><span>33</span></p></td><td colspan="1" rowspan="1"><p><span>3.64</span></p></td><td colspan="1" rowspan="1"><p><span>5.56</span></p></td><td colspan="1" rowspan="1"><p><span>1.53</span></p></td><td colspan="1" rowspan="1"><p><span>0.419</span></p></td><td colspan="1" rowspan="1"><p><span>0.115</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span>Parvez [<xref ref-type="bibr" rid="ref_18">18</xref>]</span></p></td><td colspan="1" rowspan="1"><p><span>21</span></p></td><td colspan="1" rowspan="1"><p><span>5.71      </span></p></td><td colspan="1" rowspan="1"><p><span>11.98</span></p></td><td colspan="1" rowspan="1"><p><span>2.10</span></p></td><td colspan="1" rowspan="1"><p><span>0.367</span></p></td><td colspan="1" rowspan="1"><p><span>0.064</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span>Parvez [<xref ref-type="bibr" rid="ref_19">19</xref>]</span></p></td><td colspan="1" rowspan="1"><p><span>23</span></p></td><td colspan="1" rowspan="1"><p><span>5.26</span></p></td><td colspan="1" rowspan="1"><p><span>32.50</span></p></td><td colspan="1" rowspan="1"><p><span>6.17</span></p></td><td colspan="1" rowspan="1"><p><span>1.174</span></p></td><td colspan="1" rowspan="1"><p><span>0.223</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span>Proposed</span></p></td><td colspan="1" rowspan="1"><p><span>19</span></p></td><td colspan="1" rowspan="1"><p><span>6.36</span></p></td><td colspan="1" rowspan="1"><p><span>20.07</span></p></td><td colspan="1" rowspan="1"><p><span>3.15</span></p></td><td colspan="1" rowspan="1"><p><span>0.495</span></p></td><td colspan="1" rowspan="1"><p><span>0.078</span></p></td></tr><tr><td colspan="1" rowspan="9"><p><span>Semicircles (</span><italic><span>n=</span></italic><span>102)</span></p></td><td colspan="1" rowspan="1"><p><span>Marji and Siy [<xref ref-type="bibr" rid="ref_10">10</xref>]</span></p></td><td colspan="1" rowspan="1"><p><span>15</span></p></td><td colspan="1" rowspan="1"><p><span>6.80</span></p></td><td colspan="1" rowspan="1"><p><span>22.70</span></p></td><td colspan="1" rowspan="1"><p><span>3.34</span></p></td><td colspan="1" rowspan="1"><p><span>0.491</span></p></td><td colspan="1" rowspan="1"><p><span>0.072</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span>Carmona-Poyato et al. [<xref ref-type="bibr" rid="ref_24">24</xref>]</span></p></td><td colspan="1" rowspan="1"><p><span>11</span></p></td><td colspan="1" rowspan="1"><p><span>9.18</span></p></td><td colspan="1" rowspan="1"><p><span>59.06</span></p></td><td colspan="1" rowspan="1"><p><span>6.03</span></p></td><td colspan="1" rowspan="1"><p><span>0.700</span></p></td><td colspan="1" rowspan="1"><p><span>0.076</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span>Masood [<xref ref-type="bibr" rid="ref_11">11</xref>]</span></p></td><td colspan="1" rowspan="1"><p><span>26</span></p></td><td colspan="1" rowspan="1"><p><span>3.92</span></p></td><td colspan="1" rowspan="1"><p><span>4.05</span></p></td><td colspan="1" rowspan="1"><p><span>1.03</span></p></td><td colspan="1" rowspan="1"><p><span>0.263</span></p></td><td colspan="1" rowspan="1"><p><span>0.067</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span>Carmona-Poyato et al. [<xref ref-type="bibr" rid="ref_5">5</xref>]</span></p></td><td colspan="1" rowspan="1"><p><span>26</span></p></td><td colspan="1" rowspan="1"><p><span>3.92</span></p></td><td colspan="1" rowspan="1"><p><span>4.91</span></p></td><td colspan="1" rowspan="1"><p><span>1.25</span></p></td><td colspan="1" rowspan="1"><p><span>0.319</span></p></td><td colspan="1" rowspan="1"><p><span>0.082</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span>Parvez and Mahmoud [<xref ref-type="bibr" rid="ref_4">4</xref>]</span></p></td><td colspan="1" rowspan="1"><p><span>17</span></p></td><td colspan="1" rowspan="1"><p><span>6.00</span></p></td><td colspan="1" rowspan="1"><p><span>19.02</span></p></td><td colspan="1" rowspan="1"><p><span>3.17</span></p></td><td colspan="1" rowspan="1"><p><span>0.528</span></p></td><td colspan="1" rowspan="1"><p><span>0.088</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span>Nguyen and Debled-Rennesson [<xref ref-type="bibr" rid="ref_13">13</xref>]</span></p></td><td colspan="1" rowspan="1"><p><span>25</span></p></td><td colspan="1" rowspan="1"><p><span>4.12</span></p></td><td colspan="1" rowspan="1"><p><span>5.42</span></p></td><td colspan="1" rowspan="1"><p><span>1.32</span></p></td><td colspan="1" rowspan="1"><p><span>0.319</span></p></td><td colspan="1" rowspan="1"><p><span>0.078</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span>Parvez [<xref ref-type="bibr" rid="ref_18">18</xref>]</span></p></td><td colspan="1" rowspan="1"><p><span>15</span></p></td><td colspan="1" rowspan="1"><p><span>6.80</span></p></td><td colspan="1" rowspan="1"><p><span>18.22</span></p></td><td colspan="1" rowspan="1"><p><span>2.24</span></p></td><td colspan="1" rowspan="1"><p><span>0.329</span></p></td><td colspan="1" rowspan="1"><p><span>0.048</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span>Parvez [<xref ref-type="bibr" rid="ref_19">19</xref>]</span></p></td><td colspan="1" rowspan="1"><p><span>21</span></p></td><td colspan="1" rowspan="1"><p><span>4.91</span></p></td><td colspan="1" rowspan="1"><p><span>24.47</span></p></td><td colspan="1" rowspan="1"><p><span>4.99</span></p></td><td colspan="1" rowspan="1"><p><span>1.017</span></p></td><td colspan="1" rowspan="1"><p><span>0.207</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span>Proposed</span></p></td><td colspan="1" rowspan="1"><p><span>19</span></p></td><td colspan="1" rowspan="1"><p><span>5.42</span></p></td><td colspan="1" rowspan="1"><p><span>20.22</span></p></td><td colspan="1" rowspan="1"><p><span>3.73</span></p></td><td colspan="1" rowspan="1"><p><span>0.688</span></p></td><td colspan="1" rowspan="1"><p><span>0.127</span></p></td></tr><tr><td colspan="1" rowspan="7"><p><span>Infinity (</span><italic><span>n</span></italic><span>=45)</span></p></td><td colspan="1" rowspan="1"><p><span>Carmona-Poyato et al. [<xref ref-type="bibr" rid="ref_24">24</xref>]</span></p></td><td colspan="1" rowspan="1"><p><span>9</span></p></td><td colspan="1" rowspan="1"><p><span>4.89</span></p></td><td colspan="1" rowspan="1"><p><span>7.34</span></p></td><td colspan="1" rowspan="1"><p><span>1.50</span></p></td><td colspan="1" rowspan="1"><p><span>0.306</span></p></td><td colspan="1" rowspan="1"><p><span>0.063</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span>Masood [<xref ref-type="bibr" rid="ref_11">11</xref>]</span></p></td><td colspan="1" rowspan="1"><p><span>11</span></p></td><td colspan="1" rowspan="1"><p><span>4.09</span></p></td><td colspan="1" rowspan="1"><p><span>2.90</span></p></td><td colspan="1" rowspan="1"><p><span>0.71</span></p></td><td colspan="1" rowspan="1"><p><span>0.173</span></p></td><td colspan="1" rowspan="1"><p><span>0.042</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span>Carmona-Poyato et al. [<xref ref-type="bibr" rid="ref_5">5</xref>]</span></p></td><td colspan="1" rowspan="1"><p><span>10</span></p></td><td colspan="1" rowspan="1"><p><span>4.50</span></p></td><td colspan="1" rowspan="1"><p><span>5.29</span></p></td><td colspan="1" rowspan="1"><p><span>1.18</span></p></td><td colspan="1" rowspan="1"><p><span>0.261</span></p></td><td colspan="1" rowspan="1"><p><span>0.058</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span>Parvez and Mahmoud [<xref ref-type="bibr" rid="ref_4">4</xref>]</span></p></td><td colspan="1" rowspan="1"><p><span>9</span></p></td><td colspan="1" rowspan="1"><p><span>5.00</span></p></td><td colspan="1" rowspan="1"><p><span>7.35</span></p></td><td colspan="1" rowspan="1"><p><span>1.47</span></p></td><td colspan="1" rowspan="1"><p><span>0.294</span></p></td><td colspan="1" rowspan="1"><p><span>0.059</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span>Parvez [<xref ref-type="bibr" rid="ref_18">18</xref>]</span></p></td><td colspan="1" rowspan="1"><p><span>7</span></p></td><td colspan="1" rowspan="1"><p><span>6.43</span></p></td><td colspan="1" rowspan="1"><p><span>7.69</span></p></td><td colspan="1" rowspan="1"><p><span>1.20</span></p></td><td colspan="1" rowspan="1"><p><span>0.186</span></p></td><td colspan="1" rowspan="1"><p><span>0.029</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span>Parvez [<xref ref-type="bibr" rid="ref_19">19</xref>]</span></p></td><td colspan="1" rowspan="1"><p><span>9</span></p></td><td colspan="1" rowspan="1"><p><span>5.00</span></p></td><td colspan="1" rowspan="1"><p><span>14.60</span></p></td><td colspan="1" rowspan="1"><p><span>2.92</span></p></td><td colspan="1" rowspan="1"><p><span>0.584</span></p></td><td colspan="1" rowspan="1"><p><span>0.117</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span>Proposed</span></p></td><td colspan="1" rowspan="1"><p><span>11</span></p></td><td colspan="1" rowspan="1"><p><span>4.18</span></p></td><td colspan="1" rowspan="1"><p><span>4.40</span></p></td><td colspan="1" rowspan="1"><p><span>1.05</span></p></td><td colspan="1" rowspan="1"><p><span>0.252</span></p></td><td colspan="1" rowspan="1"><p><span>0.060</span></p></td></tr></tbody></table>
             </table-wrap>
           
         </sec>
       
       
-        <sec disp-level="level2">
+        <sec>
           
             <title>4.3. Results on large dataset</title>
           
@@ -12127,16 +12144,18 @@
           
             <fig id="fig_9">
               <label>Figure 9</label>
-              <caption>Polygonal approximations by the proposed method for shapes from MPEG7_CE-Shape-1_Part_B dataset</caption>
-              <abstract/>
+              <caption>
+                <title>Polygonal approximations by the proposed method for shapes from MPEG7_CE-Shape-1_Part_B dataset</title>
+              </caption>
               <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2023/8/img_L9Z16xrzxDv0Fh62.png"/>
             </fig>
           
           
             <table-wrap id="table_4">
               <label>Table 4</label>
-              <caption>Some statistics and approximation results for MPEG7_CE-Shape-1_Part_B database</caption>
-              <abstract/>
+              <caption>
+                <title>Some statistics and approximation results for MPEG7_CE-Shape-1_Part_B database</title>
+              </caption>
               <table><tbody><tr><td colspan="1" rowspan="2"><p><span>Dataset</span></p></td><td colspan="1" rowspan="2"><p><span>Sample Count</span></p></td><td colspan="1" rowspan="2"><p><span>Average # of Contour   Points</span></p></td><td colspan="3" rowspan="1"><p><span>Average Number   of Dominant Points</span></p></td><td colspan="1" rowspan="1"><p><span> </span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span>Marji and Siy   [<xref ref-type="bibr" rid="ref_10">10</xref>]</span></p></td><td colspan="1" rowspan="1"><p><span>Parvez and   Mahmoud [<xref ref-type="bibr" rid="ref_3">3</xref>]</span></p></td><td colspan="1" rowspan="1"><p><span>Parvez [<xref ref-type="bibr" rid="ref_18">18</xref>]</span></p></td><td colspan="1" rowspan="1"><p><span>Proposed</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span>MPEG7_CE-Shape-1_Part_B   [<xref ref-type="bibr" rid="ref_26">26</xref>]</span></p></td><td colspan="1" rowspan="1"><p><span>1402</span></p></td><td colspan="1" rowspan="1"><p><span>1272.7</span></p></td><td colspan="1" rowspan="1"><p><span style="color: windowtext">98.6</span></p></td><td colspan="1" rowspan="1"><p><span style="color: windowtext">53.5</span></p></td><td colspan="1" rowspan="1"><p><span>81.34</span></p></td><td colspan="1" rowspan="1"><p><span>90.61</span></p></td></tr></tbody></table></td></tr></tbody></table>
             </table-wrap>
           
@@ -12677,8 +12696,9 @@
           
             <table-wrap id="table_5">
               <label>Table 5</label>
-              <caption>Comparisons of the current method with other reported works for MPEG7_CE-Shape-1_Part_B database</caption>
-              <abstract/>
+              <caption>
+                <title>Comparisons of the current method with other reported works for MPEG7_CE-Shape-1_Part_B database</title>
+              </caption>
               <table><tbody><tr><td colspan="1" rowspan="2"><p><span>Algorithm</span></p></td><td colspan="3" rowspan="1"><p><span>Statistics</span></p></td><td colspan="1" rowspan="1"><p><span> </span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span>Average </span><italic><span>CR</span></italic></p></td><td colspan="1" rowspan="1"><p><span>Average </span><italic><span>ISE</span></italic></p></td><td colspan="1" rowspan="1"><p><span>Average </span><italic><span>WE</span></italic><sub><span>3</span></sub></p></td><td colspan="1" rowspan="1"><p><span>Running Time (sec)</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span>Marji and Siy [<xref ref-type="bibr" rid="ref_10">10</xref>]</span></p></td><td colspan="1" rowspan="1"><p><span>20.52</span></p></td><td colspan="1" rowspan="1"><p><span>285.41</span></p></td><td colspan="1" rowspan="1"><p><span>0.229</span></p></td><td colspan="1" rowspan="1"><p><span>112.08</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span>Parvez and Mahmoud [<xref ref-type="bibr" rid="ref_3">3</xref>]</span></p></td><td colspan="1" rowspan="1"><p><span>29.24</span></p></td><td colspan="1" rowspan="1"><p><span>1783.71</span></p></td><td colspan="1" rowspan="1"><p><span>0.154</span></p></td><td colspan="1" rowspan="1"><p><span>180.70</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span>Parvez [<xref ref-type="bibr" rid="ref_18">18</xref>]</span></p></td><td colspan="1" rowspan="1"><p><span>24.26</span></p></td><td colspan="1" rowspan="1"><p><span>280.30</span></p></td><td colspan="1" rowspan="1"><p><span>0.126</span></p></td><td colspan="1" rowspan="1"><p><span>569.46</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span>Proposed</span></p><p><span>[with all phases]</span></p></td><td colspan="1" rowspan="1"><p><span>23.35</span></p></td><td colspan="1" rowspan="1"><p><span>2095.59</span></p></td><td colspan="1" rowspan="1"><p><span>0.681</span></p></td><td colspan="1" rowspan="1"><p><span>43.64</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span>Proposed</span></p><p><span>[w/o phase 4]</span></p></td><td colspan="1" rowspan="1"><p><span>17.95</span></p></td><td colspan="1" rowspan="1"><p><span>457.39</span></p></td><td colspan="1" rowspan="1"><p><span>0.513</span></p></td><td colspan="1" rowspan="1"><p><span>43.35</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span>Proposed</span></p><p><span>[w/o phase 5 (optimization)]</span></p></td><td colspan="1" rowspan="1"><p><span>23.35</span></p></td><td colspan="1" rowspan="1"><p><span>2891.36</span></p></td><td colspan="1" rowspan="1"><p><span>0.932</span></p></td><td colspan="1" rowspan="1"><p><span>41.47</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span>Proposed</span></p><p><span>[w/o phase 4 and phase 5]</span></p></td><td colspan="1" rowspan="1"><p><span>17.95</span></p></td><td colspan="1" rowspan="1"><p><span>782.29</span></p></td><td colspan="1" rowspan="1"><p><span>0.678</span></p></td><td colspan="1" rowspan="1"><p><span>42.27</span></p></td></tr></tbody></table>
             </table-wrap>
           
@@ -12686,15 +12706,16 @@
           
             <fig id="fig_10">
               <label>Figure 10</label>
-              <caption>Application of our algorithm for online shapes (data taken from Online-KHATT database [<xref ref-type="bibr" rid="ref_30">30</xref>])</caption>
-              <abstract/>
+              <caption>
+                <title>Application of our algorithm for online shapes (data taken from Online-KHATT database [<xref ref-type="bibr" rid="ref_30">30</xref>])</title>
+              </caption>
               <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2023/8/img_vw5Kr3mm_neiyMFj.png"/>
             </fig>
           
         </sec>
       
     </sec>
-    <sec disp-level="level1" sec-type="conclusions">
+    <sec sec-type="conclusions">
       <title>5. Conclusions</title>
       <p>In this study, we introduce a novel dominant point detection algorithm based on descriptors. Our innovative algorithm evaluates each point along a shape contour, assigning it a set of invariant descriptors relative to its neighboring points. These descriptors dynamically determine whether a given point qualifies as a dominant point. Notably, our approach circumvents the need for resource-intensive computations typically required to classify a point as a potential dominant point. In addition, our technique demonstrates remarkable speed when compared to other existing methodologies, owing to its reliance on integer operations and its independence from optimization phases. However, the approximations resulting from the current method exhibit higher <inline-formula>
   <math xmlns="http://www.w3.org/1998/Math/MathML">
@@ -12753,12 +12774,11 @@
           <year>1954</year>
           <person-group person-group-type="author">
             <name>
-              <given-names>F.</given-names>
               <surname>Attneave</surname>
+              <given-names>F.</given-names>
             </name>
           </person-group>
           <pub-id pub-id-type="doi">10.1037/h0054663</pub-id>
-          <pub-id pub-id-type="publisher"/>
           <article-title>Some informational aspects of visual perception</article-title>
           <source>Psychol. Rev.</source>
         </element-citation>
@@ -12772,16 +12792,15 @@
           <year>2004</year>
           <person-group person-group-type="author">
             <name>
-              <given-names>D.S.</given-names>
               <surname>Zhang</surname>
+              <given-names>D.S.</given-names>
             </name>
             <name>
-              <given-names>G.J.</given-names>
               <surname>Lu</surname>
+              <given-names>G.J.</given-names>
             </name>
           </person-group>
           <pub-id pub-id-type="doi">10.1016/j.patcog.2003.07.008</pub-id>
-          <pub-id pub-id-type="publisher"/>
           <article-title>Review of shape representation and description techniques</article-title>
           <source>Pattern Recogn.</source>
         </element-citation>
@@ -12795,16 +12814,15 @@
           <year>2010</year>
           <person-group person-group-type="author">
             <name>
-              <given-names>M. T.</given-names>
               <surname>Parvez</surname>
+              <given-names>M. T.</given-names>
             </name>
             <name>
-              <given-names>S. A.</given-names>
               <surname>Mahmoud</surname>
+              <given-names>S. A.</given-names>
             </name>
           </person-group>
           <pub-id pub-id-type="doi">10.1016/j.patrec.2010.06.007</pub-id>
-          <pub-id pub-id-type="publisher"/>
           <article-title>Polygonal approximation of digital planar curves through adaptive optimizations</article-title>
           <source>Pattern Recogn. Lett.</source>
         </element-citation>
@@ -12818,16 +12836,15 @@
           <year>2013</year>
           <person-group person-group-type="author">
             <name>
-              <given-names>M. T.</given-names>
               <surname>Parvez</surname>
+              <given-names>M. T.</given-names>
             </name>
             <name>
-              <given-names>S. A.</given-names>
               <surname>Mahmoud</surname>
+              <given-names>S. A.</given-names>
             </name>
           </person-group>
           <pub-id pub-id-type="doi">10.1016/j.patcog.2012.07.012</pub-id>
-          <pub-id pub-id-type="publisher"/>
           <article-title>Arabic handwriting recognition using structural and syntactic pattern attributes</article-title>
           <source>Pattern Recogn.</source>
         </element-citation>
@@ -12841,24 +12858,23 @@
           <year>2010</year>
           <person-group person-group-type="author">
             <name>
-              <given-names>A.</given-names>
               <surname>Carmona-Poyato</surname>
+              <given-names>A.</given-names>
             </name>
             <name>
-              <given-names>F. J.</given-names>
               <surname>Madrid-Cuevas</surname>
+              <given-names>F. J.</given-names>
             </name>
             <name>
-              <given-names>R.</given-names>
               <surname>Medina-Carnicer</surname>
+              <given-names>R.</given-names>
             </name>
             <name>
-              <given-names>R.</given-names>
               <surname>Muñoz-Salinas</surname>
+              <given-names>R.</given-names>
             </name>
           </person-group>
           <pub-id pub-id-type="doi">10.1016/j.patcog.2009.06.010</pub-id>
-          <pub-id pub-id-type="publisher"/>
           <article-title>Polygonal approximation of digital planar curves through break point suppression</article-title>
           <source>Pattern Recogn.</source>
         </element-citation>
@@ -12872,12 +12888,11 @@
           <year>1961</year>
           <person-group person-group-type="author">
             <name>
-              <given-names>R.</given-names>
               <surname>Bellman</surname>
+              <given-names>R.</given-names>
             </name>
           </person-group>
           <pub-id pub-id-type="doi">10.1145/366573.366611</pub-id>
-          <pub-id pub-id-type="publisher"/>
           <article-title>On the approximation of curves by line segments using dynamic programming</article-title>
           <source>Commun. ACM</source>
         </element-citation>
@@ -12891,16 +12906,15 @@
           <year>2001</year>
           <person-group person-group-type="author">
             <name>
-              <given-names>C. P.</given-names>
               <surname>Chau</surname>
+              <given-names>C. P.</given-names>
             </name>
             <name>
-              <given-names>W. C.</given-names>
               <surname>Siu</surname>
+              <given-names>W. C.</given-names>
             </name>
           </person-group>
           <pub-id pub-id-type="doi">10.1049/ip-vis:20010576</pub-id>
-          <pub-id pub-id-type="publisher"/>
           <article-title>New nonparametric dominant point detection algorithm</article-title>
           <source>IEE Proc.-Vis. Image Signal Process.</source>
         </element-citation>
@@ -12914,12 +12928,11 @@
           <year>2012</year>
           <person-group person-group-type="author">
             <name>
-              <given-names>A.</given-names>
               <surname>Kolesnikov</surname>
+              <given-names>A.</given-names>
             </name>
           </person-group>
           <pub-id pub-id-type="doi">10.1016/j.patrec.2012.02.015</pub-id>
-          <pub-id pub-id-type="publisher"/>
           <article-title>ISE-bounded polygonal approximation of digital curves</article-title>
           <source>Pattern Recogn. Lett.</source>
         </element-citation>
@@ -12933,16 +12946,15 @@
           <year>2003</year>
           <person-group person-group-type="author">
             <name>
-              <given-names>M.</given-names>
               <surname>Marji</surname>
+              <given-names>M.</given-names>
             </name>
             <name>
-              <given-names>P.</given-names>
               <surname>Siy</surname>
+              <given-names>P.</given-names>
             </name>
           </person-group>
           <pub-id pub-id-type="doi">10.1016/S0031-3203(03)00119-5</pub-id>
-          <pub-id pub-id-type="publisher"/>
           <article-title>A new algorithm for dominant points detection and polygonization of digital curves</article-title>
           <source>Pattern Recogn.</source>
         </element-citation>
@@ -12956,16 +12968,15 @@
           <year>2004</year>
           <person-group person-group-type="author">
             <name>
-              <given-names>M.</given-names>
               <surname>Marji</surname>
+              <given-names>M.</given-names>
             </name>
             <name>
-              <given-names>P.</given-names>
               <surname>Siy</surname>
+              <given-names>P.</given-names>
             </name>
           </person-group>
           <pub-id pub-id-type="doi">10.1016/j.patcog.2004.03.004</pub-id>
-          <pub-id pub-id-type="publisher"/>
           <article-title>Polygonal representation of digital planar curves through dominant point detection—A nonparametric algorithm</article-title>
           <source>Pattern Recognit.</source>
         </element-citation>
@@ -12979,12 +12990,11 @@
           <year>2008</year>
           <person-group person-group-type="author">
             <name>
-              <given-names>A.</given-names>
               <surname>Masood</surname>
+              <given-names>A.</given-names>
             </name>
           </person-group>
           <pub-id pub-id-type="doi">10.1016/j.patcog.2007.05.021</pub-id>
-          <pub-id pub-id-type="publisher"/>
           <article-title>Optimized polygonal approximation by dominant point deletion</article-title>
           <source>Pattern Recognit.</source>
         </element-citation>
@@ -12998,12 +13008,11 @@
           <year>1970</year>
           <person-group person-group-type="author">
             <name>
-              <given-names>U.</given-names>
               <surname>Montanari</surname>
+              <given-names>U.</given-names>
             </name>
           </person-group>
           <pub-id pub-id-type="doi">10.1145/361953.361967</pub-id>
-          <pub-id pub-id-type="publisher"/>
           <article-title>A note on minimal length polygonal approximation to a digitized contour</article-title>
           <source>Commun. ACM</source>
         </element-citation>
@@ -13017,16 +13026,15 @@
           <year>2011</year>
           <person-group person-group-type="author">
             <name>
-              <given-names>T. P.</given-names>
               <surname>Nguyen</surname>
+              <given-names>T. P.</given-names>
             </name>
             <name>
-              <given-names>I.</given-names>
               <surname>Debled-Rennesson</surname>
+              <given-names>I.</given-names>
             </name>
           </person-group>
           <pub-id pub-id-type="doi">10.1016/j.patcog.2010.06.022</pub-id>
-          <pub-id pub-id-type="publisher"/>
           <article-title>A discrete geometry approach for dominant point detection</article-title>
           <source>Pattern Recognit.</source>
         </element-citation>
@@ -13040,24 +13048,23 @@
           <year>2012</year>
           <person-group person-group-type="author">
             <name>
-              <given-names>D. K.</given-names>
               <surname>Prasad</surname>
+              <given-names>D. K.</given-names>
             </name>
             <name>
-              <given-names>M. K.</given-names>
               <surname>Leung</surname>
+              <given-names>M. K.</given-names>
             </name>
             <name>
-              <given-names>C.</given-names>
               <surname>Quek</surname>
+              <given-names>C.</given-names>
             </name>
             <name>
-              <given-names>S. Y.</given-names>
               <surname>Cho</surname>
+              <given-names>S. Y.</given-names>
             </name>
           </person-group>
           <pub-id pub-id-type="doi">10.1016/j.imavis.2012.06.010</pub-id>
-          <pub-id pub-id-type="publisher"/>
           <article-title>A novel framework for making dominant point detection methods non-parametric</article-title>
           <source>Image Vis. Comput.</source>
         </element-citation>
@@ -13071,12 +13078,11 @@
           <year>1961</year>
           <person-group person-group-type="author">
             <name>
-              <given-names>H.</given-names>
               <surname>Stone</surname>
+              <given-names>H.</given-names>
             </name>
           </person-group>
           <pub-id pub-id-type="doi">10.1090/S0025-5718-1961-0119390-6</pub-id>
-          <pub-id pub-id-type="publisher"/>
           <article-title>Approximation of curves by line segments</article-title>
           <source>Math. Comput.</source>
         </element-citation>
@@ -13090,16 +13096,15 @@
           <year>1989</year>
           <person-group person-group-type="author">
             <name>
-              <given-names>C. H.</given-names>
               <surname>Teh</surname>
+              <given-names>C. H.</given-names>
             </name>
             <name>
-              <given-names>R. T.</given-names>
               <surname>Chin</surname>
+              <given-names>R. T.</given-names>
             </name>
           </person-group>
           <pub-id pub-id-type="doi">10.1109/34.31447</pub-id>
-          <pub-id pub-id-type="publisher"/>
           <article-title>On the detection of dominant points on digital curves</article-title>
           <source>IEEE Trans. Pattern Anal. Mach. Intell.</source>
         </element-citation>
@@ -13113,12 +13118,11 @@
           <year>2003</year>
           <person-group person-group-type="author">
             <name>
-              <given-names>W. Y.</given-names>
               <surname>Wu</surname>
+              <given-names>W. Y.</given-names>
             </name>
           </person-group>
           <pub-id pub-id-type="doi">10.1016/S0031-3203(03)00087-6</pub-id>
-          <pub-id pub-id-type="publisher"/>
           <article-title>An adaptive method for detecting dominant points</article-title>
           <source>Pattern Recognit.</source>
         </element-citation>
@@ -13128,16 +13132,14 @@
         <element-citation publication-type="journal">
           <volume>34</volume>
           <page-range>1-10</page-range>
-          <issue/>
           <year>2015</year>
           <person-group person-group-type="author">
             <name>
-              <given-names>M. T.</given-names>
               <surname>Parvez</surname>
+              <given-names>M. T.</given-names>
             </name>
           </person-group>
           <pub-id pub-id-type="doi">10.1016/j.imavis.2014.10.012</pub-id>
-          <pub-id pub-id-type="publisher"/>
           <article-title>Optimized polygonal approximations through vertex relocations in contour neighborhoods</article-title>
           <source>Image Vis. Comput.</source>
         </element-citation>
@@ -13147,16 +13149,14 @@
         <element-citation publication-type="journal">
           <volume>129</volume>
           <page-range>101200</page-range>
-          <issue/>
           <year>2023</year>
           <person-group person-group-type="author">
             <name>
-              <given-names>M. T.</given-names>
               <surname>Parvez</surname>
+              <given-names>M. T.</given-names>
             </name>
           </person-group>
           <pub-id pub-id-type="doi">10.1016/j.gmod.2023.101200</pub-id>
-          <pub-id pub-id-type="publisher"/>
           <article-title>Fast progressive polygonal approximations for online strokes</article-title>
           <source>Graph. Models</source>
         </element-citation>
@@ -13170,12 +13170,11 @@
           <year>1997</year>
           <person-group person-group-type="author">
             <name>
-              <given-names>P. L.</given-names>
               <surname>Rosin</surname>
+              <given-names>P. L.</given-names>
             </name>
           </person-group>
           <pub-id pub-id-type="doi">10.1109/34.601253</pub-id>
-          <pub-id pub-id-type="publisher"/>
           <article-title>Techniques for assessing polygonal approximations of curves</article-title>
           <source>IEEE Trans. Pattern Anal. Mach. Intell.</source>
         </element-citation>
@@ -13183,9 +13182,7 @@
       <ref id="ref_21">
         <label>21.</label>
         <element-citation publication-type="conf-paper">
-          <volume/>
           <page-range>309-314</page-range>
-          <issue/>
           <year>1999</year>
           <person-group person-group-type="author">
             <name>
@@ -13197,7 +13194,6 @@
               <surname>Ma</surname>
             </name>
           </person-group>
-          <person-group person-group-type="editor"/>
           <pub-id pub-id-type="doi">10.1109/MMSP.1999.793854</pub-id>
           <article-title>A novel scheme for progressive polygon approximation of shape contours</article-title>
           <source>1999 IEEE Third Workshop on Multimedia Signal Processing (Cat. No. 99TH8451), Copenhagen, Denmark</source>
@@ -13212,16 +13208,15 @@
           <year>1994</year>
           <person-group person-group-type="author">
             <name>
-              <given-names>J. C.</given-names>
               <surname>Perez</surname>
+              <given-names>J. C.</given-names>
             </name>
             <name>
-              <given-names>E.</given-names>
               <surname>Vidal</surname>
+              <given-names>E.</given-names>
             </name>
           </person-group>
           <pub-id pub-id-type="doi">10.1016/0167-8655(94)90002-7</pub-id>
-          <pub-id pub-id-type="publisher"/>
           <article-title>Optimum polygonal approximation of digitized curves</article-title>
           <source>Pattern Recognit. Lett.</source>
         </element-citation>
@@ -13235,16 +13230,15 @@
           <year>1997</year>
           <person-group person-group-type="author">
             <name>
-              <given-names>Y.</given-names>
               <surname>Zhu</surname>
+              <given-names>Y.</given-names>
             </name>
             <name>
-              <given-names>L. D.</given-names>
               <surname>Seneviratne</surname>
+              <given-names>L. D.</given-names>
             </name>
           </person-group>
           <pub-id pub-id-type="doi">10.1049/ip-vis:19970985</pub-id>
-          <pub-id pub-id-type="publisher"/>
           <article-title>Optimal polygonal approximation of digitised curves</article-title>
           <source>IEE Proc. Vis. Image Signal Process.</source>
         </element-citation>
@@ -13258,24 +13252,23 @@
           <year>2005</year>
           <person-group person-group-type="author">
             <name>
-              <given-names>A.</given-names>
               <surname>Carmona-Poyato</surname>
+              <given-names>A.</given-names>
             </name>
             <name>
-              <given-names>N. L.</given-names>
               <surname>Fernández-García</surname>
+              <given-names>N. L.</given-names>
             </name>
             <name>
-              <given-names>R.</given-names>
               <surname>Medina-Carnicer</surname>
+              <given-names>R.</given-names>
             </name>
             <name>
-              <given-names>F. J.</given-names>
               <surname>Madrid-Cuevas</surname>
+              <given-names>F. J.</given-names>
             </name>
           </person-group>
           <pub-id pub-id-type="doi">10.1016/j.imavis.2005.07.025</pub-id>
-          <pub-id pub-id-type="publisher"/>
           <article-title>Dominant point detection: A new proposal</article-title>
           <source>Image Vis. Comput.</source>
         </element-citation>
@@ -13289,20 +13282,19 @@
           <year>2012</year>
           <person-group person-group-type="author">
             <name>
-              <given-names>M.</given-names>
               <surname>Awrangjeb</surname>
+              <given-names>M.</given-names>
             </name>
             <name>
-              <given-names>G.</given-names>
               <surname>Lu</surname>
+              <given-names>G.</given-names>
             </name>
             <name>
-              <given-names>C. S.</given-names>
               <surname>Fraser</surname>
+              <given-names>C. S.</given-names>
             </name>
           </person-group>
           <pub-id pub-id-type="doi">10.1109/TIP.2012.2200493</pub-id>
-          <pub-id pub-id-type="publisher"/>
           <article-title>Performance comparisons of contour-based corner detectors</article-title>
           <source>IEEE Trans. Image Process.</source>
         </element-citation>
@@ -13316,20 +13308,19 @@
           <year>2002</year>
           <person-group person-group-type="author">
             <name>
-              <given-names>S.</given-names>
               <surname>Belongie</surname>
+              <given-names>S.</given-names>
             </name>
             <name>
-              <given-names>J.</given-names>
               <surname>Malik</surname>
+              <given-names>J.</given-names>
             </name>
             <name>
-              <given-names>J.</given-names>
               <surname>Puzicha</surname>
+              <given-names>J.</given-names>
             </name>
           </person-group>
           <pub-id pub-id-type="doi">10.1109/34.993558</pub-id>
-          <pub-id pub-id-type="publisher"/>
           <article-title>Shape matching and object recognition using shape contexts</article-title>
           <source>IEEE Trans. Pattern Anal. Mach. Intell.</source>
         </element-citation>
@@ -13337,9 +13328,7 @@
       <ref id="ref_27">
         <label>27.</label>
         <element-citation publication-type="conf-paper">
-          <volume/>
           <page-range>1-4</page-range>
-          <issue/>
           <year>2020</year>
           <person-group person-group-type="author">
             <name>
@@ -13347,7 +13336,6 @@
               <surname>Parvez</surname>
             </name>
           </person-group>
-          <person-group person-group-type="editor"/>
           <pub-id pub-id-type="doi">10.1109/ICCIS49240.2020.9257603</pub-id>
           <article-title>Invariant shape descriptors for handwritten strokes</article-title>
           <source>2020 2nd International Conference on Computer and Information Sciences (ICCIS), Sakaka, Saudi Arabia</source>
@@ -13358,15 +13346,14 @@
         <element-citation publication-type="thesis">
           <person-group person-group-type="author">
             <name>
-              <given-names>M. T.</given-names>
               <surname>Parvez</surname>
+              <given-names>M. T.</given-names>
             </name>
           </person-group>
           <article-title>Arabic handwritten text recognition using structural and syntactic pattern attributes</article-title>
           <source>, undefined</source>
           <year>2010</year>
           <publisher-name>King Fahd University of Petroleum and Minerals</publisher-name>
-          <publisher-loc/>
         </element-citation>
       </ref>
       <ref id="ref_29">
@@ -13374,32 +13361,30 @@
         <element-citation publication-type="journal">
           <volume>138</volume>
           <page-range>109396</page-range>
-          <issue/>
           <year>2023</year>
           <person-group person-group-type="author">
             <name>
-              <given-names>N. L.</given-names>
               <surname>Fernandez-García</surname>
+              <given-names>N. L.</given-names>
             </name>
             <name>
-              <given-names>L. D. M.</given-names>
               <surname>Martinez</surname>
+              <given-names>L. D. M.</given-names>
             </name>
             <name>
-              <given-names>A.</given-names>
               <surname>Carmona-Poyato</surname>
+              <given-names>A.</given-names>
             </name>
             <name>
-              <given-names>F. J.</given-names>
               <surname>Madrid-Cuevas</surname>
+              <given-names>F. J.</given-names>
             </name>
             <name>
-              <given-names>R.</given-names>
               <surname>Medina-Carnicer</surname>
+              <given-names>R.</given-names>
             </name>
           </person-group>
           <pub-id pub-id-type="doi">10.1016/j.patcog.2023.109396</pub-id>
-          <pub-id pub-id-type="publisher"/>
           <article-title>Assessing polygonal approximations: A new measurement and a comparative study</article-title>
           <source>Pattern Recognit.</source>
         </element-citation>
@@ -13408,33 +13393,31 @@
         <label>30.</label>
         <element-citation publication-type="journal">
           <volume>12</volume>
-          <page-range/>
           <issue>1</issue>
           <year>2018</year>
           <person-group person-group-type="author">
             <name>
-              <given-names>S. A.</given-names>
               <surname>Mahmoud</surname>
+              <given-names>S. A.</given-names>
             </name>
             <name>
-              <given-names>H.</given-names>
               <surname>Luqman</surname>
+              <given-names>H.</given-names>
             </name>
             <name>
-              <given-names>B. M.</given-names>
               <surname>Al-Helali</surname>
+              <given-names>B. M.</given-names>
             </name>
             <name>
-              <given-names>G.</given-names>
               <surname>BinMakhashen</surname>
+              <given-names>G.</given-names>
             </name>
             <name>
-              <given-names>M. T.</given-names>
               <surname>Parvez</surname>
+              <given-names>M. T.</given-names>
             </name>
           </person-group>
           <pub-id pub-id-type="doi">10.2174/1874110X01812010042</pub-id>
-          <pub-id pub-id-type="publisher"/>
           <article-title>Online-khatt: An open-vocabulary database for Arabic online-text processing</article-title>
           <source>Open Cybern. Syst. J.</source>
         </element-citation>
