@@ -1,0 +1,3078 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.3 20210610//EN" "JATS-journalpublishing1-3.dtd">
+<article xml:lang="en" dtd-version="1.3" article-type="research-article" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mml="http://www.w3.org/1998/Math/MathML">
+  <front>
+    <journal-meta>
+      <journal-id journal-id-type="publisher-id">MITS</journal-id>
+      <journal-id journal-id-type="doi">10.56578</journal-id>
+      <journal-title-group>
+        <journal-title>Mechatronics and Intelligent Transportation Systems</journal-title>
+        <abbrev-journal-title abbrev-type="issn">Mechatron. Intell Transp. Syst.</abbrev-journal-title>
+        <abbrev-journal-title abbrev-type="publisher">MITS</abbrev-journal-title>
+      </journal-title-group>
+      <issn publication-format="electronic">2958-0218</issn>
+      <issn publication-format="print">2958-020X</issn>
+      <publisher>
+        <publisher-name>Acadlore</publisher-name>
+      </publisher>
+    </journal-meta>
+    <article-meta>
+      <article-id pub-id-type="publisher-id">AR-PVEyTup1xMSiEk1BqAqxid6g-APF5r4L</article-id>
+      <article-id pub-id-type="doi">10.56578/mits030105</article-id>
+      <article-categories>
+        <subj-group>
+          <subject>Articles</subject>
+        </subj-group>
+      </article-categories>
+      <title-group>
+        <article-title>Design and Implementation of a Digital Twin System for Monitoring Automated Container Terminal Equipment</article-title>
+      </title-group>
+      <contrib-group>
+        <contrib contrib-type="author">
+          <contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0009-0007-2631-8681</contrib-id>
+          <name>
+            <surname>Lu</surname>
+            <given-names>Houjun</given-names>
+          </name>
+          <email>hjlu@shmtu.edu.cn</email>
+          <xref ref-type="aff" rid="aff_1">1</xref>
+        </contrib>
+        <contrib contrib-type="author">
+          <name>
+            <surname>Zhang</surname>
+            <given-names>Bo</given-names>
+          </name>
+          <email>202230210335@stu.shmtu.edu.cn</email>
+          <xref ref-type="aff" rid="aff_1">1</xref>
+        </contrib>
+        <contrib contrib-type="author">
+          <name>
+            <surname>Hou</surname>
+            <given-names>Leike</given-names>
+          </name>
+          <email>202030210174@stu.shmtu.edu.cn</email>
+          <xref ref-type="aff" rid="aff_1">1</xref>
+        </contrib>
+        <aff id="aff_1">School of Logistics Engineering College, Shanghai Maritime University, 201306 Shanghai, China</aff>
+      </contrib-group>
+      <pub-date publication-format="electronic" date-type="pub">
+        <day>30</day>
+        <month>03</month>
+        <year>2024</year>
+      </pub-date>
+      <volume>3</volume>
+      <issue>1</issue>
+      <fpage>55</fpage>
+      <lpage>72</lpage>
+      <page-range>55-72</page-range>
+      <history>
+        <date date-type="received">
+          <day>05</day>
+          <month>01</month>
+          <year>2024</year>
+        </date>
+        <date date-type="accepted">
+          <day>09</day>
+          <month>03</month>
+          <year>2024</year>
+        </date>
+      </history>
+      <permissions>
+        <copyright-statement>©2024 by the author(s)</copyright-statement>
+        <copyright-year>2024</copyright-year>
+        <license license-type="open-access" xlink:href="https://creativecommons.org/licenses/by/4.0/">
+          <license-p> Published by Acadlore Publishing Services Limited, Hong Kong. This article is available for free download and can be reused and cited, provided that the original published version is credited, under the CC BY 4.0 license.</license-p>
+        </license>
+      </permissions>
+      <abstract><p>To address the lack of multi-perspective, real-time monitoring and management of operations and equipment in automated container terminals, a digital twin system targeted at monitoring automated container terminal equipment has been designed and developed. Based on the concept of a five-dimensional model of digital twins, a digital twin framework for monitoring automated container terminal equipment was constructed. The system's maintainability is enhanced through a layered design, which also reduces coupling between different functional modules. A multi-dimensional, multi-scale virtual scene was built and model consistency evaluations were conducted to verify the system. The system's operational efficiency was improved by optimizing model rendering with discrete level of detail (LOD) techniques. A multi-layered distributed solution for the digital twin system was proposed to achieve multi-perspective monitoring. Ultimately, using a specific automated container terminal as a case study, a system prototype was developed, realizing multi-perspective digital monitoring of terminal operations and equipment. This project offers a solution for the application of digital twin technology in the field of automated container terminals and promotes the development of intelligent digital terminals.</p></abstract>
+      <kwd-group>
+        <kwd>Automated container terminal</kwd>
+        <kwd>Equipment monitoring</kwd>
+        <kwd>Digital twin</kwd>
+        <kwd>Data-driven</kwd>
+        <kwd>Distributed</kwd>
+      </kwd-group>
+      <counts>
+        <count count-type="contributors" count="3"/>
+        <fig-count count="19"/>
+        <table-count count="6"/>
+        <ref-count count="33"/>
+      </counts>
+    </article-meta>
+  </front>
+  <body>
+    <sec sec-type="intro">
+      <title>1. Introduction</title>
+      <p>In recent years, with the accelerated development of global trade, domestic and foreign ports have successively started to build automated container terminals to improve port operational efficiency and increase throughput [<xref ref-type="bibr" rid="ref_1">1</xref>], [<xref ref-type="bibr" rid="ref_2">2</xref>], [<xref ref-type="bibr" rid="ref_3">3</xref>]. Unlike traditional terminals, the operation equipment of automated container terminals, such as quay cranes and yard cranes, generally adopts an “automatic operation + remote control” automation mode, where equipment control and monitoring are centralized in the terminal control center [<xref ref-type="bibr" rid="ref_4">4</xref>]. Since the loading and unloading operations at automated container terminals are controlled remotely by management personnel, it is impossible to enter the operation site in a timely manner to inspect unmanned operation areas and handle exceptions [<xref ref-type="bibr" rid="ref_1">1</xref>], making real-time monitoring of frontline operation equipment especially important. In this context, Bozzo et al. [<xref ref-type="bibr" rid="ref_5">5</xref>] designed a new system called MOCONT (Monitoring the Yard in Container Terminals), which integrates a positioning module, a visual recognition module, and a synchronization and communication module to automatically track the entire container loading and unloading process. Lee et al. [<xref ref-type="bibr" rid="ref_6">6</xref>] used machine vision technology and radio frequency identification technology to provide crane operators with an enhanced workspace view, significantly improving crane operation efficiency. Yang et al. [<xref ref-type="bibr" rid="ref_7">7</xref>] proposed a multi-sensor intelligent monitoring system, composed of multiple sensor clusters, signal transmission, and data acquisition systems, using Wi-Fi or Zigbee wireless transmission technology to obtain structural parameters of key parts of equipment, and using a central computer to manage and analyze these parameters for real-time monitoring of crane working conditions. Kim [<xref ref-type="bibr" rid="ref_8">8</xref>] proposed a TCP/IP-based remote monitoring system for remote monitoring of port container terminal yard cranes. Awad et al. [<xref ref-type="bibr" rid="ref_9">9</xref>] explored different applications of intelligent sensor networks in mobile port cranes, using an IoT-PLC control system to monitor and control mobile port cranes in the cloud. Li and Liu [<xref ref-type="bibr" rid="ref_10">10</xref>] developed a data-driven remote monitoring and alarm system for tower cranes to replace camera monitoring systems, using the Module-Position-Attitude-Scale (MPAS) method to describe the parts of tower cranes, and through parameterization and modularization, made the construction of virtual cranes simpler.</p><p>Digital twin is an emerging technology for digital transformation and intelligent upgrading [<xref ref-type="bibr" rid="ref_11">11</xref>], making the interaction between virtual and physical spaces possible. In 2003, Professor Michael Grieves first introduced the concept of digital twins in his Product Lifecycle Management course at the University of Michigan [<xref ref-type="bibr" rid="ref_12">12</xref>], and later in the first digital twin white paper, Professor Grieves proposed that the three-dimensional model of digital twins consists of a physical product in real space, a virtual product in virtual space, and data and information links that connect virtual and physical products [<xref ref-type="bibr" rid="ref_13">13</xref>]. Driven by data and models, digital twins can perform monitoring, simulation, prediction, optimization, and other functions [<xref ref-type="bibr" rid="ref_11">11</xref>]. As a highly intelligent product of the manufacturing and shipping industries, automated container terminals are an excellent stage for exploring digital twin technology [<xref ref-type="bibr" rid="ref_4">4</xref>]. How to apply digital twin technology to automated container terminals to effectively monitor and manage terminal operation equipment has attracted many scholars for in-depth research. Martínez-Gutiérrez et al. [<xref ref-type="bibr" rid="ref_14">14</xref>] proposed a new digital twin design concept based on external services to monitor the accuracy of the total time for automated guided vehicle (AGV) tasks in automated container terminals. Hofmann and Branding [<xref ref-type="bibr" rid="ref_15">15</xref>] proposed an IoT and cloud-based digital twin for intelligent monitoring and real-time decision support in port operations. Yang et al. [<xref ref-type="bibr" rid="ref_16">16</xref>], based on the analysis of the characteristics of large-scale comprehensive port operations, proposed a framework for a digital twin application system, elaborating on the overall design process and functions of the digital twin system, with three-dimensional visual monitoring and real-time perception data-based optimization scheduling as core functions, achieving intelligent port operations. Szpytko and Duarte [<xref ref-type="bibr" rid="ref_17">17</xref>] proposed a method for building and online monitoring of a digital twin model for container terminal cranes from the perspective of enhancing the effectiveness of maintenance decision conceptual models. Agostinelli et al. [<xref ref-type="bibr" rid="ref_18">18</xref>], focusing on the Port of Anzio in Italy, analyzed the control of a port renewable energy system using open-source tools and digital twin models, developed energy-saving programs and port equipment monitoring strategies, and integrated renewable energy production systems to achieve sustainability. Zhou et al. [<xref ref-type="bibr" rid="ref_19">19</xref>] proposed a digital twin-based framework for monitoring the operation of port cranes, combining multi-sensor data collection methods, Open Platform Communications Unified Architecture (OPC UA) information models, and other methods to achieve fusion of multi-source heterogeneous virtual and physical data, and using this method, constructed a physical platform for monitoring track-based gantry cranes based on digital twins.</p><p>However, in current implementation cases, systems generally do not have distributed functionality, and can only be displayed and operated on one computer at a time, limiting the system's convenience and scalability. When the dock production site needs to establish monitoring screens from multiple angles simultaneously, the system cannot perform its intended function. Therefore, this paper, based on the theory of the five-dimensional architecture of digital twins, designed a five-dimensional architecture of a digital twin system for monitoring automated container terminal operation equipment, and analyzed the composition and specific functions and technologies of the five-dimensional architecture. The construction and optimization methods of the digital twin virtual scene for automated container terminals were discussed, and the distributed implementation process of the system was detailed. Finally, using a certain automated container terminal as a prototype, a digital twin system for monitoring automated container terminal operation equipment was designed and developed, and its feasibility was verified through testing.</p>
+    </sec>
+    <sec sec-type="">
+      <title>2. Architecture of the digital twin system for monitoring equipment at automated container terminals</title>
+      <p>To achieve efficient monitoring of equipment at automated container terminals, a five-dimensional architecture of the digital twin system for monitoring automated container terminal operation equipment was constructed based on the concept of the five-dimensional model proposed by Tao et al. [<xref ref-type="bibr" rid="ref_20">20</xref>]. This architecture, shown in <xref ref-type="fig" rid="fig_1">Figure 1</xref>, is composed of physical space, the transmission layer, the data layer, the model layer, and the service layer. Through layered design, not only is the system's maintainability enhanced, but the encapsulation of specific functions within each level also significantly improves the decoupling between functional modules [<xref ref-type="bibr" rid="ref_21">21</xref>]. Therefore, when modifying one layer independently, the impact on other layers is effectively reduced, thereby enhancing the system's flexibility and scalability [<xref ref-type="bibr" rid="ref_22">22</xref>].</p><p>(1) Physical space: The physical space is the foundation of the entire digital twin system architecture, encompassing various dynamic equipment at automated container terminals that need monitoring, such as quay cranes, yard cranes, and AGVs. It also includes sensory devices and control devices that collect equipment data, providing real-time data for the system, enabling positioning, tracking, and status monitoring of the physical equipment at automated container terminals.</p><p>(2) Transmission layer: The transmission layer serves as the bridge between physical and virtual spaces, connecting the information space with the physical space through the OPC UA communication protocol. A data transmission network is established, using Wi-Fi, wireless routers, and other network communication equipment to transmit the large amount of data generated during the operation of automated container terminals, ensuring the data's timeliness and high fidelity.</p><p>(3) Data layer: The data layer is the driving force of the entire system, primarily storing and managing the various types of data information collected from the physical space. It also communicates in real-time with the virtual three-dimensional scene of the container terminal, driving the movement of the corresponding twin models, thus achieving virtual three-dimensional visualization monitoring of terminal operation equipment.</p><p>(4) Model layer: The model layer represents the virtual entity of automated container terminals, characterized by precision, standardization, lightweight, and visualization. Through virtual models, it provides an accurate mapping of automated container terminals. This layer serves as the three-dimensional visualization expression channel for the data collected by the data layer, acting as the main receptor of data and a significant component of the front end of the automated container terminal digital twin system.</p><p>(5) Service layer: The service layer is the system's external service interface, establishing service modules within the automated container terminal's virtual three-dimensional scene to fulfill the "monitoring" and "control" functions of the equipment monitoring digital twin system. Utilizing digital twin system data, it provides user management services, status monitoring services, scene roaming services, and anomaly alert services, among other functional modules.</p>
+      
+        <fig id="fig_1">
+          <label>Figure 1</label>
+          <caption>
+            <title>Overall architecture of the digital twin system for monitoring equipment at automated container terminals</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2024/3/img_0XTQWW6TrZQqBfPh.png"/>
+        </fig>
+      
+    </sec>
+    <sec sec-type="">
+      <title>3. Construction of virtual scenes for automated container terminals</title>
+      
+        <sec>
+          
+            <title>3.1. Multidimensional and multiscale analysis of digital twin models</title>
+          
+          <p>Digital twin theory requires that virtual space scene models comprehensively reflect production reality, possessing multidimensional and multiscale characteristics, as shown in <xref ref-type="fig" rid="fig_2">Figure 2</xref>. Different colors represent different model types, <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msub>
+      <mi>P</mi>
+      <mrow data-mjx-texclass="ORD">
+        <mi>i</mi>
+        <mi>j</mi>
+      </mrow>
+    </msub>
+  </math>
+</inline-formula> represents the $j<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo>−</mo>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>c</mi>
+    <mi>o</mi>
+    <mi>m</mi>
+    <mi>p</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>t</mi>
+    <mi>o</mi>
+    <mi>f</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+  </math>
+</inline-formula>i<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo>−</mo>
+    <mo>,</mo>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>m</mi>
+    <mi>o</mi>
+    <mi>d</mi>
+    <mi>e</mi>
+    <mi>l</mi>
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>d</mi>
+  </math>
+</inline-formula>x<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo>,</mo>
+  </math>
+</inline-formula>y<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo>,</mo>
+  </math>
+</inline-formula>z$ represent the spatial position attributes of each model type. From a multidimensional and multiscale perspective, the construction of the digital twin system scene model for monitoring equipment at automated container terminals is carried out.</p>
+          
+            <fig id="fig_2">
+              <label>Figure 2</label>
+              <caption>
+                <title>Multidimensionality and multiscale of the digital twin model</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2024/3/img_Qf01lKfbxpY9WOU-.png"/>
+            </fig>
+          
+          <p>Multidimensionality Analysis: For the geometric dimension, virtual models are constructed based on the geometric parameters and features of physical entities [<xref ref-type="bibr" rid="ref_8">8</xref>]. Building on these geometric features, the models are further enhanced by adding physical attributes derived from the physical properties of the entities, allowing for physical dimension modeling of the models. Based on the interrelationships among various components of dock equipment, the behavioral relationships and triggering effects between different parts of the models are designed, leading to the development of a behavioral dimension model.</p><p>Multiscale Analysis: The constructed multidimensional models (unit-level models), which include geometry, physics, and behavior, are systematically integrated and assembled [<xref ref-type="bibr" rid="ref_23">23</xref>], and constraints or spatial relationships between unit-level devices are added. Through integration and assembly, the models acquire a systematic nature, forming a comprehensive description of various equipment and environments within the automated container terminal virtual scene, which constitutes the multiscale integration of the model system.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.2. Construction of virtual scenes</title>
+          
+          <p>The construction process of the virtual scene at automated container terminals is shown in <xref ref-type="fig" rid="fig_3">Figure 3</xref>. Geometric modeling forms the basis of the virtual scene construction, and after static scene modeling, the features are identified through the digital twin's theory of virtual-real consistency verification to ensure the model possesses digital twin characteristics. Dynamic equipment, as the main monitoring objects of the digital twin system, require the addition of physical properties on top of geometric modeling to simulate their real behavior. The realism of the scene is enhanced by incorporating auxiliary elements such as water surfaces and greenery. Model optimization aims to improve rendering efficiency and conserve system resources, and finally, the multiscale nature of the digital twin model is used for model integration and assembly, forming a three-dimensional visualization interface.</p>
+          
+            <fig id="fig_3">
+              <label>Figure 3</label>
+              <caption>
+                <title>Construction process of virtual scenes</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2024/3/img_bQa19F01WOoyj7Rl.png"/>
+            </fig>
+          
+          <p>To effectively manage the geometric models of virtual scenes, based on the concept of a scene tree management [<xref ref-type="bibr" rid="ref_24">24</xref>], a root-stem-leaf three-tier structure is used to organize the resource model of automated container terminals, as shown in <xref ref-type="fig" rid="fig_4">Figure 4</xref>. The main body of the terminal serves as the root level, with static scene models, dynamic equipment models, and auxiliary scene models forming the stem level, and the equipment or sub-scenes that constitute each stem level acting as the leaf level. This structure allows for accurate mapping of the physical space of the terminal in geometric dimensions, covering equipment, environment, and facilities involved in automated container terminal operations.</p>
+          
+            <fig id="fig_4">
+              <label>Figure 4</label>
+              <caption>
+                <title>Scene tree management of virtual space models</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2024/3/img_Idnh2IQ1kJ7qpDcV.png"/>
+            </fig>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.3. Model virtual-real consistency evaluation</title>
+          
+          <p>Due to the large scale and complex layout of automated container terminal scenes, the degree of similarity between the virtual space and physical space of the terminal determines whether the digital twin system can accurately reflect the actual production state of the terminal and achieve precise monitoring. Therefore, a virtual-real consistency verification is conducted for the multi-dimensional, multi-scale digital twin model of the terminal [<xref ref-type="bibr" rid="ref_25">25</xref>]. Based on the explicit feature virtual-real consistency verification method proposed by Qian et al. [<xref ref-type="bibr" rid="ref_26">26</xref>], this study focuses on the layout characteristics of the automated container terminal model, conducting a consistency assessment by comparing the positional errors of different functional areas in virtual and actual spaces.</p><p>Position data of the monitored areas are taken, for instance, the AGV lanes, berths, and container areas of the double trolley quay crane unloading zones in the physical space of the terminal are taken as verification objects. First, the absolute zero points in virtual and physical spaces are selected respectively, ensuring their alignment. <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msub>
+      <mi>B</mi>
+      <mi>i</mi>
+    </msub>
+    <mrow data-mjx-texclass="INNER">
+      <mo data-mjx-texclass="OPEN">(</mo>
+      <mo>,</mo>
+      <mo data-mjx-texclass="CLOSE">)</mo>
+      <msub>
+        <mi>x</mi>
+        <mi>i</mi>
+      </msub>
+      <msub>
+        <mi>y</mi>
+        <mi>i</mi>
+      </msub>
+    </mrow>
+  </math>
+</inline-formula>, <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msub>
+      <mi>L</mi>
+      <mi>j</mi>
+    </msub>
+    <mrow data-mjx-texclass="INNER">
+      <mo data-mjx-texclass="OPEN">(</mo>
+      <mo>,</mo>
+      <mo data-mjx-texclass="CLOSE">)</mo>
+      <msub>
+        <mi>x</mi>
+        <mi>j</mi>
+      </msub>
+      <msub>
+        <mi>y</mi>
+        <mi>j</mi>
+      </msub>
+    </mrow>
+  </math>
+</inline-formula>, and <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msub>
+      <mi>C</mi>
+      <mi>k</mi>
+    </msub>
+    <mrow data-mjx-texclass="INNER">
+      <mo data-mjx-texclass="OPEN">(</mo>
+      <mo>,</mo>
+      <mo data-mjx-texclass="CLOSE">)</mo>
+      <msub>
+        <mi>x</mi>
+        <mi>k</mi>
+      </msub>
+      <msub>
+        <mi>y</mi>
+        <mi>k</mi>
+      </msub>
+    </mrow>
+  </math>
+</inline-formula> represent the coordinates of the physical space for the $i<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo>−</mo>
+    <mo>,</mo>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>d</mi>
+    <mi>o</mi>
+    <mi>u</mi>
+    <mi>b</mi>
+    <mi>l</mi>
+    <mi>e</mi>
+    <mi>t</mi>
+    <mi>r</mi>
+    <mi>o</mi>
+    <mi>l</mi>
+    <mi>l</mi>
+    <mi>e</mi>
+    <mi>y</mi>
+    <mi>q</mi>
+    <mi>u</mi>
+    <mi>a</mi>
+    <mi>y</mi>
+    <mi>c</mi>
+    <mi>r</mi>
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>e</mi>
+    <mi>u</mi>
+    <mi>n</mi>
+    <mi>l</mi>
+    <mi>o</mi>
+    <mi>a</mi>
+    <mi>d</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>g</mi>
+    <mi>z</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>e</mi>
+    <mi>A</mi>
+    <mi>G</mi>
+    <mi>V</mi>
+    <mi>l</mi>
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>e</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+  </math>
+</inline-formula>j<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo>−</mo>
+    <mo>,</mo>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>b</mi>
+    <mi>e</mi>
+    <mi>r</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>d</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+  </math>
+</inline-formula>k<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo>−</mo>
+    <mo>,</mo>
+    <mo>.</mo>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>c</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>t</mi>
+    <mi>a</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>e</mi>
+    <mi>r</mi>
+    <mi>a</mi>
+    <mi>r</mi>
+    <mi>e</mi>
+    <mi>a</mi>
+    <mi>r</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>p</mi>
+    <mi>e</mi>
+    <mi>c</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>v</mi>
+    <mi>e</mi>
+    <mi>l</mi>
+    <mi>y</mi>
+  </math>
+</inline-formula>B L_{i j}<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>r</mi>
+    <mi>e</mi>
+    <mi>p</mi>
+    <mi>r</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>t</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>d</mi>
+    <mi>i</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>c</mi>
+    <mi>e</mi>
+    <mi>b</mi>
+    <mi>e</mi>
+    <mi>t</mi>
+    <mi>w</mi>
+    <mi>e</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+  </math>
+</inline-formula>i<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo>−</mo>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>d</mi>
+    <mi>o</mi>
+    <mi>u</mi>
+    <mi>b</mi>
+    <mi>l</mi>
+    <mi>e</mi>
+    <mi>t</mi>
+    <mi>r</mi>
+    <mi>o</mi>
+    <mi>l</mi>
+    <mi>l</mi>
+    <mi>e</mi>
+    <mi>y</mi>
+    <mi>q</mi>
+    <mi>u</mi>
+    <mi>a</mi>
+    <mi>y</mi>
+    <mi>c</mi>
+    <mi>r</mi>
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>e</mi>
+    <mi>u</mi>
+    <mi>n</mi>
+    <mi>l</mi>
+    <mi>o</mi>
+    <mi>a</mi>
+    <mi>d</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>g</mi>
+    <mi>z</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>e</mi>
+  </math>
+</inline-formula>\mathrm{AGV}<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>l</mi>
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>e</mi>
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>d</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+  </math>
+</inline-formula>j<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo>−</mo>
+    <mo>,</mo>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>b</mi>
+    <mi>e</mi>
+    <mi>r</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>p</mi>
+    <mi>h</mi>
+    <mi>y</mi>
+    <mi>s</mi>
+    <mi>i</mi>
+    <mi>c</mi>
+    <mi>a</mi>
+    <mi>l</mi>
+    <mi>s</mi>
+    <mi>p</mi>
+    <mi>a</mi>
+    <mi>c</mi>
+    <mi>e</mi>
+    <mi>w</mi>
+    <mi>h</mi>
+    <mi>i</mi>
+    <mi>l</mi>
+    <mi>e</mi>
+  </math>
+</inline-formula>B C_{i k}<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>r</mi>
+    <mi>e</mi>
+    <mi>p</mi>
+    <mi>r</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>t</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>d</mi>
+    <mi>i</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>c</mi>
+    <mi>e</mi>
+    <mi>b</mi>
+    <mi>e</mi>
+    <mi>t</mi>
+    <mi>w</mi>
+    <mi>e</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+  </math>
+</inline-formula>i<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo>−</mo>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>d</mi>
+    <mi>o</mi>
+    <mi>u</mi>
+    <mi>b</mi>
+    <mi>l</mi>
+    <mi>e</mi>
+    <mi>t</mi>
+    <mi>r</mi>
+    <mi>o</mi>
+    <mi>l</mi>
+    <mi>l</mi>
+    <mi>e</mi>
+    <mi>y</mi>
+    <mi>q</mi>
+    <mi>u</mi>
+    <mi>a</mi>
+    <mi>y</mi>
+    <mi>c</mi>
+    <mi>r</mi>
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>e</mi>
+    <mi>u</mi>
+    <mi>n</mi>
+    <mi>l</mi>
+    <mi>o</mi>
+    <mi>a</mi>
+    <mi>d</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>g</mi>
+    <mi>z</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>e</mi>
+    <mi>A</mi>
+    <mi>G</mi>
+    <mi>V</mi>
+    <mi>l</mi>
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>e</mi>
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>d</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+  </math>
+</inline-formula>k$ th container area in physical space. The calculations are as follows:</p>
+          
+            <disp-formula>
+              <label>(1)</label>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <mi>B</mi>
+                <mi>i</mi>
+                <mi>j</mi>
+                <mi>i</mi>
+                <mi>j</mi>
+                <mi>Z</mi>
+                <msub>
+                  <mi>L</mi>
+                  <mrow data-mjx-texclass="ORD">
+                    <mi>i</mi>
+                    <mi>j</mi>
+                  </mrow>
+                </msub>
+                <mo>=</mo>
+                <mo>∈</mo>
+                <mo>,</mo>
+                <mo>∈</mo>
+                <mo>,</mo>
+                <mo>∈</mo>
+                <msqrt>
+                  <msup>
+                    <mrow data-mjx-texclass="INNER">
+                      <mo data-mjx-texclass="OPEN">(</mo>
+                      <mo>−</mo>
+                      <mo data-mjx-texclass="CLOSE">)</mo>
+                      <msub>
+                        <mi>x</mi>
+                        <mi>i</mi>
+                      </msub>
+                      <msub>
+                        <mi>x</mi>
+                        <mi>j</mi>
+                      </msub>
+                    </mrow>
+                    <mn>2</mn>
+                  </msup>
+                  <msup>
+                    <mrow data-mjx-texclass="INNER">
+                      <mo data-mjx-texclass="OPEN">(</mo>
+                      <mo>−</mo>
+                      <mo data-mjx-texclass="CLOSE">)</mo>
+                      <msub>
+                        <mi>y</mi>
+                        <mi>i</mi>
+                      </msub>
+                      <msub>
+                        <mi>y</mi>
+                        <mi>j</mi>
+                      </msub>
+                    </mrow>
+                    <mn>2</mn>
+                  </msup>
+                  <mo>+</mo>
+                </msqrt>
+                <mstyle scriptlevel="0">
+                  <mspace width="1em"/>
+                </mstyle>
+                <mstyle scriptlevel="0">
+                  <mspace width="1em"/>
+                </mstyle>
+                <mrow data-mjx-texclass="INNER">
+                  <mo data-mjx-texclass="OPEN">[</mo>
+                  <mo>,</mo>
+                  <mo data-mjx-texclass="CLOSE">]</mo>
+                  <mn>1</mn>
+                  <msup>
+                    <mi>i</mi>
+                    <mo>∗</mo>
+                  </msup>
+                </mrow>
+                <mrow data-mjx-texclass="INNER">
+                  <mo data-mjx-texclass="OPEN">[</mo>
+                  <mo>,</mo>
+                  <mo data-mjx-texclass="CLOSE">]</mo>
+                  <mn>1</mn>
+                  <msup>
+                    <mi>j</mi>
+                    <mo>∗</mo>
+                  </msup>
+                </mrow>
+              </math>
+            </disp-formula>
+          
+          
+            <disp-formula>
+              <label>(2)</label>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <mi>B</mi>
+                <mi>i</mi>
+                <mi>k</mi>
+                <mi>i</mi>
+                <mi>k</mi>
+                <mi>Z</mi>
+                <msub>
+                  <mi>C</mi>
+                  <mrow data-mjx-texclass="ORD">
+                    <mi>i</mi>
+                    <mi>k</mi>
+                  </mrow>
+                </msub>
+                <mo>=</mo>
+                <mo>∈</mo>
+                <mo>,</mo>
+                <mo>∈</mo>
+                <mo>,</mo>
+                <mo>∈</mo>
+                <msqrt>
+                  <msup>
+                    <mrow data-mjx-texclass="INNER">
+                      <mo data-mjx-texclass="OPEN">(</mo>
+                      <mo>−</mo>
+                      <mo data-mjx-texclass="CLOSE">)</mo>
+                      <msub>
+                        <mi>x</mi>
+                        <mi>i</mi>
+                      </msub>
+                      <msub>
+                        <mi>x</mi>
+                        <mi>k</mi>
+                      </msub>
+                    </mrow>
+                    <mn>2</mn>
+                  </msup>
+                  <msup>
+                    <mrow data-mjx-texclass="INNER">
+                      <mo data-mjx-texclass="OPEN">(</mo>
+                      <mo>−</mo>
+                      <mo data-mjx-texclass="CLOSE">)</mo>
+                      <msub>
+                        <mi>y</mi>
+                        <mi>i</mi>
+                      </msub>
+                      <msub>
+                        <mi>y</mi>
+                        <mi>k</mi>
+                      </msub>
+                    </mrow>
+                    <mn>2</mn>
+                  </msup>
+                  <mo>+</mo>
+                </msqrt>
+                <mstyle scriptlevel="0">
+                  <mspace width="1em"/>
+                </mstyle>
+                <mstyle scriptlevel="0">
+                  <mspace width="1em"/>
+                </mstyle>
+                <mrow data-mjx-texclass="INNER">
+                  <mo data-mjx-texclass="OPEN">[</mo>
+                  <mo>,</mo>
+                  <mo data-mjx-texclass="CLOSE">]</mo>
+                  <mn>1</mn>
+                  <msup>
+                    <mi>i</mi>
+                    <mo>∗</mo>
+                  </msup>
+                </mrow>
+                <mrow data-mjx-texclass="INNER">
+                  <mo data-mjx-texclass="OPEN">[</mo>
+                  <mo>,</mo>
+                  <mo data-mjx-texclass="CLOSE">]</mo>
+                  <mn>1</mn>
+                  <msup>
+                    <mi>k</mi>
+                    <mo>∗</mo>
+                  </msup>
+                </mrow>
+              </math>
+            </disp-formula>
+          
+          <p><inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>V</mi>
+    <mi>B</mi>
+    <msub>
+      <mi>L</mi>
+      <mrow data-mjx-texclass="ORD">
+        <mi>i</mi>
+        <mi>j</mi>
+      </mrow>
+    </msub>
+  </math>
+</inline-formula> represents the distance between the $i<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo>−</mo>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>d</mi>
+    <mi>o</mi>
+    <mi>u</mi>
+    <mi>b</mi>
+    <mi>l</mi>
+    <mi>e</mi>
+    <mi>t</mi>
+    <mi>r</mi>
+    <mi>o</mi>
+    <mi>l</mi>
+    <mi>l</mi>
+    <mi>e</mi>
+    <mi>y</mi>
+    <mi>q</mi>
+    <mi>u</mi>
+    <mi>a</mi>
+    <mi>y</mi>
+    <mi>c</mi>
+    <mi>r</mi>
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>e</mi>
+    <mi>u</mi>
+    <mi>n</mi>
+    <mi>l</mi>
+    <mi>o</mi>
+    <mi>a</mi>
+    <mi>d</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>g</mi>
+    <mi>z</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>e</mi>
+  </math>
+</inline-formula>\mathrm{AGV}<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>l</mi>
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>e</mi>
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>d</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+  </math>
+</inline-formula>j<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo>−</mo>
+    <mo>,</mo>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>b</mi>
+    <mi>e</mi>
+    <mi>r</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>v</mi>
+    <mi>i</mi>
+    <mi>r</mi>
+    <mi>t</mi>
+    <mi>u</mi>
+    <mi>a</mi>
+    <mi>l</mi>
+    <mi>s</mi>
+    <mi>c</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>e</mi>
+    <mi>w</mi>
+    <mi>h</mi>
+    <mi>i</mi>
+    <mi>l</mi>
+    <mi>e</mi>
+  </math>
+</inline-formula>V B C_{i k}<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>r</mi>
+    <mi>e</mi>
+    <mi>p</mi>
+    <mi>r</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>t</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>d</mi>
+    <mi>i</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>c</mi>
+    <mi>e</mi>
+    <mi>b</mi>
+    <mi>e</mi>
+    <mi>t</mi>
+    <mi>w</mi>
+    <mi>e</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+  </math>
+</inline-formula>i<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo>−</mo>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>d</mi>
+    <mi>o</mi>
+    <mi>u</mi>
+    <mi>b</mi>
+    <mi>l</mi>
+    <mi>e</mi>
+    <mi>t</mi>
+    <mi>r</mi>
+    <mi>o</mi>
+    <mi>l</mi>
+    <mi>l</mi>
+    <mi>e</mi>
+    <mi>y</mi>
+    <mi>q</mi>
+    <mi>u</mi>
+    <mi>a</mi>
+    <mi>y</mi>
+    <mi>c</mi>
+    <mi>r</mi>
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>e</mi>
+    <mi>u</mi>
+    <mi>n</mi>
+    <mi>l</mi>
+    <mi>o</mi>
+    <mi>a</mi>
+    <mi>d</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>g</mi>
+    <mi>z</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>e</mi>
+    <mi>A</mi>
+    <mi>G</mi>
+    <mi>V</mi>
+    <mi>l</mi>
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>e</mi>
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>d</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+  </math>
+</inline-formula>k<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo>−</mo>
+    <mo>.</mo>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>c</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>t</mi>
+    <mi>a</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>e</mi>
+    <mi>r</mi>
+    <mi>a</mi>
+    <mi>r</mi>
+    <mi>e</mi>
+    <mi>a</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>v</mi>
+    <mi>i</mi>
+    <mi>r</mi>
+    <mi>t</mi>
+    <mi>u</mi>
+    <mi>a</mi>
+    <mi>l</mi>
+    <mi>s</mi>
+    <mi>c</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>e</mi>
+  </math>
+</inline-formula>E R_{i j}<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>i</mi>
+    <mi>s</mi>
+    <mi>u</mi>
+    <mi>s</mi>
+    <mi>e</mi>
+    <mi>d</mi>
+    <mi>t</mi>
+    <mi>o</mi>
+    <mi>d</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>o</mi>
+    <mi>t</mi>
+    <mi>e</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>p</mi>
+    <mi>o</mi>
+    <mi>s</mi>
+    <mi>i</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>a</mi>
+    <mi>l</mi>
+    <mi>e</mi>
+    <mi>r</mi>
+    <mi>r</mi>
+    <mi>o</mi>
+    <mi>r</mi>
+    <mi>o</mi>
+    <mi>f</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>d</mi>
+    <mi>i</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>c</mi>
+    <mi>e</mi>
+    <mi>b</mi>
+    <mi>e</mi>
+    <mi>t</mi>
+    <mi>w</mi>
+    <mi>e</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>d</mi>
+    <mi>o</mi>
+    <mi>u</mi>
+    <mi>b</mi>
+    <mi>l</mi>
+    <mi>e</mi>
+    <mi>t</mi>
+    <mi>r</mi>
+    <mi>o</mi>
+    <mi>l</mi>
+    <mi>l</mi>
+    <mi>e</mi>
+    <mi>y</mi>
+    <mi>q</mi>
+    <mi>u</mi>
+    <mi>a</mi>
+    <mi>y</mi>
+    <mi>c</mi>
+    <mi>r</mi>
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>e</mi>
+    <mi>u</mi>
+    <mi>n</mi>
+    <mi>l</mi>
+    <mi>o</mi>
+    <mi>a</mi>
+    <mi>d</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>g</mi>
+    <mi>z</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>e</mi>
+    <mi>A</mi>
+    <mi>G</mi>
+    <mi>V</mi>
+    <mi>l</mi>
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>e</mi>
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>d</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>b</mi>
+    <mi>e</mi>
+    <mi>r</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>b</mi>
+    <mi>o</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>d</mi>
+    <mi>i</mi>
+    <mi>g</mi>
+    <mi>i</mi>
+    <mi>t</mi>
+    <mi>a</mi>
+    <mi>l</mi>
+    <mi>t</mi>
+    <mi>w</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>v</mi>
+    <mi>i</mi>
+    <mi>r</mi>
+    <mi>t</mi>
+    <mi>u</mi>
+    <mi>a</mi>
+    <mi>l</mi>
+    <mi>s</mi>
+    <mi>c</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>e</mi>
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>d</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>p</mi>
+    <mi>h</mi>
+    <mi>y</mi>
+    <mi>s</mi>
+    <mi>i</mi>
+    <mi>c</mi>
+    <mi>a</mi>
+    <mi>l</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>t</mi>
+    <mi>y</mi>
+    <mi>s</mi>
+    <mi>c</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>e</mi>
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>d</mi>
+    <mo>,</mo>
+  </math>
+</inline-formula>E O R_{i k}<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>d</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>o</mi>
+    <mi>t</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>p</mi>
+    <mi>o</mi>
+    <mi>s</mi>
+    <mi>i</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>a</mi>
+    <mi>l</mi>
+    <mi>e</mi>
+    <mi>r</mi>
+    <mi>r</mi>
+    <mi>o</mi>
+    <mi>r</mi>
+    <mi>o</mi>
+    <mi>f</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>d</mi>
+    <mi>i</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>c</mi>
+    <mi>e</mi>
+    <mi>b</mi>
+    <mi>e</mi>
+    <mi>t</mi>
+    <mi>w</mi>
+    <mi>e</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>d</mi>
+    <mi>o</mi>
+    <mi>u</mi>
+    <mi>b</mi>
+    <mi>l</mi>
+    <mi>e</mi>
+    <mi>t</mi>
+    <mi>r</mi>
+    <mi>o</mi>
+    <mi>l</mi>
+    <mi>l</mi>
+    <mi>e</mi>
+    <mi>y</mi>
+    <mi>q</mi>
+    <mi>u</mi>
+    <mi>a</mi>
+    <mi>y</mi>
+    <mi>c</mi>
+    <mi>r</mi>
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>e</mi>
+    <mi>u</mi>
+    <mi>n</mi>
+    <mi>l</mi>
+    <mi>o</mi>
+    <mi>a</mi>
+    <mi>d</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>g</mi>
+    <mi>z</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>e</mi>
+    <mi>A</mi>
+    <mi>G</mi>
+    <mi>V</mi>
+    <mi>l</mi>
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>e</mi>
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>d</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>c</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>t</mi>
+    <mi>a</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>e</mi>
+    <mi>r</mi>
+    <mi>a</mi>
+    <mi>r</mi>
+    <mi>e</mi>
+    <mi>a</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>b</mi>
+    <mi>o</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>d</mi>
+    <mi>i</mi>
+    <mi>g</mi>
+    <mi>i</mi>
+    <mi>t</mi>
+    <mi>a</mi>
+    <mi>l</mi>
+    <mi>t</mi>
+    <mi>w</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>v</mi>
+    <mi>i</mi>
+    <mi>r</mi>
+    <mi>t</mi>
+    <mi>u</mi>
+    <mi>a</mi>
+    <mi>l</mi>
+    <mi>s</mi>
+    <mi>c</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>e</mi>
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>d</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>p</mi>
+    <mi>h</mi>
+    <mi>y</mi>
+    <mi>s</mi>
+    <mi>i</mi>
+    <mi>c</mi>
+    <mi>a</mi>
+    <mi>l</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>t</mi>
+    <mi>y</mi>
+    <mi>s</mi>
+    <mi>c</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>e</mi>
+    <mo>.</mo>
+  </math>
+</inline-formula>i^*<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo>,</mo>
+  </math>
+</inline-formula>j^*<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo>,</mo>
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>d</mi>
+  </math>
+</inline-formula>k^*<inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>r</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>p</mi>
+    <mi>e</mi>
+    <mi>c</mi>
+    <mi>t</mi>
+    <mi>i</mi>
+    <mi>v</mi>
+    <mi>e</mi>
+    <mi>l</mi>
+    <mi>y</mi>
+    <mi>r</mi>
+    <mi>e</mi>
+    <mi>p</mi>
+    <mi>r</mi>
+    <mi>e</mi>
+    <mi>s</mi>
+    <mi>e</mi>
+    <mi>n</mi>
+    <mi>t</mi>
+    <mi>t</mi>
+    <mi>h</mi>
+    <mi>e</mi>
+    <mi>m</mi>
+    <mi>a</mi>
+    <mi>x</mi>
+    <mi>i</mi>
+    <mi>m</mi>
+    <mi>u</mi>
+    <mi>m</mi>
+    <mi>n</mi>
+    <mi>u</mi>
+    <mi>m</mi>
+    <mi>b</mi>
+    <mi>e</mi>
+    <mi>r</mi>
+    <mi>s</mi>
+    <mi>o</mi>
+    <mi>f</mi>
+    <mi>d</mi>
+    <mi>o</mi>
+    <mi>u</mi>
+    <mi>b</mi>
+    <mi>l</mi>
+    <mi>e</mi>
+    <mi>t</mi>
+    <mi>r</mi>
+    <mi>o</mi>
+    <mi>l</mi>
+    <mi>l</mi>
+    <mi>e</mi>
+    <mi>y</mi>
+    <mi>q</mi>
+    <mi>u</mi>
+    <mi>a</mi>
+    <mi>y</mi>
+    <mi>c</mi>
+    <mi>r</mi>
+    <mi>a</mi>
+    <mi>n</mi>
+    <mi>e</mi>
+    <mi>u</mi>
+    <mi>n</mi>
+    <mi>l</mi>
+    <mi>o</mi>
+    <mi>a</mi>
+    <mi>d</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>g</mi>
+    <mi>z</mi>
+    <mi>o</mi>
+    <mi>n</mi>
+    <mi>e</mi>
+  </math>
+</inline-formula>\mathrm{AGV}$ lanes, berths, and container areas. The verification formulas are as follows:</p>
+          
+            <disp-formula>
+              <label>(3)</label>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <mi>E</mi>
+                <mi>i</mi>
+                <mi>j</mi>
+                <mi>i</mi>
+                <mi>j</mi>
+                <mi>Z</mi>
+                <msub>
+                  <mi>R</mi>
+                  <mrow data-mjx-texclass="ORD">
+                    <mi>i</mi>
+                    <mi>j</mi>
+                  </mrow>
+                </msub>
+                <mo>=</mo>
+                <mo>∈</mo>
+                <mo>,</mo>
+                <mo>∈</mo>
+                <mo>,</mo>
+                <mo>∈</mo>
+                <mrow data-mjx-texclass="INNER">
+                  <mo data-mjx-texclass="OPEN">|</mo>
+                  <mo>−</mo>
+                  <mo data-mjx-texclass="CLOSE">|</mo>
+                  <mi>B</mi>
+                  <mi>V</mi>
+                  <mi>B</mi>
+                  <msub>
+                    <mi>L</mi>
+                    <mrow data-mjx-texclass="ORD">
+                      <mi>i</mi>
+                      <mi>j</mi>
+                    </mrow>
+                  </msub>
+                  <msub>
+                    <mi>L</mi>
+                    <mrow data-mjx-texclass="ORD">
+                      <mi>i</mi>
+                      <mi>j</mi>
+                    </mrow>
+                  </msub>
+                </mrow>
+                <mrow data-mjx-texclass="INNER">
+                  <mo data-mjx-texclass="OPEN">[</mo>
+                  <mo>,</mo>
+                  <mo data-mjx-texclass="CLOSE">]</mo>
+                  <mn>1</mn>
+                  <msup>
+                    <mi>i</mi>
+                    <mo>∗</mo>
+                  </msup>
+                </mrow>
+                <mrow data-mjx-texclass="INNER">
+                  <mo data-mjx-texclass="OPEN">[</mo>
+                  <mo>,</mo>
+                  <mo data-mjx-texclass="CLOSE">]</mo>
+                  <mn>1</mn>
+                  <msup>
+                    <mi>j</mi>
+                    <mo>∗</mo>
+                  </msup>
+                </mrow>
+                <mstyle scriptlevel="0">
+                  <mspace width="1em"/>
+                </mstyle>
+                <mstyle scriptlevel="0">
+                  <mspace width="1em"/>
+                </mstyle>
+              </math>
+            </disp-formula>
+          
+          
+            <disp-formula>
+              <label>(4)</label>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <mi>E</mi>
+                <mi>O</mi>
+                <mi>i</mi>
+                <mi>k</mi>
+                <mi>i</mi>
+                <mi>k</mi>
+                <mi>Z</mi>
+                <msub>
+                  <mi>R</mi>
+                  <mrow data-mjx-texclass="ORD">
+                    <mi>i</mi>
+                    <mi>k</mi>
+                  </mrow>
+                </msub>
+                <mo>=</mo>
+                <mo>∈</mo>
+                <mo>,</mo>
+                <mo>∈</mo>
+                <mo>,</mo>
+                <mo>∈</mo>
+                <mrow data-mjx-texclass="INNER">
+                  <mo data-mjx-texclass="OPEN">|</mo>
+                  <mo>−</mo>
+                  <mo data-mjx-texclass="CLOSE">|</mo>
+                  <mi>B</mi>
+                  <mi>V</mi>
+                  <mi>B</mi>
+                  <msub>
+                    <mi>C</mi>
+                    <mrow data-mjx-texclass="ORD">
+                      <mi>i</mi>
+                      <mi>k</mi>
+                    </mrow>
+                  </msub>
+                  <msub>
+                    <mi>C</mi>
+                    <mrow data-mjx-texclass="ORD">
+                      <mi>i</mi>
+                      <mi>k</mi>
+                    </mrow>
+                  </msub>
+                </mrow>
+                <mrow data-mjx-texclass="INNER">
+                  <mo data-mjx-texclass="OPEN">[</mo>
+                  <mo>,</mo>
+                  <mo data-mjx-texclass="CLOSE">]</mo>
+                  <mn>1</mn>
+                  <msup>
+                    <mi>i</mi>
+                    <mo>∗</mo>
+                  </msup>
+                </mrow>
+                <mrow data-mjx-texclass="INNER">
+                  <mo data-mjx-texclass="OPEN">[</mo>
+                  <mo>,</mo>
+                  <mo data-mjx-texclass="CLOSE">]</mo>
+                  <mn>1</mn>
+                  <msup>
+                    <mi>k</mi>
+                    <mo>∗</mo>
+                  </msup>
+                </mrow>
+                <mstyle scriptlevel="0">
+                  <mspace width="1em"/>
+                </mstyle>
+                <mstyle scriptlevel="0">
+                  <mspace width="1em"/>
+                </mstyle>
+                <mstyle scriptlevel="0">
+                  <mspace width="1em"/>
+                </mstyle>
+              </math>
+            </disp-formula>
+          
+          
+            <disp-formula>
+              <label>(5)</label>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <mi>E</mi>
+                <mi>E</mi>
+                <mi>O</mi>
+                <msub>
+                  <mi>R</mi>
+                  <mrow data-mjx-texclass="ORD">
+                    <mi>i</mi>
+                    <mi>j</mi>
+                  </mrow>
+                </msub>
+                <msub>
+                  <mi>θ</mi>
+                  <mn>1</mn>
+                </msub>
+                <msub>
+                  <mi>R</mi>
+                  <mrow data-mjx-texclass="ORD">
+                    <mi>i</mi>
+                    <mi>k</mi>
+                  </mrow>
+                </msub>
+                <msub>
+                  <mi>θ</mi>
+                  <mn>2</mn>
+                </msub>
+                <mo>&lt;</mo>
+                <mo>&lt;</mo>
+                <mstyle scriptlevel="0">
+                  <mspace width="1em"/>
+                </mstyle>
+              </math>
+            </disp-formula>
+          
+          <p><inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msub>
+      <mi>θ</mi>
+      <mn>1</mn>
+    </msub>
+  </math>
+</inline-formula> and <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msub>
+      <mi>θ</mi>
+      <mn>2</mn>
+    </msub>
+  </math>
+</inline-formula> are controllable thresholds, which can be determined according to actual needs. During layout similarity verification, it is advisable to select the central points of each candidate area for verification to avoid edge points, thus enhancing the validity of the results. </p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.4. Optimization of virtual scenes</title>
+          
+          <p>Given the large number and extensive coverage of equipment at automated container terminals, optimizing the virtual terminal scene is essential to ensure smooth display and alleviate the pressure on the digital twin system. This paper employs a discrete LOD rendering method [<xref ref-type="bibr" rid="ref_27">27</xref>], [<xref ref-type="bibr" rid="ref_28">28</xref>] to reduce the number of model faces, lower the computational burden on rendering, and increase the interaction speed of the 3D scene. As shown in <xref ref-type="fig" rid="fig_5">Figure 5</xref>, during the modeling process, three different levels of detail are created for all dynamic equipment. Models are classified into three levels from detailed to rough: LV0, LV1, and LV2, with LV2 being the simplified model.</p><p>During system operation, the precision of models is dynamically switched based on their distance from the camera. Models closer to the camera are displayed using a higher resolution, while those farther away are shown using a lower resolution. By altering the original model's texture maps, models of different levels of detail can be displayed depending on the camera's viewing distance.</p>
+          
+            <fig id="fig_5">
+              <label>Figure 5</label>
+              <caption>
+                <title>Discrete LOD-based graded model rendering optimization strategy</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2024/3/img_5n6w40CKKbAadCiK.png"/>
+            </fig>
+          
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>4. Distributed study of the system</title>
+      <p>Traditional digital twin systems have limited research on distributed architecture at the top layer, such as the service layer or display layer, and the user's viewing perspective is relatively limited. Typically, the system can only accommodate one user, which is insufficient for monitoring complex environments like automated container terminals. The greatest advantages of distributed systems are resource sharing and scalability, allowing multiple users to participate in monitoring terminal production equipment simultaneously.</p>
+      
+        <fig id="fig_6">
+          <label>Figure 6</label>
+          <caption>
+            <title>Schematics of centralized and replicated architectures</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2024/3/img_W-HKJrjzZNqzRi46.png"/>
+        </fig>
+      
+      
+        <sec>
+          
+            <title>4.1. Distributed implementation plan for the system</title>
+          
+          <p>Based on state synchronization and frame synchronization, two mainstream network synchronization methods [<xref ref-type="bibr" rid="ref_29">29</xref>], common architectures for distributed systems include centralized architecture and replicated architecture. As shown in subgraph (a) of <xref ref-type="fig" rid="fig_6">Figure 6</xref>, the centralized architecture places core functions on the server side, requiring real-time dynamic data to be forwarded from the server to the client, which places high demands on the server's computing power and network performance [<xref ref-type="bibr" rid="ref_30">30</xref>]. The structure of the replicated architecture, as shown in subgraph (b) of <xref ref-type="fig" rid="fig_6">Figure 6</xref>, mainly implements the core logic on the client side. This not only demands higher processing capability from the client but also increases the difficulty of maintaining data synchronization across clients.</p><p>Starting from the functional requirements of monitoring equipment at automated container terminals, this paper separates the database from the server and clients, proposing a multi-layer distributed system plan, as shown in <xref ref-type="fig" rid="fig_7">Figure 7</xref>. Based on the Client/Server (C/S) model, it is divided into four layers: main client, server, sub-client, and database, which communicate and transfer data through network protocols.</p>
+          
+            <fig id="fig_7">
+              <label>Figure 7</label>
+              <caption>
+                <title>Schematic of the multi-layer distributed system</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2024/3/img_-3SvsNTinKMyhGlv.png"/>
+            </fig>
+          
+          <p>The main client is assigned two major function categories, including graphic display and human-machine interaction functionalities. These encompass scene interaction, status monitoring, real-time alert, and user roaming functionalities, responsible for user input processing, model behavior display, and data presentation services. The main client communicates directly with the database through business logic and does not go through the server for data reception, hence it does not possess network attributes.</p><p>The sub-client is assigned three major function categories, including graphic display, logic judgment, and simple interaction functionalities. This includes real-time alert and user roaming functionalities within the scene interaction feature. When a user performs scene roaming, the sub-client first makes a logic judgment before conveying the user's commands. The sub-client has network attributes. In user roaming functionality, the sub-client can send the user's position and posture information within the scene to the server, while other sub-clients constantly listen for data sent back from the server, receiving and updating the user's position and posture changes in the scene in real-time.</p><p>The primary functions of the server include real-time communication with the database and continuous monitoring of device positions and statuses in the database. Additionally, for logic issues executed at the sub-client, such as user joining, user roaming, and scene refreshing, the server only forwards relevant change information and does not perform logic judgment or calculation on changes in user position and posture.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>4.2. Synchronization changes between the model layer and service layer</title>
+          
+          <p>Once the multi-layer distributed system is implemented, some behaviors in the model layer and service layer transition from being local to network behaviors. For changes in the model layer, the behavioral attributes of each dynamic model change, and the movement of dynamic models becomes a network behavior. Therefore, a network identity is assigned to dynamic models. This identity can control the uniqueness of dynamic models on the network. When using this identity, the network system can determine the position of dynamic models at any time, thus enabling the forwarding of dynamic model positions to all sub-clients to ensure that all sub-clients see a consistent data-driven position of dynamic models.</p><p>Regarding changes in the service layer, the identity of users in the service layer changes, and the user roaming operation performed by sub-clients becomes a network behavior. Since the user roaming operation of sub-clients is a form of human-machine interaction, this behavior first needs to be generated and logically judged at each sub-client, then communicated to the network, which then transmits the user behavior to the server. The server synchronizes and forwards the user's behavior to all clients, allowing other clients to see that user’s behavior.</p><p>Considering the large overall scene of the automated container terminal and starting from the perspective of reasonably saving computer system resources, after implementing the system in a distributed manner, only one character entity is established in the system for all sub-clients to invoke. The main way sub-clients provide services is through the real-time display of the equipment production process, which primarily relies on the camera mounted on the same character entity used by all sub-clients for viewing. Therefore, it is necessary to set up a user management script to prevent chaos in the user roaming functionality. Before each user performs a movement operation with the character entity, the management script checks whether the sub-client is a local user and then decides whether to allow the operation.</p>
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>5. System prototype design and implementation</title>
+      
+        <sec>
+          
+            <title>5.1. System development tools</title>
+          
+          <p>Unity3D facilitates the addition of physical properties to 3D models, such as gravity, rigid body, collision properties, and material properties [<xref ref-type="bibr" rid="ref_31">31</xref>]. Based on a script component mounting mechanism, Unity3D supports dynamic equipment data-driven modes, greatly enhancing the intuitiveness and flexibility of model dynamics. Additionally, Unity3D provides a rich resource library, offering substantial support to developers in implementing various functional modules of the system [<xref ref-type="bibr" rid="ref_32">32</xref>]. The Unity3D user interface is shown in <xref ref-type="fig" rid="fig_8">Figure 8</xref>. This integrated development environment not only simplifies the 3D model processing workflow but also provides effective tools for highly customizable and dynamic data-driven model presentation, promoting the efficiency of the development process and rapid implementation of system functions.</p>
+          
+            <fig id="fig_8">
+              <label>Figure 8</label>
+              <caption>
+                <title>Unity3D user interface</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2024/3/img_CjDrUa2IjrrRN_V9.png"/>
+            </fig>
+          
+          
+            <fig id="fig_9">
+              <label>Figure 9</label>
+              <caption>
+                <title>Relationship between Solidworks, 3DS Max, C#, and Unity3D software platform</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2024/3/img_EZ0-HgvhOgaPCBEo.png"/>
+            </fig>
+          
+          <p>Therefore, this paper used Unity3D as the development engine, combined with the Mirror framework to achieve system distribution. The modeling platform integrated Solidworks and 3DS Max. Scripting was developed using C#, and MySQL was chosen for managing data at automated container terminals. The relationships among Unity3D, Solidworks, 3DS Max, and C# are illustrated in <xref ref-type="fig" rid="fig_9">Figure 9</xref>. Models exported in FBX format from Solidworks and 3DS Max were imported into Unity3D, where C# scripts were edited and mounted on the corresponding models to enable model motion.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>5.2. Construction of automated container terminal models</title>
+          
+          <p>This paper designed a digital twin prototype system for monitoring equipment at an automated container terminal, using the previously designed modeling process to construct the 3D scene. The static scene model and auxiliary scene model are large in scale, hence they are broken down into five parts: contour model, road marking model, building model, facility model, and auxiliary model. Each part was modeled and material effects were added separately, followed by organizational integration. Dynamic models include various types of operational equipment at automated container terminals, such as double trolley quay cranes, Automated Rail-Mounted Gantry Cranes (ARMG), and AGV. Model parent-child relationships were set according to the operational logic of each dynamic device. Using Unity3D's skybox and lighting modules, the main scene was rendered to make its environment closer to physical reality. The overall effect of the automated container terminal model is shown in <xref ref-type="fig" rid="fig_10">Figure 10</xref>.</p>
+          
+            <fig id="fig_10">
+              <label>Figure 10</label>
+              <caption>
+                <title>Overall modeling effect of automated container terminal</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2024/3/img_vIDj3WqLYaQuEQBI.png"/>
+            </fig>
+          
+          <p>Model layout virtual-real consistency evaluation was conducted on the modeling effect. Initially, the southeastern corner of the terminal's production frontline land area was selected as the absolute zero point for calculating the positions of various functional areas. The automated container terminal's automated stacking yard comprises 61 container zones, primarily composed of ARMGs with and without cantilevers. For simplicity in calculation, the 61 container zones are divided into 11 groups using the single cantilever ARMG as a dividing line.</p><p>Taking the center points of 7 quay crane unloading zone AGV lanes as measurement points, and the absolute zero point as a reference, the position coordinates <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msub>
+      <mi>B</mi>
+      <mi>i</mi>
+    </msub>
+    <mrow data-mjx-texclass="INNER">
+      <mo data-mjx-texclass="OPEN">(</mo>
+      <mo>,</mo>
+      <mo data-mjx-texclass="CLOSE">)</mo>
+      <msub>
+        <mi>x</mi>
+        <mi>i</mi>
+      </msub>
+      <msub>
+        <mi>y</mi>
+        <mi>i</mi>
+      </msub>
+    </mrow>
+  </math>
+</inline-formula> of each quay crane unloading zone AGV lane were obtained, <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>i</mi>
+    <mi>i</mi>
+    <mi>i</mi>
+    <mi>Z</mi>
+    <mo>∈</mo>
+    <mo stretchy="false">[</mo>
+    <mo>,</mo>
+    <mo>∗</mo>
+    <mo stretchy="false">]</mo>
+    <mo>,</mo>
+    <mo>∈</mo>
+    <mn>1</mn>
+  </math>
+</inline-formula>. Taking the center points of 7 container ship berths as measurement points, the center position coordinates <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msub>
+      <mi>L</mi>
+      <mi>j</mi>
+    </msub>
+    <mrow data-mjx-texclass="INNER">
+      <mo data-mjx-texclass="OPEN">(</mo>
+      <mo>,</mo>
+      <mo data-mjx-texclass="CLOSE">)</mo>
+      <msub>
+        <mi>x</mi>
+        <mi>j</mi>
+      </msub>
+      <msub>
+        <mi>y</mi>
+        <mi>j</mi>
+      </msub>
+    </mrow>
+  </math>
+</inline-formula> of each berth were obtained, <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>j</mi>
+    <mo>∈</mo>
+  </math>
+</inline-formula> <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mo stretchy="false">[</mo>
+    <mo>,</mo>
+    <mo>∗</mo>
+    <mo stretchy="false">]</mo>
+    <mo>,</mo>
+    <mo>∈</mo>
+    <mn>1</mn>
+    <mi>j</mi>
+    <mi>j</mi>
+    <mi>Z</mi>
+  </math>
+</inline-formula>. Taking the center of the container zone groups as measurement points, the center position coordinates <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msub>
+      <mi>C</mi>
+      <mi>k</mi>
+    </msub>
+    <mrow data-mjx-texclass="INNER">
+      <mo data-mjx-texclass="OPEN">(</mo>
+      <mo>,</mo>
+      <mo data-mjx-texclass="CLOSE">)</mo>
+      <msub>
+        <mi>x</mi>
+        <mi>k</mi>
+      </msub>
+      <msub>
+        <mi>y</mi>
+        <mi>k</mi>
+      </msub>
+    </mrow>
+  </math>
+</inline-formula> of each container zone group were obtained, <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>k</mi>
+    <mi>k</mi>
+    <mi>k</mi>
+    <mi>Z</mi>
+    <mo>∈</mo>
+    <mo stretchy="false">[</mo>
+    <mo>,</mo>
+    <mo>∗</mo>
+    <mo stretchy="false">]</mo>
+    <mo>,</mo>
+    <mo>∈</mo>
+    <mn>1</mn>
+  </math>
+</inline-formula>. Where <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msup>
+      <mi>i</mi>
+      <mo>∗</mo>
+    </msup>
+  </math>
+</inline-formula>, <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msup>
+      <mi>j</mi>
+      <mo>∗</mo>
+    </msup>
+  </math>
+</inline-formula>, and <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msup>
+      <mi>k</mi>
+      <mo>∗</mo>
+    </msup>
+  </math>
+</inline-formula> respectively represent the maximum number of double trolley quay crane unloading zone AGV lanes, berths, and container zone groups.</p><p>Physical space distances between each quay crane unloading zone AGV lane and berth, and between each quay crane unloading zone AGV lane and the automated stacking yard container zone group, were calculated using Eq. (1) and Eq. (2), and the data are shown in <xref ref-type="table" rid="table_1">Table 1</xref> and <xref ref-type="table" rid="table_2">Table 2</xref> (unit: meters).</p><p>The calculation of distances in the virtual scene layout was implemented using the Unity3D scripting system. Initially, a vector between two measurement points was created within the constructed 3D scene of the automated container terminal, and the magnitude of the vector was used to calculate the distance between these two points. Using Eq. (3) and Eq. (4), the errors <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>E</mi>
+    <msub>
+      <mi>R</mi>
+      <mrow data-mjx-texclass="ORD">
+        <mi>i</mi>
+        <mi>j</mi>
+      </mrow>
+    </msub>
+  </math>
+</inline-formula> and <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>E</mi>
+    <mi>O</mi>
+    <msub>
+      <mi>R</mi>
+      <mrow data-mjx-texclass="ORD">
+        <mi>i</mi>
+        <mi>k</mi>
+      </mrow>
+    </msub>
+  </math>
+</inline-formula> were calculated, with the results shown in <xref ref-type="fig" rid="fig_11">Figure 11</xref>. Given that automated container terminals are typical representatives of large-scale production environments [<xref ref-type="bibr" rid="ref_33">33</xref>], this study set the error thresholds <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msub>
+      <mi>θ</mi>
+      <mn>1</mn>
+    </msub>
+  </math>
+</inline-formula> and <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msub>
+      <mi>θ</mi>
+      <mn>2</mn>
+    </msub>
+  </math>
+</inline-formula> at 0.1 m to meet the specific needs and accuracy requirements of this scenario. The maximum errors between the physical AGV lane distances at the dock and berth and the virtual AGV lane distances at the dock and berth <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mrow data-mjx-texclass="INNER">
+      <mo data-mjx-texclass="OPEN">(</mo>
+      <mo data-mjx-texclass="CLOSE">)</mo>
+      <mi>E</mi>
+      <msub>
+        <mi>R</mi>
+        <mrow data-mjx-texclass="ORD">
+          <mi>i</mi>
+          <mi>j</mi>
+        </mrow>
+      </msub>
+    </mrow>
+  </math>
+</inline-formula>, as well as between the physical AGV lane distances at the dock and the container group distances and the virtual AGV lane distances at the dock and container group distances <inline-formula>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mrow data-mjx-texclass="INNER">
+      <mo data-mjx-texclass="OPEN">(</mo>
+      <mo data-mjx-texclass="CLOSE">)</mo>
+      <mi>E</mi>
+      <mi>O</mi>
+      <msub>
+        <mi>R</mi>
+        <mrow data-mjx-texclass="ORD">
+          <mi>i</mi>
+          <mi>k</mi>
+        </mrow>
+      </msub>
+    </mrow>
+  </math>
+</inline-formula>, are all less than 0.1 m. This is below the error threshold, allowing a preliminary assumption that the 3D virtual scene has the characteristics of a digital twin in terms of model layout.</p>
+          
+            <table-wrap id="table_1">
+              <label>Table 1</label>
+              <caption>
+                <title>Distances between AGV lanes and berths in dock physical space</title>
+              </caption>
+              <table><tr><th colspan="8">Quay Crane Unloading Area AGV Lane Number</th></tr><tr><td >Berth Number</td><td >1</td><td >2</td><td >3</td><td >4</td><td >5</td><td >6</td><td >7</td></tr><tr><td >1</td><td >1181.71</td><td >1181.34</td><td >1180.86</td><td >1180.51</td><td >1180.10</td><td >1179.74</td><td >1179.40</td></tr><tr><td >2</td><td >788.12</td><td >787.53</td><td >786.91</td><td >786.31</td><td >785.74</td><td >785.20</td><td >784.77</td></tr><tr><td >3</td><td >361.28</td><td >359.91</td><td >358.70</td><td >357.51</td><td >356.44</td><td >355.37</td><td >354.36</td></tr><tr><td >4</td><td >108.35</td><td >103.91</td><td >99.59</td><td >95.15</td><td >90.84</td><td >86.52</td><td >95.13</td></tr><tr><td >5</td><td >439.80</td><td >438.70</td><td >437.71</td><td >436.74</td><td >435.82</td><td >435.03</td><td >434.18</td></tr><tr><td >6</td><td >821.97</td><td >821.49</td><td >820.80</td><td >820.31</td><td >819.87</td><td >819.41</td><td >818.94</td></tr><tr><td >7</td><td >1207.61</td><td >1207.27</td><td >1206.84</td><td >1206.56</td><td >1206.15</td><td >1205.82</td><td >1205.53</td></tr></table>
+            </table-wrap>
+          
+          
+            <table-wrap id="table_2">
+              <label>Table 2</label>
+              <caption>
+                <title>Distances between AGV lanes in quay crane unloading areas and automated stacking yard container groups</title>
+              </caption>
+              <table><tr><th colspan="8">Quay Crane Unloading Area AGV Lane Number</th></tr><tr><td >Container Group Number</td><td >1</td><td >2</td><td >3</td><td >4</td><td >5</td><td >6</td><td >7</td></tr><tr><td >1</td><td >1592.90</td><td >1593.54</td><td >1594.15</td><td >1594.71</td><td >1595.32</td><td >1596.00</td><td >1596.61</td></tr><tr><td >2</td><td >1422.04</td><td >1423.17</td><td >1424.12</td><td >1425.29</td><td >1426.31</td><td >1427.52</td><td >1428.69</td></tr><tr><td >3</td><td >1133.97</td><td >1135.33</td><td >1136.72</td><td >1138.23</td><td >1139.64</td><td >1141.16</td><td >1142.61</td></tr><tr><td >4</td><td >828.60</td><td >830.54</td><td >832.57</td><td >834.50</td><td >836.50</td><td >838.51</td><td >840.54</td></tr><tr><td >5</td><td >503.87</td><td >506.92</td><td >509.93</td><td >513.01</td><td >516.10</td><td >519.37</td><td >522.41</td></tr><tr><td >6</td><td >300.91</td><td >305.75</td><td >310.57</td><td >315.30</td><td >320.09</td><td >324.85</td><td >329.64</td></tr><tr><td >7</td><td >457.71</td><td >460.90</td><td >464.17</td><td >467.35</td><td >470.54</td><td >473.82</td><td >477.13</td></tr><tr><td >8</td><td >732.39</td><td >734.29</td><td >736.27</td><td >738.24</td><td >740.21</td><td >742.26</td><td >744.35</td></tr><tr><td >9</td><td >943.11</td><td >944.47</td><td >945.72</td><td >947.19</td><td >948.51</td><td >949.80</td><td >951.37</td></tr><tr><td >10</td><td >1131.61</td><td >1132.77</td><td >1133.84</td><td >1134.93</td><td >1136.04</td><td >1137.28</td><td >1138.45</td></tr><tr><td >11</td><td >1256.90</td><td >1257.94</td><td >1258.95</td><td >1259.94</td><td >1260.96</td><td >1261.94</td><td >1263.01</td></tr></table>
+            </table-wrap>
+          
+          
+            <fig id="fig_11">
+              <label>Figure 11</label>
+              <caption>
+                <title>Results of the virtual-real consistency evaluation for model layout</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2024/3/img_rPI2Q2kiQRUOTMRa.png"/>
+            </fig>
+          
+          <p>Finally, the LOD Group component was used to implement the discrete LOD algorithm, optimizing the virtual scene. Various dynamic equipment types such as double trolley quay cranes, ARMG, and AGV were constructed in three different rendering levels. Under a top-down view, rendering tests for the number of faces of Level LV0 and LV2 models of double trolley quay cranes were conducted, as shown in <xref ref-type="fig" rid="fig_12">Figure 12</xref>. Test results show that the number of faces (Tris attribute) of the LV2 model is more than ten times lower than that of the LV0 model, and the number of vertices (Verts attribute) is reduced nearly tenfold. With the equipment's main form intact, rendering efficiency has been significantly improved.</p>
+          
+            <fig id="fig_12">
+              <label>Figure 12</label>
+              <caption>
+                <title>Comparison of rendering faces and vertices between LV0 and LV2 models</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2024/3/img_lLzHB9eVePggOnco.png"/>
+            </fig>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>5.3. Data-driven implementation</title>
+          
+          <p>The overall architecture of the data-driven mode can be described in three layers: service layer, logic layer, and data layer, as shown in <xref ref-type="fig" rid="fig_13">Figure 13</xref>. The service layer, as the interface between the system and users, provides the function of displaying the operational status of the port production in a 3D visual format. User commands generated in the main client are passed from the service layer to the logic layer, which returns relevant parameters to the service layer and makes changes to the database while also updating the model's position and state attributes in real time.</p>
+          
+            <fig id="fig_13">
+              <label>Figure 13</label>
+              <caption>
+                <title>Overall architecture of the data-driven model</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2024/3/img_1XxmhftVMDPLy2Oa.png"/>
+            </fig>
+          
+          <p>The logic layer, implemented through C# backend scripts on the Unity3D platform, serves as a bridge between user actions and model responses. This layer, by using object-oriented dynamic models and script components mounted on their sub-assemblies, transforms operations at the service layer into updates of model states, achieving real-time data processing and dynamic feedback. Additionally, the logic layer is responsible for dynamically reading information from the data layer, driving models based on this data, and monitoring the status of newly added sub-clients to ensure the system's timeliness and accuracy.</p><p>The data layer forms the foundation of the system's information storage and management, including the database and data entry module. The database primarily stores the positions and status data of operational equipment, providing essential input for the logic layer. The data entry module is responsible for real-time collection and updating of operational data from port equipment, ensuring data accuracy and timeliness. Through efficient data management, the data layer supports the entire digital twin system's data-driven mechanism, ensuring that the logic and service layers can perform accurate model driving and user feedback based on the latest data.</p><p>Based on the concept of a model tree for geometric modeling, the management of equipment position data and status data is controlled using two separate tables for each piece of equipment, with a uniform database table structure design for all equipment. For instance, <xref ref-type="table" rid="table_3">Table 3</xref> is the structure of the double trolley quay crane equipment position data table, and <xref ref-type="table" rid="table_4">Table 4</xref> is the equipment status data table structure. Using the same two-table structure, position and status data tables have been established for each AGV and ARMG.</p>
+          
+            <table-wrap id="table_3">
+              <label>Table 3</label>
+              <caption>
+                <title>Double trolley quay crane equipment position data table structure</title>
+              </caption>
+              <table><tbody><tr><th colspan="1" rowspan="1"><p>Attribute</p></th><th colspan="1" rowspan="1"><p>Definition</p></th><th colspan="1" rowspan="1"><p>Data Type</p></th><th colspan="1" rowspan="1"><p>Remarks</p></th></tr><tr><td colspan="1" rowspan="1"><p>id</p></td><td colspan="1" rowspan="1"><p>No actual meaning</p></td><td colspan="1" rowspan="1"><p>int</p></td><td colspan="1" rowspan="1"><p>Primary key, auto-increment</p></td></tr><tr><td colspan="1" rowspan="1"><p>equip_id</p></td><td colspan="1" rowspan="1"><p>Equipment ID</p></td><td colspan="1" rowspan="1"><p>varchar</p></td><td colspan="1" rowspan="1"><p>Unique, uniformly assigned and managed</p></td></tr><tr><td colspan="1" rowspan="1"><p>equip_name</p></td><td colspan="1" rowspan="1"><p>Equipment name</p></td><td colspan="1" rowspan="1"><p>varchar</p></td><td colspan="1" rowspan="1"><p>Unique, uniformly assigned and managed</p></td></tr><tr><td colspan="1" rowspan="1"><p>time</p></td><td colspan="1" rowspan="1"><p>Update time</p></td><td colspan="1" rowspan="1"><p>varchar</p></td><td colspan="1" rowspan="1"><p>Uniform format: xxxx-xx-xx xx:xx:xx</p></td></tr><tr><td colspan="1" rowspan="1"><p>stsgantry_x</p></td><td colspan="1" rowspan="1"><p>Gantry x-coordinate</p></td><td colspan="1" rowspan="1"><p>float</p></td><td colspan="1" rowspan="1"><p>World coordinate of the gantry relative to the dock layout</p></td></tr><tr><td colspan="1" rowspan="1"><p>trolleysea_y</p></td><td colspan="1" rowspan="1"><p>Seaside trolley y-coordinate</p></td><td colspan="1" rowspan="1"><p>float</p></td><td colspan="1" rowspan="1"><p>Relative coordinate of the seaside trolley relative to the gantry parent</p></td></tr><tr><td colspan="1" rowspan="1"><p>seahoist_z</p></td><td colspan="1" rowspan="1"><p>Seaside trolley hoist z-coordinate</p></td><td colspan="1" rowspan="1"><p>float</p></td><td colspan="1" rowspan="1"><p>Relative coordinate of the seaside trolley hoist relative to the seaside trolley parent</p></td></tr><tr><td colspan="1" rowspan="1"><p>trolleyland_y</p></td><td colspan="1" rowspan="1"><p>Landside trolley y-coordinate</p></td><td colspan="1" rowspan="1"><p>float</p></td><td colspan="1" rowspan="1"><p>Relative coordinate of the landside trolley relative to the gantry parent</p></td></tr><tr><td colspan="1" rowspan="1"><p>landhoist_z</p></td><td colspan="1" rowspan="1"><p>Landside trolley hoist z-coordinate</p></td><td colspan="1" rowspan="1"><p>float</p></td><td colspan="1" rowspan="1"><p>Relative coordinate of the landside trolley hoist relative to the landside trolley parent</p></td></tr></tbody></table>
+            </table-wrap>
+          
+          
+            <table-wrap id="table_4">
+              <label>Table 4</label>
+              <caption>
+                <title>Equipment status data table structure</title>
+              </caption>
+              <table><tbody><tr><th colspan="1" rowspan="1"><p>Attribute</p></th><th colspan="1" rowspan="1"><p>Definition</p></th><th colspan="1" rowspan="1"><p>Data Type</p></th><th colspan="1" rowspan="1"><p>Remarks</p></th></tr><tr><td colspan="1" rowspan="1"><p>id</p></td><td colspan="1" rowspan="1"><p>No actual meaning</p></td><td colspan="1" rowspan="1"><p>int</p></td><td colspan="1" rowspan="1"><p>Primary key, auto-increment</p></td></tr><tr><td colspan="1" rowspan="1"><p>equip_id</p></td><td colspan="1" rowspan="1"><p>Equipment ID</p></td><td colspan="1" rowspan="1"><p>varchar</p></td><td colspan="1" rowspan="1"><p>Unique, uniformly assigned and managed</p></td></tr><tr><td colspan="1" rowspan="1"><p>equip_name</p></td><td colspan="1" rowspan="1"><p>Equipment name</p></td><td colspan="1" rowspan="1"><p>varchar</p></td><td colspan="1" rowspan="1"><p>Unique, uniformly assigned and managed</p></td></tr><tr><td colspan="1" rowspan="1"><p>time</p></td><td colspan="1" rowspan="1"><p>Update time</p></td><td colspan="1" rowspan="1"><p>varchar</p></td><td colspan="1" rowspan="1"><p>Uniform format: xxxx-xx-xx xx:xx:xx</p></td></tr><tr><td colspan="1" rowspan="1"><p>state</p></td><td colspan="1" rowspan="1"><p>Operating state</p></td><td colspan="1" rowspan="1"><p>int</p></td><td colspan="1" rowspan="1"><p>0, Power on; 1, Standby; 2, Running; 3, Fault; 4, Emergency stop; 5, Power off.</p></td></tr><tr><td colspan="1" rowspan="1"><p>stateinfo</p></td><td colspan="1" rowspan="1"><p>Operating state description</p></td><td colspan="1" rowspan="1"><p>varchar</p></td><td colspan="1" rowspan="1"><p>Specific fault codes must be provided if there is a fault or emergency stop</p></td></tr><tr><td colspan="1" rowspan="1"><p>structureinfo</p></td><td colspan="1" rowspan="1"><p>Structural monitoring state</p></td><td colspan="1" rowspan="1"><p>int</p></td><td colspan="1" rowspan="1"><p>0, Normal; 1, Alarm.</p></td></tr><tr><td colspan="1" rowspan="1"><p>mechanisminfo</p></td><td colspan="1" rowspan="1"><p>Mechanical operation state</p></td><td colspan="1" rowspan="1"><p>int</p></td><td colspan="1" rowspan="1"><p>0, Normal; 1, Alarm.</p></td></tr><tr><td colspan="1" rowspan="1"><p>electricalinfo</p></td><td colspan="1" rowspan="1"><p>Electrical control state</p></td><td colspan="1" rowspan="1"><p>int</p></td><td colspan="1" rowspan="1"><p>0, Normal; 1, Alarm.</p></td></tr></tbody></table>
+            </table-wrap>
+          
+          <p>To closely replicate the real working conditions of the transmission layer and data layer in the five-dimensional architecture, the data entry system was designed to regularly enter equipment position data and equipment status data into the database using a two-table structure at set time intervals. Therefore, to facilitate dynamic reading, an adjustable timer was set in the data retrieval stage, allowing dynamic control of the connection between the logic layer and the data layer. This setup enables the logic layer to access data at fixed intervals, and subsequently, data is forwarded to each client through the server.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>5.4. Distributed implementation of the system</title>
+          
+          <p>In the process of building a distributed system using the Mirror framework and its network components, the first step is to create an empty object named NetworkManager and configure the necessary network framework components as shown in subgraph (a) of <xref ref-type="fig" rid="fig_14">Figure 14</xref>. The Network Manager component is responsible for coordinating the connection process between clients and the server, synchronizing network scenes and states, and managing the lifecycle of network entities, as depicted in subgraph (b) of <xref ref-type="fig" rid="fig_14">Figure 14</xref>. To instantiate user character entities in real-time within the network scene, the relevant character entity information is predefined in the Prefab resources, which is further assigned to the Player Prefab property of the NetworkManager. The KCP Transport component implements a network transmission mechanism based on the KCP protocol, ensuring the orderliness and reliability of data, with specific communication parameters set as shown in subgraph (c) of <xref ref-type="fig" rid="fig_14">Figure 14</xref>. The Network Discovery component uses network broadcasting technology to automatically detect server instances on the same network, thereby simplifying the network session discovery process. The Network Discovery HUD provides a UI interaction interface, allowing users to intuitively select and join available sessions within the network.</p><p>To ensure that sub-clients immediately obtain an effective monitoring perspective upon connection, this study developed a method called CustomNetworkManager by extending the Network Behaviour class. This method, by overriding the OnServerAddPlayer function, specifies the initial position of sub-clients to optimize their access viewpoint, with related pseudocode presented in <xref ref-type="table" rid="table_5">Table 5</xref>.</p>
+          
+            <fig id="fig_14">
+              <label>Figure 14</label>
+              <caption>
+                <title>Mirror network framework components</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2024/3/img_3lNBdRBLAdygrQHP.png"/>
+            </fig>
+          
+          
+            <table-wrap id="table_5">
+              <label>Table 5</label>
+              <caption>
+                <title>Pseudocode for CustomNetworkManager class</title>
+              </caption>
+              <table><tbody><tr><td colspan="1" rowspan="18"><p>// Define the CustomNetworkManager method, inheriting from Mirror's NetworkManager class public class</p><p>public class CustomNetworkManager : NetworkManager</p><p>{</p><p>// Declare an array of Vector3 type named startPositions, to store initial positions for clients public Vector3</p><p>public Vector3[] startPositions = new Vector3[]</p><p>// Override the OnServerAddPlayer method from NetworkManager, executed when a new client is added on the server</p><p>public override void OnServerAddPlayer(NetworkConnectionToClient conn)</p><p>{</p><p>// Calculate the initial position index for the new client, index is based on the current number of connected clients</p><p>int startPosIndex = numPlayers % startPositions.Length;</p><p>// Select the initial position for the new client from the startPositions array using the calculated index</p><p>Vector3 startPos = startPositions[startPosIndex];</p><p>// Instantiate playerPrefab at the selected initial position</p><p>GameObject player = Instantiate(playerPrefab, startPos, Quaternion.identity);</p><p>// Add the instantiated player object to the corresponding client connection, completing the network setup for the player</p><p>NetworkServer.AddPlayerForConnection(conn, player);</p><p>}</p><p>}</p></td></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr></tbody></table>
+            </table-wrap>
+          
+          <p>All dynamic equipment and user character entity scripts have been changed from the MonoBehaviour class to the NetworkBehaviour class, transforming their actions into network behaviors. By using the Network Identity component, each participant and dynamic model is assigned a unique identifier, ensuring their uniqueness in the scene. Simultaneously, the Network Transform component is used to synchronize the positions and statuses of all dynamic equipment and user character entities, ensuring accurate real-time network position synchronization. To allow all sub-clients to see each other and the movement states of dynamic models, network attributes, including network identity and real-time network position, are assigned to user character entities and all dynamic models. These implementations in the Mirror framework, through network identity and network transform components, ensure interactive and consistent behavior of users and devices on the network.</p><p>Taking the double trolley quay crane as an example, its script responsible for grabbing containers has been modified to utilize the Client, Command, ClientRpc, and SyncVar attributes to dictate methods' behaviors in the network. The Client attribute is used to mark methods that should only be executed on the client side. The Command attribute is used to mark a method so it can be called from the client and executed on the server. Methods marked with the ClientRpc attribute are called from the server and executed on all clients. SyncVar is used to mark variables that need to be synchronized across the network. The modified script pseudocode is shown in <xref ref-type="table" rid="table_6">Table 6</xref>.</p>
+          
+            <table-wrap id="table_6">
+              <label>Table 6</label>
+              <caption>
+                <title>Pseudocode for network behavior and synchronization mechanism of the STSCantry class</title>
+              </caption>
+              <table><tbody><tr><td colspan="1" rowspan="22"><p>using Mirror;// Reference to the Mirror networking framework</p><p>// Marking the STSCantry class as a network behavior class, inheriting from the NetworkBehaviour class</p><p>public class STSCantry: NetworkBehaviour</p><p>{</p><p>[SyncVar] Declares variables that need to be automatically synchronized between server and client</p><p>void Update()//Called every frame to update the system state</p><p>{</p><p>// Ensure only the local client can perform actions</p><p>if (!isLocalPlayer) return;</p><p>MoveCrane();</p><p>CheckGrabInput();</p><p>}</p><p>[Client]// Indicates the following methods are executed only on the client, not on the server</p><p>MoveCrane(),// Controls the movement of the crane</p><p>CheckGrabInput()//Checks and handles user input</p><p>[Command]// Indicates the following methods are called on the client but executed on the server</p><p>CmdGrabCargo(cargo) // Command to grab a container executed on the server</p><p>CmdDropCargo() // Command to drop a container executed on the server</p><p>[ClientRpc]// Indicates the following methods are called on the server but executed on all clients</p><p>RpcSyncCargo(cargo, isGrabbing) // Synchronizes the cargo grabbing status to all clients</p><p>ShowGrabHint(show) // Show or hide grab hint text based on the parameter</p><p>}</p></td></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr></tbody></table>
+            </table-wrap>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>5.5. Implementation of system functional modules</title>
+          
+          <p>(1) Scene Roaming</p><p>By defining mouse events and keyboard inputs in the Input class and setting up user behavior logic with if statements, scene roaming can be implemented using Unity3D's Translate method. After establishing server connections and joining multiple sub-clients for testing, each sub-client entity can roam within the scene, observing a clear view of the dock operations without synchronization issues, as shown in <xref ref-type="fig" rid="fig_15">Figure 15</xref>, depicting four clients simultaneously roaming in the scene.</p>
+          
+            <fig id="fig_15">
+              <label>Figure 15</label>
+              <caption>
+                <title>Mirror network framework components</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2024/3/img_y5F_l4WMNtz_4Cwi.png"/>
+            </fig>
+          
+          <p>(2) Human-Machine Interaction Functionality </p><p>Dynamic equipment is equipped with box-type colliders. When the mouse is placed within the collider range of an equipment model, an interaction event is triggered, displaying the current equipment’s information panel. The content of the information panel is composed of the operational status data stored in <xref ref-type="table" rid="table_3">Table 3</xref> and <xref ref-type="table" rid="table_4">Table 4</xref>. The interaction effects between users and models are shown in <xref ref-type="fig" rid="fig_16">Figure 16</xref>.</p>
+          
+            <fig id="fig_16">
+              <label>Figure 16</label>
+              <caption>
+                <title>Interaction effects between users and models</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2024/3/img_icXJLzNZpBzKGp_W.png"/>
+            </fig>
+          
+          <p>(3) Status Monitoring Module </p><p>The main client is equipped with a status monitoring module that provides real-time monitoring of the dock environment and equipment, as shown in <xref ref-type="fig" rid="fig_17">Figure 17</xref>. After entering the system's main interface, users can overview the real-time status of all dock equipment and check for any alarm messages. By clicking the checkbox to close the user interface on the main screen, users can shut down or activate the current user interaction interface.</p>
+          
+            <fig id="fig_17">
+              <label>Figure 17</label>
+              <caption>
+                <title>Main interface of the status monitoring module</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2024/3/img_yIngrOaz7mlzveAM.png"/>
+            </fig>
+          
+          <p>(4) Real-Time Alarm Module</p><p>When the system database records an alarm for a piece of equipment, the corresponding equipment category button on the right side of the status monitoring interface turns red to signal an alarm, and the specific status type on the left side also turns red, changing the status display from “Normal” to “Alarm”. The alarm details for the equipment experiencing the alarm are displayed in the center of the main interface, as shown in <xref ref-type="fig" rid="fig_18">Figure 18</xref>, where a double trolley quay crane mechanism has triggered an alarm.</p><p>Simultaneously, the main client and all sub-clients will see a distinct yellow alarm marker on the alarmed equipment, as shown in <xref ref-type="fig" rid="fig_19">Figure 19</xref>. The height of the yellow alarm marker varies depending on the equipment's height. Once the main client resolves the issue, the yellow marker disappears.</p>
+          
+            <fig id="fig_18">
+              <label>Figure 18</label>
+              <caption>
+                <title>Alarm details interface</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2024/3/img_ZoyyrgMboVux5yJ0.png"/>
+            </fig>
+          
+          
+            <fig id="fig_19">
+              <label>Figure 19</label>
+              <caption>
+                <title>Yellow marker effects on alarmed equipment</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2024/3/img_0puhO2ttLWP_yfkI.png"/>
+            </fig>
+          
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>6. Conclusion</title>
+      <p>To achieve multi-perspective real-time monitoring and management of operational equipment at automated container terminals, ensuring the safe operation of automated container terminals, this paper started from the overall architecture of a digital twin system for monitoring automated container terminal operational equipment. It detailed the content of each layer and performs a multidimensional and multiscale analysis of the digital twin model, building high-fidelity virtual models. Addressing the large volume of virtual scene models at automated container terminals, a unified management approach for various models based on the concept of scene tree geometric modeling was used. From the perspective of layout consistency between virtual and physical spaces, an evaluation method for virtual-real consistency was proposed, and combined with discrete LOD technology, virtual models were rendered and optimized. Leveraging the advantages of "centralized" and "replicated" architectures, along with the functional requirements for dock operational equipment monitoring, a multi-layer distributed system solution was proposed. Finally, using an automated container terminal as an example, a digital twin system prototype was designed and developed, and testing confirms that the system's functions operate normally, achieving multi-perspective digital monitoring of dock operational equipment and the site. This provides a case study for the application of digital twin technology at automated container terminals, significantly contributing to the enhancement of digital intelligence levels at automated container terminals.</p>
+    </sec>
+  </body>
+  <back>
+    <ack>
+      <title>Acknowledgments</title>
+      
+    </ack>
+    <app-group>
+      <app>
+        <title>Appendix</title>
+        
+      </app>
+    </app-group>
+    <notes>
+      <title>Author Contributions</title>
+      
+    </notes>
+    <notes>
+      <title>Funding</title>
+      
+    </notes>
+    <notes>
+      <title>Informed Consent Statement</title>
+      
+    </notes>
+    <notes>
+      <title>Data Availability Statement</title>
+      <p>The data used to support the findings of this study are available from the corresponding author upon request.</p>
+    </notes>
+    <notes notes-type="COI-statement">
+      <title>Conflicts of Interest</title>
+      <p>The authors declare that they have no conflicts of interest.</p>
+    </notes>
+    <ref-list>
+      <title>References</title>
+      <ref id="ref_1">
+        <label>1.</label>
+        <element-citation publication-type="journal">
+          <volume>24</volume>
+          <page-range>65-76</page-range>
+          <issue>4</issue>
+          <year>2021</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Mi</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Huang</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Fu</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Postolache</surname>
+              <given-names>O.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/MIM.2021.9448257</pub-id>
+          <article-title>Vision-based measurement: Actualities and developing trends in automated container terminals</article-title>
+          <source>IEEE Instrum. Meas. Mag.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_2">
+        <label>2.</label>
+        <element-citation publication-type="journal">
+          <volume>156</volume>
+          <page-range>107258</page-range>
+          <year>2021</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Xiang</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Liu</surname>
+              <given-names>C.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.cie.2021.107258</pub-id>
+          <article-title>Modeling and analysis for an automated container terminal considering battery management</article-title>
+          <source>Comput. Ind. Eng.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_3">
+        <label>3.</label>
+        <element-citation publication-type="journal">
+          <volume>11</volume>
+          <page-range>2957</page-range>
+          <issue>10</issue>
+          <year>2019</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Wang</surname>
+              <given-names>N.</given-names>
+            </name>
+            <name>
+              <surname>Chang</surname>
+              <given-names>D.</given-names>
+            </name>
+            <name>
+              <surname>Shi</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Yuan</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Gao</surname>
+              <given-names>Y.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3390/su11102957</pub-id>
+          <article-title>Analysis and design of typical automated container terminals layout considering carbon emissions</article-title>
+          <source>Sustainability</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_4">
+        <label>4.</label>
+        <element-citation publication-type="journal">
+          <volume>2023</volume>
+          <page-range>6909801</page-range>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Ding</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Chen</surname>
+              <given-names>K.</given-names>
+            </name>
+            <name>
+              <surname>Ding</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Voss</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Heilig</surname>
+              <given-names>L.</given-names>
+            </name>
+            <name>
+              <surname>Chen</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Chen</surname>
+              <given-names>X.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1155/2023/6909801</pub-id>
+          <article-title>Real-time monitoring and optimal resource allocation for automated container terminals: A digital twin application at the Yangshan Port</article-title>
+          <source>J. Adv. Transp.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_5">
+        <label>5.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>1090–1094</page-range>
+          <year>2001</year>
+          <person-group person-group-type="author">
+            <name>
+              <given-names>R.</given-names>
+              <surname>Bozzo</surname>
+            </name>
+            <name>
+              <given-names>A.</given-names>
+              <surname>Derito</surname>
+            </name>
+            <name>
+              <given-names>R.</given-names>
+              <surname>Nurchi</surname>
+            </name>
+            <name>
+              <given-names>N.</given-names>
+              <surname>Ackroyd</surname>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/ITSC.2001.948814</pub-id>
+          <article-title>MOCONT: A new system for container terminal monitoring and control</article-title>
+          <source>2001 IEEE Intelligent Transportation Systems, Proceedings, Oakland, CA, USA</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_6">
+        <label>6.</label>
+        <element-citation publication-type="journal">
+          <volume>21</volume>
+          <page-range>594-604</page-range>
+          <issue>8</issue>
+          <year>2006</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Lee</surname>
+              <given-names>U.</given-names>
+            </name>
+            <name>
+              <surname>Kang</surname>
+              <given-names>K.</given-names>
+            </name>
+            <name>
+              <surname>Kim</surname>
+              <given-names>G.</given-names>
+            </name>
+            <name>
+              <surname>Cho</surname>
+              <given-names>H.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1111/j.1467-8667.2006.00459.x</pub-id>
+          <article-title>Improving tower crane productivity using wireless technology</article-title>
+          <source>Comput. Aided Civ. Infrastruct. Eng.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_7">
+        <label>7.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>677–684</page-range>
+          <year>2020</year>
+          <person-group person-group-type="author">
+            <name>
+              <given-names>Z.</given-names>
+              <surname>Yang</surname>
+            </name>
+            <name>
+              <given-names/>
+              <surname>J.Yang</surname>
+            </name>
+            <name>
+              <given-names>E.</given-names>
+              <surname>Yuan</surname>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.22260/ISARC2020/0095</pub-id>
+          <article-title>Safety monitoring of construction equipment based on multi-sensor technology</article-title>
+          <source>Proceedings of the International Symposium on Automation and Robotics in Construction, Kitakyushu, Japan</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_8">
+        <label>8.</label>
+        <element-citation publication-type="journal">
+          <volume>24</volume>
+          <page-range>613-620</page-range>
+          <issue>5</issue>
+          <year>2006</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Kim</surname>
+              <given-names>J. Y.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1017/S0263574706002694</pub-id>
+          <article-title>A TCP/IP-based remote control system for yard cranes in a port container terminal</article-title>
+          <source>Robotica</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_9">
+        <label>9.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>42–47</page-range>
+          <year>2021</year>
+          <person-group person-group-type="author">
+            <name>
+              <given-names>H.</given-names>
+              <surname>Awad</surname>
+            </name>
+            <name>
+              <given-names>M. S.</given-names>
+              <surname>Saraya</surname>
+            </name>
+            <name>
+              <given-names/>
+              <surname>M. S. M. Elksasy</surname>
+            </name>
+            <name>
+              <given-names>A. M. T.</given-names>
+              <surname>Ali-Eldin</surname>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/MIUCC52538.2021.9447596</pub-id>
+          <article-title>IoT based framework for monitoring and controlling movable harbor cranes</article-title>
+          <source>2021 International Mobile, Intelligent, and Ubiquitous Computing Conference (MIUCC), Cairo, Egypt</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_10">
+        <label>10.</label>
+        <element-citation publication-type="journal">
+          <volume>27</volume>
+          <page-range>111-119</page-range>
+          <year>2012</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Li</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Liu</surname>
+              <given-names>C.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.autcon.2012.05.003</pub-id>
+          <article-title>Integrating field data and 3D simulation for tower crane activity monitoring and alarming</article-title>
+          <source>Autom. Constr.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_11">
+        <label>11.</label>
+        <element-citation publication-type="journal">
+          <volume>64</volume>
+          <page-range>372-389</page-range>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Tao</surname>
+              <given-names>F.</given-names>
+            </name>
+            <name>
+              <surname>Xiao</surname>
+              <given-names>B.</given-names>
+            </name>
+            <name>
+              <surname>Qi</surname>
+              <given-names>Q.</given-names>
+            </name>
+            <name>
+              <surname>Cheng</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Ji</surname>
+              <given-names>P.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.jmsy.2022.06.015</pub-id>
+          <article-title>Digital twin modeling</article-title>
+          <source>J. Manuf. Syst.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_12">
+        <label>12.</label>
+        <element-citation publication-type="journal">
+          <page-range>85-113</page-range>
+          <year>2017</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Grieves</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Vickers</surname>
+              <given-names>J.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1007/978-3-319-38756-7_4</pub-id>
+          <article-title>Digital twin: Mitigating unpredictable, undesirable emergent behavior in complex systems</article-title>
+          <source>Transdisciplinary Perspectives on Complex Systems: New Findings and Approaches</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_13">
+        <label>13.</label>
+        <element-citation publication-type="journal">
+          <volume>1</volume>
+          <page-range>1-7</page-range>
+          <year>2014</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Grieves</surname>
+              <given-names>M.</given-names>
+            </name>
+          </person-group>
+          <article-title>Digital twin: Manufacturing excellence through virtual factory replication</article-title>
+          <source>White Paper</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_14">
+        <label>14.</label>
+        <element-citation publication-type="journal">
+          <volume>21</volume>
+          <page-range>3344</page-range>
+          <issue>10</issue>
+          <year>2021</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Martínez-Gutiérrez</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Díez-González</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Ferrero-Guillén</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Verde</surname>
+              <given-names>P.</given-names>
+            </name>
+            <name>
+              <surname>Álvarez</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Perez</surname>
+              <given-names>H.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3390/s21103344</pub-id>
+          <article-title>Digital twin for automatic transportation in industry 4.0</article-title>
+          <source>Sensors</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_15">
+        <label>15.</label>
+        <element-citation publication-type="journal">
+          <volume>52</volume>
+          <page-range>2104-2109</page-range>
+          <issue>13</issue>
+          <year>2019</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Hofmann</surname>
+              <given-names>W.</given-names>
+            </name>
+            <name>
+              <surname>Branding</surname>
+              <given-names>F.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.ifacol.2019.11.516</pub-id>
+          <article-title>Implementation of an IoT-and cloud-based digital twin for real-time decision support in port operations</article-title>
+          <source>IFAC-PapersOnLine</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_16">
+        <label>16.</label>
+        <element-citation publication-type="journal">
+          <volume>131</volume>
+          <page-range>5571-5588</page-range>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Yang</surname>
+              <given-names>W.</given-names>
+            </name>
+            <name>
+              <surname>Bao</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Zheng</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>L.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Lin</surname>
+              <given-names>L.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1007/s00170-022-10625-1</pub-id>
+          <article-title>A digital twin framework for large comprehensive ports and a case study of Qingdao Port</article-title>
+          <source>Int. J. Adv. Manuf. Technol.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_17">
+        <label>17.</label>
+        <element-citation publication-type="journal">
+          <volume>52</volume>
+          <page-range>25-30</page-range>
+          <issue>10</issue>
+          <year>2019</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Szpytko</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Duarte</surname>
+              <given-names>Y. S.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.ifacol.2019.10.014</pub-id>
+          <article-title>Digital twins model for cranes operating in container terminal</article-title>
+          <source>IFAC-PapersOnLine</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_18">
+        <label>18.</label>
+        <element-citation publication-type="journal">
+          <volume>15</volume>
+          <page-range>1817</page-range>
+          <issue>5</issue>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Agostinelli</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Cumo</surname>
+              <given-names>F.</given-names>
+            </name>
+            <name>
+              <surname>Nezhad</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Orsini</surname>
+              <given-names>G.</given-names>
+            </name>
+            <name>
+              <surname>Piras</surname>
+              <given-names>G.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3390/en15051817</pub-id>
+          <article-title>Renewable energy system controlled by open-source tools and digital twin model: Zero energy port area in Italy</article-title>
+          <source>Energies</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_19">
+        <label>19.</label>
+        <element-citation publication-type="journal">
+          <volume>22</volume>
+          <page-range>3216</page-range>
+          <issue>9</issue>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Zhou</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Fu</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>W.</given-names>
+            </name>
+            <name>
+              <surname>Gao</surname>
+              <given-names>C.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3390/s22093216</pub-id>
+          <article-title>A digital twin-based operation status monitoring system for port cranes</article-title>
+          <source>Sensors</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_20">
+        <label>20.</label>
+        <element-citation publication-type="journal">
+          <volume>23</volume>
+          <page-range>1603-1611</page-range>
+          <issue>8</issue>
+          <year>2017</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Tao</surname>
+              <given-names>F.</given-names>
+            </name>
+            <name>
+              <surname>Cheng</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Cheng</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Xu</surname>
+              <given-names>W.</given-names>
+            </name>
+            <name>
+              <surname>Qi</surname>
+              <given-names>Q.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.13196/j.cims.2017.08.001</pub-id>
+          <article-title>Theories and technologies for cyber-physical fusion in digital twin shop-floor</article-title>
+          <source>Comput. Integr. Manuf. Syst.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_21">
+        <label>21.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>1812</page-range>
+          <year>2012</year>
+          <person-group person-group-type="author">
+            <name>
+              <given-names>E.</given-names>
+              <surname>Tuegel</surname>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.2514/6.2012-1812</pub-id>
+          <article-title>The airframe digital twin: Some challenges to realization</article-title>
+          <source>53rd AIAA/ASME/ASCE/AHS/ASC Structures, Structural Dynamics and Materials Conference, Honolulu, Hawaii</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_22">
+        <label>22.</label>
+        <element-citation publication-type="journal">
+          <volume>32</volume>
+          <page-range>1-14</page-range>
+          <year>2013</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Topçu</surname>
+              <given-names>Oya</given-names>
+            </name>
+            <name>
+              <surname>Oğuztüzün</surname>
+              <given-names>Halit</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.simpat.2012.11.001</pub-id>
+          <article-title>Layered simulation architecture: A practical approach</article-title>
+          <source>Simul. Model. Pract. Theory</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_23">
+        <label>23.</label>
+        <element-citation publication-type="journal">
+          <volume>25</volume>
+          <page-range>1491-1504</page-range>
+          <issue>6</issue>
+          <year>2019</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Ding</surname>
+              <given-names>Kai</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>Xuan</given-names>
+            </name>
+            <name>
+              <surname>Zhou</surname>
+              <given-names>Guoqing</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>Chao</given-names>
+            </name>
+            <name>
+              <surname>Yang</surname>
+              <given-names>Hui</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>Fang</given-names>
+            </name>
+            <name>
+              <surname>Cao</surname>
+              <given-names>Xing</given-names>
+            </name>
+          </person-group>
+          <article-title>Digital twin-based multi-dimensional and multi-scale modeling of smart manufacturing spaces</article-title>
+          <source>Comput. Integr. Manuf. Syst.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_24">
+        <label>24.</label>
+        <element-citation publication-type="journal">
+          <volume>45</volume>
+          <page-range>11169-11183</page-range>
+          <issue>9</issue>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Cong</surname>
+              <given-names>Yang</given-names>
+            </name>
+            <name>
+              <surname>Yang</surname>
+              <given-names>Ming Y.</given-names>
+            </name>
+            <name>
+              <surname>Rosenhahn</surname>
+              <given-names>Bodo</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/TPAMI.2023.3268066</pub-id>
+          <article-title>RelTr: Relation transformer for scene graph generation</article-title>
+          <source>IEEE Trans. Pattern Anal. Mach. Intell.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_25">
+        <label>25.</label>
+        <element-citation publication-type="journal">
+          <volume>27</volume>
+          <page-range>1-15</page-range>
+          <issue>1</issue>
+          <year>2021</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Tao</surname>
+              <given-names>F.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Qi</surname>
+              <given-names>Q.</given-names>
+            </name>
+            <name>
+              <surname>et al.</surname>
+              <given-names/>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.13196/j.cims.2021.01.001</pub-id>
+          <article-title>Theory of digital twin modeling and its application</article-title>
+          <source>Comput. Integr. Manuf. Syst.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_26">
+        <label>26.</label>
+        <element-citation publication-type="journal">
+          <volume>21</volume>
+          <page-range>031005</page-range>
+          <issue>3</issue>
+          <year>2021</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Qian</surname>
+              <given-names>Weiwei</given-names>
+            </name>
+            <name>
+              <surname>Guo</surname>
+              <given-names>Yu</given-names>
+            </name>
+            <name>
+              <surname>Cui</surname>
+              <given-names>Kai</given-names>
+            </name>
+            <name>
+              <surname>Wu</surname>
+              <given-names>Pengxing</given-names>
+            </name>
+            <name>
+              <surname>Fang</surname>
+              <given-names>Weiguang</given-names>
+            </name>
+            <name>
+              <surname>Liu</surname>
+              <given-names>Daoyuan</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1115/1.4049634</pub-id>
+          <article-title>Multidimensional data modeling and model validation for digital twin workshop</article-title>
+          <source>J. Comput. Inf. Sci. Eng.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_27">
+        <label>27.</label>
+        <element-citation publication-type="journal">
+          <volume>27</volume>
+          <page-range>1815-1823</page-range>
+          <issue>8</issue>
+          <year>2015</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Li</surname>
+              <given-names>Chen</given-names>
+            </name>
+            <name>
+              <surname>Kang</surname>
+              <given-names>Fei</given-names>
+            </name>
+          </person-group>
+          <article-title>Intelligent combination of discrete LOD model for 3D visualization based on visual perception and information entropy fusion</article-title>
+          <source>J. Syst. Simul.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_28">
+        <label>28.</label>
+        <element-citation publication-type="journal">
+          <volume>161</volume>
+          <page-range>194-207</page-range>
+          <year>2020</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Tang</surname>
+              <given-names>Li</given-names>
+            </name>
+            <name>
+              <surname>Shen</surname>
+              <given-names>Ying</given-names>
+            </name>
+            <name>
+              <surname>Lin</surname>
+              <given-names>Li</given-names>
+            </name>
+            <name>
+              <surname>Biljecki</surname>
+              <given-names>Filip</given-names>
+            </name>
+            <name>
+              <surname>Zhu</surname>
+              <given-names>Hui</given-names>
+            </name>
+            <name>
+              <surname>Zhu</surname>
+              <given-names>Yu</given-names>
+            </name>
+            <name>
+              <surname>Yang</surname>
+              <given-names>Fang</given-names>
+            </name>
+            <name>
+              <surname>Su</surname>
+              <given-names>Fei</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.isprsjprs.2020.01.019</pub-id>
+          <article-title>An application-driven LOD modeling paradigm for 3D building models</article-title>
+          <source>ISPRS J. Photogramm. Remote Sens.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_29">
+        <label>29.</label>
+        <element-citation publication-type="journal">
+          <volume>53</volume>
+          <page-range>282-290</page-range>
+          <year>2015</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Hengster-Movric</surname>
+              <given-names>Kristian</given-names>
+            </name>
+            <name>
+              <surname>Lewis</surname>
+              <given-names>Frank L.</given-names>
+            </name>
+            <name>
+              <surname>Sebek</surname>
+              <given-names>Michael</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.automatica.2014.12.015</pub-id>
+          <article-title>Distributed static output-feedback control for state synchronization in networks of identical LTI systems</article-title>
+          <source>Automatica</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_30">
+        <label>30.</label>
+        <element-citation publication-type="journal">
+          <volume>25</volume>
+          <page-range>1524-1546</page-range>
+          <issue>11</issue>
+          <year>2013</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Chen</surname>
+              <given-names>Simon</given-names>
+            </name>
+            <name>
+              <surname>Ng</surname>
+              <given-names>Andy</given-names>
+            </name>
+            <name>
+              <surname>Greenfield</surname>
+              <given-names>Paul</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1002/cpe.2891</pub-id>
+          <article-title>A performance evaluation of distributed database architectures</article-title>
+          <source>Conc. Comput. Pract. Exp.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_31">
+        <label>31.</label>
+        <element-citation publication-type="journal">
+          <volume>37</volume>
+          <page-range>6071-6079</page-range>
+          <issue>5</issue>
+          <year>2019</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Zhu</surname>
+              <given-names>Xiaopeng</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3233/JIFS-179190</pub-id>
+          <article-title>Behavior tree design of intelligent behavior of non-player character (NPC) based on Unity3D</article-title>
+          <source>J. Intell. Fuzzy Syst.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_32">
+        <label>32.</label>
+        <element-citation publication-type="journal">
+          <volume>15</volume>
+          <page-range>100771</page-range>
+          <year>2021</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Cheliotis</surname>
+              <given-names>Konstantinos</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.softx.2021.100771</pub-id>
+          <article-title>ABMU: An agent-based modelling framework for Unity3D</article-title>
+          <source>SoftwareX</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_33">
+        <label>33.</label>
+        <element-citation publication-type="journal">
+          <volume>6</volume>
+          <page-range>206-233</page-range>
+          <issue>3</issue>
+          <year>2021</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Kon</surname>
+              <given-names>W.K.</given-names>
+            </name>
+            <name>
+              <surname>Abdul Rahman</surname>
+              <given-names>Noorul Shaiful Fitri</given-names>
+            </name>
+            <name>
+              <surname>Md Hanafiah</surname>
+              <given-names>Rudiah</given-names>
+            </name>
+            <name>
+              <surname>Abdul Hamid</surname>
+              <given-names>Saharuddin</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1108/MABR-03-2020-0016</pub-id>
+          <article-title>The global trends of automated container terminal: A systematic literature review</article-title>
+          <source>Marit. Bus. Rev.</source>
+        </element-citation>
+      </ref>
+    </ref-list>
+  </back>
+</article>
