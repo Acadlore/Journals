@@ -1,0 +1,4131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.3 20210610//EN" "JATS-journalpublishing1-3.dtd">
+<article xml:lang="en" dtd-version="1.3" article-type="research-article" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mml="http://www.w3.org/1998/Math/MathML">
+  <front>
+    <journal-meta>
+      <journal-id journal-id-type="publisher-id">MITS</journal-id>
+      <journal-id journal-id-type="doi">10.56578</journal-id>
+      <journal-title-group>
+        <journal-title>Mechatronics and Intelligent Transportation Systems</journal-title>
+        <abbrev-journal-title abbrev-type="issn">Mechatron. Intell Transp. Syst.</abbrev-journal-title>
+        <abbrev-journal-title abbrev-type="publisher">MITS</abbrev-journal-title>
+      </journal-title-group>
+      <issn publication-format="electronic">2958-0218</issn>
+      <issn publication-format="print">2958-020X</issn>
+      <publisher>
+        <publisher-name>Acadlore</publisher-name>
+      </publisher>
+    </journal-meta>
+    <article-meta>
+      <article-id pub-id-type="publisher-id">AR-7xCyJe95G8LlzqpHhDbCGcecIcjVFzs9</article-id>
+      <article-id pub-id-type="doi">10.56578/mits030201</article-id>
+      <article-categories>
+        <subj-group>
+          <subject>Articles</subject>
+        </subj-group>
+      </article-categories>
+      <title-group>
+        <article-title>Enhancing Occluded Pedestrian Re-Identification with the MotionBlur Data Augmentation Module</article-title>
+      </title-group>
+      <contrib-group>
+        <contrib contrib-type="author" rid="aff_1">
+          <contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0009-0001-4698-280X</contrib-id>
+          <name>
+            <surname>Xue</surname>
+            <given-names>Zhen</given-names>
+          </name>
+          <email>20214228018@stu.suda.edu.cn</email>
+        </contrib>
+        <contrib contrib-type="author" rid="aff_2">
+          <contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0009-0002-1795-2983</contrib-id>
+          <name>
+            <surname>Yao</surname>
+            <given-names>Teng</given-names>
+          </name>
+          <email>hkyaoteng@ust.hk</email>
+        </contrib>
+        <aff id="aff_1">School of Electronics and Information Engineering, Soochow University, 215006 Suzhou, China</aff>
+        <aff id="aff_2">Fok Ying Tung Research Institute, The Hong Kong University of Science and Technology, 999077 Hong Kon, China</aff>
+      </contrib-group>
+      <pub-date publication-format="electronic" date-type="pub">
+        <day>29</day>
+        <month>04</month>
+        <year>2024</year>
+      </pub-date>
+      <volume>3</volume>
+      <issue>2</issue>
+      <fpage>73</fpage>
+      <lpage>84</lpage>
+      <page-range>73-84</page-range>
+      <history>
+        <date date-type="received">
+          <day>11</day>
+          <month>02</month>
+          <year>2024</year>
+        </date>
+        <date date-type="accepted">
+          <day>22</day>
+          <month>03</month>
+          <year>2024</year>
+        </date>
+      </history>
+      <permissions>
+        <copyright-statement>©2024 by the author(s)</copyright-statement>
+        <copyright-year>2024</copyright-year>
+        <license license-type="open-access" xlink:href="https://creativecommons.org/licenses/by/4.0/">
+          <license-p> Published by Acadlore Publishing Services Limited, Hong Kong. This article is available for free download and can be reused and cited, provided that the original published version is credited, under the CC BY 4.0 license.</license-p>
+        </license>
+      </permissions>
+      <abstract><p>In the field of pedestrian re-identification (ReID), the challenge of matching occluded pedestrian images with holistic images across different camera views is significant. Traditional approaches have predominantly addressed non-pedestrian occlusions, neglecting other prevalent forms such as motion blur resulting from rapid pedestrian movement or camera focus discrepancies. This study introduces the MotionBlur module, a novel data augmentation strategy designed to enhance model performance under these specific conditions. Appropriate regions are selected on the original image for the application of convolutional blurring operations, which are characterized by predetermined lengths and frequencies of displacement. This method effectively simulates the common occurrence of motion blur observed in real-world scenarios. Moreover, the incorporation of multiple directional blurring accounts for a variety of potential situations within the dataset, thereby increasing the robustness of the data augmentation. Experimental evaluations conducted on datasets containing both occluded and holistic pedestrian images have demonstrated that models augmented with the MotionBlur module surpass existing methods in overall performance.</p></abstract>
+      <kwd-group>
+        <kwd>Pedestrian re-identification (ReID)</kwd>
+        <kwd>Intelligent video surveillance</kwd>
+        <kwd>Occluded pedestrian re-identification (occluded-ReID)</kwd>
+        <kwd>Vision transformer (ViT)</kwd>
+      </kwd-group>
+      <counts>
+        <count count-type="contributors" count="2"/>
+        <fig-count count="12"/>
+        <table-count count="3"/>
+        <ref-count count="32"/>
+      </counts>
+    </article-meta>
+  </front>
+  <body>
+    <sec sec-type="intro">
+      <title>1. Introduction</title>
+      <p>In real-world video perception scenarios, occlusion is a prevalent issue in pedestrian images captured by cameras. This problem significantly affects the performance of existing ReID algorithms in practical settings [<xref ref-type="bibr" rid="ref_1">1</xref>], [<xref ref-type="bibr" rid="ref_2">2</xref>], [<xref ref-type="bibr" rid="ref_3">3</xref>]. Generally, occlusions in real-world scenarios are diverse, ranging from trees, buildings, and vehicles, where any surrounding object can potentially occlude the target pedestrian. Moreover, these occurrences are more frequent and widespread in locations where ReID technology is extensively applied, such as shopping malls, train stations, hospitals, and schools [<xref ref-type="bibr" rid="ref_4">4</xref>], [<xref ref-type="bibr" rid="ref_5">5</xref>], [<xref ref-type="bibr" rid="ref_6">6</xref>]. Therefore, there is a need to design a more robust model structure for occluded-ReID.</p><p>Currently, common data augmentation techniques used for ReID include random erasing, color jittering, random cropping, and rotation. These methods are aimed at reducing the risk of overfitting and enhancing the model's robustness to occlusion. However, when dealing with occluded pedestrian images, the diversity and randomness of occlusions often pose challenges for achieving satisfactory results using these generic augmentation methods. Therefore, tailored designs specifically addressing occlusion are often more effective in meeting the requirements, thereby further enhancing the model's ability to handle occlusion.</p><p>The main focus of this paper is to investigate the challenges encountered in tracking and locating target pedestrians in real-world scenarios, particularly when motion blur occurs due to the high-speed movement of the target pedestrian or focusing issues with the camera. We aim to address this issue by employing data augmentation methods to introduce random motion blur to images in the dataset, thereby enabling the model to better adapt to such scenarios. As illustrated in <xref ref-type="fig" rid="fig_1">Figure 1</xref>, motion blur resembles a visual residue phenomenon resulting from small incremental displacements in a particular direction of certain parts of the target pedestrian's body. Generally, humans can easily discern specific motion changes and make informed judgments, whereas machines often struggle with this task. For instance, in the scenarios described, the presence of motion blur not only affects ReID but also introduces corresponding flaws in keypoint detection techniques [<xref ref-type="bibr" rid="ref_7">7</xref>], [<xref ref-type="bibr" rid="ref_8">8</xref>], [<xref ref-type="bibr" rid="ref_9">9</xref>], leading to confusion of the human body's specific structure and erroneous results, consequently resulting in a decrease in model accuracy.</p>
+      
+        <fig id="fig_1">
+          <label>Figure 1</label>
+          <caption>
+            <title>The motion blurred image after the human key point detection</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2024/4/img_m6SBUtB_gMBhZwQv.png"/>
+        </fig>
+      
+      <p>As previously mentioned, enhancing the model's capability to handle motion blur is crucial. However, current data augmentation techniques often struggle to achieve this, leading to limited improvements in model performance. Traditional motion blur methods typically apply blur uniformly across the entire image, and adjusting the associated coefficients usually results in minor variations over a broad scale. This approach often adversely affects the background and fails to effectively address real-world scenarios. To address this challenge, we have developed an enhancement occlusion module specifically designed for motion blur, allowing for significant blur operations within localized regions. Specifically, by judiciously extracting and expanding a portion of the pedestrian's body to simulate motion blur, our data augmentation approach introduces motion blur effects to images in the dataset, thereby improving the model's ability to handle such scenarios. Through extensive experimentation on occluded pedestrian datasets (Occluded-DukeMTMC, Partied-REID [<xref ref-type="bibr" rid="ref_10">10</xref>], and Occluded-REID [<xref ref-type="bibr" rid="ref_11">11</xref>]) and comprehensive datasets (Market1501 [<xref ref-type="bibr" rid="ref_12">12</xref>] and DukeMTMC-reID [<xref ref-type="bibr" rid="ref_13">13</xref>]), we have validated the effectiveness of our proposed method. When compared to existing methods, our approach achieves higher Rank-1 and mean Average Precision (mAP) accuracies, demonstrating its superiority in handling motion blur challenges.</p>
+    </sec>
+    <sec sec-type="">
+      <title>2. Related works</title>
+      <p>In this section, we will provide a brief overview of existing methods in the fields of general ReID and occluded-ReID.</p>
+      
+        <sec>
+          
+            <title>2.1. Holistic person re-identification</title>
+          
+          <p>ReID aims to retrieve target individuals of interest from different camera views and has made significant strides in recent years. Existing ReID methods can be broadly categorized into three types: manually annotated methods [<xref ref-type="bibr" rid="ref_14">14</xref>], [<xref ref-type="bibr" rid="ref_15">15</xref>], metric learning methods [<xref ref-type="bibr" rid="ref_16">16</xref>], [<xref ref-type="bibr" rid="ref_17">17</xref>], and deep learning methods [<xref ref-type="bibr" rid="ref_18">18</xref>], [<xref ref-type="bibr" rid="ref_19">19</xref>], [<xref ref-type="bibr" rid="ref_20">20</xref>]. With the advent of large-scale datasets and the proliferation of Graphics Processing Units (GPUs), deep learning-based approaches have become predominant in today's pedestrian ReID domain. Recent efforts have primarily focused on leveraging part-based features to achieve state-of-the-art performance in overall pedestrian ReID. Zhang et al. [<xref ref-type="bibr" rid="ref_21">21</xref>] achieved automatic alignment of part features through shortest path loss during the learning process, eliminating the need for additional supervision or explicit pose information. A generic method for learning features at the part level was proposed, which can be adapted to different strategies for partitioning parts. This method incorporates attention mechanisms to ensure that the model emphasizes the human body region, leading to the extraction of more effective features [<xref ref-type="bibr" rid="ref_22">22</xref>], [<xref ref-type="bibr" rid="ref_23">23</xref>]. However, these methods often struggle to achieve high accuracy in the presence of occlusion. These limitations hinder the practical applicability of the methods, particularly in common, crowded scenarios.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>2.2. Occluded person re-identification</title>
+          
+          <p>Research on occluded-ReID introduced a novel approach. The training set and gallery set are generally constructed from images of unobstructed pedestrians, while the query set is constructed from images of occluded pedestrians. Currently, research methods in this field can be divided into two categories: pose estimation-assisted [<xref ref-type="bibr" rid="ref_24">24</xref>], [<xref ref-type="bibr" rid="ref_25">25</xref>] and manually annotated parsing [<xref ref-type="bibr" rid="ref_26">26</xref>], [<xref ref-type="bibr" rid="ref_27">27</xref>]. Gao et al. [<xref ref-type="bibr" rid="ref_8">8</xref>] proposed a Pose-guided Visible Part Matching (PVPM) method, which jointly learns discriminative features with a pose-guided attention mechanism and self-discovers the visibility of part-level features within an end-to-end framework. He and Liu [<xref ref-type="bibr" rid="ref_24">24</xref>] introduced a new method called Pose-Guided Feature Alignment (PGFA), which separates useful information from occlusion noise using pose landmarks. Zhao et al. [<xref ref-type="bibr" rid="ref_28">28</xref>] proposed a model called HPNet for extracting part-level features and predicting the visibility of each part based on manual parsing. This method extracts features from semantic regions, compares them considering visibility, reduces background noise, and achieves pose alignment.</p><p>In contrast to the aforementioned methods, our approach does not rely on additional models. By addressing potential motion blur phenomena that may occur in real-world scenarios, our model is better equipped to handle such occurrences, enhancing its robustness to motion blur and effectively improving its performance in addressing this issue.</p>
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>3. Motion blur enhancement module</title>
+      <p>The overall architecture of the network is illustrated in <xref ref-type="fig" rid="fig_2">Figure 2</xref>. The original image passes through our motion blur module, and then the enhanced image is fed into our feature extractor. In our experiments, we simply employ a ViT [<xref ref-type="bibr" rid="ref_29">29</xref>], [<xref ref-type="bibr" rid="ref_30">30</xref>] as the feature extractor. For an input image <inline-formula>
+  <mml:math id="mha1ykjm6o">
+    <mml:mi>x</mml:mi>
+    <mml:mo>∈</mml:mo>
+    <mml:msup>
+      <mml:mrow>
+        <mml:mi>R</mml:mi>
+      </mml:mrow>
+      <mml:mrow>
+        <mml:mn>3</mml:mn>
+        <mml:mo>∗</mml:mo>
+        <mml:mo>∗</mml:mo>
+        <mml:mi>h</mml:mi>
+        <mml:mi>w</mml:mi>
+      </mml:mrow>
+    </mml:msup>
+  </mml:math>
+</inline-formula>, it is first divided into $N<inline-formula>
+  <mml:math id="magxpecjbq">
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>q</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>(P,P)<inline-formula>
+  <mml:math id="m9vfctvdy7">
+    <mml:mo>,</mml:mo>
+    <mml:mo stretchy="false">[</mml:mo>
+    <mml:mo stretchy="false">]</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>k</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+  </mml:math>
+</inline-formula>f \in \mathbb{R}^{(N+1)*c}<inline-formula>
+  <mml:math id="mpzhgrl2op">
+    <mml:mo>,</mml:mo>
+    <mml:mi>w</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+  </mml:math>
+</inline-formula>\mathrm{N}+1<inline-formula>
+  <mml:math id="mq42865dk1">
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>k</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>k</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mo stretchy="false">[</mml:mo>
+    <mml:mo stretchy="false">]</mml:mo>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>c<inline-formula>
+  <mml:math id="mpojul4a46">
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>I</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mo>.</mml:mo>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>n<inline-formula>
+  <mml:math id="mfbvhd7z5i">
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+  </mml:math>
+</inline-formula>c$ are set to 128 and 768, respectively. The extracted features undergo computation through fully connected layers to calculate both the triplet loss for feature embedding and the classification ID loss, thereby deriving the final results.</p>
+      
+        <fig id="fig_2">
+          <label>Figure 2</label>
+          <caption>
+            <title>Overall network framework</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2024/4/img_asMiYq5At4vnJmSW.png"/>
+        </fig>
+      
+      <p>Inspired by techniques such as light painting and other photography methods utilizing multiple shutter releases within a short time frame to capture the dynamic essence of moving objects, we aim to replicate a similar effect akin to visual residual phenomena. By partially displacing portions of the image at the pixel level, we simulate an effect more closely resembling motion blur. This approach mimics the scenario where multiple images of a pedestrian in motion are captured within the same time interval, akin to the effect generated by stacking multiple exposures of the same subject within a single frame. The specific procedure for this operation will be outlined below.</p><p>Given an image <inline-formula>
+  <mml:math id="mogof06a43">
+    <mml:mi>x</mml:mi>
+    <mml:mo>∈</mml:mo>
+    <mml:msup>
+      <mml:mrow>
+        <mml:mi>R</mml:mi>
+      </mml:mrow>
+      <mml:mrow>
+        <mml:mn>3</mml:mn>
+        <mml:mo>∗</mml:mo>
+        <mml:mo>∗</mml:mo>
+        <mml:mi>h</mml:mi>
+        <mml:mi>w</mml:mi>
+      </mml:mrow>
+    </mml:msup>
+  </mml:math>
+</inline-formula>, where $h<inline-formula>
+  <mml:math id="m4cf2m572j">
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+  </mml:math>
+</inline-formula>w$ represent the height and width of the image, respectively, in typical experiments, unless otherwise specified, the shape of the image will be uniformly reshaped to 256×128. First, we need to determine the parts of the image that require motion blur. Since surveillance cameras in reality often maintain a fixed perspective over short periods of time, background images tend to remain static without blur. Therefore, when simulating motion blur in images, we aim for the blur effect to predominantly appear in the human body rather than the background. According to the dataset, due to prior manual processing and annotations, pedestrian parts in images tend to occur closer to the center. Moreover, based on the physical shape of the human body, it tends to have a slender appearance, with the upper body occupying a larger proportion of the image. Thus, the extraction range will have fewer portions removed from the left and right sides and more from the top and bottom to ensure sufficient extraction of the body parts. Therefore, motion blur extraction range can be obtained from the following Eq. (1) and Eq. (2):</p>
+      
+        <disp-formula>
+          <label>(1)</label>
+          <mml:math id="mm1qtvl3js">
+            <mml:msub>
+              <mml:mi>P</mml:mi>
+              <mml:mrow>
+                <mml:mi>h</mml:mi>
+                <mml:mo>min</mml:mo>
+              </mml:mrow>
+            </mml:msub>
+            <mml:msub>
+              <mml:mi>ω</mml:mi>
+              <mml:mi>h</mml:mi>
+            </mml:msub>
+            <mml:msub>
+              <mml:mi>P</mml:mi>
+              <mml:mrow>
+                <mml:mi>h</mml:mi>
+                <mml:mo>max</mml:mo>
+              </mml:mrow>
+            </mml:msub>
+            <mml:mo>=</mml:mo>
+            <mml:mo>∗</mml:mo>
+            <mml:mo>,</mml:mo>
+            <mml:mo>=</mml:mo>
+            <mml:mo>∗</mml:mo>
+            <mml:mi>h</mml:mi>
+            <mml:mi>h</mml:mi>
+            <mml:mrow>
+              <mml:mo>(</mml:mo>
+              <mml:mo>−</mml:mo>
+              <mml:mo>)</mml:mo>
+              <mml:mn>1</mml:mn>
+              <mml:msub>
+                <mml:mi>ω</mml:mi>
+                <mml:mi>h</mml:mi>
+              </mml:msub>
+            </mml:mrow>
+          </mml:math>
+        </disp-formula>
+      
+      
+        <disp-formula>
+          <label>(2)</label>
+          <mml:math id="mmltp7v2rj">
+            <mml:msub>
+              <mml:mi>P</mml:mi>
+              <mml:mrow>
+                <mml:mi>w</mml:mi>
+                <mml:mo>min</mml:mo>
+              </mml:mrow>
+            </mml:msub>
+            <mml:msub>
+              <mml:mi>ω</mml:mi>
+              <mml:mi>w</mml:mi>
+            </mml:msub>
+            <mml:msub>
+              <mml:mi>P</mml:mi>
+              <mml:mrow>
+                <mml:mi>h</mml:mi>
+                <mml:mo>max</mml:mo>
+              </mml:mrow>
+            </mml:msub>
+            <mml:mo>=</mml:mo>
+            <mml:mo>∗</mml:mo>
+            <mml:mo>,</mml:mo>
+            <mml:mo>=</mml:mo>
+            <mml:mo>∗</mml:mo>
+            <mml:mi>w</mml:mi>
+            <mml:mi>w</mml:mi>
+            <mml:mrow>
+              <mml:mo>(</mml:mo>
+              <mml:mo>−</mml:mo>
+              <mml:mo>)</mml:mo>
+              <mml:mn>1</mml:mn>
+              <mml:msub>
+                <mml:mi>ω</mml:mi>
+                <mml:mi>w</mml:mi>
+              </mml:msub>
+            </mml:mrow>
+          </mml:math>
+        </disp-formula>
+      
+      <p> where, $0.5&gt;\omega_h&gt;\omega_w<inline-formula>
+  <mml:math id="m2u1xem3ec">
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+  </mml:math>
+</inline-formula>(P_{h \min}, P_{w \min})<inline-formula>
+  <mml:math id="mb91j8oj2l">
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>(P_{h \max }, P_{w \min})<inline-formula>
+  <mml:math id="m1d27kpafn">
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>(P_{h \min}, P_{w \max})<inline-formula>
+  <mml:math id="m3zpqxdluk">
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>(P_{\text{hmax}}, P_{\text{wmax}})$, forming a plane space enclosed by four points. By confining the extraction range in this manner, more body parts are included while minimizing excessive background portions. After obtaining the extraction range, considering subsequent operations such as displacement, it's essential to ensure that the operations do not extend beyond the original boundaries of the image. Otherwise, it would be futile and counterproductive. Therefore, not the entire extraction range is designated for motion blur. Instead, within the selected extraction range, heights and widths are cropped to:</p>
+      
+        <disp-formula>
+          <label>(3)</label>
+          <mml:math id="mo2vpw6gna">
+            <mml:msub>
+              <mml:mi>P</mml:mi>
+              <mml:mi>H</mml:mi>
+            </mml:msub>
+            <mml:mo>=</mml:mo>
+            <mml:mfrac>
+              <mml:mn>1</mml:mn>
+              <mml:mn>2</mml:mn>
+            </mml:mfrac>
+            <mml:mrow>
+              <mml:mo>(</mml:mo>
+              <mml:mo>−</mml:mo>
+              <mml:mo>)</mml:mo>
+              <mml:msub>
+                <mml:mi>P</mml:mi>
+                <mml:mrow>
+                  <mml:mi>h</mml:mi>
+                  <mml:mo>max</mml:mo>
+                </mml:mrow>
+              </mml:msub>
+              <mml:msub>
+                <mml:mi>P</mml:mi>
+                <mml:mrow>
+                  <mml:mi>h</mml:mi>
+                  <mml:mo>min</mml:mo>
+                </mml:mrow>
+              </mml:msub>
+            </mml:mrow>
+          </mml:math>
+        </disp-formula>
+      
+      
+        <disp-formula>
+          <label>(4)</label>
+          <mml:math id="m3ljca95dq">
+            <mml:msub>
+              <mml:mi>P</mml:mi>
+              <mml:mi>W</mml:mi>
+            </mml:msub>
+            <mml:mo>=</mml:mo>
+            <mml:mfrac>
+              <mml:mn>1</mml:mn>
+              <mml:mn>2</mml:mn>
+            </mml:mfrac>
+            <mml:mrow>
+              <mml:mo>(</mml:mo>
+              <mml:mo>−</mml:mo>
+              <mml:mo>)</mml:mo>
+              <mml:msub>
+                <mml:mi>P</mml:mi>
+                <mml:mrow>
+                  <mml:mi>w</mml:mi>
+                  <mml:mo>max</mml:mo>
+                </mml:mrow>
+              </mml:msub>
+              <mml:msub>
+                <mml:mi>P</mml:mi>
+                <mml:mrow>
+                  <mml:mi>w</mml:mi>
+                  <mml:mo>min</mml:mo>
+                </mml:mrow>
+              </mml:msub>
+            </mml:mrow>
+          </mml:math>
+        </disp-formula>
+      
+      <p>The area ultimately selected based on the aforementioned formulas is <inline-formula>
+  <mml:math id="mx4hsdebhd">
+    <mml:msub>
+      <mml:mi>P</mml:mi>
+      <mml:mi>H</mml:mi>
+    </mml:msub>
+    <mml:msub>
+      <mml:mi>P</mml:mi>
+      <mml:mi>W</mml:mi>
+    </mml:msub>
+    <mml:mo>∗</mml:mo>
+  </mml:math>
+</inline-formula> This ensures that a sufficiently large area is chosen to encompass an ample portion of the human body, thereby guaranteeing the desired effect of motion blur. Additionally, it prevents the final image from exceeding the original boundaries after displacement, thereby preserving the intended effect of the enhancement strategy.</p><p>Having determined the extraction range and the size of the extracted portion, the next step is to decide the direction of displacement for the blurred portion and the selection of the initial displacement point. The displacement direction should align with the likely movement direction of pedestrians captured by the camera at the time. Upon analyzing images in the dataset, it's observed that most pedestrians predominantly move either left or right due to the camera's perspective. Additionally, due to variations in camera height, pedestrians may also move in directions such as upper left, lower left, upper right, and lower right. These six directions encompass the majority of pedestrian movement directions. Hence, we opt to use a probability, denoted as pdis, to randomly determine the displacement direction of the extracted portion in the image. Considering the varying proportions of different directions in the image, we assign a higher probability to left and right directions <inline-formula>
+  <mml:math id="m8aoqr8n9f">
+    <mml:msub>
+      <mml:mi>p</mml:mi>
+      <mml:mrow>
+        <mml:mtext>left </mml:mtext>
+      </mml:mrow>
+    </mml:msub>
+    <mml:msub>
+      <mml:mi>p</mml:mi>
+      <mml:mrow>
+        <mml:mtext>right </mml:mtext>
+      </mml:mrow>
+    </mml:msub>
+    <mml:mo>=</mml:mo>
+    <mml:mo>=</mml:mo>
+    <mml:mn>0.4</mml:mn>
+  </mml:math>
+</inline-formula>, and lower probabilities to upper left, lower left, upper right, and lower right directions <inline-formula>
+  <mml:math id="m0yax3zf9a">
+    <mml:msub>
+      <mml:mi>p</mml:mi>
+      <mml:mrow>
+        <mml:mtext>top left </mml:mtext>
+      </mml:mrow>
+    </mml:msub>
+    <mml:mo>=</mml:mo>
+  </mml:math>
+</inline-formula> <inline-formula>
+  <mml:math id="mpwuyahc5c">
+    <mml:msub>
+      <mml:mi>p</mml:mi>
+      <mml:mrow>
+        <mml:mtext>bottleleft </mml:mtext>
+      </mml:mrow>
+    </mml:msub>
+    <mml:msub>
+      <mml:mi>p</mml:mi>
+      <mml:mrow>
+        <mml:mtext>topright </mml:mtext>
+      </mml:mrow>
+    </mml:msub>
+    <mml:msub>
+      <mml:mi>p</mml:mi>
+      <mml:mrow>
+        <mml:mtext>bottleright </mml:mtext>
+      </mml:mrow>
+    </mml:msub>
+    <mml:mo>=</mml:mo>
+    <mml:mo>=</mml:mo>
+    <mml:mo>=</mml:mo>
+    <mml:mn>0.05</mml:mn>
+  </mml:math>
+</inline-formula>, such that <inline-formula>
+  <mml:math id="mxzs4apjck">
+    <mml:msub>
+      <mml:mi>p</mml:mi>
+      <mml:mrow>
+        <mml:mtext>all </mml:mtext>
+      </mml:mrow>
+    </mml:msub>
+    <mml:msub>
+      <mml:mi>p</mml:mi>
+      <mml:mrow>
+        <mml:mtext>left </mml:mtext>
+      </mml:mrow>
+    </mml:msub>
+    <mml:msub>
+      <mml:mi>p</mml:mi>
+      <mml:mrow>
+        <mml:mtext>right </mml:mtext>
+      </mml:mrow>
+    </mml:msub>
+    <mml:msub>
+      <mml:mi>p</mml:mi>
+      <mml:mrow>
+        <mml:mtext>topleft </mml:mtext>
+      </mml:mrow>
+    </mml:msub>
+    <mml:msub>
+      <mml:mi>p</mml:mi>
+      <mml:mrow>
+        <mml:mtext>bottleleft </mml:mtext>
+      </mml:mrow>
+    </mml:msub>
+    <mml:mo>=</mml:mo>
+    <mml:mo>+</mml:mo>
+    <mml:mo>+</mml:mo>
+    <mml:mo>+</mml:mo>
+    <mml:mo>+</mml:mo>
+  </mml:math>
+</inline-formula> <inline-formula>
+  <mml:math id="mne7xhfxyo">
+    <mml:msub>
+      <mml:mi>p</mml:mi>
+      <mml:mrow>
+        <mml:mtext>topright </mml:mtext>
+      </mml:mrow>
+    </mml:msub>
+    <mml:msub>
+      <mml:mi>p</mml:mi>
+      <mml:mrow>
+        <mml:mtext>bottleright </mml:mtext>
+      </mml:mrow>
+    </mml:msub>
+    <mml:mo>+</mml:mo>
+    <mml:mo>=</mml:mo>
+    <mml:mn>1</mml:mn>
+  </mml:math>
+</inline-formula>. Furthermore, to ensure the rationality of the blurred image after displacement, the initial displacement point should also vary according to the chosen displacement direction. Given that there is relatively more space left in the vertical direction within the extraction range, we only consider the influence of the initial displacement point in the horizontal direction. In summary, the specific selection of the initial displacement point is as shown in Eq. (5) and Eq. (6):</p>
+      
+        <disp-formula>
+          <label>(5)</label>
+          <mml:math id="m1ln0bp9a3">
+            <mml:msub>
+              <mml:mi>x</mml:mi>
+              <mml:mrow>
+                <mml:mtext>init </mml:mtext>
+              </mml:mrow>
+            </mml:msub>
+            <mml:mo>=</mml:mo>
+            <mml:mrow>
+              <mml:mo>{</mml:mo>
+              <mml:mo fence="true" stretchy="true" symmetric="true"/>
+              <mml:mtable columnalign="left" columnspacing="1em" rowspacing="4pt">
+                <mml:mtr>
+                  <mml:mtd>
+                    <mml:mi>Random</mml:mi>
+                    <mml:mrow>
+                      <mml:mo>(</mml:mo>
+                      <mml:mo>,</mml:mo>
+                      <mml:mo>,</mml:mo>
+                      <mml:mo>=</mml:mo>
+                      <mml:mo fence="true" stretchy="true" symmetric="true"/>
+                      <mml:msub>
+                        <mml:mi>P</mml:mi>
+                        <mml:mrow>
+                          <mml:mtext>wmin</mml:mtext>
+                        </mml:mrow>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mi>p</mml:mi>
+                        <mml:mrow>
+                          <mml:mtext>dis</mml:mtext>
+                        </mml:mrow>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mi>p</mml:mi>
+                        <mml:mrow>
+                          <mml:mtext>right</mml:mtext>
+                        </mml:mrow>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mi>p</mml:mi>
+                        <mml:mrow>
+                          <mml:mtext>topright</mml:mtext>
+                        </mml:mrow>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mi>p</mml:mi>
+                        <mml:mrow>
+                          <mml:mtext>bottleright</mml:mtext>
+                        </mml:mrow>
+                      </mml:msub>
+                      <mml:mfrac>
+                        <mml:mn>1</mml:mn>
+                        <mml:mn>2</mml:mn>
+                      </mml:mfrac>
+                      <mml:mrow>
+                        <mml:mo>(</mml:mo>
+                        <mml:mo>+</mml:mo>
+                        <mml:mo>)</mml:mo>
+                        <mml:msub>
+                          <mml:mi>P</mml:mi>
+                          <mml:mrow>
+                            <mml:mtext>win</mml:mtext>
+                          </mml:mrow>
+                        </mml:msub>
+                        <mml:msub>
+                          <mml:mi>P</mml:mi>
+                          <mml:mrow>
+                            <mml:mtext>wmax</mml:mtext>
+                          </mml:mrow>
+                        </mml:msub>
+                      </mml:mrow>
+                      <mml:mrow>
+                        <mml:mo>/</mml:mo>
+                      </mml:mrow>
+                      <mml:mrow>
+                        <mml:mo>/</mml:mo>
+                      </mml:mrow>
+                      <mml:mstyle scriptlevel="0">
+                        <mml:mspace width="1em"/>
+                      </mml:mstyle>
+                    </mml:mrow>
+                  </mml:mtd>
+                </mml:mtr>
+                <mml:mtr>
+                  <mml:mtd>
+                    <mml:mi>Random</mml:mi>
+                    <mml:mrow>
+                      <mml:mo>(</mml:mo>
+                      <mml:mo>,</mml:mo>
+                      <mml:mo>)</mml:mo>
+                      <mml:mfrac>
+                        <mml:mn>1</mml:mn>
+                        <mml:mn>2</mml:mn>
+                      </mml:mfrac>
+                      <mml:mrow>
+                        <mml:mo>(</mml:mo>
+                        <mml:mo>+</mml:mo>
+                        <mml:mo>)</mml:mo>
+                        <mml:msub>
+                          <mml:mi>P</mml:mi>
+                          <mml:mrow>
+                            <mml:mtext>wmin</mml:mtext>
+                          </mml:mrow>
+                        </mml:msub>
+                        <mml:msub>
+                          <mml:mi>P</mml:mi>
+                          <mml:mrow>
+                            <mml:mtext>wmax</mml:mtext>
+                          </mml:mrow>
+                        </mml:msub>
+                      </mml:mrow>
+                      <mml:msub>
+                        <mml:mi>P</mml:mi>
+                        <mml:mrow>
+                          <mml:mtext>wmax</mml:mtext>
+                        </mml:mrow>
+                      </mml:msub>
+                    </mml:mrow>
+                    <mml:mrow>
+                      <mml:mo>/</mml:mo>
+                    </mml:mrow>
+                    <mml:mrow>
+                      <mml:mo>/</mml:mo>
+                    </mml:mrow>
+                    <mml:mo>,</mml:mo>
+                    <mml:mo>=</mml:mo>
+                    <mml:mstyle scriptlevel="0">
+                      <mml:mspace width="1em"/>
+                    </mml:mstyle>
+                    <mml:msub>
+                      <mml:mi>p</mml:mi>
+                      <mml:mrow>
+                        <mml:mtext>dis</mml:mtext>
+                      </mml:mrow>
+                    </mml:msub>
+                    <mml:msub>
+                      <mml:mi>p</mml:mi>
+                      <mml:mrow>
+                        <mml:mtext>left</mml:mtext>
+                      </mml:mrow>
+                    </mml:msub>
+                    <mml:msub>
+                      <mml:mi>p</mml:mi>
+                      <mml:mrow>
+                        <mml:mtext>topleft</mml:mtext>
+                      </mml:mrow>
+                    </mml:msub>
+                    <mml:msub>
+                      <mml:mi>p</mml:mi>
+                      <mml:mrow>
+                        <mml:mtext>bottleleft</mml:mtext>
+                      </mml:mrow>
+                    </mml:msub>
+                  </mml:mtd>
+                </mml:mtr>
+              </mml:mtable>
+            </mml:mrow>
+          </mml:math>
+        </disp-formula>
+      
+      
+        <disp-formula>
+          <label>(6)</label>
+          <mml:math id="mejtcmtbi8">
+            <mml:msub>
+              <mml:mi>y</mml:mi>
+              <mml:mrow>
+                <mml:mtext>init </mml:mtext>
+              </mml:mrow>
+            </mml:msub>
+            <mml:mo>=</mml:mo>
+            <mml:mi>Random</mml:mi>
+            <mml:mrow>
+              <mml:mo>(</mml:mo>
+              <mml:mo>,</mml:mo>
+              <mml:mo>)</mml:mo>
+              <mml:msub>
+                <mml:mi>P</mml:mi>
+                <mml:mrow>
+                  <mml:mtext>hmin</mml:mtext>
+                </mml:mrow>
+              </mml:msub>
+              <mml:msub>
+                <mml:mi>P</mml:mi>
+                <mml:mrow>
+                  <mml:mtext>hmax</mml:mtext>
+                </mml:mrow>
+              </mml:msub>
+            </mml:mrow>
+          </mml:math>
+        </disp-formula>
+      
+      <p>From the aforementioned formulas, it can be concluded that the extracted portion is defined by a rectangular area enclosed by four points: <inline-formula>
+  <mml:math id="m6q81bfiaz">
+    <mml:mo stretchy="false">(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo stretchy="false">)</mml:mo>
+    <mml:msub>
+      <mml:mi>x</mml:mi>
+      <mml:mrow>
+        <mml:mtext>init</mml:mtext>
+      </mml:mrow>
+    </mml:msub>
+    <mml:msub>
+      <mml:mi>y</mml:mi>
+      <mml:mrow>
+        <mml:mtext>init</mml:mtext>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula>, <inline-formula>
+  <mml:math id="mllmk8qbk7">
+    <mml:mo stretchy="false">(</mml:mo>
+    <mml:mo>+</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo stretchy="false">)</mml:mo>
+    <mml:msub>
+      <mml:mi>x</mml:mi>
+      <mml:mrow>
+        <mml:mtext>init</mml:mtext>
+      </mml:mrow>
+    </mml:msub>
+    <mml:msub>
+      <mml:mi>P</mml:mi>
+      <mml:mi>W</mml:mi>
+    </mml:msub>
+    <mml:msub>
+      <mml:mi>y</mml:mi>
+      <mml:mrow>
+        <mml:mtext>init</mml:mtext>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula>, <inline-formula>
+  <mml:math id="me623xjbz2">
+    <mml:mo stretchy="false">(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>+</mml:mo>
+    <mml:mo stretchy="false">)</mml:mo>
+    <mml:msub>
+      <mml:mi>x</mml:mi>
+      <mml:mrow>
+        <mml:mtext>init</mml:mtext>
+      </mml:mrow>
+    </mml:msub>
+    <mml:msub>
+      <mml:mi>y</mml:mi>
+      <mml:mrow>
+        <mml:mtext>init</mml:mtext>
+      </mml:mrow>
+    </mml:msub>
+    <mml:msub>
+      <mml:mi>P</mml:mi>
+      <mml:mrow>
+        <mml:mi>W</mml:mi>
+        <mml:mi>H</mml:mi>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula>, <inline-formula>
+  <mml:math id="m082f6tt8e">
+    <mml:mo stretchy="false">(</mml:mo>
+    <mml:mo>+</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>+</mml:mo>
+    <mml:mo stretchy="false">)</mml:mo>
+    <mml:msub>
+      <mml:mi>x</mml:mi>
+      <mml:mrow>
+        <mml:mtext>init</mml:mtext>
+      </mml:mrow>
+    </mml:msub>
+    <mml:msub>
+      <mml:mi>P</mml:mi>
+      <mml:mi>W</mml:mi>
+    </mml:msub>
+    <mml:msub>
+      <mml:mi>y</mml:mi>
+      <mml:mrow>
+        <mml:mtext>init</mml:mtext>
+      </mml:mrow>
+    </mml:msub>
+    <mml:msub>
+      <mml:mi>P</mml:mi>
+      <mml:mi>H</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula>.These equations allow for the generation of the required initial displacement points within the specified range, ensuring that the resulting blurred image remains within the original boundaries of the image while accommodating various potential displacement directions as observed in the dataset. As vertical blur effects are largely unaccounted for in the scenario, a traditional motion blur convolution kernel is subsequently applied to the displacement portion to further enhance the blur effect, as depicted in <xref ref-type="fig" rid="fig_3">Figure 3</xref>. In summary, the final creation of motion-blurred displacement segments aims to closely replicate real-world motion blur phenomena.</p>
+      
+        <fig id="fig_3">
+          <label>Figure 3</label>
+          <caption>
+            <title>Vertical motion blur convolution kernel</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2024/4/img_sQAe97k40diTPiVH.png"/>
+        </fig>
+      
+      <p>Finally, consideration must be given to the length of displacement $l<inline-formula>
+  <mml:math id="mjyh2lgf3w">
+    <mml:mo>,</mml:mo>
+    <mml:mi>f</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>q</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>y</mml:mi>
+  </mml:math>
+</inline-formula>f<inline-formula>
+  <mml:math id="mogyud21fz">
+    <mml:mo>,</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>R</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>q</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>I</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+  </mml:math>
+</inline-formula>x<inline-formula>
+  <mml:math id="mpxsm9xxnj">
+    <mml:mo>−</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mi>a</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+  </mml:math>
+</inline-formula>y<inline-formula>
+  <mml:math id="mr0niiss7n">
+    <mml:mo>−</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mi>a</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>H</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+  </mml:math>
+</inline-formula>y<inline-formula>
+  <mml:math id="m815h42857">
+    <mml:mo>−</mml:mo>
+    <mml:mi>a</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+  </mml:math>
+</inline-formula>x<inline-formula>
+  <mml:math id="m25u1d5bvf">
+    <mml:mo>−</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo stretchy="false">(</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mi>a</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>F</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>q</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>q</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>S</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>A</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>O</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>q</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>q</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>H</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>j</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>O</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>j</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:msup>
+      <mml:mi>r</mml:mi>
+      <mml:mo>′</mml:mo>
+    </mml:msup>
+  </mml:math>
+</inline-formula>\left(x_{\text {init }}+l * f, y_{\text {init }}+l * f\right)$ ) towards the original position, creating a partial body due to visual persistence. This approach minimizes the impact on the original body position, ensuring a degree of image integrity and simulating the lag effect associated with motion blur more accurately.</p><p>In summary, the specific motion blur enhancement module will encompass aspects such as extraction range determination, extracted portion size determination, and displacement direction selection. It is through the aforementioned steps that optimal experimental results can be achieved. The overall process is illustrated in <xref ref-type="fig" rid="fig_4">Figure 4</xref>.</p>
+      
+        <fig id="fig_4">
+          <label>Figure 4</label>
+          <caption>
+            <title>The results of the motion blur module are displayed</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2024/4/img_epO2yPrRo42IUyS_.png"/>
+        </fig>
+      
+    </sec>
+    <sec sec-type="">
+      <title>4. Experimental results</title>
+      
+        <sec>
+          
+            <title>4.1. Dataset and evaluation metrics</title>
+          
+          <p>Occluded-dukemtmc consists of 15,618 training images of 702 individuals, 2,210 query images of 519 individuals, and 17,661 gallery images of 1,110 individuals. Due to the diversity of scenes and interferences, it is the most challenging occluded-ReID dataset.</p><p>Occluded-ReID is a dataset for occluded-ReID captured by a moving camera. It comprises 2000 images belonging to 200 identities, with each identity having 5 full-body images and 5 heavily occluded images with different viewpoints and types of occlusions.</p><p>Partial-ReID is a specially designed ReID dataset consisting of images of pedestrians with occlusions, partial views, and full views. It consists of 600 images of 60 individuals. We conduct experiments using the occluded person query set and the full-body person gallery set.</p><p>Market-1501 is a well-known dataset for whole-body person ReID. It includes 12,936 training images of 751 individuals, 19,732 query images, and 3,368 gallery images of 750 individuals captured by 6 cameras. This dataset contains very few occluded images.</p><p>DukeMTMC-reID comprises 16,522 training images, 2,228 query images, and 17,661 gallery images of 702 individuals. These images were captured by eight different cameras, making it more challenging. Since this dataset contains more whole-body images than occluded images, it can be considered a whole-body ReID dataset.</p><p>Evaluation Metrics: To ensure fair comparison with existing person identification methods, all methods are evaluated under Cumulative Matching Characteristics (CMC) and mAP. All experiments are conducted in a single-query setting.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>4.2. Implementation details</title>
+          
+          <p>If not otherwise specified, all images in the datasets are resized to 256×128. We train our network end-to-end using the SGD optimizer with a momentum of 0.9 and a weight decay of 1e-4. The initial learning rate is set to 0.008, with cosine learning rate decay. For each input branch, the batch size is set to 64, comprising 16 labels with 4 samples per label. All testing experiments are conducted on a single RTX 3090 GPU.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>4.3. Comparison of occluded pedestrian datasets</title>
+          
+          <p>The results for Occluded-DukeMTMC (O-Duke), Occluded-REID (O-REID), and Partial-REID (P-REID) are shown in <xref ref-type="table" rid="table_1">Table 1</xref>. Since O-REID and P-REID do not have corresponding training sets, we directly test models trained on Market-1501. </p>
+          
+            <table-wrap id="table_1">
+              <label>Table 1</label>
+              <caption>
+                <title>Performance comparison with other methods on the occluded-person dataset</title>
+              </caption>
+              <table><tr><th >Method</th><th colspan="2">O-Duke</th><th colspan="2">O-REID</th><th colspan="2">P-REID</th></tr><tr><td ></td><td >R@1</td><td >mAP</td><td >R@1</td><td >mAP</td><td >R@1</td><td >mAP</td></tr><tr><td >PCB</td><td >42.6</td><td >33.7</td><td >41.3</td><td >38.9</td><td >66.3</td><td >63.8</td></tr><tr><td >RE</td><td >40.5</td><td >30.0</td><td >-</td><td >-</td><td >54.3</td><td >54.4</td></tr><tr><td >FD-GAN</td><td >40.8</td><td >-</td><td >-</td><td >-</td><td >-</td><td >-</td></tr><tr><td >DSR</td><td >40.8</td><td >30.4</td><td >72.8</td><td >62.8</td><td >73.7</td><td >68.1</td></tr><tr><td >SFR</td><td >42.3</td><td >32</td><td >-</td><td >-</td><td >56.9</td><td >-</td></tr><tr><td >FRR</td><td >-</td><td >-</td><td >78.3</td><td >68.0</td><td >81.0</td><td >76.6</td></tr><tr><td >PVPM</td><td >47</td><td >37.7</td><td >70.4</td><td >61.2</td><td >-</td><td >-</td></tr><tr><td >PGFA</td><td >51.4</td><td >37.3</td><td >-</td><td >-</td><td >69.0</td><td >61.5</td></tr><tr><td >HOReID</td><td >55.1</td><td >43.8</td><td >80.3</td><td >70.2</td><td >85.3</td><td >-</td></tr><tr><td >OAMN</td><td >62.6</td><td >46.1</td><td >-</td><td >-</td><td >86.0</td><td >-</td></tr><tr><td >PAT</td><td >64.5</td><td >53.6</td><td >81.6</td><td >72.1</td><td >88.0</td><td >-</td></tr><tr><td >ViT</td><td >60.5</td><td >53.6</td><td >81.6</td><td >72.1</td><td >73.3</td><td >74.0</td></tr><tr><td >TransReID</td><td >64.2</td><td >55.7</td><td >70.2</td><td >67.3</td><td >71.3</td><td >68.6</td></tr><tr><td >Denseformer</td><td >63.8</td><td >55.6</td><td >-</td><td >-</td><td >-</td><td >-</td></tr><tr><td >ResT-ReID</td><td >59.6</td><td >51.9</td><td >-</td><td >-</td><td >-</td><td >-</td></tr><tr><td >DRL-Net</td><td >65.0</td><td >50.8</td><td >-</td><td >-</td><td >-</td><td >-</td></tr><tr><td >DAAT</td><td >63.3</td><td >57.1</td><td >-</td><td >-</td><td >-</td><td >-</td></tr><tr><td >FED</td><td >67.9</td><td >56.3</td><td >86.3</td><td >79.3</td><td >83.1</td><td >80.5</td></tr><tr><td >MB</td><td >68.1</td><td >56.6</td><td >86.8</td><td >81.2</td><td >83.3</td><td >80.4</td></tr></table>
+            </table-wrap>
+          
+          <p>Specifically observing the results in the table, PAT [<xref ref-type="bibr" rid="ref_31">31</xref>] adopts ResNet50 [<xref ref-type="bibr" rid="ref_32">32</xref>] as the backbone and employs a transformer-based encoder-decoder structure for multi-part discovery. The prototypes in the network act as specific feature detectors, crucial for improving the network's performance on occluded data. TransReID is the first pure Transformer-based ReID architecture. The results utilize ViT as the main framework without setting sliding windows as the backbone, with image sizes also adjusted to 256×128.</p>
+          
+            <fig id="fig_5">
+              <label>Figure 5</label>
+              <caption>
+                <title>mAP curve on the O-Duke</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2024/4/img_7Yqek1Dnhs2aBacr.png"/>
+            </fig>
+          
+          
+            <fig id="fig_6">
+              <label>Figure 6</label>
+              <caption>
+                <title>Rank-N curve on the O-Duke</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2024/4/img__tDo2uQw6aBqFcph.png"/>
+            </fig>
+          
+          
+            <fig id="fig_7">
+              <label>Figure 7</label>
+              <caption>
+                <title>mAP curve on the O-REID and P-REID</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2024/4/img_7P0ov8Kk2FFL82Vh.png"/>
+            </fig>
+          
+          
+            <fig id="fig_8">
+              <label>Figure 8</label>
+              <caption>
+                <title>mAP curve on the O-REID</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2024/4/img_YXEK6FAwhFkOnn9b.png"/>
+            </fig>
+          
+          
+            <fig id="fig_9">
+              <label>Figure 9</label>
+              <caption>
+                <title>Rank-N curve on the P-REID</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2024/4/img_zTI-KG8jtJrp2w3s.png"/>
+            </fig>
+          
+          <p>The ViT Baseline performs better on O-REID and P-REID datasets compared to TransReID, as TransReID uses many dataset-specific tokens, reducing the model's cross-domain generalization and increasing the risk of overfitting, leading to decreased performance in cases where valid information cannot be effectively extracted for the dataset. When comparing with our method, it is evident that we achieve the best performance on Occluded-REID datasets in terms of both Rank-1 and mAP metrics. Particularly on the Occluded-REID dataset, there are improvements of 0.5% and 1.9% in Rank-1 and mAP respectively, considering significant improvements over previous performances. Additionally, in <xref ref-type="fig" rid="fig_5">Figure 5</xref>, <xref ref-type="fig" rid="fig_6">Figure 6</xref>, <xref ref-type="fig" rid="fig_7">Figure 7</xref>, <xref ref-type="fig" rid="fig_8">Figure 8</xref> and <xref ref-type="fig" rid="fig_9">Figure 9</xref>, we demonstrate the mAP curves and Rank-N curves on Occluded-DukeMTMC, Occluded-REID, and Partial-REID, confirming the effectiveness of our method on all three datasets. It can also be observed that the changes in Rank-5 and Rank-10 are relatively small; thus, the previous table only selected the values of mAP and Rank-1 without listing all numerical values.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>4.4. Comparison of holistic pedestrian datasets</title>
+          
+          <p>We also conducted experiments on the holistic person ReID datasets, including Market-1501 (MARKET) and DukeMTMC-reID (MTMC). The results are presented in <xref ref-type="table" rid="table_2">Table 2</xref>. In contrast to the performance on occluded pedestrian datasets, we achieved relatively better performance compared to other existing methods, but there is some gap compared to methods specifically designed for overall person datasets. TransReID, without sliding window settings, utilized image sizes of 256×128. It is evident that TransReID outperformed our method on overall datasets. This is because TransReID is specifically designed for these whole-body person datasets and encodes additional information regarding camera viewpoints and identity labels during training.</p>
+          
+            <table-wrap id="table_2">
+              <label>Table 2</label>
+              <caption>
+                <title>Performance comparison with other methods on the holistic-person dataset</title>
+              </caption>
+              <table><tr><th >Method</th><th colspan="2">Market-1501</th><th colspan="2">DukeMTMC-reID</th></tr><tr><td ></td><td >R@1</td><td >mAP</td><td >R@1</td><td >mAP</td></tr><tr><td >PT</td><td >87.7</td><td >68.9</td><td >78.5</td><td >56.9</td></tr><tr><td >PGFA</td><td >91.2</td><td >76.8</td><td >82.6</td><td >65.5</td></tr><tr><td >PCB</td><td >92.3</td><td >77.4</td><td >81.8</td><td >66.1</td></tr><tr><td >OAMN</td><td >92.3</td><td >79.8</td><td >86.3</td><td >72.6</td></tr><tr><td >BoT</td><td >94.1</td><td >85.7</td><td >86.4</td><td >76.4</td></tr><tr><td >HOReID</td><td >94.2</td><td >84.9</td><td >86.9</td><td >75.6</td></tr><tr><td >ViT</td><td >94.7</td><td >86.8</td><td >88.8</td><td >79.3</td></tr><tr><td >TransReID</td><td >95.0</td><td >88.2</td><td >89.6</td><td >80.6</td></tr><tr><td >DRL-Net</td><td >94.7</td><td >86.9</td><td >88.1</td><td >76.6</td></tr><tr><td >PAT</td><td >95.4</td><td >88.0</td><td >88.8</td><td >78.2</td></tr><tr><td >FED</td><td >95.0</td><td >86.3</td><td >89.4</td><td >78.0</td></tr><tr><td >MB</td><td >95.0</td><td >86.7</td><td >89.6</td><td >78.4</td></tr></table>
+            </table-wrap>
+          
+          
+            <fig id="fig_10">
+              <label>Figure 10</label>
+              <caption>
+                <title>mAP curve on the Market-1501 and DukeMTMC-reID</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2024/4/img_5f_3UnErUpAHYDlI.png"/>
+            </fig>
+          
+          
+            <fig id="fig_11">
+              <label>Figure 11</label>
+              <caption>
+                <title>mAP curve on the MARKET</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2024/4/img_Tk99Z7VPQNmyj9iu.png"/>
+            </fig>
+          
+          
+            <fig id="fig_12">
+              <label>Figure 12</label>
+              <caption>
+                <title>Rank-N curve on the MTMC</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2024/4/img_tKGRgfIOm74xU9Us.png"/>
+            </fig>
+          
+          <p>While our proposed method may still have room for improvement on overall person datasets, simultaneously, our method also achieved a Rank-1 accuracy of 89.6% on the DukeMTMC-reID dataset, surpassing other CNN-based methods and reaching parity with TransReID. Similar to the experimental results on occluded pedestrian datasets, we also demonstrate the mAP curves and Rank-N curves on Market-1501 and DukeMTMC-reID in <xref ref-type="fig" rid="fig_10">Figure 10</xref>, <xref ref-type="fig" rid="fig_11">Figure 11</xref> and <xref ref-type="fig" rid="fig_12">Figure 12</xref>, confirming the effectiveness of our method on these two overall person datasets.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>4.5. Qualitative analysis</title>
+          
+          <p>Meanwhile, we conducted further experiments on the displacement length $l<inline-formula>
+  <mml:math id="m2vecrms6m">
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>q</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>y</mml:mi>
+  </mml:math>
+</inline-formula>f<inline-formula>
+  <mml:math id="m69dla8ewt">
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mo>.</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>l<inline-formula>
+  <mml:math id="mcirw6q5ow">
+    <mml:mi>s</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>j</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>j</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>C</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:msup>
+      <mml:mi>l</mml:mi>
+      <mml:mo>′</mml:mo>
+    </mml:msup>
+  </mml:math>
+</inline-formula>l<inline-formula>
+  <mml:math id="mcl7pidfe7">
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>q</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mo>.</mml:mo>
+  </mml:math>
+</inline-formula>f$ primarily controls the size of the simulated parts, ensuring they remain perceptible to the model without exceeding the original image boundaries, thus aiding in enhancing the model's performance. Based on the above considerations, we conducted the following experiments on the Occluded-DukeMTMC (O-Duke) dataset, with results detailed in <xref ref-type="table" rid="table_3">Table 3</xref>.</p>
+          
+            <table-wrap id="table_3">
+              <label>Table 3</label>
+              <caption>
+                <title>Performance of different lengths $l$ and frequency $f$ on the O-Duke dataset</title>
+              </caption>
+              <table><tr><th >Datasets</th><th colspan="4">Occluded-DukeMTMC (O-Duke)</th></tr><tr><td >$l<mml:math id="m5boet6d23">
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>−</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>−</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>−</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>−</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>−</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>x</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>x</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>x</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>x</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>x</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mn>1</mml:mn>
+  <mml:mn>2</mml:mn>
+  <mml:mn>3</mml:mn>
+  <mml:mn>4</mml:mn>
+</mml:math>f$</td><td >8</td><td >8</td><td >7</td><td >6</td></tr><tr><td >mAP</td><td >55.8</td><td >56.1</td><td >56.6</td><td >56.4</td></tr><tr><td >R@1</td><td >67.5</td><td >67.9</td><td >68.1</td><td >68.0</td></tr><tr><td >R@5</td><td >79.8</td><td >80.2</td><td >80.1</td><td >79.7</td></tr></table>
+            </table-wrap>
+          
+          <p>The experimental data in the table shows that the differences in performance based on different values of $l<inline-formula>
+  <mml:math id="ms2wxtvo2k">
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+  </mml:math>
+</inline-formula>f<inline-formula>
+  <mml:math id="m6bt9rgrby">
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>z</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mo>.</mml:mo>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>1=3<inline-formula>
+  <mml:math id="mk8s25n75z">
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+  </mml:math>
+</inline-formula>f=7$, which yielded relatively optimal results. The data from the table also indicates that overall, our approach achieved favorable results on the remaining occluded pedestrian datasets and overall person datasets.</p>
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>5. Conclusion</title>
+      <p>In this study, we address the challenge of motion blur arising from high-speed motion of target pedestrians or focus issues with the camera by proposing a novel data augmentation module called MotionBlur to enhance the model's robustness to this problem. Specifically, we analyze the initial images to select appropriate regions for blurring, capturing suitable occlusion sizes. We simulate various directions of motion blur to mimic real-world scenarios and integrate them with traditional motion blur methods. This enables us to effectively simulate motion blur on body parts within a small range, enhancing the model's performance. We conducted experiments on multiple occluded pedestrian datasets and overall person datasets, achieving relatively favorable results compared to existing methods on conventional ReID benchmarks, thus demonstrating the effectiveness of our approach.</p>
+    </sec>
+  </body>
+  <back>
+    <ack>
+      <title>Acknowledgments</title>
+      
+    </ack>
+    <app-group>
+      <app>
+        <title>Appendix</title>
+        
+      </app>
+    </app-group>
+    <notes>
+      <title>Author Contributions</title>
+      
+    </notes>
+    <notes>
+      <title>Funding</title>
+      
+    </notes>
+    <notes>
+      <title>Informed Consent Statement</title>
+      
+    </notes>
+    <notes>
+      <title>Data Availability Statement</title>
+      <p>The data used to support the findings of this study are available from the corresponding author upon request.</p>
+    </notes>
+    <notes notes-type="COI-statement">
+      <title>Conflicts of Interest</title>
+      <p>The authors declare that they have no conflicts of interest.</p>
+    </notes>
+    <ref-list>
+      <title>References</title>
+      <ref id="ref_1">
+        <label>1.</label>
+        <element-citation publication-type="journal">
+          <volume>44</volume>
+          <page-range>2872-2893</page-range>
+          <issue>6</issue>
+          <year>2021</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Ye</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Shen</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Lin</surname>
+              <given-names>G.</given-names>
+            </name>
+            <name>
+              <surname>Xiang</surname>
+              <given-names>T.</given-names>
+            </name>
+            <name>
+              <surname>Shao</surname>
+              <given-names>L.</given-names>
+            </name>
+            <name>
+              <surname>Hoi</surname>
+              <given-names>S. C.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/TPAMI.2021.3054775</pub-id>
+          <article-title>Deep learning for person re-identification: A survey and outlook</article-title>
+          <source>IEEE Trans. Pattern Anal. Mach. Intell.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_2">
+        <label>2.</label>
+        <element-citation publication-type="journal">
+          <volume>43</volume>
+          <page-range>2723-2738</page-range>
+          <issue>8</issue>
+          <year>2020</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Zhong</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Zheng</surname>
+              <given-names>L.</given-names>
+            </name>
+            <name>
+              <surname>Luo</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Yang</surname>
+              <given-names>Y.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/TPAMI.2020.2976933</pub-id>
+          <article-title>Learning to adapt invariance in memory for person re-identification</article-title>
+          <source>IEEE Trans. Pattern Anal. Mach. Intell.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_3">
+        <label>3.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>3387-3396</page-range>
+          <year>2020</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Lin</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Xie</surname>
+              <given-names>L.</given-names>
+            </name>
+            <name>
+              <surname>Wu</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Yan</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Tian</surname>
+              <given-names>Q.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/cvpr42600.2020.00345</pub-id>
+          <article-title>Unsupervised person re-identification via softened similarity learning</article-title>
+          <source>2020 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), Seattle, WA, USA</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_4">
+        <label>4.</label>
+        <element-citation publication-type="journal">
+          <volume>29</volume>
+          <page-range>3037-3045</page-range>
+          <issue>10</issue>
+          <year>2018</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Zheng</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Zheng</surname>
+              <given-names>L.</given-names>
+            </name>
+            <name>
+              <surname>Yang</surname>
+              <given-names>Y.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/TCSVT.2018.2873599</pub-id>
+          <article-title>Pedestrian alignment network for large-scale person re-identification</article-title>
+          <source>IEEE Trans. Circuits Syst. Video Technol.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_5">
+        <label>5.</label>
+        <element-citation publication-type="journal">
+          <volume>34</volume>
+          <page-range>11189-11196</page-range>
+          <issue>7</issue>
+          <year>2020</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Jing</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Si</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>W.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>L.</given-names>
+            </name>
+            <name>
+              <surname>Tan</surname>
+              <given-names>T.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1609/aaai.v34i07.6777</pub-id>
+          <article-title>Pose-guided multi-granularity attention network for text-based person search</article-title>
+          <source>AAAI Conf. Artif. Intell.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_6">
+        <label>6.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>3286-3296</page-range>
+          <year>2020</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Yang</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Zheng</surname>
+              <given-names>W. S.</given-names>
+            </name>
+            <name>
+              <surname>Yang</surname>
+              <given-names>Q.</given-names>
+            </name>
+            <name>
+              <surname>Chen</surname>
+              <given-names>Y. C.</given-names>
+            </name>
+            <name>
+              <surname>Tian</surname>
+              <given-names>Q.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/CVPR42600.2020.00335</pub-id>
+          <article-title>Spatial-temporal graph convolutional network for video-based person re-identification</article-title>
+          <source>2020 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), Seattle, WA, USA</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_7">
+        <label>7.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>5686–5696</page-range>
+          <year>2019</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Sun</surname>
+              <given-names>K.</given-names>
+            </name>
+            <name>
+              <surname>Xiao</surname>
+              <given-names>B.</given-names>
+            </name>
+            <name>
+              <surname>Liu</surname>
+              <given-names>D.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>J.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/CVPR.2019.00584</pub-id>
+          <article-title>Deep high-resolution representation learning for human pose estimation</article-title>
+          <source>2019 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), Long Beach, CA, USA</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_8">
+        <label>8.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>11744–11752</page-range>
+          <year>2020</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Gao</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Lu</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Liu</surname>
+              <given-names>Z.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/CVPR42600.2020.01176</pub-id>
+          <article-title>Pose-guided visible part matching for occluded person ReID</article-title>
+          <source>2020 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), Seattle, WA, USA</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_9">
+        <label>9.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>542–551</page-range>
+          <year>2019</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Miao</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Wu</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Liu</surname>
+              <given-names>P.</given-names>
+            </name>
+            <name>
+              <surname>Ding</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Yang</surname>
+              <given-names>Y.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/ICCV.2019.00063</pub-id>
+          <article-title>Pose-guided feature alignment for occluded person reidentification</article-title>
+          <source>IEEE/CVF International Conference on Computer Vision (ICCV), Seoul, Korea (South)</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_10">
+        <label>10.</label>
+        <element-citation publication-type="journal">
+          <volume>86</volume>
+          <page-range>143-155</page-range>
+          <year>2019</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Yang</surname>
+              <given-names>F.</given-names>
+            </name>
+            <name>
+              <surname>Yan</surname>
+              <given-names>K.</given-names>
+            </name>
+            <name>
+              <surname>Lu</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Jia</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Xie</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Gao</surname>
+              <given-names>W.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.patcog.2018.08.015</pub-id>
+          <article-title>Attention driven person re-identification</article-title>
+          <source>Pattern Recognit.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_11">
+        <label>11.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>1–6</page-range>
+          <year>2018</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Zhuo</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Chen</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Lai</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>G.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/ICME.2018.8486568</pub-id>
+          <article-title>Occluded person re-identification</article-title>
+          <source>2018 IEEE International Conference on Multimedia and Expo (ICME), San Diego, CA, USA</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_12">
+        <label>12.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>1116–1124</page-range>
+          <year>2015</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Zheng</surname>
+              <given-names>L.</given-names>
+            </name>
+            <name>
+              <surname>Shen</surname>
+              <given-names>L.</given-names>
+            </name>
+            <name>
+              <surname>Tian</surname>
+              <given-names>L.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Tian</surname>
+              <given-names>Q.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/ICCV.2015.133</pub-id>
+          <article-title>Scalable person re-identification: A benchmark</article-title>
+          <source>2015 IEEE International Conference on Computer Vision (ICCV), Santiago, Chile</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_13">
+        <label>13.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>3774–3782</page-range>
+          <year>2017</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Zheng</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Zheng</surname>
+              <given-names>L.</given-names>
+            </name>
+            <name>
+              <surname>Yang</surname>
+              <given-names>Y.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/ICCV.2017.405</pub-id>
+          <article-title>Unlabeled samples generated by GAN improve the person re-identification baseline in vitro</article-title>
+          <source>2017 IEEE International Conference on Computer Vision (ICCV), Venice, Italy</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_14">
+        <label>14.</label>
+        <element-citation publication-type="journal">
+          <volume>32</volume>
+          <page-range>379-390</page-range>
+          <issue>6-7</issue>
+          <year>2014</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Ma</surname>
+              <given-names>B.</given-names>
+            </name>
+            <name>
+              <surname>Su</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Jurie</surname>
+              <given-names>F.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.imavis.2014.04.002</pub-id>
+          <article-title>Covariance descriptor based on bio-inspired features for person re-identification and face verification</article-title>
+          <source>Image Vis. Comput.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_15">
+        <label>15.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>536–551</page-range>
+          <year>2014</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Yang</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Yang</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Yan</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Liao</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Yi</surname>
+              <given-names>D.</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>S. Z.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1007/978-3-319-10590-1</pub-id>
+          <article-title>Salient color names for person re-identification</article-title>
+          <source>Computer Vision–ECCV 2014: 13th European Conference, Zurich, Switzerland</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_16">
+        <label>16.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>1320–1329</page-range>
+          <year>2017</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Chen</surname>
+              <given-names>W.</given-names>
+            </name>
+            <name>
+              <surname>Chen</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Huang</surname>
+              <given-names>K.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/CVPR.2017.145</pub-id>
+          <article-title>Beyond triplet loss: A deep quadruplet network for person re-identification</article-title>
+          <source>2017 IEEE Conference on Computer Vision and Pattern Recognition (CVPR), Honolulu, HI, USA</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_17">
+        <label>17.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>3652–3661</page-range>
+          <year>2017</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Zhong</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Zheng</surname>
+              <given-names>L.</given-names>
+            </name>
+            <name>
+              <surname>Cao</surname>
+              <given-names>D.</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>S.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/CVPR.2017.389</pub-id>
+          <article-title>Re-ranking person re-identification with k-reciprocal encoding</article-title>
+          <source>2017 IEEE Conference on Computer Vision and Pattern Recognition (CVPR), Honolulu, HI, USA</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_18">
+        <label>18.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>480–496</page-range>
+          <year>2018</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Sun</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Zheng</surname>
+              <given-names>L.</given-names>
+            </name>
+            <name>
+              <surname>Yang</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Tian</surname>
+              <given-names>Q.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>S.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1007/978-3-030-01225-0_30</pub-id>
+          <article-title>Beyond part models: Person retrieval with refined part pooling (and a strong convolutional baseline)</article-title>
+          <source>Proceedings of the European Conference on Computer Vision (ECCV), Munich, Germany</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_19">
+        <label>19.</label>
+        <element-citation publication-type="journal">
+          <year>2020</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Wang</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>He</surname>
+              <given-names>L.</given-names>
+            </name>
+            <name>
+              <surname>Gao</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Shen</surname>
+              <given-names>J.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.48550/ARXIV.2009.07491</pub-id>
+          <article-title>Robust person re-identification through contextual mutual boosting</article-title>
+          <source>arXiv preprint arXiv:2009.07491</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_20">
+        <label>20.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>2119–2128</page-range>
+          <year>2018</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Xu</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Zhao</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Zhu</surname>
+              <given-names>F.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Ouyang</surname>
+              <given-names>W.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/CVPR.2018.00226</pub-id>
+          <article-title>Attention-aware compositional network for person reidentification</article-title>
+          <source>2018 IEEE/CVF Conference on Computer Vision and Pattern Recognition, Salt Lake City, UT, USA</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_21">
+        <label>21.</label>
+        <element-citation publication-type="journal">
+          <year>2017</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Zhang</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Luo</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Fan</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Xiang</surname>
+              <given-names>W.</given-names>
+            </name>
+            <name>
+              <surname>Sun</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Xiao</surname>
+              <given-names>Q.</given-names>
+            </name>
+            <name>
+              <surname>Jiang</surname>
+              <given-names>W.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Sun</surname>
+              <given-names>J.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.48550/ARXIV.1711.08184</pub-id>
+          <article-title>AlignedReID: Surpassing human-level performance in person re-identification</article-title>
+          <source>arXiv preprint arXiv:1711.08184</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_22">
+        <label>22.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>2285–2294</page-range>
+          <year>2018</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Li</surname>
+              <given-names>W.</given-names>
+            </name>
+            <name>
+              <surname>Zhu</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Gong</surname>
+              <given-names>S.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/CVPR.2018.00243</pub-id>
+          <article-title>Harmonious attention network for person re-identification</article-title>
+          <source>2018 IEEE/CVF Conference on Computer Vision and Pattern Recognition, Salt Lake City, UT, USA</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_23">
+        <label>23.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>7127–7136</page-range>
+          <year>2019</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Tay</surname>
+              <given-names>C. P.</given-names>
+            </name>
+            <name>
+              <surname>S. Roy</surname>
+              <given-names/>
+            </name>
+            <name>
+              <surname>Yap</surname>
+              <given-names>K. H.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/CVPR.2019.00730</pub-id>
+          <article-title>AANet: Attribute attention network for person re-identifications</article-title>
+          <source>2019 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), Long Beach, CA, USA</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_24">
+        <label>24.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>357-373</page-range>
+          <year>2020</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>He</surname>
+              <given-names>L.</given-names>
+            </name>
+            <name>
+              <surname>Liu</surname>
+              <given-names>W.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1007/978-3-030-58604-1_22</pub-id>
+          <article-title>Guided saliency feature learning for person re-identification in crowded scenes</article-title>
+          <source>Computer Vision–ECCV 2020: 16th European Conference, Glasgow, UK</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_25">
+        <label>25.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>8449–8458</page-range>
+          <year>2019</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>He</surname>
+              <given-names>L.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Liu</surname>
+              <given-names>W.</given-names>
+            </name>
+            <name>
+              <surname>Zhao</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Z. Sun</surname>
+              <given-names/>
+            </name>
+            <name>
+              <surname>Feng</surname>
+              <given-names>J.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/ICCV.2019.00854</pub-id>
+          <article-title>Foreground-aware pyramid reconstruction for alignment-free occluded person re-identification</article-title>
+          <source>2019 IEEE/CVF International Conference on Computer Vision (ICCV), Seoul, Korea (South)</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_26">
+        <label>26.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>1–6</page-range>
+          <year>2020</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Huang</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Chen</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Huang</surname>
+              <given-names>K.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/ICME46284.2020.9102789</pub-id>
+          <article-title>Human parsing based alignment with multi-task learning for occluded person re-identification</article-title>
+          <source>2020 IEEE International Conference on Multimedia and Expo (ICME), London, UK</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_27">
+        <label>27.</label>
+        <element-citation publication-type="journal">
+          <year>2021</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Yu</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Chen</surname>
+              <given-names>D.</given-names>
+            </name>
+            <name>
+              <surname>Zhao</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>H. Chen</surname>
+              <given-names/>
+            </name>
+            <name>
+              <surname>Qiao</surname>
+              <given-names>Y.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.48550/arXiv.2105.07345</pub-id>
+          <article-title>Neighbourhood-guided feature reconstruction for occluded person re-identification</article-title>
+          <source>arXiv preprint arXiv:2105.07345</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_28">
+        <label>28.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>6230–6239</page-range>
+          <year>2017</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Zhao</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Shi</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Qi</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Jia</surname>
+              <given-names>J.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/CVPR.2017.660</pub-id>
+          <article-title>Pyramid scene parsing network</article-title>
+          <source>2017 IEEE Conference on Computer Vision;H. Pattern Recognition (CVPR), Honolulu, HI, USA</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_29">
+        <label>29.</label>
+        <element-citation publication-type="journal">
+          <year>2020</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Dosovitskiy</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Beyer</surname>
+              <given-names>L.</given-names>
+            </name>
+            <name>
+              <surname>Kolesnikov</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>et al.</surname>
+              <given-names/>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.48550/arXiv.2010.11929</pub-id>
+          <article-title>An image is worth 16×16 words: Transformers for image recognition at scale</article-title>
+          <source>arXiv preprint arXiv:2010.11929</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_30">
+        <label>30.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>14993–15002</page-range>
+          <year>2021</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>He</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Luo</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>P.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>F.</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Jiang</surname>
+              <given-names>W.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/ICCV48922.2021.01474</pub-id>
+          <article-title>Transreid: Transformer-based object re-identification</article-title>
+          <source>2021 IEEE/CVF International Conference on Computer Vision (ICCV), Montreal, QC, Canada</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_31">
+        <label>31.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>2897–2906</page-range>
+          <year>2021</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Li</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>He</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>T.</given-names>
+            </name>
+            <name>
+              <surname>Liu</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Wu</surname>
+              <given-names>F.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/CVPR46437.2021.00292</pub-id>
+          <article-title>Diverse part discovery: Occluded person re-identification with part-aware transformer</article-title>
+          <source>2021 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), Nashville, TN, USA</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_32">
+        <label>32.</label>
+        <element-citation publication-type="journal">
+          <year>2015</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>He</surname>
+              <given-names>K.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Ren</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Sun</surname>
+              <given-names>J.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.48550/arXiv.1512.03385</pub-id>
+          <article-title>Deep residual learning for image recognition</article-title>
+          <source>arXiv preprint arXiv:1512.03385</source>
+        </element-citation>
+      </ref>
+    </ref-list>
+  </back>
+</article>
