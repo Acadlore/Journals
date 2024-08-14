@@ -1,0 +1,3384 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.3 20210610//EN" "JATS-journalpublishing1-3.dtd">
+<article xml:lang="en" dtd-version="1.3" article-type="research-article" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mml="http://www.w3.org/1998/Math/MathML">
+  <front>
+    <journal-meta>
+      <journal-id journal-id-type="publisher-id">MITS</journal-id>
+      <journal-id journal-id-type="doi">10.56578</journal-id>
+      <journal-title-group>
+        <journal-title>Mechatronics and Intelligent Transportation Systems</journal-title>
+        <abbrev-journal-title abbrev-type="issn">Mechatron. Intell Transp. Syst.</abbrev-journal-title>
+        <abbrev-journal-title abbrev-type="publisher">MITS</abbrev-journal-title>
+      </journal-title-group>
+      <issn publication-format="electronic">2958-0218</issn>
+      <issn publication-format="print">2958-020X</issn>
+      <publisher>
+        <publisher-name>Acadlore</publisher-name>
+      </publisher>
+    </journal-meta>
+    <article-meta>
+      <article-id pub-id-type="publisher-id">AR-o054PNK6F8UBugWhxyaZosBsHqOFAcbL</article-id>
+      <article-id pub-id-type="doi">10.56578/mits030205</article-id>
+      <article-categories>
+        <subj-group>
+          <subject>Articles</subject>
+        </subj-group>
+      </article-categories>
+      <title-group>
+        <article-title>Self-Tuning Parameters of a Maglev Control System Based on Q-Learning</article-title>
+      </title-group>
+      <contrib-group>
+        <contrib contrib-type="author" rid="aff_1">
+          <contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0009-0000-3929-1835</contrib-id>
+          <name>
+            <surname>Wang</surname>
+            <given-names>Yang</given-names>
+          </name>
+          <email>2433682@tongji.edu.cn</email>
+        </contrib>
+        <contrib contrib-type="author" rid="aff_2">
+          <contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0000-0002-1549-0108</contrib-id>
+          <name>
+            <surname>Sun</surname>
+            <given-names>Yougang</given-names>
+          </name>
+          <email>1989yoga@tongji.edu.cn</email>
+        </contrib>
+        <contrib contrib-type="author" rid="aff_3">
+          <name>
+            <surname>Ji</surname>
+            <given-names>Wen</given-names>
+          </name>
+          <email/>
+        </contrib>
+        <contrib contrib-type="author" rid="aff_3">
+          <contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0000-0002-7678-6033</contrib-id>
+          <name>
+            <surname>Xu</surname>
+            <given-names>Junqi</given-names>
+          </name>
+          <email>xujunqi@tongji.edu.cn</email>
+        </contrib>
+        <aff id="aff_1">Institute of Rail Transit, Tongji University, 201804 Shanghai, China</aff>
+        <aff id="aff_2">Key Laboratory of Railway Industry of Maglev Technology, National Railway Administration of P. R. C., 201804 Shanghai, China</aff>
+        <aff id="aff_3">Maglev Transportation Engineering R&amp;D Center, Tongji University, 201804 Shanghai, China</aff>
+      </contrib-group>
+      <pub-date publication-format="electronic" date-type="pub">
+        <day>29</day>
+        <month>06</month>
+        <year>2024</year>
+      </pub-date>
+      <volume>3</volume>
+      <issue>2</issue>
+      <fpage>135</fpage>
+      <lpage>145</lpage>
+      <page-range>135-145</page-range>
+      <history>
+        <date date-type="received">
+          <day>05</day>
+          <month>04</month>
+          <year>2024</year>
+        </date>
+        <date date-type="accepted">
+          <day>14</day>
+          <month>06</month>
+          <year>2024</year>
+        </date>
+      </history>
+      <permissions>
+        <copyright-statement>©2024 by the author(s)</copyright-statement>
+        <copyright-year>2024</copyright-year>
+        <license license-type="open-access" xlink:href="https://creativecommons.org/licenses/by/4.0/">
+          <license-p> Published by Acadlore Publishing Services Limited, Hong Kong. This article is available for free download and can be reused and cited, provided that the original published version is credited, under the CC BY 4.0 license.</license-p>
+        </license>
+      </permissions>
+      <abstract><p>Maglev transportation, as an innovative mode of rail transit, is regarded as an ideal future transportation system due to its wide speed range, low noise, and strong climbing ability. However, the maglev control system faces challenges such as significant nonlinearity, open-loop instability, and multi-state coupling, leading to issues like insufficient tuning and susceptibility to environmental influences. This paper addresses these problems by investigating the self-tuning parameters of a maglev control system using Q-learning to achieve optimal parameter tuning and enhanced dynamic system performance. The study focuses on a basic levitation unit modeled after the simplified control system of an electromagnetic suspension (EMS) train. A Q-learning reinforcement learning environment and Q-learning agent were established for the levitation system, with a forward "anti-deadlock" reward function and discretization of the action space designed to facilitate reinforcement learning model training. Finally, a Q-learning-based method for self-tuning the parameters of the maglev control system is proposed. Simulation results in the Python environment demonstrate that this method outperforms the Linear Quadratic Regulator (LQR) control method, offering better control effects, improved robustness, and higher tracking accuracy under system parameter perturbations.</p></abstract>
+      <kwd-group>
+        <kwd>Maglev control system</kwd>
+        <kwd>Proportional-Integral-Derivative (PID) control</kwd>
+        <kwd>Reinforcement learning</kwd>
+        <kwd>Python simulation</kwd>
+      </kwd-group>
+      <counts>
+        <count count-type="contributors" count="4"/>
+        <fig-count count="8"/>
+        <table-count count="1"/>
+        <ref-count count="22"/>
+      </counts>
+    </article-meta>
+  </front>
+  <body>
+    <sec sec-type="intro">
+      <title>1. Introduction</title>
+      <p>The EMS-type maglev train [<xref ref-type="bibr" rid="ref_1">1</xref>], [<xref ref-type="bibr" rid="ref_2">2</xref>] achieves contactless support, guidance, traction, and partial braking through the electromagnetic attraction or repulsion generated by the interaction of coil currents. It also acquires electrical energy through magnetic induction without relying on a pantograph. This breaks the speed limit imposed by the traditional wheel-rail adhesion relationship, enabling higher speeds. At present, China has successfully completed the prototype and joint debugging of the 600 km/h high-speed maglev system [<xref ref-type="bibr" rid="ref_3">3</xref>], marking a new stage in the research of high-speed maglev transportation in China.</p><p>As an indispensable part of ensuring the stable operation of the EMS-type high-speed maglev train, the performance of the maglev control system directly determines the safety and comfort of the train [<xref ref-type="bibr" rid="ref_4">4</xref>]. Research on control systems and their algorithms began in the mid to late 20th century. In 2002, a composite control model combining PID with Fuzzy control is raised [<xref ref-type="bibr" rid="ref_5">5</xref>], which accomplishes PID parameter self-adjusting by employing Fuzzy reasoning, and shows great control effects. Cho and Kim [<xref ref-type="bibr" rid="ref_6">6</xref>] designed a fuzzy PID controller, which combines a traditional PID controller with a fuzzy controller. Based on the characteristics of system deviation, direction, and trend, decisions are made according to Teaching-Learning optimization to automatically adjust PID parameters. To compensate for the mismatch defect of PID control in nonlinear systems, Wang and Zhang [<xref ref-type="bibr" rid="ref_7">7</xref>] puts forward the theory of variable universe fuzzy PID algorithm-by selecting the right expansion factor to realize domain contraction, which can increase the fuzzy control rules, so as to improve the control precision. Additionally, in terms of explaining the PID control parameter adjustment rules for the maglev system, Ryan and Corless [<xref ref-type="bibr" rid="ref_8">8</xref>] proved that for a subclass of uncertain systems, a Maglev suspension control system, the zero state can be (a) rendered 'practically' stable (in the sense that, given any neighbourhood of the zero state, there exists a control, in the proposed class of continuous feedback controls, which guarantees global uniform ultimate boundedness with respect to that neighbourhood), or (b) rendered globally uniformly asymptotically stable by the proposed discontinuous feedback control.</p><p>Moreover, using modern control theory, scholars have proposed a series of nonlinear methods that can solve the stable suspension of the maglev system based on the premise of knowing the accurate model of the maglev system [<xref ref-type="bibr" rid="ref_9">9</xref>], [<xref ref-type="bibr" rid="ref_10">10</xref>], [<xref ref-type="bibr" rid="ref_11">11</xref>]. Tang and Yang [<xref ref-type="bibr" rid="ref_12">12</xref>] introduced a boundary variable power Fal function to replace the Sign function and associated the sliding mode gain and hyperplane function to eliminate system chattering instability in their improved sliding mode control algorithm based on Linear Extended State Observer (LESO). Hu et al. [<xref ref-type="bibr" rid="ref_13">13</xref>] improved the suspension performance of the system using Extended State Observer (ESO) technology combined with model reference sliding mode control and improved reaching law sliding mode control strategies. Additionally, this type of nonlinear control method can also improve the disturbance rejection performance of the maglev control system, ensuring suspension performance in the event of sensor failure. For example, Long et al. [<xref ref-type="bibr" rid="ref_14">14</xref>] propose designing Auto-Disturbance-Rejection (ADRC) control algorithm in train automatic operation system. From analyze of simulation of tracing the Automatic Train Operation curve, it shows that the this ADRC algorithm can meet the needs of maglev train automatic control, increasing the system's disturbance rejection.</p><p>In the era of intelligence, research in artificial intelligence has gradually penetrated the field of maglev control [<xref ref-type="bibr" rid="ref_15">15</xref>]. To reject the disturbance and parameter perturbations, an adaptive neural-fuzzy sliding mode controller is presented [<xref ref-type="bibr" rid="ref_16">16</xref>], which employs a sliding mode control, adaptive-fuzzy approximator, and the neural-fuzzy switching law, whose controller significantly reduces the impact of the disturbance and parameter perturbations ,showing good control system performance in simulations and experiments. Zhao et al. [<xref ref-type="bibr" rid="ref_17">17</xref>] used deep reinforcement learning methods, utilizing a double Q-learning scheme to reduce estimation errors in the Q function and used a PID controller to accelerate convergence, achieving suspension control and optimization based on a medium and low-speed maglev train dataset.</p><p>Therefore, for the maglev train suspension control system, the future development trend is bound to be towards high intelligence, excellent robustness, and good maintainability. Conducting adaptive reinforcement learning research on self-tuning control system parameters is of certain significance for consolidating maglev technology reserves and developing a new generation of highly intelligent high-speed maglev trains.</p>
+    </sec>
+    <sec sec-type="">
+      <title>2. Levitation system modeling</title>
+      <p>As shown in <xref ref-type="fig" rid="fig_1">Figure 1</xref>, the topology of the maglev system of the EMS-type maglev train consists of four units: control unit, drive unit, motion unit, and feedback unit. These units can complete the levitation functions from lifting off to levitating and then to maintaining stability. A carriage of the EMS-type maglev train is composed of several levitation bogies, each of which consists of four basic levitation units, as shown in <xref ref-type="fig" rid="fig_2">Figure 2</xref>. It is not difficult to find that there is consistency in functionality between the topological structure and the basic levitation unit, and the study of the basic levitation unit is representative to a certain extent [<xref ref-type="bibr" rid="ref_18">18</xref>].</p><p>Assumptions: Ignore the possible magnetic leakage in the electromagnet windings; the magnetic field generated by the electromagnet is uniform in the action area and conforms to infinite magnetic permeability; ignore adverse phenomena such as magnetic field saturation, hysteresis, and residual magnetism in electromagnetic phenomena:</p>
+      
+        <disp-formula>
+          <label>(1)</label>
+          <mml:math id="m49nsaeawz">
+            <mml:mi>L</mml:mi>
+            <mml:mi>c</mml:mi>
+            <mml:mi>i</mml:mi>
+            <mml:mo>(</mml:mo>
+            <mml:mo>,</mml:mo>
+            <mml:mo>)</mml:mo>
+            <mml:mo>=</mml:mo>
+            <mml:mo>=</mml:mo>
+            <mml:mfrac>
+              <mml:mi>N</mml:mi>
+              <mml:mrow>
+                <mml:mi>i</mml:mi>
+                <mml:mi>t</mml:mi>
+                <mml:mo>(</mml:mo>
+                <mml:mo>)</mml:mo>
+              </mml:mrow>
+            </mml:mfrac>
+            <mml:mfrac>
+              <mml:mrow>
+                <mml:mi>μ</mml:mi>
+                <mml:mi>A</mml:mi>
+                <mml:msup>
+                  <mml:mi>N</mml:mi>
+                  <mml:mn>2</mml:mn>
+                </mml:msup>
+              </mml:mrow>
+              <mml:mrow>
+                <mml:mn>2</mml:mn>
+                <mml:mi>c</mml:mi>
+                <mml:mi>t</mml:mi>
+                <mml:mo>(</mml:mo>
+                <mml:mo>)</mml:mo>
+              </mml:mrow>
+            </mml:mfrac>
+            <mml:msub>
+              <mml:mi>φ</mml:mi>
+              <mml:mi>T</mml:mi>
+            </mml:msub>
+          </mml:math>
+        </disp-formula>
+      
+      <p> where, <inline-formula>
+  <mml:math id="ms5ysknhz1">
+    <mml:mi>L</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+  </mml:math>
+</inline-formula> represents the inductance value corresponding to the determined coil current $i<inline-formula>
+  <mml:math id="m92utoxngy">
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>e</mml:mi>
+  </mml:math>
+</inline-formula>c<inline-formula>
+  <mml:math id="mmzm9zkgnn">
+    <mml:mo>;</mml:mo>
+  </mml:math>
+</inline-formula>N<inline-formula>
+  <mml:math id="mipa7mzcsx">
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mo>;</mml:mo>
+  </mml:math>
+</inline-formula>\varphi_T<inline-formula>
+  <mml:math id="mx29pt7a8m">
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mo>;</mml:mo>
+  </mml:math>
+</inline-formula>A<inline-formula>
+  <mml:math id="muq09mh59x">
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mo>;</mml:mo>
+  </mml:math>
+</inline-formula>\mu<inline-formula>
+  <mml:math id="mtx0komyrd">
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mo>;</mml:mo>
+  </mml:math>
+</inline-formula>i(t)<inline-formula>
+  <mml:math id="myyqvjdcae">
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+  </mml:math>
+</inline-formula>t<inline-formula>
+  <mml:math id="mrr5vhjqer">
+    <mml:mo>;</mml:mo>
+  </mml:math>
+</inline-formula>c(t)<inline-formula>
+  <mml:math id="mk3dvbz8s0">
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+  </mml:math>
+</inline-formula>t$.</p><p>Then combining the inductance formula with the relationship between magnetic induction intensity and main pole magnetic flux, we have:</p>
+      
+        <disp-formula>
+          <label>(2)</label>
+          <mml:math id="mjfqkdlw2w">
+            <mml:mi>B</mml:mi>
+            <mml:mo>≈</mml:mo>
+            <mml:mfrac>
+              <mml:msub>
+                <mml:mi>φ</mml:mi>
+                <mml:mi>T</mml:mi>
+              </mml:msub>
+              <mml:mi>A</mml:mi>
+            </mml:mfrac>
+          </mml:math>
+        </disp-formula>
+      
+      
+        <disp-formula>
+          <label>(3)</label>
+          <mml:math id="mpgjpokmmy">
+            <mml:msub>
+              <mml:mi>F</mml:mi>
+              <mml:mi>e</mml:mi>
+            </mml:msub>
+            <mml:mo>(</mml:mo>
+            <mml:mo>,</mml:mo>
+            <mml:mo>)</mml:mo>
+            <mml:mo>=</mml:mo>
+            <mml:mi>i</mml:mi>
+            <mml:mi>c</mml:mi>
+            <mml:mfrac>
+              <mml:mrow>
+                <mml:mi>μ</mml:mi>
+                <mml:mi>A</mml:mi>
+                <mml:msup>
+                  <mml:mi>N</mml:mi>
+                  <mml:mn>2</mml:mn>
+                </mml:msup>
+              </mml:mrow>
+              <mml:mn>4</mml:mn>
+            </mml:mfrac>
+            <mml:msup>
+              <mml:mrow>
+                <mml:mo>(</mml:mo>
+                <mml:mo>)</mml:mo>
+                <mml:mfrac>
+                  <mml:mrow>
+                    <mml:mi>i</mml:mi>
+                    <mml:mi>t</mml:mi>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>)</mml:mo>
+                  </mml:mrow>
+                  <mml:mrow>
+                    <mml:mi>c</mml:mi>
+                    <mml:mi>t</mml:mi>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>)</mml:mo>
+                  </mml:mrow>
+                </mml:mfrac>
+              </mml:mrow>
+              <mml:mn>2</mml:mn>
+            </mml:msup>
+          </mml:math>
+        </disp-formula>
+      
+      <p> where, <inline-formula>
+  <mml:math id="mn2q3eya3i">
+    <mml:msub>
+      <mml:mi>F</mml:mi>
+      <mml:mi>e</mml:mi>
+    </mml:msub>
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+  </mml:math>
+</inline-formula> represents the electromagnetic attraction corresponding to the determined coil current $i<inline-formula>
+  <mml:math id="m6er1cc1qi">
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>e</mml:mi>
+  </mml:math>
+</inline-formula>c$.</p><p>In the vertical direction, according to Newton's second law, the kinematic equation of the levitation electromagnet can be expressed as:</p>
+      
+        <fig id="fig_1">
+          <label>Figure 1</label>
+          <caption>
+            <title>Topology of the high-speed maglev system</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2024/7/img_3OOFWmzzJ0vcH0Xj.png"/>
+        </fig>
+      
+      
+        <fig id="fig_2">
+          <label>Figure 2</label>
+          <caption>
+            <title>Topology of the high-speed maglev system [<xref ref-type="bibr" rid="ref_19">19</xref>], [<xref ref-type="bibr" rid="ref_20">20</xref>]</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2024/7/img_DfCLMXL4Mj7QtA4p.png"/>
+        </fig>
+      
+      
+        <disp-formula>
+          <label>(4)</label>
+          <mml:math id="my38yefx0d">
+            <mml:mi>m</mml:mi>
+            <mml:mi>m</mml:mi>
+            <mml:mi>g</mml:mi>
+            <mml:mi>t</mml:mi>
+            <mml:mi>i</mml:mi>
+            <mml:mi>c</mml:mi>
+            <mml:mfrac>
+              <mml:mrow>
+                <mml:msup>
+                  <mml:mi>d</mml:mi>
+                  <mml:mn>2</mml:mn>
+                </mml:msup>
+                <mml:mi>c</mml:mi>
+                <mml:mi>t</mml:mi>
+                <mml:mo>(</mml:mo>
+                <mml:mo>)</mml:mo>
+              </mml:mrow>
+              <mml:mrow>
+                <mml:mi>d</mml:mi>
+                <mml:msup>
+                  <mml:mi>t</mml:mi>
+                  <mml:mn>2</mml:mn>
+                </mml:msup>
+              </mml:mrow>
+            </mml:mfrac>
+            <mml:mo>=</mml:mo>
+            <mml:mo>+</mml:mo>
+            <mml:mo>(</mml:mo>
+            <mml:mo>)</mml:mo>
+            <mml:mo>−</mml:mo>
+            <mml:mo>(</mml:mo>
+            <mml:mo>,</mml:mo>
+            <mml:mo>)</mml:mo>
+            <mml:msub>
+              <mml:mi>f</mml:mi>
+              <mml:mi>d</mml:mi>
+            </mml:msub>
+            <mml:msub>
+              <mml:mi>F</mml:mi>
+              <mml:mi>e</mml:mi>
+            </mml:msub>
+          </mml:math>
+        </disp-formula>
+      
+      <p> where, $m<inline-formula>
+  <mml:math id="mgzu72m8ld">
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mo>,</mml:mo>
+    <mml:mo>;</mml:mo>
+  </mml:math>
+</inline-formula>g<inline-formula>
+  <mml:math id="ms8t3ckkza">
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mo>;</mml:mo>
+  </mml:math>
+</inline-formula>f_d(t)<inline-formula>
+  <mml:math id="mvxxtrimh3">
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+  </mml:math>
+</inline-formula>t$.</p><p>At the equilibrium position, there is:</p>
+      
+        <disp-formula>
+          <label>(5)</label>
+          <mml:math id="mgrlfrjn35">
+            <mml:mrow>
+              <mml:mo>{</mml:mo>
+              <mml:mo fence="true"/>
+              <mml:mtable columnalign="left" columnspacing="1em" rowspacing="4pt">
+                <mml:mtr>
+                  <mml:mtd>
+                    <mml:mrow>
+                      <mml:mi>m</mml:mi>
+                    </mml:mrow>
+                    <mml:mfrac>
+                      <mml:mrow>
+                        <mml:msup>
+                          <mml:mi>d</mml:mi>
+                          <mml:mn>2</mml:mn>
+                        </mml:msup>
+                        <mml:mi>c</mml:mi>
+                        <mml:mi>t</mml:mi>
+                        <mml:mo>(</mml:mo>
+                        <mml:mo>)</mml:mo>
+                      </mml:mrow>
+                      <mml:mrow>
+                        <mml:mi>d</mml:mi>
+                        <mml:msup>
+                          <mml:mi>t</mml:mi>
+                          <mml:mn>2</mml:mn>
+                        </mml:msup>
+                      </mml:mrow>
+                    </mml:mfrac>
+                    <mml:mfrac>
+                      <mml:mrow>
+                        <mml:mi>μ</mml:mi>
+                        <mml:mi>A</mml:mi>
+                        <mml:msup>
+                          <mml:mi>N</mml:mi>
+                          <mml:mn>2</mml:mn>
+                        </mml:msup>
+                      </mml:mrow>
+                      <mml:mn>4</mml:mn>
+                    </mml:mfrac>
+                    <mml:mo>=</mml:mo>
+                    <mml:mo>+</mml:mo>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:mo>−</mml:mo>
+                    <mml:mi>m</mml:mi>
+                    <mml:mi>g</mml:mi>
+                    <mml:mi>t</mml:mi>
+                    <mml:msub>
+                      <mml:mi>f</mml:mi>
+                      <mml:mi>d</mml:mi>
+                    </mml:msub>
+                    <mml:msup>
+                      <mml:mrow>
+                        <mml:mo>(</mml:mo>
+                        <mml:mo>)</mml:mo>
+                        <mml:mfrac>
+                          <mml:mrow>
+                            <mml:mi>i</mml:mi>
+                            <mml:mi>t</mml:mi>
+                            <mml:mo>(</mml:mo>
+                            <mml:mo>)</mml:mo>
+                          </mml:mrow>
+                          <mml:mrow>
+                            <mml:mi>c</mml:mi>
+                            <mml:mi>t</mml:mi>
+                            <mml:mo>(</mml:mo>
+                            <mml:mo>)</mml:mo>
+                          </mml:mrow>
+                        </mml:mfrac>
+                      </mml:mrow>
+                      <mml:mn>2</mml:mn>
+                    </mml:msup>
+                  </mml:mtd>
+                </mml:mtr>
+                <mml:mtr>
+                  <mml:mtd>
+                    <mml:msub>
+                      <mml:mi>F</mml:mi>
+                      <mml:mi>e</mml:mi>
+                    </mml:msub>
+                    <mml:msub>
+                      <mml:mi>f</mml:mi>
+                      <mml:mi>d</mml:mi>
+                    </mml:msub>
+                    <mml:mrow>
+                      <mml:mo>(</mml:mo>
+                      <mml:mo>,</mml:mo>
+                      <mml:mo>)</mml:mo>
+                      <mml:msub>
+                        <mml:mi>i</mml:mi>
+                        <mml:mn>0</mml:mn>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mi>c</mml:mi>
+                        <mml:mn>0</mml:mn>
+                      </mml:msub>
+                    </mml:mrow>
+                    <mml:mo>=</mml:mo>
+                    <mml:mo>+</mml:mo>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:mi>m</mml:mi>
+                    <mml:mi>g</mml:mi>
+                    <mml:mi>t</mml:mi>
+                  </mml:mtd>
+                </mml:mtr>
+              </mml:mtable>
+            </mml:mrow>
+          </mml:math>
+        </disp-formula>
+      
+      <p>Ignoring the disturbance term and performing approximate linearization, we have the Taylor expansion at the equilibrium point, ignoring higher-order terms:</p>
+      
+        <disp-formula>
+          <label>(6)</label>
+          <mml:math id="myguggek2h">
+            <mml:mrow>
+              <mml:mo>{</mml:mo>
+              <mml:mo fence="true"/>
+              <mml:mtable columnalign="left" columnspacing="1em" rowspacing="4pt">
+                <mml:mtr>
+                  <mml:mtd>
+                    <mml:mfrac>
+                      <mml:mrow>
+                        <mml:msup>
+                          <mml:mi>d</mml:mi>
+                          <mml:mn>2</mml:mn>
+                        </mml:msup>
+                        <mml:mi>c</mml:mi>
+                        <mml:mi>t</mml:mi>
+                        <mml:mo>(</mml:mo>
+                        <mml:mo>)</mml:mo>
+                      </mml:mrow>
+                      <mml:mrow>
+                        <mml:mi>d</mml:mi>
+                        <mml:msup>
+                          <mml:mi>t</mml:mi>
+                          <mml:mn>2</mml:mn>
+                        </mml:msup>
+                      </mml:mrow>
+                    </mml:mfrac>
+                    <mml:mo>=</mml:mo>
+                    <mml:mo>−</mml:mo>
+                    <mml:msub>
+                      <mml:mi>k</mml:mi>
+                      <mml:mn>1</mml:mn>
+                    </mml:msub>
+                    <mml:msub>
+                      <mml:mi>k</mml:mi>
+                      <mml:mn>2</mml:mn>
+                    </mml:msub>
+                    <mml:mrow>
+                      <mml:mo>(</mml:mo>
+                      <mml:mo>−</mml:mo>
+                      <mml:mo>)</mml:mo>
+                      <mml:mi>c</mml:mi>
+                      <mml:msub>
+                        <mml:mi>c</mml:mi>
+                        <mml:mn>0</mml:mn>
+                      </mml:msub>
+                    </mml:mrow>
+                    <mml:mrow>
+                      <mml:mo>(</mml:mo>
+                      <mml:mo>−</mml:mo>
+                      <mml:mo>)</mml:mo>
+                      <mml:mi>i</mml:mi>
+                      <mml:msub>
+                        <mml:mi>i</mml:mi>
+                        <mml:mn>0</mml:mn>
+                      </mml:msub>
+                    </mml:mrow>
+                  </mml:mtd>
+                </mml:mtr>
+                <mml:mtr>
+                  <mml:mtd>
+                    <mml:msub>
+                      <mml:mi>k</mml:mi>
+                      <mml:mn>1</mml:mn>
+                    </mml:msub>
+                    <mml:msub>
+                      <mml:mi>k</mml:mi>
+                      <mml:mn>2</mml:mn>
+                    </mml:msub>
+                    <mml:mo>=</mml:mo>
+                    <mml:mo>;</mml:mo>
+                    <mml:mo>=</mml:mo>
+                    <mml:mfrac>
+                      <mml:mrow>
+                        <mml:mi>μ</mml:mi>
+                        <mml:mi>A</mml:mi>
+                        <mml:msup>
+                          <mml:mi>N</mml:mi>
+                          <mml:mn>2</mml:mn>
+                        </mml:msup>
+                        <mml:msup>
+                          <mml:mrow/>
+                          <mml:mn>2</mml:mn>
+                        </mml:msup>
+                        <mml:msub>
+                          <mml:mi>i</mml:mi>
+                          <mml:mn>0</mml:mn>
+                        </mml:msub>
+                      </mml:mrow>
+                      <mml:mrow>
+                        <mml:mn>2</mml:mn>
+                        <mml:mi>m</mml:mi>
+                        <mml:msub>
+                          <mml:mi>c</mml:mi>
+                          <mml:mn>0</mml:mn>
+                        </mml:msub>
+                        <mml:msup>
+                          <mml:mrow/>
+                          <mml:mn>3</mml:mn>
+                        </mml:msup>
+                      </mml:mrow>
+                    </mml:mfrac>
+                    <mml:mfrac>
+                      <mml:mrow>
+                        <mml:mi>μ</mml:mi>
+                        <mml:mi>A</mml:mi>
+                        <mml:msup>
+                          <mml:mi>N</mml:mi>
+                          <mml:mn>2</mml:mn>
+                        </mml:msup>
+                        <mml:msub>
+                          <mml:mi>i</mml:mi>
+                          <mml:mn>0</mml:mn>
+                        </mml:msub>
+                      </mml:mrow>
+                      <mml:mrow>
+                        <mml:mn>2</mml:mn>
+                        <mml:mi>m</mml:mi>
+                        <mml:msub>
+                          <mml:mi>c</mml:mi>
+                          <mml:mn>0</mml:mn>
+                        </mml:msub>
+                        <mml:msup>
+                          <mml:mrow/>
+                          <mml:mn>2</mml:mn>
+                        </mml:msup>
+                      </mml:mrow>
+                    </mml:mfrac>
+                  </mml:mtd>
+                </mml:mtr>
+              </mml:mtable>
+            </mml:mrow>
+          </mml:math>
+        </disp-formula>
+      
+      <p>The open-loop transfer function of the entire system is:</p>
+      
+        <disp-formula>
+          <label>(7)</label>
+          <mml:math id="ml913vteoj">
+            <mml:mi>G</mml:mi>
+            <mml:mi>s</mml:mi>
+            <mml:mo>(</mml:mo>
+            <mml:mo>)</mml:mo>
+            <mml:mo>=</mml:mo>
+            <mml:mo>=</mml:mo>
+            <mml:mfrac>
+              <mml:mrow>
+                <mml:mi>X</mml:mi>
+                <mml:mi>s</mml:mi>
+                <mml:mo>(</mml:mo>
+                <mml:mo>)</mml:mo>
+              </mml:mrow>
+              <mml:mrow>
+                <mml:mi>Y</mml:mi>
+                <mml:mi>s</mml:mi>
+                <mml:mo>(</mml:mo>
+                <mml:mo>)</mml:mo>
+              </mml:mrow>
+            </mml:mfrac>
+            <mml:mfrac>
+              <mml:mrow>
+                <mml:mo>−</mml:mo>
+                <mml:msub>
+                  <mml:mi>k</mml:mi>
+                  <mml:mn>2</mml:mn>
+                </mml:msub>
+              </mml:mrow>
+              <mml:mrow>
+                <mml:msup>
+                  <mml:mi>s</mml:mi>
+                  <mml:mn>2</mml:mn>
+                </mml:msup>
+                <mml:mo>−</mml:mo>
+                <mml:msub>
+                  <mml:mi>k</mml:mi>
+                  <mml:mn>1</mml:mn>
+                </mml:msub>
+              </mml:mrow>
+            </mml:mfrac>
+          </mml:math>
+        </disp-formula>
+      
+      <p>Obviously, the characteristic equation of the system has a zero point on the right half-plane of s, making the system open-loop unstable and requiring external feedback control.</p>
+    </sec>
+    <sec sec-type="">
+      <title>3. Design of the levitation control system parameter tuning algorithm based on q-learning</title>
+      <p>Reinforcement learning is a type of learning that originates from the field of artificial intelligence. Its core idea is to enable an agent to gradually learn how to make optimal or near-optimal decisions in a complex environment through a series of trial-and-error processes, guided by a specific reward function [<xref ref-type="bibr" rid="ref_16">16</xref>], [<xref ref-type="bibr" rid="ref_21">21</xref>]. Q-learning is a type of reinforcement learning that is based on the temporal difference method. By using the maximization of the subsequent state's Q value as the target value, it iteratively updates the Q function and ultimately converges to the optimal Q function to obtain the optimal policy [<xref ref-type="bibr" rid="ref_22">22</xref>]. The parameter training framework of the maglev control system based on reinforcement learning is shown in <xref ref-type="fig" rid="fig_3">Figure 3</xref>.</p>
+      
+        <fig id="fig_3">
+          <label>Figure 3</label>
+          <caption>
+            <title>Framework of maglev control system parameter training based on reinforcement learning</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2024/7/img_XLQQU-kS6DduBJTi.png"/>
+        </fig>
+      
+      
+        <sec>
+          
+            <title>3.1. Q-learning</title>
+          
+          
+            <sec>
+              
+                <title>3.1.1 Q-function</title>
+              
+              <p><inline-formula>
+  <mml:math id="mn4a4xaa9c">
+    <mml:mi>Q</mml:mi>
+    <mml:mi>U</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>∣</mml:mo>
+    <mml:mo>)</mml:mo>
+  </mml:math>
+</inline-formula> represents the expected total sum of future cumulative reward functions obtained by executing all subsequent actions using policy $U<inline-formula>
+  <mml:math id="mg93qwwjgh">
+    <mml:mi>a</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>k</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+  </mml:math>
+</inline-formula>a<inline-formula>
+  <mml:math id="mgprscpfia">
+    <mml:mi>u</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+  </mml:math>
+</inline-formula>s$.</p>
+            </sec>
+          
+          
+            <sec>
+              
+                <title>3.1.2 Value function</title>
+              
+              <p><inline-formula>
+  <mml:math id="mby9czjakz">
+    <mml:mi>V</mml:mi>
+    <mml:mi>U</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>∣</mml:mo>
+    <mml:mo>)</mml:mo>
+  </mml:math>
+</inline-formula> represents the expected total sum of future cumulative reward functions obtained by executing a series of actions using policy $U<inline-formula>
+  <mml:math id="mbqaerdp86">
+    <mml:mi>u</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+  </mml:math>
+</inline-formula>s$.</p>
+            </sec>
+          
+          
+            <sec>
+              
+                <title>3.1.3 Bellman equation relationship</title>
+              
+              <p>Naturally, we know from the Bellman equation that <inline-formula>
+  <mml:math id="mlz5z6wbat">
+    <mml:mi>Q</mml:mi>
+    <mml:mi>U</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>∣</mml:mo>
+    <mml:mo>)</mml:mo>
+  </mml:math>
+</inline-formula> and <inline-formula>
+  <mml:math id="miyey5vus2">
+    <mml:mi>V</mml:mi>
+    <mml:mi>U</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>∣</mml:mo>
+    <mml:mo>)</mml:mo>
+  </mml:math>
+</inline-formula> satisfy:</p>
+              
+                <disp-formula>
+                  <label>(8)</label>
+                  <mml:math id="mqat2p9key">
+                    <mml:mi>V</mml:mi>
+                    <mml:mi>U</mml:mi>
+                    <mml:mi>s</mml:mi>
+                    <mml:mi>U</mml:mi>
+                    <mml:mi>a</mml:mi>
+                    <mml:mi>s</mml:mi>
+                    <mml:mi>T</mml:mi>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>∣</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:mo>=</mml:mo>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>∣</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:munder>
+                      <mml:mo>∑</mml:mo>
+                      <mml:mi>a</mml:mi>
+                    </mml:munder>
+                    <mml:munder>
+                      <mml:mo>∑</mml:mo>
+                      <mml:mrow>
+                        <mml:msup>
+                          <mml:mi>s</mml:mi>
+                          <mml:mrow>
+                            <mml:mi>′</mml:mi>
+                          </mml:mrow>
+                        </mml:msup>
+                      </mml:mrow>
+                    </mml:munder>
+                    <mml:mrow>
+                      <mml:mo>(</mml:mo>
+                      <mml:mo>,</mml:mo>
+                      <mml:mo>,</mml:mo>
+                      <mml:mo>)</mml:mo>
+                      <mml:mi>s</mml:mi>
+                      <mml:mi>a</mml:mi>
+                      <mml:msup>
+                        <mml:mi>s</mml:mi>
+                        <mml:mrow>
+                          <mml:mi>′</mml:mi>
+                        </mml:mrow>
+                      </mml:msup>
+                    </mml:mrow>
+                    <mml:mrow>
+                      <mml:mo>[</mml:mo>
+                      <mml:mo>(</mml:mo>
+                      <mml:mo>,</mml:mo>
+                      <mml:mo>)</mml:mo>
+                      <mml:mo>+</mml:mo>
+                      <mml:mo>]</mml:mo>
+                      <mml:mi>R</mml:mi>
+                      <mml:mi>s</mml:mi>
+                      <mml:mi>a</mml:mi>
+                      <mml:mi>γ</mml:mi>
+                      <mml:mi>V</mml:mi>
+                      <mml:mrow>
+                        <mml:mo>(</mml:mo>
+                        <mml:mo>∣</mml:mo>
+                        <mml:mo>)</mml:mo>
+                        <mml:mi>U</mml:mi>
+                        <mml:msup>
+                          <mml:mi>s</mml:mi>
+                          <mml:mrow>
+                            <mml:mi>′</mml:mi>
+                          </mml:mrow>
+                        </mml:msup>
+                      </mml:mrow>
+                    </mml:mrow>
+                  </mml:math>
+                </disp-formula>
+              
+              
+                <disp-formula>
+                  <label>(9)</label>
+                  <mml:math id="mckjrzdv4q">
+                    <mml:mi>Q</mml:mi>
+                    <mml:mi>U</mml:mi>
+                    <mml:mi>a</mml:mi>
+                    <mml:mi>s</mml:mi>
+                    <mml:mi>T</mml:mi>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>,</mml:mo>
+                    <mml:mo>∣</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:mo>=</mml:mo>
+                    <mml:munder>
+                      <mml:mo>∑</mml:mo>
+                      <mml:mrow>
+                        <mml:msup>
+                          <mml:mi>s</mml:mi>
+                          <mml:mrow>
+                            <mml:mi>′</mml:mi>
+                          </mml:mrow>
+                        </mml:msup>
+                      </mml:mrow>
+                    </mml:munder>
+                    <mml:mrow>
+                      <mml:mo>(</mml:mo>
+                      <mml:mo>,</mml:mo>
+                      <mml:mo>,</mml:mo>
+                      <mml:mo>)</mml:mo>
+                      <mml:mi>s</mml:mi>
+                      <mml:mi>a</mml:mi>
+                      <mml:msup>
+                        <mml:mi>s</mml:mi>
+                        <mml:mrow>
+                          <mml:mi>′</mml:mi>
+                        </mml:mrow>
+                      </mml:msup>
+                    </mml:mrow>
+                    <mml:mrow>
+                      <mml:mo>[</mml:mo>
+                      <mml:mo>(</mml:mo>
+                      <mml:mo>,</mml:mo>
+                      <mml:mo>)</mml:mo>
+                      <mml:mo>+</mml:mo>
+                      <mml:mo>]</mml:mo>
+                      <mml:mi>R</mml:mi>
+                      <mml:mi>s</mml:mi>
+                      <mml:mi>a</mml:mi>
+                      <mml:mi>γ</mml:mi>
+                      <mml:mi>U</mml:mi>
+                      <mml:mi>Q</mml:mi>
+                      <mml:munder>
+                        <mml:mo>∑</mml:mo>
+                        <mml:mrow>
+                          <mml:msup>
+                            <mml:mi>a</mml:mi>
+                            <mml:mrow>
+                              <mml:mi>′</mml:mi>
+                            </mml:mrow>
+                          </mml:msup>
+                        </mml:mrow>
+                      </mml:munder>
+                      <mml:mrow>
+                        <mml:mo>(</mml:mo>
+                        <mml:mo>∣</mml:mo>
+                        <mml:mo>)</mml:mo>
+                        <mml:msup>
+                          <mml:mi>a</mml:mi>
+                          <mml:mrow>
+                            <mml:mi>′</mml:mi>
+                          </mml:mrow>
+                        </mml:msup>
+                        <mml:msup>
+                          <mml:mi>s</mml:mi>
+                          <mml:mrow>
+                            <mml:mi>′</mml:mi>
+                          </mml:mrow>
+                        </mml:msup>
+                      </mml:mrow>
+                      <mml:mrow>
+                        <mml:mo>(</mml:mo>
+                        <mml:mo>,</mml:mo>
+                        <mml:mo>∣</mml:mo>
+                        <mml:mo>)</mml:mo>
+                        <mml:mi>U</mml:mi>
+                        <mml:msup>
+                          <mml:mi>a</mml:mi>
+                          <mml:mrow>
+                            <mml:mi>′</mml:mi>
+                          </mml:mrow>
+                        </mml:msup>
+                        <mml:msup>
+                          <mml:mi>s</mml:mi>
+                          <mml:mrow>
+                            <mml:mi>′</mml:mi>
+                          </mml:mrow>
+                        </mml:msup>
+                      </mml:mrow>
+                    </mml:mrow>
+                  </mml:math>
+                </disp-formula>
+              
+            </sec>
+          
+          
+            <sec>
+              
+                <title>3.1.4 Q-learning algorithm</title>
+              
+              <p>As previously mentioned, the Q-learning algorithm is a learning interaction process based on the optimal Q-function. Its update strategy can be derived from Eqs. (8) and (9):</p>
+              
+                <disp-formula>
+                  <label>(10)</label>
+                  <mml:math id="mp4hkdmygs">
+                    <mml:mi>Q</mml:mi>
+                    <mml:mi>a</mml:mi>
+                    <mml:mi>t</mml:mi>
+                    <mml:mi>s</mml:mi>
+                    <mml:mi>t</mml:mi>
+                    <mml:mi>Q</mml:mi>
+                    <mml:mi>A</mml:mi>
+                    <mml:mi>t</mml:mi>
+                    <mml:mi>S</mml:mi>
+                    <mml:mi>t</mml:mi>
+                    <mml:mi>α</mml:mi>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:mo>,</mml:mo>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:mo>←</mml:mo>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:mo>,</mml:mo>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:mo>+</mml:mo>
+                    <mml:mrow>
+                      <mml:mo>[</mml:mo>
+                      <mml:mo>(</mml:mo>
+                      <mml:mo>)</mml:mo>
+                      <mml:mo>+</mml:mo>
+                      <mml:mo>(</mml:mo>
+                      <mml:mo>(</mml:mo>
+                      <mml:mo>+</mml:mo>
+                      <mml:mo>)</mml:mo>
+                      <mml:mo>,</mml:mo>
+                      <mml:mo>(</mml:mo>
+                      <mml:mo>+</mml:mo>
+                      <mml:mo>)</mml:mo>
+                      <mml:mo>)</mml:mo>
+                      <mml:mo>−</mml:mo>
+                      <mml:mo>(</mml:mo>
+                      <mml:mo>(</mml:mo>
+                      <mml:mo>)</mml:mo>
+                      <mml:mo>,</mml:mo>
+                      <mml:mo>(</mml:mo>
+                      <mml:mo>)</mml:mo>
+                      <mml:mo>)</mml:mo>
+                      <mml:mo>]</mml:mo>
+                      <mml:mi>r</mml:mi>
+                      <mml:mi>t</mml:mi>
+                      <mml:mi>γ</mml:mi>
+                      <mml:mi>Q</mml:mi>
+                      <mml:mi>a</mml:mi>
+                      <mml:mi>t</mml:mi>
+                      <mml:mi>s</mml:mi>
+                      <mml:mi>t</mml:mi>
+                      <mml:mi>Q</mml:mi>
+                      <mml:mi>A</mml:mi>
+                      <mml:mi>t</mml:mi>
+                      <mml:mi>S</mml:mi>
+                      <mml:mi>t</mml:mi>
+                      <mml:munder>
+                        <mml:mo>max</mml:mo>
+                        <mml:mrow>
+                          <mml:mi>a</mml:mi>
+                          <mml:mi>t</mml:mi>
+                          <mml:mo>(</mml:mo>
+                          <mml:mo>+</mml:mo>
+                          <mml:mo>)</mml:mo>
+                          <mml:mn>1</mml:mn>
+                        </mml:mrow>
+                      </mml:munder>
+                      <mml:mn>1</mml:mn>
+                      <mml:mn>1</mml:mn>
+                    </mml:mrow>
+                  </mml:math>
+                </disp-formula>
+              
+              <p>In the equations, <inline-formula>
+  <mml:math id="mbt2fh6e4j">
+    <mml:mi>α</mml:mi>
+  </mml:math>
+</inline-formula> represents the learning rate, which quantifies the impact of each learning iteration; <inline-formula>
+  <mml:math id="m0kd7r0flu">
+    <mml:mi>γ</mml:mi>
+  </mml:math>
+</inline-formula> is the discount factor, which measures the importance of future rewards.</p><p>At the same time, the optimal Q-function <inline-formula>
+  <mml:math id="m8b3c9zofh">
+    <mml:msup>
+      <mml:mi>Q</mml:mi>
+      <mml:mo>∗</mml:mo>
+    </mml:msup>
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+  </mml:math>
+</inline-formula> also satisfies the Bellman equation, and its transformation relationship is:</p>
+              
+                <disp-formula>
+                  <label>(11)</label>
+                  <mml:math id="mnzf9lwgh6">
+                    <mml:mi>Q</mml:mi>
+                    <mml:mi>a</mml:mi>
+                    <mml:mi>s</mml:mi>
+                    <mml:mi>T</mml:mi>
+                    <mml:mo>∗</mml:mo>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>,</mml:mo>
+                    <mml:mo>∣</mml:mo>
+                    <mml:mo>+</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:mo>←</mml:mo>
+                    <mml:mrow>
+                      <mml:mi>k</mml:mi>
+                    </mml:mrow>
+                    <mml:mrow>
+                      <mml:mo>(</mml:mo>
+                      <mml:mo>,</mml:mo>
+                      <mml:mo>,</mml:mo>
+                      <mml:mo>)</mml:mo>
+                      <mml:mi>s</mml:mi>
+                      <mml:mi>a</mml:mi>
+                      <mml:msup>
+                        <mml:mi>s</mml:mi>
+                        <mml:mrow>
+                          <mml:mi>′</mml:mi>
+                        </mml:mrow>
+                      </mml:msup>
+                    </mml:mrow>
+                    <mml:mrow>
+                      <mml:mo>[</mml:mo>
+                      <mml:mo>(</mml:mo>
+                      <mml:mo>∣</mml:mo>
+                      <mml:mo>,</mml:mo>
+                      <mml:mo>)</mml:mo>
+                      <mml:mo>+</mml:mo>
+                      <mml:mo>]</mml:mo>
+                      <mml:mi>R</mml:mi>
+                      <mml:mi>t</mml:mi>
+                      <mml:mi>s</mml:mi>
+                      <mml:mi>a</mml:mi>
+                      <mml:mi>γ</mml:mi>
+                      <mml:munder>
+                        <mml:mo>max</mml:mo>
+                        <mml:mrow>
+                          <mml:msup>
+                            <mml:mi>a</mml:mi>
+                            <mml:mrow>
+                              <mml:mi>′</mml:mi>
+                            </mml:mrow>
+                          </mml:msup>
+                        </mml:mrow>
+                      </mml:munder>
+                      <mml:msup>
+                        <mml:mi>Q</mml:mi>
+                        <mml:mo>∗</mml:mo>
+                      </mml:msup>
+                      <mml:mrow>
+                        <mml:mo>(</mml:mo>
+                        <mml:mo>,</mml:mo>
+                        <mml:mo>∣</mml:mo>
+                        <mml:mo>)</mml:mo>
+                        <mml:msup>
+                          <mml:mi>a</mml:mi>
+                          <mml:mrow>
+                            <mml:mi>′</mml:mi>
+                          </mml:mrow>
+                        </mml:msup>
+                        <mml:msup>
+                          <mml:mi>s</mml:mi>
+                          <mml:mrow>
+                            <mml:mi>′</mml:mi>
+                          </mml:mrow>
+                        </mml:msup>
+                        <mml:mi>k</mml:mi>
+                      </mml:mrow>
+                    </mml:mrow>
+                    <mml:mn>1</mml:mn>
+                    <mml:munder>
+                      <mml:mo>∑</mml:mo>
+                      <mml:mrow>
+                        <mml:msup>
+                          <mml:mi>s</mml:mi>
+                          <mml:mrow>
+                            <mml:mi>′</mml:mi>
+                          </mml:mrow>
+                        </mml:msup>
+                      </mml:mrow>
+                    </mml:munder>
+                  </mml:math>
+                </disp-formula>
+              
+              <p>In the equations, $k<inline-formula>
+  <mml:math id="m618ioqvjr">
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>s^{\prime}<inline-formula>
+  <mml:math id="ms6zwi8p6b">
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+  </mml:math>
+</inline-formula>a^{\prime}<inline-formula>
+  <mml:math id="mivs4c113g">
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+  </mml:math>
+</inline-formula>S<inline-formula>
+  <mml:math id="ml7nrfl7ce">
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+  </mml:math>
+</inline-formula>A$ at the next time step in the iteration.</p>
+            </sec>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.2. Self-tuning algorithm for levitation control parameters based on q-learning</title>
+          
+          
+            <sec>
+              
+                <title>3.2.1 Agent setup</title>
+              
+              <p>For the single-point maglev model agent, its operating range must have definite upper and lower limits, including but not limited to the upper and lower limits of speed <inline-formula>
+  <mml:math id="mdsxz33yuy">
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+  </mml:math>
+</inline-formula>, the upper and lower limits of levitation gap <inline-formula>
+  <mml:math id="m210fx47vv">
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+  </mml:math>
+</inline-formula>, the upper limit of adjustment time <inline-formula>
+  <mml:math id="mhnaqui3q2">
+    <mml:msub>
+      <mml:mi>t</mml:mi>
+      <mml:mi>s</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> (mechanism model time limit), and the upper and lower limits of control current $i$, etc.</p><p>The following values are specified:</p>
+              
+                <disp-formula>
+                  <label>(12)</label>
+                  <mml:math id="mrgnka5py7">
+                    <mml:mrow>
+                      <mml:mover>
+                        <mml:mrow>
+                          <mml:mi>c</mml:mi>
+                          <mml:mi>t</mml:mi>
+                          <mml:mo>(</mml:mo>
+                          <mml:mo>)</mml:mo>
+                        </mml:mrow>
+                        <mml:mo>˙</mml:mo>
+                      </mml:mover>
+                    </mml:mrow>
+                    <mml:mrow>
+                      <mml:mo>{</mml:mo>
+                      <mml:mo fence="true"/>
+                      <mml:mtable columnspacing="1em" rowspacing="4pt">
+                        <mml:mtr>
+                          <mml:mtd>
+                            <mml:mn>0</mml:mn>
+                            <mml:mn>0</mml:mn>
+                            <mml:mn>0</mml:mn>
+                            <mml:mo>,</mml:mo>
+                            <mml:mo>(</mml:mo>
+                            <mml:mo>)</mml:mo>
+                            <mml:mo>&lt;</mml:mo>
+                            <mml:mo>,</mml:mo>
+                            <mml:mo>&lt;</mml:mo>
+                            <mml:mrow>
+                              <mml:mover>
+                                <mml:mi>c</mml:mi>
+                                <mml:mo>˙</mml:mo>
+                              </mml:mover>
+                            </mml:mrow>
+                            <mml:mi>t</mml:mi>
+                            <mml:mi>F</mml:mi>
+                            <mml:mi>e</mml:mi>
+                          </mml:mtd>
+                        </mml:mtr>
+                        <mml:mtr>
+                          <mml:mtd>
+                            <mml:mn>0</mml:mn>
+                            <mml:mn>0</mml:mn>
+                            <mml:mo>,</mml:mo>
+                            <mml:mo>(</mml:mo>
+                            <mml:mo>)</mml:mo>
+                            <mml:mo>&gt;</mml:mo>
+                            <mml:mo>,</mml:mo>
+                            <mml:mo>&gt;</mml:mo>
+                            <mml:mrow>
+                              <mml:mover>
+                                <mml:mi>c</mml:mi>
+                                <mml:mo>˙</mml:mo>
+                              </mml:mover>
+                            </mml:mrow>
+                            <mml:mi>t</mml:mi>
+                            <mml:mi>F</mml:mi>
+                            <mml:mi>e</mml:mi>
+                            <mml:msub>
+                              <mml:mi>c</mml:mi>
+                              <mml:mrow>
+                                <mml:mo>max</mml:mo>
+                              </mml:mrow>
+                            </mml:msub>
+                          </mml:mtd>
+                        </mml:mtr>
+                        <mml:mtr>
+                          <mml:mtd>
+                            <mml:mrow>
+                              <mml:mover>
+                                <mml:mi>c</mml:mi>
+                                <mml:mo>˙</mml:mo>
+                              </mml:mover>
+                            </mml:mrow>
+                            <mml:mo>(</mml:mo>
+                            <mml:mo>)</mml:mo>
+                            <mml:mo>,</mml:mo>
+                            <mml:mi>t</mml:mi>
+                            <mml:mtext> others </mml:mtext>
+                          </mml:mtd>
+                        </mml:mtr>
+                      </mml:mtable>
+                    </mml:mrow>
+                    <mml:mo>=</mml:mo>
+                  </mml:math>
+                </disp-formula>
+              
+              
+                <disp-formula>
+                  <label>(13)</label>
+                  <mml:math id="mcvqaml29v">
+                    <mml:mrow>
+                      <mml:mo>{</mml:mo>
+                      <mml:mo fence="true"/>
+                      <mml:mtable columnspacing="1em" rowspacing="4pt">
+                        <mml:mtr>
+                          <mml:mtd>
+                            <mml:mn>0</mml:mn>
+                            <mml:mn>0.0024</mml:mn>
+                            <mml:mo>&lt;</mml:mo>
+                            <mml:mo>(</mml:mo>
+                            <mml:mo>)</mml:mo>
+                            <mml:mo>&lt;</mml:mo>
+                            <mml:mi>c</mml:mi>
+                            <mml:mi>t</mml:mi>
+                          </mml:mtd>
+                        </mml:mtr>
+                        <mml:mtr>
+                          <mml:mtd>
+                            <mml:mn>0</mml:mn>
+                            <mml:mo>&lt;</mml:mo>
+                            <mml:mo>&lt;</mml:mo>
+                            <mml:msub>
+                              <mml:mi>t</mml:mi>
+                              <mml:mi>s</mml:mi>
+                            </mml:msub>
+                            <mml:msub>
+                              <mml:mi>t</mml:mi>
+                              <mml:mrow>
+                                <mml:mi>s</mml:mi>
+                                <mml:mo>max</mml:mo>
+                              </mml:mrow>
+                            </mml:msub>
+                          </mml:mtd>
+                        </mml:mtr>
+                        <mml:mtr>
+                          <mml:mtd>
+                            <mml:mn>0</mml:mn>
+                            <mml:mo>&lt;</mml:mo>
+                            <mml:mo>&lt;</mml:mo>
+                            <mml:mi>i</mml:mi>
+                            <mml:msub>
+                              <mml:mi>i</mml:mi>
+                              <mml:mrow>
+                                <mml:mo>max</mml:mo>
+                              </mml:mrow>
+                            </mml:msub>
+                          </mml:mtd>
+                        </mml:mtr>
+                      </mml:mtable>
+                    </mml:mrow>
+                  </mml:math>
+                </disp-formula>
+              
+              <p>Additionally, the action space for the self-tuning algorithm of levitation control parameters based on Q-learning meets:</p>
+              
+                <disp-formula>
+                  <label>(14)</label>
+                  <mml:math id="mtyevlw4i1">
+                    <mml:mrow>
+                      <mml:mo>{</mml:mo>
+                      <mml:mo fence="true"/>
+                      <mml:mtable columnalign="left" columnspacing="1em" rowspacing="4pt">
+                        <mml:mtr>
+                          <mml:mtd>
+                            <mml:mi>K</mml:mi>
+                            <mml:mi>p</mml:mi>
+                            <mml:mi>n</mml:mi>
+                            <mml:mo>∈</mml:mo>
+                            <mml:mo>;</mml:mo>
+                            <mml:mo>∈</mml:mo>
+                            <mml:mo>[</mml:mo>
+                            <mml:mo>,</mml:mo>
+                            <mml:mo>]</mml:mo>
+                            <mml:mrow>
+                              <mml:mo>[</mml:mo>
+                              <mml:mo>,</mml:mo>
+                              <mml:mo>]</mml:mo>
+                              <mml:msub>
+                                <mml:mi>i</mml:mi>
+                                <mml:mn>1</mml:mn>
+                              </mml:msub>
+                              <mml:mfrac>
+                                <mml:msub>
+                                  <mml:mi>i</mml:mi>
+                                  <mml:mn>1</mml:mn>
+                                </mml:msub>
+                                <mml:mi>n</mml:mi>
+                              </mml:mfrac>
+                              <mml:mrow>
+                                <mml:mo>(</mml:mo>
+                                <mml:mo>−</mml:mo>
+                                <mml:mo>)</mml:mo>
+                                <mml:mi>K</mml:mi>
+                                <mml:mi>K</mml:mi>
+                                <mml:msub>
+                                  <mml:mi>p</mml:mi>
+                                  <mml:mrow>
+                                    <mml:mo>max</mml:mo>
+                                  </mml:mrow>
+                                </mml:msub>
+                                <mml:msub>
+                                  <mml:mi>p</mml:mi>
+                                  <mml:mrow>
+                                    <mml:mo>min</mml:mo>
+                                  </mml:mrow>
+                                </mml:msub>
+                              </mml:mrow>
+                            </mml:mrow>
+                            <mml:msub>
+                              <mml:mi>i</mml:mi>
+                              <mml:mn>1</mml:mn>
+                            </mml:msub>
+                            <mml:mn>1</mml:mn>
+                          </mml:mtd>
+                        </mml:mtr>
+                        <mml:mtr>
+                          <mml:mtd>
+                            <mml:mi>K</mml:mi>
+                            <mml:mi>i</mml:mi>
+                            <mml:mi>n</mml:mi>
+                            <mml:mo>∈</mml:mo>
+                            <mml:mo>;</mml:mo>
+                            <mml:mo>∈</mml:mo>
+                            <mml:mo>[</mml:mo>
+                            <mml:mo>,</mml:mo>
+                            <mml:mo>]</mml:mo>
+                            <mml:mrow>
+                              <mml:mo>[</mml:mo>
+                              <mml:mo>,</mml:mo>
+                              <mml:mo>]</mml:mo>
+                              <mml:msub>
+                                <mml:mi>i</mml:mi>
+                                <mml:mn>2</mml:mn>
+                              </mml:msub>
+                              <mml:mfrac>
+                                <mml:msub>
+                                  <mml:mi>i</mml:mi>
+                                  <mml:mn>2</mml:mn>
+                                </mml:msub>
+                                <mml:mi>n</mml:mi>
+                              </mml:mfrac>
+                              <mml:mrow>
+                                <mml:mo>(</mml:mo>
+                                <mml:mo>−</mml:mo>
+                                <mml:mo>)</mml:mo>
+                                <mml:mi>K</mml:mi>
+                                <mml:mi>K</mml:mi>
+                                <mml:msub>
+                                  <mml:mi>i</mml:mi>
+                                  <mml:mrow>
+                                    <mml:mo>max</mml:mo>
+                                  </mml:mrow>
+                                </mml:msub>
+                                <mml:msub>
+                                  <mml:mi>i</mml:mi>
+                                  <mml:mrow>
+                                    <mml:mo>min</mml:mo>
+                                  </mml:mrow>
+                                </mml:msub>
+                              </mml:mrow>
+                            </mml:mrow>
+                            <mml:msub>
+                              <mml:mi>i</mml:mi>
+                              <mml:mn>2</mml:mn>
+                            </mml:msub>
+                            <mml:mn>1</mml:mn>
+                          </mml:mtd>
+                        </mml:mtr>
+                        <mml:mtr>
+                          <mml:mtd>
+                            <mml:mi>K</mml:mi>
+                            <mml:mi>d</mml:mi>
+                            <mml:mi>n</mml:mi>
+                            <mml:mo>∈</mml:mo>
+                            <mml:mo>;</mml:mo>
+                            <mml:mo>∈</mml:mo>
+                            <mml:mo>[</mml:mo>
+                            <mml:mo>,</mml:mo>
+                            <mml:mo>]</mml:mo>
+                            <mml:mrow>
+                              <mml:mo>[</mml:mo>
+                              <mml:mo>,</mml:mo>
+                              <mml:mo>]</mml:mo>
+                              <mml:msub>
+                                <mml:mi>i</mml:mi>
+                                <mml:mn>3</mml:mn>
+                              </mml:msub>
+                              <mml:mfrac>
+                                <mml:msub>
+                                  <mml:mi>i</mml:mi>
+                                  <mml:mn>3</mml:mn>
+                                </mml:msub>
+                                <mml:mi>n</mml:mi>
+                              </mml:mfrac>
+                              <mml:mrow>
+                                <mml:mo>(</mml:mo>
+                                <mml:mo>−</mml:mo>
+                                <mml:mo>)</mml:mo>
+                                <mml:mi>K</mml:mi>
+                                <mml:mi>K</mml:mi>
+                                <mml:msub>
+                                  <mml:mi>d</mml:mi>
+                                  <mml:mrow>
+                                    <mml:mo>max</mml:mo>
+                                  </mml:mrow>
+                                </mml:msub>
+                                <mml:msub>
+                                  <mml:mi>d</mml:mi>
+                                  <mml:mrow>
+                                    <mml:mo>min</mml:mo>
+                                  </mml:mrow>
+                                </mml:msub>
+                              </mml:mrow>
+                            </mml:mrow>
+                            <mml:msub>
+                              <mml:mi>i</mml:mi>
+                              <mml:mn>3</mml:mn>
+                            </mml:msub>
+                            <mml:mn>1</mml:mn>
+                          </mml:mtd>
+                        </mml:mtr>
+                      </mml:mtable>
+                    </mml:mrow>
+                  </mml:math>
+                </disp-formula>
+              
+              <p>The action space here cannot be simply explained as the values or changes of Kp, Ki, and Kd, but rather the sum of the default initial values and the changes. It is important to note that during the Q-learning process, there is an expected cumulative reward value for the reward function. To express this value, the action space in Q-learning must ignore the default initial value to estimate the impact of its change on the cumulative expectation of the reward function and the effect of increasing the change on the cumulative expectation of the reward function.</p><p>For the reward function, we cannot only calculate the expected gap value because we require the overall steady-state performance of the system. Therefore, the reward function <inline-formula>
+  <mml:math id="mlolz218tw">
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+  </mml:math>
+</inline-formula> is expressed as follows. To avoid the "deadlock phenomenon" caused by negative reward functions, which may lead to poor convergence during training, a positive reward function is adopted here. It uses an exponential form to expand the positive reward function [<xref ref-type="bibr" rid="ref_14">14</xref>], reducing or avoiding fatigue phenomena in reinforcement learning.</p>
+              
+                <disp-formula>
+                  <label>(15)</label>
+                  <mml:math id="mfemm557va">
+                    <mml:mi>r</mml:mi>
+                    <mml:mi>i</mml:mi>
+                    <mml:mi>s</mml:mi>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>,</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:mo>=</mml:mo>
+                    <mml:mo>+</mml:mo>
+                    <mml:mo>+</mml:mo>
+                    <mml:msup>
+                      <mml:mi>w</mml:mi>
+                      <mml:mrow>
+                        <mml:msub>
+                          <mml:mi>k</mml:mi>
+                          <mml:mi>c</mml:mi>
+                        </mml:msub>
+                        <mml:msup>
+                          <mml:mrow>
+                            <mml:mo>(</mml:mo>
+                            <mml:mo>−</mml:mo>
+                            <mml:mo>)</mml:mo>
+                            <mml:mi>c</mml:mi>
+                            <mml:msub>
+                              <mml:mi>c</mml:mi>
+                              <mml:mi>o</mml:mi>
+                            </mml:msub>
+                          </mml:mrow>
+                          <mml:mn>2</mml:mn>
+                        </mml:msup>
+                      </mml:mrow>
+                    </mml:msup>
+                    <mml:msup>
+                      <mml:mi>w</mml:mi>
+                      <mml:mrow>
+                        <mml:msub>
+                          <mml:mi>t</mml:mi>
+                          <mml:mi>s</mml:mi>
+                        </mml:msub>
+                      </mml:mrow>
+                    </mml:msup>
+                    <mml:msup>
+                      <mml:mi>w</mml:mi>
+                      <mml:mrow>
+                        <mml:msub>
+                          <mml:mn>0</mml:mn>
+                          <mml:mi>c</mml:mi>
+                        </mml:msub>
+                      </mml:mrow>
+                    </mml:msup>
+                    <mml:msub>
+                      <mml:mi>k</mml:mi>
+                      <mml:mi>s</mml:mi>
+                    </mml:msub>
+                    <mml:msub>
+                      <mml:mi>k</mml:mi>
+                      <mml:mi>o</mml:mi>
+                    </mml:msub>
+                  </mml:math>
+                </disp-formula>
+              
+              <p> where, <inline-formula>
+  <mml:math id="mplm0lhvxm">
+    <mml:msub>
+      <mml:mi>O</mml:mi>
+      <mml:mi>c</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> represents the overshoot value under a set of control parameters. <inline-formula>
+  <mml:math id="m8by4tgj9t">
+    <mml:msub>
+      <mml:mi>t</mml:mi>
+      <mml:mi>s</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> is the adjustment time. $w<inline-formula>
+  <mml:math id="mmo99zbz21">
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mo>,</mml:mo>
+    <mml:mo>;</mml:mo>
+  </mml:math>
+</inline-formula>k_c, k_s<inline-formula>
+  <mml:math id="mevug924jl">
+    <mml:mo>,</mml:mo>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+  </mml:math>
+</inline-formula>k_o<inline-formula>
+  <mml:math id="m4yxmc4o1m">
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>j</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>A</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>k_o$ is a value less than 0 because the smaller the overshoot, the better the steady-state performance.</p>
+            </sec>
+          
+          
+            <sec>
+              
+                <title>3.2.2 Basic levitation unit gym environment model</title>
+              
+              <p>The Python mechanism modeling of the single-point maglev control system should be divided into the following steps:</p><p>(1) Construct a PID controller (simulator). When given the controller parameters (Kp, Ki, Kd) and the system's previous action (speed, position information), the PID's calculation output value can be fed back under this set of parameters.</p>
+              <p>(2) Construct a numerical feedback model in Python for the single-point maglev mechanism as a single environment step. After obtaining the PID calculation output value at this time, complete the output feedback of the single-point maglev mathematical system and output the system's next action information (speed, position information).</p><p>(3) Construct a monitor and termination program with certain monitoring capabilities. Under stable system conditions, output the steady-state indicators of the single-point levitation system mechanism model under given controller parameters, including rise time, adjustment time, overshoot, and steady-state error. Meanwhile, under unstable conditions, output a calibration condition to prevent the system from encountering singularities during reinforcement learning.</p><graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2024/7/img_ljHDqVPAVYh5Fpsk.png" /><p>For convenience in subsequent research and development and standardizing the code, the Gym model framework based on neural learning cases was referenced when modeling the single-point levitation model. The code implementation is shown in the above figure.</p><p>The construction of the Gym environment is mainly based on Eq. (5). Given the system parameters, based on the transfer function relationship between the control quantity (current) and the controlled quantity (gap), Python solver tools simulate the environment feedback during a given single environment duration. It provides real-time transient information such as gap value and speed and dynamic performance information like system stability indicators, adjustment time, and steady-state error. The Q-learning system in this paper mainly uses dynamic performance information for training and simulation.</p>
+            </sec>
+          
+          
+            <sec>
+              
+                <title>3.2.3 Implementation of maglev control parameter self-tuning based on q-learning</title>
+              
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2024/7/img_1xFSK39zJ6808RTg.png" /><p>To implement the model functions, in addition to the single-point levitation mechanism model, it is necessary to design a training algorithm for the maglev PID control model based on Q-learning. The code is shown in the above figure. It should be noted that there is an exploration rate in the Q-learning algorithm, which was not mentioned earlier. This is because even with a positive reward function to prevent deadlock, the input-output relationship between the system and the reward function and the Q function cannot be purely linear, so “potential traps” exist. The reward function setting cannot fully guarantee crossing these “potential traps”, where a certain non-optimal control parameter's Q value and the corresponding Q values within the positive and negative action range during Q-learning may both be greater. However, this does not indicate that the control parameter is optimal. The existence of the exploration rate effectively solves the problem of “potential traps”.</p>
+            </sec>
+          
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>4. Simulation results validation and analysis</title>
+      <p>To validate the performance of the Q-learning-based tuning levitation control system, this method was compared with the traditional LQR method for control performance. The Q-learning algorithm and the traditional LQR method were compared under conditions of initial startup to stable levitation and system load change. </p><p>Key parameters in the Q-learning model include:</p><p>Total environment training update steps: 100000 times, maximum steps per episode: W=1200. Discrete PID sampling time: 0.001 s, discretization coefficient of control parameters: n=500.</p><p>Due to the program design, the total training steps in the environment cannot be infinitely large, so the steps were derived based on preliminary simulation and estimation.</p><p>The parameters used for comparison with LQR control are <inline-formula>
+  <mml:math id="mo7btfbcst">
+    <mml:mi>Q</mml:mi>
+    <mml:mo>=</mml:mo>
+    <mml:mrow>
+      <mml:mo>[</mml:mo>
+      <mml:mo>]</mml:mo>
+      <mml:mtable columnalign="center center center" columnspacing="1em" rowspacing="4pt">
+        <mml:mtr>
+          <mml:mtd>
+            <mml:mn>1</mml:mn>
+          </mml:mtd>
+          <mml:mtd>
+            <mml:mi>a</mml:mi>
+            <mml:mi>m</mml:mi>
+            <mml:mi>p</mml:mi>
+            <mml:mo>;</mml:mo>
+            <mml:mn>0</mml:mn>
+          </mml:mtd>
+          <mml:mtd>
+            <mml:mi>a</mml:mi>
+            <mml:mi>m</mml:mi>
+            <mml:mi>p</mml:mi>
+            <mml:mo>;</mml:mo>
+            <mml:mn>0</mml:mn>
+          </mml:mtd>
+        </mml:mtr>
+        <mml:mtr>
+          <mml:mtd>
+            <mml:mn>0</mml:mn>
+          </mml:mtd>
+          <mml:mtd>
+            <mml:mi>a</mml:mi>
+            <mml:mi>m</mml:mi>
+            <mml:mi>p</mml:mi>
+            <mml:mo>;</mml:mo>
+            <mml:mn>1</mml:mn>
+          </mml:mtd>
+          <mml:mtd>
+            <mml:mi>a</mml:mi>
+            <mml:mi>m</mml:mi>
+            <mml:mi>p</mml:mi>
+            <mml:mo>;</mml:mo>
+            <mml:mn>0</mml:mn>
+          </mml:mtd>
+        </mml:mtr>
+        <mml:mtr>
+          <mml:mtd>
+            <mml:mn>0</mml:mn>
+          </mml:mtd>
+          <mml:mtd>
+            <mml:mi>a</mml:mi>
+            <mml:mi>m</mml:mi>
+            <mml:mi>p</mml:mi>
+            <mml:mo>;</mml:mo>
+            <mml:mn>0</mml:mn>
+          </mml:mtd>
+          <mml:mtd>
+            <mml:mi>a</mml:mi>
+            <mml:mi>m</mml:mi>
+            <mml:mi>p</mml:mi>
+            <mml:mo>;</mml:mo>
+            <mml:mn>150</mml:mn>
+          </mml:mtd>
+        </mml:mtr>
+      </mml:mtable>
+    </mml:mrow>
+  </mml:math>
+</inline-formula>, <inline-formula>
+  <mml:math id="mqca7z2m3b">
+    <mml:mi>R</mml:mi>
+    <mml:mo>=</mml:mo>
+    <mml:mn>4</mml:mn>
+  </mml:math>
+</inline-formula>, step time: 0.001 s. Here, the parameter $Q<inline-formula>
+  <mml:math id="mmjjxm3uua">
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>L</mml:mi>
+    <mml:mi>Q</mml:mi>
+    <mml:mi>R</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mo>,</mml:mo>
+    <mml:mo>;</mml:mo>
+    <mml:msup>
+      <mml:mi>m</mml:mi>
+      <mml:mo>′</mml:mo>
+    </mml:msup>
+  </mml:math>
+</inline-formula>R$ is the control weighting matrix, where the larger the value, the slower the system's state decays.</p><p>Additionally, the basic physical quantities referenced in the algorithm are shown in <xref ref-type="table" rid="table_1">Table 1</xref>.</p>
+      
+        <table-wrap id="table_1">
+          <label>Table 1</label>
+          <caption>
+            <title>Reference values for basic physical quantities required by the algorithm model</title>
+          </caption>
+          <table><tr><th >Parameter</th><th >Unit</th><th >Symbol</th><th >Reference Value</th></tr><tr><td >Single track load mass</td><td >Kg</td><td >M</td><td >750</td></tr><tr><td >Coil turns</td><td >-</td><td >N</td><td >270</td></tr><tr><td >Target gap</td><td >m</td><td ><mml:math id="m55mf6h6h2">
+  <mml:msub>
+    <mml:mi>c</mml:mi>
+    <mml:mn>0</mml:mn>
+  </mml:msub>
+</mml:math></td><td >0.008</td></tr><tr><td >Electromagnet area</td><td ><mml:math id="mc2x1p12o9">
+  <mml:msup>
+    <mml:mi>m</mml:mi>
+    <mml:mn>2</mml:mn>
+  </mml:msup>
+</mml:math></td><td >A</td><td >0.115</td></tr><tr><td >Vacuum permeability</td><td >H/m</td><td ><mml:math id="mtdzy8dzee">
+  <mml:mi>μ</mml:mi>
+</mml:math></td><td >$4\pi \times 10^{-7}<mml:math id="mdvgh1vwz8">
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>−</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>−</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>−</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>x</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>E</mml:mi>
+  <mml:mi>q</mml:mi>
+  <mml:mi>u</mml:mi>
+  <mml:mi>i</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>i</mml:mi>
+  <mml:mi>b</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>i</mml:mi>
+  <mml:mi>u</mml:mi>
+  <mml:mi>m</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>u</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>x</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>A</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>x</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>r</mml:mi>
+</mml:math>i_0$</td><td >19.1</td></tr></table>
+        </table-wrap>
+      
+      
+        <sec>
+          
+            <title>4.1. Simulation training results</title>
+          
+          <p>(1) Steady-state levitation conditions</p><p>Here, we only considered the first 20,000 environment update steps. The variation images of the Action (i.e., coefficients in Km) are shown in <xref ref-type="fig" rid="fig_4">Figure 4</xref>. It can be observed that at approximately 9,800 steps and 8,000 steps, Kp and Ki have both reached a nearly stable value, namely:</p>
+          
+            <disp-formula>
+              <label>(16)</label>
+              <mml:math id="m8prqx5pfp">
+                <mml:mi>K</mml:mi>
+                <mml:mi>p</mml:mi>
+                <mml:mi>Q</mml:mi>
+                <mml:mi>K</mml:mi>
+                <mml:mi>i</mml:mi>
+                <mml:mi>Q</mml:mi>
+                <mml:mo>=</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo>=</mml:mo>
+                <mml:mn>65400</mml:mn>
+                <mml:mn>1522</mml:mn>
+              </mml:math>
+            </disp-formula>
+          
+          
+            <fig id="fig_4">
+              <label>Figure 4</label>
+              <caption>
+                <title>Variation of system control parameters with environmental changes</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2024/7/img_jX3Ltni4hvWzkHjl.jpeg"/>
+            </fig>
+          
+          <p>Additionally, it should be noted that the Kd parameter was not considered in Q-learning and was set to 0 by default.</p><p>(2) Simulation Training results under system load variation</p><p>For changes in system load, we modify the average load M to M'=820 kg as described above. After training the Q-learning reinforcement learning model, the output values of Km' are shown in <xref ref-type="fig" rid="fig_5">Figure 5</xref>.</p>
+          <p>It can be seen that due to the change in system load, the environment stabilization steps increase. At approximately 17,500 steps and 13,000 steps, Kp' and Ki' have both reached a stable learning value:</p>
+          
+            <disp-formula>
+              <label>(17)</label>
+              <mml:math id="m00ay7bjcm">
+                <mml:mi>K</mml:mi>
+                <mml:mi>K</mml:mi>
+                <mml:msup>
+                  <mml:mi>p</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>′</mml:mi>
+                  </mml:mrow>
+                </mml:msup>
+                <mml:msup>
+                  <mml:mi>i</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>′</mml:mi>
+                  </mml:mrow>
+                </mml:msup>
+                <mml:mo>=</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo>=</mml:mo>
+                <mml:mn>71320</mml:mn>
+                <mml:mn>1610</mml:mn>
+              </mml:math>
+            </disp-formula>
+          
+          
+            <fig id="fig_5">
+              <label>Figure 5</label>
+              <caption>
+                <title>System control parameters with changes in the environment under varying load conditions</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2024/7/img_O9k-vw2iuHCXB9jT.jpeg"/>
+            </fig>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>4.2. Comparison with traditional lqr algorithm</title>
+          
+          <p>(1) Static levitation</p><p><xref ref-type="fig" rid="fig_6">Figure 6</xref> presents the gap values and velocity (gap derivative) values for Q-learning.</p><p>It is evident that the Q-learning PID achieves a steady-state adjustment time t of 0.17 s, compared to the 0.9 s adjustment time for LQR control, representing an improvement rate of 81.1%. Moreover, the slope of the rise curves for the two control systems indicates that the Q-learning PID responds much faster than the LQR control system, which is also visually reflected in the peak sizes of b.</p><p>It is clear from the figure that the Q-learning strategy is more effective and reliable. The control parameters reflected by the Q-learning PID control strategy show more efficient characteristics in steady-state levitation. Under the condition of satisfying control size constraints, the control current effect is utilized to achieve faster levitation and stabilization.</p>
+          
+            <fig id="fig_6">
+              <label>Figure 6</label>
+              <caption>
+                <title>The steady-state levitation comparison between Q-learning PID and LQR control</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2024/7/img_zcjBvGWkhspQGqjt.jpeg"/>
+            </fig>
+          
+          <p>(2) System load variation</p><p>During the operation of magnetic levitation trains, the load on the bogie changes continuously due to the boarding and alighting of passengers. <xref ref-type="fig" rid="fig_7">Figure 7</xref> compares the levitation performance of Q-learning PID and LQR control when the system load changes from 750 kg to 820 kg.</p>
+          <p>It can be observed that when the system load changes, the LQR control method experiences a decrease in control capability, with an increased rise time and a significantly smaller curve slope compared to the slope of the curve obtained after retraining the Q-learning reinforcement learning model.</p><p>From the information in <xref ref-type="fig" rid="fig_7">Figure 7</xref>, it is evident that due to the lack of reconfiguration of LQR system parameters, the adjustment time increases significantly from 0.9 s to approximately 1.2 s, representing a growth rate of 33.3%. This indicates that when using an LQR controller, adjustments to the QR values are necessary during system load changes. For the Q-learning PID control algorithm, the adjustment time only increases from 0.17 s to approximately 0.20 s after load changes. The system control parameters exhibit strong robustness and adaptability to system parameter perturbations.</p>
+          
+            <fig id="fig_7">
+              <label>Figure 7</label>
+              <caption>
+                <title>Performance comparison of Q-learning PID and LQR control when system load changes</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2024/7/img_E6xN1YRnFRPcwNdl.jpeg"/>
+            </fig>
+          
+          <p>(3) System parameter perturbations</p><p>During operation, magnetic levitation trains might encounter vertical perturbing forces when passing through tunnels and other environments. <xref ref-type="fig" rid="fig_8">Figure 8</xref> compares the system performance of Q-learning PID control and LQR control under an external perturbing force of 1 <inline-formula>
+  <mml:math id="m0afahkn6r">
+    <mml:mrow>
+      <mml:mi>m</mml:mi>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:msup>
+      <mml:mrow>
+        <mml:mi>s</mml:mi>
+      </mml:mrow>
+      <mml:mn>2</mml:mn>
+    </mml:msup>
+  </mml:math>
+</inline-formula>.</p>
+          
+            <fig id="fig_8">
+              <label>Figure 8</label>
+              <caption>
+                <title>Performance comparison of Q-learning PID and LQR control under an external perturbing force of 1 $m/s^2$</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2024/7/img_X_ZlY9jIFtfAs2JT.jpeg"/>
+            </fig>
+          
+          <p>In subgraph (a) of <xref ref-type="fig" rid="fig_8">Figure 8</xref>, it can be seen that LQR control results in a significant gap variation when a constant external force F is applied, changing from 0.008 m to 0.020 m, which exceeds the control limit range. Furthermore, LQR control cannot correct the gap error, which remains at 0.020 m, indicating an imbalanced condition. In contrast, the Q-learning PID system performance is significantly better than LQR, with only about 0.7 mm of error.</p><p>This indicates that under the same external force, the effect of acceleration changes due to Q-learning control parameters is much smaller compared to LQR control.</p><p>In summary, the Q-learning PID control method demonstrates better robustness and faster response speed compared to LQR control. For situations involving external load changes or external forces, which result in significant perturbations to system parameters, the Q-learning-based magnetic levitation system parameter self-tuning PID control exhibits superior dynamic performance, robustness, and adaptability compared to LQR control.</p>
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>5. Conclusion</title>
+      <p>For the problem of parameter tuning in magnetic levitation control systems and the associated issues, a self-tuning method based on reinforcement learning Q-learning was proposed. A standardized Gym reinforcement learning environment for the basic levitation unit was established, a forward "anti-deadlock" reward function was set, and a Q-learning algorithm path was used to find the optimal Q function. A Q-learning algorithm for self-tuning magnetic levitation control system parameters under discretized action space of control parameters was designed.</p><p>Compared to traditional LQR control methods, the proposed Q-learning PID control demonstrated superior performance. The steady-state levitation time for Q-learning PID control is only 18.9% of that for LQR control; during system load changes, the rise time for Q-learning PID control is 29.8% of that for LQR control; and under external perturbations, the steady-state error of Q-learning PID control is only 5.8% of that for LQR control. This confirms that the Q-learning-based magnetic levitation control system parameter self-tuning research can achieve optimization of control system parameters and dynamic performance. It provides the magnetic levitation control system with excellent parameter tuning capability, improved interference resistance, and robustness.</p><p>As the current Q-learning magnetic levitation system control parameter self-tuning algorithm is a simplified model and does not consider coupling situations or the self-tuning of Kd parameters, further detailed research will be conducted in the next phase to address these issues and achieve more outstanding self-tuning of magnetic levitation system control parameters.</p>
+    </sec>
+  </body>
+  <back>
+    <ack>
+      <title>Acknowledgments</title>
+      
+    </ack>
+    <app-group>
+      <app>
+        <title>Appendix</title>
+        
+      </app>
+    </app-group>
+    <notes>
+      <title>Author Contributions</title>
+      
+    </notes>
+    <notes>
+      <title>Funding</title>
+      
+    </notes>
+    <notes>
+      <title>Informed Consent Statement</title>
+      
+    </notes>
+    <notes>
+      <title>Data Availability Statement</title>
+      <p>The data used to support the findings of this study are available from the author upon request.</p>
+    </notes>
+    <notes notes-type="COI-statement">
+      <title>Conflicts of Interest</title>
+      <p>The author declares no conflicts of interest regarding this work.</p>
+    </notes>
+    <ref-list>
+      <title>References</title>
+      <ref id="ref_1">
+        <label>1.</label>
+        <element-citation publication-type="journal">
+          <volume>42</volume>
+          <page-range>1917-1925</page-range>
+          <issue>7</issue>
+          <year>2006</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Lee</surname>
+              <given-names>H. W.</given-names>
+            </name>
+            <name>
+              <surname>Kim</surname>
+              <given-names>K. C.</given-names>
+            </name>
+            <name>
+              <surname>Lee</surname>
+              <given-names>J.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/TMAG.2006.875842</pub-id>
+          <article-title>Review of maglev train technologies</article-title>
+          <source>IEEE Trans. Magn.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_2">
+        <label>2.</label>
+        <element-citation publication-type="journal">
+          <volume>139</volume>
+          <page-range>106886</page-range>
+          <year>2020</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Nian</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Liu</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Huang</surname>
+              <given-names>B.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.compchemeng.2020.106886</pub-id>
+          <article-title>A review on reinforcement learning: Introduction and applications in industrial process control</article-title>
+          <source>Comput. Chem. Eng.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_3">
+        <label>3.</label>
+        <element-citation publication-type="journal">
+          <volume>57</volume>
+          <page-range>455-474</page-range>
+          <issue>3</issue>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Deng</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Liu</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>W.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3969/j.issn.0258-2724.20220001</pub-id>
+          <article-title>Development status and prospect of maglev train</article-title>
+          <source>J. Southwest Jiaotong Univ.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_4">
+        <label>4.</label>
+        <element-citation publication-type="journal">
+          <volume>7</volume>
+          <page-range>1765-1779</page-range>
+          <issue>3</issue>
+          <year>2021</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Ni</surname>
+              <given-names>F.</given-names>
+            </name>
+            <name>
+              <surname>Mu</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Kang</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Xu</surname>
+              <given-names>J.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/TTE.2021.3058137</pub-id>
+          <article-title>Robust controller design for maglev suspension systems based on improved suspension force model</article-title>
+          <source>IEEE Trans. Transport. Electrification</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_5">
+        <label>5.</label>
+        <element-citation publication-type="journal">
+          <volume>10</volume>
+          <page-range>375-377</page-range>
+          <issue>6</issue>
+          <year>2002</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Liu</surname>
+              <given-names>D. S.</given-names>
+            </name>
+            <name>
+              <surname>Yin</surname>
+              <given-names>L. M.</given-names>
+            </name>
+            <name>
+              <surname>She</surname>
+              <given-names>L. H.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3969/j.issn.1671-4598.2002.06.011</pub-id>
+          <article-title>Application of fuzzy-PID algorithm in maglev system</article-title>
+          <source>Comput. Autom. Meas. Control</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_6">
+        <label>6.</label>
+        <element-citation publication-type="journal">
+          <volume>66</volume>
+          <page-range>701-708</page-range>
+          <issue>4</issue>
+          <year>2017</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Cho</surname>
+              <given-names>J. H.</given-names>
+            </name>
+            <name>
+              <surname>Kim</surname>
+              <given-names>Y. T.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.5370/KIEE.2017.66.4.701</pub-id>
+          <article-title>Design of TLBO-based optimal fuzzy PID controller for magnetic levitation system</article-title>
+          <source>Trans. KIEE</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_7">
+        <label>7.</label>
+        <element-citation publication-type="journal">
+          <page-range>144-147</page-range>
+          <issue>12</issue>
+          <year>2012</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Wang</surname>
+              <given-names>X. L.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>G. M.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3969/j.issn.1002-1841.2012.12.049</pub-id>
+          <article-title>Magnetic levitating bearing control system simulation based on variable universe fuzzy PID algorithm</article-title>
+          <source>Instrum. Tech. Sens.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_8">
+        <label>8.</label>
+        <element-citation publication-type="journal">
+          <volume>1</volume>
+          <page-range>223-242</page-range>
+          <issue>3</issue>
+          <year>1984</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Ryan</surname>
+              <given-names>E. P.</given-names>
+            </name>
+            <name>
+              <surname>Corless</surname>
+              <given-names>M.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1093/imamci/1.3.223</pub-id>
+          <article-title>Ultimate boundedness and asymptotic stability of a class of uncertain dynamical systems via continuous and discontinuous feedback control</article-title>
+          <source>IMA J. Math. Control Inf.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_9">
+        <label>9.</label>
+        <element-citation publication-type="journal">
+          <volume>7</volume>
+          <page-range>1765-1779</page-range>
+          <issue>3</issue>
+          <year>2021</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Ni</surname>
+              <given-names>F.</given-names>
+            </name>
+            <name>
+              <surname>Mu</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Kang</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Xu</surname>
+              <given-names>J.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/TTE.2021.3058137</pub-id>
+          <article-title>Robust controller design for maglev suspension systems based on improved suspension force model</article-title>
+          <source>IEEE Trans. Transp. Electr.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_10">
+        <label>10.</label>
+        <element-citation publication-type="journal">
+          <volume>12</volume>
+          <page-range>1573-1583</page-range>
+          <issue>11</issue>
+          <year>2018</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Xu</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Du</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Chen</surname>
+              <given-names>Y. H.</given-names>
+            </name>
+            <name>
+              <surname>Guo</surname>
+              <given-names>H.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1049/iet-cta.2017.1348</pub-id>
+          <article-title>Adaptive robust constrained state control for non-linear maglev vehicle with guaranteed bounded airgap</article-title>
+          <source>IET Control Theory Appl.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_11">
+        <label>11.</label>
+        <element-citation publication-type="journal">
+          <volume>10</volume>
+          <page-range>1179</page-range>
+          <issue>3</issue>
+          <year>2020</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Sun</surname>
+              <given-names>Y. G.</given-names>
+            </name>
+            <name>
+              <surname>Xie</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Xu</surname>
+              <given-names>J. Q.</given-names>
+            </name>
+            <name>
+              <surname>Lin</surname>
+              <given-names>G. B.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3390/app10031179</pub-id>
+          <article-title>A robust levitation control of maglev vehicles subject to time delay and disturbances: Design and hardware experimentation</article-title>
+          <source>Appl. Sci.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_12">
+        <label>12.</label>
+        <element-citation publication-type="journal">
+          <volume>44</volume>
+          <page-range>262-269</page-range>
+          <issue>11</issue>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Tang</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Yang</surname>
+              <given-names>J.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.11809/bqzbgcxb2023.11.033</pub-id>
+          <article-title>Improved sliding mode magnetic levitation control algorithm based on LESO</article-title>
+          <source>J. Ordn. Equip. Eng.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_13">
+        <label>13.</label>
+        <element-citation publication-type="journal">
+          <volume>29</volume>
+          <page-range>82-91</page-range>
+          <issue>1</issue>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Hu</surname>
+              <given-names>K.</given-names>
+            </name>
+            <name>
+              <surname>Jiang</surname>
+              <given-names>Q.N.</given-names>
+            </name>
+            <name>
+              <surname>Ji</surname>
+              <given-names>C.G.</given-names>
+            </name>
+            <name>
+              <surname>Yang</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>F.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3785/j.issn.1006-754X.2022.00.004</pub-id>
+          <article-title>Model reference sliding mode control of magnetic levitation system based on improved ESO</article-title>
+          <source>J. Eng. Des.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_14">
+        <label>14.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>681–685</page-range>
+          <year>2008</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Long</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Y. Li</surname>
+            </name>
+            <name>
+              <surname>X.Wang</surname>
+              <given-names>“</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/CHICC.2008.4605180</pub-id>
+          <article-title>On maglev train automatic operation control system based on auto-disturbancerejection control algorithm</article-title>
+          <source>2008 27th Chinese Control Conference, Kunming, China</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_15">
+        <label>15.</label>
+        <element-citation publication-type="journal">
+          <volume>236</volume>
+          <page-range>66-75</page-range>
+          <issue>1</issue>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Cui</surname>
+              <given-names>G.</given-names>
+            </name>
+            <name>
+              <surname>Cai</surname>
+              <given-names>B.</given-names>
+            </name>
+            <name>
+              <surname>Su</surname>
+              <given-names>B.</given-names>
+            </name>
+            <name>
+              <surname>Chu</surname>
+              <given-names>X.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1177/09596518211022068</pub-id>
+          <article-title>Radial basis function neural network-based adaptive sliding mode suspension control for maglev yaw system of wind turbines</article-title>
+          <source>Proc. Inst. Mech. Eng., Part I: J. Syst. Control Eng.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_16">
+        <label>16.</label>
+        <element-citation publication-type="journal">
+          <volume>66</volume>
+          <page-range>8589-8599</page-range>
+          <issue>11</issue>
+          <year>2019</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Sun</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Xu</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Qiang</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Lin</surname>
+              <given-names>G.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/TIE.2019.2891409</pub-id>
+          <article-title>Adaptive neural-fuzzy robust position control scheme for maglev train systems with experimental verification</article-title>
+          <source>IEEE Trans. Ind. Electron.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_17">
+        <label>17.</label>
+        <element-citation publication-type="journal">
+          <volume>2</volume>
+          <page-range>341-351</page-range>
+          <issue>4</issue>
+          <year>2021</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Zhao</surname>
+              <given-names>F.</given-names>
+            </name>
+            <name>
+              <surname>You</surname>
+              <given-names>K.</given-names>
+            </name>
+            <name>
+              <surname>Song</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>W.</given-names>
+            </name>
+            <name>
+              <surname>Tong</surname>
+              <given-names>L.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/TAI.2021.3097313</pub-id>
+          <article-title>Suspension regulation of medium-low-speed maglev trains via deep reinforcement learning</article-title>
+          <source>IEEE Trans. Artif. Intell.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_18">
+        <label>18.</label>
+        <element-citation publication-type="journal">
+          <volume>9</volume>
+          <page-range>29032-29046</page-range>
+          <year>2021</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Liu</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Fan</surname>
+              <given-names>K.</given-names>
+            </name>
+            <name>
+              <surname>Ouyang</surname>
+              <given-names>Q.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/ACCESS.2021.3059443</pub-id>
+          <article-title>Intelligent traction control method based on model predictive fuzzy PID control and online optimization for permanent magnetic maglev trains</article-title>
+          <source>IEEE Access</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_19">
+        <label>19.</label>
+        <element-citation publication-type="journal">
+          <volume>51</volume>
+          <page-range>332-340</page-range>
+          <issue>3</issue>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Hu</surname>
+              <given-names>K.T.</given-names>
+            </name>
+            <name>
+              <surname>Zu</surname>
+              <given-names>J.Q.</given-names>
+            </name>
+            <name>
+              <surname>Liu</surname>
+              <given-names>Z.G.</given-names>
+            </name>
+            <name>
+              <surname>Lin</surname>
+              <given-names>G.B.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.11908/j.issn.0253-374x.23006</pub-id>
+          <article-title>Reinforcement learning-based suspension control for electromagnetic suspension maglev trains</article-title>
+          <source>J. Tongji Uni.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_20">
+        <label>20.</label>
+        <element-citation publication-type="journal">
+          <volume>9</volume>
+          <page-range>748-758</page-range>
+          <issue>1</issue>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Beauloye</surname>
+              <given-names>L.</given-names>
+            </name>
+            <name>
+              <surname>Dehez</surname>
+              <given-names>B.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/TTE.2022.3193296</pub-id>
+          <article-title>Permanent magnet electrodynamic suspensions applied to MAGLEV transportation systems: A review</article-title>
+          <source>IEEE Trans. Transp. Electrification</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_21">
+        <label>21.</label>
+        <element-citation publication-type="journal">
+          <volume>18</volume>
+          <page-range>509-519</page-range>
+          <issue>1</issue>
+          <year>2020</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Sun</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Xu</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Lin</surname>
+              <given-names>G.</given-names>
+            </name>
+            <name>
+              <surname>Ji</surname>
+              <given-names>W.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>L.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/TII.2020.3032235</pub-id>
+          <article-title>RBF neural network-based supervisor control for maglev vehicles on an elastic track with network time delay</article-title>
+          <source>IEEE Trans. Ind. Inform.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_22">
+        <label>22.</label>
+        <element-citation publication-type="journal">
+          <volume>15</volume>
+          <page-range>3110</page-range>
+          <issue>9</issue>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Pan</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Yu</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Zhao</surname>
+              <given-names>J.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3390/en15093110</pub-id>
+          <article-title>Displacement-constrained neural network control of maglev trains based on a multi-mass-point model</article-title>
+          <source>Energies</source>
+        </element-citation>
+      </ref>
+    </ref-list>
+  </back>
+</article>
