@@ -1,0 +1,2615 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.3 20210610//EN" "JATS-journalpublishing1-3.dtd">
+<article xml:lang="en" dtd-version="1.3" article-type="research-article" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mml="http://www.w3.org/1998/Math/MathML">
+  <front>
+    <journal-meta>
+      <journal-id journal-id-type="publisher-id">JISC</journal-id>
+      <journal-id journal-id-type="doi">10.56578</journal-id>
+      <journal-title-group>
+        <journal-title>Journal of Intelligent Systems and Control</journal-title>
+        <abbrev-journal-title abbrev-type="issn">J. Intell Syst. Control</abbrev-journal-title>
+        <abbrev-journal-title abbrev-type="publisher">JISC</abbrev-journal-title>
+      </journal-title-group>
+      <issn publication-format="electronic">2957-9813</issn>
+      <issn publication-format="print">2957-9805</issn>
+      <publisher>
+        <publisher-name>Acadlore</publisher-name>
+      </publisher>
+    </journal-meta>
+    <article-meta>
+      <article-id pub-id-type="publisher-id">AR-QGG0f6eMgYIV34YzQx_Py4f-h2Gi1HVI</article-id>
+      <article-id pub-id-type="doi">10.56578/jisc030303</article-id>
+      <article-categories>
+        <subj-group>
+          <subject>Articles</subject>
+        </subj-group>
+      </article-categories>
+      <title-group>
+        <article-title>Design and Implementation of FPGA for Digital Channelization Processing</article-title>
+      </title-group>
+      <contrib-group>
+        <contrib contrib-type="author" rid="aff_1">
+          <contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0009-0000-4272-3053</contrib-id>
+          <name>
+            <surname>Yin</surname>
+            <given-names>Ming</given-names>
+          </name>
+          <email>LD2020052901@qust.edu.cn</email>
+        </contrib>
+        <contrib contrib-type="author" rid="aff_2">
+          <contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0009-0005-0232-5807</contrib-id>
+          <name>
+            <surname>Fu</surname>
+            <given-names>Yanlei</given-names>
+          </name>
+          <email>gm127@qust.edu.com</email>
+        </contrib>
+        <contrib contrib-type="author" rid="aff_1">
+          <contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0009-0004-3476-7960</contrib-id>
+          <name>
+            <surname>Mei</surname>
+            <given-names>Jiefeng</given-names>
+          </name>
+          <email>waive_65@163.com</email>
+        </contrib>
+        <aff id="aff_1">School of Information Science and Technology, Qingdao University of Science and Technology, 266100 Qingdao, China</aff>
+        <aff id="aff_2">Gaomi Campus, Qingdao University of Science and Technology, 261500 Weifang, China</aff>
+      </contrib-group>
+      <pub-date publication-format="electronic" date-type="pub">
+        <day>29</day>
+        <month>09</month>
+        <year>2024</year>
+      </pub-date>
+      <volume>3</volume>
+      <issue>3</issue>
+      <fpage>160</fpage>
+      <lpage>173</lpage>
+      <page-range>160-173</page-range>
+      <history>
+        <date date-type="received">
+          <day>01</day>
+          <month>07</month>
+          <year>2024</year>
+        </date>
+        <date date-type="accepted">
+          <day>22</day>
+          <month>09</month>
+          <year>2024</year>
+        </date>
+      </history>
+      <permissions>
+        <copyright-statement>©2024 by the author(s)</copyright-statement>
+        <copyright-year>2024</copyright-year>
+        <license license-type="open-access" xlink:href="https://creativecommons.org/licenses/by/4.0/">
+          <license-p> Published by Acadlore Publishing Services Limited, Hong Kong. This article is available for free download and can be reused and cited, provided that the original published version is credited, under the CC BY 4.0 license.</license-p>
+        </license>
+      </permissions>
+      <abstract><p> To address the rate mismatch between high-bandwidth, high-sampling-rate analog-to-digital converters (ADCs) and low-bandwidth, low-sampling-rate baseband processors, digital signal processing techniques were employed to enable the parallel processing of broadband signals. The broadband signals were decomposed into multiple narrowband channels, facilitating parallel processing and frequency-selective analysis of signals. The validity of the principle was verified through MATLAB modeling. A digital channelization Register Transfer Level (RTL) model was constructed on a Field-Programmable Gate Array (FPGA) using Verilog Hardware Description Language (HDL), implementing a pipelined parallel processing mechanism. The computational efficiency in Fast Fourier Transform (FFT) operations was improved by optimizing the processing flow. A digital channelization receiver application test board was developed using a domestically produced FMQL45T900 FPGA as the core component. Practical applications confirmed the correctness of the approach, with significant improvements in power efficiency compared to methods reported in existing literature, thereby enhancing overall parallel processing performance. This method demonstrates broad applicability in fields such as military communications, broadcasting, radar navigation systems, and more.</p></abstract>
+      <kwd-group>
+        <kwd>FPGA</kwd>
+        <kwd>Digital channelization</kwd>
+        <kwd>FIR filter</kwd>
+      </kwd-group>
+      <counts>
+        <count count-type="contributors" count="3"/>
+        <fig-count count="17"/>
+        <table-count count="3"/>
+        <ref-count count="21"/>
+      </counts>
+    </article-meta>
+  </front>
+  <body>
+    <sec sec-type="intro">
+      <title>1. Introduction</title>
+      <p>Electronic warfare receivers are required to possess a wide instantaneous bandwidth, exceptional demodulation sensitivity and frequency resolution, extensive dynamic range, and the ability to process multiple signals in parallel. Against this backdrop, channelized receivers have emerged as an ideal solution due to their unique performance advantages, making them well-suited to meet the demands of modern battlefield environments. Digital channelization is a method that employs encoding and decoding techniques to process digital communication signals, thereby enhancing transmission quality and reliability [<xref ref-type="bibr" rid="ref_1">1</xref>]. In recent years, with the continuous advancement of communication technologies and the expansion of application scenarios, the importance of digital channelization and digital filters in communication systems, the Internet of Things, satellite communications, and intelligent transportation has significantly increased [<xref ref-type="bibr" rid="ref_2">2</xref>].</p><p>FPGA, as a flexible and programmable hardware platform, provides an efficient means for implementing digital channelization algorithms. FPGA-based digital channelization techniques represent an effective signal processing approach capable of decomposing a broadband signal with substantial instantaneous bandwidth into multiple narrowband signals, which are then allocated to different channels. The number of channels is typically predetermined, such as 32-channel processing mentioned in this study.</p><p>Thamizharasan and Kasthuri [<xref ref-type="bibr" rid="ref_3">3</xref>] proposed an efficient FPGA-based digital down-conversion design tailored to software radio applications. Zhang et al. [<xref ref-type="bibr" rid="ref_4">4</xref>] introduced a design approach that incorporates undersampling and frequency estimation in channelization applications. Datta and Dutta [<xref ref-type="bibr" rid="ref_5">5</xref>] designed the efficient implementation of a half-band filter on the FPGA. Kim et al. [<xref ref-type="bibr" rid="ref_6">6</xref>] used digital down-conversion for equivalent time-domain signal sampling in complex periodic signals. Furthermore, Zhang et al. [<xref ref-type="bibr" rid="ref_7">7</xref>] presented an ultra-wideband digital back-end system for the QTT, employing a Polyphase Filter Bank (PFB) algorithm. Zhang et al. [<xref ref-type="bibr" rid="ref_8">8</xref>] investigated channelization techniques for radio astronomical wideband signals using oversampled PFBs. Liu et al. [<xref ref-type="bibr" rid="ref_9">9</xref>] proposed a frequency measurement approach for microwave signals over a wide frequency range, leveraging an optical frequency comb combined with a channelization method. Huiskamp et al. [<xref ref-type="bibr" rid="ref_10">10</xref>] introduced a method for reconstructing aliased frequency spectra by employing multiple sample rates. Song et al. [<xref ref-type="bibr" rid="ref_11">11</xref>] presented an optimized compressed spectrum sensing technique based on a multicoset sampler for multiband signals, approaching the sub-Nyquist boundary. Furthermore, Huang et al. [<xref ref-type="bibr" rid="ref_12">12</xref>] demonstrated parameter measurement for multiple exponentially damped sinusoids using sub-Nyquist sampling. </p><p>While these studies focus on the application of algorithms for digital processing, they lack validation and extension in practical engineering implementations. To address critical technological bottlenecks and reduce manufacturing costs, it is imperative to pursue independent development and domestically produced alternatives for core technologies. The FPGA design of the digital channelization receiver described in this study includes several key modules, namely the data preprocessing module, the Finite Impulse Response (FIR) filter bank module, the inverse FFT (IFFT) module, and the digital signal processing module. The data preprocessing module is responsible for introducing external signals into the system and performing integer-factor decimation on the input data, which reduces the sampling rate while transmitting the processed data to the FIR module. Subsequently, the FIR filter bank module processes the signals by filtering them according to their frequency characteristics and performing necessary spectrum shifting. Next, an IFFT module, implemented using butterfly operations, performs the 32-channel IFFT, converting signals from the frequency domain to the time domain. Finally, the digital signal processing module applies quantization and other processing steps to the output signals to meet specific output requirements. Through the integration and coordinated operation of these modules, the overall digital channelization workflow is achieved. This process effectively decomposes the original signal into multiple channels for parallel processing, ultimately accomplishing digital channelization.</p>
+    </sec>
+    <sec sec-type="">
+      <title>2. Digital channelization principle</title>
+      <p>Digital channelization is achieved through the reception of bandpass signals using FIR filters. During the channelization process, digital processing techniques such as FFT were employed to enable efficient and accurate signal reception and processing. When handling data sampled by the ADC, the data acquisition rate of the ADC differed from the processing rate of the receiver, necessitating the consideration of data buffering and processing during transmission.</p>
+      
+        <sec>
+          
+            <title>2.1. Multi-rate data conversion</title>
+          
+          <p>To reduce the data rate obtained from the ADC, integer-factor decimation is commonly applied. Integer decimation refers to the process of resampling the original sequence <inline-formula>
+  <mml:math id="myihhunuhz">
+    <mml:mi>x</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+  </mml:math>
+</inline-formula> by selecting every $N<inline-formula>
+  <mml:math id="m6u0f6g7wh">
+    <mml:mo>−</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+  </mml:math>
+</inline-formula>N<inline-formula>
+  <mml:math id="mc3ov6dj6n">
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>q</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mo>)</mml:mo>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>x_N(m)<inline-formula>
+  <mml:math id="maf8ditu5b">
+    <mml:mi>w</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+  </mml:math>
+</inline-formula>f_s^{\prime}=f_s / N<inline-formula>
+  <mml:math id="m71q93ude9">
+    <mml:mo>[</mml:mo>
+    <mml:mo>]</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>:&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>=</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mn>13</mml:mn>
+    <mml:mi>T</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>N</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>A</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>q</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mtext mathcolor="red">\[</mml:mtext>
+    <mml:mtext mathcolor="red">\]</mml:mtext>
+    <mml:msub>
+      <mml:mi>x</mml:mi>
+      <mml:mi>N</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula>f_s<inline-formula>
+  <mml:math id="md0mtnkq7u">
+    <mml:mo>,</mml:mo>
+    <mml:mi>w</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+  </mml:math>
+</inline-formula>T<inline-formula>
+  <mml:math id="mpsit0n1dn">
+    <mml:mo>,</mml:mo>
+    <mml:mo>:&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mo>&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>F</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>q</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>q</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mtext mathcolor="red">\[</mml:mtext>
+    <mml:mtext mathcolor="red">\]</mml:mtext>
+    <mml:mtable displaystyle="true" columnalign="right left" columnspacing="0em" rowspacing="3pt">
+      <mml:mtr>
+        <mml:mtd/>
+        <mml:mtd>
+          <mml:mi>a</mml:mi>
+          <mml:mi>m</mml:mi>
+          <mml:mi>p</mml:mi>
+          <mml:mi>j</mml:mi>
+          <mml:mi>Ω</mml:mi>
+          <mml:mo>;</mml:mo>
+          <mml:mo>=</mml:mo>
+          <mml:mo>(</mml:mo>
+          <mml:mo>)</mml:mo>
+          <mml:mo>=</mml:mo>
+          <mml:mo>=</mml:mo>
+          <mml:msub>
+            <mml:mrow>
+              <mml:mo fence="true"/>
+              <mml:mo>|</mml:mo>
+              <mml:mrow>
+                <mml:mi>X</mml:mi>
+              </mml:mrow>
+              <mml:mrow>
+                <mml:mo>(</mml:mo>
+                <mml:mo>)</mml:mo>
+                <mml:msup>
+                  <mml:mrow>
+                    <mml:mi>e</mml:mi>
+                  </mml:mrow>
+                  <mml:mrow>
+                    <mml:mi>j</mml:mi>
+                    <mml:mi>ϖ</mml:mi>
+                  </mml:mrow>
+                </mml:msup>
+              </mml:mrow>
+            </mml:mrow>
+            <mml:mrow>
+              <mml:mi>ϖ</mml:mi>
+              <mml:mi>Ω</mml:mi>
+              <mml:mi>T</mml:mi>
+              <mml:mo>=</mml:mo>
+            </mml:mrow>
+          </mml:msub>
+          <mml:msub>
+            <mml:mrow>
+              <mml:mover>
+                <mml:mi>X</mml:mi>
+                <mml:mo>^</mml:mo>
+              </mml:mover>
+            </mml:mrow>
+            <mml:mi>a</mml:mi>
+          </mml:msub>
+          <mml:msub>
+            <mml:mi>X</mml:mi>
+            <mml:mi>a</mml:mi>
+          </mml:msub>
+          <mml:msub>
+            <mml:mi>X</mml:mi>
+            <mml:mi>a</mml:mi>
+          </mml:msub>
+          <mml:mfrac>
+            <mml:mn>1</mml:mn>
+            <mml:mi>T</mml:mi>
+          </mml:mfrac>
+          <mml:mfrac>
+            <mml:mn>1</mml:mn>
+            <mml:mi>T</mml:mi>
+          </mml:mfrac>
+          <mml:munderover>
+            <mml:mo>∑</mml:mo>
+            <mml:mrow>
+              <mml:mi>k</mml:mi>
+              <mml:mi>∞</mml:mi>
+              <mml:mo>=</mml:mo>
+              <mml:mo>−</mml:mo>
+            </mml:mrow>
+            <mml:mrow>
+              <mml:mi>∞</mml:mi>
+            </mml:mrow>
+          </mml:munderover>
+          <mml:munderover>
+            <mml:mo>∑</mml:mo>
+            <mml:mrow>
+              <mml:mi>k</mml:mi>
+              <mml:mi>∞</mml:mi>
+              <mml:mo>=</mml:mo>
+              <mml:mo>−</mml:mo>
+            </mml:mrow>
+            <mml:mrow>
+              <mml:mi>∞</mml:mi>
+            </mml:mrow>
+          </mml:munderover>
+          <mml:mrow>
+            <mml:mo>(</mml:mo>
+            <mml:mo>−</mml:mo>
+            <mml:mo>)</mml:mo>
+            <mml:mi>j</mml:mi>
+            <mml:mi>Ω</mml:mi>
+            <mml:mi>j</mml:mi>
+            <mml:mi>k</mml:mi>
+            <mml:mfrac>
+              <mml:mrow>
+                <mml:mn>2</mml:mn>
+                <mml:mi>π</mml:mi>
+              </mml:mrow>
+              <mml:mi>T</mml:mi>
+            </mml:mfrac>
+          </mml:mrow>
+          <mml:mrow>
+            <mml:mo>(</mml:mo>
+            <mml:mo>)</mml:mo>
+            <mml:mi>j</mml:mi>
+            <mml:mi>k</mml:mi>
+            <mml:mfrac>
+              <mml:mrow>
+                <mml:mi>ϖ</mml:mi>
+                <mml:mi>π</mml:mi>
+                <mml:mo>−</mml:mo>
+                <mml:mn>2</mml:mn>
+              </mml:mrow>
+              <mml:mi>T</mml:mi>
+            </mml:mfrac>
+          </mml:mrow>
+        </mml:mtd>
+      </mml:mtr>
+    </mml:mtable>
+  </mml:math>
+</inline-formula>x_N(m)<inline-formula>
+  <mml:math id="mewkt8e0s4">
+    <mml:mi>b</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+  </mml:math>
+</inline-formula>f^{\prime}{ }_s=f_s / N<inline-formula>
+  <mml:math id="m40xmltewx">
+    <mml:mo>,</mml:mo>
+    <mml:mi>w</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+  </mml:math>
+</inline-formula>T^{\prime}=N T<inline-formula>
+  <mml:math id="mscp2xfr9r">
+    <mml:mo>.</mml:mo>
+    <mml:mi>T</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>F</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>q</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+  </mml:math>
+</inline-formula>x_N(m)$ can be expressed as follows:</p><p>\[\begin{aligned} &amp;amp; \left.\mathrm{X}\left(\mathrm{e}^{j \varpi^{\prime}}\right)\right|_{\varpi^{\prime}=\Omega T^{\prime}}=\hat{X}_a^{\prime}(j \Omega)=\frac{1}{T^{\prime}} \sum_{k=-\infty}^{\infty} X_a\left(j \Omega-j \frac{2 \pi}{T^{\prime}} k\right) =\frac{1}{N T} \sum_{k=-\infty}^{\infty} X_a\left(j \frac{\varpi^{\prime}-2 \pi}{T} k\right)\end{aligned}\]</p><p>It can be observed from these expressions that integer-factor decimation improves the frequency-domain resolution of the ADC signal. This enhanced resolution is advantageous for subsequent digital processing workflows [<xref ref-type="bibr" rid="ref_14">14</xref>].</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>2.2. Digital quadrature downconversion</title>
+          
+          <p>Digital quadrature downconversion is a widely used technique in communication systems, primarily employed to enhance spectrum utilization. In communication scenarios, signals transmitted through the air are typically real-valued [<xref ref-type="bibr" rid="ref_15">15</xref>]. Upon reception, such signals must be demodulated to convert them into baseband frequencies. During this process, the signal is decomposed into two orthogonal components: the in-phase component (I) and the quadrature component (Q), collectively referred to as IQ components. The purpose of this transformation is to facilitate efficient signal processing and enable subsequent processors or demodulators to interpret and handle the signal more effectively. Through IQ components, the receiver is capable of extracting critical information from the original signal, ensuring accurate data transmission and processing [<xref ref-type="bibr" rid="ref_16">16</xref>]. Consequently, digital quadrature downconversion plays a pivotal role in modern communication systems by enabling higher spectrum efficiency and reliable data transmission.</p><p>Digital quadrature downconversion typically employs <inline-formula>
+  <mml:math id="mp7gvjwnoz">
+    <mml:mi>cos</mml:mi>
+    <mml:mo>⁡</mml:mo>
+    <mml:mrow>
+      <mml:mo>(</mml:mo>
+      <mml:mo>)</mml:mo>
+      <mml:msub>
+        <mml:mi>ω</mml:mi>
+        <mml:mn>0</mml:mn>
+      </mml:msub>
+      <mml:mi>n</mml:mi>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> and <inline-formula>
+  <mml:math id="ml75ppr8jf">
+    <mml:mo>−</mml:mo>
+    <mml:mo>⁡</mml:mo>
+    <mml:mi>sin</mml:mi>
+    <mml:mrow>
+      <mml:mo>(</mml:mo>
+      <mml:mo>)</mml:mo>
+      <mml:msub>
+        <mml:mi>ω</mml:mi>
+        <mml:mn>0</mml:mn>
+      </mml:msub>
+      <mml:mi>n</mml:mi>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> to perform frequency translation. The original input signal is multiplied by these transformation factors to convert the radio frequency (RF) signal into I and Q signals. A structural diagram of this process is illustrated in <xref ref-type="fig" rid="fig_1">Figure 1</xref>.</p>
+          
+            <fig id="fig_1">
+              <label>Figure 1</label>
+              <caption>
+                <title>Structural diagram of digital quadrature downconversion</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2024/10/img_hV5212YZSLYQ_MY9.png"/>
+            </fig>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>2.3. Channelization structure based on polyphase filtering</title>
+          
+          <p>A digital channelization receiver based on a polyphase filter structure was designed, with the core principle being the use of a parallel sampling digital structure featuring different frequency mixing coefficients to achieve channelization in the frequency domain, thereby generating baseband signals [<xref ref-type="bibr" rid="ref_17">17</xref>]. Compared to directly processing high-speed ADC data through multiplication with mixing factors, this approach imposes lower requirements on mixers, making it more resource-efficient and easier to implement [<xref ref-type="bibr" rid="ref_18">18</xref>]. However, the increase in the number of channels, with each channel requiring a unique mixing factor, leads to higher hardware resource consumption [<xref ref-type="bibr" rid="ref_19">19</xref>].</p><p>To address this challenge, a channelization structure based on polyphase filtering was adopted for signal processing. This structure performs exceptionally well when handling multi-channel inputs and effectively reduces hardware resource consumption. The structural diagram of a polyphase filter [<xref ref-type="bibr" rid="ref_20">20</xref>] is shown in <xref ref-type="fig" rid="fig_2">Figure 2</xref>. By utilizing polyphase filters, the receiver achieves more efficient processing of input signals, improving system performance and scalability.</p>
+          
+            <fig id="fig_2">
+              <label>Figure 2</label>
+              <caption>
+                <title>Structural diagram of channelization</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2024/10/img_dLqPcD-vaLTWOFCa.png"/>
+            </fig>
+          
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>3. Digital channelization receiver design</title>
+      
+        <sec>
+          
+            <title>3.1. Overall framework</title>
+          
+          <p>The FPGA module design for the digital channelization receiver comprises the following key components: the data preprocessing module, the filter bank module, the IFFT module, and the signal processing output module.</p><p>The data preprocessing module is responsible for converting serial input data into a parallel form, facilitating subsequent processing stages. The FIR filter bank module is then utilized to filter the input signals, eliminating noise and unwanted frequency components to enhance signal quality. The IFFT module performs the IFFT, converting frequency-domain signals back into the time domain for further processing. Finally, the signal processing output module applies necessary operations such as demodulation, decryption, or other signal processing algorithms [<xref ref-type="bibr" rid="ref_10">10</xref>].</p><p>Channel division can be categorized into uniform channelization and non-uniform channelization. In this design, a uniform channelization method was adopted for the filter bank design. The structural diagram of the system is shown in <xref ref-type="fig" rid="fig_3">Figure 3</xref>.</p>
+          
+            <fig id="fig_3">
+              <label>Figure 3</label>
+              <caption>
+                <title>Channelization structure</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2024/10/img_NZjFwvAGDFUxjnzU.png"/>
+            </fig>
+          
+          <p>Integer-factor decimation was achieved using serial-to-parallel conversion techniques to preprocess the acquired data. This technique allows high-speed serial data streams to be decomposed into multiple low-speed parallel data streams, thereby enabling data downsampling without any loss of information. This approach is particularly significant in digital signal processing as it facilitates the efficient management and handling of large data streams. The overall RTL framework for the FPGA design of digital channelization is illustrated in <xref ref-type="fig" rid="fig_4">Figure 4</xref>.</p>
+          
+            <fig id="fig_4">
+              <label>Figure 4</label>
+              <caption>
+                <title>RTL diagram of the FPGA design for channelization</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2024/10/img_DIcgjW0MqqwkrYC1.png"/>
+            </fig>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.2. Data preprocessing module</title>
+          
+          <p>To ensure the effective application of FIR filtering in subsequent stages, appropriate data preprocessing must be performed. The core objective of the preprocessing stage is to implement serial-to-parallel conversion, facilitating data rate reduction.</p>
+          <p>Integer-factor decimation was employed to achieve the downsampling of data acquired by the ADC. In FPGA implementations, this process is typically realized using serial-to-parallel conversion techniques [<xref ref-type="bibr" rid="ref_20">20</xref>]. The primary task of this module is to shift the ADC data and convert it into serial data with a specific bit width. During this process, due to the integer-factor relationship inherent in decimation, overlapping of output serial data occurs. For instance, if the output serial data has a bit width of 512 bits, there will be an overlap of 256 bits between consecutive segments. The workflow of the data preprocessing module is illustrated in <xref ref-type="fig" rid="fig_5">Figure 5</xref>.</p>
+          
+            <fig id="fig_5">
+              <label>Figure 5</label>
+              <caption>
+                <title>Workflow of serial-to-parallel data conversion</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2024/10/img_YV5XcReJBMYhAP8o.png"/>
+            </fig>
+          
+          <p>The core of implementing this process lies in the precise control of the flag bit, enabling the orderly shifting of input ADC data into registers to ultimately construct a complete 512-bit serial data stream. This sophisticated design not only optimizes the handling of high-speed data inputs but also fundamentally ensures the accuracy, integrity, and completeness of the data. Through this approach, the FPGA is able to effectively manage high-speed data streams from RF signals, providing a robust data foundation for subsequent signal processing and demodulation.</p><p>The RTL diagram of the data preprocessing module, as generated in Vivado, is shown in <xref ref-type="fig" rid="fig_6">Figure 6</xref>.</p>
+          
+            <fig id="fig_6">
+              <label>Figure 6</label>
+              <caption>
+                <title>RTL diagram of the data preprocessing module</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2024/10/img_BILzS8Rut-Yiz7YS.png"/>
+            </fig>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.3. Fir filter bank design</title>
+          
+          <p>From the perspective of hardware implementation, achieving an ideal sharp cutoff characteristic in filter design is challenging. In practical applications, a very narrow transition band significantly increases filter complexity, leading to a higher number of required multipliers and potentially extending filtering processing time. These factors considerably increase hardware resource consumption and reduce data processing rates [<xref ref-type="bibr" rid="ref_21">21</xref>].</p><p>To ensure that no critical information is missed, a filter bank with 50% overlap was employed for filtering operations. This design enhances the comprehensiveness of information capture, ensuring continuity and accuracy during signal monitoring and minimizing the risk of data loss or omissions. Additionally, the transition band of each filter was designed to be relatively wide. This approach effectively reduces the order of the FIR filters, simplifying the filter structure and significantly lowering computational complexity and resource utilization, thereby efficiently utilizing hardware resources.</p><p>By employing this filter bank design, hardware resources were utilized efficiently while maintaining system performance. Additionally, the approach ensures full coverage of all frequencies within the monitoring bandwidth. This method is widely adopted in digital signal processing, particularly in scenarios where efficient signal processing is required under limited hardware resources. <xref ref-type="table" rid="table_1">Table 1</xref> shows the channel allocation and filter numbers.</p>
+          
+            <table-wrap id="table_1">
+              <label>Table 1</label>
+              <caption>
+                <title>Channel allocation and filter numbers</title>
+              </caption>
+              <table><tbody><tr><td colspan="1" rowspan="1"><p>Filter Number</p></td><td colspan="1" rowspan="1"><p>Start Frequency (MHz)</p></td><td colspan="1" rowspan="1"><p>Centre Frequency (MHz)</p></td><td colspan="1" rowspan="1"><p>Cutoff Frequency (MHz)</p></td></tr><tr><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>520</p></td><td colspan="1" rowspan="1"><p>512</p></td><td colspan="1" rowspan="1"><p>504</p></td></tr><tr><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>504</p></td><td colspan="1" rowspan="1"><p>496</p></td><td colspan="1" rowspan="1"><p>488</p></td></tr><tr><td colspan="1" rowspan="1"><p>2</p></td><td colspan="1" rowspan="1"><p>488</p></td><td colspan="1" rowspan="1"><p>480</p></td><td colspan="1" rowspan="1"><p>472</p></td></tr><tr><td colspan="1" rowspan="1"><p>3</p></td><td colspan="1" rowspan="1"><p>472</p></td><td colspan="1" rowspan="1"><p>464</p></td><td colspan="1" rowspan="1"><p>456</p></td></tr><tr><td colspan="1" rowspan="1"><p>4</p></td><td colspan="1" rowspan="1"><p>456</p></td><td colspan="1" rowspan="1"><p>448</p></td><td colspan="1" rowspan="1"><p>440</p></td></tr><tr><td colspan="1" rowspan="1"><p>5</p></td><td colspan="1" rowspan="1"><p>440</p></td><td colspan="1" rowspan="1"><p>432</p></td><td colspan="1" rowspan="1"><p>424</p></td></tr><tr><td colspan="1" rowspan="1"><p>6</p></td><td colspan="1" rowspan="1"><p>424</p></td><td colspan="1" rowspan="1"><p>416</p></td><td colspan="1" rowspan="1"><p>408</p></td></tr><tr><td colspan="1" rowspan="1"><p>7</p></td><td colspan="1" rowspan="1"><p>408</p></td><td colspan="1" rowspan="1"><p>400</p></td><td colspan="1" rowspan="1"><p>392</p></td></tr><tr><td colspan="1" rowspan="1"><p>8</p></td><td colspan="1" rowspan="1"><p>392</p></td><td colspan="1" rowspan="1"><p>384</p></td><td colspan="1" rowspan="1"><p>376</p></td></tr><tr><td colspan="1" rowspan="1"><p>9</p></td><td colspan="1" rowspan="1"><p>376</p></td><td colspan="1" rowspan="1"><p>368</p></td><td colspan="1" rowspan="1"><p>360</p></td></tr><tr><td colspan="1" rowspan="1"><p>10</p></td><td colspan="1" rowspan="1"><p>360</p></td><td colspan="1" rowspan="1"><p>352</p></td><td colspan="1" rowspan="1"><p>344</p></td></tr><tr><td colspan="1" rowspan="1"><p>11</p></td><td colspan="1" rowspan="1"><p>344</p></td><td colspan="1" rowspan="1"><p>336</p></td><td colspan="1" rowspan="1"><p>328</p></td></tr><tr><td colspan="1" rowspan="1"><p>12</p></td><td colspan="1" rowspan="1"><p>328</p></td><td colspan="1" rowspan="1"><p>320</p></td><td colspan="1" rowspan="1"><p>312</p></td></tr><tr><td colspan="1" rowspan="1"><p>13</p></td><td colspan="1" rowspan="1"><p>312</p></td><td colspan="1" rowspan="1"><p>304</p></td><td colspan="1" rowspan="1"><p>296</p></td></tr><tr><td colspan="1" rowspan="1"><p>14</p></td><td colspan="1" rowspan="1"><p>296</p></td><td colspan="1" rowspan="1"><p>288</p></td><td colspan="1" rowspan="1"><p>280</p></td></tr><tr><td colspan="1" rowspan="1"><p>15</p></td><td colspan="1" rowspan="1"><p>280</p></td><td colspan="1" rowspan="1"><p>272</p></td><td colspan="1" rowspan="1"><p>264</p></td></tr></tbody></table>
+            </table-wrap>
+          
+          <p>The bandpass filter bank was implemented by modulating a prototype low-pass filter with 192 taps. Based on the selected design parameter K=32, the number of phases P in each PFB can be calculated, with P=N/K. Thus, 192/32=6. Each phase filter coefficient was extended by inserting zeros, specifically two zeros between every coefficient, resulting in 12 coefficients for each phase filter.</p><p>In this PFB design, each coefficient of the prototype filter was reused in a specific pattern, with zero values inserted between repetitions of the coefficients. This approach not only conserves hardware resources but also enhances the flexibility and response speed of the filter. By processing input signals through these polyphase filters, uniform distribution of the data stream across all phases is ensured, enabling efficient frequency bandwidth utilization and signal reconstruction.</p><p>The data processing workflow demonstrates how input data is managed through these polyphase filters and how the processed data is combined to form the final output signal. In practical applications, this polyphase filter structure is commonly employed for efficient signal demodulation and bandwidth management, particularly in frequency-selective signal processing and communication systems. The implementation details and optimization strategies of each FIR filter significantly influence the overall performance and efficiency of the system. <xref ref-type="fig" rid="fig_7">Figure 7</xref> shows the filter structure.</p><p>When the <inline-formula>
+  <mml:math id="mjrqk3l310">
+    <mml:mrow>
+      <mml:mrow>
+        <mml:mi>F</mml:mi>
+        <mml:mi>I</mml:mi>
+        <mml:mi>R</mml:mi>
+      </mml:mrow>
+      <mml:mrow>
+        <mml:mi>S</mml:mi>
+        <mml:mi>T</mml:mi>
+        <mml:mi>E</mml:mi>
+        <mml:mi>P</mml:mi>
+      </mml:mrow>
+      <mml:mi>_</mml:mi>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> parameter was set to 12 and the number of filters was 32, each FIR filter contained 192 coefficients, with each coefficient occupying 16 bits. These coefficients were generated using the filterDesigner tool in MATLAB. The coefficients were divided into 32 groups, each containing 12 coefficients, with zero-padding applied between coefficients. The RTL implementation diagram of the FIR filter bank module is shown in <xref ref-type="fig" rid="fig_8">Figure 8</xref>.</p><p>The required tap coefficients for each filter were not described individually. Instead, the FIR filters were designed in MATLAB, and their functions were generated. These tap functions were directly written into Verilog HDL files, serving as the tap sources for the FIR filter bank.</p>
+          
+            <fig id="fig_7">
+              <label>Figure 7</label>
+              <caption>
+                <title>Filter structure</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2024/10/img_qvf9tDWFW4Bo8P02.png"/>
+            </fig>
+          
+          
+            <fig id="fig_8">
+              <label>Figure 8</label>
+              <caption>
+                <title>RTL implementation of the FIR filter bank</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2024/10/img_32ifPXipYOBGySO6.png"/>
+            </fig>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.4. Ifft module</title>
+          
+          <p>The IFFT is a critical technique used to convert frequency-domain signals back into the time domain. In the implementation of the IFFT, a practical approach involves first removing the complex conjugate of the signal, then performing a FFT, followed by taking the complex conjugate of the result and multiplying it by a coefficient <inline-formula>
+  <mml:math id="mx19zzlz78">
+    <mml:mrow>
+      <mml:mo>(</mml:mo>
+      <mml:mo>)</mml:mo>
+      <mml:mfrac>
+        <mml:mn>1</mml:mn>
+        <mml:mi>N</mml:mi>
+      </mml:mfrac>
+    </mml:mrow>
+  </mml:math>
+</inline-formula>.</p><p>For processing ADC sampling data, PFBs were employed for filtering. This approach enables the simultaneous output of 32 filtered signals, achieving efficient parallel processing. The utilization of this filtering technique not only enhances the speed of data processing but also ensures the accuracy and quality of signal handling. To address the issue of excessive data throughput caused by serial input, a fully parallel IFFT operation based on radix-2 time-decimation was adopted. This design ensures efficient handling of high-speed data streams while maintaining the fidelity of the transformed signals, making it particularly suitable for high-performance digital signal processing applications. In this design, the IFFT module features 32 inputs and is tasked with executing 32-point parallel IFFT operations. By leveraging the properties of the FFT, a 32-point Inverse Discrete Fourier Transform (IDFT) can be decomposed into a series of smaller-scale IDFT computations. Specifically, a 32-point IDFT can be divided into two 16-point IDFTs. This decomposition process can be recursively continued until the original 32-point IDFT is reduced to 16 computations, each comprising 2-point IDFTs. This decomposition methodology significantly simplifies computational complexity and enhances operational efficiency. Based on this principle, Decimation-In-Time for the IFFT (DIT-IFFT) can be applied to the 32-channel data output from the filter bank. This approach enables efficient handling and analysis of the data, further optimizing the overall signal processing workflow. The RTL diagram of the 32-point parallel IFFT module is shown in <xref ref-type="fig" rid="fig_9">Figure 9</xref>.</p>
+          
+            <fig id="fig_9">
+              <label>Figure 9</label>
+              <caption>
+                <title>RTL diagram of the 32-point parallel IFFT module</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2024/10/img_AGjYt-85eAGZM8jj.png"/>
+            </fig>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.5. Digital signal processing module</title>
+          
+          <p>This module performs specific operations on the output data from the IFFT, focusing on the processing of odd-numbered channels. For the output data of the $n<inline-formula>
+  <mml:math id="mce9k61ewn">
+    <mml:mo>−</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+  </mml:math>
+</inline-formula>n<inline-formula>
+  <mml:math id="mu25lwc9rc">
+    <mml:mo>−</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mn>1</mml:mn>
+  </mml:math>
+</inline-formula>n<inline-formula>
+  <mml:math id="mhrihdvddp">
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+  </mml:math>
+</inline-formula>n$-th channel.</p>
+          <p>In digital quadrature demodulation, the exponential term in the product <inline-formula>
+  <mml:math id="m9i1kyfr9w">
+    <mml:msup>
+      <mml:mi>e</mml:mi>
+      <mml:mrow>
+        <mml:mo>−</mml:mo>
+        <mml:mi>j</mml:mi>
+        <mml:mi>M</mml:mi>
+        <mml:mi>n</mml:mi>
+        <mml:msub>
+          <mml:mi>w</mml:mi>
+          <mml:mi>k</mml:mi>
+        </mml:msub>
+      </mml:mrow>
+    </mml:msup>
+  </mml:math>
+</inline-formula> can be expressed as <inline-formula>
+  <mml:math id="ms3cyxggv0">
+    <mml:mo>(</mml:mo>
+    <mml:mo>⁡</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>×</mml:mo>
+    <mml:mo>⁡</mml:mo>
+    <mml:mi>cos</mml:mi>
+    <mml:mi>k</mml:mi>
+    <mml:mi>π</mml:mi>
+    <mml:mi>j</mml:mi>
+    <mml:mi>sin</mml:mi>
+    <mml:mi>k</mml:mi>
+    <mml:mi>π</mml:mi>
+    <mml:msup>
+      <mml:mo>)</mml:mo>
+      <mml:mi>n</mml:mi>
+    </mml:msup>
+  </mml:math>
+</inline-formula>, where <inline-formula>
+  <mml:math id="mkr7f1415h">
+    <mml:mi>F</mml:mi>
+    <mml:mi>k</mml:mi>
+    <mml:mo>=</mml:mo>
+    <mml:mo>=</mml:mo>
+    <mml:mo>;</mml:mo>
+    <mml:mfrac>
+      <mml:mi>K</mml:mi>
+      <mml:mi>M</mml:mi>
+    </mml:mfrac>
+    <mml:mn>2</mml:mn>
+  </mml:math>
+</inline-formula> denotes the $k<inline-formula>
+  <mml:math id="mf7cxxnmfy">
+    <mml:mo>−</mml:mo>
+    <mml:mo>;</mml:mo>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+  </mml:math>
+</inline-formula>n<inline-formula>
+  <mml:math id="m4j4x1ax8u">
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+  </mml:math>
+</inline-formula>n<inline-formula>
+  <mml:math id="mgswb8q1mt">
+    <mml:mo>−</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+  </mml:math>
+</inline-formula>n<inline-formula>
+  <mml:math id="m3bhk3xnjx">
+    <mml:mo>−</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mn>1</mml:mn>
+  </mml:math>
+</inline-formula>^{\mathrm{n}}<inline-formula>
+  <mml:math id="mclw5poom6">
+    <mml:mo>.</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mi>S</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>y</mml:mi>
+  </mml:math>
+</inline-formula>\times$ (-1), while the data from even-numbered channels remain unchanged. Following the operation, all signals are output together. In practical terms, the data from channels 0, 2, ..., 14 are left unaltered, while the data from channels 1, 3, ..., 15 are multiplied by (-1) before being output. The purpose of this operation is to adjust the channels to ensure correct processing or demodulation in subsequent stages. The RTL design of the digital signal processing module is shown in <xref ref-type="fig" rid="fig_10">Figure 10</xref>.</p>
+          
+            <fig id="fig_10">
+              <label>Figure 10</label>
+              <caption>
+                <title>RTL design of the digital signal processing module</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2024/10/img_Kojpk5QKd1reGLYF.png"/>
+            </fig>
+          
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>4. Digital channelization simulation</title>
+      
+        <sec>
+          
+            <title>4.1. Matlab design of the digital channelization receiver</title>
+          
+          <p>The key tasks in the MATLAB simulation include generating the tap coefficients for the FIR filter bank and producing the signals required for the digital channelization receiver.</p><p>In this module, the FIR filter tap coefficients were generated based on the design requirements. These coefficients define the frequency response characteristics of the filters used for processing the input signals, including parameters such as filter type and cutoff frequency. The generation of these coefficients must consider the filter design specifications and performance criteria to meet the system requirements.</p><p>Additionally, MATLAB was employed to simulate the generation of analog-to-digital (AD) signals required for digital channelization. The ADC acquisition process was mimicked, and the data was exported into a text file. These data served as the ADC acquisition inputs during the digital channelization simulation.</p><p>To achieve efficient data processing, a uniform channelization strategy was selected, with the number of subchannels set to K = 32. To capture and analyze detailed information within the signal, an ADC sampling frequency of 512 MHz was adopted. Based on this sampling frequency and the number of subchannels, the bandwidth of each subchannel was precisely calculated to be 16 MHz, while the total processing bandwidth extended up to 32 MHz, ensuring broad signal coverage and high-resolution capability. To optimize signal quality, particularly during the filtering stage, a 192-tap low-pass filter was specifically designed. This filter plays a critical role in the digital channelization system, effectively eliminating high-frequency noise and interference to ensure accuracy and reliability during subsequent signal processing. This well-designed filtering scheme provides a robust foundation for the entire signal processing workflow. The Filter Designer tool in MATLAB was used to design the filter. The filter function was then exported and incorporated into the FIR module, where it served as the basis for FIR filter design.</p><p>Instead of using ADC for data acquisition, MATLAB was employed to simulate the acquisition process. In this simulation, ADC data was generated in MATLAB and an ADC sampling frequency of 512 MHz was set, with the carrier frequency of the signal to be captured set at 320 MHz and the simulated ADC sampling bandwidth set to 20 MHz.</p><p>Using MATLAB, a function was employed to generate a modulated signal centred around a carrier frequency of 320 MHz with a bandwidth of 20 MHz. This signal was then sampled at a frequency of 512 MHz, indicating that the signal was sampled 512 million times per second. Following the sampling process, the resulting digital signal was converted into binary data and saved to a text file for subsequent simulation. <xref ref-type="fig" rid="fig_11">Figure 11</xref> shows the amplitude-frequency spectrum.</p>
+          
+            <fig id="fig_11">
+              <label>Figure 11</label>
+              <caption>
+                <title>Amplitude-frequency spectrum</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2024/10/img_a9XKSon6qGqgJAmg.png"/>
+            </fig>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>4.2. Digital channelization receiver simulation</title>
+          
+          
+            <sec>
+              
+                <title>4.2.1 Simulation of the data preprocessing module</title>
+              
+              <p>The primary task of the data preprocessing module is to convert parallel AD data into a 512-bit serial data stream. This module plays a critical role in the signal processing system by transforming high-speed parallel data into a serial format that is easier to handle and transmit, thus facilitating subsequent signal processing stages.</p><p>In this module, parallel AD data, typically consisting of a series of samples acquired from the analog signal, was first received. The ADC data used in this simulation was generated by MATLAB, representing a radio-frequency signal. The data was directly read from the previously generated text file. Subsequently, the parallel data was converted into a 512-bit serial data stream. The simulation results of this module are presented in <xref ref-type="fig" rid="fig_12">Figure 12</xref>.</p>
+              
+                <fig id="fig_12">
+                  <label>Figure 12</label>
+                  <caption>
+                    <title>Simulation results of the data preprocessing module</title>
+                  </caption>
+                  <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2024/10/img_quy7OG8ZhjQYXDXx.png"/>
+                </fig>
+              
+              <p>The <inline-formula>
+  <mml:math id="muuqa3ojla">
+    <mml:mrow>
+      <mml:mi>a</mml:mi>
+      <mml:mi>d</mml:mi>
+      <mml:mi>c</mml:mi>
+      <mml:mi>_</mml:mi>
+      <mml:mi>c</mml:mi>
+      <mml:mi>l</mml:mi>
+      <mml:mi>k</mml:mi>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> signal serves as the clock signal used to control AD data acquisition. The <inline-formula>
+  <mml:math id="m6enwwlkon">
+    <mml:mrow>
+      <mml:mi>o</mml:mi>
+      <mml:mi>u</mml:mi>
+      <mml:mi>t</mml:mi>
+      <mml:mi>p</mml:mi>
+      <mml:mi>u</mml:mi>
+      <mml:mi>t</mml:mi>
+      <mml:mi>_</mml:mi>
+      <mml:mi>t</mml:mi>
+      <mml:mi>v</mml:mi>
+      <mml:mi>a</mml:mi>
+      <mml:mi>l</mml:mi>
+      <mml:mi>i</mml:mi>
+      <mml:mi>d</mml:mi>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> flag is a status indicator that signifies the completion of the serial-to-parallel data conversion. The <inline-formula>
+  <mml:math id="mhxttbz8eo">
+    <mml:mrow>
+      <mml:mi>a</mml:mi>
+      <mml:mi>d</mml:mi>
+      <mml:mi>c</mml:mi>
+      <mml:mi>_</mml:mi>
+      <mml:mi>d</mml:mi>
+      <mml:mi>i</mml:mi>
+      <mml:mi>n</mml:mi>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> signal represents the input data from the ADC , while <inline-formula>
+  <mml:math id="muvsrnlznq">
+    <mml:mrow>
+      <mml:mi>o</mml:mi>
+      <mml:mi>u</mml:mi>
+      <mml:mi>t</mml:mi>
+      <mml:mi>p</mml:mi>
+      <mml:mi>u</mml:mi>
+      <mml:mi>t</mml:mi>
+      <mml:mi>_</mml:mi>
+      <mml:mi>t</mml:mi>
+      <mml:mi>d</mml:mi>
+      <mml:mi>a</mml:mi>
+      <mml:mi>t</mml:mi>
+      <mml:mi>a</mml:mi>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> refers to the converted data output after the serial-to-parallel transformation. In summary, when the <inline-formula>
+  <mml:math id="m36l0mohxv">
+    <mml:mrow>
+      <mml:mi>a</mml:mi>
+      <mml:mi>d</mml:mi>
+      <mml:mi>c</mml:mi>
+      <mml:mi>_</mml:mi>
+      <mml:mi>c</mml:mi>
+      <mml:mi>l</mml:mi>
+      <mml:mi>k</mml:mi>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> is triggered, AD data is input through <inline-formula>
+  <mml:math id="mjapjqa2f1">
+    <mml:mrow>
+      <mml:mi>a</mml:mi>
+      <mml:mi>d</mml:mi>
+      <mml:mi>c</mml:mi>
+      <mml:mi>_</mml:mi>
+      <mml:mi>d</mml:mi>
+      <mml:mi>i</mml:mi>
+      <mml:mi>n</mml:mi>
+    </mml:mrow>
+  </mml:math>
+</inline-formula>. After undergoing serial-to-parallel conversion, the data is output through <inline-formula>
+  <mml:math id="maw3jb0fyr">
+    <mml:mrow>
+      <mml:mi>o</mml:mi>
+      <mml:mi>u</mml:mi>
+      <mml:mi>t</mml:mi>
+      <mml:mi>p</mml:mi>
+      <mml:mi>u</mml:mi>
+      <mml:mi>t</mml:mi>
+      <mml:mi>_</mml:mi>
+      <mml:mi>t</mml:mi>
+      <mml:mi>d</mml:mi>
+      <mml:mi>a</mml:mi>
+      <mml:mi>t</mml:mi>
+      <mml:mi>a</mml:mi>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> once the <inline-formula>
+  <mml:math id="mqkxsvnz36">
+    <mml:mrow>
+      <mml:mi>o</mml:mi>
+      <mml:mi>u</mml:mi>
+      <mml:mi>t</mml:mi>
+      <mml:mi>p</mml:mi>
+      <mml:mi>u</mml:mi>
+      <mml:mi>t</mml:mi>
+      <mml:mi>_</mml:mi>
+      <mml:mi>t</mml:mi>
+      <mml:mi>v</mml:mi>
+      <mml:mi>a</mml:mi>
+      <mml:mi>l</mml:mi>
+      <mml:mi>i</mml:mi>
+      <mml:mi>d</mml:mi>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> flag becomes active.</p>
+            </sec>
+          
+          
+            <sec>
+              
+                <title>4.2.2 Simulation of the fir filter bank</title>
+              
+              <p>The primary function of the FIR filter bank module is to perform filtering and mixing operations on the input signal, removing components outside the predefined frequency range to ensure that the output signal meets specific requirements. Additionally, this module shifts the spectrum of the input signal to the baseband while generating the corresponding I and Q components. These operations provide essential preprocessing for the subsequent IFFT stage. Through precise filtering by the FIR filter bank, the processed signal can become cleaner and more aligned with the system requirements, thereby improving overall system performance. The simulation results of this module are shown in <xref ref-type="fig" rid="fig_13">Figure 13</xref>.</p>
+              
+                <fig id="fig_13">
+                  <label>Figure 13</label>
+                  <caption>
+                    <title>Simulation of a single filter</title>
+                  </caption>
+                  <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2024/10/img_VEQAMvH3-UzqS17V.png"/>
+                </fig>
+              
+              <p><inline-formula>
+  <mml:math id="mdkqib9rav">
+    <mml:mrow>
+      <mml:mi>o</mml:mi>
+      <mml:mi>u</mml:mi>
+      <mml:mi>t</mml:mi>
+      <mml:mi>p</mml:mi>
+      <mml:mi>u</mml:mi>
+      <mml:mi>t</mml:mi>
+      <mml:mi>_</mml:mi>
+      <mml:mi>d</mml:mi>
+      <mml:mi>a</mml:mi>
+      <mml:mi>t</mml:mi>
+      <mml:mi>a</mml:mi>
+      <mml:mi>_</mml:mi>
+      <mml:mi>i</mml:mi>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> [<xref ref-type="bibr" rid="ref_13">13</xref>] and <inline-formula>
+  <mml:math id="mr9h2vd1y7">
+    <mml:mrow>
+      <mml:mi>o</mml:mi>
+      <mml:mi>u</mml:mi>
+      <mml:mi>t</mml:mi>
+      <mml:mi>p</mml:mi>
+      <mml:mi>u</mml:mi>
+      <mml:mi>t</mml:mi>
+      <mml:mi>_</mml:mi>
+      <mml:mi>d</mml:mi>
+      <mml:mi>a</mml:mi>
+      <mml:mi>t</mml:mi>
+      <mml:mi>a</mml:mi>
+      <mml:mi>_</mml:mi>
+      <mml:mi>q</mml:mi>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> [<xref ref-type="bibr" rid="ref_13">13</xref>] represent the I and Q components of the output from the 13<inline-formula>
+  <mml:math id="m42ltg2i91">
+    <mml:msup>
+      <mml:mi/>
+      <mml:mrow>
+        <mml:mtext>th </mml:mtext>
+      </mml:mrow>
+    </mml:msup>
+  </mml:math>
+</inline-formula> channel, respectively. The figure illustrates the output results of the 13<inline-formula>
+  <mml:math id="m2a7dbk9zd">
+    <mml:msup>
+      <mml:mi/>
+      <mml:mrow>
+        <mml:mtext>th</mml:mtext>
+      </mml:mrow>
+    </mml:msup>
+  </mml:math>
+</inline-formula> input signal after processing by the FIR filter bank. It can be observed that, after filtering, the output signal retains only the required 320 MHz component, while unwanted frequency components are effectively removed. This demonstrates that the FIR filter bank successfully filters out signals outside the specified range and shifts the spectrum of the desired signal to the baseband.</p>
+            </sec>
+          
+          
+            <sec>
+              
+                <title>4.2.3 Simulation of the digital channelization receiver</title>
+              
+              <p>The primary function of the digital channelization receiver is to convert input signals with a large instantaneous bandwidth into output signals with smaller instantaneous bandwidths. This conversion process not only conserves communication resources and improves signal transmission efficiency but also ensures that the signals can be accurately reconstructed and decoded at the receiver end, enabling reliable communication and data transmission.</p><p>In this simulation, the input excitation signal was generated using MATLAB and saved as a TXT file to serve as the ADC-acquired data. The overall simulation results of the digital channelization receiver are shown in <xref ref-type="fig" rid="fig_14">Figure 14</xref>. <xref ref-type="fig" rid="fig_15">Figure 15</xref> shows partial channel output results.</p>
+              
+                <fig id="fig_14">
+                  <label>Figure 14</label>
+                  <caption>
+                    <title>Overall simulation results of the digital channelization receiver</title>
+                  </caption>
+                  <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2024/10/img_TyIn3gI7EYWmXLyL.png"/>
+                </fig>
+              
+              
+                <fig id="fig_15">
+                  <label>Figure 15</label>
+                  <caption>
+                    <title>Partial channel output results</title>
+                  </caption>
+                  <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2024/10/img_hBAqwmeeRmMOJhAg.png"/>
+                </fig>
+              
+              <p>The signals processed by the system included the input ADC signal, marked as <inline-formula>
+  <mml:math id="ml54qosegk">
+    <mml:mi>a</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>_</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+  </mml:math>
+</inline-formula>. After processing, the system output 32 channels of serial data. The I components, representing the real part, were stored in <inline-formula>
+  <mml:math id="mvt0hks130">
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>_</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>_</mml:mi>
+    <mml:mi>i</mml:mi>
+  </mml:math>
+</inline-formula>, while the Q components, representing the imaginary part, were stored in <inline-formula>
+  <mml:math id="mvt4tsizr9">
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>_</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>_</mml:mi>
+    <mml:mi>q</mml:mi>
+  </mml:math>
+</inline-formula>. For different digital channels, specific output signals were identified as follows:</p><p>a) For the 11<inline-formula>
+  <mml:math id="m5dq77gqzv">
+    <mml:msup>
+      <mml:mi/>
+      <mml:mrow>
+        <mml:mtext>th</mml:mtext>
+      </mml:mrow>
+    </mml:msup>
+  </mml:math>
+</inline-formula> channel, the I and Q components are represented by <inline-formula>
+  <mml:math id="m1g6z1y65i">
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>_</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>_</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mn>11</mml:mn>
+  </mml:math>
+</inline-formula> and <inline-formula>
+  <mml:math id="mokk7w2pdm">
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>_</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>_</mml:mi>
+    <mml:mi>q</mml:mi>
+    <mml:mn>11</mml:mn>
+  </mml:math>
+</inline-formula>, respectively, corresponding to a channel bandwidth of 328 MHz to 344 MHz.</p><p>b) For the 12<inline-formula>
+  <mml:math id="m4fhsvtsmp">
+    <mml:msup>
+      <mml:mi/>
+      <mml:mrow>
+        <mml:mtext>th</mml:mtext>
+      </mml:mrow>
+    </mml:msup>
+  </mml:math>
+</inline-formula> channel, the I and Q components are represented by <inline-formula>
+  <mml:math id="mm97ekyj7m">
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>_</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>_</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mn>12</mml:mn>
+  </mml:math>
+</inline-formula> and <inline-formula>
+  <mml:math id="mif2un6web">
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>_</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>_</mml:mi>
+    <mml:mi>q</mml:mi>
+    <mml:mn>12</mml:mn>
+  </mml:math>
+</inline-formula>, respectively, corresponding to a channel bandwidth of 312 MHz to 328 MHz.</p><p>c) For the 13<inline-formula>
+  <mml:math id="mcq9h404kf">
+    <mml:msup>
+      <mml:mi/>
+      <mml:mrow>
+        <mml:mtext>th</mml:mtext>
+      </mml:mrow>
+    </mml:msup>
+  </mml:math>
+</inline-formula> channel, the I and Q components are represented by <inline-formula>
+  <mml:math id="mspkb7f0mm">
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>_</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>_</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mn>13</mml:mn>
+  </mml:math>
+</inline-formula> and <inline-formula>
+  <mml:math id="mm9ftozc3a">
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>_</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>_</mml:mi>
+    <mml:mi>q</mml:mi>
+    <mml:mn>13</mml:mn>
+  </mml:math>
+</inline-formula>, respectively, corresponding to a channel bandwidth of 296 MHz to 312 MHz.</p><p>d) For the 14<inline-formula>
+  <mml:math id="m7pbx27icl">
+    <mml:msup>
+      <mml:mi/>
+      <mml:mrow>
+        <mml:mtext>th</mml:mtext>
+      </mml:mrow>
+    </mml:msup>
+  </mml:math>
+</inline-formula> channel, the I component is represented by <inline-formula>
+  <mml:math id="mw48trycpt">
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>_</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>_</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mn>14</mml:mn>
+  </mml:math>
+</inline-formula>, corresponding to a channel bandwidth of 280 MHz to 296 MHz.</p><p>e) For the 10<inline-formula>
+  <mml:math id="m1bzkimcpd">
+    <mml:msup>
+      <mml:mi/>
+      <mml:mrow>
+        <mml:mtext>th</mml:mtext>
+      </mml:mrow>
+    </mml:msup>
+  </mml:math>
+</inline-formula> channel, the Q component is represented by <inline-formula>
+  <mml:math id="mdptycw70t">
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>_</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>_</mml:mi>
+    <mml:mi>q</mml:mi>
+    <mml:mn>10</mml:mn>
+  </mml:math>
+</inline-formula>, corresponding to a channel bandwidth of 344 MHz to 360 MHz.</p><p>Upon entering the digital channelization system, the input RF signal underwent a series of processing stages, including serial-to-parallel conversion, FIR filter bank processing, IFFT computation, and subsequent transformations. This sequence of operations transformed the original wideband RF signal into signals with narrower instantaneous bandwidths, enabling the receiving end to capture and analyze the transmitted signals more effectively. As shown in the results above, and based on the previously defined channel division, it is evident that the responses of the 11<inline-formula>
+  <mml:math id="mg1fbgklin">
+    <mml:msup>
+      <mml:mi/>
+      <mml:mrow>
+        <mml:mtext>th</mml:mtext>
+      </mml:mrow>
+    </mml:msup>
+  </mml:math>
+</inline-formula> and 13<inline-formula>
+  <mml:math id="mbdk2pq910">
+    <mml:msup>
+      <mml:mi/>
+      <mml:mrow>
+        <mml:mtext>th</mml:mtext>
+      </mml:mrow>
+    </mml:msup>
+  </mml:math>
+</inline-formula> channels were significantly stronger than those of other channels when the system processed signals acquired by the ADC. These simulation results confirm that the digital channelization receiver successfully completed the digital channelization process. The instantaneous bandwidth and sampling rate of the input signal were significantly reduced.</p>
+            </sec>
+          
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>5. Test results</title>
+      <p>The digital channelization processing was tested on the FMQL45T900 FPGA evaluation board developed by Fudan Microelectronics. A setup with five ADC channels was implemented, capturing five intermediate-frequency signals. A single RF signal was generated using a signal generator, split into five parallel signals via a power splitter, and input into the five ADC channels. On the FPGA board, the processes of AD sampling, data preprocessing, FIR filtering, and IFFT transformation were completed to extract corresponding frequency information. These operations provide the foundation for subsequent Fourier transformations, frequency acquisition, phase extraction, and other processing tasks. The domestic FMQL45 series FPGA by Fudan Microelectronics is fully compatible with the ZYNQ 7045 series developed by Xilinx.</p><p>The FMQL45T900 integrates two ARM Cortex-A9 cores and a Kintex 7 FPGA. The FPGA’s programmable logic (PL) extends interfaces such as FMC, Ethernet, and I/O, while the processing system (PS) based on ARM supports extensions for networking, USB, and RS232 interfaces. The board is suitable for applications in image processing, vibration analysis, communication systems, radar front-end signal processing, and handheld device development. <xref ref-type="fig" rid="fig_16">Figure 16</xref> shows the test board. <xref ref-type="fig" rid="fig_17">Figure 17</xref> shows the workflow diagram for the digital channelization application.</p><p><inline-formula>
+  <mml:math id="mfxkjgwslj">
+    <mml:mo>∙</mml:mo>
+  </mml:math>
+</inline-formula> Number of channels: 5 parallel channels.</p><p><inline-formula>
+  <mml:math id="mwfc5hi0xu">
+    <mml:mo>∙</mml:mo>
+  </mml:math>
+</inline-formula> ADC resolution: 16-bit resolution for low-speed channels.</p><p><inline-formula>
+  <mml:math id="ml52w3dqlr">
+    <mml:mo>∙</mml:mo>
+  </mml:math>
+</inline-formula> Maximum sampling rate: 250 Msps for low-speed channels.</p><p><inline-formula>
+  <mml:math id="mq8o87omb8">
+    <mml:mo>∙</mml:mo>
+  </mml:math>
+</inline-formula> Acquisition clock: Supports both internal and external clocks.</p><p><inline-formula>
+  <mml:math id="mezgrt2jmg">
+    <mml:mo>∙</mml:mo>
+  </mml:math>
+</inline-formula> External trigger: Equipped with an external trigger interface.</p><p><inline-formula>
+  <mml:math id="mc8iomhjwy">
+    <mml:mo>∙</mml:mo>
+  </mml:math>
+</inline-formula> Synchronization precision: Better than 0.03 ns.</p><p><inline-formula>
+  <mml:math id="mlicvfgywd">
+    <mml:mo>∙</mml:mo>
+  </mml:math>
+</inline-formula> Spurious-Free Dynamic Range (SFDR): Better than 85 dBFS for low-speed channels.</p><p><inline-formula>
+  <mml:math id="mgz2o61bzm">
+    <mml:mo>∙</mml:mo>
+  </mml:math>
+</inline-formula> Signal-to-Noise Ratio (SNR): Better than 70 dBFS for low-speed channels.</p>
+      
+        <fig id="fig_16">
+          <label>Figure 16</label>
+          <caption>
+            <title>Test board</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2024/10/img_yOYqplzWRv4oUWMG.png"/>
+        </fig>
+      
+      
+        <fig id="fig_17">
+          <label>Figure 17</label>
+          <caption>
+            <title>Workflow diagram for digital channelization application</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2024/10/img_EG_wAYXv1WC4n3By.png"/>
+        </fig>
+      
+      <p>The validation of the proposed system was performed using a test setup built around the domestic FMQL45T900 FPGA from Fudan Microelectronics. Intermediate-frequency signals were sampled, and wideband signals were processed in parallel across multiple channels. Amplitude data were obtained using FFT, and frequency information was derived using a frequency estimation algorithm. These tests verified the accuracy and effectiveness of the digital channelization receiver.</p><p>The proposed design was implemented on the FMQL45T900 FPGA, and the logic resource utilization is summarized in <xref ref-type="table" rid="table_2">Table 2</xref>.</p>
+      
+        <table-wrap id="table_2">
+          <label>Table 2</label>
+          <caption>
+            <title>Channel allocation and filter numbers</title>
+          </caption>
+          <table><tbody><tr><td colspan="1" rowspan="1"><p>Parameter</p></td><td colspan="1" rowspan="1"><p>Digital Channelization</p></td><td colspan="1" rowspan="1"><p>DDC</p></td><td colspan="1" rowspan="1"><p>DSP Devices</p></td></tr><tr><td colspan="1" rowspan="1"><p>Slice registers</p></td><td colspan="1" rowspan="1"><p>228</p></td><td colspan="1" rowspan="1"><p>420</p></td><td colspan="1" rowspan="1"><p>50</p></td></tr><tr><td colspan="1" rowspan="1"><p>Slices</p></td><td colspan="1" rowspan="1"><p>97</p></td><td colspan="1" rowspan="1"><p>108</p></td><td colspan="1" rowspan="1"><p>100</p></td></tr><tr><td colspan="1" rowspan="1"><p>Slice LUT</p></td><td colspan="1" rowspan="1"><p>132</p></td><td colspan="1" rowspan="1"><p>135</p></td><td colspan="1" rowspan="1"><p>50</p></td></tr><tr><td colspan="1" rowspan="1"><p>LUT flip-flop pairs</p></td><td colspan="1" rowspan="1"><p>280</p></td><td colspan="1" rowspan="1"><p>410</p></td><td colspan="1" rowspan="1"><p>62</p></td></tr><tr><td colspan="1" rowspan="1"><p>Bonded IOB</p></td><td colspan="1" rowspan="1"><p>65</p></td><td colspan="1" rowspan="1"><p>40</p></td><td colspan="1" rowspan="1"><p>107</p></td></tr></tbody></table>
+        </table-wrap>
+      
+      <p>The proposed method was compared with the approach presented by Zhang et al. [<xref ref-type="bibr" rid="ref_8">8</xref>] regarding area, frequency, and power consumption, as shown in <xref ref-type="table" rid="table_3">Table 3</xref>.</p>
+      
+        <table-wrap id="table_3">
+          <label>Table 3</label>
+          <caption>
+            <title>Performance comparison of architectures</title>
+          </caption>
+          <table><tbody><tr><td colspan="1" rowspan="1"><p>Important Parameter</p></td><td colspan="1" rowspan="1"><p>Zhang et al. [<xref ref-type="bibr" rid="ref_8">8</xref>]</p></td><td colspan="1" rowspan="1"><p>Proposed Method</p></td></tr><tr><td colspan="1" rowspan="1"><p>Slice registers (area)</p></td><td colspan="1" rowspan="1"><p>1882</p></td><td colspan="1" rowspan="1"><p>1266</p></td></tr><tr><td colspan="1" rowspan="1"><p>Frequency (MHz)</p></td><td colspan="1" rowspan="1"><p>472.4</p></td><td colspan="1" rowspan="1"><p>550</p></td></tr><tr><td colspan="1" rowspan="1"><p>Power</p></td><td colspan="1" rowspan="1"><p>1022</p></td><td colspan="1" rowspan="1"><p>985</p></td></tr></tbody></table>
+        </table-wrap>
+      
+      <p>It is evident from <xref ref-type="table" rid="table_2">Table 2</xref> that the proposed method reduces the required slice registers compared to the work by Zhang et al. [<xref ref-type="bibr" rid="ref_8">8</xref>]. <xref ref-type="table" rid="table_3">Table 3</xref> further illustrates that both power consumption and performance have been improved. Moreover, the proposed method demonstrates effective implementation on the domestic FMQL45T900 FPGA, providing a robust foundation for digital channelization processing in indigenous electronic, communication, and radar systems. This ensures independence from foreign chips, thereby mitigating risks associated with potential restrictions and delays in equipment development.</p>
+    </sec>
+    <sec sec-type="">
+      <title>6. Conclusion</title>
+      <p>This study primarily demonstrates the successful implementation of digital channelization processing on a domestic FPGA. The digital channelization workflow was modeled and simulated using MATLAB, and each module was implemented on the FPGA. An application test board was constructed based on the domestic FMQL45T900 FPGA, and the correctness of frequency measurement data was verified, confirming the feasibility of the digital channelization approach and improving processing efficiency. By employing digital signal processing techniques, broadband signals were decomposed into multiple narrowband channels, enabling parallel signal processing and frequency-selective analysis. The validation on a domestic FPGA demonstrated engineering adaptability and feasibility for domestic applications, effectively mitigating risks associated with foreign export restrictions and ensuring no delays in equipment development and maintenance. In the future, the increasing demand for processing multiple narrowband signals within high-bandwidth reception will impose higher efficiency requirements on digital signal processing. Imaginary number digital channelization processing remains a promising research direction.</p>
+    </sec>
+  </body>
+  <back>
+    <ack>
+      <title>Acknowledgments</title>
+      
+    </ack>
+    <app-group>
+      <app>
+        <title>Appendix</title>
+        
+      </app>
+    </app-group>
+    <notes>
+      <title>Author Contributions</title>
+      
+    </notes>
+    <notes>
+      <title>Funding</title>
+      <p>This paper was supported by the National Natural Science Foundation of China (Grant No.: 62105176).</p>
+    </notes>
+    <notes>
+      <title>Informed Consent Statement</title>
+      
+    </notes>
+    <notes>
+      <title>Data Availability Statement</title>
+      <p>The data used to support the research findings are available from the corresponding author upon request.</p>
+    </notes>
+    <notes notes-type="COI-statement">
+      <title>Conflicts of Interest</title>
+      <p>The authors declare no conflict of interest.</p>
+    </notes>
+    <ref-list>
+      <title>References</title>
+      <ref id="ref_1">
+        <label>1.</label>
+        <element-citation publication-type="journal">
+          <volume>21</volume>
+          <page-range>6029-6029</page-range>
+          <issue>18</issue>
+          <year>2021</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Samila</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Hotra</surname>
+              <given-names>O.</given-names>
+            </name>
+            <name>
+              <surname>Majewski</surname>
+              <given-names>J.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3390/s21186029</pub-id>
+          <article-title>Implementation of the configuration structure of an integrated computational core of a pulsed NQR sensor based on FPGA</article-title>
+          <source>Sensors</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_2">
+        <label>2.</label>
+        <element-citation publication-type="journal">
+          <volume>45</volume>
+          <page-range>169-178</page-range>
+          <issue>3</issue>
+          <year>2019</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Mewada</surname>
+              <given-names>H. K.</given-names>
+            </name>
+            <name>
+              <surname>Chaudhari</surname>
+              <given-names>J.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1108/CW-02-2019-0015</pub-id>
+          <article-title>Low computation digital down converter using polyphase IIR filter</article-title>
+          <source>Circuit World</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_3">
+        <label>3.</label>
+        <element-citation publication-type="journal">
+          <volume>110</volume>
+          <page-range>587-607</page-range>
+          <issue>4</issue>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Thamizharasan</surname>
+              <given-names>V.</given-names>
+            </name>
+            <name>
+              <surname>Kasthuri</surname>
+              <given-names>N.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1080/00207217.2022.2098387</pub-id>
+          <article-title>FPGA implementation of high performance digital FIR filter design using a hybrid adder and multiplier</article-title>
+          <source>Int. J. Electron.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_4">
+        <label>4.</label>
+        <element-citation publication-type="journal">
+          <volume>30</volume>
+          <page-range>1492-1496</page-range>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Zhang</surname>
+              <given-names>W. X.</given-names>
+            </name>
+            <name>
+              <surname>Cui</surname>
+              <given-names>X. L.</given-names>
+            </name>
+            <name>
+              <surname>Zhao</surname>
+              <given-names>Z. K.</given-names>
+            </name>
+            <name>
+              <surname>Zhao</surname>
+              <given-names>X. Q.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/LSP.2023.3324549</pub-id>
+          <article-title>Sub-nyquist sampling and gridless frequency estimation based on channelization</article-title>
+          <source>IEEE Signal Process. Lett.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_5">
+        <label>5.</label>
+        <element-citation publication-type="journal">
+          <volume>8</volume>
+          <page-range>317-323</page-range>
+          <issue>2</issue>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Datta</surname>
+              <given-names>D.</given-names>
+            </name>
+            <name>
+              <surname>Dutta</surname>
+              <given-names>H. S.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1007/s41403-023-00392-0</pub-id>
+          <article-title>High efficient half-band decimation filter on FPGA</article-title>
+          <source>Trans. Indian Natl. Acad. Eng.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_6">
+        <label>6.</label>
+        <element-citation publication-type="journal">
+          <volume>46</volume>
+          <page-range>238-249</page-range>
+          <issue>2</issue>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Kim</surname>
+              <given-names>K. W.</given-names>
+            </name>
+            <name>
+              <surname>Kwon</surname>
+              <given-names>H. K.</given-names>
+            </name>
+            <name>
+              <surname>Kim</surname>
+              <given-names>M. D.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.4218/etrij.2022-0426</pub-id>
+          <article-title>Optimal equivalent-time sampling for periodic complex signals with digital down-conversion</article-title>
+          <source>ETRI J.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_7">
+        <label>7.</label>
+        <element-citation publication-type="journal">
+          <volume>168</volume>
+          <page-range>222</page-range>
+          <issue>5</issue>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Zhang</surname>
+              <given-names>H. L.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>Y. Z.</given-names>
+            </name>
+            <name>
+              <surname>Guo</surname>
+              <given-names>S. C.</given-names>
+            </name>
+            <name>
+              <surname>Du</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>N.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Ye</surname>
+              <given-names>X. C.</given-names>
+            </name>
+            <name>
+              <surname>Wu</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Pei</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Meng</surname>
+              <given-names>Q.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3847/1538-3881/ad7fe0</pub-id>
+          <article-title>An ultrawide bandwidth digital backend system based on PFB algorithm for QTT</article-title>
+          <source>Astron. J.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_8">
+        <label>8.</label>
+        <element-citation publication-type="journal">
+          <volume>23</volume>
+          <page-range>085012</page-range>
+          <issue>8</issue>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Zhang</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>H. L.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>Y. Z.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Guo</surname>
+              <given-names>S. C.</given-names>
+            </name>
+            <name>
+              <surname>Meng</surname>
+              <given-names>Q.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1088/1674-4527/acd73b</pub-id>
+          <article-title>Research on channelization techniques of radio astronomical wideband signal with oversampled polyphase filter banks</article-title>
+          <source>Res. Astron. Astrophys.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_9">
+        <label>9.</label>
+        <element-citation publication-type="journal">
+          <volume>61</volume>
+          <page-range>3663-3670</page-range>
+          <issue>13</issue>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Liu</surname>
+              <given-names>Y. X.</given-names>
+            </name>
+            <name>
+              <surname>Guo</surname>
+              <given-names>Y. F.</given-names>
+            </name>
+            <name>
+              <surname>Wu</surname>
+              <given-names>S. B.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1364/AO.456507</pub-id>
+          <article-title>Frequency measurement of microwave signals in a wide frequency range based on an optical frequency comb and channelization method</article-title>
+          <source>Appl. Opt.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_10">
+        <label>10.</label>
+        <element-citation publication-type="journal">
+          <volume>69</volume>
+          <page-range>999-1012</page-range>
+          <issue>3</issue>
+          <year>2021</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Huiskamp</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Alink</surname>
+              <given-names>M. S. O.</given-names>
+            </name>
+            <name>
+              <surname>Nauta</surname>
+              <given-names>B.</given-names>
+            </name>
+            <name>
+              <surname>Annema</surname>
+              <given-names>A. J.</given-names>
+            </name>
+            <name>
+              <surname>Bindra</surname>
+              <given-names>H. S.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/TCSI.2021.3131273</pub-id>
+          <article-title>Reconstructing aliased frequency spectra by using multiple sample rates</article-title>
+          <source>IEEE Trans. Circuits Syst. I: Regul. Pap.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_11">
+        <label>11.</label>
+        <element-citation publication-type="journal">
+          <volume>70</volume>
+          <page-range>4225-4238</page-range>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Song</surname>
+              <given-names>Zhihui</given-names>
+            </name>
+            <name>
+              <surname>Yang</surname>
+              <given-names>Jun</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>Huan</given-names>
+            </name>
+            <name>
+              <surname>Gao</surname>
+              <given-names>Yang</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/TSP.2022.3198186</pub-id>
+          <article-title>Approaching sub-nyquist boundary: Optimized compressed spectrum sensing based on multicoset sampler for multiband signal</article-title>
+          <source>IEEE Trans. Signal Process.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_12">
+        <label>12.</label>
+        <element-citation publication-type="journal">
+          <volume>68</volume>
+          <page-range>2710-2714</page-range>
+          <issue>7</issue>
+          <year>2021</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Huang</surname>
+              <given-names>Guoxing</given-names>
+            </name>
+            <name>
+              <surname>Ni</surname>
+              <given-names>Ai</given-names>
+            </name>
+            <name>
+              <surname>Lu</surname>
+              <given-names>Weiding</given-names>
+            </name>
+            <name>
+              <surname>Peng</surname>
+              <given-names>Huan</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>Jiawei</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/TCSII.2021.3055938</pub-id>
+          <article-title>Parameters measurement of multiple exponentially damped sinusoids with sub-Nyquist sampling</article-title>
+          <source>IEEE Trans. Circuits Syst. II, Express Briefs</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_13">
+        <label>13.</label>
+        <element-citation publication-type="journal">
+          <volume>44</volume>
+          <page-range>28</page-range>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Girish</surname>
+              <given-names>B. S.</given-names>
+            </name>
+            <name>
+              <surname>Reddy</surname>
+              <given-names>S. H.</given-names>
+            </name>
+            <name>
+              <surname>Sethi</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Srivani</surname>
+              <given-names>K. S.</given-names>
+            </name>
+            <name>
+              <surname>Abhishek</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Ajithkumar</surname>
+              <given-names>B.</given-names>
+            </name>
+            <name>
+              <surname>Bhattramakki</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Buch</surname>
+              <given-names>K.</given-names>
+            </name>
+            <name>
+              <surname>Chaudhuri</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Gupta</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Kamini</surname>
+              <given-names>P. A.</given-names>
+            </name>
+            <name>
+              <surname>Kudale</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Madhavi</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Muley</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Prabu</surname>
+              <given-names>T.</given-names>
+            </name>
+            <name>
+              <surname>Raghunathan</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Shelton</surname>
+              <given-names>G. J.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1007/s12036-023-09921-3</pub-id>
+          <article-title>Progression of digital-receiver architecture: From MWA to SKA1-Low, and beyond</article-title>
+          <source>J. Astrophys. Astron.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_14">
+        <label>14.</label>
+        <element-citation publication-type="journal">
+          <volume>23</volume>
+          <page-range>6584</page-range>
+          <issue>14</issue>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Whipple</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Ruzindana</surname>
+              <given-names>M. W.</given-names>
+            </name>
+            <name>
+              <surname>Burnett</surname>
+              <given-names>M. C.</given-names>
+            </name>
+            <name>
+              <surname>Kunzler</surname>
+              <given-names>J. W.</given-names>
+            </name>
+            <name>
+              <surname>Lyman</surname>
+              <given-names>K.</given-names>
+            </name>
+            <name>
+              <surname>Jeffs</surname>
+              <given-names>B. D.</given-names>
+            </name>
+            <name>
+              <surname>Warnick</surname>
+              <given-names>K. F.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3390/s23146584</pub-id>
+          <article-title>Wideband array signal processing with real-time adaptive interference mitigation</article-title>
+          <source>Sensors</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_15">
+        <label>15.</label>
+        <element-citation publication-type="journal">
+          <volume>8</volume>
+          <page-range>3801-3806</page-range>
+          <year>2019</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Gunda</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Ernest Ravindran</surname>
+              <given-names>R. S.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.12785/ijcds</pub-id>
+          <article-title>Design and simulation of low power consuming digital controlled oscillator in all digital phase locked loop</article-title>
+          <source>Int. J. Innov. Technol. Explor. Eng.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_16">
+        <label>16.</label>
+        <element-citation publication-type="journal">
+          <volume>9</volume>
+          <page-range>111718-111791</page-range>
+          <year>2021</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Mohammadian</surname>
+              <given-names>Ali</given-names>
+            </name>
+            <name>
+              <surname>Tellambura</surname>
+              <given-names>Chintha</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/ACCESS.2021.3101845</pub-id>
+          <article-title>RF impairments in wireless transceivers: Phase noise, CFO, and IQ imbalance–A survey.</article-title>
+          <source>IEEE Access</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_17">
+        <label>17.</label>
+        <element-citation publication-type="journal">
+          <volume>70</volume>
+          <page-range>1-4</page-range>
+          <year>2021</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Takahashi</surname>
+              <given-names>Kazuo</given-names>
+            </name>
+            <name>
+              <surname>Roberts</surname>
+              <given-names>Richard</given-names>
+            </name>
+            <name>
+              <surname>Jiang</surname>
+              <given-names>Zhen</given-names>
+            </name>
+            <name>
+              <surname>Memarzadeh</surname>
+              <given-names>Babak</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/TIM.2021.3078003</pub-id>
+          <article-title>Statistical evaluation of signal-to-noise ratio and timing jitter in equivalent-time sampling signals</article-title>
+          <source>IEEE Trans. Instrum. Meas.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_18">
+        <label>18.</label>
+        <element-citation publication-type="journal">
+          <volume>2</volume>
+          <page-range>14-30</page-range>
+          <issue>1</issue>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Yin</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Jiang</surname>
+              <given-names>Y.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.56578/jii020102</pub-id>
+          <article-title>Enhanced signal processing through FPGA-based digital downconversion via the CORDIC algorithm</article-title>
+          <source>J. Ind. Intell.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_19">
+        <label>19.</label>
+        <element-citation publication-type="journal">
+          <volume>18</volume>
+          <page-range>2200952</page-range>
+          <issue>2</issue>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Liang</surname>
+              <given-names>D.</given-names>
+            </name>
+            <name>
+              <surname>Mohammad</surname>
+              <given-names>A. W.</given-names>
+            </name>
+            <name>
+              <surname>Roeloffzen</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Tan</surname>
+              <given-names>Q. G.</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>L.</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>X. J.</given-names>
+            </name>
+            <name>
+              <surname>Shao</surname>
+              <given-names>B.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>B.</given-names>
+            </name>
+            <name>
+              <surname>Deng</surname>
+              <given-names>X. K.</given-names>
+            </name>
+            <name>
+              <surname>Zheng</surname>
+              <given-names>F. T.</given-names>
+            </name>
+            <name>
+              <surname>Wevers</surname>
+              <given-names>L.</given-names>
+            </name>
+            <name>
+              <surname>Grootjans</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Kapteijn</surname>
+              <given-names>P.</given-names>
+            </name>
+            <name>
+              <surname>Timens</surname>
+              <given-names>R. B.</given-names>
+            </name>
+            <name>
+              <surname>Heuvink</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Musa</surname>
+              <given-names>S.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1002/lpor.202200952</pub-id>
+          <article-title>Chip-based microwave photonic payload repeater for high throughput satellites</article-title>
+          <source>Laser Photonics Rev.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_20">
+        <label>20.</label>
+        <element-citation publication-type="journal">
+          <volume>15</volume>
+          <page-range>9556-9565</page-range>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Teng</surname>
+              <given-names>F.</given-names>
+            </name>
+            <name>
+              <surname>Jiao</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Yang</surname>
+              <given-names>W.</given-names>
+            </name>
+            <name>
+              <surname>Yan</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Gao</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Lu</surname>
+              <given-names>Z.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/JSTARS.2022.3201251</pub-id>
+          <article-title>Multiphase parallel demodulation for remote sensing satellite data transmission–filter bank based on WOLA structure</article-title>
+          <source>IEEE J. Sel. Topics Appl. Earth Observ. Remote Sens.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_21">
+        <label>21.</label>
+        <element-citation publication-type="journal">
+          <volume>27</volume>
+          <page-range>1625-1629</page-range>
+          <year>2020</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Chen</surname>
+              <given-names>T.</given-names>
+            </name>
+            <name>
+              <surname>Shi</surname>
+              <given-names>L.</given-names>
+            </name>
+            <name>
+              <surname>Guo</surname>
+              <given-names>L.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/LSP.2020.3021276</pub-id>
+          <article-title>Gridless direction of arrival estimation exploiting sparse linear array</article-title>
+          <source>IEEE Signal Process. Lett.</source>
+        </element-citation>
+      </ref>
+    </ref-list>
+  </back>
+</article>
