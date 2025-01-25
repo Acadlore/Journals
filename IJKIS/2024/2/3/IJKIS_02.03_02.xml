@@ -1,0 +1,2723 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.3 20210610//EN" "JATS-journalpublishing1-3.dtd">
+<article xml:lang="en" dtd-version="1.3" article-type="research-article" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mml="http://www.w3.org/1998/Math/MathML">
+  <front>
+    <journal-meta>
+      <journal-id journal-id-type="publisher-id">IJKIS</journal-id>
+      <journal-id journal-id-type="doi">10.56578</journal-id>
+      <journal-title-group>
+        <journal-title>International Journal of Knowledge and Innovation Studies</journal-title>
+        <abbrev-journal-title abbrev-type="issn">Int J. Knowl. Innov Stud.</abbrev-journal-title>
+        <abbrev-journal-title abbrev-type="publisher">IJKIS</abbrev-journal-title>
+      </journal-title-group>
+      <issn publication-format="electronic">3005-6101</issn>
+      <issn publication-format="print">3005-6098</issn>
+      <publisher>
+        <publisher-name>Acadlore</publisher-name>
+      </publisher>
+    </journal-meta>
+    <article-meta>
+      <article-id pub-id-type="publisher-id">AR-0OSHgr-oi5YiDt0zUskGG3I0Jr8IUpMZ</article-id>
+      <article-id pub-id-type="doi">10.56578/ijkis020302</article-id>
+      <article-categories>
+        <subj-group>
+          <subject>Articles</subject>
+        </subj-group>
+      </article-categories>
+      <title-group>
+        <article-title>A Residual Network with Multi-Scale Dilated Convolutions for Enhanced Recognition of Digital Ink Chinese Characters by Non-Native Writers</article-title>
+      </title-group>
+      <contrib-group>
+        <contrib contrib-type="author" rid="aff_1,2">
+          <contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0009-0003-5708-0777</contrib-id>
+          <name>
+            <surname>Xu</surname>
+            <given-names>Huafen</given-names>
+          </name>
+          <email>xhf@ncist.edu.cn</email>
+        </contrib>
+        <contrib contrib-type="author" rid="aff_2">
+          <contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0009-0006-8724-7939</contrib-id>
+          <name>
+            <surname>Zhang</surname>
+            <given-names>Xiwen</given-names>
+          </name>
+          <email>zxw@blcu.edu.cn</email>
+        </contrib>
+        <aff id="aff_1">College of Computer, North China Institute of Science and Technology, 065201 Langfang, China</aff>
+        <aff id="aff_2">College of Information Science, Beĳing Language and Culture University, 100083 Beĳing, China</aff>
+      </contrib-group>
+      <pub-date publication-format="electronic" date-type="pub">
+        <day>31</day>
+        <month>07</month>
+        <year>2024</year>
+      </pub-date>
+      <volume>2</volume>
+      <issue>3</issue>
+      <fpage>130</fpage>
+      <lpage>146</lpage>
+      <page-range>130-146</page-range>
+      <history>
+        <date date-type="received">
+          <day>09</day>
+          <month>06</month>
+          <year>2024</year>
+        </date>
+        <date date-type="accepted">
+          <day>24</day>
+          <month>07</month>
+          <year>2024</year>
+        </date>
+      </history>
+      <permissions>
+        <copyright-statement>©2024 by the author(s)</copyright-statement>
+        <copyright-year>2024</copyright-year>
+        <license license-type="open-access" xlink:href="https://creativecommons.org/licenses/by/4.0/">
+          <license-p> Published by Acadlore Publishing Services Limited, Hong Kong. This article is available for free download and can be reused and cited, provided that the original published version is credited, under the CC BY 4.0 license.</license-p>
+        </license>
+      </permissions>
+      <abstract><p><p style="text-align: justify">Digital ink Chinese character recognition (DICCR) systems have predominantly been developed using datasets composed of native language writers. However, the handwriting of foreign students, who possess distinct writing habits and often make errors or deviations from standard forms, poses a unique challenge to recognition systems. To address this issue, a robust and adaptable approach is proposed, utilizing a residual network augmented with multi-scale dilated convolutions. The proposed architecture incorporates convolutional kernels of varying scales, which facilitate the extraction of contextual information from different receptive fields. Additionally, the use of dilated convolutions with varying dilation rates allows the model to capture long-range dependencies and short-range features concurrently. This strategy mitigates the gridding effect commonly associated with dilated convolutions, thereby enhancing feature extraction. Experiments conducted on a dataset of digital ink Chinese characters (DICCs) written by foreign students demonstrate the efficacy of the proposed method in improving recognition accuracy. The results indicate that the network is capable of more effectively handling the non-standard writing styles often encountered in such datasets. This approach offers significant potential for the error extraction and automatic evaluation of Chinese character writing, especially in the context of non-native learners.</p></p></abstract>
+      <kwd-group>
+        <kwd>Digital ink Chinese character recognition (DICCR)</kwd>
+        <kwd>Multi-scale context</kwd>
+        <kwd>Residual network</kwd>
+        <kwd>Dilated convolution</kwd>
+      </kwd-group>
+      <counts>
+        <count count-type="contributors" count="2"/>
+        <fig-count count="15"/>
+        <table-count count="4"/>
+        <ref-count count="31"/>
+      </counts>
+    </article-meta>
+  </front>
+  <body>
+    <sec sec-type="intro">
+      <title>1. Introduction</title>
+      <p style="text-align: justify">With the continuous development and maturity of handwriting input devices such as tablets and digital pens, DICCs are constantly generated in learning, work, and life. There are already datasets stemming from native Chinese speakers with correct and standardized Chinese character writing, such as the datasets CASIA-OLHWDB [<xref ref-type="bibr" rid="ref_1">1</xref>] and SCUT-COUCH2009 [<xref ref-type="bibr" rid="ref_2">2</xref>]. Great progress has been made in DICCR for these native-speaker datasets [<xref ref-type="bibr" rid="ref_3">3</xref>].</p><p style="text-align: justify">Nowadays, more and more foreign students are using handwriting devices for their studies and daily lives, and DICCs are generated constantly. The recognition of DICCs by foreign students is of great significance for Chinese international education. Recognizing handwritten Chinese characters can facilitate the evaluation of their correctness and provide standardized guidance. This makes it possible for computers to guide students in writing Chinese characters. However, foreign students often unconsciously apply their native thinking and writing habits to Chinese character learning, leading to writing errors and various non- standardization, which pose great challenges to their DICCR:</p><p>(1) Stroke errors:</p><p style="text-align: justify">* Extra strokes: Unnecessary additional strokes that do not belong to the standard form.</p><p style="text-align: justify">* Missing strokes: Omissions of required strokes.</p><p style="text-align: justify">* Connected strokes: Strokes that should be separate but are incorrectly joined.</p><p style="text-align: justify">* Broken strokes: Strokes that should be continuous but are interrupted.</p><p style="text-align: justify">* Incomplete strokes: Partially written strokes that do not reach their intended endpoints.</p><p style="text-align: justify">(2) Incorrect stroke relationships:</p><p style="text-align: justify">* Stroke order: The sequence in which strokes are written deviates from the standard.</p><p style="text-align: justify">* Stroke direction: Strokes are drawn in the wrong orientation.</p><p style="text-align: justify">* Geometric errors: Misplacement or misalignment of strokes within the character structure.</p><p style="text-align: justify">(3) Non-standardized DICCs:</p><p style="text-align: justify">* Overall structural imbalance: Characters may appear skewed or improperly proportioned.</p><p style="text-align: justify">* Non-standard strokes: Variations in stroke shapes that do not conform to standard forms.</p><p style="text-align: justify">The complexity and frequency of these errors increase with the number of strokes and the intricacy of stroke combinations. As a result, the accuracy and standardization of foreign students' DICCs tend to decline, particularly for more complex characters. These challenges are illustrated in <xref ref-type="fig" rid="fig_1">Figure 1</xref>, highlighting the need for robust and adaptive recognition systems that can accommodate the diverse and nonstandard writing patterns of foreign students.</p>
+      
+        <fig id="fig_1">
+          <label>Figure 1</label>
+          <caption>
+            <title>Examples of DICCs for foreign students</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/0/img_WKEKLEVvQQ3BYB3C.png"/>
+        </fig>
+      
+      <p style="text-align: justify">There has been some research on DICCR for foreign students, such as the Chinese character recognition method based on stroke names and whole character structures proposed by Bai and Zhang [<xref ref-type="bibr" rid="ref_4">4</xref>]. Later, they utilized Hidden Conditional Random Field (HCRF) to enhance model performance [<xref ref-type="bibr" rid="ref_5">5</xref>]. These methods all belong to structure-based recognition methods, which posit that recognizing Chinese characters should follow the process of writing them: composed of strokes to form radicals and radicals to form Chinese characters. However, there are various stroke errors and stroke order errors in the DICCs of foreign students, and many strokes are not written in a standardized manner, which makes it difficult to stably extract the stroke structure and its interrelationships of Chinese characters. Although it is possible to obtain certain experimental results and even some demonstration systems under certain conditions, recognition methods that rely on extracting stroke structures cannot solve the DICCs recognition problem for foreign students. Xu and Zhang [<xref ref-type="bibr" rid="ref_6">6</xref>] proposed the 1-D ResNetDC for classifying DICCs writing trajectories. This method is specifically designed for learning sequential data; therefore, it relies on the writing trajectory of Chinese characters and cannot achieve stroke-order freedom [<xref ref-type="bibr" rid="ref_7">7</xref>].</p><p style="text-align: justify">There have been many studies on DICCs targeting native Chinese speakers, and good recognition performance has been achieved, such as RNN-based recognition methods [<xref ref-type="bibr" rid="ref_8">8</xref>], [<xref ref-type="bibr" rid="ref_9">9</xref>] and Convolutional Neural Network (CNN)-based recognition methods [<xref ref-type="bibr" rid="ref_3">3</xref>], [<xref ref-type="bibr" rid="ref_10">10</xref>], [<xref ref-type="bibr" rid="ref_11">11</xref>], [<xref ref-type="bibr" rid="ref_12">12</xref>]. RNN-based recognition methods process raw sequence data to better utilize the rich temporal and spatial information contained in the sequence data. However, there are errors of stroke order and stroke direction in DICCs for foreign students, which will affect the accuracy of RNN models that use sequence data as input. CNN-based recognition methods convert the sequential data of DICCs into digital images or extract feature maps. These methods all study the recognition of DICCs from native language writers, while DICCs for foreign students have their own characteristics, and these methods are not applicable.</p><p style="text-align: justify">This paper converts the handwriting sequence into a 2D black-and-white image, which can avoid effects such as stroke direction, stroke order, continuous strokes, and broken strokes. The converted images have no noise from scanning or taking photos, and the data volume is small, which is beneficial for training the model. This paper proposes a residual network based on dilated convolution (ResNetDC), which can not only capture the important features of DICCs in short distances but also ensure the extraction of long-distance correlation. It has a good recognition rate for foreign students' DICCs existing writing errors, such as extra, missing, connected, broken, and incomplete strokes, as well as non-standard writing of DICCs.</p>
+    </sec>
+    <sec sec-type="">
+      <title>2. Related works</title>
+      <p style="text-align: justify">DICCR methods that rely on handcrafted features are limited by these low-capacity features, making it difficult to improve recognition performance [<xref ref-type="bibr" rid="ref_2">2</xref>], [<xref ref-type="bibr" rid="ref_13">13</xref>]. With the rapid development of GPU parallel computing support for deep learning, new breakthroughs have been brought to DICCR. The performance of DICCR has rapidly improved, surpassing traditional methods comprehensively, and the recognition accuracy exceeds human level. Based on the representation of input data, we classify existing deep learning methods for DICCR into three categories.</p><p>A. Recurrent Neural Network (RNN) method based on sequence data</p><p style="text-align: justify">RNN methods based on sequence data directly process the original sequence data. Zhang et al. [<xref ref-type="bibr" rid="ref_8">8</xref>] used both LSTM and GRU for RNN modeling and built a deep RNN model by stacking bidirectional RNNs to achieve end-to-end recognition of DICCs. Zhang et al. [<xref ref-type="bibr" rid="ref_9">9</xref>] proposed a trajectory-based component analysis network (TRAN). Ren et al. [<xref ref-type="bibr" rid="ref_14">14</xref>] proposed the variance constraint and attention weight vector to improve the performance of the RNN network. Due to the recurrent computing mechanism of RNN, it is not easy to parallelize and has low computational speed; moreover, the recognition effect of these methods relies on the writing order of DICCs, making it difficult to achieve stroke-order freedom. There are many stroke-order issues with the Chinese characters written by foreign students, so this type of method is not applicable.</p><p>B. Graph Neural Network (GNN) method based on graph-structured data</p><p style="text-align: justify">GNN methods process graph-structured data and explicitly model the geometric semantics of DICCs. Specifically, Gan et al. [<xref ref-type="bibr" rid="ref_15">15</xref>] proposed SGCN for DICCR. SGCN uses spatial graph convolution to combine information about nearby neighborhoods and a hierarchical residual structure to use the global shape properties to make the final classification. Gan et al. [<xref ref-type="bibr" rid="ref_16">16</xref>] proposed PyGT to recognize graph-structured DICCs. This method requires constructing direct geometric graphs based on coordinate sequences, extracting the features of vertices in the graph, designing graph convolution kernels, etc., which is more complex to implement. Due to the confusion between similar characters, GNNs cannot accurately recognize characters with similar structures.</p><p>C. CNN method based on grid data</p><p style="text-align: justify">CNN methods process two-dimensional grid data. Cireşan and Meier [<xref ref-type="bibr" rid="ref_17">17</xref>] introduced MCDNN, which is a set model that classifying Chinese characters images. Gan [<xref ref-type="bibr" rid="ref_18">18</xref>] developed a one-dimensional CNN architecture for recognizing DICCs. Hu et al. [<xref ref-type="bibr" rid="ref_19">19</xref>] utilized a CNN-based method for IAHCCR. These methods all fall under the end-to-end approach category, where the system learns to recognize characters directly from raw input data without the need for manual feature extraction or intermediate processing steps.</p><p style="text-align: justify">Integrating domain-specific knowledge can enhance the recognition performance of traditional CNNs. For instance, Graham [<xref ref-type="bibr" rid="ref_12">12</xref>] utilized path signature to improve recognition accuracy of DICCs. Zhong et al. [<xref ref-type="bibr" rid="ref_20">20</xref>] extracted Gabor features, gradient features, and other features using traditional feature extraction methods, embedding these features into network to improve the recognition rate. Zhang et al. [<xref ref-type="bibr" rid="ref_3">3</xref>] put forward the method of DirectMap + ConvNet + Adaptation by combining the CNN with the domain knowledge of directional feature maps. These approaches integrate manually extracted feature images from Chinese characters as prior knowledge into the CNN architecture. This integration aids CNN in learning auxiliary features of Chinese characters more effectively, thereby significantly enhancing the network's recognition performance. However, this method requires a deep understanding of the complex domain knowledge involved in extracting these feature images.</p><p style="text-align: justify">These traditional convolutional networks aggregate contextual information through continuous convolution strides and pooling operations, with relatively fixed kernel sizes, and the convolutions are all common convolutions. Structures of some DICCs from foreign students are not standard, with excessively dispersed components, as shown in the fourth line of <xref ref-type="fig" rid="fig_1">Figure 1</xref>. The traditional convolutional network lacks the ability to obtain long-distance correlation of DICCs and cannot effectively learn advanced structural knowledge of Chinese characters.</p><p style="text-align: justify">Dilated convolution, also known as atrous convolution, is an efficient technique for expanding the receptive field of a neural network without increasing the number of parameters or the computational cost. This method is particularly valuable in tasks such as semantic segmentation [<xref ref-type="bibr" rid="ref_21">21</xref>], [<xref ref-type="bibr" rid="ref_22">22</xref>], [<xref ref-type="bibr" rid="ref_23">23</xref>], depth estimation [<xref ref-type="bibr" rid="ref_24">24</xref>], and object detection [<xref ref-type="bibr" rid="ref_25">25</xref>], where capturing multi-scale context is crucial. By adjusting the dilation rate, the same convolutional kernel can capture information at varying scales: smaller dilation rates focus on local, short-range details, whereas larger dilation rates enable the kernel to encompass broader, long-range contexts.</p><p style="text-align: justify">In our model, in addition to traditional methods, the resolution of feature maps is considered. The combination of convolution kernel and different dilated rates is used to increase the receptive field and aggregate multi-scale context information while maintaining the resolution of the feature map. This article applies dilated convolution to the recognition of DICCs by foreign students. It studies the application of dilated convolution in classification tasks, marking a novel and innovative approach in this field.</p>
+    </sec>
+    <sec sec-type="">
+      <title>3. Deep residual network based on multi-scale convolution and dilated convolution</title>
+      <p style="text-align: justify">This section mainly elaborates on the technical details of the DICCR method proposed in this article for foreign students, including model design, multi-scale context, and visualization.</p><p>A. Design of deep networks based on residual Blocks</p><p style="text-align: justify">The increasing number of layers of CNNs brings about significant improvement in performance. Although deep architecture is beneficial for feature learning, there are still many problems in training deep neural networks, including gradient vanishing and gradient explosion. Therefore, we propose network architecture ResNetDC, which adopts residual connections [<xref ref-type="bibr" rid="ref_26">26</xref>], as shown in <xref ref-type="fig" rid="fig_2">Figure 2</xref>.</p>
+      
+        <fig id="fig_2">
+          <label>Figure 2</label>
+          <caption>
+            <title>Network architecture ResNetDC</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/0/img_cnZ10TOUyihTP_4v.png"/>
+        </fig>
+      
+      <p style="text-align: justify">In <xref ref-type="fig" rid="fig_2">Figure 2</xref>, the notation "Conv-64, k=7×7, s=2" specifies that this convolutional layer produces 64 output channels, uses a kernel size of 7×7, and applies a stride of 2. The term "Max pooling 2×2, s=2" signifies a max pooling operation with a 2×2 window and a stride of 2. We have designed a residual module named Block, which comprises six convolutional layers, as illustrated in <xref ref-type="fig" rid="fig_3">Figure 3</xref>. These layers are sequentially labeled as "$1^{\text {st }}<inline-formula>
+  <mml:math id="mqsx1lzcxh">
+    <mml:mi>C</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mrow>
+      <mml:mo>"</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>"</mml:mo>
+    </mml:mrow>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>2^{\text {nd }}<inline-formula>
+  <mml:math id="mam4p6j6uf">
+    <mml:mi>C</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mrow>
+      <mml:mo>"</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>"</mml:mo>
+    </mml:mrow>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>3^{\text {rd }}<inline-formula>
+  <mml:math id="mgnh8dllm4">
+    <mml:mi>C</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mrow>
+      <mml:mo>"</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>"</mml:mo>
+    </mml:mrow>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>4^{\text {th }}<inline-formula>
+  <mml:math id="m3crcy9glv">
+    <mml:mi>C</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mrow>
+      <mml:mo>"</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>"</mml:mo>
+    </mml:mrow>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>5^{\text {th }}<inline-formula>
+  <mml:math id="mr4znmcf4s">
+    <mml:mi>C</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mrow>
+      <mml:mo>"</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>"</mml:mo>
+    </mml:mrow>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>6^{\text {th }}<inline-formula>
+  <mml:math id="m8l2od5yhh">
+    <mml:mi>C</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>F</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mrow>
+      <mml:mo>"</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>"</mml:mo>
+    </mml:mrow>
+    <mml:mo>.</mml:mo>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>2^{\text {nd }}$ Conv k=3×3, stride=1, dilate=1" describes the second convolutional layer, characterized by a 3×3 kernel, a stride of 1, and a dilation rate of 1. The symbol "⊕" represents the element-wise addition operation. Following each convolution, we apply batch normalization and activate the outputs using the ReLU function. It's worth noting that there is variability in the number of channels across the convolutional layers within the four Block modules. The specific channel counts for each convolutional layer in these four modules are detailed in <xref ref-type="table" rid="table_1">Table 1</xref>.</p>
+      
+        <fig id="fig_3">
+          <label>Figure 3</label>
+          <caption>
+            <title>Residual module Block 1</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/0/img_3gT4vxeNc-qwiyYM.png"/>
+        </fig>
+      
+      
+        <table-wrap id="table_1">
+          <label>Table 1</label>
+          <caption>
+            <title>Channel counts of each convolutional layer for the Block modules</title>
+          </caption>
+          <table><tbody><tr><td colspan="1" rowspan="1"><p> Layer Name</p></td><td colspan="1" rowspan="1"><p>Block 1</p></td><td colspan="1" rowspan="1"><p>Block 2</p></td><td colspan="1" rowspan="1"><p>Block 3</p></td><td colspan="1" rowspan="1"><p>Block 4</p></td></tr><tr><td colspan="1" rowspan="1"><p>$1^{\text {st }}<mml:math id="mwga6xmaxk">
+  <mml:mi>C</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>v</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>64</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>128</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>256</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>512</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+</mml:math>2^{\text {nd }}<mml:math id="mmspmcp6oh">
+  <mml:mi>C</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>v</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>64</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>128</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>256</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>512</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+</mml:math>3^{\text {rd }}<mml:math id="msstk99fws">
+  <mml:mi>C</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>v</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>64</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>128</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>256</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>512</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+</mml:math>4^{\text {th }}<mml:math id="mhwyiyvm7o">
+  <mml:mi>C</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>v</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>64</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>128</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>256</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>512</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+</mml:math>5^{\text {th }}<mml:math id="mr1yby292h">
+  <mml:mi>C</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>v</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>256</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>512</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1024</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>2048</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+</mml:math>6^{\text {th }}$ Conv</p></td><td colspan="1" rowspan="1"><p>256</p></td><td colspan="1" rowspan="1"><p>512</p></td><td colspan="1" rowspan="1"><p>1024</p></td><td colspan="1" rowspan="1"><p>2048</p></td></tr></tbody></table>
+        </table-wrap>
+      
+      <p style="text-align: justify">The input Chinese character image is a black-and-white image with a single channel of 64×64 pixels. The first three layers of the network structure down-sample the image by 8 times, and the input feature map size of Block 1 is 8×8. Given that the resolution of the feature maps has already been significantly reduced, all convolutional layers within the four Block modules employ a stride of 1. This means that no further down-sampling is applied. As a result, both the input and output feature maps for each of the four Block modules maintain a spatial dimension of 8×8.</p><p>B. Multi-scale convolutional kernel</p><p style="text-align: justify">The ResNetDC network designed in this article employs a multi-scale convolutional kernel strategy. Specifically, the initial convolutional layer utilizes a larger 7×7 kernel to capture broader spatial features. This choice is motivated by the fact that larger kernels provide a wider effective receptive field and higher shape bias, aligning with how humans primarily use shape cues for object recognition [<xref ref-type="bibr" rid="ref_27">27</xref>]. Moreover, smaller (3×3) kernels facilitate the construction of such deep architectures [<xref ref-type="bibr" rid="ref_28">28</xref>]. To leverage these advantages, ResNetDC incorporates multiple Block modules, each featuring 3×3 and 1×1 convolutional kernels. The 1×1 convolutional layers are particularly useful for cross-channel information exchange, enhancing feature integration. By stacking these Block modules, ResNetDC achieves a deep network architecture that effectively captures both local and global features. This multi-scale kernel design significantly boosts the network's expressive power, enabling it to better model the complex patterns present in Chinese character images.</p><p>C. Multi-scale dilated convolution</p><p style="text-align: justify">For handwritten Chinese character recognition tasks, low-level visual cues and advanced structural knowledge are both necessary for predicting successfully. Therefore, the convolutional layers in Block employ varying rates to learn contextual information from deferent spatial ranges.</p><p style="text-align: justify">Traditionally, each convolutional layer is followed by a pooling layer, which helps integrate multi-scale contextual information through the combination of convolutional strides and pooling operations. Besides the traditional way, in the design of this model, we also considered the resolution of the feature map, the four Block modules having a convolution step of 1, removed the pooling layer, and then aggregated multi-scale context information by combining the convolution kernel and different dilation rates.</p><p style="text-align: justify">For a <inline-formula>
+  <mml:math id="m8sr0ay1rz">
+    <mml:mi>k</mml:mi>
+    <mml:mi>k</mml:mi>
+    <mml:mo>×</mml:mo>
+  </mml:math>
+</inline-formula> convolutional kernel with a dilated rate of $r<inline-formula>
+  <mml:math id="mjsa6gbc78">
+    <mml:mo>,</mml:mo>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>z</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>k</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+  </mml:math>
+</inline-formula>k_d \times k_d<inline-formula>
+  <mml:math id="m8q5hijfz2">
+    <mml:mo>,</mml:mo>
+    <mml:mi>w</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+  </mml:math>
+</inline-formula>k_d=k+(k-1) \times(r-1)<inline-formula>
+  <mml:math id="mxbnw983uk">
+    <mml:mo>,</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mi>s</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>z</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>H</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:msup>
+      <mml:mi>t</mml:mi>
+      <mml:mo>′</mml:mo>
+    </mml:msup>
+  </mml:math>
+</inline-formula>k_d \times k_d<inline-formula>
+  <mml:math id="mh4v9fee8v">
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>k \times k$ pixels actually participate in the computation, and a significant portion of the information is lost, so it is a sparse sampling method. When multiple dilated convolutions are used continuously, it is easy to cause Grid Effect [<xref ref-type="bibr" rid="ref_29">29</xref>], losing the continuity and correlation.</p><p style="text-align: justify">To effectively address the issues caused by the grid effect, the 3×3 convolution layers of the each Block in the ResNetDC use varying dilated rates: 1, 2 and 3 respectively. Correspondingly, the dilated kernel sizes are 3×3, 5×5 and 7×7 respectively, and the receptive fields on the Block's input feature map are 3×3, 7×7 and 13×13. This approach ensures that all holes are covered, thereby significantly increasing the receptive field without sacrificing spatial resolution. By maintaining the 8×8 resolution of the feature maps, the model can capture both local and global features, aggregating context information from multiple scales. This multi-scale context learning enhances the model's ability to understand complex patterns and improves classification accuracy. Notably, with the input feature image resolution down-sampled to 8×8, the 7×7 dilated convolution kernels effectively approximate global convolutions, capturing long-range dependencies across the entire feature map. The detailed configuration of the convolutional layers within the Block module is summarized in <xref ref-type="table" rid="table_2">Table 2</xref>.</p><p style="text-align: justify">According to ResNetDC shown in <xref ref-type="fig" rid="fig_2">Figure 2</xref>, the network focuses on the areas shown in the right figures of <xref ref-type="fig" rid="fig_4">Figure 4</xref> and <xref ref-type="fig" rid="fig_5">Figure 5</xref>, respectively, when predicting the categories of characters “棋”and “和”. If dilated convolution is not used, that is to say, the dilated rates of all convolutional layers are set to 1, the areas of interest for the network are shown in the left figures of <xref ref-type="fig" rid="fig_4">Figure 4</xref> and <xref ref-type="fig" rid="fig_5">Figure 5</xref>, respectively. They illustrate that ResNetDC we designed can not only capture low-level visual clues of Chinese characters but also acquire advanced structural knowledge. Both short-distance features and long-range correlations can be learned.</p>
+      
+        <table-wrap id="table_2">
+          <label>Table 2</label>
+          <caption>
+            <title>Detailed configuration of Block</title>
+          </caption>
+          <table><tbody><tr><td colspan="1" rowspan="1"><p>Layer</p></td><td colspan="1" rowspan="1"><p> 1</p></td><td colspan="1" rowspan="1"><p>2</p></td><td colspan="1" rowspan="1"><p>3</p></td><td colspan="1" rowspan="1"><p>4</p></td><td colspan="1" rowspan="1"><p>5</p></td></tr><tr><td colspan="1" rowspan="1"><p>Convolution</p></td><td colspan="1" rowspan="1"><p>1×1</p></td><td colspan="1" rowspan="1"><p>3×3</p></td><td colspan="1" rowspan="1"><p>3×3</p></td><td colspan="1" rowspan="1"><p>3×3</p></td><td colspan="1" rowspan="1"><p>1×1</p></td></tr><tr><td colspan="1" rowspan="1"><p>Dilation rate</p></td><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>2</p></td><td colspan="1" rowspan="1"><p>3</p></td><td colspan="1" rowspan="1"><p>1</p></td></tr><tr><td colspan="1" rowspan="1"><p>Dilated kernel size</p></td><td colspan="1" rowspan="1"><p>1×1</p></td><td colspan="1" rowspan="1"><p>3×3</p></td><td colspan="1" rowspan="1"><p>5×5</p></td><td colspan="1" rowspan="1"><p>7×7</p></td><td colspan="1" rowspan="1"><p>1×1</p></td></tr><tr><td colspan="1" rowspan="1"><p>Receptive field</p></td><td colspan="1" rowspan="1"><p>1×1</p></td><td colspan="1" rowspan="1"><p>3×3</p></td><td colspan="1" rowspan="1"><p>7×7</p></td><td colspan="1" rowspan="1"><p>13×13</p></td><td colspan="1" rowspan="1"><p>13×13</p></td></tr></tbody></table>
+        </table-wrap>
+      
+      
+        <fig id="fig_4">
+          <label>Figure 4</label>
+          <caption>
+            <title>Comparison of regions concerned by not dilated network and ResNetDC when classifying the character “棋"</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/0/img_uyVmgabDNWeVwFMC.png"/>
+        </fig>
+      
+      
+        <fig id="fig_5">
+          <label>Figure 5</label>
+          <caption>
+            <title>Comparison of regions concerned by not dilated network and ResNetDC when classifying the character "和"</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/0/img_1FXmAGLr16UTG1F7.png"/>
+        </fig>
+      
+      <p>D. Visualization</p><p><xref ref-type="fig" rid="fig_6">Figure 6</xref> shows the visualization effect of the focus areas of each layer in the ResNetDC model, which are areas of interest for the 7×7 convolutional layer, 3×3 convolutional layers, and Block 1 – Block 4 from left to right. The input Chinese character is “报”.</p><p><xref ref-type="fig" rid="fig_6">Figure 6</xref> illustrates that the low-level convolution operation learns the local and detailed information of the Chinese character image, and has a small receptive field. With the increase of the network depth, the receptive field gradually increases, and the scope of attention is also growing, which conforms to the design intention of the ResNetDC model. That is, the layer-by-layer feature extraction of the image is completed through multi-layer convolution. The ResNetDC model can capture not only low-level visual clues but also advanced structural knowledge of Chinese characters.</p>
+      
+        <fig id="fig_6">
+          <label>Figure 6</label>
+          <caption>
+            <title>Visualization of regions concerned by each layer in ResNetDC</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/0/img_d2_I4ZJoLqCZsHW3.png"/>
+        </fig>
+      
+    </sec>
+    <sec sec-type="">
+      <title>4. Experiment</title>
+      <p>A. Datasets</p><p style="text-align: justify">The experimental data of this study is based on the DICCs dataset for "zero starting point" foreign students [<xref ref-type="bibr" rid="ref_30">30</xref>], [<xref ref-type="bibr" rid="ref_31">31</xref>]. The dataset uses Anoto digital paper and pen to collect data, which contains 525 categories of Chinese characters and 31,734 samples. The sample size of each category varies greatly, and the dataset is imbalanced. CASIA-OLHWDB1.0 [<xref ref-type="bibr" rid="ref_1">1</xref>] is used to pre-train the ResNetDC, which can effectively alleviate the challenges brought by imbalanced dataset. CASIA-OLHWDB1.0 is established by the Institute of Automation of the Chinese Academy of Sciences and produced by 420 authors, involving 3,866 commonly used Chinese characters, of which 3,740 categories overlap with the GB1 set. Some examples of datasets are shown in <xref ref-type="fig" rid="fig_7">Figure 7</xref> and <xref ref-type="fig" rid="fig_8">Figure 8</xref>.</p>
+      
+        <fig id="fig_7">
+          <label>Figure 7</label>
+          <caption>
+            <title>DICCs for foreign students</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/0/img_mtozaEh6MvHWUtaY.png"/>
+        </fig>
+      
+      
+        <fig id="fig_8">
+          <label>Figure 8</label>
+          <caption>
+            <title>CASIA-OLHWDB1.0</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/0/img_zPTj9fU2UPGWWC3w.png"/>
+        </fig>
+      
+      <p>B. Data preprocessing</p><p style="text-align: justify">Because the category of Chinese characters is very large, we rasterize the sampled handwriting sequence into an image, keeping the aspect ratio scaled to 56×56 pixels, and place it on a slightly larger 64×64 image center to allow for various geometric deformations during the training process. Set the foreground color to 0 and the background color to 255.</p><p style="text-align: justify">The amount of images for DICCs is large. If each image is stored as a file, not only will the number of files be large, but the loading of data will also be slow. Therefore, we use Lightning Memory Mapped Database (LMDB) to store images. LMDB puts the entire dataset in one file, avoiding the overhead of file system addressing. After preprocessing, the images and labels are stored uniformly in the LMDB database.</p><p>Because the number of Chinese character categories in the DICCs training set for foreign students is much greater than the number of samples for each category of Chinese character, the method of data augmentation is used to increase the number of samples for each category of character, making the training set much richer and the model more generalizable. Before feeding samples into the network, data augmentation is carried out through methods such as cropping, flipping, and rotation.</p><p>C. Implementation details</p><p style="text-align: justify">ResNetDC is a CNN built on the PyTorch deep learning framework, designed to achieve efficient and effective model training through a series of carefully crafted optimization strategies. The detailed parameter configurations are listed in <xref ref-type="table" rid="table_1">Table 1</xref>. The training process of ResNetDC aims to minimize the cross-entropy loss. To achieve rapid convergence and adapt to the learning requirements of different parameters, ResNetDC employs the Adam optimizer. The choice of batch size is a balancing act that needs to be adjusted based on specific hardware conditions and model complexity. A batch size of 256 provides a good balance in most cases, accelerating the training process while avoiding excessive memory consumption. Initially, the learning rate is set to 0.01, which is a relatively high starting value intended to speed up the initial convergence. As training progresses, when the objective loss no longer decreases significantly, the learning rate is multiplied by 0.35. Training is terminated when the model's performance on the validation set no longer shows significant improvement.</p><p>D. Experimental results</p><p><xref ref-type="fig" rid="fig_9">Figure 9</xref> shows the changes in training loss for networks configured with 2, 3, and 4 Blocks, while <xref ref-type="fig" rid="fig_10">Figure 10</xref> presents the corresponding validation accuracy for these three network configurations.</p><p style="text-align: justify">The results show that the ResNetDC configured with four Blocks achieves the lowest training loss and the highest validation accuracy. This performance is attributed to the increased depth provided by stacking more Block modules, which, combined with the residual structure within each Block, effectively mitigates issues of gradient vanishing and explosion. Consequently, this deeper architecture facilitates better feature learning and enhances classification accuracy. Through experiments, it was found that the area of interest of the ResNetDC configured with four Blocks has almost covered the entire Chinese character image. Increasing the number of Block will only increase the size, parameters, and training time of the network, but will not improve classification accuracy and performance. Therefore, in the ResNetDC model, setting up four Block modules is the most reasonable solution.</p>
+      
+        <fig id="fig_9">
+          <label>Figure 9</label>
+          <caption>
+            <title>The changes in training loss for networks configured with 2, 3, and 4 Blocks</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/0/img_U5gVYX91j_bn0gZm.png"/>
+        </fig>
+      
+      
+        <fig id="fig_10">
+          <label>Figure 10</label>
+          <caption>
+            <title>Accuracy comparison for the three networks</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/0/img_o8hBdFuBrGxHFLU4.png"/>
+        </fig>
+      
+      <p style="text-align: justify">To evaluate the effectiveness of dilated convolution in the ResNetDC, a comparison of the classification performance between common convolutional networks and dilated convolutional networks is conducted. In the ResNetDC shown in <xref ref-type="fig" rid="fig_2">Figure 2</xref> and <xref ref-type="fig" rid="fig_3">Figure 3</xref>, the dilation rates of 3×3 convolutional layers of every Block module in an common convolutional network are set to 1, and they are set to 1, 2 and 3 respectively in the dilated convolutional network, <xref ref-type="fig" rid="fig_11">Figure 11</xref> shows the training losses of these two networks, and <xref ref-type="fig" rid="fig_12">Figure 12</xref> shows their validation accuracy.</p><p style="text-align: justify"><xref ref-type="fig" rid="fig_11">Figure 11</xref> and <xref ref-type="fig" rid="fig_12">Figure 12</xref> clearly demonstrate the superior performance of the dilated convolutional network compared to the common convolutional network. Specifically, the training loss of the dilated convolutional network is consistently lower, and the validation accuracy stabilizes after approximately 16 epochs, reaching a significantly higher level than that of the common convolutional network. Its Top 1 accuracy reaches 94.3%, and Top 5 accuracy reaches 98.9%. These results highlight the substantial impact of dilated convolutions on DICCR for foreign students.</p>
+      
+        <fig id="fig_11">
+          <label>Figure 11</label>
+          <caption>
+            <title>Changes in training loss of two networks</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/0/img_pN3rgs7cjGCFaort.png"/>
+        </fig>
+      
+      
+        <fig id="fig_12">
+          <label>Figure 12</label>
+          <caption>
+            <title>Changes in validation accuracy of two networks</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/0/img_7A7i5KfADkbQX8uG.png"/>
+        </fig>
+      
+      <p style="text-align: justify">The sample size of DICCs for foreign students is small and imbalanced. By pre-training the ResNetDC on the CASIA-OLHWDB1.0 dataset, we can transfer the knowledge learned from a large dataset to the target task, thereby improving the model's generalization ability and performance. Additionally, this approach helps avoid overfitting, which is a common issue when training models directly on small and imbalanced datasets. The validation accuracy changes of pre-trained models compared to models without pre-training on the foreign student DICCs dataset are shown in <xref ref-type="fig" rid="fig_13">Figure 13</xref>.</p>
+      
+        <fig id="fig_13">
+          <label>Figure 13</label>
+          <caption>
+            <title>The validation accuracy changes</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/0/img_vboNq_3e2-pasqBG.png"/>
+        </fig>
+      
+      <p>Our pre-trained model achieves an accuracy of 98.5%, which shows a significant advantage over Hao Bai's method, as illustrated in the accuracies comparison in <xref ref-type="table" rid="table_3">Table 3</xref>.</p>
+      
+        <table-wrap id="table_3">
+          <label>Table 3</label>
+          <caption>
+            <title>Accuracies comparison</title>
+          </caption>
+          <table><tbody><tr><td colspan="1" rowspan="1"><p>Approach</p></td><td colspan="1" rowspan="1"><p>Accuracy</p></td></tr><tr><td colspan="1" rowspan="1"><p>Hierarchical model [<xref ref-type="bibr" rid="ref_4">4</xref>]</p></td><td colspan="1" rowspan="1"><p>92.55%</p></td></tr><tr><td colspan="1" rowspan="1"><p>Improved hierarchical models [<xref ref-type="bibr" rid="ref_5">5</xref>]</p></td><td colspan="1" rowspan="1"><p>97.91%</p></td></tr><tr><td colspan="1" rowspan="1"><p>ResNetDC (ours)</p></td><td colspan="1" rowspan="1"><p>98.5%</p></td></tr></tbody></table>
+        </table-wrap>
+      
+      <p>E. Result analysis</p><p style="text-align: justify">Using the trained ResNetDC model, single-sample prediction and batch prediction are achieved for the samples in the test set. The single sample prediction interface is shown in <xref ref-type="fig" rid="fig_14">Figure 14</xref>. Select a sample by opening a dialog box, and the prediction window displays the sample content, actual category, Top 1 prediction value, and Top 5 prediction value. Batch prediction saves the file names, actual categories, Top 1 predicted values, and Top 5 predicted values of all samples in the test set to a file.</p><p style="text-align: justify">The ResNetDC model can effectively recognize DICCs by foreign students with writing errors and non-standard problems, as shown in <xref ref-type="table" rid="table_4">Table 4</xref>. The Top 1 prediction value is completely correct for samples with extra, missing, incomplete strokes, and structural imbalance. <xref ref-type="fig" rid="fig_15">Figure 15</xref> shows some samples correctly recognized by ResNetDC. The ability of ResNetDC to effectively recognize DICCs of foreign students highlights its adaptability, making it a powerful tool for accurate DICCR, despite the challenges posed by various imperfect input data.</p>
+      
+        <table-wrap id="table_4">
+          <label>Table 4</label>
+          <caption>
+            <title>Prediction effect of ResNetDC model on writing errors and non-standard writing samples</title>
+          </caption>
+          <table><tbody><tr><td colspan="1" rowspan="1"><p>Sample</p></td><td colspan="1" rowspan="1"><graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/0/img_qD6kNqmk_VLRzf-x.png" /></td><td colspan="1" rowspan="1"><graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/0/img_ox7NWFNnRE0ULagl.png" /></td><td colspan="1" rowspan="1"><graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/0/img_E2OIdWMCtmejKQTE.png" /></td><td colspan="1" rowspan="1"><graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/0/img_zQ90gwGkVkJ6l7Yx.png" /></td><td colspan="1" rowspan="1"><graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/0/img_VyympGaQITDf55g0.png" /></td></tr><tr><td colspan="1" rowspan="1"><p>Problem</p></td><td colspan="1" rowspan="1"><p>Extra stoke</p></td><td colspan="1" rowspan="1"><p>Missing stroke</p></td><td colspan="1" rowspan="1"><p>Incomplete stroke</p></td><td colspan="1" rowspan="1"><p>Structural imbalance</p></td><td colspan="1" rowspan="1"><p>Structural imbalance</p></td></tr><tr><td colspan="1" rowspan="1"><p>Actual categories</p></td><td colspan="1" rowspan="1"><p>吃</p></td><td colspan="1" rowspan="1"><p>风</p></td><td colspan="1" rowspan="1"><p>块</p></td><td colspan="1" rowspan="1"><p>棋</p></td><td colspan="1" rowspan="1"><p>在</p></td></tr><tr><td colspan="1" rowspan="1"><p>Top 1 prediction</p></td><td colspan="1" rowspan="1"><p>吃</p></td><td colspan="1" rowspan="1"><p>风</p></td><td colspan="1" rowspan="1"><p>块</p></td><td colspan="1" rowspan="1"><p>棋</p></td><td colspan="1" rowspan="1"><p>在</p></td></tr><tr><td colspan="1" rowspan="1"><p>Top 5 prediction</p></td><td colspan="1" rowspan="1"><p>吃 气 汽 空 还</p></td><td colspan="1" rowspan="1"><p>风 见 几 贝 识</p></td><td colspan="1" rowspan="1"><p>块 知 步</p><p>边 球</p></td><td colspan="1" rowspan="1"><p>棋 快 楼</p><p>样 糕</p></td><td colspan="1" rowspan="1"><p>在 石 礼</p><p>木 本</p></td></tr></tbody></table>
+        </table-wrap>
+      
+      
+        <fig id="fig_14">
+          <label>Figure 14</label>
+          <caption>
+            <title>Single sample prediction interface</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/0/img_gVK1kCFPQ6dSrp2V.png"/>
+        </fig>
+      
+      
+        <fig id="fig_15">
+          <label>Figure 15</label>
+          <caption>
+            <title>Samples correctly recognized by ResNetDC</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/0/img_BckpYO3F1PK1ZOqF.png"/>
+        </fig>
+      
+    </sec>
+    <sec sec-type="">
+      <title>5. Conclusion</title>
+      <p style="text-align: justify">For the recognition of foreign students' DICCs, we propose network architecture ResNetDC that learns multi-scale context information, which has the characteristics of easy optimization of the residual network. The ResNetDC overcomes the limitation of traditional convolutional networks, which struggle to capture long-distance correlations in DICCs. By employing varying dilation rates, the model aggregates multi-scale contextual information, ensuring a comprehensive acquisition of both low-level visual clues and high-level structural knowledge. This approach enables the model to achieve excellent classification accuracy, even for DICCs with various errors and non-standard.</p><p style="text-align: justify">The experimental results clearly demonstrate the effectiveness of the proposed ResNetDC model in DICCR for foreign students. This robust performance provides a solid technical foundation for a wide range of applications. For example, Assessing the accuracy and legibility of handwritten Chinese characters, enhancing the learning experience by providing immediate feedback on writing mistakes, assisting foreign students in practicing and improving their handwriting skills, facilitating the recognition and processing of handwritten text in various digital systems, ensuring accurate and efficient evaluation of handwritten responses in online testing environments, and so on.</p><p style="text-align: justify">The ResNetDC model's ability to handle diverse and imperfect input data makes it particularly valuable for these applications, offering significant development prospects and paving the way for advancements in international Chinese language education and technology.</p>
+    </sec>
+  </body>
+  <back>
+    <ack>
+      <title>Acknowledgments</title>
+      
+    </ack>
+    <app-group>
+      <app>
+        <title>Appendix</title>
+        
+      </app>
+    </app-group>
+    <notes>
+      <title>Author Contributions</title>
+      
+    </notes>
+    <notes>
+      <title>Funding</title>
+      
+    </notes>
+    <notes>
+      <title>Informed Consent Statement</title>
+      
+    </notes>
+    <notes>
+      <title>Data Availability Statement</title>
+      <p>Data used to support research findings are available from relevant authors upon request.</p>
+    </notes>
+    <notes notes-type="COI-statement">
+      <title>Conflicts of Interest</title>
+      <p>The authors declare that they have no conflicts of interest.</p>
+    </notes>
+    <ref-list>
+      <title>References</title>
+      <ref id="ref_1">
+        <label>1.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>37-41</page-range>
+          <year>2011</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Liu</surname>
+              <given-names>C. L.</given-names>
+            </name>
+            <name>
+              <surname>Yin</surname>
+              <given-names>F.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>D. H.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>Q. F.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/ICDAR.2011.17</pub-id>
+          <article-title>CASIA online and offline Chinese handwriting databases</article-title>
+          <source>2011 International Conference on Document Analysis and Recognition, Beĳing, China</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_2">
+        <label>2.</label>
+        <element-citation publication-type="journal">
+          <volume>14</volume>
+          <page-range>53-64</page-range>
+          <year>2011</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Jin</surname>
+              <given-names>Lian Wen</given-names>
+            </name>
+            <name>
+              <surname>Gao</surname>
+              <given-names>Yan</given-names>
+            </name>
+            <name>
+              <surname>Liu</surname>
+              <given-names>Gang</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>Yun Yang</given-names>
+            </name>
+            <name>
+              <surname>Ding</surname>
+              <given-names>Kai</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1007/s10032-010-0116-6</pub-id>
+          <article-title>SCUT-COUCH2009 — A comprehensive online unconstrained Chinese handwriting database and benchmark evaluation</article-title>
+          <source>Int. J. Doc. Anal. Recognit.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_3">
+        <label>3.</label>
+        <element-citation publication-type="journal">
+          <volume>61</volume>
+          <page-range>348-360</page-range>
+          <year>2017</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Zhang</surname>
+              <given-names>X. Y.</given-names>
+            </name>
+            <name>
+              <surname>Bengio</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Liu</surname>
+              <given-names>C. L.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.patcog.2016.08.005</pub-id>
+          <article-title>Online and offline handwritten Chinese character recognition: A comprehensive study and new benchmark</article-title>
+          <source>Pattern Recognit.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_4">
+        <label>4.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>45-50</page-range>
+          <year>2017</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Bai</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>X.W.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1117/12.2280237</pub-id>
+          <article-title>Recognizing Chinese characters in digital ink from non-native language writers using hierarchical models</article-title>
+          <source>Proceedings of the Second International Workshop on Pattern Recognition, Singapore</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_5">
+        <label>5.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>41-45</page-range>
+          <year>2020</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Bai</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>X. W.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1117/12.2574420</pub-id>
+          <article-title>Improved hierarchical models for non-native Chinese handwriting recognition using hidden conditional random fields</article-title>
+          <source>Proceedings of the Fifth International Workshop on Pattern Recognition, Chengdu, China</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_6">
+        <label>6.</label>
+        <element-citation publication-type="journal">
+          <volume>15</volume>
+          <page-range>531</page-range>
+          <issue>9</issue>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Xu</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>X.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3390/info15090531</pub-id>
+          <article-title>Recognizing digital ink Chinese characters written by international students using a residual network with 1-dimensional dilated convolution</article-title>
+          <source>Information</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_7">
+        <label>7.</label>
+        <element-citation publication-type="journal">
+          <volume>8</volume>
+          <page-range>773-784</page-range>
+          <year>2014</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Cai</surname>
+              <given-names>W.</given-names>
+            </name>
+            <name>
+              <surname>Uchida</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Sakoe</surname>
+              <given-names>H.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1007/s11704-014-3207-6</pub-id>
+          <article-title>Comparative performance analysis of stroke correspondence search methods for stroke-order free online multi-stroke character recognition</article-title>
+          <source>Front. Comput. Sci.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_8">
+        <label>8.</label>
+        <element-citation publication-type="journal">
+          <volume>40</volume>
+          <page-range>849-862</page-range>
+          <issue>4</issue>
+          <year>2018</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Zhang</surname>
+              <given-names>X. Y.</given-names>
+            </name>
+            <name>
+              <surname>Yin</surname>
+              <given-names>F.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>Y. M.</given-names>
+            </name>
+            <name>
+              <surname>Liu</surname>
+              <given-names>C. L.</given-names>
+            </name>
+            <name>
+              <surname>Bengio</surname>
+              <given-names>Y.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/TPAMI.2017.2695539</pub-id>
+          <article-title>Drawing and recognizing Chinese characters with recurrent neural network</article-title>
+          <source>IEEE Trans. Pattern Anal. Mach. Intell.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_9">
+        <label>9.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>3681–3686</page-range>
+          <year>2018</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Zhang</surname>
+              <given-names>J. S.</given-names>
+            </name>
+            <name>
+              <surname>Zhu</surname>
+              <given-names>Y. X.</given-names>
+            </name>
+            <name>
+              <surname>Du</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Dai</surname>
+              <given-names>L. R.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/ICPR.2018.8546074</pub-id>
+          <article-title>Trajectory-based radical analysis network for online handwritten Chinese character recognition</article-title>
+          <source>2018 24th International Conference on Pattern Recognition (ICPR), Beĳing, China</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_10">
+        <label>10.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>551–555</page-range>
+          <year>2015</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Yang</surname>
+              <given-names>W. X.</given-names>
+            </name>
+            <name>
+              <surname>Jin</surname>
+              <given-names>L.W.</given-names>
+            </name>
+            <name>
+              <surname>Xie</surname>
+              <given-names>Z. C.</given-names>
+            </name>
+            <name>
+              <surname>Feng</surname>
+              <given-names>Z. Y.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/ICDAR.2015.7333822</pub-id>
+          <article-title>Improved deep convolutional neural network for online handwritten Chinese character recognition using domain-specific knowledge</article-title>
+          <source>2015 13th International Conference on Document Analysis and Recognition (ICDAR), Tunis, Tunisia</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_11">
+        <label>11.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>695–699</page-range>
+          <year>2015</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Chen</surname>
+              <given-names>L.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Fan</surname>
+              <given-names>W.</given-names>
+            </name>
+            <name>
+              <surname>Sun</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Naoi</surname>
+              <given-names>S.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/ACPR.2015.7486592</pub-id>
+          <article-title>Beyond human recognition: A CNN-based framework for handwritten character recognition</article-title>
+          <source>2015 3rd IAPR Asian Conference on Pattern Recognition (ACPR), Kuala Lumpur, Malaysia</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_12">
+        <label>12.</label>
+        <element-citation publication-type="journal">
+          <year>2013</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Graham</surname>
+              <given-names>B.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.48550/arXiv.1308.0371</pub-id>
+          <article-title>Sparse arrays of signatures for online character recognition</article-title>
+          <source>arXiv preprint arXiv:1308.0371</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_13">
+        <label>13.</label>
+        <element-citation publication-type="journal">
+          <volume>46</volume>
+          <page-range>155-162</page-range>
+          <issue>1</issue>
+          <year>2013</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Liu</surname>
+              <given-names>Cheng Lin</given-names>
+            </name>
+            <name>
+              <surname>Yin</surname>
+              <given-names>Fei</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>Da Han</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>Qiu Feng</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.patcog.2012.06.021</pub-id>
+          <article-title>Online and offline handwritten Chinese character recognition: Benchmarking on new databases</article-title>
+          <source>Pattern Recognit.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_14">
+        <label>14.</label>
+        <element-citation publication-type="journal">
+          <volume>93</volume>
+          <page-range>179-192</page-range>
+          <year>2019</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Ren</surname>
+              <given-names>Hui Qi</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>Wei Qiang</given-names>
+            </name>
+            <name>
+              <surname>Liu</surname>
+              <given-names>Cheng Lin</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.patcog.2019.04.015</pub-id>
+          <article-title>Recognizing online handwritten Chinese characters using RNNs with new computing architectures</article-title>
+          <source>Pattern Recognit.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_15">
+        <label>15.</label>
+        <element-citation publication-type="journal">
+          <year>2020</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Gan</surname>
+              <given-names>Ji</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>Wei Qiang</given-names>
+            </name>
+            <name>
+              <surname>Lu</surname>
+              <given-names>Ke</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.48550/arXiv.2004.09412</pub-id>
+          <article-title>Characters as graphs: Recognizing online handwritten Chinese characters via spatial graph convolutional network</article-title>
+          <source>arXiv preprint arXiv:2004.09412</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_16">
+        <label>16.</label>
+        <element-citation publication-type="journal">
+          <volume>137</volume>
+          <page-range>109317</page-range>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Gan</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Chen</surname>
+              <given-names>Y. Y.</given-names>
+            </name>
+            <name>
+              <surname>Hu</surname>
+              <given-names>B.</given-names>
+            </name>
+            <name>
+              <surname>Leng</surname>
+              <given-names>J. X.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>W. Q.</given-names>
+            </name>
+            <name>
+              <surname>Gao</surname>
+              <given-names>X. B.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.patcog.2023.109317</pub-id>
+          <article-title>Characters as graphs: Interpretable handwritten Chinese character recognition via Pyramid Graph Transformer</article-title>
+          <source>Pattern Recognit.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_17">
+        <label>17.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>1-6</page-range>
+          <year>2015</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Cireşan</surname>
+              <given-names>D.</given-names>
+            </name>
+            <name>
+              <surname>Meier</surname>
+              <given-names>U.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/IJCNN.2015.7280516</pub-id>
+          <article-title>Multi-column deep neural networks for offline handwritten Chinese character classification</article-title>
+          <source>2015 International Joint Conference on Neural Networks (ĲCNN), Killarney, Ireland</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_18">
+        <label>18.</label>
+        <element-citation publication-type="journal">
+          <volume>478</volume>
+          <page-range>375-390</page-range>
+          <year>2019</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Gan</surname>
+              <given-names>Ji</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>Wei Qiang</given-names>
+            </name>
+            <name>
+              <surname>Lu</surname>
+              <given-names>Ke</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.ins.2018.11.035</pub-id>
+          <article-title>A new perspective: Recognizing online handwritten Chinese characters via 1-dimensional CNN</article-title>
+          <source>Inform. Sci.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_19">
+        <label>19.</label>
+        <element-citation publication-type="journal">
+          <volume>12</volume>
+          <page-range>6862</page-range>
+          <issue>14</issue>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Hu</surname>
+              <given-names>M. J.</given-names>
+            </name>
+            <name>
+              <surname>Qu</surname>
+              <given-names>X. W.</given-names>
+            </name>
+            <name>
+              <surname>Huang</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Wu</surname>
+              <given-names>X. G.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3390/app12146862</pub-id>
+          <article-title>An end-to-end classifier based on CNN for in-air handwritten-Chinese-character recognition</article-title>
+          <source>Appl. Sci.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_20">
+        <label>20.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>846–850</page-range>
+          <year>2015</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Zhong</surname>
+              <given-names>Z. Y.</given-names>
+            </name>
+            <name>
+              <surname>Jin</surname>
+              <given-names>L. W.</given-names>
+            </name>
+            <name>
+              <surname>Xie</surname>
+              <given-names>Z. C.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/ICDAR.2015.7333881</pub-id>
+          <article-title>High performance offline handwritten Chinese character recognition using GoogLeNet and directional feature maps</article-title>
+          <source>2015 13th International Conference on Document Analysis and Recognition (ICDAR), Tunis, Tunisia</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_21">
+        <label>21.</label>
+        <element-citation publication-type="journal">
+          <year>2016</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Chen</surname>
+              <given-names>Liang Chieh</given-names>
+            </name>
+            <name>
+              <surname>Papandreou</surname>
+              <given-names>George</given-names>
+            </name>
+            <name>
+              <surname>Kokkinos</surname>
+              <given-names>Iasonas</given-names>
+            </name>
+            <name>
+              <surname>Murphy</surname>
+              <given-names>Kevin</given-names>
+            </name>
+            <name>
+              <surname>Yuille</surname>
+              <given-names>Alan</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.48550/arXiv.1412.7062</pub-id>
+          <article-title>Semantic image segmentation with deep convolutional nets and fully connected CRFs</article-title>
+          <source>arXiv preprint arXiv:1412.7062</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_22">
+        <label>22.</label>
+        <element-citation publication-type="journal">
+          <year>2016</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Yu</surname>
+              <given-names>Fisher</given-names>
+            </name>
+            <name>
+              <surname>Koltun</surname>
+              <given-names>Vladlen</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.48550/arXiv.1511.07122</pub-id>
+          <article-title>Multi-scale context aggregation by dilated convolutions</article-title>
+          <source>arXiv preprint arXiv:1511.07122</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_23">
+        <label>23.</label>
+        <element-citation publication-type="journal">
+          <year>2017</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Chen</surname>
+              <given-names>Liang Chieh</given-names>
+            </name>
+            <name>
+              <surname>Papandreou</surname>
+              <given-names>George</given-names>
+            </name>
+            <name>
+              <surname>Schroff</surname>
+              <given-names>Florian</given-names>
+            </name>
+            <name>
+              <surname>Adam</surname>
+              <given-names>Hartwig</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.48550/arXiv.1706.05587</pub-id>
+          <article-title>Rethinking atrous convolution for semantic image segmentation</article-title>
+          <source>arXiv preprint arXiv:1706.05587</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_24">
+        <label>24.</label>
+        <element-citation publication-type="journal">
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Zhuang</surname>
+              <given-names>C. Q.</given-names>
+            </name>
+            <name>
+              <surname>Lu</surname>
+              <given-names>Z. D.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>Y. Q.</given-names>
+            </name>
+            <name>
+              <surname>Xiao</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>Y.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.48550/arXiv.2112.14440</pub-id>
+          <article-title>ACDNet: Adaptively combined dilated convolution for monocular panorama depth estimation</article-title>
+          <source>arXiv preprint arXiv:2112.14440</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_25">
+        <label>25.</label>
+        <element-citation publication-type="book">
+          <person-group person-group-type="author">
+            <name>
+              <surname>Liu</surname>
+              <given-names>W.</given-names>
+            </name>
+            <name>
+              <surname>Anguelov</surname>
+              <given-names>D.</given-names>
+            </name>
+            <name>
+              <surname>Erhan</surname>
+              <given-names>D.</given-names>
+            </name>
+            <name>
+              <surname>Szegedy</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Reed</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Fu</surname>
+              <given-names>C. Y.</given-names>
+            </name>
+            <name>
+              <surname>Berg</surname>
+              <given-names>A. C.</given-names>
+            </name>
+          </person-group>
+          <article-title>SSD: Single shot multibox detector</article-title>
+          <source>Computer Vision – ECCV 2016</source>
+          <publisher-name>Cham: Springer International Publishing</publisher-name>
+          <year>2016</year>
+          <page-range>21-37</page-range>
+          <pub-id pub-id-type="doi">10.1007/978-3-319-46448-0_2</pub-id>
+        </element-citation>
+      </ref>
+      <ref id="ref_26">
+        <label>26.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>770–778</page-range>
+          <year>2016</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>He</surname>
+              <given-names>K. M.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>X. Y.</given-names>
+            </name>
+            <name>
+              <surname>Ren</surname>
+              <given-names>S. Q.</given-names>
+            </name>
+            <name>
+              <surname>Sun</surname>
+              <given-names>J.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/CVPR.2016.90</pub-id>
+          <article-title>Deep residual learning for image recognition</article-title>
+          <source>Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition, Las Vegas, NV, USA</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_27">
+        <label>27.</label>
+        <element-citation publication-type="journal">
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Ding</surname>
+              <given-names>X. H.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>X. Y.</given-names>
+            </name>
+            <name>
+              <surname>Zhou</surname>
+              <given-names>Y. Z.</given-names>
+            </name>
+            <name>
+              <surname>Han</surname>
+              <given-names>J. G.</given-names>
+            </name>
+            <name>
+              <surname>Ding</surname>
+              <given-names>G. G.</given-names>
+            </name>
+            <name>
+              <surname>Sun</surname>
+              <given-names>J.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.48550/arXiv.2203.06717</pub-id>
+          <article-title>Scaling up your kernels to 31×31: Revisiting large kernel design in CNNs</article-title>
+          <source>arXiv preprint arXiv:2203.06717</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_28">
+        <label>28.</label>
+        <element-citation publication-type="journal">
+          <page-range>1451-1460</page-range>
+          <year>2015</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Simonyan</surname>
+              <given-names>K.</given-names>
+            </name>
+            <name>
+              <surname>Zisserman</surname>
+              <given-names>A.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.48550/arXiv.1409.1556</pub-id>
+          <article-title>Very deep convolutional networks for large-scale image recognition</article-title>
+          <source>arXiv preprint arXiv:1409.1556</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_29">
+        <label>29.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>1451–1460</page-range>
+          <year>2018</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Wang</surname>
+              <given-names>P. Q.</given-names>
+            </name>
+            <name>
+              <surname>Chen</surname>
+              <given-names>P. F.</given-names>
+            </name>
+            <name>
+              <surname>Yuan</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Liu</surname>
+              <given-names>D.</given-names>
+            </name>
+            <name>
+              <surname>Huang</surname>
+              <given-names>Z. H.</given-names>
+            </name>
+            <name>
+              <surname>Hou</surname>
+              <given-names>X. D.</given-names>
+            </name>
+            <name>
+              <surname>Cottrell</surname>
+              <given-names>G.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/WACV.2018.00163</pub-id>
+          <article-title>Understanding convolution for semantic segmentation</article-title>
+          <source>2018 IEEE Winter Conference on Applications of Computer Vision (WACV), LakeTahoe, NV, USA</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_30">
+        <label>30.</label>
+        <element-citation publication-type="thesis">
+          <person-group person-group-type="author">
+            <name>
+              <surname>Bai</surname>
+              <given-names>H.</given-names>
+            </name>
+          </person-group>
+          <article-title>Study on digital ink characters stroke error extraction by beginning learners of Chinese as a foreign language</article-title>
+          <publisher-name>Ph.D. thesis, Beĳing Language and Culture University, 2018</publisher-name>
+        </element-citation>
+      </ref>
+      <ref id="ref_31">
+        <label>31.</label>
+        <element-citation publication-type="journal">
+          <volume>48</volume>
+          <page-range>153-158</page-range>
+          <issue>15</issue>
+          <year>2012</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Bai</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>X. W.</given-names>
+            </name>
+            <name>
+              <surname>Fu</surname>
+              <given-names>Y. G.</given-names>
+            </name>
+            <name>
+              <surname>An</surname>
+              <given-names>W. H.</given-names>
+            </name>
+          </person-group>
+          <article-title>Adaptive visualization of extracted digital ink characters in Chinese</article-title>
+          <source>Comput. Eng. Appl.</source>
+        </element-citation>
+      </ref>
+    </ref-list>
+  </back>
+</article>
