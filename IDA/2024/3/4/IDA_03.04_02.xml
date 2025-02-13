@@ -1,0 +1,2910 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.3 20210610//EN" "JATS-journalpublishing1-3.dtd">
+<article xml:lang="en" dtd-version="1.3" article-type="research-article" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mml="http://www.w3.org/1998/Math/MathML">
+  <front>
+    <journal-meta>
+      <journal-id journal-id-type="publisher-id">IDA</journal-id>
+      <journal-id journal-id-type="doi">10.56578</journal-id>
+      <journal-title-group>
+        <journal-title>Information Dynamics and Applications</journal-title>
+        <abbrev-journal-title abbrev-type="issn">Inf. Dyn. Appl.</abbrev-journal-title>
+        <abbrev-journal-title abbrev-type="publisher">IDA</abbrev-journal-title>
+      </journal-title-group>
+      <issn publication-format="electronic">2958-1494</issn>
+      <issn publication-format="print">2958-1486</issn>
+      <publisher>
+        <publisher-name>Acadlore</publisher-name>
+      </publisher>
+    </journal-meta>
+    <article-meta>
+      <article-id pub-id-type="publisher-id">AR-kzRcHkaVS-LBc2Ng6kii7HWQRWszxEdt</article-id>
+      <article-id pub-id-type="doi">10.56578/ida030402</article-id>
+      <article-categories>
+        <subj-group>
+          <subject>Articles</subject>
+        </subj-group>
+      </article-categories>
+      <title-group>
+        <article-title>Extraction of Judgment Elements from Legal Instruments Using an Attention Mechanism-Based RCNN Fusion Model</article-title>
+      </title-group>
+      <contrib-group>
+        <contrib contrib-type="author" rid="aff_1">
+          <contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0000-0002-5832-3756</contrib-id>
+          <name>
+            <surname>Ren</surname>
+            <given-names>Jin</given-names>
+          </name>
+          <email>rj@ncut.edu.cn</email>
+        </contrib>
+        <aff id="aff_1">School of Information Science and Technology, North China University of Technology, 100144 Beijing, China</aff>
+      </contrib-group>
+      <pub-date publication-format="electronic" date-type="pub">
+        <day>03</day>
+        <month>12</month>
+        <year>2024</year>
+      </pub-date>
+      <volume>3</volume>
+      <issue>4</issue>
+      <fpage>223</fpage>
+      <lpage>233</lpage>
+      <page-range>223-233</page-range>
+      <history>
+        <date date-type="received">
+          <day>13</day>
+          <month>10</month>
+          <year>2024</year>
+        </date>
+        <date date-type="accepted">
+          <day>26</day>
+          <month>11</month>
+          <year>2024</year>
+        </date>
+      </history>
+      <permissions>
+        <copyright-statement>©2024 by the author(s)</copyright-statement>
+        <copyright-year>2024</copyright-year>
+        <license license-type="open-access" xlink:href="https://creativecommons.org/licenses/by/4.0/">
+          <license-p> Published by Acadlore Publishing Services Limited, Hong Kong. This article is available for free download and can be reused and cited, provided that the original published version is credited, under the CC BY 4.0 license.</license-p>
+        </license>
+      </permissions>
+      <abstract><p>In the field of jurisprudence, judgment element extraction has become a crucial aspect of legal judgment prediction research. The introduction of pre-trained language models has provided significant momentum for the advancement of Natural Language Processing (NLP) technologies, with the Bidirectional Encoder Representations from Transformers (BERT) model being particularly notable for its ability to enhance semantic understanding in unsupervised learning. A fusion model combining BERT and an attention mechanism-based Recurrent Convolutional Neural Network (RCNN) was utilized in this study for multi-label classification tasks, aiming to further extract contextual features from legal texts. The dataset used in this research was derived from the "China Legal Research Cup" judgment element extraction competition, which includes three types of cases (divorce, labor, and lending disputes), with each case type divided into 20 label categories. Four comparative experiments were conducted to investigate the optimization of the model by placing the attention mechanism at different positions. At the same time, previous models were learned and studied and their advantages were analyzed. The results obtained from replicating and optimizing those previous models demonstrate promising legal instrument classification performance.</p></abstract>
+      <kwd-group>
+        <kwd>Legal instruments</kwd>
+        <kwd>NLP</kwd>
+        <kwd>BERT</kwd>
+        <kwd>RCNN</kwd>
+        <kwd>Element extraction model</kwd>
+      </kwd-group>
+      <counts>
+        <count count-type="contributors" count="1"/>
+        <fig-count count="11"/>
+        <table-count count="7"/>
+        <ref-count count="27"/>
+      </counts>
+    </article-meta>
+  </front>
+  <body>
+    <sec sec-type="intro">
+      <title>1. Introduction</title>
+      <p>Currently, big data and artificial intelligence (AI) technologies are playing significant roles across various industries, attracting widespread attention. Their development and application in the judicial field have become key tasks in the future of legal work. The effective use of AI in the judicial domain can bring more convenient smart judicial services to judges, lawyers, and the general public. Smart judicial services primarily involve the application of NLP technology, a core component of AI, to address real-world legal needs. First, it can provide judges and legal professionals with higher work efficiency by extracting key points from complex and lengthy legal instruments and predicting judgment outcomes, thereby assisting experts in decision-making. Second, it can offer high-quality consultation services to the general public, who may not understand legal terms or procedures, by providing specialized advice [<xref ref-type="bibr" rid="ref_1">1</xref>], [<xref ref-type="bibr" rid="ref_2">2</xref>], [<xref ref-type="bibr" rid="ref_3">3</xref>]. To promote the development of NLP technology within the smart judiciary, the China Judicial Big Data Research Institute, in collaboration with the Information Center of the Supreme People's Court, organized the "Legal Research Cup" Judicial AI Challenge. This competition used real legal cases from China Judgements Online as a dataset and conducted separate evaluations for tasks such as sentence prediction, crime amount element extraction, and dispute focus element extraction. The main body of a legal instrument typically includes case facts, reasoning (requests), and opinions (decisions). Among these, the case facts are the core of the document, containing the causes, progress, financial loss amounts, and the extent of injuries sustained by participants involved in the case. These factors play an important role in the final judgment and are considered key elements in the judicial decision-making process [<xref ref-type="bibr" rid="ref_4">4</xref>], [<xref ref-type="bibr" rid="ref_5">5</xref>], [<xref ref-type="bibr" rid="ref_6">6</xref>]. In most cases, sentences describing the case facts tend to be lengthy and require considerable time to understand. Therefore, research into judgment element extraction in legal instruments is highly significant.</p><p>Event extraction refers to the process of presenting unstructured text containing event-related information in a structured format. It has widespread applications in fields such as automatic summarization, question answering, and information retrieval. The goal of event element extraction in the legal domain is to rapidly identify the key elements of events within large volumes of text. For example, in legal instruments related to divorce cases, important details such as whether the couple has children, the custody arrangement, and whether either party has committed infidelity—factors that significantly influence a judge’s final decision—can be quickly identified. Event element extraction is a deeper level of research within the field of information extraction, involving methods and technologies such as deep learning, NLP, and pattern matching.</p><p>In recent years, event extraction has attracted considerable attention from research institutions and scholars. Research on event element extraction for English texts has been relatively advanced, with more mature techniques, while the technology for Chinese text remains relatively underdeveloped. In both domestic and international research on event extraction, much of the work is based on the Automatic Content Extraction (ACE) conference and related evaluation corpora. From a technical standpoint, the mainstream approach currently is machine learning, which is preferred over pattern-based methods due to its ease of implementation and strong scalability, making it adaptable to many other fields. Early machine learning methods were based on vocabulary and context features for classification. While in recent years, the use of neural networks for event extraction has become more common. These models require the construction of a robust architecture, after which feature learning occurs autonomously [<xref ref-type="bibr" rid="ref_7">7</xref>], [<xref ref-type="bibr" rid="ref_8">8</xref>], [<xref ref-type="bibr" rid="ref_9">9</xref>].</p><p>BERT is a pre-trained language representation model. It emphasizes the shift away from traditional unidirectional language models or shallow concatenation of two unidirectional models for pre-training, instead adopting a new Masked Language Model (MLM) approach to generate deep bidirectional language representations. Additionally, the Next Sentence Prediction (NSP) model was used to train the model’s ability to understand the relationship between sentences. The BERT paper reported new state-of-the-art results on 11 NLP tasks, which was a remarkable achievement [<xref ref-type="bibr" rid="ref_9">9</xref>], [<xref ref-type="bibr" rid="ref_10">10</xref>], [<xref ref-type="bibr" rid="ref_11">11</xref>]. This study primarily focuses on integrating the BERT pre-trained language model with an RCNN model and attention mechanisms, formulating the task of judgment element extraction as a multi-label classification problem. The element extraction dataset from the China "Legal Research Cup" Judicial AI Challenge was used as the dataset in this study. The judgment element sentence extraction task was formulated as a multi-label classification model for factual description sentences. An existing open-source code capable of multi-label classification was selected for study and reproduction, with the goal of understanding, learning, and analyzing methods and implementations of multi-label classification tasks. Through the accumulation of knowledge related to NLP, efforts were made to optimize the model and further explore the BERT model and its structure [<xref ref-type="bibr" rid="ref_12">12</xref>], [<xref ref-type="bibr" rid="ref_13">13</xref>], [<xref ref-type="bibr" rid="ref_14">14</xref>].</p>
+    </sec>
+    <sec sec-type="">
+      <title>2. Model development</title>
+      
+        <sec>
+          
+            <title>2.1. Bert model</title>
+          
+          <p>The BERT model is an autoencoding language model. Unlike other language models, BERT is designed to perform pre-training on unlabeled text, where both left and right context from all layers are jointly adjusted to generate deep bidirectional representations. By training on large amounts of unlabeled text, BERT significantly improves the accuracy of NLP tasks [<xref ref-type="bibr" rid="ref_15">15</xref>], [<xref ref-type="bibr" rid="ref_16">16</xref>], [<xref ref-type="bibr" rid="ref_17">17</xref>].</p><p>BERT not only fully leverages large-scale, unlabeled text to mine rich semantic information but also deepens the NLP model's depth. The BERT model uses the Transformer model as the core algorithmic framework. The Transformer is particularly effective at capturing bidirectional relationships within sentences, meaning it can effectively capture contextual information within the text. This ability is fundamentally based on the attention mechanism.</p><p>To enable BERT to handle various downstream tasks, the input sequence was tokenized. In addition to word identifiers, a special classification token [CLS] was inserted at the beginning of each input sequence, and a specific separator token [SEP] was inserted between two input sentences, with two sentences fixed as a sequence in each input. For a given token, its input representation was constructed by adding together the corresponding token, segment, and position embeddings, as shown in <xref ref-type="fig" rid="fig_1">Figure 1</xref>.</p>
+          
+            <fig id="fig_1">
+              <label>Figure 1</label>
+              <caption>
+                <title>Representation of the BERT input sequence</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/1/img_n02McJn7c7SLqPQt.png"/>
+            </fig>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>2.2. Attention mechanism</title>
+          
+          <p>When a lengthy legal text is presented, humans tend to focus on the most important information during the reading process. For instance, when encountering a new name, rather than remembering the specific name, attention is typically directed towards the relationship of that person to other individuals. To enable machines to exhibit similar attention capabilities, the attention mechanism was proposed. The core idea is to focus on the most important parts of the input sequence, that is, to distinguish the impact of different sections of the input on the output. This mechanism, by providing a direct path between the output and input, helps mitigate the vanishing gradient problem [<xref ref-type="bibr" rid="ref_18">18</xref>], [<xref ref-type="bibr" rid="ref_19">19</xref>], [<xref ref-type="bibr" rid="ref_20">20</xref>].</p>
+          
+            <fig id="fig_2">
+              <label>Figure 2</label>
+              <caption>
+                <title>Block diagram of the attention mechanism calculation</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/1/img_2wV4o_OiBRsM-Yw9.png"/>
+            </fig>
+          
+          <p>The attention mechanism primarily involves three concepts: query, key, and value. In a given text, the target word and its surrounding context words each have their initial value. The attention mechanism treats the target word as the query, while the context words are treated as keys. The similarity between the query and each key is used as a weight, and the value of the context words is integrated into the initial value of the target word. As shown in <xref ref-type="fig" rid="fig_2">Figure 2</xref>, the attention mechanism takes the semantic vector representations of the target word and the context words as input. First, linear transformations are applied to obtain the query vector representation of the target word, the key vector representations of the context words, and the original value representations of the target word and the context words. Then, the similarity between the query vector and each key vector is computed to determine the weights. These weights are used to compute a weighted fusion of the value vector of the target word and the value vectors of the context words, producing the output of the attention mechanism, i.e., the enhanced semantic vector representation of the target word.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>2.3. Rcnn model</title>
+          
+          <p>The RCNN integrates the structure of Recurrent Neural Network (RNN) with a max-pooling layer, combining the advantages of both Convolutional Neural Network (CNN) and RNN [<xref ref-type="bibr" rid="ref_21">21</xref>], [<xref ref-type="bibr" rid="ref_22">22</xref>], [<xref ref-type="bibr" rid="ref_23">23</xref>].</p><p>The RCNN model is a bidirectional recurrent structure, which, compared to traditional window-based neural networks, significantly reduces noise and better captures contextual information. It retains a wider range of word order during the learning of text representations. A max-pooling layer, which can automatically identify key features that play a critical role in text classification, is used to capture essential information from the text. The RCNN framework, as shown in <xref ref-type="fig" rid="fig_3">Figure 3</xref>, consists of three parts: the first part is a bidirectional Long Short-Term Memory (BiLSTM) structure primarily used to learn word representations, the second part is a max-pooling layer, and the third part is a fully connected layer used for learning text representations.</p><p>The overall process of constructing the RCNN model is as follows: a) Contextual information is obtained using the BiLSTM, similar to a language model. b) The hidden layer output from the BiLSTM is concatenated with the word vectors. c) The concatenated vector is non-linearly mapped to a lower-dimensional space. d) The maximum value from each time step across the sequence is selected at each position in the vector, producing the final feature vector, similar to the max-pooling process. e) A softmax classifier is applied [<xref ref-type="bibr" rid="ref_24">24</xref>], [<xref ref-type="bibr" rid="ref_25">25</xref>], [<xref ref-type="bibr" rid="ref_26">26</xref>].</p>
+          
+            <fig id="fig_3">
+              <label>Figure 3</label>
+              <caption>
+                <title>Framework of the RCNN model</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/1/img_9NobeXJPurhgyguk.png"/>
+            </fig>
+          
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>3. Multi-label classification task based on the bert+rcnn+attention model</title>
+      <p>The flowchart of Model 1 is shown in <xref ref-type="fig" rid="fig_4">Figure 4</xref>. The word embeddings generated by the BERT model were input into the BiLSTM model. The use of a BiLSTM model not only addresses the issues of gradient vanishing and explosion commonly found in traditional RNN models but also mitigates the long-term dependency problems within the network. The specific structure of the BiLSTM is shown in <xref ref-type="fig" rid="fig_5">Figure 5</xref>, where <inline-formula>
+  <mml:math id="mkc9hqvcuf">
+    <mml:msub>
+      <mml:mi>x</mml:mi>
+      <mml:mn>1</mml:mn>
+    </mml:msub>
+    <mml:msub>
+      <mml:mi>x</mml:mi>
+      <mml:mn>2</mml:mn>
+    </mml:msub>
+    <mml:msub>
+      <mml:mi>x</mml:mi>
+      <mml:mi>N</mml:mi>
+    </mml:msub>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>…</mml:mo>
+  </mml:math>
+</inline-formula> represent the segmented data, <inline-formula>
+  <mml:math id="mh4pzz4as2">
+    <mml:msub>
+      <mml:mi>C</mml:mi>
+      <mml:mrow>
+        <mml:mi>f</mml:mi>
+        <mml:mo>,</mml:mo>
+        <mml:mn>0</mml:mn>
+      </mml:mrow>
+    </mml:msub>
+    <mml:msub>
+      <mml:mi>C</mml:mi>
+      <mml:mrow>
+        <mml:mi>f</mml:mi>
+        <mml:mo>,</mml:mo>
+        <mml:mn>1</mml:mn>
+      </mml:mrow>
+    </mml:msub>
+    <mml:msub>
+      <mml:mi>C</mml:mi>
+      <mml:mrow>
+        <mml:mi>f</mml:mi>
+        <mml:mi>N</mml:mi>
+        <mml:mo>,</mml:mo>
+        <mml:mo>−</mml:mo>
+        <mml:mn>1</mml:mn>
+      </mml:mrow>
+    </mml:msub>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>…</mml:mo>
+  </mml:math>
+</inline-formula> are the cell states of the forward Long Short-Term Memory (LSTM) layer, and <inline-formula>
+  <mml:math id="m3ipztk7wf">
+    <mml:msub>
+      <mml:mi>C</mml:mi>
+      <mml:mrow>
+        <mml:mi>b</mml:mi>
+        <mml:mo>,</mml:mo>
+        <mml:mo>,</mml:mo>
+        <mml:mn>1</mml:mn>
+      </mml:mrow>
+    </mml:msub>
+    <mml:msub>
+      <mml:mi>C</mml:mi>
+      <mml:mrow>
+        <mml:mi>b</mml:mi>
+        <mml:mo>,</mml:mo>
+        <mml:mo>,</mml:mo>
+        <mml:mo>…</mml:mo>
+        <mml:mn>2</mml:mn>
+      </mml:mrow>
+    </mml:msub>
+    <mml:msub>
+      <mml:mi>C</mml:mi>
+      <mml:mrow>
+        <mml:mi>b</mml:mi>
+        <mml:mi>N</mml:mi>
+        <mml:mo>,</mml:mo>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula> are the cell states of the backward LSTM layer. Compared to the unidirectional LSTM, the BiLSTM improves the model's performance on sequence classification tasks by extracting deeper semantic information from the text. This allows for better contextual understanding and more accurate inferential decisions. The outputs of the BiLSTM were concatenated in the merging layer to form the word representations. Once all the word representations were computed, they were passed through the max-pooling layer, which converted texts of varying lengths into fixed-length vectors. The max-pooling layer captured the entire text's information. The output was then passed through a fully connected layer, which served as the "classifier" in the network. This layer mapped the "distributed feature representations" to the label space of the samples. The final part of the model was the output layer, where the softmax function was applied to the output vector, processing each of the raw output values. The formula for the softmax function is given in Eq. (1).</p>
+      
+        <disp-formula>
+          <label>(1)</label>
+          <mml:math id="mz9r2jwhyz">
+            <mml:msub>
+              <mml:mi>y</mml:mi>
+              <mml:mi>k</mml:mi>
+            </mml:msub>
+            <mml:mo>=</mml:mo>
+            <mml:msup>
+              <mml:mi>e</mml:mi>
+              <mml:mrow>
+                <mml:msub>
+                  <mml:mi>a</mml:mi>
+                  <mml:mi>k</mml:mi>
+                </mml:msub>
+              </mml:mrow>
+            </mml:msup>
+            <mml:mrow>
+              <mml:mo>/</mml:mo>
+            </mml:mrow>
+            <mml:mrow>
+              <mml:mo>(</mml:mo>
+              <mml:mo>)</mml:mo>
+              <mml:msub>
+                <mml:mi>Σ</mml:mi>
+                <mml:mi>i</mml:mi>
+              </mml:msub>
+              <mml:msup>
+                <mml:mi>e</mml:mi>
+                <mml:mrow>
+                  <mml:msub>
+                    <mml:mi>a</mml:mi>
+                    <mml:mi>i</mml:mi>
+                  </mml:msub>
+                </mml:mrow>
+              </mml:msup>
+            </mml:mrow>
+          </mml:math>
+        </disp-formula>
+      
+      <p>The denominator consolidates all factors from the raw output values, ensuring that the output of the softmax function can be interpreted as "probabilities," with the sum of the outputs equal to 1.</p><p>The flowchart of Model 2 is shown in <xref ref-type="fig" rid="fig_6">Figure 6</xref>. The word embeddings generated by the BERT model were input into the BiLSTM model for word-level representation. These word representations were then concatenated and passed into a hierarchical attention mechanism. The hierarchical attention mechanism assigned different weights to various features in the text, extracting and merging different hierarchical features based on their importance. The output was subsequently passed through a fully connected layer for classification, followed by the final output. Model 2, based on Model 1, replaced the max-pooling layer with a sentence-level attention mechanism, aiming to place greater emphasis on the relationships between sentence-level elements, facilitating a better connection between preceding and succeeding sentences.</p>
+      
+        <fig id="fig_4">
+          <label>Figure 4</label>
+          <caption>
+            <title>Flowchart of Model 1</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/1/img_4KlGPOFXHqJWJID3.png"/>
+        </fig>
+      
+      
+        <fig id="fig_5">
+          <label>Figure 5</label>
+          <caption>
+            <title>BiLSTM structure</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/1/img_DuAl9fniQwTnKt5t.png"/>
+        </fig>
+      
+      
+        <fig id="fig_6">
+          <label>Figure 6</label>
+          <caption>
+            <title>Flowchart of Model 2</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/1/img_eA6ysaKb8u6Y-afK.png"/>
+        </fig>
+      
+      <p>The flowchart of Model 3 is shown in <xref ref-type="fig" rid="fig_7">Figure 7</xref>. The word embeddings generated by the BERT model were input into the BiLSTM model, while an attention mechanism was added to enhance the attention paid to inter-word relationships during word-level representation. This improved the representation of the relationships between words in legal texts. The resulting representations were then concatenated and passed through the max-pooling layer, retaining the most important components for classification. The text was then classified, and the final output was generated. Model 3 built upon Model 1 by adding a word-level attention mechanism after both the forward and backward LSTM layers, aiming at enhancing the relationships between words by incorporating contextual information.</p>
+      
+        <fig id="fig_7">
+          <label>Figure 7</label>
+          <caption>
+            <title>Flowchart of Model 3</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/1/img_dylD2zpXbfHKl-rF.png"/>
+        </fig>
+      
+      
+        <fig id="fig_8">
+          <label>Figure 8</label>
+          <caption>
+            <title>Flowchart of Model 4</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/1/img_1tlh7YBjGq-URFuM.png"/>
+        </fig>
+      
+      <p>The flowchart of Model 4 is shown in <xref ref-type="fig" rid="fig_8">Figure 8</xref>. The word embeddings generated by the BERT model were input into the BiLSTM model, while an attention mechanism was added to enhance the attention paid to inter-word relationships during the word-level representation process. The resulting word representations were then concatenated and passed into the hierarchical attention mechanism. The hierarchical attention mechanism encoded the weights of the features of each sentence, thereby increasing the relationship between sentences. The output was then sent to the fully connected layer for classification, followed by the final output. Model 4 was based on Model 3, with the max-pooling layer replaced by the sentence-level attention mechanism. Compared to Model 1, this model establishes tighter connections both between sentences and between words within sentences.</p>
+    </sec>
+    <sec sec-type="">
+      <title>4. Experimentation</title>
+      <p>The model employed in this experiment is a fusion model of BERT+ RCNN+ attention. The platform AutoDL was selected for model construction and execution.</p>
+      
+        <sec>
+          
+            <title>4.1. Dataset</title>
+          
+          <p>The dataset used in this study was sourced from the "Legal Research Cup" AI Challenge. In the element extraction track, the organizer provided a dataset based on real legal instruments from the China Judgments Online platform for public evaluation. This dataset contains three types of cases: divorce, labor, and lending disputes. Specifically, the divorce dataset includes 11,685 legal texts, the labor dispute dataset contains 5,680 texts, and the lending dispute dataset consists of 5,123 texts.</p><p>The content of legal instruments primarily consists of information related to the individuals and relationships involved in the case, the cause and process of the events, the losses incurred, relevant legal provisions, and the final judgment. The content that significantly influences the judgment result is considered a key reference. In lengthy legal instruments, extracting such important references is essential, which can swiftly assist legal professionals in understanding the specifics of a case and making predictions [<xref ref-type="bibr" rid="ref_27">27</xref>].</p><p>In the legal instrument dataset, data were annotated using the format <inline-formula>
+  <mml:math id="mnshilxog6">
+    <mml:mo fence="false">{</mml:mo>
+  </mml:math>
+</inline-formula>“labels”: [DV1], “sentence”: “xxx.”<inline-formula>
+  <mml:math id="mqd3a3f9cc">
+    <mml:mo fence="false">}</mml:mo>
+  </mml:math>
+</inline-formula>. For example, in the divorce case dataset, a legal text may include the following sentence: <inline-formula>
+  <mml:math id="mmkxm87met">
+    <mml:mo fence="false">{</mml:mo>
+  </mml:math>
+</inline-formula>“labels”: [DV1], “sentence”: “In February 1998, a daughter named Li Mouyi was born, and on April 15, 2005, a second daughter named Li Moucheng was born. In November 2007, a third daughter named Li Mouding was born.”<inline-formula>
+  <mml:math id="m29gqw0l68">
+    <mml:mo fence="false">}</mml:mo>
+  </mml:math>
+</inline-formula>, indicating that this sentence is labeled as a divorce case (DV1), with children born during the marriage. Similarly, <inline-formula>
+  <mml:math id="mkakrxih9s">
+    <mml:mo fence="false">{</mml:mo>
+  </mml:math>
+</inline-formula>“labels”: [DV3], “sentence”: “4. The defendant stated that a Swiss watch given to the plaintiff before marriage is to be considered as belonging to the plaintiff, and the plaintiff will compensate the defendant with 8,500 yuan.”<inline-formula>
+  <mml:math id="mdnz5ifpql">
+    <mml:mo fence="false">}</mml:mo>
+  </mml:math>
+</inline-formula> indicates that this sentence is labeled as a divorce case (DV3), involving shared marital property. Furthermore, <inline-formula>
+  <mml:math id="m2ny080p3a">
+    <mml:mo fence="false">{</mml:mo>
+  </mml:math>
+</inline-formula>“labels”: [DV1, DV19, DV2], “sentence”: “In September 2012, the daughter Zhao Mouyi moved in to live with the plaintiff Lin Mou. Various expenses for the child’s school, living expenses, medical expenses, etc., were all borne by the plaintiff.”<inline-formula>
+  <mml:math id="mpi5g8r1ga">
+    <mml:mo fence="false">}</mml:mo>
+  </mml:math>
+</inline-formula> indicates a multi-label case, where the sentence is tagged with DV1 (children born during the marriage), DV2 (custody of children with limited capacity), and DV19 (children living with the non-custodial parent).</p><p>For different types of cases, the factors that ultimately influence the judgment differ. In this dataset, each type of case was divided into 20 labels based on the key content that impacts the judgment. The labels for divorce cases are shown in <xref ref-type="table" rid="table_1">Table 1</xref>, those for labor cases in <xref ref-type="table" rid="table_2">Table 2</xref>, and those for lending cases in <xref ref-type="table" rid="table_3">Table 3</xref>.</p>
+          
+            <table-wrap id="table_1">
+              <label>Table 1</label>
+              <caption>
+                <title>Multi-label categories for divorce cases</title>
+              </caption>
+              <table><tr><th >Label</th><th >Element Description</th></tr><tr><td >DV1</td><td >Children born during the marriage</td></tr><tr><td >DV2</td><td >Custody of children with limited capacity</td></tr><tr><td >DV3</td><td >Shared marital property</td></tr><tr><td >DV4</td><td >Payment of child support</td></tr><tr><td >DV5</td><td >Division of real property</td></tr><tr><td >DV6</td><td >Separation after marriage</td></tr><tr><td >DV7</td><td >Second lawsuit for divorce</td></tr><tr><td >DV8</td><td >Monthly payment of child support</td></tr><tr><td >DV9</td><td >Divorce granted</td></tr><tr><td >DV10</td><td >Shared marital debts</td></tr><tr><td >DV11</td><td >Personal property acquired before marriage</td></tr><tr><td >DV12</td><td >Statutory grounds for divorce</td></tr><tr><td >DV13</td><td >Failure to fulfill family obligations</td></tr><tr><td >DV14</td><td >Existence of a non-marital child</td></tr><tr><td >DV15</td><td >Provision of appropriate assistance</td></tr><tr><td >DV16</td><td >Failure to perform divorce agreement</td></tr><tr><td >DV17</td><td >Damages compensation</td></tr><tr><td >DV18</td><td >Separation for more than two years due to</td></tr><tr><td >DV19</td><td >Childrencen living with the non-custodial parent</td></tr><tr><td >DV20</td><td >Personal property acquired after marriage</td></tr></table>
+            </table-wrap>
+          
+          
+            <table-wrap id="table_2">
+              <label>Table 2</label>
+              <caption>
+                <title>Multi-label categories for labor cases</title>
+              </caption>
+              <table><tr><th >Label</th><th >Element Description</th></tr><tr><td >LB1</td><td >Termination of employment relationship</td></tr><tr><td >LB2</td><td >Payment of wages</td></tr><tr><td >LB3</td><td >Payment of economic compensation</td></tr><tr><td >LB4</td><td >Non-payment of full wages</td></tr><tr><td >LB5</td><td >Existence of an employment relationship</td></tr><tr><td >LB6</td><td >Failure to sign a labor contract</td></tr><tr><td >LB7</td><td >Signing of a labor contract</td></tr><tr><td >LB8</td><td >Payment of overtime wages</td></tr><tr><td >LB9</td><td >Payment of double wages for not signing a labor contract</td></tr><tr><td >LB10</td><td >Payment of work-related injury compensation</td></tr><tr><td >LB11</td><td >Lack of prior labor arbitration procedures</td></tr><tr><td >LB12</td><td >No requirement to pay compensation for illegal termination of employment</td></tr><tr><td >LB13</td><td >Economic layoffs</td></tr><tr><td >LB14</td><td >Non-payment of bonuses</td></tr><tr><td >LB15</td><td >Illegal collection of property from employees</td></tr><tr><td >LB16</td><td >Special occupations</td></tr><tr><td >LB17</td><td >Payment of compensation for work-related death (including funeral allowance and bereavement compensation)</td></tr><tr><td >LB18</td><td >Employer's early notice of termination</td></tr><tr><td >LB19</td><td >Legal entity status has been terminated</td></tr><tr><td >LB20</td><td >Existence of a mediation agreement</td></tr></table>
+            </table-wrap>
+          
+          
+            <table-wrap id="table_3">
+              <label>Table 3</label>
+              <caption>
+                <title>Multi-label categories for lending cases</title>
+              </caption>
+              <table><tr><th >Label</th><th >Element Description</th></tr><tr><td >LN1</td><td >Transfer of creditor's rights</td></tr><tr><td >LN2</td><td >Loan amount (in ten thousand yuan)</td></tr><tr><td >LN3</td><td >Existence of a loan agreement</td></tr><tr><td >LN4</td><td >Lender is a financial institution</td></tr><tr><td >LN5</td><td >Demand for repayment of principal debt</td></tr><tr><td >LN6</td><td >Loan by a company, unit, or organization</td></tr><tr><td >LN7</td><td >Joint and several guarantee liability</td></tr><tr><td >LN8</td><td >Demand for repayment</td></tr><tr><td >LN9</td><td >Payment of interest</td></tr><tr><td >LN10</td><td >Signing of a guarantee agreement</td></tr><tr><td >LN11</td><td >Existence of a written repayment commitment</td></tr><tr><td >LN12</td><td >Guarantee agreement is invalid, revoked, or terminated</td></tr><tr><td >LN13</td><td >Refusal to perform repayment</td></tr><tr><td >LN14</td><td >Exemption of guarantor from liability</td></tr><tr><td >LN15</td><td >Guarantor does not bear liability</td></tr><tr><td >LN16</td><td >Pledgor is a company</td></tr><tr><td >LN17</td><td >Lender fails to provide loan in accordance with</td></tr><tr><td >LN18</td><td >agreed date or amount</td></tr><tr><td >LN19</td><td >Debtor transfers debt</td></tr><tr><td >LN20</td><td >Agreed interest rate is unclear</td></tr></table>
+            </table-wrap>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>4.2. Experimental setup</title>
+          
+          <p>The modeling in this experiment was performed using the TensorFlow deep learning framework, with the GPU set to an RTX 3080 (10 GB) and a memory size of 40 GB. The programming language used was Python 3.8, and the network setup and execution were conducted on a cloud server.</p><p>The pre-trained BERT model used in this experiment was Google’s open-source bert_base_chinese. The hyperparameters of BERT generally consist of three components: the number of encoder layers in the Transformer ($L<inline-formula>
+  <mml:math id="mzxywwg5vi">
+    <mml:mo>)</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+  </mml:math>
+</inline-formula>H<inline-formula>
+  <mml:math id="mns0s1ro5s">
+    <mml:mo>)</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>m</mml:mi>
+  </mml:math>
+</inline-formula>A<inline-formula>
+  <mml:math id="m4o6qc51gy">
+    <mml:mo>)</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>:</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mi>T</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>B</mml:mi>
+    <mml:mi>E</mml:mi>
+    <mml:mi>R</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>B</mml:mi>
+    <mml:mi>E</mml:mi>
+    <mml:mi>R</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>s</mml:mi>
+  </mml:math>
+</inline-formula>L<inline-formula>
+  <mml:math id="mm9mqs9zmf">
+    <mml:mo>=</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mn>12</mml:mn>
+  </mml:math>
+</inline-formula>H<inline-formula>
+  <mml:math id="m11fg1z4c5">
+    <mml:mo>=</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mn>768</mml:mn>
+  </mml:math>
+</inline-formula>A<inline-formula>
+  <mml:math id="mtzyk9ndf9">
+    <mml:mo>=</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mn>12</mml:mn>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>B</mml:mi>
+    <mml:mi>E</mml:mi>
+    <mml:mi>R</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>s</mml:mi>
+  </mml:math>
+</inline-formula>L<inline-formula>
+  <mml:math id="mt7x1n3pbf">
+    <mml:mo>=</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mn>24</mml:mn>
+  </mml:math>
+</inline-formula>A<inline-formula>
+  <mml:math id="m4fx7d7m5j">
+    <mml:mo>=</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mn>1024</mml:mn>
+  </mml:math>
+</inline-formula>H$ = 16) [<xref ref-type="bibr" rid="ref_20">20</xref>]. In this experiment, the BERTbase model parameters were selected.</p><p>The main parameters set for different case types in the experiment are listed in <xref ref-type="table" rid="table_4">Table 4</xref>. In this study, <italic>Train_epochs</italic> refers to the number of iterations over the dataset, <italic>Batch_size</italic> indicates the number of samples in each training batch (with weights being updated after each training pass through backpropagation), <italic>Max_length</italic> specifies the maximum allowable length of input text strings in the input field, and <italic>Learning_rate</italic> represents the initial learning rate.</p><p>The loss function used in this experiment was the Focal loss method. This function reduces the weight of easily classified samples, allowing the model to focus more on the difficult-to-classify samples during training. The expression for the Focal loss function is shown in Eq. (2):</p>
+          
+            <disp-formula>
+              <label>(2)</label>
+              <mml:math id="mgbg20jai5">
+                <mml:msub>
+                  <mml:mi>F</mml:mi>
+                  <mml:mi>l</mml:mi>
+                </mml:msub>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:msub>
+                    <mml:mi>p</mml:mi>
+                    <mml:mi>t</mml:mi>
+                  </mml:msub>
+                </mml:mrow>
+                <mml:mrow>
+                  <mml:mi>a</mml:mi>
+                </mml:mrow>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:msub>
+                    <mml:mi>p</mml:mi>
+                    <mml:mi>t</mml:mi>
+                  </mml:msub>
+                </mml:mrow>
+                <mml:mo>=</mml:mo>
+                <mml:mo>−</mml:mo>
+                <mml:mo>∗</mml:mo>
+                <mml:mo>∗</mml:mo>
+                <mml:mo>⁡</mml:mo>
+                <mml:msup>
+                  <mml:mrow>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>−</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:mn>1</mml:mn>
+                    <mml:msub>
+                      <mml:mi>p</mml:mi>
+                      <mml:mi>t</mml:mi>
+                    </mml:msub>
+                  </mml:mrow>
+                  <mml:mi>γ</mml:mi>
+                </mml:msup>
+                <mml:mi>log</mml:mi>
+              </mml:math>
+            </disp-formula>
+          
+          <p> where, <inline-formula>
+  <mml:math id="mxtd6s3uvi">
+    <mml:msub>
+      <mml:mi>p</mml:mi>
+      <mml:mi>t</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> represents the predicted probability of the sample, $a<inline-formula>
+  <mml:math id="mv9pl5jc7y">
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>r<inline-formula>
+  <mml:math id="mpdwlswe27">
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>W</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mo>.</mml:mo>
+  </mml:math>
+</inline-formula>r=0<inline-formula>
+  <mml:math id="m86u7frgeg">
+    <mml:mo>,</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>F</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>q</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>W</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+  </mml:math>
+</inline-formula>r&gt;0<inline-formula>
+  <mml:math id="mnp72kke3h">
+    <mml:mo>,</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>F</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+  </mml:math>
+</inline-formula>a=0.25<inline-formula>
+  <mml:math id="m63g7x7dsf">
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+  </mml:math>
+</inline-formula>r=2$.</p>
+          
+            <table-wrap id="table_4">
+              <label>Table 4</label>
+              <caption>
+                <title>Parameter settings</title>
+              </caption>
+              <table><tbody><tr><th colspan="1" rowspan="1" colwidth="113"><p>Case Type</p></th><th colspan="1" rowspan="1" colwidth="102"><p><italic>Train_Epochs</italic></p></th><th colspan="1" rowspan="1" colwidth="83"><p><italic>Batch_Size</italic></p></th><th colspan="1" rowspan="1" colwidth="87"><p><italic>Max_Length</italic></p></th><th colspan="1" rowspan="1" colwidth="141"><p><italic>Learning_Rate</italic></p></th></tr><tr><td colspan="1" rowspan="1" colwidth="113"><p>Divorce</p></td><td colspan="1" rowspan="1" colwidth="102"><p>10</p></td><td colspan="1" rowspan="1" colwidth="83"><p>20</p></td><td colspan="1" rowspan="1" colwidth="87"><p>128</p></td><td colspan="1" rowspan="1" colwidth="141"><p>$2 \mathrm{e}-5<mml:math id="m356od2r8u">
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>−</mml:mo>
+  <mml:mo>:</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>−</mml:mo>
+  <mml:mo>:</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>−</mml:mo>
+  <mml:mo>:</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>−</mml:mo>
+  <mml:mo>:</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>−</mml:mo>
+  <mml:mo>:</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>i</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>h</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>y</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>x</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>i</mml:mi>
+  <mml:mi>g</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>L</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>b</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>i</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>h</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>y</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>x</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>i</mml:mi>
+  <mml:mi>g</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>i</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>h</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>y</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>x</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>i</mml:mi>
+  <mml:mi>g</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>i</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>h</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>y</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>x</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>i</mml:mi>
+  <mml:mi>g</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>i</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>h</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>y</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>x</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>i</mml:mi>
+  <mml:mi>g</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>113</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>102</mml:mn>
+  <mml:mn>10</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>83</mml:mn>
+  <mml:mn>20</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>87</mml:mn>
+  <mml:mn>150</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>141</mml:mn>
+</mml:math>2 \mathrm{e}-5<mml:math id="mjwyhxpeak">
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>−</mml:mo>
+  <mml:mo>:</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>−</mml:mo>
+  <mml:mo>:</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>−</mml:mo>
+  <mml:mo>:</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>−</mml:mo>
+  <mml:mo>:</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>−</mml:mo>
+  <mml:mo>:</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>i</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>h</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>y</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>x</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>i</mml:mi>
+  <mml:mi>g</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>L</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>i</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>g</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>i</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>h</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>y</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>x</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>i</mml:mi>
+  <mml:mi>g</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>i</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>h</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>y</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>x</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>i</mml:mi>
+  <mml:mi>g</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>i</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>h</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>y</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>x</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>i</mml:mi>
+  <mml:mi>g</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>i</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>h</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>y</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>x</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>i</mml:mi>
+  <mml:mi>g</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>113</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>102</mml:mn>
+  <mml:mn>10</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>83</mml:mn>
+  <mml:mn>10</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>87</mml:mn>
+  <mml:mn>200</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>141</mml:mn>
+</mml:math>2 \mathrm{e}-5$</p></td></tr></tbody></table>
+            </table-wrap>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>4.3. Evaluation metrics and results</title>
+          
+          <p>For conventional classification model evaluation, precision, recall, and the F1-score are commonly used as metrics. In this experiment, the F1-score was selected as the evaluation criterion. The F1-score is the harmonic mean of precision and recall. Considering only precision or only recall would not provide a comprehensive measure of a model’s performance; thus, the F1-score was used to balance both precision and recall. The experimental results are shown in <xref ref-type="table" rid="table_5">Table 5</xref>, <xref ref-type="table" rid="table_6">Table 6</xref>, and <xref ref-type="table" rid="table_7">Table 7</xref>.</p>
+          
+            <table-wrap id="table_5">
+              <label>Table 5</label>
+              <caption>
+                <title>Data results of the divorce cases</title>
+              </caption>
+              <table><tr><th >Model</th><th >F1-score</th></tr><tr><td >1</td><td >0.768</td></tr><tr><td >2</td><td >0.770</td></tr><tr><td >3</td><td >0.758</td></tr><tr><td >4</td><td >0.764</td></tr></table>
+            </table-wrap>
+          
+          
+            <table-wrap id="table_6">
+              <label>Table 6</label>
+              <caption>
+                <title>Data results of the labor cases</title>
+              </caption>
+              <table><tr><th >Model</th><th >F1-score</th></tr><tr><td >1</td><td >0.672</td></tr><tr><td >2</td><td >0.680</td></tr><tr><td >3</td><td >0.660</td></tr><tr><td >4</td><td >0.679</td></tr></table>
+            </table-wrap>
+          
+          
+            <table-wrap id="table_7">
+              <label>Table 7</label>
+              <caption>
+                <title>Data results of the lending cases</title>
+              </caption>
+              <table><tr><th >Model</th><th >F1-score</th></tr><tr><td >1</td><td >0.666</td></tr><tr><td >2</td><td >0.687</td></tr><tr><td >3</td><td >0.658</td></tr><tr><td >4</td><td >0.686</td></tr></table>
+            </table-wrap>
+          
+          <p>From the three tables above, it can be observed that Model 2 consistently achieved the highest F1-score. Model 3 exhibited a lower F1-score compared to Model 1, and similarly, Model 4 showed a lower F1-score than Model 2. This suggests that the inclusion of word-level attention mechanisms did not yield positive results and, in fact, led to a decrease in the F1-score. When comparing Model 2 to Model 1, the F1-score was improved, indicating that replacing the max-pooling layer with a hierarchical attention mechanism could optimize the model.</p><p>The term loss refers to the loss value of the training set. <xref ref-type="fig" rid="fig_9">Figure 9</xref>, <xref ref-type="fig" rid="fig_10">Figure 10</xref>, and <xref ref-type="fig" rid="fig_11">Figure 11</xref> display the loss curves for each model in the divorce, labor, and lending cases, respectively.</p>
+          
+            <fig id="fig_9">
+              <label>Figure 9</label>
+              <caption>
+                <title>Loss curve for the divorce cases</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/1/img_Tatgwvkehhjs49f-.png"/>
+            </fig>
+          
+          
+            <fig id="fig_10">
+              <label>Figure 10</label>
+              <caption>
+                <title>Loss curve for the labor cases</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/1/img_RS2lvE_UAcn9nRBs.png"/>
+            </fig>
+          
+          
+            <fig id="fig_11">
+              <label>Figure 11</label>
+              <caption>
+                <title>Loss curve for the lending cases</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/1/img_6gvT717YJT66AFrM.png"/>
+            </fig>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>4.4. Analysis of the experimental results</title>
+          
+          <p>The data presented above indicate that the fusion model of BERT combined with RCNN is capable of effectively performing multi-label classification tasks. As shown in <xref ref-type="table" rid="table_5">Table 5</xref>, <xref ref-type="table" rid="table_6">Table 6</xref>, and <xref ref-type="table" rid="table_7">Table 7</xref>, replacing the max pooling layer with a hierarchical attention mechanism network improves the F1-score across all three case types. This suggests that the hierarchical attention mechanism, compared to the max pooling layer, is able to more accurately focus on the relationships between sentences in legal texts. This is due to the embedding process of the hierarchical attention mechanism, which increases the degree of sentence-level association, whereas the max pooling layer does not emphasize sentence relationships as effectively. However, in the legal text dataset, adding an attention mechanism after the BiLSTM to focus on word-level relationships did not lead to an improvement in the F1-score. Instead, it resulted in a slight decrease, indicating that the word-level attention mechanism increased the complexity of the model without optimizing it. The loss curves shown in <xref ref-type="fig" rid="fig_9">Figure 9</xref>, <xref ref-type="fig" rid="fig_10">Figure 10</xref>, and <xref ref-type="fig" rid="fig_11">Figure 11</xref> reveal that the loss for Model 1 and Model 3 decreases more slowly within the first 200 steps, while for Models 2 and 4, where the max pooling layer is replaced with an attention mechanism, the loss decreases more rapidly. For all models, as the number of neural network training steps increases, the loss decreases to below 0.3 and stabilizes. Overall, Model 2, which is the BERT-RCNN fusion model with the max pooling layer replaced by the hierarchical attention mechanism, performs better in classification. It rapidly reduces the loss and stabilizes as training progresses. The replacement of the max pooling layer with the hierarchical attention mechanism effectively captures the semantic relationships between sentences, concentrating the learning on the sentences most relevant to text classification. This results in further optimization of the network structure and a significant improvement in classification performance.</p>
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>5. Conclusion</title>
+      <p>In this study, the BERT pre-trained model was combined with the improved traditional RCNN model for multi-label classification tasks of legal instruments. The BERT model is capable of extracting key features of words within sentences and extracting relational features at multiple levels, thereby providing a more comprehensive representation of sentence semantics. By integrating it with the RCNN model augmented with an attention mechanism, the degree of inter-sentence relationships in legal texts was increased during the embedding process, enabling concurrent execution. Compared to traditional models, this algorithm shows improved classification accuracy. This is due to the accumulation of training data from millions of iterations within the pre-trained model, which allows the word embedding process in the proposed method to retain more contextual and syntactic information. The inclusion of a hierarchical attention mechanism in the model enables greater focus on the relationships between key sentences during the learning process, thereby achieving more accurate classification results.</p>
+    </sec>
+  </body>
+  <back>
+    <ack>
+      <title>Acknowledgments</title>
+      
+    </ack>
+    <app-group>
+      <app>
+        <title>Appendix</title>
+        
+      </app>
+    </app-group>
+    <notes>
+      <title>Author Contributions</title>
+      
+    </notes>
+    <notes>
+      <title>Funding</title>
+      
+    </notes>
+    <notes>
+      <title>Informed Consent Statement</title>
+      
+    </notes>
+    <notes>
+      <title>Data Availability Statement</title>
+      <p>The data used to support the findings of this study are available from the corresponding author upon request.</p>
+    </notes>
+    <notes notes-type="COI-statement">
+      <title>Conflicts of Interest</title>
+      <p>The author declares no conflict of interest.</p>
+    </notes>
+    <ref-list>
+      <title>References</title>
+      <ref id="ref_1">
+        <label>1.</label>
+        <element-citation publication-type="journal">
+          <volume>38</volume>
+          <page-range>160-166</page-range>
+          <issue>9</issue>
+          <year>2021</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Zhang</surname>
+              <given-names>Hu</given-names>
+            </name>
+            <name>
+              <surname>Pan</surname>
+              <given-names>Bang Ze</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>Ying</given-names>
+            </name>
+          </person-group>
+          <article-title>Judgment elements extraction for factual description of legal documents based on deep learning</article-title>
+          <source>Comput. Appl. Softw.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_2">
+        <label>2.</label>
+        <element-citation publication-type="journal">
+          <volume>47</volume>
+          <page-range>1-11</page-range>
+          <issue>4</issue>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Dai</surname>
+              <given-names>Jian Hua</given-names>
+            </name>
+            <name>
+              <surname>Peng</surname>
+              <given-names>Ruo Yao</given-names>
+            </name>
+            <name>
+              <surname>Xu</surname>
+              <given-names>Lu</given-names>
+            </name>
+            <name>
+              <surname>Jiang</surname>
+              <given-names>Chao</given-names>
+            </name>
+            <name>
+              <surname>Zeng</surname>
+              <given-names>Dao Jian</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>Yang Ding</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.13718/j.cnki.xsxb.2022.04.001</pub-id>
+          <article-title>A survey of information extraction based on deep neural networks</article-title>
+          <source>J. Southwest China Norm. Univ. (Nat. Sci. Ed.)</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_3">
+        <label>3.</label>
+        <element-citation publication-type="book">
+          <person-group person-group-type="author">
+            <name>
+              <surname>Paul</surname>
+              <given-names>Shounak</given-names>
+            </name>
+            <name>
+              <surname>Mandal</surname>
+              <given-names>Arpan</given-names>
+            </name>
+            <name>
+              <surname>Goyal</surname>
+              <given-names>Pawan</given-names>
+            </name>
+            <name>
+              <surname>Ghosh</surname>
+              <given-names>Saptarshi</given-names>
+            </name>
+          </person-group>
+          <article-title>Pre-trained Language Models for the legal domain: A case study on Indian law</article-title>
+          <source>Proceedings of the Nineteenth International Conference on Artificial Intelligence and Law</source>
+          <year>2023</year>
+          <page-range>187-196</page-range>
+          <pub-id pub-id-type="doi">10.1145/3594536.3595165</pub-id>
+        </element-citation>
+      </ref>
+      <ref id="ref_4">
+        <label>4.</label>
+        <element-citation publication-type="journal">
+          <volume>14</volume>
+          <issue>3</issue>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Naik</surname>
+              <given-names>V.</given-names>
+            </name>
+            <name>
+              <surname>Patel</surname>
+              <given-names>P.</given-names>
+            </name>
+            <name>
+              <surname>Kannan</surname>
+              <given-names>R.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.14569/IJACSA.2023.0140389</pub-id>
+          <article-title>Legal entity extraction: An experimental study of NER approach for legal documents</article-title>
+          <source>Int. J. Adv. Comput. Sci. Appl.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_5">
+        <label>5.</label>
+        <element-citation publication-type="book">
+          <person-group person-group-type="author">
+            <name>
+              <surname>Sleimi</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Sannier</surname>
+              <given-names>N.</given-names>
+            </name>
+            <name>
+              <surname>Sabetzadeh</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Briand</surname>
+              <given-names>L.</given-names>
+            </name>
+            <name>
+              <surname>Dann</surname>
+              <given-names>J.</given-names>
+            </name>
+          </person-group>
+          <article-title>Automated extraction of semantic legal metadata using natural language processing</article-title>
+          <source>2018 IEEE 26th International Requirements Engineering Conference (RE), Banff, AB, Canada</source>
+          <year>2018</year>
+          <page-range>124-135</page-range>
+          <pub-id pub-id-type="doi">10.1109/RE.2018.00022</pub-id>
+        </element-citation>
+      </ref>
+      <ref id="ref_6">
+        <label>6.</label>
+        <element-citation publication-type="book">
+          <person-group person-group-type="author">
+            <name>
+              <surname>Hammami</surname>
+              <given-names>Eya</given-names>
+            </name>
+            <name>
+              <surname>Faiz</surname>
+              <given-names>Rim</given-names>
+            </name>
+            <name>
+              <surname>Akermi</surname>
+              <given-names>Imen</given-names>
+            </name>
+          </person-group>
+          <article-title>A dynamic convolutional neural network approach for legal text classification</article-title>
+          <source>International Conference on Information and Knowledge Systems</source>
+          <publisher-name>Springer, Cham</publisher-name>
+          <year>2021</year>
+          <page-range>71-84</page-range>
+          <pub-id pub-id-type="doi">10.1007/978-3-030-85977-0_6</pub-id>
+        </element-citation>
+      </ref>
+      <ref id="ref_7">
+        <label>7.</label>
+        <element-citation publication-type="journal">
+          <volume>8</volume>
+          <page-range>75022-75034</page-range>
+          <year>2020</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Fang</surname>
+              <given-names>Yin</given-names>
+            </name>
+            <name>
+              <surname>Tian</surname>
+              <given-names>Xin</given-names>
+            </name>
+            <name>
+              <surname>Wu</surname>
+              <given-names>Hao</given-names>
+            </name>
+            <name>
+              <surname>Gu</surname>
+              <given-names>Song Yuan</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>Zhu</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>Feng</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>Jun Liang</given-names>
+            </name>
+            <name>
+              <surname>Weng</surname>
+              <given-names>Yang</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/ACCESS.2020.2988493</pub-id>
+          <article-title>Few-shot learning for Chinese legal controversial issues classification</article-title>
+          <source>IEEE Access</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_8">
+        <label>8.</label>
+        <element-citation publication-type="journal">
+          <volume>20</volume>
+          <page-range>413-435</page-range>
+          <issue>4</issue>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Yang</surname>
+              <given-names>Xiao Xian</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>Zhi Feng</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>Qi</given-names>
+            </name>
+            <name>
+              <surname>Wei</surname>
+              <given-names>Ke</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>Kai Qi</given-names>
+            </name>
+            <name>
+              <surname>Shi</surname>
+              <given-names>Jian Gang</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1108/IJWIS-12-2023-0256</pub-id>
+          <article-title>Large language models for automated Q&amp;A involving legal documents: A survey on algorithms, frameworks and applications</article-title>
+          <source>Int. J. Web Inf. Syst.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_9">
+        <label>9.</label>
+        <element-citation publication-type="journal">
+          <page-range>136-139, 144</page-range>
+          <issue>5</issue>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Chen</surname>
+              <given-names>J.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.18653/v1/2022.coling-main.121</pub-id>
+          <article-title>Research on long text classification based on the combination of BERT feature representation and attention mechanism</article-title>
+          <source>Comput. Era</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_10">
+        <label>10.</label>
+        <element-citation publication-type="journal">
+          <volume>59</volume>
+          <page-range>102780</page-range>
+          <issue>1</issue>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Lyu</surname>
+              <given-names>You Gang</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>Zi Han</given-names>
+            </name>
+            <name>
+              <surname>Ren</surname>
+              <given-names>Zhao Chun</given-names>
+            </name>
+            <name>
+              <surname>Ren</surname>
+              <given-names>Peng Jie</given-names>
+            </name>
+            <name>
+              <surname>Chen</surname>
+              <given-names>Zhu Min</given-names>
+            </name>
+            <name>
+              <surname>Liu</surname>
+              <given-names>Xiao Zhong</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>Yu Jun</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>Hong Song</given-names>
+            </name>
+            <name>
+              <surname>Song</surname>
+              <given-names>Hong Ye</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.ipm.2021.102780</pub-id>
+          <article-title>Improving legal judgment prediction through reinforced criminal element extraction</article-title>
+          <source>Inf. Process. Manag.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_11">
+        <label>11.</label>
+        <element-citation publication-type="journal">
+          <volume>60</volume>
+          <page-range>103455</page-range>
+          <issue>5</issue>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Zhao</surname>
+              <given-names>Qi Hui</given-names>
+            </name>
+            <name>
+              <surname>Gao</surname>
+              <given-names>Tian Han</given-names>
+            </name>
+            <name>
+              <surname>Guo</surname>
+              <given-names>Nan</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.ipm.2023.103455</pub-id>
+          <article-title>LA-MGFM: A legal judgment prediction method via sememe-enhanced graph neural networks and multi-graph fusion mechanism</article-title>
+          <source>Inf. Process. Manag.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_12">
+        <label>12.</label>
+        <element-citation publication-type="journal">
+          <volume>60</volume>
+          <page-range>103421</page-range>
+          <issue>5</issue>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Feng</surname>
+              <given-names>Ge Ya</given-names>
+            </name>
+            <name>
+              <surname>Qin</surname>
+              <given-names>Yong Bin</given-names>
+            </name>
+            <name>
+              <surname>Huang</surname>
+              <given-names>Rui Zhang</given-names>
+            </name>
+            <name>
+              <surname>Chen</surname>
+              <given-names>Yan Ping</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.ipm.2023.103421</pub-id>
+          <article-title>Criminal Action Graph: A semantic representation model of judgement documents for legal charge prediction</article-title>
+          <source>Inf. Process. Manag.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_13">
+        <label>13.</label>
+        <element-citation publication-type="journal">
+          <volume>123</volume>
+          <page-range>106178</page-range>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Lin</surname>
+              <given-names>Zhi Qiang</given-names>
+            </name>
+            <name>
+              <surname>Yang</surname>
+              <given-names>Fan</given-names>
+            </name>
+            <name>
+              <surname>Wu</surname>
+              <given-names>Xu Yang</given-names>
+            </name>
+            <name>
+              <surname>Su</surname>
+              <given-names>Jin Song</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>Xiao Yue</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.engappai.2023.106178</pub-id>
+          <article-title>A Feedback-Enhanced Two-Stage Framework for judicial Machine Reading Comprehension</article-title>
+          <source>Eng. Appl. Artif. Intell.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_14">
+        <label>14.</label>
+        <element-citation publication-type="journal">
+          <volume>31</volume>
+          <page-range>511-520</page-range>
+          <issue>2</issue>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Fang</surname>
+              <given-names>Bao Fu</given-names>
+            </name>
+            <name>
+              <surname>Zheng</surname>
+              <given-names>Cai Ming</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>Hao</given-names>
+            </name>
+            <name>
+              <surname>Yu</surname>
+              <given-names>Ting Ting</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/TFUZZ.2022.3214001</pub-id>
+          <article-title>Two-stream fused fuzzy deep neural network for multiagent learning</article-title>
+          <source>IEEE Trans. Fuzzy Syst.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_15">
+        <label>15.</label>
+        <element-citation publication-type="journal">
+          <volume>59</volume>
+          <page-range>505-511</page-range>
+          <issue>7</issue>
+          <year>2019</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Wang</surname>
+              <given-names>W. G.</given-names>
+            </name>
+            <name>
+              <surname>Chen</surname>
+              <given-names>Y. W.</given-names>
+            </name>
+            <name>
+              <surname>Cai</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Zeng</surname>
+              <given-names>Y. N.</given-names>
+            </name>
+            <name>
+              <surname>Yang</surname>
+              <given-names>H. Y.</given-names>
+            </name>
+          </person-group>
+          <article-title>Judicial document intellectual processing using hybrid deep neural networks</article-title>
+          <source>J. Tsinghua Univ. (Sci. Technol.)</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_16">
+        <label>16.</label>
+        <element-citation publication-type="journal">
+          <volume>41</volume>
+          <page-range>1-25</page-range>
+          <issue>4</issue>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Zhang</surname>
+              <given-names>Han</given-names>
+            </name>
+            <name>
+              <surname>Dou</surname>
+              <given-names>Zhi Cheng</given-names>
+            </name>
+            <name>
+              <surname>Zhu</surname>
+              <given-names>Yu Tao</given-names>
+            </name>
+            <name>
+              <surname>Wen</surname>
+              <given-names>Ji Rong</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1145/3580489</pub-id>
+          <article-title>Contrastive learning for legal judgment prediction</article-title>
+          <source>ACM Trans. Inf. Syst.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_17">
+        <label>17.</label>
+        <element-citation publication-type="book">
+          <person-group person-group-type="author">
+            <name>
+              <surname>Pal</surname>
+              <given-names>Arghya</given-names>
+            </name>
+            <name>
+              <surname>Rajanala</surname>
+              <given-names>Sailaja</given-names>
+            </name>
+            <name>
+              <surname>Phan</surname>
+              <given-names>Raphaël C.W.</given-names>
+            </name>
+            <name>
+              <surname>Wong</surname>
+              <given-names>Koksheik</given-names>
+            </name>
+          </person-group>
+          <article-title>Self supervised BERT for legal text classification</article-title>
+          <source>ICASSP 2023-2023 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP), Rhodes Island, Greece</source>
+          <year>2023</year>
+          <page-range>1-5</page-range>
+          <pub-id pub-id-type="doi">10.1109/ICASSP49357.2023.10095308</pub-id>
+        </element-citation>
+      </ref>
+      <ref id="ref_18">
+        <label>18.</label>
+        <element-citation publication-type="book">
+          <person-group person-group-type="author">
+            <name>
+              <surname>Lyu</surname>
+              <given-names>Y. G.</given-names>
+            </name>
+            <name>
+              <surname>Hao</surname>
+              <given-names>J. T.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>Z. H.</given-names>
+            </name>
+            <name>
+              <surname>Zhao</surname>
+              <given-names>K.</given-names>
+            </name>
+            <name>
+              <surname>Gao</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Ren</surname>
+              <given-names>P. J.</given-names>
+            </name>
+            <name>
+              <surname>Chen</surname>
+              <given-names>Z. M.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>F.</given-names>
+            </name>
+            <name>
+              <surname>Ren</surname>
+              <given-names>Z. C.</given-names>
+            </name>
+          </person-group>
+          <article-title>Multi-Defendant Legal Judgment Prediction via hierarchical reasoning</article-title>
+          <source>Findings of the Association for Computational Linguistics: EMNLP 2023, Singapore</source>
+          <publisher-name>Association for Computational Linguistics</publisher-name>
+          <year>2023</year>
+          <page-range>2198-2209</page-range>
+          <pub-id pub-id-type="doi">10.18653/v1/2023.findings-emnlp.145</pub-id>
+        </element-citation>
+      </ref>
+      <ref id="ref_19">
+        <label>19.</label>
+        <element-citation publication-type="book">
+          <person-group person-group-type="author">
+            <name>
+              <surname>Hu</surname>
+              <given-names>S. D.</given-names>
+            </name>
+            <name>
+              <surname>Ding</surname>
+              <given-names>N.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>H. D.</given-names>
+            </name>
+            <name>
+              <surname>Liu</surname>
+              <given-names>Z. Y.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>J. G.</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>J. Z.</given-names>
+            </name>
+            <name>
+              <surname>Wu</surname>
+              <given-names>W.</given-names>
+            </name>
+            <name>
+              <surname>Sun</surname>
+              <given-names>M. S.</given-names>
+            </name>
+          </person-group>
+          <article-title>Knowledgeable prompt-tuning: Incorporating knowledge into prompt verbalizer for text classification</article-title>
+          <source>Proceedings of the 60th Annual Meeting of the Association for Computational Linguistics, Dublin, Ireland</source>
+          <publisher-name>Association for Computational Linguistics</publisher-name>
+          <year>2022</year>
+          <page-range>2225-2240</page-range>
+          <pub-id pub-id-type="doi">10.18653/v1/2022.acl-long.158</pub-id>
+        </element-citation>
+      </ref>
+      <ref id="ref_20">
+        <label>20.</label>
+        <element-citation publication-type="book">
+          <person-group person-group-type="author">
+            <name>
+              <surname>Devlin</surname>
+              <given-names>Jacob</given-names>
+            </name>
+            <name>
+              <surname>Chang</surname>
+              <given-names>Ming Wei</given-names>
+            </name>
+            <name>
+              <surname>Lee</surname>
+              <given-names>Kenton</given-names>
+            </name>
+            <name>
+              <surname>Toutanova</surname>
+              <given-names>Kristina</given-names>
+            </name>
+          </person-group>
+          <article-title>BERT: Pre-training of deep bidirectional transformers for language understanding</article-title>
+          <source>Proceedings of the 2019 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies, Minneapolis, MN, United States</source>
+          <publisher-name>Association for Computational Linguistics</publisher-name>
+          <year>2019</year>
+          <page-range>4171-4186</page-range>
+          <pub-id pub-id-type="doi">10.18653/v1/n19-1423</pub-id>
+        </element-citation>
+      </ref>
+      <ref id="ref_21">
+        <label>21.</label>
+        <element-citation publication-type="book">
+          <person-group person-group-type="author">
+            <name>
+              <surname>Adhikari</surname>
+              <given-names>Ashutosh</given-names>
+            </name>
+            <name>
+              <surname>Ram</surname>
+              <given-names>Achyudh</given-names>
+            </name>
+            <name>
+              <surname>Tang</surname>
+              <given-names>Raphael</given-names>
+            </name>
+            <name>
+              <surname>Hamilton</surname>
+              <given-names>William L</given-names>
+            </name>
+            <name>
+              <surname>Lin</surname>
+              <given-names>Jimmy</given-names>
+            </name>
+          </person-group>
+          <article-title>Exploring the limits of simple learners in knowledge distillation for document classification with DocBERT</article-title>
+          <source>Proceedings of the 5th Workshop on Representation Learning for NLP</source>
+          <publisher-name>Association for Computational Linguistics</publisher-name>
+          <year>2020</year>
+          <page-range>72-77</page-range>
+          <pub-id pub-id-type="doi">10.18653/v1/2020.repl4nlp-1.10</pub-id>
+        </element-citation>
+      </ref>
+      <ref id="ref_22">
+        <label>22.</label>
+        <element-citation publication-type="book">
+          <person-group person-group-type="author">
+            <name>
+              <surname>Kien</surname>
+              <given-names>Phi Manh</given-names>
+            </name>
+            <name>
+              <surname>Nguyen</surname>
+              <given-names>Ha Thanh</given-names>
+            </name>
+            <name>
+              <surname>Bach</surname>
+              <given-names>Ngo Xuan</given-names>
+            </name>
+            <name>
+              <surname>Tran</surname>
+              <given-names>Vu</given-names>
+            </name>
+            <name>
+              <surname>Le Nguyen</surname>
+              <given-names>Minh</given-names>
+            </name>
+            <name>
+              <surname>Phuong</surname>
+              <given-names>Tu Minh</given-names>
+            </name>
+          </person-group>
+          <article-title>Answering legal questions by learning neural attentive text representation</article-title>
+          <source>Proceedings of 28th International Conference on Computational Linguistics</source>
+          <publisher-name>Association for Computational Linguistics</publisher-name>
+          <year>2020</year>
+          <page-range>988-998</page-range>
+          <pub-id pub-id-type="doi">10.18653/v1/2020.coling-main.86</pub-id>
+        </element-citation>
+      </ref>
+      <ref id="ref_23">
+        <label>23.</label>
+        <element-citation publication-type="book">
+          <person-group person-group-type="author">
+            <name>
+              <surname>Gan</surname>
+              <given-names>L. L.</given-names>
+            </name>
+            <name>
+              <surname>Kuang</surname>
+              <given-names>K.</given-names>
+            </name>
+            <name>
+              <surname>Yang</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Wu</surname>
+              <given-names>F.</given-names>
+            </name>
+          </person-group>
+          <article-title>Judgment prediction via injecting legal knowledge into neural networks</article-title>
+          <source>Proceedings of the AAAI conference on artificial intelligence</source>
+          <year>2021</year>
+          <page-range>12866-12874</page-range>
+          <pub-id pub-id-type="doi">10.1609/aaai.v35i14.17522</pub-id>
+        </element-citation>
+      </ref>
+      <ref id="ref_24">
+        <label>24.</label>
+        <element-citation publication-type="journal">
+          <volume>60</volume>
+          <page-range>103374</page-range>
+          <issue>4</issue>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Sun</surname>
+              <given-names>Jing Yun</given-names>
+            </name>
+            <name>
+              <surname>Huang</surname>
+              <given-names>Shao Bin</given-names>
+            </name>
+            <name>
+              <surname>Wei</surname>
+              <given-names>Chi</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.ipm.2023.103374</pub-id>
+          <article-title>A BERT-based deontic logic learner</article-title>
+          <source>Inf. Process. Manag.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_25">
+        <label>25.</label>
+        <element-citation publication-type="book">
+          <person-group person-group-type="author">
+            <name>
+              <surname>Lu</surname>
+              <given-names>Wei Jun</given-names>
+            </name>
+            <name>
+              <surname>Duan</surname>
+              <given-names>Yun</given-names>
+            </name>
+            <name>
+              <surname>Song</surname>
+              <given-names>Yu Tong</given-names>
+            </name>
+          </person-group>
+          <article-title>Self-attention-based convolutional neural networks for sentence classification</article-title>
+          <source>2020 IEEE 6th International Conference on Computer and Communications (ICCC), Chengdu, China</source>
+          <publisher-name>2020</publisher-name>
+          <page-range>2065-2069</page-range>
+          <pub-id pub-id-type="doi">10.1109/ICCC51575.2020.9345092</pub-id>
+        </element-citation>
+      </ref>
+      <ref id="ref_26">
+        <label>26.</label>
+        <element-citation publication-type="book">
+          <person-group person-group-type="author">
+            <name>
+              <surname>Yue</surname>
+              <given-names>Linan</given-names>
+            </name>
+            <name>
+              <surname>Liu</surname>
+              <given-names>Qi</given-names>
+            </name>
+            <name>
+              <surname>Jin</surname>
+              <given-names>Binbin</given-names>
+            </name>
+            <name>
+              <surname>Wu</surname>
+              <given-names>Han</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>Kai</given-names>
+            </name>
+            <name>
+              <surname>An</surname>
+              <given-names>Yanqing</given-names>
+            </name>
+            <name>
+              <surname>Cheng</surname>
+              <given-names>Mingyue</given-names>
+            </name>
+            <name>
+              <surname>Yin</surname>
+              <given-names>Biao</given-names>
+            </name>
+            <name>
+              <surname>Wu</surname>
+              <given-names>Dayong</given-names>
+            </name>
+          </person-group>
+          <article-title>NeurJudge: A circumstance-aware neural framework for legal judgment prediction</article-title>
+          <source>Proceedings of the 44th international ACM SIGIR conference on research and development in information retrieval</source>
+          <year>2021</year>
+          <page-range>973-982</page-range>
+          <pub-id pub-id-type="doi">10.1145/3404835.3462826</pub-id>
+        </element-citation>
+      </ref>
+      <ref id="ref_27">
+        <label>27.</label>
+        <element-citation publication-type="book">
+          <person-group person-group-type="author">
+            <name>
+              <surname>Zhong</surname>
+              <given-names>Hao Xi</given-names>
+            </name>
+            <name>
+              <surname>Xiao</surname>
+              <given-names>Chao Jun</given-names>
+            </name>
+            <name>
+              <surname>Tu</surname>
+              <given-names>Cun Chao</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>Tian Yang</given-names>
+            </name>
+            <name>
+              <surname>Liu</surname>
+              <given-names>Zhi Yuan</given-names>
+            </name>
+            <name>
+              <surname>Sun</surname>
+              <given-names>Mao Song</given-names>
+            </name>
+          </person-group>
+          <article-title>How does NLP benefit legal system: A summary of Legal Artificial Intelligence</article-title>
+          <source>Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics</source>
+          <publisher-name>Association for Computational Linguistics</publisher-name>
+          <year>2020</year>
+          <page-range>5218-5230</page-range>
+          <pub-id pub-id-type="doi">10.18653/v1/2020.acl-main.466</pub-id>
+        </element-citation>
+      </ref>
+    </ref-list>
+  </back>
+</article>
