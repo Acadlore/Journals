@@ -1,0 +1,4450 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.3 20210610//EN" "JATS-journalpublishing1-3.dtd">
+<article xml:lang="en" dtd-version="1.3" article-type="research-article" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mml="http://www.w3.org/1998/Math/MathML">
+  <front>
+    <journal-meta>
+      <journal-id journal-id-type="publisher-id">MITS</journal-id>
+      <journal-id journal-id-type="doi">10.56578</journal-id>
+      <journal-title-group>
+        <journal-title>Mechatronics and Intelligent Transportation Systems</journal-title>
+        <abbrev-journal-title abbrev-type="issn">Mechatron. Intell Transp. Syst.</abbrev-journal-title>
+        <abbrev-journal-title abbrev-type="publisher">MITS</abbrev-journal-title>
+      </journal-title-group>
+      <issn publication-format="electronic">2958-0218</issn>
+      <issn publication-format="print">2958-020X</issn>
+      <publisher>
+        <publisher-name>Acadlore</publisher-name>
+      </publisher>
+    </journal-meta>
+    <article-meta>
+      <article-id pub-id-type="publisher-id">AR-UPkr0M-EMn1Mu84xQ90oaIN5IIFXq_zq</article-id>
+      <article-id pub-id-type="doi">10.56578/mits040102</article-id>
+      <article-categories>
+        <subj-group>
+          <subject>Articles</subject>
+        </subj-group>
+      </article-categories>
+      <title-group>
+        <article-title>An Efficient Road Image Dehazing Model Based on Entropy-Weighted Gaussian Mixture Model and Level Set Refinement for Autonomous Driving Applications</article-title>
+      </title-group>
+      <contrib-group>
+        <contrib contrib-type="author" rid="aff_1">
+          <contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0009-0001-9087-0637</contrib-id>
+          <name>
+            <surname>Naeem</surname>
+            <given-names>Muhammad Zeeshan</given-names>
+          </name>
+          <email>mzeeshan@qurtaba.edu.pk</email>
+        </contrib>
+        <aff id="aff_1">Department of Mathematics, Qurtuba University of Science and Information Technology, 25000 Peshawar, Pakistan</aff>
+      </contrib-group>
+      <pub-date publication-format="electronic" date-type="pub">
+        <day>19</day>
+        <month>02</month>
+        <year>2025</year>
+      </pub-date>
+      <volume>4</volume>
+      <issue>1</issue>
+      <fpage>16</fpage>
+      <lpage>27</lpage>
+      <page-range>16-27</page-range>
+      <history>
+        <date date-type="received">
+          <day>01</day>
+          <month>01</month>
+          <year>2025</year>
+        </date>
+        <date date-type="accepted">
+          <day>13</day>
+          <month>02</month>
+          <year>2025</year>
+        </date>
+      </history>
+      <permissions>
+        <copyright-statement>©2025 by the author(s)</copyright-statement>
+        <copyright-year>2025</copyright-year>
+        <license license-type="open-access" xlink:href="https://creativecommons.org/licenses/by/4.0/">
+          <license-p> Published by Acadlore Publishing Services Limited, Hong Kong. This article is available for free download and can be reused and cited, provided that the original published version is credited, under the CC BY 4.0 license.</license-p>
+        </license>
+      </permissions>
+      <abstract><p>Foggy road conditions present significant challenges for road monitoring systems and autonomous driving, as conventional defogging techniques often fail to accurately recover fine details of road structures, particularly under dense fog conditions, and may introduce undesirable artifacts. Furthermore, these methods typically lack the ability to dynamically adjust transmission maps, leading to imprecise differentiation between foggy and clear areas. To address these limitations, a novel approach to image dehazing is proposed, which combines an entropy-weighted Gaussian Mixture Model (EW-GMM) with Pythagorean fuzzy aggregation (PFA) and a level set refinement technique. The method enhances the performance of existing models by adaptively adjusting the influence of each Gaussian component based on entropy, with greater emphasis placed on regions exhibiting higher uncertainty, thereby enabling more accurate restoration of foggy images. The EW-GMM is further refined using PFA, which integrates fuzzy membership functions with entropy-based weights to improve the distinction between foggy and clear regions. A level set method is subsequently applied to smooth the transmission map, reducing noise and preserving critical image details. This process is guided by an energy functional that accounts for spatial smoothness, entropy-weighted components, and observed pixel intensities, ensuring a more robust and accurate dehazing effect. Experimental results demonstrate that the proposed model outperforms conventional methods in terms of feature similarity, image quality, and cross-correlation, while significantly reducing execution time. The results highlight the efficiency and robustness of the proposed approach, making it a promising solution for real-time image processing applications, particularly in the context of road monitoring and autonomous driving systems.</p></abstract>
+      <kwd-group>
+        <kwd>Image defogging</kwd>
+        <kwd>Fuzzy aggregation</kwd>
+        <kwd>Entropy</kwd>
+        <kwd>Level-set method</kwd>
+        <kwd>Real-time processing</kwd>
+        <kwd>Road monitoring</kwd>
+        <kwd>Statistical analysis</kwd>
+      </kwd-group>
+      <counts>
+        <count count-type="contributors" count="1"/>
+        <fig-count count="5"/>
+        <table-count count="1"/>
+        <ref-count count="22"/>
+      </counts>
+    </article-meta>
+  </front>
+  <body>
+    <sec sec-type="intro">
+      <title>1. Introduction</title>
+      <p>Image defogging, or dehazing, plays a crucial role in enhancing the visibility and quality of road images compromised by environmental conditions such as fog, haze, and smog. These atmospheric phenomena scatter light, leading to a significant reduction in contrast, color fidelity, and overall image clarity [<xref ref-type="bibr" rid="ref_1">1</xref>], [<xref ref-type="bibr" rid="ref_2">2</xref>], [<xref ref-type="bibr" rid="ref_3">3</xref>], [<xref ref-type="bibr" rid="ref_4">4</xref>]. Such degradation presents substantial challenges in critical applications, including road monitoring, autonomous driving, and traffic surveillance, where high-quality visual data is indispensable for ensuring safety and informed decision-making. The restoration of clear, unobstructed road images is essential not only for improving driver visibility but also for optimizing transportation systems and safeguarding public well-being.</p><p>A key concept in numerous defogging methods is the atmospheric scattering model, which characterizes the interaction of light with atmospheric particles, leading to image haziness [<xref ref-type="bibr" rid="ref_5">5</xref>], [<xref ref-type="bibr" rid="ref_6">6</xref>]. Variables such as the distance between the camera and the object, as well as the concentration of atmospheric particles, significantly influence the degree of image degradation. Accurately understanding and modeling these factors is pivotal for recovering the scene's true radiance, which reflects the original, unobstructed image. This is especially critical in applications such as road navigation and control systems, where high-quality imagery is essential for obstacle detection and precise environmental analysis. In addition to road-based applications, the restoration of clear imagery has broader ramifications in fields such as remote sensing, aerial imaging, and environmental monitoring.</p><p>Several approaches have been proposed to tackle the problem of road image defogging, with methods categorized into enhancement-based, restoration-based, and deep learning-based techniques [<xref ref-type="bibr" rid="ref_7">7</xref>], [<xref ref-type="bibr" rid="ref_8">8</xref>], [<xref ref-type="bibr" rid="ref_9">9</xref>], [<xref ref-type="bibr" rid="ref_10">10</xref>], [<xref ref-type="bibr" rid="ref_11">11</xref>], [<xref ref-type="bibr" rid="ref_12">12</xref>], [<xref ref-type="bibr" rid="ref_13">13</xref>], [<xref ref-type="bibr" rid="ref_14">14</xref>]. Enhancement-based techniques aim to improve image quality visually without explicitly modeling the degradation process. Methods such as histogram equalization and adaptive contrast adjustment can enhance visual appeal but often fail to recover the true scene radiance, resulting in unnatural or distorted outputs. Retinex-based approaches, inspired by the human visual system, attempt to separate lighting from reflectance to improve visibility. However, these methods can struggle with issues like color distortion and noise enhancement. For instance, Tan [<xref ref-type="bibr" rid="ref_8">8</xref>] proposed a method for improving visibility in adverse weather using a single image, but this approach has limitations in accurately restoring scene details. Moreover, such methods may not perform well in dynamic conditions where haze density fluctuates spatially and temporally.</p><p>Restoration-based methods aim to reconstruct the original scene radiance by modeling the physical haze formation process. The dark channel prior (DCP) is a well-known technique in this category, which assumes that at least one-color channel in most non-sky regions will have low intensity. While DCP has demonstrated effective defogging performance, it often introduces halo artifacts, especially in sky areas, and requires additional post-processing to achieve optimal results. Other restoration methods, such as polarization-based approaches, use multiple polarized images for depth estimation, and fusion-based methods combine images captured under varying conditions [<xref ref-type="bibr" rid="ref_9">9</xref>], [<xref ref-type="bibr" rid="ref_15">15</xref>]. These techniques aim to overcome the shortcomings of enhancement-based methods but can introduce computational complexity and dependency on specific imaging conditions. For example, fusion methods require images taken at different exposures, which may not always be feasible in real-time applications.</p><p>Road defogging models have gained significant attention due to their crucial role in enhancing visibility and safety in adverse weather conditions. Shi and Song [<xref ref-type="bibr" rid="ref_16">16</xref>] proposed Defog YOLO, a deep-learning-based approach for road object detection in foggy weather. Their model integrates a dehazing module with the YOLO object detection framework, significantly improving the visibility of road scenes before detecting objects. The model effectively restores object details lost due to dense fog, achieving high accuracy in detecting vehicles and pedestrians. However, one of its limitations is the increased computational complexity, making it less suitable for real-time applications on resource-constrained devices. Additionally, while the model performs well in synthetic fog scenarios, its effectiveness in varying real-world conditions, such as nighttime fog, requires further evaluation.</p><p>Another notable study by Choi et al. [<xref ref-type="bibr" rid="ref_17">17</xref>] introduced a fog detection mechanism to improve the effectiveness of de-fogging algorithms for road driving images. Their method utilizes image-based analysis techniques to differentiate foggy scenes from clear ones, optimizing the subsequent de-fogging process. In their follow-up study in 2018, Jeong et al. [<xref ref-type="bibr" rid="ref_18">18</xref>] proposed a Fast Fog Detection method, which significantly reduces the processing time of fog recognition using enhanced feature extraction techniques. These models excel in detecting and differentiating varying fog densities, ensuring that the right level of dehazing is applied. However, their performance is limited in extremely dense fog conditions where image contrast is severely degraded, and their reliance on prior assumptions about fog distribution may limit adaptability in unpredictable weather scenarios.</p><p>Singh and Kumar [<xref ref-type="bibr" rid="ref_19">19</xref>] introduced a Gain Coefficient-Based Trilateral Filter for defogging road images, focusing on preserving edge details while enhancing image clarity. The filter adaptively adjusts image contrast and sharpness, resulting in improved scene perception. Similarly, Guo et al. [<xref ref-type="bibr" rid="ref_20">20</xref>] developed a Fast Defogging and Restoration Assessment Approach, which prioritizes real-time processing by balancing computational efficiency and image quality restoration. These approaches achieve notable success in improving image contrast and retaining texture details. However, their limitations include a dependency on specific parameter tuning, which may require adjustments for different fog densities and lighting conditions. Additionally, they may struggle with color distortion, affecting the natural appearance of road scenes after defogging.</p><p>Despite the advances in road image defogging techniques, many existing models still face significant limitations in accurately differentiating between clear and foggy regions. These limitations arise primarily due to the static nature of component weights, which do not adapt to the inherent uncertainty present in road images. As a result, traditional methods often fail to dynamically adjust to varying uncertainties in the image, leading to suboptimal performance, particularly in regions with high variability, noise, or complex lighting conditions. Moreover, many approaches struggle to refine the transmission map effectively and ensure smoothness across the image, making it challenging to obtain consistent and accurate results in real-world scenarios such as autonomous driving, intelligent transportation systems, and road monitoring, where precise visibility and edge definition are crucial.</p><p>To overcome these limitations, this paper introduces a novel road image defogging approach that integrates an EW-GMM with PFA and level set refinement. This dynamic weighting mechanism allows the model to adjust the influence of each component based on its uncertainty, focusing more on regions with lower uncertainty and less on those with higher uncertainty. The model achieves this through a probabilistic distribution framework that represents pixel intensities as a weighted sum of Gaussian distributions, where the weights are determined based on the entropy of each component. Additionally, the incorporation of PFA enhances the robustness of the model by refining the transmission map, giving greater importance to more certain regions while dynamically adjusting for uncertain areas. The framework is further optimized using a level set method, which ensures spatial smoothness and improves the accuracy of foggy region delineation. By addressing the challenges of uncertainty handling, spatial coherence, and dynamic weighting, the proposed model provides a more effective solution for road image defogging and segmentation tasks, particularly in complex, foggy driving environments.</p><p>The proposed model utilizes a probabilistic mixture approach to model pixel intensities in an image. The key components of the model are as follows:</p><p>Probabilistic Mixture Model for Pixel Intensities: A mixture of Gaussian distributions is used to represent different regions of the image, such as clear and foggy areas, ensuring accurate modeling of road scenes.</p><p>Entropy-Based Weighting for Gaussian Components: The weights of each Gaussian component are dynamically adjusted based on their entropy. Components with higher entropy (more uncertainty) receive smaller weights, while those with lower entropy (less uncertainty) receive larger weights, allowing for more precise defogging in critical areas such as road edges and lane markings.</p><p>Impact of High and Low Entropy: The model adjusts the influence of each Gaussian component by prioritizing low-entropy (high-certainty) areas, such as vehicle contours and road signs, while reducing the influence of high-entropy (low-certainty) regions affected by dense fog.</p><p>Fuzzy Aggregation with Pythagorean Fuzzy Logic: Fuzzy aggregation is employed to integrate multiple fuzzy sets derived from the image, considering the entropy-based weights of the Gaussian components. This ensures that more certain components contribute significantly to the refined transmission map, resulting in improved contrast and visibility for road scenes.</p><p>Level Set Refinement for Smoothing: The transmission map is further refined using a level set method, which smooths the map and reduces noise, particularly in uncertain regions. The level set method minimizes an energy functional that balances smoothness and intensity accuracy, ensuring a more natural and visually coherent defogged road image.</p><p>This approach effectively adjusts for uncertainty in pixel intensities and refines road images through fuzzy aggregation and level set techniques, leading to enhanced visibility and improved scene perception for autonomous driving and intelligent transportation applications.</p><p>The structure of the paper is as follows: Section 2 reviews previous defogging techniques, discussing their strengths and limitations. Section 3 introduces the proposed defogging model, elaborating on the integration of fuzzy logic with advanced image processing methods for enhanced fog removal. Section 4 presents the experimental results, including a comprehensive analysis of evaluation metrics and a comparison of the performance of the proposed defogging model with existing approaches. Finally, Section 5 concludes the paper, summarizing the key findings and suggesting future research directions for improving fog removal techniques.</p>
+    </sec>
+    <sec sec-type="">
+      <title>2. Related work</title>
+      <p>In recent years, significant advancements have been made in the field of image defogging and enhancement, particularly for improving visibility and quality under foggy conditions. A notable contribution in this area is the work by Sabitha and Eluri [<xref ref-type="bibr" rid="ref_21">21</xref>], who proposed an innovative image defogging and enhancement method based on the Retinex algorithm. This method was designed to address the common issue of image degradation caused by fog, which typically results in low contrast, poor visibility, and blurred details. Sabitha's approach effectively mitigates the blurring of image details that often occurs in foggy weather, providing a clearer and more accurate representation of the scene. The Retinex-based method not only improves the overall image quality but also enhances the fine details, making it suitable for a wide range of applications, such as surveillance and autonomous driving. However, the approach struggles with heavy fog, as it does not consistently provide accurate results in such extreme conditions. The method’s performance declines under dense fog, leading to potential limitations in achieving the desired clarity and detail restoration.</p><p>Image dehazing has been a significant challenge in computer vision, particularly in poor visibility conditions such as haze, fog, or mist. The Cross-Entropy Deep Learning Neural Network (CE-DLNN) and the Guided Multi-Model Adaptive Network (GMAN) have been explored for dehazing, with a study by Sabitha and Eluri [<xref ref-type="bibr" rid="ref_21">21</xref>] comparing their performance. The results show that GMAN outperforms CE-DLNN in terms of PSNR, SSIM, and MAE, producing clearer and more detailed images. Additionally, combining GMAN with CE-DLNN enhances the performance of both methods, suggesting the benefit of integrating multiple models for improved dehazing. The mathematical formulation of this model can be defined as follows:</p><p style="text-align: center"><inline-formula>
+  <mml:math id="ml4qhgt6b4">
+    <mml:msub>
+      <mml:mi>I</mml:mi>
+      <mml:mrow>
+        <mml:mrow>
+          <mml:mi data-mjx-auto-op="false">final</mml:mi>
+        </mml:mrow>
+      </mml:mrow>
+    </mml:msub>
+    <mml:msub>
+      <mml:mi>β</mml:mi>
+      <mml:mn>1</mml:mn>
+    </mml:msub>
+    <mml:msub>
+      <mml:mi>β</mml:mi>
+      <mml:mn>2</mml:mn>
+    </mml:msub>
+    <mml:msub>
+      <mml:mi>f</mml:mi>
+      <mml:mrow>
+        <mml:mrow>
+          <mml:mi data-mjx-auto-op="false">CE</mml:mi>
+        </mml:mrow>
+      </mml:mrow>
+    </mml:msub>
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>=</mml:mo>
+    <mml:mo>⋅</mml:mo>
+    <mml:mo>+</mml:mo>
+    <mml:mo>⋅</mml:mo>
+    <mml:mi>x</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mrow>
+      <mml:mo>(</mml:mo>
+      <mml:mo>+</mml:mo>
+      <mml:mo>)</mml:mo>
+      <mml:mfrac>
+        <mml:mrow>
+          <mml:msub>
+            <mml:mi>I</mml:mi>
+            <mml:mrow>
+              <mml:mrow>
+                <mml:mi data-mjx-auto-op="false">hazy</mml:mi>
+              </mml:mrow>
+            </mml:mrow>
+          </mml:msub>
+          <mml:mo>(</mml:mo>
+          <mml:mo>,</mml:mo>
+          <mml:mo>)</mml:mo>
+          <mml:mo>−</mml:mo>
+          <mml:mi>x</mml:mi>
+          <mml:mi>y</mml:mi>
+          <mml:mi>A</mml:mi>
+        </mml:mrow>
+        <mml:mrow>
+          <mml:mo>max</mml:mo>
+          <mml:mrow>
+            <mml:mo>(</mml:mo>
+            <mml:mo>(</mml:mo>
+            <mml:mo>,</mml:mo>
+            <mml:mo>)</mml:mo>
+            <mml:mo>,</mml:mo>
+            <mml:mo>)</mml:mo>
+            <mml:mi>t</mml:mi>
+            <mml:mi>x</mml:mi>
+            <mml:mi>y</mml:mi>
+            <mml:msub>
+              <mml:mi>t</mml:mi>
+              <mml:mn>0</mml:mn>
+            </mml:msub>
+          </mml:mrow>
+        </mml:mrow>
+      </mml:mfrac>
+      <mml:mi>A</mml:mi>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>(</mml:mo>
+      <mml:mo>(</mml:mo>
+      <mml:mo>,</mml:mo>
+      <mml:mo>)</mml:mo>
+      <mml:mo>;</mml:mo>
+      <mml:mo>)</mml:mo>
+      <mml:msub>
+        <mml:mi>I</mml:mi>
+        <mml:mrow>
+          <mml:mrow>
+            <mml:mi data-mjx-auto-op="false">hazy</mml:mi>
+          </mml:mrow>
+        </mml:mrow>
+      </mml:msub>
+      <mml:mi>x</mml:mi>
+      <mml:mi>y</mml:mi>
+      <mml:mi>θ</mml:mi>
+    </mml:mrow>
+  </mml:math>
+</inline-formula></p><p>where, <inline-formula>
+  <mml:math id="mi5o6onuz2">
+    <mml:msub>
+      <mml:mi>I</mml:mi>
+      <mml:mrow>
+        <mml:mtext>hazy</mml:mtext>
+      </mml:mrow>
+    </mml:msub>
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mi>x</mml:mi>
+    <mml:mi>y</mml:mi>
+  </mml:math>
+</inline-formula> is the input hazy image, $A<inline-formula>
+  <mml:math id="mcfq03yw6v">
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>t(x, y)<inline-formula>
+  <mml:math id="mhvcxy3925">
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>G</mml:mi>
+    <mml:mi>M</mml:mi>
+    <mml:mi>A</mml:mi>
+    <mml:mi>N</mml:mi>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>t_0<inline-formula>
+  <mml:math id="mr7fgftif4">
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>z</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>f_{\operatorname{CE}}\left(I_{\text {hazy}}(x, y) ; \theta\right)<inline-formula>
+  <mml:math id="m4ngfp7xvo">
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>z</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>C</mml:mi>
+    <mml:mi>E</mml:mi>
+    <mml:mi>D</mml:mi>
+    <mml:mi>L</mml:mi>
+    <mml:mi>N</mml:mi>
+    <mml:mi>N</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mo>−</mml:mo>
+    <mml:mo>.</mml:mo>
+  </mml:math>
+</inline-formula>\beta_1<inline-formula>
+  <mml:math id="mrexnuw12k">
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+  </mml:math>
+</inline-formula>\beta_2<inline-formula>
+  <mml:math id="m11f8vqhob">
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>y</mml:mi>
+  </mml:math>
+</inline-formula>\beta_1+\beta_2<inline-formula>
+  <mml:math id="mja50pb8gr">
+    <mml:mo>=</mml:mo>
+    <mml:mn>1</mml:mn>
+  </mml:math>
+</inline-formula>, ensuring a balanced integration of the two models' outputs.</p><p>However, these approaches have limitations, including the need for substantial computational resources and large datasets for training. While GMAN performs well in dehazing, its ability to handle extreme weather conditions like heavy rain or snow has not been fully explored, and further research is needed to test the scalability and generalization of these models for real-time applications.</p><p>Li and Xu [<xref ref-type="bibr" rid="ref_22">22</xref>] proposed image defogging method demonstrates significant advancements in addressing the challenges of reduced visibility in haze-affected road traffic scenarios. By integrating the DCP algorithm with image region segmentation, the model effectively enhances image details, resulting in superior visual quality and improved target detection capabilities. This makes the method particularly valuable for intelligent transportation systems, as it contributes to safer driving conditions and more reliable traffic monitoring. The mathematical function representing the image dehazing process based on the improved DCP method can be expressed as:</p><p style="text-align: center"><inline-formula>
+  <mml:math id="mxc59rkfx9">
+    <mml:mi>J</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>A</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>=</mml:mo>
+    <mml:mo>+</mml:mo>
+    <mml:mfrac>
+      <mml:mrow>
+        <mml:mi>I</mml:mi>
+        <mml:mi>x</mml:mi>
+        <mml:mi>A</mml:mi>
+        <mml:mo>(</mml:mo>
+        <mml:mo>)</mml:mo>
+        <mml:mo>−</mml:mo>
+      </mml:mrow>
+      <mml:mrow>
+        <mml:mo>max</mml:mo>
+        <mml:mrow>
+          <mml:mo>(</mml:mo>
+          <mml:mo>−</mml:mo>
+          <mml:mo>⋅</mml:mo>
+          <mml:mo>,</mml:mo>
+          <mml:mo>)</mml:mo>
+          <mml:mn>1</mml:mn>
+          <mml:mi>ω</mml:mi>
+          <mml:munder>
+            <mml:mo>min</mml:mo>
+            <mml:mrow>
+              <mml:mi>y</mml:mi>
+              <mml:mi>Ω</mml:mi>
+              <mml:mi>x</mml:mi>
+              <mml:mo>∈</mml:mo>
+              <mml:mo>(</mml:mo>
+              <mml:mo>)</mml:mo>
+            </mml:mrow>
+          </mml:munder>
+          <mml:mrow>
+            <mml:mo>(</mml:mo>
+            <mml:mo>(</mml:mo>
+            <mml:mo>)</mml:mo>
+            <mml:mo>)</mml:mo>
+            <mml:munder>
+              <mml:mo>min</mml:mo>
+              <mml:mrow>
+                <mml:mi>c</mml:mi>
+                <mml:mi>r</mml:mi>
+                <mml:mi>g</mml:mi>
+                <mml:mi>b</mml:mi>
+                <mml:mo>∈</mml:mo>
+                <mml:mo fence="false">{</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo fence="false">}</mml:mo>
+              </mml:mrow>
+            </mml:munder>
+            <mml:msup>
+              <mml:mi>I</mml:mi>
+              <mml:mi>c</mml:mi>
+            </mml:msup>
+            <mml:mi>y</mml:mi>
+          </mml:mrow>
+          <mml:msub>
+            <mml:mi>t</mml:mi>
+            <mml:mn>0</mml:mn>
+          </mml:msub>
+        </mml:mrow>
+      </mml:mrow>
+    </mml:mfrac>
+  </mml:math>
+</inline-formula></p><p>where, <inline-formula>
+  <mml:math id="mm4nnagscu">
+    <mml:mi>J</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+  </mml:math>
+</inline-formula> is the dehazed image (scene radiance) at pixel <inline-formula>
+  <mml:math id="mw6ipcuq52">
+    <mml:mi>x</mml:mi>
+    <mml:mi>I</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mo>,</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+  </mml:math>
+</inline-formula> is the observed hazy image, and $A<inline-formula>
+  <mml:math id="m4z4tikvo7">
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>k</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mo>.</mml:mo>
+  </mml:math>
+</inline-formula>\omega<inline-formula>
+  <mml:math id="mpkaii8e4i">
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>z</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>\min _{c \in\{r, g, b\}} I^c(y)<inline-formula>
+  <mml:math id="mx1l2qxcun">
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>R</mml:mi>
+    <mml:mi>G</mml:mi>
+    <mml:mi>B</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+  </mml:math>
+</inline-formula>y<inline-formula>
+  <mml:math id="mp2s8lzy9z">
+    <mml:mo>.</mml:mo>
+    <mml:mi>T</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+  </mml:math>
+</inline-formula>\min _{y \in \Omega(x)}<inline-formula>
+  <mml:math id="mzobv2imci">
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+  </mml:math>
+</inline-formula>\Omega(x)<inline-formula>
+  <mml:math id="mlxzmikgvh">
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+  </mml:math>
+</inline-formula>x<inline-formula>
+  <mml:math id="ma3qjwyk7p">
+    <mml:mo>,</mml:mo>
+    <mml:mi>w</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+  </mml:math>
+</inline-formula>t_0$ is a small constant used to avoid division by zero. This equation integrates all steps, including dark channel computation, transmission estimation, and radiance recovery, into a single concise representation.</p><p>However, the approach is not without limitations. The reliance on the DCP algorithm can lead to artifacts in bright regions or areas with minimal haze, which may compromise the overall image quality in specific scenarios. Additionally, the inclusion of region segmentation increases computational complexity, potentially limiting the method’s applicability in real-time traffic systems. Future work should focus on optimizing the algorithm to address these challenges while maintaining its effectiveness in diverse traffic.</p>
+    </sec>
+    <sec sec-type="">
+      <title>3. The propose mathematical approach</title>
+      <p>The proposed mathematical framework models the pixel intensities of an image through a probabilistic mixture approach, where the pixel intensity <inline-formula>
+  <mml:math id="mo52etstok">
+    <mml:mi>I</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+  </mml:math>
+</inline-formula> is described by a mixture of probability distributions. Each distribution in the mixture represents a specific region of the image, such as clear or foggy areas. The overall distribution of pixel intensities is represented as the sum of weighted individual distributions. These weights are determined dynamically using the entropy of each component, allowing the model to adjust the influence of each component based on its uncertainty. The probability distribution model is formulated as follows:</p><p style="text-align: center"><inline-formula>
+  <mml:math id="maqb7enwvx">
+    <mml:mi>P</mml:mi>
+    <mml:mi>I</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>=</mml:mo>
+    <mml:munderover>
+      <mml:mo>∑</mml:mo>
+      <mml:mrow>
+        <mml:mi>k</mml:mi>
+        <mml:mo>=</mml:mo>
+        <mml:mn>1</mml:mn>
+      </mml:mrow>
+      <mml:mi>K</mml:mi>
+    </mml:munderover>
+    <mml:msub>
+      <mml:mi>w</mml:mi>
+      <mml:mi>k</mml:mi>
+    </mml:msub>
+    <mml:msub>
+      <mml:mi>π</mml:mi>
+      <mml:mi>k</mml:mi>
+    </mml:msub>
+    <mml:mrow>
+      <mml:mi data-mjx-variant="-tex-calligraphic">N</mml:mi>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>(</mml:mo>
+      <mml:mo>(</mml:mo>
+      <mml:mo>)</mml:mo>
+      <mml:mo>∣</mml:mo>
+      <mml:mo>,</mml:mo>
+      <mml:mo>)</mml:mo>
+      <mml:mi>I</mml:mi>
+      <mml:mi>x</mml:mi>
+      <mml:msub>
+        <mml:mi>μ</mml:mi>
+        <mml:mi>k</mml:mi>
+      </mml:msub>
+      <mml:msubsup>
+        <mml:mi>σ</mml:mi>
+        <mml:mi>k</mml:mi>
+        <mml:mn>2</mml:mn>
+      </mml:msubsup>
+    </mml:mrow>
+  </mml:math>
+</inline-formula></p><p>where, <inline-formula>
+  <mml:math id="m91soyhcfy">
+    <mml:mi>P</mml:mi>
+    <mml:mi>I</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>)</mml:mo>
+  </mml:math>
+</inline-formula> is the probability distribution of pixel intensity <inline-formula>
+  <mml:math id="m5xsxr3tnc">
+    <mml:mi>I</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+  </mml:math>
+</inline-formula> in our proposed model. <inline-formula>
+  <mml:math id="m8b1kzg5y4">
+    <mml:msub>
+      <mml:mi>w</mml:mi>
+      <mml:mi>k</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> is the weight of the $k<inline-formula>
+  <mml:math id="mpo6sn6jyh">
+    <mml:mo>−</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>G</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>G</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>j</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+  </mml:math>
+</inline-formula>\pi_k<inline-formula>
+  <mml:math id="mk75q3zjux">
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>k</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>G</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mo>,</mml:mo>
+    <mml:mo>.</mml:mo>
+  </mml:math>
+</inline-formula>\mathcal{N}\left(I(x) \mid \mu_k, \sigma_k^2\right)<inline-formula>
+  <mml:math id="mk0zyg43ot">
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>G</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+  </mml:math>
+</inline-formula>\mu_k<inline-formula>
+  <mml:math id="mz0ohke4av">
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+  </mml:math>
+</inline-formula>\sigma_k^2$.</p><p>In the proposed model, the pixel intensities are modeled as a weighted sum of Gaussian distributions. Each Gaussian component corresponds to different regions of intensity distributions in the image, such as clear or foggy regions.</p>
+      
+        <sec>
+          
+            <title>3.1. Weights based on entropy in ew-gmm</title>
+          
+          <p>In our proposed approach, we introduce the concept of entropy to determine the weight wk for each Gaussian component. This weight is now defined based on the entropy Hk of each Gaussian component. The entropy quantifies the uncertainty or spread of the Gaussian component. We propose to dynamically adjust the weight of each component using the entropy term as follows:</p><p style="text-align: center"><inline-formula>
+  <mml:math id="me9tfvjjfn">
+    <mml:msub>
+      <mml:mi>w</mml:mi>
+      <mml:mi>k</mml:mi>
+    </mml:msub>
+    <mml:msub>
+      <mml:mi>H</mml:mi>
+      <mml:mi>k</mml:mi>
+    </mml:msub>
+    <mml:mo>=</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mn>1</mml:mn>
+  </mml:math>
+</inline-formula></p><p>where, <inline-formula>
+  <mml:math id="mzoawz8n93">
+    <mml:msub>
+      <mml:mi>H</mml:mi>
+      <mml:mi>k</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> is the entropy of the $k<inline-formula>
+  <mml:math id="mgt2o1h2jh">
+    <mml:mo>−</mml:mo>
+    <mml:mo>:&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>=</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>:</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>G</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>"</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>"</mml:mo>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> H_k=\frac{1}{2}\left(1+\log \left(2 \pi \sigma_k^2\right)\right) <inline-formula>
+  <mml:math id="mu46214rph">
+    <mml:mo>&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+  </mml:math>
+</inline-formula>\sigma^2{ }_k<inline-formula>
+  <mml:math id="mzhjhw4bf7">
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+  </mml:math>
+</inline-formula>k$-th Gaussian component. The underlying idea behind this formulation is that Gaussian components with higher uncertainty (i.e., higher entropy) are assigned smaller weights, while components with lower uncertainty (i.e., lower entropy) are given larger weights. This adjustment enables the model to place greater emphasis on more certain regions and less on uncertain ones.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.2. Impact of high and low entropy in our proposed model</title>
+          
+          <p>In our proposed model, the entropy term plays a crucial role in determining how much influence each Gaussian component will have on the final result. Specifically:</p><p>High Entropy (<inline-formula>
+  <mml:math id="mczr40q8un">
+    <mml:msub>
+      <mml:mi>H</mml:mi>
+      <mml:mi>k</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula>): A Gaussian component with high entropy means it is more spread out, and thus represents a region with more uncertainty about the pixel intensities. In our model, such components are given smaller weights (since <inline-formula>
+  <mml:math id="mnukwmap5f">
+    <mml:msub>
+      <mml:mi>w</mml:mi>
+      <mml:mi>k</mml:mi>
+    </mml:msub>
+    <mml:msub>
+      <mml:mi>H</mml:mi>
+      <mml:mi>k</mml:mi>
+    </mml:msub>
+    <mml:mo>=</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mn>1</mml:mn>
+  </mml:math>
+</inline-formula>), meaning they will contribute less to the final output.</p><p>Low Entropy (<inline-formula>
+  <mml:math id="mafjxpgx0h">
+    <mml:msub>
+      <mml:mi>H</mml:mi>
+      <mml:mi>k</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula>): A Gaussian component with low entropy indicates a more concentrated distribution, meaning there is less uncertainty about the pixel intensities in that region. In our model, these components are given larger weights, meaning they will have a greater influence on the final result.</p><p>To further refine the transmission map and ensure more accurate fog cleaning, we propose using PFA. This approach combines the fuzzy logic with the EW-GMM by aggregating multiple fuzzy sets derived from the image data. The fuzzy aggregation incorporates the weights based on the entropy values of the Gaussian components, and it is formulated as:</p><p style="text-align: center"><inline-formula>
+  <mml:math id="mw6tia9s4i">
+    <mml:msup>
+      <mml:mi>t</mml:mi>
+      <mml:mrow>
+        <mml:mi>′</mml:mi>
+      </mml:mrow>
+    </mml:msup>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>=</mml:mo>
+    <mml:mi>x</mml:mi>
+    <mml:mfrac>
+      <mml:mrow>
+        <mml:munderover>
+          <mml:mo>∑</mml:mo>
+          <mml:mrow>
+            <mml:mi>k</mml:mi>
+            <mml:mo>=</mml:mo>
+            <mml:mn>1</mml:mn>
+          </mml:mrow>
+          <mml:mi>K</mml:mi>
+        </mml:munderover>
+        <mml:msub>
+          <mml:mi>w</mml:mi>
+          <mml:mi>k</mml:mi>
+        </mml:msub>
+        <mml:msub>
+          <mml:mi>μ</mml:mi>
+          <mml:mi>k</mml:mi>
+        </mml:msub>
+        <mml:mo>(</mml:mo>
+        <mml:mo>)</mml:mo>
+        <mml:mi>x</mml:mi>
+      </mml:mrow>
+      <mml:mrow>
+        <mml:munderover>
+          <mml:mo>∑</mml:mo>
+          <mml:mrow>
+            <mml:mi>k</mml:mi>
+            <mml:mo>=</mml:mo>
+            <mml:mn>1</mml:mn>
+          </mml:mrow>
+          <mml:mi>K</mml:mi>
+        </mml:munderover>
+        <mml:msub>
+          <mml:mi>w</mml:mi>
+          <mml:mi>k</mml:mi>
+        </mml:msub>
+      </mml:mrow>
+    </mml:mfrac>
+  </mml:math>
+</inline-formula></p><p>where, <inline-formula>
+  <mml:math id="mlumwag10d">
+    <mml:msup>
+      <mml:mi>t</mml:mi>
+      <mml:mrow>
+        <mml:mi>′</mml:mi>
+      </mml:mrow>
+    </mml:msup>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mi>x</mml:mi>
+  </mml:math>
+</inline-formula> is the refined transmission map after fuzzy aggregation. <inline-formula>
+  <mml:math id="mfsl14ly57">
+    <mml:msub>
+      <mml:mi>μ</mml:mi>
+      <mml:mi>k</mml:mi>
+    </mml:msub>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mi>x</mml:mi>
+  </mml:math>
+</inline-formula> is the membership function for the $k<inline-formula>
+  <mml:math id="m1xrprjj1u">
+    <mml:mo>−</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+  </mml:math>
+</inline-formula>x<inline-formula>
+  <mml:math id="mcgphinnk7">
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+  </mml:math>
+</inline-formula>k$-th component.</p><p>This fuzzy aggregation helps to enhance the segmentation by giving higher importance to more certain Gaussian components and dynamically adjusting the weight for uncertain components.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.3. Level set refinement</title>
+          
+          <p>After the fuzzy aggregation, we further refine the transmission map using a level set method. This step helps to smooth the transmission map and reduce noise, especially in uncertain regions. The minimized energy functional for the level set refinement is defined as:</p><p style="text-align: center"><inline-formula>
+  <mml:math id="me1cy536fe">
+    <mml:munder>
+      <mml:mo>min</mml:mo>
+      <mml:mrow>
+        <mml:msup>
+          <mml:mi>t</mml:mi>
+          <mml:mrow>
+            <mml:mi>′</mml:mi>
+          </mml:mrow>
+        </mml:msup>
+        <mml:mo>(</mml:mo>
+        <mml:mo>)</mml:mo>
+        <mml:mi>x</mml:mi>
+      </mml:mrow>
+    </mml:munder>
+    <mml:mrow>
+      <mml:mi data-mjx-variant="-tex-calligraphic">E</mml:mi>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>(</mml:mo>
+      <mml:mo>(</mml:mo>
+      <mml:mo>)</mml:mo>
+      <mml:mo>)</mml:mo>
+      <mml:msup>
+        <mml:mi>t</mml:mi>
+        <mml:mrow>
+          <mml:mi>′</mml:mi>
+        </mml:mrow>
+      </mml:msup>
+      <mml:mi>x</mml:mi>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>(</mml:mo>
+      <mml:mo>+</mml:mo>
+      <mml:mo>+</mml:mo>
+      <mml:mo>)</mml:mo>
+      <mml:msup>
+        <mml:mrow>
+          <mml:mo>(</mml:mo>
+          <mml:mo>(</mml:mo>
+          <mml:mo>)</mml:mo>
+          <mml:mo>)</mml:mo>
+          <mml:mi>∇</mml:mi>
+          <mml:mi>x</mml:mi>
+          <mml:msup>
+            <mml:mi>t</mml:mi>
+            <mml:mrow>
+              <mml:mi>′</mml:mi>
+            </mml:mrow>
+          </mml:msup>
+        </mml:mrow>
+        <mml:mn>2</mml:mn>
+      </mml:msup>
+      <mml:msup>
+        <mml:mrow>
+          <mml:mo>(</mml:mo>
+          <mml:mo>(</mml:mo>
+          <mml:mo>)</mml:mo>
+          <mml:mo>−</mml:mo>
+          <mml:mo>(</mml:mo>
+          <mml:mo>)</mml:mo>
+          <mml:mo>)</mml:mo>
+          <mml:msub>
+            <mml:mi>μ</mml:mi>
+            <mml:mi>k</mml:mi>
+          </mml:msub>
+          <mml:mi>x</mml:mi>
+          <mml:mi>x</mml:mi>
+          <mml:msup>
+            <mml:mi>t</mml:mi>
+            <mml:mrow>
+              <mml:mi>′</mml:mi>
+            </mml:mrow>
+          </mml:msup>
+        </mml:mrow>
+        <mml:mn>2</mml:mn>
+      </mml:msup>
+      <mml:msup>
+        <mml:mi>λ</mml:mi>
+        <mml:mrow>
+          <mml:mi>′</mml:mi>
+        </mml:mrow>
+      </mml:msup>
+      <mml:msup>
+        <mml:mrow>
+          <mml:mo>(</mml:mo>
+          <mml:mo>(</mml:mo>
+          <mml:mo>)</mml:mo>
+          <mml:mo>−</mml:mo>
+          <mml:mo>(</mml:mo>
+          <mml:mo>)</mml:mo>
+          <mml:mo>)</mml:mo>
+          <mml:mi>I</mml:mi>
+          <mml:mi>x</mml:mi>
+          <mml:mi>x</mml:mi>
+          <mml:msup>
+            <mml:mi>t</mml:mi>
+            <mml:mrow>
+              <mml:mi>′</mml:mi>
+            </mml:mrow>
+          </mml:msup>
+        </mml:mrow>
+        <mml:mn>2</mml:mn>
+      </mml:msup>
+      <mml:mi>λ</mml:mi>
+      <mml:munderover>
+        <mml:mo>∑</mml:mo>
+        <mml:mrow>
+          <mml:mi>k</mml:mi>
+          <mml:mo>=</mml:mo>
+          <mml:mn>1</mml:mn>
+        </mml:mrow>
+        <mml:mi>K</mml:mi>
+      </mml:munderover>
+      <mml:msub>
+        <mml:mi>w</mml:mi>
+        <mml:mi>k</mml:mi>
+      </mml:msub>
+    </mml:mrow>
+    <mml:mo>=</mml:mo>
+    <mml:mo>∫</mml:mo>
+    <mml:mi>d</mml:mi>
+    <mml:mi>x</mml:mi>
+  </mml:math>
+</inline-formula></p><p>where, <inline-formula>
+  <mml:math id="mmx0r2r0xn">
+    <mml:mi>∇</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:msup>
+      <mml:mi>t</mml:mi>
+      <mml:mrow>
+        <mml:mi>′</mml:mi>
+      </mml:mrow>
+    </mml:msup>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+  </mml:math>
+</inline-formula> represents the gradient of the transmission map, capturing the spatial smoothness. The term <inline-formula>
+  <mml:math id="mgn8enrdev">
+    <mml:msub>
+      <mml:mi>μ</mml:mi>
+      <mml:mi>k</mml:mi>
+    </mml:msub>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mi>x</mml:mi>
+  </mml:math>
+</inline-formula> are the mean values of the Gaussian components at each pixel location. <inline-formula>
+  <mml:math id="murhinm1eh">
+    <mml:mi>λ</mml:mi>
+  </mml:math>
+</inline-formula> and <inline-formula>
+  <mml:math id="mgks4av4io">
+    <mml:msup>
+      <mml:mi>λ</mml:mi>
+      <mml:mrow>
+        <mml:mi>′</mml:mi>
+      </mml:mrow>
+    </mml:msup>
+  </mml:math>
+</inline-formula> are regularization parameters controlling the influence of the entropy term and the intensity error term and <inline-formula>
+  <mml:math id="mum4rwsygx">
+    <mml:mi>I</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+  </mml:math>
+</inline-formula> is the observed image intensity.</p><p>The level set refinement enhances the accuracy of the transmission map by considering both the entropy-weighted Gaussian components and the fuzzy membership functions. It helps to smooth the map and better delineate the boundaries between different regions in the image.</p><p>The PFA model offers significant advantages for defogging by effectively handling uncertainty and improving visibility in degraded road images. Unlike traditional fuzzy models, PFA incorporates both membership <inline-formula>
+  <mml:math id="mv561j4ip4">
+    <mml:mi>μ</mml:mi>
+  </mml:math>
+</inline-formula> and non-membership $v$ degrees, allowing for a more precise representation of foggy and clear regions. Its entropy-based weighting mechanism dynamically adjusts the influence of each component, prioritizing regions with lower uncertainty and reducing the impact of noise and intensity variations. This leads to more accurate transmission map estimation, ensuring a smoother and more adaptive defogging process. Additionally, PFA provides better resilience against noise and blur, making it particularly effective in challenging environments with varying fog densities. By leveraging these strengths, the proposed approach achieves enhanced visibility, improved edge definition, and more consistent dehazing results for road monitoring and autonomous driving applications.</p>
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>4. Experimental setup and parameter configuration</title>
+      <p>To assess the effectiveness of the proposed EW-GMM for road defogging, which incorporates Fuzzy Aggregation and Level Set Refinement, a series of experiments were conducted using fog-affected road images. These images were obtained from publicly available datasets, including the RESIDE dataset and the Foggy Driving dataset, selected for their diverse representation of fog densities, road types, and environmental conditions. The datasets included more than 300 images, ensuring a comprehensive evaluation of the proposed model. Before applying the model, the images underwent a preprocessing stage to standardize input conditions and enhance image clarity. First, all images were resized to a standardized resolution of 256×256 pixels to maintain uniform dimensions and ensure consistent feature extraction across different image sizes. Next, adaptive histogram equalization was applied to normalize intensity distributions, enhancing contrast between foggy and clear regions. To further refine the images, a Gaussian smoothing filter was used to suppress unwanted noise, preventing random intensity fluctuations from affecting the defogging process. Additionally, a Laplacian filter was applied to enhance edge details, ensuring better distinction between road structures and foggy back-grounds. These preprocessing steps significantly improved the robustness of the model against varying levels of fog intensity. To enhance clarity, visual representations of the preprocessing results, including the original foggy image, contrast-enhanced image, noise-reduced image, and edge-enhanced image, will be included in the revised manuscript. The experiments were executed on a system equipped with MATLAB 2019, a high-performance CPU, 8 GB of RAM, and Windows 10 (64-bit), ensuring efficient processing for evaluating the model under diverse foggy conditions.</p><p>The parameter settings for the EW-GMM-based model were determined based on extensive experimentation and fine-tuning. Specifically, the GMM components were adjusted to match the intensity distribution characteristics of foggy road images. In the model, the mean intensity <inline-formula>
+  <mml:math id="m21fo5f0vm">
+    <mml:msub>
+      <mml:mi>μ</mml:mi>
+      <mml:mi>k</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> for the Gaussian components was set to 120 , and the standard deviation <inline-formula>
+  <mml:math id="ml98z4vb66">
+    <mml:msub>
+      <mml:mi>σ</mml:mi>
+      <mml:mi>k</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> was set to 25 for foggy regions, based on the statistical analysis of pixel intensity distributions from the training set. The weights for the PFA operator, <inline-formula>
+  <mml:math id="mgk3e491pl">
+    <mml:msub>
+      <mml:mi>w</mml:mi>
+      <mml:mn>1</mml:mn>
+    </mml:msub>
+  </mml:math>
+</inline-formula> and <inline-formula>
+  <mml:math id="mt0l04rdbc">
+    <mml:msub>
+      <mml:mi>w</mml:mi>
+      <mml:mn>2</mml:mn>
+    </mml:msub>
+  </mml:math>
+</inline-formula>, were set to 0.7 and 0.3, respectively, based on the relative importance of clear and foggy regions in the image. For the level set refinement, the threshold parameter <inline-formula>
+  <mml:math id="mavqeeeu9f">
+    <mml:mi>α</mml:mi>
+  </mml:math>
+</inline-formula> was empirically set to 0.5. These values were chosen since foggy areas typically exhibit intensity clusters in this range, allowing the model to effectively identify fog-affected regions and remove fog from the image.</p><p> <xref ref-type="fig" rid="fig_1">Figure 1</xref> illustrates a foggy image with added noise, alongside the corresponding defogging result produced by the proposed model and the ground truth image. This highlights the capability of the proposed method to restore the image clarity and reduce the noise effectively while closely matching the ground truth. <xref ref-type="fig" rid="fig_2">Figure 2</xref> provides a comparative analysis of defogging performance using input foggy images. The first column displays the original foggy images, while the second and third columns showcase the defogging results from Sabitha and Eluri [<xref ref-type="bibr" rid="ref_21">21</xref>] and Li and Xu [<xref ref-type="bibr" rid="ref_22">22</xref>], respectively. The fourth column features the outcomes of the proposed model, demonstrating its ability to deliver improved clarity and detail preservation compared to the other methods. These visual results emphasize the proposed model’s superior performance in handling foggy conditions and preserving image quality.</p>
+      
+        <fig id="fig_1">
+          <label>Figure 1</label>
+          <caption>
+            <title>The foggy image with noise, result of the proposed model and the ground truth</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/1/img_glC3rDR_Vzamc1ML.png"/>
+        </fig>
+      
+      
+        <fig id="fig_2">
+          <label>Figure 2</label>
+          <caption>
+            <title>Comparison of defogging techniques</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/1/img_MaQHZQgVfTwPTtJK.png"/>
+        </fig>
+      
+      <p>In <xref ref-type="fig" rid="fig_2">Figure 2</xref>, the first column contains the input foggy images, while the second column illustrates the outcomes achieved by Sabitha and Eluri [<xref ref-type="bibr" rid="ref_21">21</xref>]. The third column showcases the results obtained by Li and Xu [<xref ref-type="bibr" rid="ref_22">22</xref>], and the final column features the defogged images produced by the proposed model, which exhibit enhanced clarity and superior detail preservation.</p><p> <xref ref-type="fig" rid="fig_3">Figure 3</xref> provides a detailed comparative analysis of the performance of the competing models and the proposed model. The first column shows the input foggy images with a noise level of 0.1, serving as the baseline for evaluation. The second column illustrates the defogging results obtained using the method proposed by Sabitha and Eluri [<xref ref-type="bibr" rid="ref_21">21</xref>], highlighting its effectiveness in partially improving visibility. The third column displays the outcomes produced by Li's model, which shows further enhancement in clarity compared to Sabitha's method. The final column presents the results achieved by the proposed model, which demonstrate significantly improved clarity and superior detail preservation. This comparison underscores the proposed model’s ability to handle challenging conditions with fog and noise while maintaining high image quality and visual fidelity.</p>
+      
+        <fig id="fig_3">
+          <label>Figure 3</label>
+          <caption>
+            <title>Comparative performance evaluation of defogging models</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/1/img_fs11FmoDp_XojQ6q.png"/>
+        </fig>
+      
+      <p>In <xref ref-type="fig" rid="fig_3">Figure 3</xref>, the first column displays the input foggy images with a noise level of 0.1. The second column presents the defogging results obtained by Sabitha and Eluri [<xref ref-type="bibr" rid="ref_21">21</xref>], followed by the third column, which shows the outcomes achieved by Li and Xu [<xref ref-type="bibr" rid="ref_22">22</xref>]. Finally, the last column highlights the defogging results produced by the proposed model.</p><p> <xref ref-type="fig" rid="fig_4">Figure 4</xref> demonstrates the performance of various models in handling blurred images. The first column presents the input blurred image, serving as the baseline for comparison. The second column depicts the defogging results achieved by Sabitha and Eluri [<xref ref-type="bibr" rid="ref_21">21</xref>], which show moderate improvement in visibility but limited detail recovery. The third column illustrates the outcomes from Li's model, offering enhanced sharpness and clarity compared to the previous method. Finally, the fourth column highlights the results of the proposed model, showcasing its exceptional ability to handle blurred images effectively. The proposed model not only restores clarity but also preserves intricate details, further emphasizing its robustness and adaptability in processing both foggy and blurred images. This demonstrates its superior performance across a range of challenging visual conditions.</p>
+      
+        <fig id="fig_4">
+          <label>Figure 4</label>
+          <caption>
+            <title>Comparison of blurred image restoration results using different models</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/1/img_KPFlersz6aMkqK4y.png"/>
+        </fig>
+      
+      <p>In <xref ref-type="fig" rid="fig_4">Figure 4</xref>, the provided blurred image is shown in the first column, followed by the results of Sabitha and Eluri [<xref ref-type="bibr" rid="ref_21">21</xref>] in the second column, Li and Xu [<xref ref-type="bibr" rid="ref_22">22</xref>] in the third column, and the proposed model in the fourth column, respectively.</p>
+      
+        <sec>
+          
+            <title>4.1. Statistical analysis for proposed model</title>
+          
+          <p>The mathematical calculations in the context of defogging (or image dehazing) involve evaluating the quality of defogged images using various metrics, such as Mean Squared Error (MSE), Feature Similarity Index (FSIM), Universal Image Quality Index (UIQI), and statistical tests. These calculations help quantify the performance of the proposed defogging model against other competing models.</p>
+          
+            <sec>
+              
+                <title>4.1.1 Mse</title>
+              
+              <p>MSE is used to assess the difference between the original (fog-free) image and the defogged image. A lower MSE indicates better quality. The MSE is calculated as:</p><p style="text-align: center"><inline-formula>
+  <mml:math id="m1hscxi3qm">
+    <mml:mrow>
+      <mml:mi data-mjx-auto-op="false">MSE</mml:mi>
+    </mml:mrow>
+    <mml:mo>=</mml:mo>
+    <mml:mfrac>
+      <mml:mn>1</mml:mn>
+      <mml:mi>N</mml:mi>
+    </mml:mfrac>
+    <mml:munderover>
+      <mml:mo>∑</mml:mo>
+      <mml:mrow>
+        <mml:mi>i</mml:mi>
+        <mml:mo>=</mml:mo>
+        <mml:mn>1</mml:mn>
+      </mml:mrow>
+      <mml:mi>N</mml:mi>
+    </mml:munderover>
+    <mml:msup>
+      <mml:mrow>
+        <mml:mo>(</mml:mo>
+        <mml:mo>(</mml:mo>
+        <mml:mo>)</mml:mo>
+        <mml:mo>−</mml:mo>
+        <mml:mo>(</mml:mo>
+        <mml:mo>)</mml:mo>
+        <mml:mo>)</mml:mo>
+        <mml:msub>
+          <mml:mi>I</mml:mi>
+          <mml:mrow>
+            <mml:mtext>orig</mml:mtext>
+          </mml:mrow>
+        </mml:msub>
+        <mml:msub>
+          <mml:mi>I</mml:mi>
+          <mml:mrow>
+            <mml:mtext>defog </mml:mtext>
+          </mml:mrow>
+        </mml:msub>
+        <mml:mi>i</mml:mi>
+        <mml:mi>i</mml:mi>
+      </mml:mrow>
+      <mml:mn>2</mml:mn>
+    </mml:msup>
+  </mml:math>
+</inline-formula></p><p>where, <inline-formula>
+  <mml:math id="m3hn1bq83x">
+    <mml:msub>
+      <mml:mi>I</mml:mi>
+      <mml:mrow>
+        <mml:mtext>orig </mml:mtext>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula> is the original (fog-free) image, <inline-formula>
+  <mml:math id="m3p0g18ddo">
+    <mml:msub>
+      <mml:mi>I</mml:mi>
+      <mml:mrow>
+        <mml:mtext>defog</mml:mtext>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula> is the defogged image, $N$ is the total number of pixels in the image.</p>
+            </sec>
+          
+          
+            <sec>
+              
+                <title>4.1.2 Fsim</title>
+              
+              <p>FSIM evaluates the similarity between the original and defogged images based on the low-level features like edges and gradients. The FSIM is given by:</p><p style="text-align: center"><inline-formula>
+  <mml:math id="mjzi8fl0lx">
+    <mml:mi>FSIM</mml:mi>
+    <mml:mrow>
+      <mml:mo>(</mml:mo>
+      <mml:mo>,</mml:mo>
+      <mml:mo>)</mml:mo>
+      <mml:msub>
+        <mml:mi>I</mml:mi>
+        <mml:mrow>
+          <mml:mtext>orig</mml:mtext>
+        </mml:mrow>
+      </mml:msub>
+      <mml:msub>
+        <mml:mi>I</mml:mi>
+        <mml:mrow>
+          <mml:mtext>defog</mml:mtext>
+        </mml:mrow>
+      </mml:msub>
+    </mml:mrow>
+    <mml:mo>=</mml:mo>
+    <mml:mfrac>
+      <mml:mrow>
+        <mml:munderover>
+          <mml:mo>∑</mml:mo>
+          <mml:mrow>
+            <mml:mi>i</mml:mi>
+            <mml:mo>=</mml:mo>
+            <mml:mn>1</mml:mn>
+          </mml:mrow>
+          <mml:mi>N</mml:mi>
+        </mml:munderover>
+        <mml:mi>similarity</mml:mi>
+        <mml:mrow>
+          <mml:mo>(</mml:mo>
+          <mml:mo>(</mml:mo>
+          <mml:mo>)</mml:mo>
+          <mml:mo>,</mml:mo>
+          <mml:mo>(</mml:mo>
+          <mml:mo>)</mml:mo>
+          <mml:mo>)</mml:mo>
+          <mml:msub>
+            <mml:mi>I</mml:mi>
+            <mml:mrow>
+              <mml:mtext>orig</mml:mtext>
+            </mml:mrow>
+          </mml:msub>
+          <mml:msub>
+            <mml:mi>I</mml:mi>
+            <mml:mrow>
+              <mml:mtext>defog</mml:mtext>
+            </mml:mrow>
+          </mml:msub>
+          <mml:mi>i</mml:mi>
+          <mml:mi>i</mml:mi>
+        </mml:mrow>
+      </mml:mrow>
+      <mml:mi>N</mml:mi>
+    </mml:mfrac>
+  </mml:math>
+</inline-formula></p><p>where, similarity <inline-formula>
+  <mml:math id="m46p4dxaze">
+    <mml:mo>(</mml:mo>
+    <mml:mo>⋅</mml:mo>
+    <mml:mo>)</mml:mo>
+  </mml:math>
+</inline-formula> is a feature similarity measure based on edge and gradient information, $N$ is the total number of pixels in the image.</p>
+            </sec>
+          
+          
+            <sec>
+              
+                <title>4.1.3 Uiqi</title>
+              
+              <p>UIQI is another important metric that evaluates the perceptual quality of defogged images by considering luminance, contrast, and structure, similar to SSIM, but with a more robust approach to image distortion. The UIQI is given by:</p><p style="text-align: center"><inline-formula>
+  <mml:math id="mkrqd6juyl">
+    <mml:mrow>
+      <mml:mi data-mjx-auto-op="false">UIQI</mml:mi>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>(</mml:mo>
+      <mml:mo>,</mml:mo>
+      <mml:mo>)</mml:mo>
+      <mml:msub>
+        <mml:mi>I</mml:mi>
+        <mml:mrow>
+          <mml:mtext>orig </mml:mtext>
+        </mml:mrow>
+      </mml:msub>
+      <mml:msub>
+        <mml:mi>I</mml:mi>
+        <mml:mrow>
+          <mml:mtext>defog </mml:mtext>
+        </mml:mrow>
+      </mml:msub>
+    </mml:mrow>
+    <mml:mo>=</mml:mo>
+    <mml:mfrac>
+      <mml:mrow>
+        <mml:mrow>
+          <mml:mo>(</mml:mo>
+          <mml:mo>+</mml:mo>
+          <mml:mo>)</mml:mo>
+          <mml:mn>2</mml:mn>
+          <mml:msub>
+            <mml:mi>μ</mml:mi>
+            <mml:mrow>
+              <mml:mtext>orig </mml:mtext>
+            </mml:mrow>
+          </mml:msub>
+          <mml:msub>
+            <mml:mi>μ</mml:mi>
+            <mml:mrow>
+              <mml:mtext>defog</mml:mtext>
+            </mml:mrow>
+          </mml:msub>
+          <mml:msub>
+            <mml:mi>C</mml:mi>
+            <mml:mn>1</mml:mn>
+          </mml:msub>
+        </mml:mrow>
+        <mml:mrow>
+          <mml:mo>(</mml:mo>
+          <mml:mo>+</mml:mo>
+          <mml:mo>)</mml:mo>
+          <mml:mn>2</mml:mn>
+          <mml:msub>
+            <mml:mi>σ</mml:mi>
+            <mml:mrow>
+              <mml:mtext>origdefog</mml:mtext>
+            </mml:mrow>
+          </mml:msub>
+          <mml:msub>
+            <mml:mi>C</mml:mi>
+            <mml:mn>2</mml:mn>
+          </mml:msub>
+        </mml:mrow>
+      </mml:mrow>
+      <mml:mrow>
+        <mml:mrow>
+          <mml:mo>(</mml:mo>
+          <mml:mo>+</mml:mo>
+          <mml:mo>+</mml:mo>
+          <mml:mo>)</mml:mo>
+          <mml:msubsup>
+            <mml:mi>μ</mml:mi>
+            <mml:mrow>
+              <mml:mtext>orig</mml:mtext>
+            </mml:mrow>
+            <mml:mn>2</mml:mn>
+          </mml:msubsup>
+          <mml:msubsup>
+            <mml:mi>μ</mml:mi>
+            <mml:mrow>
+              <mml:mtext>defog</mml:mtext>
+            </mml:mrow>
+            <mml:mn>2</mml:mn>
+          </mml:msubsup>
+          <mml:msub>
+            <mml:mi>C</mml:mi>
+            <mml:mn>1</mml:mn>
+          </mml:msub>
+        </mml:mrow>
+        <mml:mrow>
+          <mml:mo>(</mml:mo>
+          <mml:mo>+</mml:mo>
+          <mml:mo>+</mml:mo>
+          <mml:mo>)</mml:mo>
+          <mml:msubsup>
+            <mml:mi>σ</mml:mi>
+            <mml:mrow>
+              <mml:mtext>orig</mml:mtext>
+            </mml:mrow>
+            <mml:mn>2</mml:mn>
+          </mml:msubsup>
+          <mml:msubsup>
+            <mml:mi>σ</mml:mi>
+            <mml:mrow>
+              <mml:mtext>defog</mml:mtext>
+            </mml:mrow>
+            <mml:mn>2</mml:mn>
+          </mml:msubsup>
+          <mml:msub>
+            <mml:mi>C</mml:mi>
+            <mml:mn>2</mml:mn>
+          </mml:msub>
+        </mml:mrow>
+      </mml:mrow>
+    </mml:mfrac>
+  </mml:math>
+</inline-formula></p><p>where, <inline-formula>
+  <mml:math id="mrsnqjuqle">
+    <mml:msub>
+      <mml:mi>μ</mml:mi>
+      <mml:mrow>
+        <mml:mtext>orig </mml:mtext>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula> and <inline-formula>
+  <mml:math id="mp4zvfrfwo">
+    <mml:msub>
+      <mml:mi>μ</mml:mi>
+      <mml:mrow>
+        <mml:mtext>defog </mml:mtext>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula> are the mean intensities of the original and defogged images, <inline-formula>
+  <mml:math id="mt5033mepa">
+    <mml:msubsup>
+      <mml:mi>σ</mml:mi>
+      <mml:mrow>
+        <mml:mtext>orig </mml:mtext>
+      </mml:mrow>
+      <mml:mn>2</mml:mn>
+    </mml:msubsup>
+  </mml:math>
+</inline-formula> and <inline-formula>
+  <mml:math id="m0dy4ac88s">
+    <mml:msubsup>
+      <mml:mi>σ</mml:mi>
+      <mml:mrow>
+        <mml:mtext>defog </mml:mtext>
+      </mml:mrow>
+      <mml:mn>2</mml:mn>
+    </mml:msubsup>
+  </mml:math>
+</inline-formula> are the variances of the original and defogged images, <inline-formula>
+  <mml:math id="mj1obxhfc0">
+    <mml:msub>
+      <mml:mi>σ</mml:mi>
+      <mml:mrow>
+        <mml:mtext>origdefog </mml:mtext>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula> is the covariance between the original and defogged images, <inline-formula>
+  <mml:math id="m5co1yfl38">
+    <mml:msub>
+      <mml:mi>C</mml:mi>
+      <mml:mn>1</mml:mn>
+    </mml:msub>
+  </mml:math>
+</inline-formula> and <inline-formula>
+  <mml:math id="mq0a0ejvyr">
+    <mml:msub>
+      <mml:mi>C</mml:mi>
+      <mml:mn>2</mml:mn>
+    </mml:msub>
+  </mml:math>
+</inline-formula> are constants used to stabilize the denominator.</p>
+            </sec>
+          
+          
+            <sec>
+              
+                <title>4.1.4 Paired t-test for defogging model comparison</title>
+              
+              <p>The paired t-test is used to compare the performance of the proposed defogging model against competing models. The test statistic is calculated as:</p><p style="text-align: center"><inline-formula>
+  <mml:math id="ml2cgpdmqs">
+    <mml:mi>t</mml:mi>
+    <mml:mo>=</mml:mo>
+    <mml:mfrac>
+      <mml:mrow>
+        <mml:mover>
+          <mml:mi>d</mml:mi>
+          <mml:mo>¯</mml:mo>
+        </mml:mover>
+      </mml:mrow>
+      <mml:mrow>
+        <mml:msub>
+          <mml:mi>s</mml:mi>
+          <mml:mi>d</mml:mi>
+        </mml:msub>
+        <mml:mrow>
+          <mml:mo>/</mml:mo>
+        </mml:mrow>
+        <mml:msqrt>
+          <mml:mi>n</mml:mi>
+        </mml:msqrt>
+      </mml:mrow>
+    </mml:mfrac>
+  </mml:math>
+</inline-formula></p><p>where, <inline-formula>
+  <mml:math id="mu9qwwsa9h">
+    <mml:mrow>
+      <mml:mover>
+        <mml:mi>d</mml:mi>
+        <mml:mo>¯</mml:mo>
+      </mml:mover>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> is the mean of the differences between the paired samples (i.e., the difference in MSE, FSIM, or UIQI values between the proposed defogging model and another model), <inline-formula>
+  <mml:math id="m6iiwp3lx9">
+    <mml:msub>
+      <mml:mi>s</mml:mi>
+      <mml:mi>d</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> is the standard deviation of these differences, $n<inline-formula>
+  <mml:math id="mcv30tvile">
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>=</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>:</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>"</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>"</mml:mo>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> p=2 \times P(T \geq|t|) <inline-formula>
+  <mml:math id="mk66y3bub6">
+    <mml:mo>&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+  </mml:math>
+</inline-formula>P(T \geq|t|)<inline-formula>
+  <mml:math id="mifo9dn7ik">
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+  </mml:math>
+</inline-formula>t$-value under the null hypothesis. The pvalue associated with the t-test is used to determine if the observed difference in performance is statistically significant.</p>
+            </sec>
+          
+          
+            <sec>
+              
+                <title>4.1.5 One-way anova for model comparison</title>
+              
+              <p>One-way ANOVA is applied to compare the performance of multiple defogging models across various metrics. The F-statistic is calculated as:</p><p style="text-align: center"><inline-formula>
+  <mml:math id="mo2772vg5b">
+    <mml:mi>F</mml:mi>
+    <mml:mo>=</mml:mo>
+    <mml:mfrac>
+      <mml:mtext>Between-group variability</mml:mtext>
+      <mml:mtext>Within-group variability</mml:mtext>
+    </mml:mfrac>
+  </mml:math>
+</inline-formula></p><p>where, between-group variability measures how much the means of the different models differ from the overall mean, within-group variability measures the variability within each group of model outputs.</p><p style="text-align: center"><inline-formula>
+  <mml:math id="m2suxvj9ce">
+    <mml:mi>p</mml:mi>
+    <mml:mi>P</mml:mi>
+    <mml:mo>=</mml:mo>
+    <mml:mrow>
+      <mml:mo>(</mml:mo>
+      <mml:mo>≥</mml:mo>
+      <mml:mo>)</mml:mo>
+      <mml:mi>F</mml:mi>
+      <mml:msub>
+        <mml:mi>F</mml:mi>
+        <mml:mrow>
+          <mml:mtext>obs</mml:mtext>
+        </mml:mrow>
+      </mml:msub>
+    </mml:mrow>
+  </mml:math>
+</inline-formula></p><p>where, <inline-formula>
+  <mml:math id="m5cdabayuy">
+    <mml:msub>
+      <mml:mi>F</mml:mi>
+      <mml:mrow>
+        <mml:mtext>obs </mml:mtext>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula> is the observed F-statistic, and the probability is computed from the F-distribution with the appropriate degrees of freedom. A large F -value and a small p -value indicate that at least one of the models performs significantly differently from the others.</p>
+            </sec>
+          
+          
+            <sec>
+              
+                <title>4.1.6 Wilcoxon signed-rank (wsr) test for defogging efficiency comparison</title>
+              
+              <p>The WSR Test is a non-parametric test used to compare the execution time of the proposed defogging model with competing models. It is calculated as:</p><p style="text-align: center"><inline-formula>
+  <mml:math id="mf4l6b9rny">
+    <mml:mi>W</mml:mi>
+    <mml:mo>=</mml:mo>
+    <mml:mo>∑</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mtext>signed ranks of execution time differences</mml:mtext>
+  </mml:math>
+</inline-formula></p><p>where, the differences between execution times of the proposed and competing models are ranked, and the sign of each difference is retained. The p-value obtained from this test indicates whether there is a significant difference in execution time between the models. The p-value is defined as follows:</p><p style="text-align: center"><inline-formula>
+  <mml:math id="m3td599cm4">
+    <mml:mi>p</mml:mi>
+    <mml:mi>P</mml:mi>
+    <mml:mo>=</mml:mo>
+    <mml:mo>×</mml:mo>
+    <mml:mn>2</mml:mn>
+    <mml:mrow>
+      <mml:mo>(</mml:mo>
+      <mml:mo>≥</mml:mo>
+      <mml:mo>)</mml:mo>
+      <mml:mi>W</mml:mi>
+      <mml:msub>
+        <mml:mi>W</mml:mi>
+        <mml:mrow>
+          <mml:mtext>obs</mml:mtext>
+        </mml:mrow>
+      </mml:msub>
+    </mml:mrow>
+  </mml:math>
+</inline-formula></p><p>where, <inline-formula>
+  <mml:math id="mien4sjh5q">
+    <mml:mi>P</mml:mi>
+    <mml:mrow>
+      <mml:mo>(</mml:mo>
+      <mml:mo>≥</mml:mo>
+      <mml:mo>)</mml:mo>
+      <mml:mi>W</mml:mi>
+      <mml:msub>
+        <mml:mi>W</mml:mi>
+        <mml:mrow>
+          <mml:mtext>obs </mml:mtext>
+        </mml:mrow>
+      </mml:msub>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> is derived from the Wilcoxon rank-sum distribution.</p>
+            </sec>
+          
+          
+            <sec>
+              
+                <title>4.1.7 Execution time comparison (second)</title>
+              
+              <p>The efficiency of the proposed defogging model can also be assessed by measuring its execution time on a test set of images. The average execution time is compared to that of other defogging models using statistical tests such as the paired t-test and the WSR Test to assess if the proposed model is significantly faster without compromising image quality.</p>
+            </sec>
+          
+          
+            <sec>
+              
+                <title>4.1.8 Image fidelity comparison</title>
+              
+              <p>Image fidelity can be measured using a set of perceptual metrics such as Normalized Cross-Correlation (NCC). NCC is used to assess how closely the defogged image matches the original image in terms of pixel-level correspondence. The NCC is calculated as:</p><p style="text-align: center"><inline-formula>
+  <mml:math id="m4nwvzl3ww">
+    <mml:mi>N</mml:mi>
+    <mml:mi>C</mml:mi>
+    <mml:mi>C</mml:mi>
+    <mml:mo>=</mml:mo>
+    <mml:mfrac>
+      <mml:mrow>
+        <mml:munderover>
+          <mml:mo>∑</mml:mo>
+          <mml:mrow>
+            <mml:mi>i</mml:mi>
+            <mml:mo>=</mml:mo>
+            <mml:mn>1</mml:mn>
+          </mml:mrow>
+          <mml:mi>N</mml:mi>
+        </mml:munderover>
+        <mml:mrow>
+          <mml:mo>(</mml:mo>
+          <mml:mo>(</mml:mo>
+          <mml:mo>)</mml:mo>
+          <mml:mo>−</mml:mo>
+          <mml:mo>)</mml:mo>
+          <mml:msub>
+            <mml:mi>I</mml:mi>
+            <mml:mrow>
+              <mml:mtext>orig</mml:mtext>
+            </mml:mrow>
+          </mml:msub>
+          <mml:msub>
+            <mml:mi>μ</mml:mi>
+            <mml:mrow>
+              <mml:mtext>orig</mml:mtext>
+            </mml:mrow>
+          </mml:msub>
+          <mml:mi>i</mml:mi>
+        </mml:mrow>
+        <mml:mrow>
+          <mml:mo>(</mml:mo>
+          <mml:mo>(</mml:mo>
+          <mml:mo>)</mml:mo>
+          <mml:mo>−</mml:mo>
+          <mml:mo>)</mml:mo>
+          <mml:msub>
+            <mml:mi>I</mml:mi>
+            <mml:mrow>
+              <mml:mtext>defog</mml:mtext>
+            </mml:mrow>
+          </mml:msub>
+          <mml:msub>
+            <mml:mi>μ</mml:mi>
+            <mml:mrow>
+              <mml:mtext>defog</mml:mtext>
+            </mml:mrow>
+          </mml:msub>
+          <mml:mi>i</mml:mi>
+        </mml:mrow>
+      </mml:mrow>
+      <mml:msqrt>
+        <mml:munderover>
+          <mml:mo>∑</mml:mo>
+          <mml:mrow>
+            <mml:mi>i</mml:mi>
+            <mml:mo>=</mml:mo>
+            <mml:mn>1</mml:mn>
+          </mml:mrow>
+          <mml:mi>N</mml:mi>
+        </mml:munderover>
+        <mml:munderover>
+          <mml:mo>∑</mml:mo>
+          <mml:mrow>
+            <mml:mi>i</mml:mi>
+            <mml:mo>=</mml:mo>
+            <mml:mn>1</mml:mn>
+          </mml:mrow>
+          <mml:mi>N</mml:mi>
+        </mml:munderover>
+        <mml:msup>
+          <mml:mrow>
+            <mml:mo>(</mml:mo>
+            <mml:mo>(</mml:mo>
+            <mml:mo>)</mml:mo>
+            <mml:mo>−</mml:mo>
+            <mml:mo>)</mml:mo>
+            <mml:msub>
+              <mml:mi>I</mml:mi>
+              <mml:mrow>
+                <mml:mtext>orig</mml:mtext>
+              </mml:mrow>
+            </mml:msub>
+            <mml:msub>
+              <mml:mi>μ</mml:mi>
+              <mml:mrow>
+                <mml:mtext>orig</mml:mtext>
+              </mml:mrow>
+            </mml:msub>
+            <mml:mi>i</mml:mi>
+          </mml:mrow>
+          <mml:mn>2</mml:mn>
+        </mml:msup>
+        <mml:msup>
+          <mml:mrow>
+            <mml:mo>(</mml:mo>
+            <mml:mo>(</mml:mo>
+            <mml:mo>)</mml:mo>
+            <mml:mo>−</mml:mo>
+            <mml:mo>)</mml:mo>
+            <mml:msub>
+              <mml:mi>I</mml:mi>
+              <mml:mrow>
+                <mml:mtext>defog</mml:mtext>
+              </mml:mrow>
+            </mml:msub>
+            <mml:msub>
+              <mml:mi>μ</mml:mi>
+              <mml:mrow>
+                <mml:mtext>defog</mml:mtext>
+              </mml:mrow>
+            </mml:msub>
+            <mml:mi>i</mml:mi>
+          </mml:mrow>
+          <mml:mn>2</mml:mn>
+        </mml:msup>
+      </mml:msqrt>
+    </mml:mfrac>
+  </mml:math>
+</inline-formula></p><p>where, <inline-formula>
+  <mml:math id="mgu9ccorgs">
+    <mml:msub>
+      <mml:mi>μ</mml:mi>
+      <mml:mrow>
+        <mml:mtext>orig </mml:mtext>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula> and <inline-formula>
+  <mml:math id="mvy7l8kbni">
+    <mml:msub>
+      <mml:mi>μ</mml:mi>
+      <mml:mrow>
+        <mml:mtext>defog</mml:mtext>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula> are the mean pixel values of the original and defogged images, respectively.</p><p>The closer the NCC value is to 1, the better the image fidelity.</p><p>The performance comparison between the proposed defogging model and the competing models (Sabitha's model and Li's model) is presented in <xref ref-type="table" rid="table_1">Table 1</xref>. The results demonstrate that the proposed model consistently outperforms the existing methods across various quality metrics, execution time, and statistical significance tests.</p>
+              
+                <table-wrap id="table_1">
+                  <label>Table 1</label>
+                  <caption>
+                    <title>Comparison of the proposed defogging model with competing Sabitha's model and Li's model</title>
+                  </caption>
+                  <table><tbody><tr><th colspan="1" rowspan="1"><p>Metric</p></th><th colspan="1" rowspan="1"><p>Our Model</p></th><th colspan="1" rowspan="1"><p>Sabitha's Model</p></th><th colspan="1" rowspan="1"><p>Li's Model</p></th></tr><tr><td colspan="1" rowspan="1"><p>MSE</p></td><td colspan="1" rowspan="1"><p>0.023</p></td><td colspan="1" rowspan="1"><p>0.045</p></td><td colspan="1" rowspan="1"><p>0.039</p></td></tr><tr><td colspan="1" rowspan="1"><p>FSIM</p></td><td colspan="1" rowspan="1"><p>$0.95 \pm 0.01<mml:math id="mdixijvkt9">
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+</mml:math>0.85 \pm 0.02<mml:math id="mdpy5e8tq4">
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+</mml:math>0.89 \pm 0.02<mml:math id="mrj81unrid">
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>U</mml:mi>
+  <mml:mi>I</mml:mi>
+  <mml:mi>Q</mml:mi>
+  <mml:mi>I</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+</mml:math>0.92 \pm 0.02<mml:math id="movl6x6xf7">
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+</mml:math>0.88 \pm 0.03<mml:math id="m4jzndh1ci">
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+</mml:math>0.84 \pm 0.04<mml:math id="mxgjx87cir">
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>N</mml:mi>
+  <mml:mi>C</mml:mi>
+  <mml:mi>C</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+</mml:math>0.98 \pm 0.01<mml:math id="m9lchb6mjt">
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+</mml:math>0.93 \pm 0.02<mml:math id="m6j4eshgsk">
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+</mml:math>0.91 \pm 0.03<mml:math id="msv9j1wzzh">
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mo>(</mml:mo>
+  <mml:mo>)</mml:mo>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>E</mml:mi>
+  <mml:mi>x</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>u</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>i</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>i</mml:mi>
+  <mml:mi>m</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+</mml:math>2.2 \pm 0.3<mml:math id="m3eo33s0uw">
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+</mml:math>7.4 \pm 0.5<mml:math id="muvafeyaa6">
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+</mml:math>6.5 \pm 0.4<mml:math id="mjxfbcbcdz">
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mo>−</mml:mo>
+  <mml:mo>(</mml:mo>
+  <mml:mo>−</mml:mo>
+  <mml:mo>)</mml:mo>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>P</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>i</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>v</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>u</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+</mml:math>&lt; 0.01<mml:math id="mvuyxi0b9u">
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mo>(</mml:mo>
+  <mml:mo>−</mml:mo>
+  <mml:mo>)</mml:mo>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>—</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>—</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>W</mml:mi>
+  <mml:mi>S</mml:mi>
+  <mml:mi>R</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>v</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>u</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+</mml:math>&lt; 0.05<mml:math id="mcdkh567yp">
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mo>(</mml:mo>
+  <mml:mo>−</mml:mo>
+  <mml:mo>)</mml:mo>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>—</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>—</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>A</mml:mi>
+  <mml:mi>N</mml:mi>
+  <mml:mi>O</mml:mi>
+  <mml:mi>V</mml:mi>
+  <mml:mi>A</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>v</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>u</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+</mml:math>&lt; 0.01$</p></td><td colspan="1" rowspan="1"><p>—</p></td><td colspan="1" rowspan="1"><p>—</p></td></tr></tbody></table>
+                </table-wrap>
+              
+              <p>MSE: The proposed model achieved the lowest MSE value of 0.023, significantly better than Sabitha (0.045) and Li (0.039). This indicates that the defogged images generated by the proposed model are closer to the original (fog-free) images, showcasing its ability to minimize reconstruction errors.</p><p>FSIM: The FSIM of the proposed model (0.95±0.01) is significantly higher than that of Sabitha (0.85±0.02) and Li (0.89±0.02). This demonstrates the superior preservation of structural and perceptual features, such as edges and gradients, by the proposed model.</p><p>UIOI: The proposed model also exhibited a higher UIOI (0.92±0.02) compared to Sabitha (0.88±0.03) and Li (0.84±0.04). This highlights its robustness in maintaining luminance, contrast, and structure, ensuring visually pleasing results.</p><p>NCC: With an NCC of 0.98±0.01, the proposed model achieved closer pixel-level correspondence with the original images compared to Sabitha (0.93±0.02) and Li (0.91±0.03). This underscores the high fidelity of the defogged images produced by the proposed approach.</p><p>Execution time: The proposed model was also the fastest, with an average execution time of 2.2±0.3 seconds, outperforming Sabitha (7.4±0.5 seconds) and Li (6.5±0.4 seconds). This efficiency is particularly advantageous for real-time applications, where rapid processing is essential.</p><p>The statistical tests further validate the superiority of the proposed model. The paired t-test results (p-value &lt; 0.01) confirm significant improvements in metrics like FSIM and UIQI over competing models. Similarly, the WSR test (p-value &lt; 0.05) indicates that the proposed model's execution time is significantly shorter. Finally, the one-way ANOVA (p-value &lt; 0.01) demonstrates that the observed differences among the models are statistically significant.</p><p>The combination of lower MSE, higher FSIM, UIQI, and NCC, and reduced execution time demonstrates the overall effectiveness of the proposed defogging model (see <xref ref-type="fig" rid="fig_5">Figure 5</xref>). The statistical significance of the results further supports its robustness and reliability. These findings suggest that the proposed model is well-suited for applications requiring high-quality defogging with efficient processing, such as autonomous driving, remote sensing, and surveillance systems.</p>
+              
+                <fig id="fig_5">
+                  <label>Figure 5</label>
+                  <caption>
+                    <title>Comparative performance evaluation of defogging models</title>
+                  </caption>
+                  <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/1/img_hjrLvDuiD2MO1q-9.png"/>
+                </fig>
+              
+              <p>The proposed model outperforms Sabitha's model and Li's model with the lowest MSE, highest FSIM and UIQI values, and the shortest execution time, demonstrating superior image quality and computational efficiency.</p>
+            </sec>
+          
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>5. Conclusion</title>
+      <p>In this work, a novel image defogging model has been proposed, integrating EW-GMM with PFA for road image defogging. The model dynamically adjusts the influence of each Gaussian component based on entropy, thereby improving the differentiation between foggy and clear regions. This dynamic weighting mechanism enhances the model's flexibility, making it more effective in addressing various fog densities and uncertainties inherent in road images. The incorporation of PFA further refines the transmission map, improving image contrast while preserving important structural details. Additionally, the level set refinement method smooths the transmission map, improving the distinction between foggy and clear regions, ensuring accurate fog removal and clearer road boundaries.</p><p>Despite its promising performance, the model is limited in extremely dense fog conditions or in the presence of non-homogeneous haze, where finer structural details may not be fully restored. Furthermore, the reliance on predefined parameters constrains the adaptability of the model in dynamic atmospheric conditions. Future work will focus on overcoming these limitations by incorporating adaptive parameter selection techniques and learning-based frameworks to enhance the model's adaptability. The potential integration of deep learning techniques will be explored to improve the generalization of the model across diverse environments. Moreover, efforts will be directed towards extending the applicability of the model for real-time defogging in autonomous vehicles, satellite imaging, and aerial surveillance, broadening its use in challenging imaging scenarios.</p>
+    </sec>
+  </body>
+  <back>
+    <ack>
+      <title>Acknowledgments</title>
+      
+    </ack>
+    <app-group>
+      <app>
+        <title>Appendix</title>
+        
+      </app>
+    </app-group>
+    <notes>
+      <title>Author Contributions</title>
+      
+    </notes>
+    <notes>
+      <title>Funding</title>
+      
+    </notes>
+    <notes>
+      <title>Informed Consent Statement</title>
+      
+    </notes>
+    <notes>
+      <title>Data Availability Statement</title>
+      <p>The data used to support the findings of this study are available from the corresponding author upon request.</p>
+    </notes>
+    <notes notes-type="COI-statement">
+      <title>Conflicts of Interest</title>
+      <p>The author declares no conflict of interest.</p>
+    </notes>
+    <ref-list>
+      <title>References</title>
+      <ref id="ref_1">
+        <label>1.</label>
+        <element-citation publication-type="journal">
+          <volume>148</volume>
+          <page-range>04022076</page-range>
+          <issue>10</issue>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Alomari</surname>
+              <given-names>A. H.</given-names>
+            </name>
+            <name>
+              <surname>Abu Lebdeh</surname>
+              <given-names>E.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1061/JTEPBS.0000728</pub-id>
+          <article-title>Smart real-time vehicle detection and tracking system using road surveillance cameras</article-title>
+          <source>J. Transp. Eng. Part A Syst.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_2">
+        <label>2.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>22–34</page-range>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Fan</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>J. Liu</surname>
+            </name>
+            <name>
+              <surname>Yu</surname>
+              <given-names>J.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1007/978-3-031-70507-6_3</pub-id>
+          <article-title>Highway obstacle recognition based on improvedYOLOv7 and defogging algorithm</article-title>
+          <source>IoT as a Service: 9th EAI International Conference, IoTaaS 2023, Nanjing, China</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_3">
+        <label>3.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>61–65</page-range>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Zhang</surname>
+              <given-names>J.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/NNICE58320.2023.10105664</pub-id>
+          <article-title>Traffic sign defogging based on conditional adversarial neural network pix2pixHD</article-title>
+          <source>2023 3rd International Conference on Neural Networks, Information and Communication Engineering (NNICE), Guangzhou, China</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_4">
+        <label>4.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>88–94</page-range>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Hao</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Y. Yu</surname>
+            </name>
+            <name>
+              <surname>Sun</surname>
+              <given-names>J.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/CCSB60789.2023.10398795</pub-id>
+          <article-title>Optimization and implementation of image defogging algorithm based on field programmable gate array</article-title>
+          <source>2023 3rd International Conference on Computer Science and Blockchain (CCSB), Shenzhen, China</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_5">
+        <label>5.</label>
+        <element-citation publication-type="journal">
+          <volume>41</volume>
+          <page-range>101031</page-range>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Liu</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Tian</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Zheng</surname>
+              <given-names>W.</given-names>
+            </name>
+            <name>
+              <surname>Yin</surname>
+              <given-names>L.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.uclim.2021.101031</pub-id>
+          <article-title>Spatial and temporal distribution characteristics of haze and pollution particles in China based on spatial statistics</article-title>
+          <source>Urban Clim.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_6">
+        <label>6.</label>
+        <element-citation publication-type="journal">
+          <volume>7</volume>
+          <page-range>173977-173988</page-range>
+          <year>2019</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Kuo</surname>
+              <given-names>Y. T.</given-names>
+            </name>
+            <name>
+              <surname>Chen</surname>
+              <given-names>W. T.</given-names>
+            </name>
+            <name>
+              <surname>Chen</surname>
+              <given-names>P. Y.</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>C. H.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/ACCESS.2019.2953959</pub-id>
+          <article-title>VLSI implementation for an adaptive haze removal method</article-title>
+          <source>IEEE Access</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_7">
+        <label>7.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>938–946</page-range>
+          <year>2018</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Engin</surname>
+              <given-names>D.</given-names>
+            </name>
+            <name>
+              <surname>A. Genç</surname>
+            </name>
+            <name>
+              <surname>Kemal Ekenel</surname>
+              <given-names>H.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/CVPRW.2018.00127</pub-id>
+          <article-title>Cycle-dehaze: Enhanced CycleGAN for single image dehazing</article-title>
+          <source>2018 IEEE/CVF Conference on Computer Vision and Pattern Recognition Workshops (CVPRW), Salt Lake City, UT, USA</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_8">
+        <label>8.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>1-8</page-range>
+          <year>2008</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Tan</surname>
+              <given-names>R. T.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/CVPR.2008.4587643</pub-id>
+          <article-title>Visibility in bad weather from a single image</article-title>
+          <source>2008 IEEE Conference on Computer Vision and Pattern Recognition, Anchorage, AK, USA</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_9">
+        <label>9.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>1015-1024</page-range>
+          <year>2018</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Zhang</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Sindagi</surname>
+              <given-names>V.</given-names>
+            </name>
+            <name>
+              <surname>Patel</surname>
+              <given-names>V. M.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/CVPRW.2018.00135</pub-id>
+          <article-title>Multi-scale single image dehazing using perceptual pyramid deep network</article-title>
+          <source>2018 IEEE/CVF Conference on Computer Vision and Pattern Recognition Workshops (CVPRW), Salt Lake City, UT, USA</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_10">
+        <label>10.</label>
+        <element-citation publication-type="journal">
+          <volume>14</volume>
+          <page-range>1170-1179</page-range>
+          <issue>6</issue>
+          <year>2020</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Sarkar</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Sarkar</surname>
+              <given-names>P. R.</given-names>
+            </name>
+            <name>
+              <surname>Mondal</surname>
+              <given-names>U.</given-names>
+            </name>
+            <name>
+              <surname>Nandi</surname>
+              <given-names>D.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1049/iet-ipr.2019.0496</pub-id>
+          <article-title>Empirical wavelet transform-based fog removal via dark channel prior</article-title>
+          <source>IET Image Process.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_11">
+        <label>11.</label>
+        <element-citation publication-type="journal">
+          <volume>34</volume>
+          <page-range>11908-11915</page-range>
+          <issue>7</issue>
+          <year>2020</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Qin</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Bai</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Xie</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Jia</surname>
+              <given-names>H.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1609/aaai.v34i07.6865</pub-id>
+          <article-title>FFA-Net: Feature fusion attention network for single image dehazing</article-title>
+          <source>Proc. AAAI Conf. Artif. Intell.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_12">
+        <label>12.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>208-216</page-range>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Qu</surname>
+              <given-names>F.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1049/icp.2023.2940</pub-id>
+          <article-title>Image defogging algorithm based on physical prior and contrast learning</article-title>
+          <source>5th International Conference on Artificial Intelligence and Advanced Manufacturing (AIAM 2023), Brussels, Belgium</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_13">
+        <label>13.</label>
+        <element-citation publication-type="journal">
+          <volume>22</volume>
+          <page-range>1957</page-range>
+          <issue>5</issue>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Ngo</surname>
+              <given-names>D.</given-names>
+            </name>
+            <name>
+              <surname>Lee</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Kang</surname>
+              <given-names>U. J.</given-names>
+            </name>
+            <name>
+              <surname>Ngo</surname>
+              <given-names>T. M.</given-names>
+            </name>
+            <name>
+              <surname>Lee</surname>
+              <given-names>G. D.</given-names>
+            </name>
+            <name>
+              <surname>Kang</surname>
+              <given-names>B.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3390/s22051957</pub-id>
+          <article-title>Adapting a dehazing system to haze conditions by piece-wisely linearizing a depth estimator</article-title>
+          <source>Sensors</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_14">
+        <label>14.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>86-91</page-range>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Yang</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>Y.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1117/12.3004738</pub-id>
+          <article-title>Polarization image defogging based on detail recovery generative adversarial network</article-title>
+          <source>Third International Conference on Signal Image Processing and Communication (ICSIPC 2023), Kunming, China</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_15">
+        <label>15.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>109-119</page-range>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Liu</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Qi</surname>
+              <given-names>L.</given-names>
+            </name>
+            <name>
+              <surname>Cao</surname>
+              <given-names>T.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1007/978-3-031-65126-7_11</pub-id>
+          <article-title>Research on traffic sign image recognition algorithms under complex weather conditions</article-title>
+          <source>Quality, Reliability, Security and Robustness in Heterogeneous Systems: 19th EAI International Conference, QShine 2023, Shenzhen, China</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_16">
+        <label>16.</label>
+        <element-citation publication-type="journal">
+          <volume>67</volume>
+          <page-range>3115-3127</page-range>
+          <issue>11</issue>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Shi</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Song</surname>
+              <given-names>A.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1093/comjnl/bxae074</pub-id>
+          <article-title>Defog YOLO for road object detection in foggy weather</article-title>
+          <source>Comput. J.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_17">
+        <label>17.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>1-6</page-range>
+          <year>2017</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Choi</surname>
+              <given-names>K. Y.</given-names>
+            </name>
+            <name>
+              <surname>Jeong</surname>
+              <given-names>K. M.</given-names>
+            </name>
+            <name>
+              <surname>Song</surname>
+              <given-names>B. C.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/ITSC.2017.8317710</pub-id>
+          <article-title>Fog detection for de-fogging of road driving images</article-title>
+          <source>2017 IEEE 20th International Conference on Intelligent Transportation Systems (ITSC), Yokohama, Japan</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_18">
+        <label>18.</label>
+        <element-citation publication-type="journal">
+          <volume>101</volume>
+          <page-range>473-480</page-range>
+          <issue>2</issue>
+          <year>2018</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Jeong</surname>
+              <given-names>K.</given-names>
+            </name>
+            <name>
+              <surname>Choi</surname>
+              <given-names>K.</given-names>
+            </name>
+            <name>
+              <surname>Kim</surname>
+              <given-names>D.</given-names>
+            </name>
+            <name>
+              <surname>Song</surname>
+              <given-names>B. C.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1587/transinf.2017EDP7211</pub-id>
+          <article-title>Fast fog detection for de-fogging of road driving images</article-title>
+          <source>IEICE Trans. Inf. Syst.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_19">
+        <label>19.</label>
+        <element-citation publication-type="journal">
+          <volume>27</volume>
+          <page-range>013004</page-range>
+          <issue>1</issue>
+          <year>2018</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Singh</surname>
+              <given-names>D.</given-names>
+            </name>
+            <name>
+              <surname>Kumar</surname>
+              <given-names>V.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1117/1.JEI.27.1.013004</pub-id>
+          <article-title>Defogging of road images using gain coefficient-based trilateral filter</article-title>
+          <source>J. Electron. Imaging</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_20">
+        <label>20.</label>
+        <element-citation publication-type="journal">
+          <volume>32</volume>
+          <page-range>677-702</page-range>
+          <issue>3</issue>
+          <year>2016</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Guo</surname>
+              <given-names>F.</given-names>
+            </name>
+            <name>
+              <surname>Peng</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Tang</surname>
+              <given-names>J.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.6688/JISE.2016.32.3.10</pub-id>
+          <article-title>Fast defogging and restoration assessment approach to road scene images</article-title>
+          <source>J. Inf. Sci. Eng.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_21">
+        <label>21.</label>
+        <element-citation publication-type="journal">
+          <volume>11</volume>
+          <page-range>1-11</page-range>
+          <issue>2</issue>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Sabitha</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Eluri</surname>
+              <given-names>S.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.26634/jcom.11.2.20033</pub-id>
+          <article-title>Improving dehazing results for different weather conditions using guided multi-model adaptive network (GMAN) and cross-entropy deep learning neural network (CE-DLNN)</article-title>
+          <source>i-Manag. J. Comput. Sci.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_22">
+        <label>22.</label>
+        <element-citation publication-type="journal">
+          <volume>2035</volume>
+          <page-range>012024</page-range>
+          <issue>1</issue>
+          <year>2021</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Li</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Xu</surname>
+              <given-names>Y.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1088/1742-6596/2035/1/012024</pub-id>
+          <article-title>Image defogging method for road traffic in haze days</article-title>
+          <source>J. Phys. Conf. Ser.</source>
+        </element-citation>
+      </ref>
+    </ref-list>
+  </back>
+</article>
