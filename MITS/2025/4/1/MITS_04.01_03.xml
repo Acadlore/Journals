@@ -1,0 +1,3504 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.3 20210610//EN" "JATS-journalpublishing1-3.dtd">
+<article xml:lang="en" dtd-version="1.3" article-type="research-article" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mml="http://www.w3.org/1998/Math/MathML">
+  <front>
+    <journal-meta>
+      <journal-id journal-id-type="publisher-id">MITS</journal-id>
+      <journal-id journal-id-type="doi">10.56578</journal-id>
+      <journal-title-group>
+        <journal-title>Mechatronics and Intelligent Transportation Systems</journal-title>
+        <abbrev-journal-title abbrev-type="issn">Mechatron. Intell Transp. Syst.</abbrev-journal-title>
+        <abbrev-journal-title abbrev-type="publisher">MITS</abbrev-journal-title>
+      </journal-title-group>
+      <issn publication-format="electronic">2958-0218</issn>
+      <issn publication-format="print">2958-020X</issn>
+      <publisher>
+        <publisher-name>Acadlore</publisher-name>
+      </publisher>
+    </journal-meta>
+    <article-meta>
+      <article-id pub-id-type="publisher-id">AR-dIn0fOjVm0u4abN6z51QR5pxUFFznTtK</article-id>
+      <article-id pub-id-type="doi">10.56578/mits040103</article-id>
+      <article-categories>
+        <subj-group>
+          <subject>Articles</subject>
+        </subj-group>
+      </article-categories>
+      <title-group>
+        <article-title>DSTGN-ExpertNet: A Deep Spatio-Temporal Graph Neural Network for High-Precision Traffic Forecasting</article-title>
+      </title-group>
+      <contrib-group>
+        <contrib contrib-type="author" rid="aff_1">
+          <contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0000-0001-9349-5695</contrib-id>
+          <name>
+            <surname>Edalatpanah</surname>
+            <given-names>Seyyed Ahmad</given-names>
+          </name>
+          <email>s.a.edalatpanah@aihe.ac.ir</email>
+        </contrib>
+        <contrib contrib-type="author" rid="aff_2">
+          <contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0000-0002-8169-1178</contrib-id>
+          <name>
+            <surname>Pourqasem</surname>
+            <given-names>Javad</given-names>
+          </name>
+          <email>jpourmail@gmail.com</email>
+        </contrib>
+        <aff id="aff_1">Department of Applied Mathematics, Ayandegan Institute of Higher Education, 4681853617 Tonekabon, Iran</aff>
+        <aff id="aff_2">Department of Computer Engineering, Urmia University, 5756151818 Urmia, Iran</aff>
+      </contrib-group>
+      <pub-date publication-format="electronic" date-type="pub">
+        <day>26</day>
+        <month>02</month>
+        <year>2025</year>
+      </pub-date>
+      <volume>4</volume>
+      <issue>1</issue>
+      <fpage>28</fpage>
+      <lpage>40</lpage>
+      <page-range>28-40</page-range>
+      <history>
+        <date date-type="received">
+          <day>04</day>
+          <month>01</month>
+          <year>2025</year>
+        </date>
+        <date date-type="accepted">
+          <day>15</day>
+          <month>02</month>
+          <year>2025</year>
+        </date>
+      </history>
+      <permissions>
+        <copyright-statement>©2025 by the author(s)</copyright-statement>
+        <copyright-year>2025</copyright-year>
+        <license license-type="open-access" xlink:href="https://creativecommons.org/licenses/by/4.0/">
+          <license-p> Published by Acadlore Publishing Services Limited, Hong Kong. This article is available for free download and can be reused and cited, provided that the original published version is credited, under the CC BY 4.0 license.</license-p>
+        </license>
+      </permissions>
+      <abstract><p>Accurate traffic prediction is essential for optimizing urban mobility and mitigating congestion. Traditional deep learning models, including Convolutional Neural Networks (CNNs) and Recurrent Neural Networks (RNNs), struggle to capture complex spatiotemporal dependencies and dynamic traffic variations across urban networks. To address these challenges, this study introduces DSTGN-ExpertNet, a novel Deep Spatio-Temporal Graph Neural Network (DSTGNN) framework that integrates Graph Neural Networks (GNNs) for spatial modeling and advanced deep learning techniques for temporal dynamics. The framework employs a Mixture of Experts (MoE) approach, where specialized expert models are dynamically assigned to distinct traffic patterns through a gating network, optimizing both prediction accuracy and interpretability. The proposed model is evaluated on large-scale real-world traffic datasets from Beijing and New York, demonstrating superior performance over conventional methods, including Spatio-Temporal Graph Convolutional Networks (ST-GCN) and attention-based models. With a mean absolute error (MAE) of 1.97 on the BikeNYC dataset and 9.70 on the TaxiBJ dataset, DSTGN-ExpertNet achieves state-of-the-art accuracy. These findings highlight the potential of GNN-based frameworks in revolutionizing traffic forecasting and intelligent transportation systems (ITS).</p></abstract>
+      <kwd-group>
+        <kwd>Traffic prediction</kwd>
+        <kwd>ST-GNN</kwd>
+        <kwd>GNNs</kwd>
+        <kwd>ITS</kwd>
+        <kwd>Deep learning</kwd>
+        <kwd>Traffic flow forecasting</kwd>
+        <kwd>Urban mobility</kwd>
+        <kwd>Real-time traffic analytics</kwd>
+      </kwd-group>
+      <counts>
+        <count count-type="contributors" count="2"/>
+        <fig-count count="12"/>
+        <table-count count="2"/>
+        <ref-count count="30"/>
+      </counts>
+    </article-meta>
+  </front>
+  <body>
+    <sec sec-type="intro">
+      <title>1. Introduction</title>
+      <p>Intelligent Transport Systems (ITS) [<xref ref-type="bibr" rid="ref_1">1</xref>], aim to provide precise and sophisticated traffic forecasts, guaranteeing easy and effective transportation and controls. Since ITS has been the subject of research for many years and is still developing, the discipline has experienced significant expansion and advancement. As a result, there is a vast body of literature on traffic prediction, reflecting the ongoing efforts to improve and refine predictive models for better transportation outcomes.</p><p>Short-term traffic prediction [<xref ref-type="bibr" rid="ref_2">2</xref>] enhances road management by reducing delays, incidents, and unexpected events through real-time data. This paper reviews literature on model/data driven approaches in short-term traffic predictions. It begins with an analysis of real-time traffic data collection methods used as input for predictive algorithms. The study then describes key traffic prediction [<xref ref-type="bibr" rid="ref_3">3</xref>] outputs based on available input variables and discusses standard metrics for assessing prediction accuracy. Lastly, it offers information on the effectiveness of the existing data-driven and model-driven techniques that provide real-time short-term traffic projections.</p><p>Road transportation [<xref ref-type="bibr" rid="ref_4">4</xref>], as the most extensive and complex nonlinear component of traffic management, requires accurate traffic predictions for the effective functioning of ITS. However, selecting the right prediction technique remains challenging for transportation departments, ensuring users can effectively utilize the forecasted information. This pape [<xref ref-type="bibr" rid="ref_5">5</xref>] surveys the latest forecasting technologies, offering insights into the core concepts behind various prediction approaches to aid in understanding and improving ITS applications.</p><p>Traffic prediction [<xref ref-type="bibr" rid="ref_6">6</xref>] is essential for addressing global traffic congestion, which leads to issues like longer journey duration and more fuel usage. Both new research difficulties and notable gains in traffic prediction are brought about by the incorporation of modern technology into transportation systems. This paper offers a thorough analysis of traffic prediction techniques [<xref ref-type="bibr" rid="ref_7">7</xref>], emphasizing new developments and promising prospects in AI-based approaches. Given their recent success and promise, special emphasis is paid to multivariate traffic time series modelling for handling open research challenges in traffic prediction.</p><p>The increase in traffic-related information and its applications has led to a greater focus on traffic prediction. Spatial-temporal prediction [<xref ref-type="bibr" rid="ref_8">8</xref>] has a variety of uses, including as urban planning and climate forecasting. For example, businesses might better arrange taxis to fulfill commute demands by using precise taxi demand forecast [<xref ref-type="bibr" rid="ref_9">9</xref>]. Simulating intricate geographical and temporal connections is the primary issue in traffic prediction. Based on two important findings, this research presents a unique Spatial-Temporal Dynamic Network (STDN) paradigm [<xref ref-type="bibr" rid="ref_10">10</xref>]: (1) Temporal dependencies show substantial periodicity but are not exactly periodic because of dynamic temporal changes, and (2) spatial relationships between sites are dynamic. <xref ref-type="fig" rid="fig_1">Figure 1</xref> illustrates the DSTGN-ExpertNet enhances real-time traffic prediction by using Graph Neural Networks for spatial modelling and specialized expert models for varying traffic patterns, showing superior accuracy and interpretability in large-scale urban datasets.</p>
+      
+        <fig id="fig_1">
+          <label>Figure 1</label>
+          <caption>
+            <title>Block diagram for traffic prediction</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/1/img_NtScs9TlirsSLisF.png"/>
+        </fig>
+      
+    </sec>
+    <sec sec-type="">
+      <title>2. Literature review</title>
+      <p>Ali and Mahmood [<xref ref-type="bibr" rid="ref_11">11</xref>] proposed LSTM Neural Networks because they work best with sequential data, making usable for short-term traffic flow predictions. The most popular dataset is PeMS. For increased accuracy, contemporary ITS increasingly include weather, traffic feelings from social media, temporal, and geographical data. This is ITS's first review on deep learning.</p><p>Korkmaz and Erturk [<xref ref-type="bibr" rid="ref_12">12</xref>] introduced an in-depth review which listed important studies, publications, authors, and developments that have impacted predicting lengths of traffic incidents using statistical and machine learning (ML) techniques. It addresses unobserved heterogeneity and unpredictability while analyzing novel approaches, data kinds, and significant variables. The study also employs VOSviewer® to visualize knowledge mapping from 2010 to 2022. The paper's contributions include comparing previous studies, identifying key conceptual features in analysis and prediction, and exploring future trends. The study notably found lesser usages of crowdsourcing, social media, and textual data.</p><p>Shi et al. [<xref ref-type="bibr" rid="ref_13">13</xref>] focuses on the prediction of network traffic and critically analyzes the decomposition and optimization methods applied in predictive models. It describes model parameters, datasets, and assessment standards, emphasizing how well Variational Mode Decomposition (VMD) and Particle Swarm Optimization (PSO) handle prediction problems. According to the investigation, the best optimization algorithm and decomposition method for improving the precision and rate of convergence in network traffic forecast models are PSO and VMD, respectively.</p><p>Kolekar et al. [<xref ref-type="bibr" rid="ref_14">14</xref>] developed with an emphasis on AI tactics, new trends, databases, and research difficulties in order to forecast the behavior of traffic actors in intelligent cars. With an analysis of peer-reviewed publications from 2011 to 2021 and a focus on five major research issues, it is the first comprehensive literature assessment in this field. The findings highlight that AI-based solutions, utilizing advanced input representations like traffic rules and road geometry, have shown significant success in predicting vehicle behavior, particularly in complex driving scenarios.</p><p>Wang et al. [<xref ref-type="bibr" rid="ref_7">7</xref>] presented LibCity, unified and extensible libraries for traffic predictions with easy-to-use programming framework and a dependable experimental instrument. LibCity facilitates extensive experimentation by providing 29 spatial-temporal datasets and 42 replicated traffic prediction models. By isolating implementation details, the library's standardized model interfaces, which are based on uniform data formats, make it easier to design new models. The study creates a performance leaderboard for four traffic prediction tasks and presents repeatability comparisons to verify its efficacy.</p><p>Irawan et al. [<xref ref-type="bibr" rid="ref_5">5</xref>] predicted traffic flows using Intelligent Transport Systems (ITS) which divided predictions into short and long term. While Long-Term Prediction depends on time series data and has trouble with exceptional events like accidents, Short-Term Prediction employs real-time data and may be redundant in ordinary traffic. In order to develop a more successful traffic prediction model, the author suggests a novel approach that blends time series analysis and dynamic real-time prediction.</p><p>The use of the Adaptive Neuro-Fuzzy Inference System (ANFIS) in intelligent transport systems was emphasized by Stojčić [<xref ref-type="bibr" rid="ref_15">15</xref>], who also recommended its application in traffic and transportation. The papers have been divided into seven categories: vehicle routing, traffic signal management at intersections, vehicle steering and control, safety, fuel consumption, engine performance, and emissions modeling, traffic congestion prediction, and other applications. Each sub-area is assessed using a tabular summary of the input and output variables, with the results explained in the third part.</p><p>Xiao et al. [<xref ref-type="bibr" rid="ref_16">16</xref>] suggested a crucial element for maritime traffic networks, emphasizing the most recent developments in vessel motion forecasting to improve situation awareness and pattern extraction from marine traffic data mining. It highlights how knowledge of traffic patterns is crucial for the development of knowledge-based forecasting methods and offers insightful information for a range of applications. The paper emphasizes how important advanced marine traffic studies are to enhancing intelligence and safety, especially when combined with big data, IoT, AI, and knowledge engineering.</p><p>Shaik et al. [<xref ref-type="bibr" rid="ref_17">17</xref>] suggested usages of numerous neural network models, such as the radial basis functions (RBFs), RNNs, CNNs, single-layer perceptrons (SLPs), and multilayer perceptrons (MLPs) for predicting severity of injuries received in traffic accidents. It discusses possible future directions and challenges, as well as providing an overview of the models' inputs (independent variables), outputs (dependent variables), and performance evaluation methodologies.</p><p>Ashwini and Sumathi [<xref ref-type="bibr" rid="ref_18">18</xref>] suggested a number of data sources for traffic prediction, including cutting-edge ones like cellular network and social media data. In addition to doing a comparison analysis based on quality factors such data correctness, dependability, preprocessing complexity, data sufficiency, infrastructure cost, and maintenance overhead, it describes the contributions of each data source to traffic forecast.</p>
+    </sec>
+    <sec sec-type="">
+      <title>3. Problem formulation</title>
+      <p>Traffic prediction [<xref ref-type="bibr" rid="ref_19">19</xref>] relies on historical traffic data from multiple road segments or monitoring devices to forecast future traffic conditions, including flow and speed. Initially, the challenges associated with traffic prediction are defined as follows:</p><p>Definition 1 (Traffic Prediction): Formally, the anticipated future signals may be described as <inline-formula>
+  <mml:math id="mpjzozx5yb">
+    <mml:mi>Y</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mo>=</mml:mo>
+    <mml:mo>+</mml:mo>
+    <mml:mn>1</mml:mn>
+  </mml:math>
+</inline-formula> given a set of fully observed time series signals <inline-formula>
+  <mml:math id="mzscnjwsty">
+    <mml:mi>X</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mo>=</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>…</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mn>1</mml:mn>
+    <mml:mn>2</mml:mn>
+  </mml:math>
+</inline-formula> of all the road segments or sensors. Traffic networks may be represented as directed graphs using structured time-series data as roadways include directional information.</p><p>The essential terms used in directed graph-based traffic prediction will be outlined in the following sections.</p><p>Definition 2 (Directed Graph for Traffic Network): <inline-formula>
+  <mml:math id="mlqtcmkio4">
+    <mml:mi>G</mml:mi>
+    <mml:mi>V</mml:mi>
+    <mml:mi>E</mml:mi>
+    <mml:mi>W</mml:mi>
+    <mml:mo>=</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+  </mml:math>
+</inline-formula> is a weighted directed graph that can be used to model a traffic network. $N<inline-formula>
+  <mml:math id="mvf12ls334">
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>W \in R N \times N<inline-formula>
+  <mml:math id="m8now3oidw">
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>j</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+  </mml:math>
+</inline-formula>G<inline-formula>
+  <mml:math id="mv3t3azgp4">
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>I</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>k</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:msup>
+      <mml:mi>s</mml:mi>
+      <mml:mo>′</mml:mo>
+    </mml:msup>
+    <mml:mo>,</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>V<inline-formula>
+  <mml:math id="m3x1sdf4w7">
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>k</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>k</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>I</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>j</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>k</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>\varepsilon(i, j)=1<inline-formula>
+  <mml:math id="m7nyhd2rhz">
+    <mml:mo>;</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mi>i</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+  </mml:math>
+</inline-formula>\varepsilon(i, j)=0<inline-formula>
+  <mml:math id="mcx5t15rml">
+    <mml:mo>.</mml:mo>
+    <mml:mi>T</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+  </mml:math>
+</inline-formula>E<inline-formula>
+  <mml:math id="mtwf16b4ja">
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>S</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mo>.</mml:mo>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>w(i, j)<inline-formula>
+  <mml:math id="m9czy5swqx">
+    <mml:mo>,</mml:mo>
+    <mml:mi>w</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+  </mml:math>
+</inline-formula>vi<inline-formula>
+  <mml:math id="m83mof5n9t">
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+  </mml:math>
+</inline-formula>vj$. <xref ref-type="fig" rid="fig_2">Figure 2</xref> illustrates the framework of the proposed ST-ExpertNet for traffic prediction.</p>
+      
+        <fig id="fig_2">
+          <label>Figure 2</label>
+          <caption>
+            <title>The framework of our ST-ExpertNet for traffic prediction</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/1/img_xuCQun4DEv_5kTpD.png"/>
+        </fig>
+      
+      <p>Definition 3 (Traffic Prediction on Graphs): Let <inline-formula>
+  <mml:math id="mey0h8qpvm">
+    <mml:mi>x</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>R</mml:mi>
+    <mml:mi>N</mml:mi>
+    <mml:mi>P</mml:mi>
+    <mml:mo>∈</mml:mo>
+    <mml:mo>×</mml:mo>
+  </mml:math>
+</inline-formula> be a graph signal noticed at times $t<inline-formula>
+  <mml:math id="mj22aek9al">
+    <mml:mo>,</mml:mo>
+    <mml:mi>g</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+  </mml:math>
+</inline-formula>G.P<inline-formula>
+  <mml:math id="miu3xw5p6t">
+    <mml:mo>.</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+  </mml:math>
+</inline-formula>yt+1$:</p>
+      
+        <disp-formula>
+          <label>(1)</label>
+          <mml:math id="m2r6fl3thh">
+            <mml:msub>
+              <mml:mi>y</mml:mi>
+              <mml:mrow>
+                <mml:mi>t</mml:mi>
+                <mml:mo>+</mml:mo>
+                <mml:mn>1</mml:mn>
+              </mml:mrow>
+            </mml:msub>
+            <mml:mo>=</mml:mo>
+            <mml:mi>f</mml:mi>
+            <mml:mrow>
+              <mml:mo>(</mml:mo>
+              <mml:mo>,</mml:mo>
+              <mml:mo>)</mml:mo>
+              <mml:mrow>
+                <mml:mo>[</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo>…</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo>]</mml:mo>
+                <mml:msub>
+                  <mml:mi>x</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>t</mml:mi>
+                    <mml:mo>−</mml:mo>
+                    <mml:mo>+</mml:mo>
+                    <mml:mrow>
+                      <mml:mover>
+                        <mml:mi>h</mml:mi>
+                        <mml:mo>~</mml:mo>
+                      </mml:mover>
+                    </mml:mrow>
+                    <mml:mn>1</mml:mn>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>x</mml:mi>
+                  <mml:mi>t</mml:mi>
+                </mml:msub>
+              </mml:mrow>
+              <mml:mi>G</mml:mi>
+            </mml:mrow>
+          </mml:math>
+        </disp-formula>
+      
+      <p>Definition 4 (Diffusion Convolution): The following is the definition of diffusion convolutions over graph signals <inline-formula>
+  <mml:math id="m1evxwlm44">
+    <mml:mi>x</mml:mi>
+    <mml:mi>R</mml:mi>
+    <mml:mi>N</mml:mi>
+    <mml:mi>P</mml:mi>
+    <mml:mo>∈</mml:mo>
+    <mml:mo>×</mml:mo>
+  </mml:math>
+</inline-formula> and filters <inline-formula>
+  <mml:math id="m1rq6yvod6">
+    <mml:mi>Θ</mml:mi>
+  </mml:math>
+</inline-formula>:</p>
+      
+        <disp-formula>
+          <label>(2)</label>
+          <mml:math id="m1lbizwkl7">
+            <mml:mi>x</mml:mi>
+            <mml:mi>θ</mml:mi>
+            <mml:mi>x</mml:mi>
+            <mml:mo>⋆</mml:mo>
+            <mml:mo>=</mml:mo>
+            <mml:munderover>
+              <mml:mo>∑</mml:mo>
+              <mml:mrow>
+                <mml:mi>k</mml:mi>
+                <mml:mo>=</mml:mo>
+                <mml:mn>0</mml:mn>
+              </mml:mrow>
+              <mml:mrow>
+                <mml:mi>K</mml:mi>
+                <mml:mo>−</mml:mo>
+                <mml:mn>1</mml:mn>
+              </mml:mrow>
+            </mml:munderover>
+            <mml:mrow>
+              <mml:mo>(</mml:mo>
+              <mml:mo>+</mml:mo>
+              <mml:mo>)</mml:mo>
+              <mml:msub>
+                <mml:mi>θ</mml:mi>
+                <mml:mrow>
+                  <mml:mi>k</mml:mi>
+                  <mml:mo>,</mml:mo>
+                  <mml:mn>1</mml:mn>
+                </mml:mrow>
+              </mml:msub>
+              <mml:msub>
+                <mml:mi>θ</mml:mi>
+                <mml:mrow>
+                  <mml:mi>k</mml:mi>
+                  <mml:mo>,</mml:mo>
+                  <mml:mn>2</mml:mn>
+                </mml:mrow>
+              </mml:msub>
+              <mml:msup>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:msubsup>
+                    <mml:mi>D</mml:mi>
+                    <mml:mi>O</mml:mi>
+                    <mml:mrow>
+                      <mml:mo>−</mml:mo>
+                      <mml:mn>1</mml:mn>
+                    </mml:mrow>
+                  </mml:msubsup>
+                  <mml:mi>W</mml:mi>
+                </mml:mrow>
+                <mml:mi>k</mml:mi>
+              </mml:msup>
+              <mml:msup>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:msubsup>
+                    <mml:mi>D</mml:mi>
+                    <mml:mi>I</mml:mi>
+                    <mml:mrow>
+                      <mml:mo>−</mml:mo>
+                      <mml:mn>1</mml:mn>
+                    </mml:mrow>
+                  </mml:msubsup>
+                  <mml:msup>
+                    <mml:mi>W</mml:mi>
+                    <mml:mi>T</mml:mi>
+                  </mml:msup>
+                </mml:mrow>
+                <mml:mi>k</mml:mi>
+              </mml:msup>
+            </mml:mrow>
+          </mml:math>
+        </disp-formula>
+      
+      <p> where $x<inline-formula>
+  <mml:math id="m3lquode64">
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>K<inline-formula>
+  <mml:math id="ms6h2gfgwj">
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+  </mml:math>
+</inline-formula>\Theta<inline-formula>
+  <mml:math id="mjxhruppzd">
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:msup>
+      <mml:mi>h</mml:mi>
+      <mml:mo>′</mml:mo>
+    </mml:msup>
+  </mml:math>
+</inline-formula>\theta \in R K \times 2 ; D I=\operatorname{diag}(W T)<inline-formula>
+  <mml:math id="m0aumptk9d">
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mo>−</mml:mo>
+    <mml:mo>;</mml:mo>
+  </mml:math>
+</inline-formula>1 \in R N<inline-formula>
+  <mml:math id="mg0nxixrdj">
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mo>−</mml:mo>
+    <mml:mo>;</mml:mo>
+  </mml:math>
+</inline-formula>D O=\operatorname{diag}(W 1)<inline-formula>
+  <mml:math id="m4vd475hc4">
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mo>−</mml:mo>
+    <mml:mo>.</mml:mo>
+  </mml:math>
+</inline-formula>D_o^{-1} W, D_I^{-1} W^T$ represents transition matrices of diffusions and reversals [<xref ref-type="bibr" rid="ref_20">20</xref>], respectively.</p>
+    </sec>
+    <sec sec-type="">
+      <title>4. Proposed methodology</title>
+      <p>Traffic monitoring today employs a vast amount of hardware to collect traffic data, and the amount of traffic data grows as the problem of traffic prediction gains traction. We are searching for efficient computational models for analyzing traffic data. There are now various models for analysing and forecasting traffic flow. A model called GraphSAGE learns nodes effectively by aggregating nearby nodes. It excels in drug detection, system recommendations, and classification jobs due to its excellent computing efficiency. Good performance. Nonetheless, it concentrates on data items with strong order features and does not include time series. Traffic flow data exhibits significant time series patterns, but the possible link between time and location is more complex. As a result, GraphSAGE is unable to effectively address these issues. This research introduces a novel ST-GNN for learning and forecasting traffic flow. This technique mimics the concept of the GraphSAGE model by generating a directed graph that depicts the spatiotemporal interaction between routes. The Skip-gram [<xref ref-type="bibr" rid="ref_3">3</xref>] approach applies unsupervised learning to a particular road segment to predict future traffic conditions. This model's distinctive characteristic is that Graph SAGE is an inductive graph learning model that, after sampling nodes and aggregating neighboring data, handles the final goal (like node classification). Instead of using the final node embedding itself, Graph SAGE uses the node attributes (text, node degree, node attribute description, etc.) to determine the node embedding pattern (i.e., function). This enables it to cope with unseen nodes and even observe unique network topologies by using the proper learning node embedding mode, which sets it apart from the generic matrix decomposition-based graph embedding approach.</p>
+      
+        <sec>
+          
+            <title>4.1. The define of stgnn</title>
+          
+          <p>A Spatiotemporal Graph Neural Network (STGNN) framework has been specifically developed to capture the spatiotemporal relationships between roads and traffic flow, particularly under complex road conditions. Given the intricate nature of road networks and their strong correlation with real-world traffic challenges, the road variations depicted in <xref ref-type="fig" rid="fig_3">Figure 3</xref> provide a practical and meaningful foundation for this study.</p><p>By transforming the road structure into an undirected graph, the problem of traffic flow forecasting is reframed as learning the correlations between nodes within the network. Our primary objective is to uncover implicit patterns in traffic flow variations across different road segments over time. By analyzing historical traffic data and the underlying relationships between road sections, we can effectively anticipate future traffic flow patterns.</p><p> <xref ref-type="fig" rid="fig_3">Figure 3</xref> illustrates the road network structure, where a highway is divided into seven segments or routes: A, B, C, D, E, F, and G. The network contains two junctions, one of which is paved. Notably, routes C, F, and G originate from the same straight road, whereas routes B and D form another straight connection. Additionally, routes A and E are linked by a common road.</p><p>The interactions between routes are complex and interdependent. For instance, routes C, B, D, and G can directly influence one another. However, the degree of influence varies—for example, the impact between routes B and F is significantly weaker than that between routes F and G. While routes B and F exhibit a stronger correlation, routes F and G are relatively more distantly connected in terms of influence.</p><p>This intricate interplay between road segments highlights the need for advanced spatiotemporal modeling, enabling more accurate and reliable traffic flow predictions.</p><p>We depict road links as graph relationships, as seen in <xref ref-type="fig" rid="fig_3">Figure 3</xref>, where all alignments are corresponding nodes in the network; all routes are corresponding nodes in the graph; and the lines linking the routes are nodes in directed graphs. The following guidelines describe road structures:</p>
+          
+            <fig id="fig_3">
+              <label>Figure 3</label>
+              <caption>
+                <title>Proposed usage. (a) Block diagram; (b) Representation in real-world scenario</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/1/img_LYHhna31HsVZrhye.png"/>
+            </fig>
+          
+          
+            <disp-formula>
+              <label>(3)</label>
+              <mml:math id="mozufwnpiu">
+                <mml:mi>R</mml:mi>
+                <mml:mi>G</mml:mi>
+                <mml:mo>=</mml:mo>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>,</mml:mo>
+                  <mml:mo>,</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:mi>N</mml:mi>
+                  <mml:msub>
+                    <mml:mi>E</mml:mi>
+                    <mml:mi>s</mml:mi>
+                  </mml:msub>
+                  <mml:msub>
+                    <mml:mi>E</mml:mi>
+                    <mml:mi>e</mml:mi>
+                  </mml:msub>
+                </mml:mrow>
+              </mml:math>
+            </disp-formula>
+          
+          <p> where $N<inline-formula>
+  <mml:math id="m0o8yyptnn">
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>E</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>E_e<inline-formula>
+  <mml:math id="mhn4mjhxtf">
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>R<inline-formula>
+  <mml:math id="me7fmlluna">
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>M</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mo>[</mml:mo>
+    <mml:mo>]</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mn>21</mml:mn>
+  </mml:math>
+</inline-formula>N$ contains two types of nodes: embedded representations of the same routes at different times and embedding nodes of routes.</p>
+          
+            <fig id="fig_4">
+              <label>Figure 4</label>
+              <caption>
+                <title>Graph structure representation between different road sections</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/1/img_fPRV1M3yEJBtGHle.png"/>
+            </fig>
+          
+          <p> <xref ref-type="fig" rid="fig_4">Figure 4</xref> shows the spatiotemporal relationship between road segments.</p><p>Node E1 represents embedded representations of routes E at given times E and E1, with connections established between them to enhance functionality. The same is true for G and G1, A and A1, and so on. The following equation can be used to illustrate the link between nodes:</p>
+          
+            <disp-formula>
+              <label>(4)</label>
+              <mml:math id="madmmlv3n9">
+                <mml:msub>
+                  <mml:mi>G</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>s</mml:mi>
+                    <mml:mi>t</mml:mi>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:mo>:=</mml:mo>
+                <mml:mo>=</mml:mo>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>,</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:mi>R</mml:mi>
+                  <mml:msub>
+                    <mml:mi>R</mml:mi>
+                    <mml:mi>t</mml:mi>
+                  </mml:msub>
+                </mml:mrow>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>,</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:mi>G</mml:mi>
+                  <mml:mrow>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>,</mml:mo>
+                    <mml:mo>,</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:mi>N</mml:mi>
+                    <mml:msub>
+                      <mml:mi>E</mml:mi>
+                      <mml:mi>s</mml:mi>
+                    </mml:msub>
+                    <mml:msub>
+                      <mml:mi>E</mml:mi>
+                      <mml:mi>e</mml:mi>
+                    </mml:msub>
+                  </mml:mrow>
+                  <mml:mrow>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>,</mml:mo>
+                    <mml:mo>,</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:msub>
+                      <mml:mi>N</mml:mi>
+                      <mml:mi>t</mml:mi>
+                    </mml:msub>
+                    <mml:msub>
+                      <mml:mi>E</mml:mi>
+                      <mml:mrow>
+                        <mml:mi>s</mml:mi>
+                        <mml:mi>t</mml:mi>
+                      </mml:mrow>
+                    </mml:msub>
+                    <mml:msub>
+                      <mml:mi>E</mml:mi>
+                      <mml:mrow>
+                        <mml:mi>e</mml:mi>
+                        <mml:mi>t</mml:mi>
+                      </mml:mrow>
+                    </mml:msub>
+                  </mml:mrow>
+                  <mml:msub>
+                    <mml:mi>G</mml:mi>
+                    <mml:mi>t</mml:mi>
+                  </mml:msub>
+                </mml:mrow>
+              </mml:math>
+            </disp-formula>
+          
+          <p> where nodes are represented by <inline-formula>
+  <mml:math id="mko9k9i77v">
+    <mml:msub>
+      <mml:mi>N</mml:mi>
+      <mml:mi>t</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula>, such as E1, A1, G1, D1, and so on, and <inline-formula>
+  <mml:math id="m3ujg24w5j">
+    <mml:msub>
+      <mml:mi>R</mml:mi>
+      <mml:mi>t</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> contains embedded representations of routes at various time periods. <inline-formula>
+  <mml:math id="mxsv7tmmj0">
+    <mml:msub>
+      <mml:mi>G</mml:mi>
+      <mml:mrow>
+        <mml:mi>s</mml:mi>
+        <mml:mi>t</mml:mi>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula> stands for spatio-temporal direct graphs. $R<inline-formula>
+  <mml:math id="mdw5yew5dg">
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>E</mml:mi>
+    <mml:mi>q</mml:mi>
+    <mml:mi>N</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>D</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>j</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>G</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mo>.</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mn>4</mml:mn>
+    <mml:msup>
+      <mml:mi>t</mml:mi>
+      <mml:mo>′</mml:mo>
+    </mml:msup>
+  </mml:math>
+</inline-formula>E_{s t}<inline-formula>
+  <mml:math id="me2a38j0hz">
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>y</mml:mi>
+  </mml:math>
+</inline-formula>E_{e t}<inline-formula>
+  <mml:math id="mts382iyj7">
+    <mml:mo>.</mml:mo>
+    <mml:mi>A</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>h</mml:mi>
+  </mml:math>
+</inline-formula>E_1<inline-formula>
+  <mml:math id="mxpgsfdvnk">
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+  </mml:math>
+</inline-formula>A_1<inline-formula>
+  <mml:math id="mb3qhsm4r0">
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>E_l<inline-formula>
+  <mml:math id="mwgmh2f3il">
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>A_l<inline-formula>
+  <mml:math id="m22c3zmq8w">
+    <mml:mo>,</mml:mo>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+  </mml:math>
+</inline-formula>E<inline-formula>
+  <mml:math id="mltf2yj9kk">
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mo>.</mml:mo>
+  </mml:math>
+</inline-formula>N<inline-formula>
+  <mml:math id="mvyjsa7uzg">
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+  </mml:math>
+</inline-formula>N_t<inline-formula>
+  <mml:math id="mbvv5np0gp">
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>A</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>F</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mo>.</mml:mo>
+    <mml:mo>&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mn>5</mml:mn>
+  </mml:math>
+</inline-formula>N=\{A, B, C, D, E, F, G\}, N_1=\{A 1, B 1, C 1, D 1, E 1, F 1, G 1\}<inline-formula>
+  <mml:math id="mx7fzvx88m">
+    <mml:mo>.</mml:mo>
+    <mml:mi>W</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+  </mml:math>
+</inline-formula>A \leftrightarrow A 1<inline-formula>
+  <mml:math id="m7migdh4xa">
+    <mml:mo>,</mml:mo>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+  </mml:math>
+</inline-formula>A<inline-formula>
+  <mml:math id="mjcblhyvsn">
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+  </mml:math>
+</inline-formula>A 1<inline-formula>
+  <mml:math id="mpf6p5uikb">
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+  </mml:math>
+</inline-formula>A \rightarrow A 1<inline-formula>
+  <mml:math id="mz87a4fuwn">
+    <mml:mo>.</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mi>S</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+  </mml:math>
+</inline-formula>A \leftrightarrow F, A \leftrightarrow$ $E<inline-formula>
+  <mml:math id="meockbyylo">
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+  </mml:math>
+</inline-formula>A \leftrightarrow G<inline-formula>
+  <mml:math id="mqp10zzb9f">
+    <mml:mo>.</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mi>I</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+  </mml:math>
+</inline-formula>A1 \leftrightarrow A, A1 \leftrightarrow E1, A1 \leftrightarrow G1<inline-formula>
+  <mml:math id="mqeztze3m9">
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+  </mml:math>
+</inline-formula>A1 \leftrightarrow F 1<inline-formula>
+  <mml:math id="mmac041z6b">
+    <mml:mo>.</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>;</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mi>B</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>A</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>E</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mn>1</mml:mn>
+  </mml:math>
+</inline-formula>\mathrm{A} 1=\mathrm{E}<inline-formula>
+  <mml:math id="ms195tzyho">
+    <mml:mo>.</mml:mo>
+    <mml:mi>T</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>A</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mn>1</mml:mn>
+  </mml:math>
+</inline-formula>\mathrm{A} 1=\mathrm{G}<inline-formula>
+  <mml:math id="modc1m63q0">
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>A</mml:mi>
+    <mml:mn>1</mml:mn>
+  </mml:math>
+</inline-formula>=\mathrm{F}<inline-formula>
+  <mml:math id="mmccnxo2na">
+    <mml:mo>.</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mi>T</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>E</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>E</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>F</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>E</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mn>5</mml:mn>
+    <mml:mn>1</mml:mn>
+  </mml:math>
+</inline-formula>t 1$ is shown in the following notation:</p>
+          
+            <disp-formula>
+              <label>(5)</label>
+              <mml:math id="m91vp1evrr">
+                <mml:mtable displaystyle="true" columnspacing="1em" rowspacing="3pt">
+                  <mml:mtr>
+                    <mml:mtd>
+                      <mml:mi>F</mml:mi>
+                      <mml:mi>N</mml:mi>
+                      <mml:mi>N</mml:mi>
+                      <mml:mi>N</mml:mi>
+                      <mml:mi>N</mml:mi>
+                      <mml:mi>i</mml:mi>
+                      <mml:mo>=</mml:mo>
+                      <mml:mo fence="false">{</mml:mo>
+                      <mml:mo>,</mml:mo>
+                      <mml:mo>,</mml:mo>
+                      <mml:mo>,</mml:mo>
+                      <mml:mo>…</mml:mo>
+                      <mml:mo>,</mml:mo>
+                      <mml:mo fence="false">}</mml:mo>
+                      <mml:mn>1</mml:mn>
+                      <mml:mn>2</mml:mn>
+                      <mml:mn>3</mml:mn>
+                    </mml:mtd>
+                  </mml:mtr>
+                  <mml:mtr>
+                    <mml:mtd>
+                      <mml:mi>N</mml:mi>
+                      <mml:mi>i</mml:mi>
+                      <mml:mo>=</mml:mo>
+                      <mml:mo>,</mml:mo>
+                      <mml:mrow>
+                        <mml:mo>(</mml:mo>
+                        <mml:mo>,</mml:mo>
+                        <mml:mo>)</mml:mo>
+                        <mml:msub>
+                          <mml:mi>V</mml:mi>
+                          <mml:mi>N</mml:mi>
+                        </mml:msub>
+                        <mml:msub>
+                          <mml:mi>T</mml:mi>
+                          <mml:mi>i</mml:mi>
+                        </mml:msub>
+                      </mml:mrow>
+                      <mml:mrow>
+                        <mml:mo>(</mml:mo>
+                        <mml:mo>&lt;</mml:mo>
+                        <mml:mo>,</mml:mo>
+                        <mml:mo>=</mml:mo>
+                        <mml:mo>−</mml:mo>
+                        <mml:mo>)</mml:mo>
+                        <mml:mn>0</mml:mn>
+                        <mml:mn>1</mml:mn>
+                        <mml:mi>i</mml:mi>
+                        <mml:msub>
+                          <mml:mi>T</mml:mi>
+                          <mml:mi>i</mml:mi>
+                        </mml:msub>
+                        <mml:msub>
+                          <mml:mi>T</mml:mi>
+                          <mml:mi>i</mml:mi>
+                        </mml:msub>
+                      </mml:mrow>
+                    </mml:mtd>
+                  </mml:mtr>
+                </mml:mtable>
+              </mml:math>
+            </disp-formula>
+          
+          
+            <fig id="fig_5">
+              <label>Figure 5</label>
+              <caption>
+                <title>Graphic representation of spatio-temporal relationship of road sections</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/1/img_uCmAQbz90t89wzTU.png"/>
+            </fig>
+          
+          <p>The node embedding vectors for all time periods are represented by F, the embedding vectors are Ni, the traffic flow properties of routes N are implied by VN, and the values of VN vary between Ti and Ti-1. Although Ti and Ti-1 have the same value, Ni and Ni-1 are not the same. According to Eq. (3), the letters E1, E2, E3, E4, Ei, and Ep stand for the route E embedding throughout different time periods. The node that represents the future time period is specifically Ep.</p><p>E1 → E2, E2 → E3, E3 → E4, E4 → Ei, Ei → Ep, but Ep 8 Ei, Ei 8 E4, E4 8 E3, E3 8 E2, E2 8 E1, as seen in subgraph (a) of <xref ref-type="fig" rid="fig_6">Figure 6</xref>. The serialization of nodes at different times is shown in subgraph (b) of <xref ref-type="fig" rid="fig_6">Figure 6</xref>; the node that is closest in time, Ep, is the one where we choose to predict the data. We may be able to get the desired node Ep from nodes E and Ei.</p>
+          
+            <fig id="fig_6">
+              <label>Figure 6</label>
+              <caption>
+                <title>Temporal graph structure for a single node. (a) Graphic representation of spatio-temporal relationship of a road section. (b) Representation of traffic flow at different time periods on a road section</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/1/img_w649w2VGRw6UhOrU.png"/>
+            </fig>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>4.2. The prediction process of stgnn</title>
+          
+          <p>The ST-GNN is primarily made up of two kinds of node embeddings, as shown in <xref ref-type="fig" rid="fig_7">Figure 7</xref>: The traffic flow node embedding of the road segments at various periods and the node embedding of the directed graph initialization of the link between the beginning road segments.</p><p>The segment node must be embedded before a multi-segment segment may be created as a directed graph. Determine the new node A's connectable neighbors first. The value of k determines the maximum distance between the neighbors. </p>
+          
+            <fig id="fig_7">
+              <label>Figure 7</label>
+              <caption>
+                <title>A general pipeline of ST-GNN models for traffic prediction</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/1/img_Q3_d8Ss2HUcig31c.png"/>
+            </fig>
+          
+          <p>The nearest effective neighbor of A is chosen when k = 1. These neighbor nodes also have their own neighbor nodes. When k = 2, they select the neighbor nodes of node A's effective neighbors. As needed, they are free to change the value of k. Finally, in order to obtain information on node A, they combine all of the nodes they have selected.</p><p>Different nodes can be used to depict the road section's traffic flow at various periods. Assume that at time ti, node Ati reflects node A's state. Ati has a direct relationship with node A and is solely connected to the node of ti-1. Assign k to 1. In order to embed the node Ati, first ascertain whether there are any additional nodes in the time period at t(i-1). If the neighbor of the node is connected to the node, choose it. Similarly, after setting k = 2 if required, find the neighbor nodes of the selected neighbor nodes, and so on. Ultimately, the aggregate of these neighbor nodes yields Ati's representation vector.</p>
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>5. Result and discussion</title>
+      <p>DSTGN-ExpertNet [<xref ref-type="bibr" rid="ref_22">22</xref>] was evaluated and compared using TaxiBJ and BikeNYC-I real-world public crowd flow datasets. Both quantitative and qualitative experiments were conducted to show the effectiveness and superiority of our proposed method.</p>
+      
+        <sec>
+          
+            <title>5.1. Data sets</title>
+          
+          <p>TaxiBJ: Four time periods are used to gather trajectory GPS data [<xref ref-type="bibr" rid="ref_23">23</xref>] in Beijing taxicabs: 01/07/2013 - 30/10/2013, 01/03/2014 - 30/06/2014, 01/03/2015 - 30/06/2015, and 01/11/2015 - 10/04/2016. Beijing's map is divided into 32×32 identical areas, and metadata factors such as temperature, wind speed, weather, and holiday information are also saved in this collection.</p><p>BikeNYC-I: These datasets were released in NYC-Bike between July 1, 2016, and August 29, 2016, and April 1, 2014, and September 30, 2014, respectively. The datasets published from various sources are distinguished using I and II.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>5.2. Evaluation metric</title>
+          
+          <p>The outcomes of suggested algorithms and current techniques have been evaluated using metrics such as Mean Squared Error (MSE), Root Mean Square Error (RMSE), and MAE. The following is the definition of these metrics:</p>
+          
+            <disp-formula>
+              <label>(6)</label>
+              <mml:math id="m836otcatu">
+                <mml:mtable displaystyle="true" columnspacing="1em" rowspacing="3pt">
+                  <mml:mtr>
+                    <mml:mtd>
+                      <mml:mi>M</mml:mi>
+                      <mml:mi>S</mml:mi>
+                      <mml:mi>E</mml:mi>
+                      <mml:mo>=</mml:mo>
+                      <mml:mfrac>
+                        <mml:mn>1</mml:mn>
+                        <mml:mi>N</mml:mi>
+                      </mml:mfrac>
+                      <mml:munderover>
+                        <mml:mo>∑</mml:mo>
+                        <mml:mrow>
+                          <mml:mi>i</mml:mi>
+                          <mml:mo>=</mml:mo>
+                          <mml:mn>1</mml:mn>
+                        </mml:mrow>
+                        <mml:mi>N</mml:mi>
+                      </mml:munderover>
+                      <mml:msup>
+                        <mml:mrow>
+                          <mml:mo>(</mml:mo>
+                          <mml:mo>−</mml:mo>
+                          <mml:mo>)</mml:mo>
+                          <mml:msub>
+                            <mml:mrow>
+                              <mml:mover>
+                                <mml:mi>Y</mml:mi>
+                                <mml:mo>^</mml:mo>
+                              </mml:mover>
+                            </mml:mrow>
+                            <mml:mrow>
+                              <mml:mi>t</mml:mi>
+                              <mml:mo>+</mml:mo>
+                              <mml:mn>1</mml:mn>
+                            </mml:mrow>
+                          </mml:msub>
+                          <mml:msubsup>
+                            <mml:mi>Y</mml:mi>
+                            <mml:mi>i</mml:mi>
+                            <mml:mrow>
+                              <mml:mi>t</mml:mi>
+                              <mml:mo>+</mml:mo>
+                              <mml:mn>1</mml:mn>
+                            </mml:mrow>
+                          </mml:msubsup>
+                        </mml:mrow>
+                        <mml:mn>2</mml:mn>
+                      </mml:msup>
+                    </mml:mtd>
+                  </mml:mtr>
+                </mml:mtable>
+              </mml:math>
+            </disp-formula>
+          
+          
+            <disp-formula>
+              <label>(7)</label>
+              <mml:math id="mpcx0sevju">
+                <mml:mtable displaystyle="true" columnspacing="1em" rowspacing="3pt">
+                  <mml:mtr>
+                    <mml:mtd>
+                      <mml:mi>R</mml:mi>
+                      <mml:mi>M</mml:mi>
+                      <mml:mi>S</mml:mi>
+                      <mml:mi>E</mml:mi>
+                      <mml:mo>=</mml:mo>
+                      <mml:msqrt>
+                        <mml:mfrac>
+                          <mml:mn>1</mml:mn>
+                          <mml:mi>N</mml:mi>
+                        </mml:mfrac>
+                        <mml:munderover>
+                          <mml:mo>∑</mml:mo>
+                          <mml:mrow>
+                            <mml:mi>i</mml:mi>
+                            <mml:mo>=</mml:mo>
+                            <mml:mn>1</mml:mn>
+                          </mml:mrow>
+                          <mml:mi>N</mml:mi>
+                        </mml:munderover>
+                        <mml:msup>
+                          <mml:mrow>
+                            <mml:mo>(</mml:mo>
+                            <mml:mo>−</mml:mo>
+                            <mml:mo>)</mml:mo>
+                            <mml:msubsup>
+                              <mml:mrow>
+                                <mml:mover>
+                                  <mml:mi>Y</mml:mi>
+                                  <mml:mo>^</mml:mo>
+                                </mml:mover>
+                              </mml:mrow>
+                              <mml:mrow>
+                                <mml:mi>t</mml:mi>
+                                <mml:mo>+</mml:mo>
+                                <mml:mn>1</mml:mn>
+                              </mml:mrow>
+                              <mml:mi>i</mml:mi>
+                            </mml:msubsup>
+                            <mml:msubsup>
+                              <mml:mi>Y</mml:mi>
+                              <mml:mi>i</mml:mi>
+                              <mml:mrow>
+                                <mml:mi>t</mml:mi>
+                                <mml:mo>+</mml:mo>
+                                <mml:mn>1</mml:mn>
+                              </mml:mrow>
+                            </mml:msubsup>
+                          </mml:mrow>
+                          <mml:mn>2</mml:mn>
+                        </mml:msup>
+                      </mml:msqrt>
+                    </mml:mtd>
+                  </mml:mtr>
+                </mml:mtable>
+              </mml:math>
+            </disp-formula>
+          
+          
+            <disp-formula>
+              <label>(8)</label>
+              <mml:math id="m1k8pwzcei">
+                <mml:mtable displaystyle="true" columnspacing="1em" rowspacing="3pt">
+                  <mml:mtr>
+                    <mml:mtd>
+                      <mml:mi>M</mml:mi>
+                      <mml:mi>A</mml:mi>
+                      <mml:mi>E</mml:mi>
+                      <mml:mo>=</mml:mo>
+                      <mml:mfrac>
+                        <mml:mn>1</mml:mn>
+                        <mml:mi>N</mml:mi>
+                      </mml:mfrac>
+                      <mml:munderover>
+                        <mml:mo>∑</mml:mo>
+                        <mml:mi>i</mml:mi>
+                        <mml:mi>n</mml:mi>
+                      </mml:munderover>
+                      <mml:mrow>
+                        <mml:mo>|</mml:mo>
+                        <mml:mo>−</mml:mo>
+                        <mml:mo>|</mml:mo>
+                        <mml:msubsup>
+                          <mml:mrow>
+                            <mml:mover>
+                              <mml:mi>Y</mml:mi>
+                              <mml:mo>^</mml:mo>
+                            </mml:mover>
+                          </mml:mrow>
+                          <mml:mrow>
+                            <mml:mi>t</mml:mi>
+                            <mml:mo>+</mml:mo>
+                            <mml:mn>1</mml:mn>
+                          </mml:mrow>
+                          <mml:mi>i</mml:mi>
+                        </mml:msubsup>
+                        <mml:msubsup>
+                          <mml:mi>Y</mml:mi>
+                          <mml:mi>i</mml:mi>
+                          <mml:mrow>
+                            <mml:mi>t</mml:mi>
+                            <mml:mo>+</mml:mo>
+                            <mml:mn>1</mml:mn>
+                          </mml:mrow>
+                        </mml:msubsup>
+                      </mml:mrow>
+                    </mml:mtd>
+                  </mml:mtr>
+                </mml:mtable>
+              </mml:math>
+            </disp-formula>
+          
+          
+            <disp-formula>
+              <label>(9)</label>
+              <mml:math id="m74ijv73nl">
+                <mml:mtable displaystyle="true" columnspacing="1em" rowspacing="3pt">
+                  <mml:mtr>
+                    <mml:mtd>
+                      <mml:mi>M</mml:mi>
+                      <mml:mi>A</mml:mi>
+                      <mml:mi>P</mml:mi>
+                      <mml:mi>E</mml:mi>
+                      <mml:mo>=</mml:mo>
+                      <mml:mfrac>
+                        <mml:mn>1</mml:mn>
+                        <mml:mi>N</mml:mi>
+                      </mml:mfrac>
+                      <mml:munderover>
+                        <mml:mo>∑</mml:mo>
+                        <mml:mi>i</mml:mi>
+                        <mml:mi>n</mml:mi>
+                      </mml:munderover>
+                      <mml:mrow>
+                        <mml:mo>|</mml:mo>
+                        <mml:mo>|</mml:mo>
+                        <mml:mfrac>
+                          <mml:mrow>
+                            <mml:msubsup>
+                              <mml:mrow>
+                                <mml:mover>
+                                  <mml:mi>Y</mml:mi>
+                                  <mml:mo>^</mml:mo>
+                                </mml:mover>
+                              </mml:mrow>
+                              <mml:mrow>
+                                <mml:mi>t</mml:mi>
+                                <mml:mo>+</mml:mo>
+                                <mml:mn>1</mml:mn>
+                              </mml:mrow>
+                              <mml:mi>i</mml:mi>
+                            </mml:msubsup>
+                            <mml:msubsup>
+                              <mml:mi>Y</mml:mi>
+                              <mml:mi>i</mml:mi>
+                              <mml:mrow>
+                                <mml:mi>t</mml:mi>
+                                <mml:mo>+</mml:mo>
+                                <mml:mn>1</mml:mn>
+                              </mml:mrow>
+                            </mml:msubsup>
+                            <mml:mo>−</mml:mo>
+                          </mml:mrow>
+                          <mml:msubsup>
+                            <mml:mrow>
+                              <mml:mover>
+                                <mml:mi>Y</mml:mi>
+                                <mml:mo>^</mml:mo>
+                              </mml:mover>
+                            </mml:mrow>
+                            <mml:mrow>
+                              <mml:mi>t</mml:mi>
+                              <mml:mo>+</mml:mo>
+                              <mml:mn>1</mml:mn>
+                            </mml:mrow>
+                            <mml:mi>i</mml:mi>
+                          </mml:msubsup>
+                        </mml:mfrac>
+                      </mml:mrow>
+                    </mml:mtd>
+                  </mml:mtr>
+                </mml:mtable>
+              </mml:math>
+            </disp-formula>
+          
+          <p> where <inline-formula>
+  <mml:math id="mqbj54wdn5">
+    <mml:msubsup>
+      <mml:mrow>
+        <mml:mover>
+          <mml:mi>Y</mml:mi>
+          <mml:mo>^</mml:mo>
+        </mml:mover>
+      </mml:mrow>
+      <mml:mrow>
+        <mml:mi>t</mml:mi>
+        <mml:mo>+</mml:mo>
+        <mml:mn>1</mml:mn>
+      </mml:mrow>
+      <mml:mi>i</mml:mi>
+    </mml:msubsup>
+  </mml:math>
+</inline-formula> and <inline-formula>
+  <mml:math id="m12reki1at">
+    <mml:msubsup>
+      <mml:mi>Y</mml:mi>
+      <mml:mi>i</mml:mi>
+      <mml:mrow>
+        <mml:mi>t</mml:mi>
+        <mml:mo>+</mml:mo>
+        <mml:mn>1</mml:mn>
+      </mml:mrow>
+    </mml:msubsup>
+  </mml:math>
+</inline-formula> represent prediction and real values of regions i for time intervals <inline-formula>
+  <mml:math id="mjfwwiywmc">
+    <mml:mi>t</mml:mi>
+    <mml:mo>+</mml:mo>
+    <mml:mn>1</mml:mn>
+  </mml:math>
+</inline-formula> and where $N$ implies sample counts.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>5.3. Methods for comparison</title>
+          
+          <p>The settings for each method are specified, with the highest performance achieved on the validation set reported. Additionally, the CNN, ConvLSTM, and ESOM-ResNet [<xref ref-type="bibr" rid="ref_24">24</xref>] architects were incorporated into our model to evaluate the broad applicability of ESOM-Expert Net [<xref ref-type="bibr" rid="ref_25">25</xref>]. The following list includes the comprehensive implementations for each ESOM-Expert Net and the experiment setup based on the benchmark work [<xref ref-type="bibr" rid="ref_26">26</xref>] in traffic flow prediction:</p><p>Historical average (HA): By averaging the value of past flow at the same location within the same relative time period, the historical average forecasts future flow.</p><p>ConvLSTM: The fully connected LSTM (FC-LSTM) is extended by convolutional LSTM [<xref ref-type="bibr" rid="ref_27">27</xref>], which preserves its benefits. Furthermore, it is possible to capture both temporal and spatial dependence thanks to the convolutional processes preserved in input-to-state and state-to-state transitions. The ConvLSTM layers maintain a 3×3 kernel size and 32 filters. The ReLU operation is selected as the final output after four ConvLSTM layers are employed.</p><p>ST-ResNet: ST-ResNet extends the ResNet [<xref ref-type="bibr" rid="ref_28">28</xref>] into a traffic prediction framework. Furthermore, the three ResNet blocks handle the hour, day, and week patterns, respectively. The closeness, period, and trend sequence lengths are set to lc = 3, lp = 1, and lt = 1. In ST-ResNet, every block has three residual units with 32 3_3 kernel filters.</p><p>CNN-ExpertNet [<xref ref-type="bibr" rid="ref_29">29</xref>]: CNNs are included in ST Expert Net with 10 expert networks having the same architectures as pure CNNs.</p><p>ExpertNet-ST-ResNet [<xref ref-type="bibr" rid="ref_30">30</xref>]: ST-ResNet designs are utilized, and only three expert networks are used to compare performance with the original ST-ResNet. The ST-ResNet-ExpertNet does not demonstrate that its three ST-ResNet blocks are comparable to those of ST-ResNet; rather, it shows that the three ResNets are.</p><p><xref ref-type="table" rid="table_1">Table 1</xref> presents the parameter settings and compares the performance of DSTGN-ExpertNet with various baseline methods. For the TaxiBJ and BikeNYC datasets, as shown in <xref ref-type="fig" rid="fig_8">Figure 8</xref>, DSTGN-ExpertNet achieves an MSE of 275.130 for TaxiBJ and 20.043 for BikeNYC, demonstrating a significant improvement over the best-performing baseline models.</p><p>The performance of the proposed approach, in comparison to competing methods, is shown in <xref ref-type="fig" rid="fig_9">Figure 9</xref>. When compared to the TaxiBJ (14.123%) and BikeNYC (3.890%) datasets, the RMSE results for traffic flow prediction are evaluated, with the proposed method demonstrating the best performance among the baseline approaches.</p><p>As shown in <xref ref-type="fig" rid="fig_10">Figure 10</xref>, DSTGN-ExpertNet achieves a MAE of 9.700 for TaxiBJ and 1.970 for BikeNYC, demonstrating a significant improvement over the baseline methods in terms of MAE performance.</p>
+          
+            <table-wrap id="table_1">
+              <label>Table 1</label>
+              <caption>
+                <title>Effectiveness evaluation on TaxiBJ and BikeNYC-I</title>
+              </caption>
+              <table><tbody><tr><td colspan="1" rowspan="2"><p>Models</p></td><td colspan="3" rowspan="1"><p>TaxiBJ</p></td><td colspan="3" rowspan="1"><p>BikeNYC</p></td></tr><tr><td colspan="1" rowspan="1"><p>MSE</p></td><td colspan="1" rowspan="1"><p>RMSE</p></td><td colspan="1" rowspan="1"><p>MAE</p></td><td colspan="1" rowspan="1"><p>MSE</p></td><td colspan="1" rowspan="1"><p>RMSE</p></td><td colspan="1" rowspan="1"><p>MAE</p></td></tr><tr><td colspan="1" rowspan="1"><p>HistoricalAverage</p></td><td colspan="1" rowspan="1"><p>3025.123</p></td><td colspan="1" rowspan="1"><p>56.005</p></td><td colspan="1" rowspan="1"><p>26.465</p></td><td colspan="1" rowspan="1"><p>230.723</p></td><td colspan="1" rowspan="1"><p>16.767</p></td><td colspan="1" rowspan="1"><p>4.778</p></td></tr><tr><td colspan="1" rowspan="1"><p>CopyYesterday</p></td><td colspan="1" rowspan="1"><p>2015.256</p></td><td colspan="1" rowspan="1"><p>42.704</p></td><td colspan="1" rowspan="1"><p>24.004</p></td><td colspan="1" rowspan="1"><p>210.541</p></td><td colspan="1" rowspan="1"><p>15.121</p></td><td colspan="1" rowspan="1"><p>4.601</p></td></tr><tr><td colspan="1" rowspan="1"><p>ConvLSTM</p></td><td colspan="1" rowspan="1"><p>470.458</p></td><td colspan="1" rowspan="1"><p>20.247</p></td><td colspan="1" rowspan="1"><p>12.816</p></td><td colspan="1" rowspan="1"><p>43.341</p></td><td colspan="1" rowspan="1"><p>8.112</p></td><td colspan="1" rowspan="1"><p>2.512</p></td></tr><tr><td colspan="1" rowspan="1"><p>CNN-ExpertNet</p></td><td colspan="1" rowspan="1"><p>370.636</p></td><td colspan="1" rowspan="1"><p>19.510</p></td><td colspan="1" rowspan="1"><p>10.323</p></td><td colspan="1" rowspan="1"><p>38.001</p></td><td colspan="1" rowspan="1"><p>6.362</p></td><td colspan="1" rowspan="1"><p>2.144</p></td></tr><tr><td colspan="1" rowspan="1"><p>ST-ResNet-ExpertNet</p></td><td colspan="1" rowspan="1"><p>340.258</p></td><td colspan="1" rowspan="1"><p>17.153</p></td><td colspan="1" rowspan="1"><p>10.183</p></td><td colspan="1" rowspan="1"><p>36.658</p></td><td colspan="1" rowspan="1"><p>6.063</p></td><td colspan="1" rowspan="1"><p>2.101</p></td></tr><tr><td colspan="1" rowspan="1"><p>ESCOM–ExpertNet</p></td><td colspan="1" rowspan="1"><p>310.158</p></td><td colspan="1" rowspan="1"><p>15.153</p></td><td colspan="1" rowspan="1"><p>10.045</p></td><td colspan="1" rowspan="1"><p>23.001</p></td><td colspan="1" rowspan="1"><p>4.004</p></td><td colspan="1" rowspan="1"><p>2.001</p></td></tr><tr><td colspan="1" rowspan="1"><p>DSTGN-Expertnet</p></td><td colspan="1" rowspan="1"><p>275.130</p></td><td colspan="1" rowspan="1"><p>14.123</p></td><td colspan="1" rowspan="1"><p>9.700</p></td><td colspan="1" rowspan="1"><p>20.043</p></td><td colspan="1" rowspan="1"><p>3.890</p></td><td colspan="1" rowspan="1"><p>1.970</p></td></tr></tbody></table>
+            </table-wrap>
+          
+          
+            <fig id="fig_8">
+              <label>Figure 8</label>
+              <caption>
+                <title>Parameter analysis of TaxiBJ &amp;amp; BikeNYC-MSE</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/1/img_CrDVO6CVuVakB7xV.png"/>
+            </fig>
+          
+          
+            <fig id="fig_9">
+              <label>Figure 9</label>
+              <caption>
+                <title>Parameter analysis of TaxiBJ &amp;amp; BikeNYC – RMSE</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/1/img_QZ5hfTBkq6DO6nrO.png"/>
+            </fig>
+          
+          
+            <fig id="fig_10">
+              <label>Figure 10</label>
+              <caption>
+                <title>Parameter analysis of TaxiBJ &amp;amp; BikeNYC – MAE</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/1/img_3Ww5TiJjpmJZel0G.png"/>
+            </fig>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>5.4. Parameter analysis</title>
+          
+          
+            <sec>
+              
+                <title>5.4.1 Ablation study</title>
+              
+              <p>Ablation tests were conducted on the TaxiBJ dataset using distinct masks for <inline-formula>
+  <mml:math id="mo48q5xb6r">
+    <mml:msub>
+      <mml:mi>G</mml:mi>
+      <mml:mi>s</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> and <inline-formula>
+  <mml:math id="mwtehn9mjo">
+    <mml:msub>
+      <mml:mi>G</mml:mi>
+      <mml:mi>t</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula>. Masking <inline-formula>
+  <mml:math id="mr9wwldyek">
+    <mml:msub>
+      <mml:mi>G</mml:mi>
+      <mml:mi>s</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> is achieved by removing <inline-formula>
+  <mml:math id="m47ofydw2x">
+    <mml:msub>
+      <mml:mi>G</mml:mi>
+      <mml:mi>s</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> and incorporating self-attention directly from the expert's output in the model. Conversely, <inline-formula>
+  <mml:math id="mrlib23wjn">
+    <mml:msub>
+      <mml:mi>G</mml:mi>
+      <mml:mi>t</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> can be masked simply by discarding it.</p><p> <xref ref-type="table" rid="table_2">Table 2</xref> presents the results of the ablation study for the TaxiBJ and BikeNYC datasets. As shown in <xref ref-type="fig" rid="fig_11">Figure 11</xref>, the performance is compared with several models and evaluated using metrics such as MAE and Mean Absolute Percentage Error (MAPE). The results indicate that BikeNYC yields superior prediction accuracy from the expert models.</p>
+              
+                <table-wrap id="table_2">
+                  <label>Table 2</label>
+                  <caption>
+                    <title>Ablation study results for TaxiBJ and BikeNYC datasets</title>
+                  </caption>
+                  <table><tbody><tr><td colspan="1" rowspan="2"><p>Model</p></td><td colspan="2" rowspan="1"><p>TaxiBJ</p></td><td colspan="2" rowspan="1"><p>BikeNYC</p></td></tr><tr><td colspan="1" rowspan="1"><p>MSE</p></td><td colspan="1" rowspan="1"><p>MAPE</p></td><td colspan="1" rowspan="1"><p>MSE</p></td><td colspan="1" rowspan="1"><p>MAPE</p></td></tr><tr><td colspan="1" rowspan="1"><p>CNN-ExpertNet</p></td><td colspan="1" rowspan="1"><p>340.614</p></td><td colspan="1" rowspan="1"><p>5.18%</p></td><td colspan="1" rowspan="1"><p>112.717</p></td><td colspan="1" rowspan="1"><p>4.49%</p></td></tr><tr><td colspan="1" rowspan="1"><p>CNN-ExpertNet:Gs</p></td><td colspan="1" rowspan="1"><p>450.734</p></td><td colspan="1" rowspan="1"><p>6.48%</p></td><td colspan="1" rowspan="1"><p>130.002</p></td><td colspan="1" rowspan="1"><p>5.05%</p></td></tr><tr><td colspan="1" rowspan="1"><p>CNN-ExpertNet:Gt</p></td><td colspan="1" rowspan="1"><p>430.237</p></td><td colspan="1" rowspan="1"><p>6.13%</p></td><td colspan="1" rowspan="1"><p>143.523</p></td><td colspan="1" rowspan="1"><p>5.15%</p></td></tr><tr><td colspan="1" rowspan="1"><p>ST-ResNet-ExpertNet</p></td><td colspan="1" rowspan="1"><p>340.258</p></td><td colspan="1" rowspan="1"><p>5.05%</p></td><td colspan="1" rowspan="1"><p>110.435</p></td><td colspan="1" rowspan="1"><p>4.05%</p></td></tr><tr><td colspan="1" rowspan="1"><p>ST-ResNet-ExpertNet:Gs</p></td><td colspan="1" rowspan="1"><p>347.201</p></td><td colspan="1" rowspan="1"><p>5.24%</p></td><td colspan="1" rowspan="1"><p>125.173</p></td><td colspan="1" rowspan="1"><p>4.15%</p></td></tr><tr><td colspan="1" rowspan="1"><p>ST-ResNet-ExpertNet:Gt</p></td><td colspan="1" rowspan="1"><p>342.434</p></td><td colspan="1" rowspan="1"><p>5.18%</p></td><td colspan="1" rowspan="1"><p>154.110</p></td><td colspan="1" rowspan="1"><p>5.23%</p></td></tr><tr><td colspan="1" rowspan="1"><p>ConvLSTM-ExpertNet</p></td><td colspan="1" rowspan="1"><p>330.250</p></td><td colspan="1" rowspan="1"><p>4.95%</p></td><td colspan="1" rowspan="1"><p>108.445</p></td><td colspan="1" rowspan="1"><p>3.95%</p></td></tr><tr><td colspan="1" rowspan="1"><p>ConvLSTM-ExpertNet:Gs</p></td><td colspan="1" rowspan="1"><p>343.748</p></td><td colspan="1" rowspan="1"><p>5.67%</p></td><td colspan="1" rowspan="1"><p>110.318</p></td><td colspan="1" rowspan="1"><p>4.24%</p></td></tr><tr><td colspan="1" rowspan="1"><p>ConvLSTM-ExpertNet:Gt</p></td><td colspan="1" rowspan="1"><p>330.004</p></td><td colspan="1" rowspan="1"><p>5.07%</p></td><td colspan="1" rowspan="1"><p>116.742</p></td><td colspan="1" rowspan="1"><p>4.52%</p></td></tr><tr><td colspan="1" rowspan="1"><p>GNN – ExpertNet; Gs</p></td><td colspan="1" rowspan="1"><p>353.004</p></td><td colspan="1" rowspan="1"><p>5.03%</p></td><td colspan="1" rowspan="1"><p>125.670</p></td><td colspan="1" rowspan="1"><p>4.35%</p></td></tr><tr><td colspan="1" rowspan="1"><p>GNN – ExpertNet; Gt</p></td><td colspan="1" rowspan="1"><p>347.790</p></td><td colspan="1" rowspan="1"><p>5.25%</p></td><td colspan="1" rowspan="1"><p>156.80</p></td><td colspan="1" rowspan="1"><p>5.19%</p></td></tr></tbody></table>
+                </table-wrap>
+              
+              
+                <fig id="fig_11">
+                  <label>Figure 11</label>
+                  <caption>
+                    <title>Sequence length of TaxiBJ &amp;amp; BikeNYC - MSE</title>
+                  </caption>
+                  <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/1/img_EpKKrHrBPfvYwnw0.png"/>
+                </fig>
+              
+              
+                <fig id="fig_12">
+                  <label>Figure 12</label>
+                  <caption>
+                    <title>Sequence length of TaxiBJ &amp;amp; BikeNYC - MAPE</title>
+                  </caption>
+                  <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/1/img_LBWMLUZhOeUblHRe.png"/>
+                </fig>
+              
+              <p> <xref ref-type="fig" rid="fig_12">Figure 12</xref> presents the results of the ablation study for the TaxiBJ and BikeNYC datasets. A comparison with several models is made, and the performance is evaluated using metrics such as MAE and MAPE. The results indicate that BikeNYC achieves superior traffic prediction accuracy.</p>
+            </sec>
+          
+          
+            <sec>
+              
+                <title>5.4.2 Parameters search</title>
+              
+              <p>Sensitivities of three key hyperparameters in CNN-ExpertNet training on four datasets: the number of experts K , the punishment intensity of <inline-formula>
+  <mml:math id="mudl3q6qnm">
+    <mml:msub>
+      <mml:mi>λ</mml:mi>
+      <mml:mrow>
+        <mml:mi>e</mml:mi>
+        <mml:mi>r</mml:mi>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula>, and the punishment intensity of <inline-formula>
+  <mml:math id="m7xoz8gtns">
+    <mml:msub>
+      <mml:mi>λ</mml:mi>
+      <mml:mrow>
+        <mml:mtext>eid</mml:mtext>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula>. Every experiment will be conducted three times, and the variance and mean have been computed and shown.</p>
+            </sec>
+          
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>6. Conclusion and future work</title>
+      <p>DSTGN-ExpertNet, as proposed in this study, addresses the limitations inherent in conventional traffic prediction models, representing a significant advancement in the field. By leveraging advanced deep learning techniques to capture temporal dynamics and incorporating GNNs to model spatial relationships, DSTGN-ExpertNet effectively handles the complex and diverse traffic patterns characteristic of urban environments. The model architecture is supported by a dynamic gating network, which allocates resources based on real-time data, while simultaneously utilizing a range of expert models, each designed to specialise in distinct traffic patterns. This innovative approach ensures more accurate and adaptable traffic predictions.</p><p>Extensive evaluations conducted on large-scale traffic datasets from Beijing and New York demonstrate that DSTGN-ExpertNet outperforms existing methods, including attention-based models and ST-GCN, in both predictive accuracy and interpretability. Moreover, the framework not only enhances the accuracy of traffic forecasts but also provides deeper insights into the underlying traffic dynamics, offering valuable support for urban traffic management and planning. The results underscore the potential of this model to contribute significantly to the optimisation of ITS and urban mobility solutions.</p>
+    </sec>
+  </body>
+  <back>
+    <ack>
+      <title>Acknowledgments</title>
+      
+    </ack>
+    <app-group>
+      <app>
+        <title>Appendix</title>
+        
+      </app>
+    </app-group>
+    <notes>
+      <title>Author Contributions</title>
+      
+    </notes>
+    <notes>
+      <title>Funding</title>
+      
+    </notes>
+    <notes>
+      <title>Informed Consent Statement</title>
+      
+    </notes>
+    <notes>
+      <title>Data Availability Statement</title>
+      <p>The data used to support the research findings are available from the corresponding author upon request.</p>
+    </notes>
+    <notes notes-type="COI-statement">
+      <title>Conflicts of Interest</title>
+      <p>The authors declare no conflict of interest.</p>
+    </notes>
+    <ref-list>
+      <title>References</title>
+      <ref id="ref_1">
+        <label>1.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>138–143</page-range>
+          <year>2017</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Suhas</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Kalyan</surname>
+              <given-names>V. V.</given-names>
+            </name>
+            <name>
+              <surname>Katti</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>B. A. Prakash</surname>
+            </name>
+            <name>
+              <surname>Naveena</surname>
+              <given-names>C.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/ICRAECT.2017.33</pub-id>
+          <article-title>A comprehensive review on traffic prediction for intelligent transport system</article-title>
+          <source>2017 International Conference on Recent Advances in Electronics and Communication Technology (ICRAECT), Bangalore, India</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_2">
+        <label>2.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>132–139</page-range>
+          <year>2015</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Barros</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>M. Araujo</surname>
+            </name>
+            <name>
+              <surname>Rossetti</surname>
+              <given-names>R. J.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/MTITS.2015.7223248</pub-id>
+          <article-title>Short-term real-time traffic prediction methods: A survey</article-title>
+          <source>2015 International Conference on Models and Technologies for Intelligent Transportation Systems (MT-ITS), Budapest, Hungary</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_3">
+        <label>3.</label>
+        <element-citation publication-type="journal">
+          <volume>9</volume>
+          <page-range>54739-54756</page-range>
+          <year>2021</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Lee</surname>
+              <given-names>K.</given-names>
+            </name>
+            <name>
+              <surname>Eo</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Jung</surname>
+              <given-names>E.</given-names>
+            </name>
+            <name>
+              <surname>Yoon</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Rhee</surname>
+              <given-names>W.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/ACCESS.2021.3071174</pub-id>
+          <article-title>Short-term traffic prediction with deep neural networks: A survey</article-title>
+          <source>IEEE Access</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_4">
+        <label>4.</label>
+        <element-citation publication-type="journal">
+          <volume>115</volume>
+          <page-range>1047-1106</page-range>
+          <issue>2</issue>
+          <year>2020</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>George</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Santra</surname>
+              <given-names>A. K.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1007/s11277-020-07612-8</pub-id>
+          <article-title>Traffic prediction using multifaceted techniques: A survey</article-title>
+          <source>Wirel. Pers. Commun.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_5">
+        <label>5.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>1–4</page-range>
+          <year>2020</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Irawan</surname>
+              <given-names>K.</given-names>
+            </name>
+            <name>
+              <surname>R. Yusuf</surname>
+            </name>
+            <name>
+              <surname>Prihatmanto</surname>
+              <given-names>A. S.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/ICIDM51048.2020.9339675</pub-id>
+          <article-title>A survey on traffic flow prediction methods</article-title>
+          <source>2020 6th International Conference on Interactive Digital Media (ICIDM), Bandung, Indonesia</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_6">
+        <label>6.</label>
+        <element-citation publication-type="journal">
+          <volume>145</volume>
+          <page-range>103921</page-range>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Shaygan</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Meese</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>W.</given-names>
+            </name>
+            <name>
+              <surname>Zhao</surname>
+              <given-names>X. G.</given-names>
+            </name>
+            <name>
+              <surname>Nejad</surname>
+              <given-names>M.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.trc.2022.103921</pub-id>
+          <article-title>Traffic prediction using artificial intelligence: Review of recent advances and emerging opportunities</article-title>
+          <source>Transp. Res. Part C Emerg. Technol.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_7">
+        <label>7.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>145–148</page-range>
+          <year>2021</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Wang</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Jiang</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Jiang</surname>
+              <given-names>W.</given-names>
+            </name>
+            <name>
+              <surname>C. Li</surname>
+            </name>
+            <name>
+              <surname>Zhao</surname>
+              <given-names>W. X.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1145/3474717.3483923</pub-id>
+          <article-title>Libcity: An open library for traffic prediction</article-title>
+          <source>29th International Conference on Advances in Geographic Information Systems, Beijing, China</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_8">
+        <label>8.</label>
+        <element-citation publication-type="journal">
+          <volume>10</volume>
+          <page-range>1754</page-range>
+          <issue>10</issue>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Li</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Zhao</surname>
+              <given-names>W.</given-names>
+            </name>
+            <name>
+              <surname>Fan</surname>
+              <given-names>H.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3390/math10101754</pub-id>
+          <article-title>A spatio-temporal graph neural network approach for traffic flow prediction</article-title>
+          <source>Mathematics</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_9">
+        <label>9.</label>
+        <element-citation publication-type="journal">
+          <volume>13</volume>
+          <page-range>1210-1220</page-range>
+          <issue>2</issue>
+          <year>2021</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Simeunović</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Schubnel</surname>
+              <given-names>B.</given-names>
+            </name>
+            <name>
+              <surname>Alet</surname>
+              <given-names>P. J.</given-names>
+            </name>
+            <name>
+              <surname>Carrillo</surname>
+              <given-names>R. E.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/TSTE.2021.3125200</pub-id>
+          <article-title>Spatio-temporal graph neural networks for multi-site PV power forecasting</article-title>
+          <source>IEEE Trans. Sustain. Energy</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_10">
+        <label>10.</label>
+        <element-citation publication-type="journal">
+          <volume>10</volume>
+          <page-range>670-681</page-range>
+          <issue>2</issue>
+          <year>2018</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Khodayar</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>J.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/TSTE.2018.2844102</pub-id>
+          <article-title>Spatio-temporal graph deep neural network for short-term wind speed forecasting</article-title>
+          <source>IEEE Trans. Sustain. Energy</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_11">
+        <label>11.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>90–101</page-range>
+          <year>2018</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Ali</surname>
+              <given-names>U.</given-names>
+            </name>
+            <name>
+              <surname>Mahmood</surname>
+              <given-names>T.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1007/978-3-319-93710-6_11</pub-id>
+          <article-title>Using deep learning to predict short term traffic flow: A systematic literature review</article-title>
+          <source>Intelligent Transport Systems–From Research and Development to the Market Uptake: First International Conference, INTSYS 2017, Hyvinkää, Finland</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_12">
+        <label>12.</label>
+        <element-citation publication-type="journal">
+          <volume>207</volume>
+          <page-range>123621</page-range>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Korkmaz</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Erturk</surname>
+              <given-names>M. A.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.techfore.2024.123621</pub-id>
+          <article-title>Prediction of the traffic incident duration using statistical and machine-learning methods: A systematic literature review</article-title>
+          <source>Technol. Forecast. Soc. Change</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_13">
+        <label>13.</label>
+        <element-citation publication-type="journal">
+          <volume>8</volume>
+          <page-range>202858-202871</page-range>
+          <year>2020</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Shi</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Leau</surname>
+              <given-names>Y. B.</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>K.</given-names>
+            </name>
+            <name>
+              <surname>Park</surname>
+              <given-names>Y. J.</given-names>
+            </name>
+            <name>
+              <surname>Yan</surname>
+              <given-names>Z.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/ACCESS.2020.3036421</pub-id>
+          <article-title> Optimization and decomposition methods in network traffic prediction model: A review and discussion</article-title>
+          <source>IEEE Access</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_14">
+        <label>14.</label>
+        <element-citation publication-type="journal">
+          <volume>9</volume>
+          <page-range>135034-135058</page-range>
+          <year>2021</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Kolekar</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Gite</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Pradhan</surname>
+              <given-names>B.</given-names>
+            </name>
+            <name>
+              <surname>Kotecha</surname>
+              <given-names>K.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/ACCESS.2021.3116303</pub-id>
+          <article-title>Behavior prediction of traffic actors for intelligent vehicle using artificial intelligence techniques: A review</article-title>
+          <source>IEEE Access</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_15">
+        <label>15.</label>
+        <element-citation publication-type="journal">
+          <volume>1</volume>
+          <page-range>40-61</page-range>
+          <issue>1</issue>
+          <year>2018</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Stojčić</surname>
+              <given-names>M.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.31181/oresta19012010140s</pub-id>
+          <article-title>Application of ANFIS model in road traffic and transportation: A literature review from 1993 to 2018</article-title>
+          <source>Oper. Res. Eng. Sci. Theor. Appl.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_16">
+        <label>16.</label>
+        <element-citation publication-type="journal">
+          <volume>21</volume>
+          <page-range>1796-1825</page-range>
+          <issue>5</issue>
+          <year>2019</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Xiao</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Fu</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>L.</given-names>
+            </name>
+            <name>
+              <surname>Goh</surname>
+              <given-names>R. S. M.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/TITS.2019.2908191</pub-id>
+          <article-title>Traffic pattern mining and forecasting technologies in maritime traffic service networks: A comprehensive survey</article-title>
+          <source>IEEE Trans. Intell. Transp. Syst.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_17">
+        <label>17.</label>
+        <element-citation publication-type="journal">
+          <volume>7</volume>
+          <page-range>100040</page-range>
+          <year>2021</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Shaik</surname>
+              <given-names>M. E.</given-names>
+            </name>
+            <name>
+              <surname>Islam</surname>
+              <given-names>M. M.</given-names>
+            </name>
+            <name>
+              <surname>Hossain</surname>
+              <given-names>Q. S.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.eastsj.2021.100040</pub-id>
+          <article-title>A review on neural network techniques for the prediction of road traffic accident severity</article-title>
+          <source>Asian Transp. Stud.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_18">
+        <label>18.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>628–635</page-range>
+          <year>2020</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Ashwini</surname>
+              <given-names>B. P.</given-names>
+            </name>
+            <name>
+              <surname>Sumathi</surname>
+              <given-names>R.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/ICISS49785.2020.9316096</pub-id>
+          <article-title>Data sources for urban traffic prediction: A review on classification, comparison and technologies</article-title>
+          <source>2020 3rd International Conference on Intelligent Sustainable Systems (ICISS), Thoothukudi, India</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_19">
+        <label>19.</label>
+        <element-citation publication-type="journal">
+          <volume>33</volume>
+          <page-range>485–492</page-range>
+          <issue>1</issue>
+          <year>2019</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Chen</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>K.</given-names>
+            </name>
+            <name>
+              <surname>Teo</surname>
+              <given-names>S. G.</given-names>
+            </name>
+            <name>
+              <surname>Zou</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>K.</given-names>
+            </name>
+            <name>
+              <surname>J. Wang</surname>
+            </name>
+            <name>
+              <surname>Zeng</surname>
+              <given-names>Z.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1609/aaai.v33i01.3301485</pub-id>
+          <article-title>Gated residual recurrent graph neural networks for traffic prediction</article-title>
+          <source>Proc. AAAI Conf. Artif. Intell.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_20">
+        <label>20.</label>
+        <element-citation publication-type="journal">
+          <volume>36</volume>
+          <page-range>5388-5408</page-range>
+          <issue>10</issue>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Jin</surname>
+              <given-names>G.</given-names>
+            </name>
+            <name>
+              <surname>Liang</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Fang</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Shao</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Huang</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Zheng</surname>
+              <given-names>Y.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/TKDE.2023.3333824</pub-id>
+          <article-title>Spatio-temporal graph neural networks for predictive learning in urban computing: A survey</article-title>
+          <source>IEEE Trans. Knowl. Data Eng.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_21">
+        <label>21.</label>
+        <element-citation publication-type="journal">
+          <volume>33</volume>
+          <page-range>5668-5675</page-range>
+          <issue>1</issue>
+          <year>2019</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Yao</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Tang</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Wei</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Zheng</surname>
+              <given-names>G.</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>Z.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1609/aaai.v33i01.33015668</pub-id>
+          <article-title>Revisiting spatial-temporal similarity: A deep learning framework for traffic prediction</article-title>
+          <source>Proc. AAAI Conf. Artif. Intell.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_22">
+        <label>22.</label>
+        <element-citation publication-type="journal">
+          <volume>34</volume>
+          <page-range>1544-1561</page-range>
+          <issue>4</issue>
+          <year>2020</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Tedjopurnomo</surname>
+              <given-names>D. A.</given-names>
+            </name>
+            <name>
+              <surname>Bao</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Zheng</surname>
+              <given-names>B.</given-names>
+            </name>
+            <name>
+              <surname>Choudhury</surname>
+              <given-names>F. M.</given-names>
+            </name>
+            <name>
+              <surname>Qin</surname>
+              <given-names>A. K.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/TKDE.2020.3001195</pub-id>
+          <article-title>A survey on modern deep neural network for traffic prediction: Trends, methods and challenges</article-title>
+          <source>IEEE Trans. Knowl. Data Eng.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_23">
+        <label>23.</label>
+        <element-citation publication-type="journal">
+          <volume>85</volume>
+          <page-range>36-50</page-range>
+          <year>2015</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Otoshi</surname>
+              <given-names>T.</given-names>
+            </name>
+            <name>
+              <surname>Ohsita</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Murata</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Takahashi</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Ishibashi</surname>
+              <given-names>K.</given-names>
+            </name>
+            <name>
+              <surname>Shiomoto</surname>
+              <given-names>K.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.comnet.2015.05.001</pub-id>
+          <article-title>Traffic prediction for dynamic traffic engineering</article-title>
+          <source>Comput. Netw.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_24">
+        <label>24.</label>
+        <element-citation publication-type="journal">
+          <volume>2021</volume>
+          <page-range>8878011</page-range>
+          <issue>1</issue>
+          <year>2021</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Akhtar</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Moridpour</surname>
+              <given-names>S.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1155/2021/8878011</pub-id>
+          <article-title>A review of traffic congestion prediction using artificial intelligence</article-title>
+          <source>J. Adv. Transp.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_25">
+        <label>25.</label>
+        <element-citation publication-type="journal">
+          <volume>181</volume>
+          <page-range>107530</page-range>
+          <year>2020</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Boukerche</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>J.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.comnet.2020.107530</pub-id>
+          <article-title>Machine learning-based traffic prediction models for intelligent transportation systems</article-title>
+          <source>Comput. Netw.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_26">
+        <label>26.</label>
+        <element-citation publication-type="journal">
+          <volume>2019</volume>
+          <page-range>4067135</page-range>
+          <issue>1</issue>
+          <year>2019</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Iqbal</surname>
+              <given-names>M. F.</given-names>
+            </name>
+            <name>
+              <surname>Zahid</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Habib</surname>
+              <given-names>D.</given-names>
+            </name>
+            <name>
+              <surname>John</surname>
+              <given-names>L. K.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1155/2019/4067135</pub-id>
+          <article-title>Efficient prediction of network traffic for real‐time applications</article-title>
+          <source>J. Comput. Netw. Commun.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_27">
+        <label>27.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>187–193</page-range>
+          <year>2018</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Ramakrishnan</surname>
+              <given-names>N.</given-names>
+            </name>
+            <name>
+              <surname>Soni</surname>
+              <given-names>T.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/ICMLA.2018.00035</pub-id>
+          <article-title>Network traffic prediction using recurrent neural networks</article-title>
+          <source>2018 17th IEEE International Conference on Machine Learning and Applications (ICMLA), Orlando, FL, USA</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_28">
+        <label>28.</label>
+        <element-citation publication-type="journal">
+          <volume>9</volume>
+          <page-range>702-715</page-range>
+          <issue>4</issue>
+          <year>2015</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Xu</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Deng</surname>
+              <given-names>D.</given-names>
+            </name>
+            <name>
+              <surname>Demiryurek</surname>
+              <given-names>U.</given-names>
+            </name>
+            <name>
+              <surname>Shahabi</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Schaar</surname>
+              <given-names>M.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/JSTSP.2015.2389196</pub-id>
+          <article-title>Mining the situation: Spatiotemporal traffic prediction with big data.</article-title>
+          <source>IEEE J. Sel. Top. Signal Process.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_29">
+        <label>29.</label>
+        <element-citation publication-type="journal">
+          <volume>228</volume>
+          <page-range>120421</page-range>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Chen</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>W. Wang</surname>
+            </name>
+            <name>
+              <surname>Chen</surname>
+              <given-names>X. M.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.eswa.2023.120421</pub-id>
+          <article-title>Bibliometric methods in traffic flow prediction based on artificial intelligence</article-title>
+          <source>Expert Syst. Appl.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_30">
+        <label>30.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>17–29</page-range>
+          <year>2021</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Cao</surname>
+              <given-names>P.</given-names>
+            </name>
+            <name>
+              <surname>Dai</surname>
+              <given-names>F.</given-names>
+            </name>
+            <name>
+              <surname>Liu</surname>
+              <given-names>G.</given-names>
+            </name>
+            <name>
+              <surname>J. Yang</surname>
+            </name>
+            <name>
+              <surname>Huang</surname>
+              <given-names>B.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1007/978-3-030-99191-3_2</pub-id>
+          <article-title>A survey of traffic prediction based on deep neural network: Data, methods and challenges</article-title>
+          <source>Cloud Computing: 11th EAI International Conference, Virtual Event</source>
+        </element-citation>
+      </ref>
+    </ref-list>
+  </back>
+</article>
