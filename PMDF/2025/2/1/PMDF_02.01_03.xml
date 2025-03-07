@@ -1,0 +1,2747 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.3 20210610//EN" "JATS-journalpublishing1-3.dtd">
+<article xml:lang="en" dtd-version="1.3" article-type="research-article" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mml="http://www.w3.org/1998/Math/MathML">
+  <front>
+    <journal-meta>
+      <journal-id journal-id-type="publisher-id">PMDF</journal-id>
+      <journal-id journal-id-type="doi">10.56578</journal-id>
+      <journal-title-group>
+        <journal-title>Precision Mechanics &amp; Digital Fabrication</journal-title>
+        <abbrev-journal-title abbrev-type="issn">Precis. Mech. Digit. Fabr.</abbrev-journal-title>
+        <abbrev-journal-title abbrev-type="publisher">PMDF</abbrev-journal-title>
+      </journal-title-group>
+      <issn publication-format="electronic">3006-9742</issn>
+      <issn publication-format="print">3006-9734</issn>
+      <publisher>
+        <publisher-name>Acadlore</publisher-name>
+      </publisher>
+    </journal-meta>
+    <article-meta>
+      <article-id pub-id-type="publisher-id">AR-Ea6jmGGUgFBkf8EO3SXuJnQmdK-BVLUm</article-id>
+      <article-id pub-id-type="doi">10.56578/pmdf020103</article-id>
+      <article-categories>
+        <subj-group>
+          <subject>Articles</subject>
+        </subj-group>
+      </article-categories>
+      <title-group>
+        <article-title>A Multi-Scale Temporal Convolutional Network Approach for Remaining Useful Life Prediction of Rolling Bearings</article-title>
+      </title-group>
+      <contrib-group>
+        <contrib contrib-type="author" rid="aff_1">
+          <contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0000-0001-5220-2251</contrib-id>
+          <name>
+            <surname>Wang</surname>
+            <given-names>Tichun</given-names>
+          </name>
+          <email>wangtichun2010@nuaa.edu.cn</email>
+        </contrib>
+        <contrib contrib-type="author" rid="aff_1">
+          <contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0009-0004-4411-8438</contrib-id>
+          <name>
+            <surname>Teng</surname>
+            <given-names>Qiji</given-names>
+          </name>
+          <email>1162719323@qq.com</email>
+        </contrib>
+        <aff id="aff_1">College of Mechanical and Electrical Engineering, Nanjing University of Aeronautics and Astronautics, 210000 Nanjing, China</aff>
+      </contrib-group>
+      <pub-date publication-format="electronic" date-type="pub">
+        <day>06</day>
+        <month>03</month>
+        <year>2025</year>
+      </pub-date>
+      <volume>2</volume>
+      <issue>1</issue>
+      <fpage>31</fpage>
+      <lpage>43</lpage>
+      <page-range>31-43</page-range>
+      <history>
+        <date date-type="received">
+          <day>05</day>
+          <month>01</month>
+          <year>2025</year>
+        </date>
+        <date date-type="accepted">
+          <day>01</day>
+          <month>03</month>
+          <year>2025</year>
+        </date>
+      </history>
+      <permissions>
+        <copyright-statement>©2025 by the author(s)</copyright-statement>
+        <copyright-year>2025</copyright-year>
+        <license license-type="open-access" xlink:href="https://creativecommons.org/licenses/by/4.0/">
+          <license-p> Published by Acadlore Publishing Services Limited, Hong Kong. This article is available for free download and can be reused and cited, provided that the original published version is credited, under the CC BY 4.0 license.</license-p>
+        </license>
+      </permissions>
+      <abstract><p>Rolling bearings, as key components of rotating machinery, play a crucial role in the reliable operation of equipment. Over time, rolling bearings inevitably experience wear and fatigue, leading to damage. Accurate prediction of their Remaining Useful Life (RUL) is of paramount importance. This paper proposes an RUL prediction model based on the Multi-Scale Temporal Convolutional Network (MSTCN). The model effectively integrates both time-domain and frequency-domain information from bearing vibration signals through a multi-scale feature extraction module, enabling it to capture feature representations at different time scales. Additionally, the MSTCN's powerful temporal modeling capabilities allow it to capture long-term dependencies and short-term fluctuations in the bearing degradation process. Experimental results show that, compared to traditional methods, the proposed MSTCN model significantly improves the accuracy and stability of RUL predictions on the PHM2012 bearing dataset, demonstrating the effectiveness of the method in predicting the RUL of rolling bearings.</p></abstract>
+      <kwd-group>
+        <kwd>Rolling bearings</kwd>
+        <kwd>Remaining Useful Life (RUL) prediction</kwd>
+        <kwd>Multi-Scale Temporal Convolutional Network (MSTCN)</kwd>
+        <kwd>Intelligent design</kwd>
+      </kwd-group>
+      <counts>
+        <count count-type="contributors" count="2"/>
+        <fig-count count="9"/>
+        <table-count count="3"/>
+        <ref-count count="22"/>
+      </counts>
+    </article-meta>
+  </front>
+  <body>
+    <sec sec-type="intro">
+      <title>1. Introduction</title>
+      <p>Rolling bearings play a crucial role in the transmission system [<xref ref-type="bibr" rid="ref_1">1</xref>]. They are key components that connect rotating and fixed parts, mainly serving to support the rotating parts, transmit loads, and reduce friction [<xref ref-type="bibr" rid="ref_2">2</xref>]. Therefore, accurately extracting the features of rolling bearings and predicting their RUL is of significant importance for ensuring the safety performance of equipment [<xref ref-type="bibr" rid="ref_3">3</xref>], [<xref ref-type="bibr" rid="ref_4">4</xref>].</p><p>RUL prediction methods can be categorized into three types based on their fundamental techniques and methods: physics-based methods [<xref ref-type="bibr" rid="ref_5">5</xref>], [<xref ref-type="bibr" rid="ref_6">6</xref>], data-driven methods [<xref ref-type="bibr" rid="ref_7">7</xref>], [<xref ref-type="bibr" rid="ref_8">8</xref>], and hybrid methods [<xref ref-type="bibr" rid="ref_9">9</xref>], [<xref ref-type="bibr" rid="ref_10">10</xref>]. Physics-based methods typically rely on a deep understanding of the physical characteristics and working principles of the equipment or system [<xref ref-type="bibr" rid="ref_11">11</xref>], [<xref ref-type="bibr" rid="ref_12">12</xref>]. These methods build physical models to describe the wear, failure, and degradation process of the equipment, and predict the RUL based on these models. In contrast, data-driven methods [<xref ref-type="bibr" rid="ref_13">13</xref>], [<xref ref-type="bibr" rid="ref_14">14</xref>] do not depend on the physical models of the equipment but instead model the degradation process of the equipment by analyzing historical data. These methods usually use a large amount of monitoring data to identify degradation patterns and further predict RUL. Hybrid methods combine the advantages of both physics-based and data-driven approaches, usually by integrating physical models with data-driven techniques to improve the accuracy and reliability of RUL predictions.</p><p>In recent years, with the rapid development of deep learning and neural networks, deep learning and hybrid methods for rolling bearing RUL prediction have gradually become a research hotspot. Qian [<xref ref-type="bibr" rid="ref_15">15</xref>] proposed an RUL prediction method for rotating components based on nonlinear phase space reconstruction theory in chaotic time series analysis. This method models the degradation process of rotating components using nonlinear phase space reconstruction theory, which can capture the nonlinearity and uncertainty in the degradation process, thereby improving the accuracy and reliability of life prediction. Liu et al. [<xref ref-type="bibr" rid="ref_16">16</xref>] proposed an RUL prediction method based on health indicators, where the method adaptively extracts the feature distances between normal and degraded samples to construct the health indicator of the rolling bearing. Afterward, Liu et al. [<xref ref-type="bibr" rid="ref_16">16</xref>] combined an unsupervised clustering algorithm to determine the alarm threshold and fault threshold, adaptively setting reasonable early warning standards. Based on this, a four-parameter exponential model and particle filtering algorithm were used for real-time tracking and prediction of the RUL of rolling bearings. Yao et al. [<xref ref-type="bibr" rid="ref_17">17</xref>] proposed a fan noise field RUL prediction method combining an acoustic model and neural networks by applying FW-H acoustic analogy theory to calculate the fan's noise field solution. This method trained the sample data using the BP neural network algorithm. The trained neural network could predict the noise field of the axial fan during operation, thus achieving accurate prediction of fan noise and indirectly inferring the RUL of the fan. Ren et al. [<xref ref-type="bibr" rid="ref_18">18</xref>] proposed a novel RUL prediction method based on deep convolutional neural networks (CNN). This method introduced the spectrum-principal-energy-vector (SPEV) as a new feature extraction technique, and by using deep CNNs, these feature vectors were input into the network for training. The CNN model can automatically learn complex patterns in the signal through multiple convolution layers, thus improving the accuracy of RUL prediction. With this deep learning method, Ren et al. [<xref ref-type="bibr" rid="ref_18">18</xref>] successfully enhanced the prediction accuracy of equipment life.</p><p>This paper proposes an RUL prediction method for rolling bearings based on MSTCN. This method first extracts key features from the vibration signals through feature processing, and then, through the MSTCN's modeling capability, effectively extracts multi-level information from the features, mining potential temporal features and hidden patterns, thereby predicting the RUL of rolling bearings. The main innovations of this method are as follows:</p><p>(1) An adaptive receptive field adjustment mechanism is designed. Different convolution layers of the MSTCN can dynamically adjust the receptive field size according to the characteristic changes in the degradation stages of the rolling bearing. The early stage quickly captures the overall trend of the signal, while the later stage finely explores the local details, effectively improving the model's adaptability and prediction accuracy for different degradation stages.</p><p>(2) The feature extraction of the rolling bearings allows for more effective integration of information from different scales, suppressing the interference of redundant features and improving the robustness and accuracy of the prediction model.</p><p>(3) The advantages of residual learning are fully utilized to construct a deeper MSTCN network. Residual connections effectively mitigate the gradient vanishing problem during deep network training, enabling the model to learn more complex temporal dependencies, thus improving the accuracy of rolling bearing RUL prediction.</p>
+    </sec>
+    <sec sec-type="">
+      <title>2. Construction of the mstcn prediction method</title>
+      
+        <sec>
+          
+            <title>2.1. Dilated causal convolution</title>
+          
+          <p>Dilated causal convolution is an extension of causal convolution, where a dilation factor is introduced by adding gaps between the elements of the convolution kernel to expand the receptive field. This allows the model to convolve over a larger time range without increasing the size of the convolution kernel or the network depth. Its network structure is shown in <xref ref-type="fig" rid="fig_1">Figure 1</xref>.</p>
+          
+            <fig id="fig_1">
+              <label>Figure 1</label>
+              <caption>
+                <title>Dilated causal convolution network structure</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/2/img_y-Oaa6UoNS0Opd8t.png"/>
+            </fig>
+          
+          <p>For a one-dimensional input sequence <inline-formula>
+  <mml:math id="muxtzpsh2x">
+    <mml:mi>x</mml:mi>
+    <mml:mo>=</mml:mo>
+    <mml:mrow>
+      <mml:mo>[</mml:mo>
+      <mml:mo>,</mml:mo>
+      <mml:mo>,</mml:mo>
+      <mml:mo>…</mml:mo>
+      <mml:mo>,</mml:mo>
+      <mml:mo>]</mml:mo>
+      <mml:msub>
+        <mml:mi>x</mml:mi>
+        <mml:mn>1</mml:mn>
+      </mml:msub>
+      <mml:msub>
+        <mml:mi>x</mml:mi>
+        <mml:mn>2</mml:mn>
+      </mml:msub>
+      <mml:msub>
+        <mml:mi>x</mml:mi>
+        <mml:mi>t</mml:mi>
+      </mml:msub>
+    </mml:mrow>
+  </mml:math>
+</inline-formula>, the output <inline-formula>
+  <mml:math id="mhqedxnayi">
+    <mml:mi>F</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+  </mml:math>
+</inline-formula> of the causal convolution at time step $t$ can be expressed as:</p>
+          
+            <disp-formula>
+              <label>(1)</label>
+              <mml:math id="m7l0vt14qj">
+                <mml:mi>F</mml:mi>
+                <mml:mi>s</mml:mi>
+                <mml:mi>f</mml:mi>
+                <mml:mi>i</mml:mi>
+                <mml:mo>(</mml:mo>
+                <mml:mo>)</mml:mo>
+                <mml:mo>=</mml:mo>
+                <mml:mo>(</mml:mo>
+                <mml:mo>)</mml:mo>
+                <mml:mo>×</mml:mo>
+                <mml:munderover>
+                  <mml:mo>∑</mml:mo>
+                  <mml:mrow>
+                    <mml:mi>i</mml:mi>
+                    <mml:mo>=</mml:mo>
+                    <mml:mn>0</mml:mn>
+                  </mml:mrow>
+                  <mml:mrow>
+                    <mml:mi>k</mml:mi>
+                    <mml:mo>−</mml:mo>
+                    <mml:mn>1</mml:mn>
+                  </mml:mrow>
+                </mml:munderover>
+                <mml:msub>
+                  <mml:mi>x</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>s</mml:mi>
+                    <mml:mi>d</mml:mi>
+                    <mml:mi>i</mml:mi>
+                    <mml:mo>−</mml:mo>
+                    <mml:mo>×</mml:mo>
+                  </mml:mrow>
+                </mml:msub>
+              </mml:math>
+            </disp-formula>
+          
+          <p>The length of the dilated convolution kernel is:</p>
+          
+            <disp-formula>
+              <label>(2)</label>
+              <mml:math id="mkwsv5zg5z">
+                <mml:mi>l</mml:mi>
+                <mml:mi>k</mml:mi>
+                <mml:mi>k</mml:mi>
+                <mml:mi>d</mml:mi>
+                <mml:mo>=</mml:mo>
+                <mml:mo>+</mml:mo>
+                <mml:mo>(</mml:mo>
+                <mml:mo>−</mml:mo>
+                <mml:mo>)</mml:mo>
+                <mml:mo>(</mml:mo>
+                <mml:mo>−</mml:mo>
+                <mml:mo>)</mml:mo>
+                <mml:mn>1</mml:mn>
+                <mml:mn>1</mml:mn>
+              </mml:math>
+            </disp-formula>
+          
+          <p>In formulas (1) and (2), <inline-formula>
+  <mml:math id="m2l45g6bfz">
+    <mml:mi>F</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>)</mml:mo>
+  </mml:math>
+</inline-formula> represents the convolution operation, $k<inline-formula>
+  <mml:math id="m65jmko29c">
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>z</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>k</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mo>(</mml:mo>
+  </mml:math>
+</inline-formula>k=3<inline-formula>
+  <mml:math id="m3mzowdg6x">
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mo>)</mml:mo>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>{f}(i)<inline-formula>
+  <mml:math id="m4pf426xl8">
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+  </mml:math>
+</inline-formula>i<inline-formula>
+  <mml:math id="mffduhkfg9">
+    <mml:mo>−</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>k</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+  </mml:math>
+</inline-formula>{s}-d \times i<inline-formula>
+  <mml:math id="mikvqa2oa2">
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>d<inline-formula>
+  <mml:math id="mt6te1d9rm">
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>I</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>k</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mo>.</mml:mo>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>d=2^t<inline-formula>
+  <mml:math id="mac2d9et12">
+    <mml:mo>.</mml:mo>
+    <mml:mo>&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>“</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>”</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>I</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>C</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>N</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>k</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>C</mml:mi>
+    <mml:mi>N</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>I</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>E</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>A</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>F</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:msup>
+      <mml:mi>l</mml:mi>
+      <mml:mo>′</mml:mo>
+    </mml:msup>
+    <mml:mn>1</mml:mn>
+  </mml:math>
+</inline-formula>d<inline-formula>
+  <mml:math id="m5xvirgw1c">
+    <mml:mo>,</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>F</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>F</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mn>1</mml:mn>
+  </mml:math>
+</inline-formula>d<inline-formula>
+  <mml:math id="m4o639pem5">
+    <mml:mo>=</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mn>1</mml:mn>
+  </mml:math>
+</inline-formula>d<inline-formula>
+  <mml:math id="me5xdv1vv2">
+    <mml:mo>=</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mn>2</mml:mn>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+  </mml:math>
+</inline-formula>d$=4. This setup allows the neurons in the output layer to cover a longer historical time step, expanding the receptive field with relatively fewer layers, thus addressing the issue of a small receptive field in the initial layers with fewer layers. This also reduces computational overhead and improves computational efficiency.</p><p>For this reason, dilated causal convolution expands the receptive field by setting different dilation factors without increasing the number of layers, effectively reducing the number of intermediate layers in the gradient propagation path, thereby alleviating the vanishing gradient problem to some extent.</p><p>In the RUL prediction of rolling bearings, dilated causal convolution can be used to process various sensor data, such as vibration signals, temperature signals, and more. By analyzing these long-time series data, it can accurately predict the RUL of rolling bearings. This technology can identify potential fault signals in the early stages, providing a reliable basis for maintenance decisions and avoiding sudden equipment failures, thus reducing maintenance costs.</p><p>In summary, the application of dilated causal convolution in rolling bearing RUL prediction not only enhances the model’s ability to capture long-term dependencies but also improves computational efficiency and prediction stability, providing strong support for equipment health management.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>2.2. Residual connection</title>
+          
+          <p>In the TCN structure, the input and output of the dilated causal convolution are added together through a residual connection. The concept of residual connection was first introduced by He et al. [<xref ref-type="bibr" rid="ref_19">19</xref>], and its structure is shown in <xref ref-type="fig" rid="fig_2">Figure 2</xref>.</p>
+          
+            <fig id="fig_2">
+              <label>Figure 2</label>
+              <caption>
+                <title>Residual structure diagram</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/2/img_FYxfJ4-Zz22HOHUL.png"/>
+            </fig>
+          
+          <p>In the convolutional operations of CNN, as the number of layers in the network increases, problems such as vanishing gradients and exploding gradients may occur. In the residual structure, short connections between the input and output are used, which can effectively solve the above problems. </p><p>The formula is as follows:</p>
+          
+            <disp-formula>
+              <label>(3)</label>
+              <mml:math id="mie2tj8lf6">
+                <mml:mrow>
+                  <mml:mi>y</mml:mi>
+                </mml:mrow>
+                <mml:mrow>
+                  <mml:mi>A</mml:mi>
+                  <mml:mi>c</mml:mi>
+                  <mml:mi>t</mml:mi>
+                  <mml:mi>i</mml:mi>
+                  <mml:mi>v</mml:mi>
+                  <mml:mi>a</mml:mi>
+                  <mml:mi>t</mml:mi>
+                  <mml:mi>i</mml:mi>
+                  <mml:mi>o</mml:mi>
+                  <mml:mi>n</mml:mi>
+                </mml:mrow>
+                <mml:mo>=</mml:mo>
+                <mml:mo>(</mml:mo>
+                <mml:mo>+</mml:mo>
+                <mml:mo>(</mml:mo>
+                <mml:mo>)</mml:mo>
+                <mml:mo>)</mml:mo>
+                <mml:mi>x</mml:mi>
+                <mml:mi>F</mml:mi>
+                <mml:mi>x</mml:mi>
+              </mml:math>
+            </disp-formula>
+          
+          <p>where, $x<inline-formula>
+  <mml:math id="mc2lceaoke">
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+  </mml:math>
+</inline-formula>F(\cdot)$ represents the residual function.</p><p>However, this structure does not solve the problem of overfitting in the residual structure, so Shao et al. [<xref ref-type="bibr" rid="ref_20">20</xref>] made some improvements to the residual block, and the structure is shown in <xref ref-type="fig" rid="fig_3">Figure 3</xref>. </p>
+          
+            <fig id="fig_3">
+              <label>Figure 3</label>
+              <caption>
+                <title>TCN residual structure diagram</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/2/img_ONC9VOhST_pipFQw.png"/>
+            </fig>
+          
+          <p>From <xref ref-type="fig" rid="fig_3">Figure 3</xref>, we can see that the TCN residual block consists of two identical submodules and a residual connection. The dilated causal convolution layer is used to capture longer dependencies in the time series. The weight normalization layer standardizes each weight in the network, ensuring that the gradient updates are more stable during training, and preventing issues like gradient explosion or vanishing. Assume there is a weight matrix $W$, and the formula is:</p>
+          
+            <disp-formula>
+              <label>(4)</label>
+              <mml:math id="m51wc9zgoq">
+                <mml:mi>W</mml:mi>
+                <mml:mi>g</mml:mi>
+                <mml:mo>=</mml:mo>
+                <mml:mo>⋅</mml:mo>
+                <mml:mfrac>
+                  <mml:mi>v</mml:mi>
+                  <mml:mrow>
+                    <mml:mo fence="false">‖</mml:mo>
+                    <mml:mo fence="false">‖</mml:mo>
+                    <mml:mi>v</mml:mi>
+                  </mml:mrow>
+                </mml:mfrac>
+              </mml:math>
+            </disp-formula>
+          
+          <p>where, $g<inline-formula>
+  <mml:math id="mp4fxswyy6">
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>v<inline-formula>
+  <mml:math id="mx90vtm3zn">
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>z</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mo>.</mml:mo>
+  </mml:math>
+</inline-formula>\frac{v}{\|v\|}$. This way, the network's learning can be independent of the scale of the weights.</p><p>The activation function layer introduces nonlinearity so that the neural network can approximate nonlinear relationships. Common activation functions include ReLU, Leaky ReLU, Tanh, Sigmoid, etc. In TCN, the ReLU activation function is used, and the formula is:</p>
+          
+            <disp-formula>
+              <label>(5)</label>
+              <mml:math id="m9n5auss63">
+                <mml:mrow>
+                  <mml:mi>R</mml:mi>
+                  <mml:mi>e</mml:mi>
+                </mml:mrow>
+                <mml:mi>L</mml:mi>
+                <mml:mi>U</mml:mi>
+                <mml:mi>x</mml:mi>
+                <mml:mi>x</mml:mi>
+                <mml:mo>(</mml:mo>
+                <mml:mo>)</mml:mo>
+                <mml:mo>=</mml:mo>
+                <mml:mo>max</mml:mo>
+                <mml:mo>(</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo>)</mml:mo>
+                <mml:mn>0</mml:mn>
+              </mml:math>
+            </disp-formula>
+          
+          <p>The Dropout layer is a regularization strategy that randomly “deactivates” part of the neural network neurons during training to alleviate overfitting. In this way, the model does not depend on specific neurons during training, enhancing its generalization ability. </p><p>Assume the input is $x<inline-formula>
+  <mml:math id="m7y26gego5">
+    <mml:mo>.</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>“</mml:mo>
+    <mml:mo>”</mml:mo>
+    <mml:mi>I</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>D</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:msup>
+      <mml:mi>n</mml:mi>
+      <mml:mo>′</mml:mo>
+    </mml:msup>
+  </mml:math>
+</inline-formula>p$, meaning it becomes 0, and the remaining part is scaled by a certain factor. The specific operation is as follows:</p>
+          
+            <disp-formula>
+              <label>(6)</label>
+              <mml:math id="mz94su05jj">
+                <mml:mrow>
+                  <mml:mi>D</mml:mi>
+                  <mml:mi>r</mml:mi>
+                  <mml:mi>o</mml:mi>
+                  <mml:mi>p</mml:mi>
+                  <mml:mi>o</mml:mi>
+                  <mml:mi>u</mml:mi>
+                  <mml:mi>t</mml:mi>
+                </mml:mrow>
+                <mml:mrow>
+                  <mml:mi>M</mml:mi>
+                  <mml:mi>a</mml:mi>
+                  <mml:mi>s</mml:mi>
+                  <mml:mi>k</mml:mi>
+                </mml:mrow>
+                <mml:mo>(</mml:mo>
+                <mml:mo>)</mml:mo>
+                <mml:mo>=</mml:mo>
+                <mml:mo>⋅</mml:mo>
+                <mml:mo>(</mml:mo>
+                <mml:mo>)</mml:mo>
+                <mml:mi>x</mml:mi>
+                <mml:mi>x</mml:mi>
+                <mml:mfrac>
+                  <mml:mi>x</mml:mi>
+                  <mml:mi>p</mml:mi>
+                </mml:mfrac>
+              </mml:math>
+            </disp-formula>
+          
+          <p>where, <inline-formula>
+  <mml:math id="mhosyduuwo">
+    <mml:mrow>
+      <mml:mi>M</mml:mi>
+      <mml:mi>a</mml:mi>
+      <mml:mi>s</mml:mi>
+      <mml:mi>k</mml:mi>
+    </mml:mrow>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mi>x</mml:mi>
+  </mml:math>
+</inline-formula> is a binary vector with the same dimension as the input, and each element is independently retained with probability $p<inline-formula>
+  <mml:math id="mus1exbnym">
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mi>v</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mn>1</mml:mn>
+  </mml:math>
+</inline-formula>1-p<inline-formula>
+  <mml:math id="mpib9jdval">
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mi>v</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>D</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>D</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mn>0</mml:mn>
+  </mml:math>
+</inline-formula>p$.</p><p>A 1×1 convolutional layer has been added to the main path to adjust the dimensions. This ensures that the input xxx and the output after convolution have the same dimensions, allowing for the addition operation.</p><p>The TCN residual block combines dilated causal convolution and short connections, so that TCN can still achieve a large receptive field even with fewer network layers, providing a greater advantage when processing time-series data with long-term historical dependencies.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>2.3. Multi-scale fusion</title>
+          
+          <p>MSTCN adopts an innovative structural design consisting of three parallel TCN branches. Each branch uses convolution kernels of different lengths to extract temporal features from the input data, with kernel lengths of 2, 3, and 5, respectively. According to the definition of receptive fields, the receptive field lengths corresponding to these kernels are 5, 9, and 17. This design enables the network to extract features at different time scales from the input data, specifically short-term, medium-term, and long-term temporal features. The short-term features are extracted using smaller receptive fields, capable of capturing rapidly changing temporal information; medium-term features are extracted using slightly larger receptive fields, suitable for capturing smoother changes; and long-term features are extracted using even larger receptive fields to capture long-term trends and periodic changes.</p><p>Since the features extracted by each branch contain temporal information at different time scales, simply adding them together may not effectively fuse these features. Therefore, in order to better integrate the multi-scale features extracted by the branches, this study chooses to combine the features from the three branches. This approach fuses the temporal features at different scales along the channel dimension, thus forming a new three-dimensional feature that contains multi-level temporal information. This three-dimensional feature not only contains information from each scale but also provides richer temporal context, which helps the subsequent model processing. The overall structure of MSTCN is shown in <xref ref-type="fig" rid="fig_4">Figure 4</xref>.</p>
+          
+            <fig id="fig_4">
+              <label>Figure 4</label>
+              <caption>
+                <title>MSTCN structure</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/2/img_R2fvF-wvGz-ACmpb.png"/>
+            </fig>
+          
+          <p>The specific computation process is: first, the input data passes through the three parallel TCN branches, each of which uses a convolution kernel of different lengths for feature extraction; then, the extracted features are concatenated along the channel dimension to form a new three-dimensional feature; finally, they are processed and predicted by the subsequent network layers. The formula is as follows:</p>
+          
+            <disp-formula>
+              <label>(7)</label>
+              <mml:math id="m8phzwz8wb">
+                <mml:mi>O</mml:mi>
+                <mml:mo>=</mml:mo>
+                <mml:mrow>
+                  <mml:mi>c</mml:mi>
+                  <mml:mi>o</mml:mi>
+                  <mml:mi>n</mml:mi>
+                  <mml:mi>c</mml:mi>
+                  <mml:mi>a</mml:mi>
+                  <mml:mi>t</mml:mi>
+                  <mml:mi>e</mml:mi>
+                  <mml:mi>n</mml:mi>
+                  <mml:mi>a</mml:mi>
+                  <mml:mi>t</mml:mi>
+                  <mml:mi>e</mml:mi>
+                </mml:mrow>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>,</mml:mo>
+                  <mml:mo>,</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:msub>
+                    <mml:mi>O</mml:mi>
+                    <mml:mn>1</mml:mn>
+                  </mml:msub>
+                  <mml:msub>
+                    <mml:mi>O</mml:mi>
+                    <mml:mn>2</mml:mn>
+                  </mml:msub>
+                  <mml:msub>
+                    <mml:mi>O</mml:mi>
+                    <mml:mn>3</mml:mn>
+                  </mml:msub>
+                </mml:mrow>
+              </mml:math>
+            </disp-formula>
+          
+          <p>where, <inline-formula>
+  <mml:math id="mspuighnmk">
+    <mml:msub>
+      <mml:mi>O</mml:mi>
+      <mml:mi>l</mml:mi>
+    </mml:msub>
+    <mml:msub>
+      <mml:mi>O</mml:mi>
+      <mml:mn>2</mml:mn>
+    </mml:msub>
+    <mml:msub>
+      <mml:mi>O</mml:mi>
+      <mml:mn>3</mml:mn>
+    </mml:msub>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula> are the outputs of the three TCN branches, and <inline-formula>
+  <mml:math id="m6to9gjqsi">
+    <mml:mi>O</mml:mi>
+    <mml:mo>∈</mml:mo>
+    <mml:msup>
+      <mml:mi>R</mml:mi>
+      <mml:mrow>
+        <mml:mi>C</mml:mi>
+        <mml:mi>S</mml:mi>
+        <mml:mi>T</mml:mi>
+        <mml:mo>×</mml:mo>
+        <mml:mo>×</mml:mo>
+      </mml:mrow>
+    </mml:msup>
+  </mml:math>
+</inline-formula> is the final output of MSTCN.</p><p>This design enables MSTCN to more comprehensively capture multi-scale information in temporal data and shows better performance when dealing with complex temporal data, thus improving the accuracy of predicting the RUL of rolling bearings.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>2.4. Mstcn prediction method structure and hyperparameter settings</title>
+          
+          
+            <sec>
+              
+                <title>2.4.1 Mstcn prediction method structure</title>
+              
+              <p>The structure of the MSTCN prediction method is shown in <xref ref-type="fig" rid="fig_5">Figure 5</xref>.</p>
+              
+                <fig id="fig_5">
+                  <label>Figure 5</label>
+                  <caption>
+                    <title>MSTCN method structure</title>
+                  </caption>
+                  <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/2/img_yv2QZmZKl7KIiddk.png"/>
+                </fig>
+              
+              <p>As shown in <xref ref-type="fig" rid="fig_5">Figure 5</xref>, the MSTCN prediction method first extracts time-domain and frequency-domain features from the vibration signal, then the extracted features are used as the feature set input to the MSTCN prediction model, and the prediction results are output.</p><p>Time-domain features include mean, standard deviation, root mean square value, root mean square value, peak value, skewness, kurtosis, peak factor, margin factor, waveform factor, and impulse factor. Frequency-domain features include mean, standard deviation, central value, root mean square value, frequency domain kurtosis, average frequency, stability factor, and variation coefficient.</p><p>The multi-layer convolution structure in MSTCN can simultaneously capture short-term and long-term features through different-sized convolution kernels. Small convolution kernels can identify rapidly changing signal patterns, while large convolution kernels can extract slower-changing trends to improve the model’s prediction accuracy.</p>
+            </sec>
+          
+          
+            <sec>
+              
+                <title>2.4.2 Mstcn hyperparameter settings</title>
+              
+              <p>Hyperparameters play a key role in the performance of the MSTCN model. Different hyperparameter configurations not only affect the training speed of the model but also directly influence its generalization ability. For bearing RUL prediction, appropriate hyperparameter settings can improve the model's ability to capture complex temporal dependencies, thus improving prediction accuracy.</p><p>As shown in <xref ref-type="table" rid="table_1">Table 1</xref>, the hyperparameter settings have been experimentally verified to achieve optimal prediction performance on the specific dataset used in this study.</p><p>The optimizer in the model is Adam, which effectively handles the training of large datasets, and the global learning rate is set to 0.001. Adam is a very popular and commonly used optimizer because its adaptive learning rate adjustment mechanism allows it to perform well in most tasks. The combination of MSE and MAE loss functions is used to comprehensively measure the model’s performance. By setting the dilation factors to 1/2/4, the model can capture features at different time scales, allowing it to capture multi-scale temporal information. The 32 convolution kernels and 3×3 convolution kernel size ensure effective feature extraction. The learning rate is set to 0.001 to allow the model to converge more stably, reducing fluctuations and ensuring stable model updates.</p><p>To enhance the model's nonlinear expression ability, a training batch size of 512 and 200 iterations are set to ensure sufficient training of the model. These hyperparameter choices provide a solid foundation for the model’s accuracy, stability, and generalization ability.</p><p>The combination of the Adam optimizer, small learning rate, MSE and MAE loss functions is suitable for complex time-series prediction tasks. The dilation factors, multi-scale convolution kernels, larger batch size, and sufficient iteration counts all provide the model with enough expressive ability and training space.</p>
+              
+                <table-wrap id="table_1">
+                  <label>Table 1</label>
+                  <caption>
+                    <title>Hyperparameter settings</title>
+                  </caption>
+                  <table><tbody><tr><td colspan="1" rowspan="1"><p>Parameter Name</p></td><td colspan="1" rowspan="1"><p>Specific Parameter Value</p></td></tr><tr><td colspan="1" rowspan="1"><p>Optimizer</p></td><td colspan="1" rowspan="1"><p>Adam</p></td></tr><tr><td colspan="1" rowspan="1"><p>Loss Function</p></td><td colspan="1" rowspan="1"><p>Mean Squared Error (MSE)</p><p> Mean Absolute Error (MAE)</p></td></tr><tr><td colspan="1" rowspan="1"><p>Dilution Factor (d)</p></td><td colspan="1" rowspan="1"><p>1/2/4</p></td></tr><tr><td colspan="1" rowspan="1"><p>Number of Convolutions</p></td><td colspan="1" rowspan="1"><p>32</p></td></tr><tr><td colspan="1" rowspan="1"><p>Convolution Kernel Size (k)</p></td><td colspan="1" rowspan="1"><p>3×3</p></td></tr><tr><td colspan="1" rowspan="1"><p>Learning Rate</p></td><td colspan="1" rowspan="1"><p>0.001</p></td></tr><tr><td colspan="1" rowspan="1"><p>Batch Size</p></td><td colspan="1" rowspan="1"><p>512</p></td></tr><tr><td colspan="1" rowspan="1"><p>Epochs</p></td><td colspan="1" rowspan="1"><p>200</p></td></tr></tbody></table>
+                </table-wrap>
+              
+            </sec>
+          
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>3. Experiment</title>
+      
+        <sec>
+          
+            <title>3.1. Experimental data</title>
+          
+          <p>The experimental data selected for this study is from the PHM 2012 Data Challenge, which provides the bearing run-to-failure dataset.</p><p>The data was collected from the PRO-NOSTIA accelerated degradation platform [<xref ref-type="bibr" rid="ref_21">21</xref>]. This platform can accelerate the degradation of rolling bearings under constant or variable loads, allowing the collection of full-life data of rolling bearings in just a few hours, significantly reducing the data volume. The experimental setup consists of three main components: the rotating mechanism, the load module, and the measurement system. During the experiment, an AC motor drives the rolling bearings to rotate at different speeds, applying different loads for testing. The PRO-NOSTIA accelerated degradation platform is shown in <xref ref-type="fig" rid="fig_6">Figure 6</xref>.</p>
+          
+            <fig id="fig_6">
+              <label>Figure 6</label>
+              <caption>
+                <title>PRO-NOSTIA accelerated degradation platform</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/2/img_XevBbzxIYxXSEuD8.png"/>
+            </fig>
+          
+          <p>During the experiment, two accelerometers were installed in the horizontal and vertical directions of the rolling bearing to collect vibration acceleration data in real time. At the beginning of each experiment, the bearing is in a normal state, and the motor speed and load are increased to accelerate the degradation of the rolling bearing until complete failure.</p><p>The accelerometers placed horizontally and vertically on the test bench collect vibration signals from the two directions, namely the x and y directions. The data sampling rate is 25.6 kHz, recording data every 0.1 seconds for 10 seconds, totaling 2560 sample points. For safety, data collection stops when the vibration amplitude exceeds 20 g (20 times the force of gravity, 1 g <inline-formula>
+  <mml:math id="m9e84cc7e0">
+    <mml:mo>≈</mml:mo>
+  </mml:math>
+</inline-formula> 9.8 m/s²). The experiment was conducted under three operating conditions, as shown in <xref ref-type="table" rid="table_2">Table 2</xref>. The detailed information of the bearings under these conditions is shown in <xref ref-type="table" rid="table_2">Table 2</xref>.</p>
+          
+            <table-wrap id="table_2">
+              <label>Table 2</label>
+              <caption>
+                <title>Bearing data overview</title>
+              </caption>
+              <table><tbody><tr><td colspan="1" rowspan="1"><p>Operating Condition</p></td><td colspan="1" rowspan="1"><p>Load (N)</p></td><td colspan="1" rowspan="1"><p>Speed (rpm)</p></td><td colspan="1" rowspan="1"><p>Training Set</p></td><td colspan="1" rowspan="1"><p>Testing Set</p></td></tr><tr><td colspan="1" rowspan="1"><p>Condition 1</p></td><td colspan="1" rowspan="1"><p>4000</p></td><td colspan="1" rowspan="1"><p>1800</p></td><td colspan="1" rowspan="1"><p>Bearing1_1-Bearing1_6</p></td><td colspan="1" rowspan="1"><p>Bearing1_7</p></td></tr><tr><td colspan="1" rowspan="1"><p>Condition 2</p></td><td colspan="1" rowspan="1"><p>4200</p></td><td colspan="1" rowspan="1"><p>1650</p></td><td colspan="1" rowspan="1"><p>Bearing2_1-Bearing2_6</p></td><td colspan="1" rowspan="1"><p>Bearing2_7</p></td></tr><tr><td colspan="1" rowspan="1"><p>Condition 3</p></td><td colspan="1" rowspan="1"><p>5000</p></td><td colspan="1" rowspan="1"><p>1500</p></td><td colspan="1" rowspan="1"><p>Bearing3_1-Bearing3_2</p></td><td colspan="1" rowspan="1"><p>Bearing3_3</p></td></tr></tbody></table>
+            </table-wrap>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.2. Experimental process</title>
+          
+          <p>In bearing RUL prediction, the RUL prediction problem is treated as a regression problem. During the modeling process, the bearing's operating time is converted into input features for the model, while the RUL percentage is used as the label for RUL prediction. This label design provides a more intuitive reflection of the bearing's degradation throughout its life cycle, thus helping to improve the prediction model's performance. The formula is as follows:</p>
+          
+            <disp-formula>
+              <label>(8)</label>
+              <mml:math id="mtl8e08e08">
+                <mml:msub>
+                  <mml:mi>y</mml:mi>
+                  <mml:mi>i</mml:mi>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mo>−</mml:mo>
+                <mml:mn>1</mml:mn>
+                <mml:mfrac>
+                  <mml:mrow>
+                    <mml:msub>
+                      <mml:mi>x</mml:mi>
+                      <mml:mi>i</mml:mi>
+                    </mml:msub>
+                    <mml:msub>
+                      <mml:mi>x</mml:mi>
+                      <mml:mrow>
+                        <mml:mo>min</mml:mo>
+                      </mml:mrow>
+                    </mml:msub>
+                    <mml:mo>−</mml:mo>
+                  </mml:mrow>
+                  <mml:mrow>
+                    <mml:msub>
+                      <mml:mi>x</mml:mi>
+                      <mml:mrow>
+                        <mml:mo>max</mml:mo>
+                      </mml:mrow>
+                    </mml:msub>
+                    <mml:msub>
+                      <mml:mi>x</mml:mi>
+                      <mml:mrow>
+                        <mml:mo>min</mml:mo>
+                      </mml:mrow>
+                    </mml:msub>
+                    <mml:mo>−</mml:mo>
+                  </mml:mrow>
+                </mml:mfrac>
+              </mml:math>
+            </disp-formula>
+          
+          <p>where, <inline-formula>
+  <mml:math id="m4pq1ttegd">
+    <mml:msub>
+      <mml:mi>x</mml:mi>
+      <mml:mi>i</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> is the current operating time of the bearing; <inline-formula>
+  <mml:math id="mclt6vq434">
+    <mml:msub>
+      <mml:mi>x</mml:mi>
+      <mml:mrow>
+        <mml:mo>min</mml:mo>
+      </mml:mrow>
+    </mml:msub>
+    <mml:msub>
+      <mml:mi>x</mml:mi>
+      <mml:mrow>
+        <mml:mo>max</mml:mo>
+      </mml:mrow>
+    </mml:msub>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula> are the initial operating time and the maximum operating time of the bearing, respectively. <inline-formula>
+  <mml:math id="mpeqhgdmei">
+    <mml:msub>
+      <mml:mi>y</mml:mi>
+      <mml:mi>i</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> indicates the degree of degradation, with smaller values of <inline-formula>
+  <mml:math id="m59zvohkj1">
+    <mml:msub>
+      <mml:mi>y</mml:mi>
+      <mml:mi>i</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> indicating more severe degradation. When <inline-formula>
+  <mml:math id="m3vuu52901">
+    <mml:msub>
+      <mml:mi>y</mml:mi>
+      <mml:mi>i</mml:mi>
+    </mml:msub>
+    <mml:mo>=</mml:mo>
+    <mml:mn>0</mml:mn>
+  </mml:math>
+</inline-formula>, the bearing has completely failed.</p><p>For the evaluation of the experimental results in this study, in addition to the commonly used MAE and RMSE, a specialized score function, called “score”, specifically improved for the PHM 2012 dataset, was also used to evaluate the performance of the developed methods. The formula is as follows:</p>
+          
+            <disp-formula>
+              <label>(9)</label>
+              <mml:math id="mzy4c7c9vl">
+                <mml:mi>M</mml:mi>
+                <mml:mi>A</mml:mi>
+                <mml:mi>E</mml:mi>
+                <mml:mo>=</mml:mo>
+                <mml:mfrac>
+                  <mml:mn>1</mml:mn>
+                  <mml:mi>n</mml:mi>
+                </mml:mfrac>
+                <mml:munderover>
+                  <mml:mo>∑</mml:mo>
+                  <mml:mrow>
+                    <mml:mi>i</mml:mi>
+                    <mml:mo>=</mml:mo>
+                    <mml:mn>1</mml:mn>
+                  </mml:mrow>
+                  <mml:mi>n</mml:mi>
+                </mml:munderover>
+                <mml:mrow>
+                  <mml:mo>|</mml:mo>
+                  <mml:mo>|</mml:mo>
+                  <mml:mi>e</mml:mi>
+                  <mml:msub>
+                    <mml:mi>r</mml:mi>
+                    <mml:mi>i</mml:mi>
+                  </mml:msub>
+                </mml:mrow>
+              </mml:math>
+            </disp-formula>
+          
+          
+            <disp-formula>
+              <label>(10)</label>
+              <mml:math id="m2qhdy5ilh">
+                <mml:mi>R</mml:mi>
+                <mml:mi>M</mml:mi>
+                <mml:mi>S</mml:mi>
+                <mml:mi>E</mml:mi>
+                <mml:mo>=</mml:mo>
+                <mml:msqrt>
+                  <mml:mfrac>
+                    <mml:mn>1</mml:mn>
+                    <mml:mi>n</mml:mi>
+                  </mml:mfrac>
+                  <mml:munderover>
+                    <mml:mo>∑</mml:mo>
+                    <mml:mrow>
+                      <mml:mi>i</mml:mi>
+                      <mml:mo>=</mml:mo>
+                      <mml:mn>1</mml:mn>
+                    </mml:mrow>
+                    <mml:mi>n</mml:mi>
+                  </mml:munderover>
+                  <mml:msup>
+                    <mml:mrow>
+                      <mml:mo>(</mml:mo>
+                      <mml:mo>)</mml:mo>
+                      <mml:mi>e</mml:mi>
+                      <mml:msub>
+                        <mml:mi>r</mml:mi>
+                        <mml:mi>i</mml:mi>
+                      </mml:msub>
+                    </mml:mrow>
+                    <mml:mn>2</mml:mn>
+                  </mml:msup>
+                </mml:msqrt>
+              </mml:math>
+            </disp-formula>
+          
+          
+            <disp-formula>
+              <label>(11)</label>
+              <mml:math id="m3awzf43e6">
+                <mml:mrow>
+                  <mml:mi>s</mml:mi>
+                  <mml:mi>c</mml:mi>
+                  <mml:mi>o</mml:mi>
+                  <mml:mi>r</mml:mi>
+                  <mml:mi>e</mml:mi>
+                </mml:mrow>
+                <mml:mo>=</mml:mo>
+                <mml:mfrac>
+                  <mml:mn>1</mml:mn>
+                  <mml:mi>n</mml:mi>
+                </mml:mfrac>
+                <mml:munderover>
+                  <mml:mo>∑</mml:mo>
+                  <mml:mrow>
+                    <mml:mi>i</mml:mi>
+                    <mml:mo>=</mml:mo>
+                    <mml:mn>1</mml:mn>
+                  </mml:mrow>
+                  <mml:mi>n</mml:mi>
+                </mml:munderover>
+                <mml:msub>
+                  <mml:mi>S</mml:mi>
+                  <mml:mi>i</mml:mi>
+                </mml:msub>
+              </mml:math>
+            </disp-formula>
+          
+          <p>where,</p>
+          
+            <disp-formula>
+              <label>(12)</label>
+              <mml:math id="m7nb8vd91j">
+                <mml:msub>
+                  <mml:mi>S</mml:mi>
+                  <mml:mi>i</mml:mi>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mrow>
+                  <mml:mo>{</mml:mo>
+                  <mml:mo fence="true"/>
+                  <mml:mtable columnalign="left" columnspacing="1em" rowspacing="4pt">
+                    <mml:mtr>
+                      <mml:mtd>
+                        <mml:mi>exp</mml:mi>
+                        <mml:mo>⁡</mml:mo>
+                        <mml:mo>,</mml:mo>
+                        <mml:mo>≤</mml:mo>
+                        <mml:mrow>
+                          <mml:mo>(</mml:mo>
+                          <mml:mo>−</mml:mo>
+                          <mml:mo>(</mml:mo>
+                          <mml:mo>)</mml:mo>
+                          <mml:mo>⋅</mml:mo>
+                          <mml:mo>)</mml:mo>
+                          <mml:mrow>
+                            <mml:mi>l</mml:mi>
+                            <mml:mi>i</mml:mi>
+                            <mml:mi>n</mml:mi>
+                          </mml:mrow>
+                          <mml:mrow>
+                            <mml:mo>(</mml:mo>
+                            <mml:mo>)</mml:mo>
+                            <mml:msub>
+                              <mml:mi>E</mml:mi>
+                              <mml:mi>i</mml:mi>
+                            </mml:msub>
+                            <mml:mrow>
+                              <mml:mo>/</mml:mo>
+                            </mml:mrow>
+                            <mml:mn>5</mml:mn>
+                          </mml:mrow>
+                          <mml:mn>0.5</mml:mn>
+                        </mml:mrow>
+                        <mml:msub>
+                          <mml:mi>E</mml:mi>
+                          <mml:mi>i</mml:mi>
+                        </mml:msub>
+                        <mml:mn>0</mml:mn>
+                      </mml:mtd>
+                    </mml:mtr>
+                    <mml:mtr>
+                      <mml:mtd>
+                        <mml:mi>exp</mml:mi>
+                        <mml:mo>⁡</mml:mo>
+                        <mml:mo>,</mml:mo>
+                        <mml:mo>&gt;</mml:mo>
+                        <mml:mrow>
+                          <mml:mo>(</mml:mo>
+                          <mml:mo>(</mml:mo>
+                          <mml:mo>)</mml:mo>
+                          <mml:mo>⋅</mml:mo>
+                          <mml:mo>)</mml:mo>
+                          <mml:mrow>
+                            <mml:mi>l</mml:mi>
+                            <mml:mi>i</mml:mi>
+                            <mml:mi>n</mml:mi>
+                          </mml:mrow>
+                          <mml:mrow>
+                            <mml:mo>(</mml:mo>
+                            <mml:mo>)</mml:mo>
+                            <mml:msub>
+                              <mml:mi>E</mml:mi>
+                              <mml:mi>i</mml:mi>
+                            </mml:msub>
+                            <mml:mrow>
+                              <mml:mo>/</mml:mo>
+                            </mml:mrow>
+                            <mml:mn>20</mml:mn>
+                          </mml:mrow>
+                          <mml:mn>0.5</mml:mn>
+                        </mml:mrow>
+                        <mml:msub>
+                          <mml:mi>E</mml:mi>
+                          <mml:mi>i</mml:mi>
+                        </mml:msub>
+                        <mml:mn>0</mml:mn>
+                      </mml:mtd>
+                    </mml:mtr>
+                  </mml:mtable>
+                </mml:mrow>
+              </mml:math>
+            </disp-formula>
+          
+          
+            <disp-formula>
+              <label>(13)</label>
+              <mml:math id="mw15nr6apx">
+                <mml:msub>
+                  <mml:mrow>
+                    <mml:mi>E</mml:mi>
+                  </mml:mrow>
+                  <mml:mrow>
+                    <mml:mrow>
+                      <mml:mi>i</mml:mi>
+                    </mml:mrow>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mo>×</mml:mo>
+                <mml:mfrac>
+                  <mml:mrow>
+                    <mml:msub>
+                      <mml:mrow>
+                        <mml:mi>y</mml:mi>
+                      </mml:mrow>
+                      <mml:mrow>
+                        <mml:mrow>
+                          <mml:mi>i</mml:mi>
+                        </mml:mrow>
+                      </mml:mrow>
+                    </mml:msub>
+                    <mml:msub>
+                      <mml:mrow>
+                        <mml:mover>
+                          <mml:mrow>
+                            <mml:mi>y</mml:mi>
+                          </mml:mrow>
+                          <mml:mo>^</mml:mo>
+                        </mml:mover>
+                      </mml:mrow>
+                      <mml:mrow>
+                        <mml:mrow>
+                          <mml:mi>i</mml:mi>
+                        </mml:mrow>
+                      </mml:mrow>
+                    </mml:msub>
+                    <mml:mo>−</mml:mo>
+                  </mml:mrow>
+                  <mml:msub>
+                    <mml:mrow>
+                      <mml:mi>y</mml:mi>
+                    </mml:mrow>
+                    <mml:mrow>
+                      <mml:mrow>
+                        <mml:mi>i</mml:mi>
+                      </mml:mrow>
+                    </mml:mrow>
+                  </mml:msub>
+                </mml:mfrac>
+                <mml:mn>100</mml:mn>
+              </mml:math>
+            </disp-formula>
+          
+          <p>In practical engineering operations, overestimation and underestimation of RUL predictions can have different consequences. Underestimation may lead to premature maintenance and unnecessary downtime, which increases costs but carries relatively low risk. On the other hand, overestimation is more dangerous because it may lead to continued operation of equipment without timely maintenance, increasing the risk of failure or even safety accidents [<xref ref-type="bibr" rid="ref_22">22</xref>].</p><p>The scoring standard of <italic>Score</italic> assigns higher penalties for overestimation errors to reflect the severity of overestimation, ensuring that the model predicts the equipment's life more cautiously. In the early stages of the equipment's life cycle, the impact of prediction errors is relatively small because the equipment is far from failure, and the risks of inaccurate predictions are lower.</p><p>The value of <italic>Score</italic> ranges from 0 to 1. The higher the value of the score, the better the prediction performance. However, in performance evaluation, it is inevitable that the three scoring standards may produce inconsistent results, because MAE and RMSE do not consider the sign of the error (i.e., overestimation or underestimation) and do not differentiate the impact of different errors. On the other hand, the <italic>Score</italic> introduces different penalty mechanisms, assigning different weights to overestimation and underestimation, with particular emphasis on penalizing overestimation errors. This design is more aligned with practical application needs. Therefore, in model selection or evaluation, <italic>Score</italic> is a more appropriate metric.</p><p>The x-axis and y-axis signals are stacked to form a new array with dimensions (2660, 2), which is used as input to the model.</p><p>The data is first divided into training and testing sets, and then preprocessed before being input into the MSTCN prediction model for computation, and finally, the prediction results are obtained. The hyperparameter settings of the model are listed in <xref ref-type="table" rid="table_1">Table 1</xref>.</p><p>The preprocessing process mainly involves normalizing the vibration data and RUL values. The original RUL values can have a wide range and large differences, making it difficult for the model to handle them effectively during training. Normalization compresses the data into the range of (0,1), allowing for more stable weight updates and faster convergence, thus improving the training efficiency of the model. The formula for normalizing the RUL is shown in Eq. (10).</p><p>In this experiment, time-domain and frequency-domain features of the vibration signals were first extracted. The time-domain features are shown in <xref ref-type="fig" rid="fig_7">Figure 7</xref>.</p>
+          
+            <fig id="fig_7">
+              <label>Figure 7</label>
+              <caption>
+                <title>Time-domain features: (a) Mean; (b) Standard deviation; (c) Root mean square amplitude; (d) Root mean square value; (e) Peak value; (f) Skewness; (g) Kurtosis; (h) Peak factor; (i) Margin factor; (j) Waveform factor; (k) Impulse factor</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/2/img_j0xq0s3-ScJvtoMc.png"/>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/2/img_AkTbnvkG9tCaDybV.png"/>
+            </fig>
+          
+          <p>Frequency-domain features are shown in <xref ref-type="fig" rid="fig_8">Figure 8</xref>.</p>
+          
+            <fig id="fig_8">
+              <label>Figure 8</label>
+              <caption>
+                <title>Frequency-domain features: (a) Mean; (b) Standard deviation; (c) Central value; (d) Root mean square value; (e) Frequency-domain kurtosis; (f) Average frequency; (g) Stability factor; (h) Coefficient of variation</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/2/img_PKtjVdXOv2MOZUwp.png"/>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/2/img_O7YeWqwVncmLvs80.png"/>
+            </fig>
+          
+          
+            <fig id="fig_9">
+              <label>Figure 9</label>
+              <caption>
+                <title>Prediction results of four models: (a) Prediction results of the CNN model; (b) Prediction results of the LSTM model; (c) Prediction results of the TCN model; (d) Prediction results of the MSTCN model</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/2/img_K0SvIMLq-apN7SpA.png"/>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/2/img_i70NcawHI-dn5xdi.png"/>
+            </fig>
+          
+          <p>The extracted time-domain and frequency-domain features from <xref ref-type="fig" rid="fig_7">Figure 7</xref> and <xref ref-type="fig" rid="fig_8">Figure 8</xref> are input into the MSTCN prediction model, and compared with CNN, LSTM, and TCN. The output prediction results are shown in <xref ref-type="fig" rid="fig_9">Figure 9</xref>.</p><p><xref ref-type="fig" rid="fig_9">Figure 9</xref> shows the data from the rolling bearings being input into the four algorithm models for RUL prediction. The black line represents the true RUL curve of the bearing, while the red line represents the predicted RUL curve. The vertical axis shows the normalized RUL.</p><p>From the figure, it can be observed that CNN shows a certain fluctuation in the overall trend during the RUL prediction of the rolling bearing. Especially in the later stages, the prediction results have a large deviation and fail to accurately reflect the true change in the RUL of the bearing. The LSTM model's prediction performs smoothly in the early stages, capturing the long-term trend of the data well, but shows some deviation later, with the predicted values not accurately following the fluctuations of the true values. The TCN model can more accurately reflect the trend of the RUL change of the rolling bearing during the prediction process, but still exhibits some fluctuation, and there remains a small gap between the predicted and true values. The MSTCN model has the smallest error between the predicted and true values, especially in terms of the trend of the RUL changes, where MSTCN can accurately reflect the true situation. During the prediction process, MSTCN can smoothly track the changes in the RUL of the rolling bearing, avoiding large fluctuations or errors that may occur in other models, demonstrating very high accuracy.</p><p>Overall, MSTCN shows the strongest performance in the RUL prediction task and is suitable for the RUL prediction of rolling bearings.</p><p>The scores of the four prediction models are given in <xref ref-type="table" rid="table_3">Table 3</xref>.</p>
+          
+            <table-wrap id="table_3">
+              <label>Table 3</label>
+              <caption>
+                <title>Score of four prediction models</title>
+              </caption>
+              <table><tbody><tr><td colspan="1" rowspan="1"><p>Prediction Model</p></td><td colspan="1" rowspan="1"><p>MAE</p></td><td colspan="1" rowspan="1"><p>RMSE</p></td><td colspan="1" rowspan="1"><p>Score</p></td></tr><tr><td colspan="1" rowspan="1"><p>CNN</p></td><td colspan="1" rowspan="1"><p>0.49</p></td><td colspan="1" rowspan="1"><p>0.60</p></td><td colspan="1" rowspan="1"><p>0.82</p></td></tr><tr><td colspan="1" rowspan="1"><p>LSTM</p></td><td colspan="1" rowspan="1"><p>0.56</p></td><td colspan="1" rowspan="1"><p>0.51</p></td><td colspan="1" rowspan="1"><p>0.86</p></td></tr><tr><td colspan="1" rowspan="1"><p>TCN</p></td><td colspan="1" rowspan="1"><p>0.38</p></td><td colspan="1" rowspan="1"><p>0.45</p></td><td colspan="1" rowspan="1"><p>0.89</p></td></tr><tr><td colspan="1" rowspan="1"><p>MSTCN</p></td><td colspan="1" rowspan="1"><p>0.34</p></td><td colspan="1" rowspan="1"><p>0.41</p></td><td colspan="1" rowspan="1"><p>0.93</p></td></tr></tbody></table>
+            </table-wrap>
+          
+          <p><xref ref-type="table" rid="table_3">Table 3</xref> shows the evaluation results of four models (CNN, LSTM, TCN, MSTCN) in the rolling bearing RUL prediction task. The evaluation metrics include MAE, RMSE, and score, with each value reflecting the performance of the models in predicting the RUL of rolling bearings.</p><p>From the results in <xref ref-type="table" rid="table_3">Table 3</xref>, it is clear that MSTCN outperforms all other models across all metrics. It has the lowest MAE (0.34) and RMSE (0.41), and the highest score (0.93). This indicates that MSTCN has the best predictive performance for RUL prediction tasks in rolling bearings. TCN follows closely behind, showing good long-term dependency modeling and strong prediction accuracy. LSTM and CNN perform relatively poorly, especially when handling complex vibration signals, showing larger errors and lower predictive accuracy. Overall, MSTCN exhibits significant advantages in RUL prediction due to its multi-scale feature extraction and powerful temporal modeling capabilities.</p>
+          <p>From a combination of <xref ref-type="fig" rid="fig_9">Figure 9</xref> and <xref ref-type="table" rid="table_3">Table 3</xref>, it can be concluded that the four models (CNN, LSTM, TCN, MSTCN) show obvious performance differences in rolling bearing RUL prediction. CNN has advantages in local feature extraction but fails to capture long-term dependencies effectively, resulting in large prediction errors and the worst performance. LSTM can capture long-term dependencies in time series data well, but still shows some errors when dealing with complex signals, resulting in moderate performance. TCN models long-term dependencies effectively by stacking convolutional layers, demonstrating higher prediction accuracy and stability, outperforming CNN and LSTM. MSTCN, with its multi-scale feature extraction capability, can capture both short-term and long-term features simultaneously, achieving the best prediction accuracy with the smallest error and highest accuracy. Therefore, MSTCN exhibits the strongest performance in rolling bearing RUL prediction.</p>
+        </sec>
+      
+    </sec>
+    <sec sec-type="conclusions">
+      <title>4. Conclusions</title>
+      <p>To address the issues of insufficient model expressive power and difficulty in feature extraction in bearing RUL prediction, this chapter proposes an MSTCN-based method for rolling bearing RUL prediction. The chapter first introduces the construction principle of the MSTCN model, followed by a detailed description of the method’s process. By extracting key time-domain and frequency-domain features from vibration signals, MSTCN's powerful modeling capability is employed to capture deep temporal features from the signals, improving the model's prediction accuracy. Finally, through experimental validation, the method effectively enhances the prediction accuracy of RUL in rolling bearings with a single failure mode.</p>
+    </sec>
+  </body>
+  <back>
+    <ack>
+      <title>Acknowledgments</title>
+      
+    </ack>
+    <app-group>
+      <app>
+        <title>Appendix</title>
+        
+      </app>
+    </app-group>
+    <notes>
+      <title>Author Contributions</title>
+      
+    </notes>
+    <notes>
+      <title>Funding</title>
+      <p>This research was funded by the National Key Laboratory of Helicopter Aeromechanics Foundation, China (Grant No.: 2023-HA--LB-067-07); the Jiangsu Provincial Natural Science Foundation General Project, China (Grant No.: BK20221481).</p>
+    </notes>
+    <notes>
+      <title>Informed Consent Statement</title>
+      
+    </notes>
+    <notes>
+      <title>Data Availability Statement</title>
+      <p>The data used to support the research findings are available from the corresponding author upon request.</p>
+    </notes>
+    <notes notes-type="COI-statement">
+      <title>Conflicts of Interest</title>
+      <p>The authors declare no conflict of interest.</p>
+    </notes>
+    <ref-list>
+      <title>References</title>
+      <ref id="ref_1">
+        <label>1.</label>
+        <element-citation publication-type="book">
+          <person-group person-group-type="author">
+            <name>
+              <surname>Rathore</surname>
+              <given-names>M. S.</given-names>
+            </name>
+            <name>
+              <surname>Harsha</surname>
+              <given-names>S. P.</given-names>
+            </name>
+          </person-group>
+          <article-title>Intelligent fault detection scheme for rolling bearing based on generative adversarial network and auto encoders using convolutional neural network</article-title>
+          <source>Vibration Engineering and Technology of Machinery</source>
+          <year>2024</year>
+          <page-range>133-153</page-range>
+          <pub-id pub-id-type="doi">10.1007/978-981-99-8986-7_9</pub-id>
+        </element-citation>
+      </ref>
+      <ref id="ref_2">
+        <label>2.</label>
+        <element-citation publication-type="journal">
+          <volume>335</volume>
+          <page-range>327-335</page-range>
+          <year>2019</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Hoang</surname>
+              <given-names>D. T.</given-names>
+            </name>
+            <name>
+              <surname>Kang</surname>
+              <given-names>H. J.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.neucom.2018.06.078</pub-id>
+          <article-title>A survey on deep learning based bearing fault diagnosis</article-title>
+          <source>Neurocomput.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_3">
+        <label>3.</label>
+        <element-citation publication-type="journal">
+          <volume>2</volume>
+          <page-range>1-12</page-range>
+          <issue>1</issue>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>JDMD Editorial Office</surname>
+            </name>
+            <name>
+              <surname>Gebraeel</surname>
+              <given-names>N.</given-names>
+            </name>
+            <name>
+              <surname>Lei</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>N.</given-names>
+            </name>
+            <name>
+              <surname>Si</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Zio</surname>
+              <given-names>E.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.37965/jdmd.2023.148</pub-id>
+          <article-title>Prognostics and remaining useful life prediction of machinery: Advances, opportunities and challenges</article-title>
+          <source>J. Dyn. Monit. Diagn.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_4">
+        <label>4.</label>
+        <element-citation publication-type="journal">
+          <volume>58</volume>
+          <page-range>102206</page-range>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Kumar</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Parkash</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Tang</surname>
+              <given-names>He Sheng</given-names>
+            </name>
+            <name>
+              <surname>Xiang</surname>
+              <given-names>Jia Wei</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.aei.2023.102206</pub-id>
+          <article-title>Intelligent framework for degradation monitoring, defect identification and estimation of remaining useful life (RUL) of bearing</article-title>
+          <source>Adv. Eng. Inform.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_5">
+        <label>5.</label>
+        <element-citation publication-type="journal">
+          <volume>43</volume>
+          <page-range>68-76</page-range>
+          <issue>3</issue>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Jing</surname>
+              <given-names>B.</given-names>
+            </name>
+            <name>
+              <surname>Cui</surname>
+              <given-names>Z. B.</given-names>
+            </name>
+            <name>
+              <surname>Sun</surname>
+              <given-names>H. D.</given-names>
+            </name>
+            <name>
+              <surname>Jiao</surname>
+              <given-names>X. X.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>Y.</given-names>
+            </name>
+          </person-group>
+          <article-title>Online life prediction of fuel pumps based on the fusion of failed physics and data-driven methods</article-title>
+          <source>Chin. J. Sci. Instrum.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_6">
+        <label>6.</label>
+        <element-citation publication-type="journal">
+          <volume>2022</volume>
+          <page-range>50-55</page-range>
+          <issue>2</issue>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Chen</surname>
+              <given-names>Xing Yu</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>Hong Qi</given-names>
+            </name>
+            <name>
+              <surname>Huang</surname>
+              <given-names>Kui</given-names>
+            </name>
+            <name>
+              <surname>Su</surname>
+              <given-names>Chun</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3969/j.issn.1671-8186.2022.02.011</pub-id>
+          <article-title>A review of research on engineering equipment fault prediction methods for predictive maintenance</article-title>
+          <source>Intell. Manuf.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_7">
+        <label>7.</label>
+        <element-citation publication-type="journal">
+          <volume>31</volume>
+          <page-range>309-322</page-range>
+          <issue>3–4</issue>
+          <year>2009</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Pecht</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Gu</surname>
+              <given-names>Jie</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1177/0142331208092031</pub-id>
+          <article-title>Physics-of-failure-based prognostics for electronic products</article-title>
+          <source>Trans. Inst. Meas. Control</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_8">
+        <label>8.</label>
+        <element-citation publication-type="journal">
+          <volume>127</volume>
+          <page-range>452-460</page-range>
+          <year>2018</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Hu</surname>
+              <given-names>Yao Gang</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>Hui</given-names>
+            </name>
+            <name>
+              <surname>Shi</surname>
+              <given-names>Ping Ping</given-names>
+            </name>
+            <name>
+              <surname>Chai</surname>
+              <given-names>Zhao Sen</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>Kun</given-names>
+            </name>
+            <name>
+              <surname>Xie</surname>
+              <given-names>Xiang Jie</given-names>
+            </name>
+            <name>
+              <surname>Chen</surname>
+              <given-names>Zhe</given-names>
+            </name>
+          </person-group>
+          <article-title>A prediction method for the real-time remaining useful life of wind turbine bearings based on the Wiener process</article-title>
+          <source>Renew. Energy</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_9">
+        <label>9.</label>
+        <element-citation publication-type="journal">
+          <volume>63</volume>
+          <page-range>550-562</page-range>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Ferreira</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Gonçalves</surname>
+              <given-names>G.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.jmsy.2022.05.010</pub-id>
+          <article-title>Remaining useful life prediction and challenges: A literature review on the use of machine learning methods</article-title>
+          <source>J. Manuf. Syst.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_10">
+        <label>10.</label>
+        <element-citation publication-type="journal">
+          <volume>9</volume>
+          <page-range>e17584</page-range>
+          <issue>6</issue>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Das</surname>
+              <given-names>Oguzhan</given-names>
+            </name>
+            <name>
+              <surname>Duygu</surname>
+              <given-names>Bagci Das</given-names>
+            </name>
+            <name>
+              <surname>Birant</surname>
+              <given-names>Derya</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.heliyon.2023.e17584</pub-id>
+          <article-title>Machine learning for fault analysis in rotating machinery: A comprehensive review</article-title>
+          <source>Heliyon</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_11">
+        <label>11.</label>
+        <element-citation publication-type="journal">
+          <volume>44</volume>
+          <page-range>763-771</page-range>
+          <issue>4</issue>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Xu</surname>
+              <given-names>Hai Ming</given-names>
+            </name>
+            <name>
+              <surname>Xia</surname>
+              <given-names>Qiao Yang</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>Yong</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>Lan Zhu</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.16579/j.issn.1001.9669</pub-id>
+          <article-title>Prediction of remaining life of bearings based on depthwise separable convolutional neural network</article-title>
+          <source>Mech. Strength</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_12">
+        <label>12.</label>
+        <element-citation publication-type="journal">
+          <volume>48</volume>
+          <page-range>2119-2141</page-range>
+          <issue>9</issue>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Li</surname>
+              <given-names>Tian Mei</given-names>
+            </name>
+            <name>
+              <surname>Si</surname>
+              <given-names>Xiao Sheng</given-names>
+            </name>
+            <name>
+              <surname>Liu</surname>
+              <given-names>Xiang</given-names>
+            </name>
+            <name>
+              <surname>Pei</surname>
+              <given-names>Hong</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.16383/j.aas.c201068</pub-id>
+          <article-title>Data-model interactive remaining useful life prediction technologies for stochastic degrading devices with big data</article-title>
+          <source>Acta Autom. Sin.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_13">
+        <label>13.</label>
+        <element-citation publication-type="journal">
+          <volume>213</volume>
+          <page-range>1-14</page-range>
+          <issue>1</issue>
+          <year>2011</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Si</surname>
+              <given-names>Xiao Sheng</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>Wenbin</given-names>
+            </name>
+            <name>
+              <surname>Hu</surname>
+              <given-names>Chang Hua</given-names>
+            </name>
+            <name>
+              <surname>Zhou</surname>
+              <given-names>Dong Hua</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.ejor.2010.11.018</pub-id>
+          <article-title>Remaining useful life estimation – A review on the statistical data driven approaches</article-title>
+          <source>Eur. J. Oper. Res.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_14">
+        <label>14.</label>
+        <element-citation publication-type="thesis">
+          <person-group person-group-type="author">
+            <name>
+              <surname>Han</surname>
+              <given-names>Ning</given-names>
+            </name>
+          </person-group>
+          <article-title>Prediction of remaining life of two stage rolling bearings based on hybrid filtering</article-title>
+          <year>2023</year>
+          <publisher-name>Xi'an University of Technology, Xi'an, China</publisher-name>
+        </element-citation>
+      </ref>
+      <ref id="ref_15">
+        <label>15.</label>
+        <element-citation publication-type="thesis">
+          <person-group person-group-type="author">
+            <name>
+              <surname>Qian</surname>
+              <given-names>Yu Ning</given-names>
+            </name>
+          </person-group>
+          <article-title>Research on degradation tracking and fault prediction methods for rotating components in mechanical systems</article-title>
+          <source>, undefined</source>
+          <year>2015</year>
+          <publisher-name>Southeast University, Nanjing, China</publisher-name>
+        </element-citation>
+      </ref>
+      <ref id="ref_16">
+        <label>16.</label>
+        <element-citation publication-type="journal">
+          <volume>14</volume>
+          <issue>6</issue>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Liu</surname>
+              <given-names>X. Y.</given-names>
+            </name>
+            <name>
+              <surname>Chen</surname>
+              <given-names>G.</given-names>
+            </name>
+            <name>
+              <surname>Cheng</surname>
+              <given-names>Z. J.</given-names>
+            </name>
+            <name>
+              <surname>Wei</surname>
+              <given-names>X. K.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>H.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1177/16878132221100631</pub-id>
+          <article-title>Convolution neural network based particle filtering for remaining useful life prediction of rolling bearing</article-title>
+          <source>Adv. Mech. Eng.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_17">
+        <label>17.</label>
+        <element-citation publication-type="journal">
+          <volume>56</volume>
+          <page-range>900-908</page-range>
+          <issue>6</issue>
+          <year>2020</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Yao</surname>
+              <given-names>Jing Yu</given-names>
+            </name>
+            <name>
+              <surname>Meng</surname>
+              <given-names>Hai Yang</given-names>
+            </name>
+            <name>
+              <surname>Yang</surname>
+              <given-names>Jing</given-names>
+            </name>
+            <name>
+              <surname>Liang</surname>
+              <given-names>Bin</given-names>
+            </name>
+            <name>
+              <surname>Cheng</surname>
+              <given-names>Jian Chun</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.13232/j.cnki.jnju.2020.06.013</pub-id>
+          <article-title>Prediction of axial flow fan aerodynamic noise based on BP artificial neural network</article-title>
+          <source>J. Nanjing Univ. Nat. Sci.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_18">
+        <label>18.</label>
+        <element-citation publication-type="journal">
+          <volume>6</volume>
+          <page-range>13041-13049</page-range>
+          <year>2018</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Ren</surname>
+              <given-names>L.</given-names>
+            </name>
+            <name>
+              <surname>Sun</surname>
+              <given-names>Y. Q.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>L.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/ACCESS.2018.2804930</pub-id>
+          <article-title>Prediction of bearing remaining useful life with deep convolution neural network</article-title>
+          <source>IEEE Access</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_19">
+        <label>19.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>770-778</page-range>
+          <year>2016</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>He</surname>
+              <given-names>K. M.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>X. Y.</given-names>
+            </name>
+            <name>
+              <surname>Ren</surname>
+              <given-names>S. Q.</given-names>
+            </name>
+            <name>
+              <surname>Sun</surname>
+              <given-names>J.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/CVPR.2016.90</pub-id>
+          <source>2016 IEEE Conference on Computer Vision and Pattern Recognition (CVPR), Las Vegas, NV, USA</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_20">
+        <label>20.</label>
+        <element-citation publication-type="journal">
+          <year>2018</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Shao</surname>
+              <given-names>Jie Bai</given-names>
+            </name>
+            <name>
+              <surname>Kolter</surname>
+              <given-names>J. Zico</given-names>
+            </name>
+            <name>
+              <surname>Koltun</surname>
+              <given-names>Vladlen</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.48550/arXiv.1803.01271</pub-id>
+          <article-title>An empirical evaluation of generic convolutional and recurrent networks for sequence modeling</article-title>
+          <source>arXiv preprint</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_21">
+        <label>21.</label>
+        <element-citation publication-type="conference-proceedings">
+          <page-range>1-8</page-range>
+          <year>2012</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Nectoux</surname>
+              <given-names>P.</given-names>
+            </name>
+            <name>
+              <surname>Gouriveau</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Medjaher</surname>
+              <given-names>K.</given-names>
+            </name>
+            <name>
+              <surname>Ramasso</surname>
+              <given-names>E.</given-names>
+            </name>
+            <name>
+              <surname>Chebel-Morello</surname>
+              <given-names>B.</given-names>
+            </name>
+            <name>
+              <surname>Zerhouni</surname>
+              <given-names>N.</given-names>
+            </name>
+            <name>
+              <surname>Varnier</surname>
+              <given-names>C.</given-names>
+            </name>
+          </person-group>
+          <article-title>PRONOSTIA: An experimental platform for bearings accelerated degradation tests</article-title>
+          <source>, </source>
+        </element-citation>
+      </ref>
+      <ref id="ref_22">
+        <label>22.</label>
+        <element-citation publication-type="journal">
+          <volume>1</volume>
+          <page-range>145-157</page-range>
+          <issue>3</issue>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Wang</surname>
+              <given-names>T. C.</given-names>
+            </name>
+            <name>
+              <surname>Teng</surname>
+              <given-names>Q. J.</given-names>
+            </name>
+            <name>
+              <surname>Jin</surname>
+              <given-names>G. H.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.56578/pmdf010303</pub-id>
+          <article-title>A remaining useful life prediction method for rolling bearings based on broad learning system - Multi-scale temporal convolutional network</article-title>
+          <source>Precis. Mech. Digit. Fabr.</source>
+        </element-citation>
+      </ref>
+    </ref-list>
+  </back>
+</article>
