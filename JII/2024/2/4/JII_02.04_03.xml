@@ -1,0 +1,3216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.3 20210610//EN" "JATS-journalpublishing1-3.dtd">
+<article xml:lang="en" dtd-version="1.3" article-type="research-article" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mml="http://www.w3.org/1998/Math/MathML">
+  <front>
+    <journal-meta>
+      <journal-id journal-id-type="publisher-id">JII</journal-id>
+      <journal-id journal-id-type="doi">10.56578</journal-id>
+      <journal-title-group>
+        <journal-title>Journal of Industrial Intelligence</journal-title>
+        <abbrev-journal-title abbrev-type="issn">J. Ind Intell.</abbrev-journal-title>
+        <abbrev-journal-title abbrev-type="publisher">JII</abbrev-journal-title>
+      </journal-title-group>
+      <issn publication-format="electronic">2958-2695</issn>
+      <issn publication-format="print">2958-2687</issn>
+      <publisher>
+        <publisher-name>Acadlore</publisher-name>
+      </publisher>
+    </journal-meta>
+    <article-meta>
+      <article-id pub-id-type="publisher-id">AR-OpuoI0NIi7buSVgIHpkqX-5eMYVKFbM5</article-id>
+      <article-id pub-id-type="doi">10.56578/jii020403</article-id>
+      <article-categories>
+        <subj-group>
+          <subject>Articles</subject>
+        </subj-group>
+      </article-categories>
+      <title-group>
+        <article-title>Enhanced Low-Illumination Image Defect Detection Using Machine Vision</article-title>
+      </title-group>
+      <contrib-group>
+        <contrib contrib-type="author" rid="aff_1">
+          <contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0009-0002-7578-1393</contrib-id>
+          <name>
+            <surname>Li</surname>
+            <given-names>Yan</given-names>
+          </name>
+          <email>yanli@ciit.edu.cn</email>
+        </contrib>
+        <aff id="aff_1">School of Information Engineering, Changzhou Vocational Institute of Industry Technology, 213164 Changzhou, China</aff>
+      </contrib-group>
+      <pub-date publication-format="electronic" date-type="pub">
+        <day>30</day>
+        <month>12</month>
+        <year>2024</year>
+      </pub-date>
+      <volume>2</volume>
+      <issue>4</issue>
+      <fpage>218</fpage>
+      <lpage>229</lpage>
+      <page-range>218-229</page-range>
+      <history>
+        <date date-type="received">
+          <day>14</day>
+          <month>11</month>
+          <year>2024</year>
+        </date>
+        <date date-type="accepted">
+          <day>25</day>
+          <month>12</month>
+          <year>2024</year>
+        </date>
+      </history>
+      <permissions>
+        <copyright-statement>©2024 by the author(s)</copyright-statement>
+        <copyright-year>2024</copyright-year>
+        <license license-type="open-access" xlink:href="https://creativecommons.org/licenses/by/4.0/">
+          <license-p> Published by Acadlore Publishing Services Limited, Hong Kong. This article is available for free download and can be reused and cited, provided that the original published version is credited, under the CC BY 4.0 license.</license-p>
+        </license>
+      </permissions>
+      <abstract><p>The detection of image defects under low-illumination conditions presents significant challenges due to unstable and uneven lighting, which introduces substantial noise and shadow artifacts. These artifacts can obscure actual defect points while simultaneously increasing the likelihood of false positives, thereby complicating accurate defect identification. To address these limitations, a novel defect detection method based on machine vision was proposed in this study. Low-illumination images were captured and decomposed using a noise assessment-based framework to enhance defect visibility. A spatial transformation technique was then employed to distinguish between target regions and background components based on localized variations. To maximize the contrast between these components, the Hue-Saturation-Intensity (HSI) color space was leveraged, enabling precise segmentation of low-illumination images. Subsequently, an energy local binary pattern (LBP) operator was applied to the segmented images for defect detection, ensuring improved robustness against noise and illumination inconsistencies. Experimental results demonstrate that the proposed method significantly enhances detection accuracy, as confirmed by both subjective visual assessments and objective performance evaluations. The findings indicate that the proposed approach effectively mitigates the adverse effects of low illumination, thereby improving the accuracy and reliability of defect detection in challenging imaging environments.</p></abstract>
+      <kwd-group>
+        <kwd>Machine vision</kwd>
+        <kwd>Low-illumination images</kwd>
+        <kwd>Imperfections</kwd>
+        <kwd>Energy local binary pattern operator</kwd>
+        <kwd>Defect detection</kwd>
+      </kwd-group>
+      <counts>
+        <count count-type="contributors" count="1"/>
+        <fig-count count="5"/>
+        <table-count count="5"/>
+        <ref-count count="20"/>
+      </counts>
+    </article-meta>
+  </front>
+  <body>
+    <sec sec-type="intro">
+      <title>1. Introduction</title>
+      <p>In real life, due to various factors such as lighting conditions and camera performance, the image acquisition quality is often unsatisfactory, and low-illumination images generally have defects, such as noise, blur, defects, etc. These defects not only affect the quality and clarity of the image but also may cause errors in the analysis results. Therefore, how to accurately and quickly detect and repair the defects in low-illumination images has become one of the current research hotspots [<xref ref-type="bibr" rid="ref_1">1</xref>]. Research on the defect detection method of low-illumination images is conducive to improving image quality and the accuracy of information extraction, especially in the scene where automatic image analysis and recognition are required. Accurate defect detection can effectively improve the robustness and performance of image processing algorithms [<xref ref-type="bibr" rid="ref_2">2</xref>], [<xref ref-type="bibr" rid="ref_3">3</xref>]. For example, in the industrial production line, by detecting the defect points in the low-illumination image, the product quality can be quickly detected and checked, thus significantly improving the production efficiency and ensuring the improvement of the product qualification rate. In the field of medical imaging, accurate detection of defects in low-illumination images can help doctors diagnose diseases more accurately, improving the accuracy of medical diagnosis [<xref ref-type="bibr" rid="ref_4">4</xref>]. Therefore, research on the defect detection method of low-illumination images is of great significance. It can not only improve the level of image processing and analysis technology but also promote the development and application of related fields.</p><p>The current research on image defect detection methods is mainly aimed at improving detection accuracy and robustness. Among them, Zhuang et al. [<xref ref-type="bibr" rid="ref_5">5</xref>] proposed a neural network model based on deformable dense convolution, which uses a deformable convolution mechanism to achieve effective target description. The offset between the convolutional pixel and the image center pixel in the x and y directions was set as a new learning function to improve the adaptive deformation ability of the perceptual field. In addition, in order to ensure that the defects in the image are not lost when modeling, a method based on dense connection was proposed. The experimental data shows that the model has a high accuracy in the task of single-class target detection, but the rate of missed detection is high in the low-clarity environment. Liu and Zhou [<xref ref-type="bibr" rid="ref_6">6</xref>] proposed an image singularity detection method based on contourlet transform and fuzzy logic, which combines continuous wave transform and fuzzy logic to detect singularity and output the detection results of image singularity. The experimental results show that this method can enhance the detection accuracy, but under the condition of low brightness, the defect feature information is similar to the background pattern and the background information has strong interference, which easily leads to low structural similarity (SSIM) of the detection results and low fidelity of visual information. Xiao et al. [<xref ref-type="bibr" rid="ref_7">7</xref>] proposed an image defect detection method based on contrastive learning, which adopts a dual branch encoder decoder structure and ResNet50 as the backbone network to process defect images and template images with the same center position but different sizes (template images have slightly higher resolution). In the design, the attention module LACB is used to divide patches and utilize attention mechanisms to locally compare the feature differences between the two images, in order to adapt to the small-scale watermark offset caused by paper flexibility changes. Therefore, the defect feature map is designed to be smaller than the template feature map, allowing the features to shift within a certain range. Input the comparison results of the first three layers into the decoder, and the final layer into ASPP to integrate global information. The decoder fuses multi-scale feature maps across layers to reduce information loss, enhance different feature responses, and accurately segment defects. However, the local comparison mechanism of the LACB module ignores global contextual information, resulting in insufficient detection accuracy for complex defects, especially in cases where the watermark offset range is large or the shape is complex, the detection effect may significantly decrease. Hu et al. [<xref ref-type="bibr" rid="ref_8">8</xref>] proposed an unsupervised learning surface defect detection method based on image repair. In the detection process, a lost area was generated manually, and then the lost part was predicted according to the established network model. Finally, the defects were extracted and separated through the SSIM evaluation and residual analysis of the reconstructed image and the image to be measured. The experimental results show that the method performs well in detecting defects on regular texture surfaces, but the effect is not ideal in processing noisy images. Therefore, the ability of defect detection needs to be further improved.</p><p>In order to overcome the problems of the existing methods, a method was developed in this study to detect defects in low-illumination images with the help of machine vision technology as follows:</p><p>(a) In the low-illumination environment, the image is often disturbed by noise and shadow; the proposed method decomposes the image by noise estimation, which effectively reduces the impact of noise on the subsequent processing and improves the quality of the image.</p><p>(b) Traditional image processing is mostly based on the red, green, and blue (RGB) color space, but under low-illumination conditions, the information in the RGB space may not be accurate enough. The proposed method converts an image from the RGB color space to the HSI space, which can better deal with brightness and color information and is conducive to distinguishing different parts of the image.</p><p>(c) In the HSI space, this method uses local changes to distinguish the target part (such as defects) and the background part. This strategy can separate defects from the surrounding environment more accurately, laying the foundation for subsequent defect detection.</p><p>(d) The proposed method adopts the energy LBP operator to detect the defect points in the segmented image, which can capture the local structure and texture changes in the image and has high sensitivity and accuracy to the defect points in the low-illumination image.</p><p>(e) Comparative analysis of the proposed method with the existing methods through experiments verifies the application effect of the proposed method.</p>
+    </sec>
+    <sec sec-type="">
+      <title>2. Methods for detecting defect points in low-illumination images</title>
+      
+        <sec>
+          
+            <title>2.1. Acquisition of low-illumination images based on machine vision technology</title>
+          
+          <p>The accuracy of traditional detection methods is often limited by workers' experience and subjective judgment, resulting in instability of detection results [<xref ref-type="bibr" rid="ref_9">9</xref>], [<xref ref-type="bibr" rid="ref_10">10</xref>]. For this reason, this study introduces machine vision technology for defect detection of low-illumination images, and collects low-illumination images through this technology. In terms of low-illumination image acquisition based on machine vision technology, computers and other electronic hardware were used as the core tools to capture the image information of target objects through specific image acquisition devices, such as Complementary Metal-Oxide-Semiconductor (CMOS) or Charge-Coupled Device (CCD) sensors. In the low-illumination environment, the image quality is usually low and the noise interference is strong. Therefore, a series of image processing technologies, such as image enhancement and feature extraction, are needed to optimize the image quality and improve the visibility and recognition accuracy of target objects. These technologies can effectively enhance the contrast of the image and enhance the edge information, thereby accurately extracting and recognizing the features of the target object under low-illumination conditions. By setting the objective function and using the optimization algorithm to decompose the image, this study further removed the noise, retained key information, and finally achieved reliable acquisition and processing of low-illumination images.</p><p>The working principle of the technique is shown in <xref ref-type="fig" rid="fig_1">Figure 1</xref>.</p>
+          
+            <fig id="fig_1">
+              <label>Figure 1</label>
+              <caption>
+                <title>Schematic diagram of the image acquisition principle</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/2/img_v2ckRfemxMt6xcND.png"/>
+            </fig>
+          
+          <p>As can be seen from <xref ref-type="fig" rid="fig_1">Figure 1</xref>, the principle of machine vision image acquisition is to capture light and form images through the optical imaging technology and different types of sensors to convert these images into digital signals. This process involves the refraction of light, image focusing and sensor photoelectric conversion steps. In machine vision systems, image acquisition is the first step in the process, in which precise control of lighting conditions becomes a key step, while the selection of suitable lenses and sensors is also critical. By optimizing these steps, clear and accurate image data can be obtained to provide strong support for subsequent applications such as defect detection.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>2.2. Decomposition of low-illumination images under noise estimation</title>
+          
+          <p>Since the current defect detection methods for low-illumination images are often used to detect the image as a whole, it may lead to insufficient feature extraction of defects, making it difficult to accurately identify and locate the defects. In addition, it is susceptible to misjudgment due to the influence of the overall information of the low-illumination image, which reduces the accuracy and stability of the defect detection. In addition, ignoring the multi-frequency characteristics of the image may lead to the loss of small-scale detail information, which affects the accuracy of the final detection results. For this reason, the low-illumination images acquired in Section 2.1 were decomposed based on noise evaluation before defect detection [<xref ref-type="bibr" rid="ref_11">11</xref>], [<xref ref-type="bibr" rid="ref_12">12</xref>], aiming to split the image into sub-images or feature maps of different frequencies for subsequent analysis and processing. The decomposition can help to extract the subtle defect point information in the image and locate and identify the defect points more accurately on different frequency spaces, thus improving the accuracy and reliability of the defect point detection method for low-illumination images.</p><p>Images captured by industrial cameras often have problems such as uneven illumination, low contrast and more noise. Directly adjusting image illumination often aggravates the impact of noise, making noise suppression or removal more complex. Therefore, the image decomposition method was used in this study to separate the different structure information of the image and achieve effective noise suppression in the detail layer (including the fine features and significant defects of the image). The input low-illumination image was set to <inline-formula>
+  <mml:math id="mu8xuvs8co">
+    <mml:mi>I</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+  </mml:math>
+</inline-formula>, which contains the base layer <inline-formula>
+  <mml:math id="m5qurxxpmp">
+    <mml:msub>
+      <mml:mi>I</mml:mi>
+      <mml:mi>a</mml:mi>
+    </mml:msub>
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mi>x</mml:mi>
+    <mml:mi>y</mml:mi>
+  </mml:math>
+</inline-formula> and detail layers <inline-formula>
+  <mml:math id="mj0qfzn6bt">
+    <mml:msub>
+      <mml:mi>I</mml:mi>
+      <mml:mi>b</mml:mi>
+    </mml:msub>
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mi>x</mml:mi>
+    <mml:mi>y</mml:mi>
+  </mml:math>
+</inline-formula> as follows:</p>
+          
+            <disp-formula>
+              <label>(1)</label>
+              <mml:math id="m8p1tb4dzg">
+                <mml:mi>I</mml:mi>
+                <mml:mi>x</mml:mi>
+                <mml:mi>y</mml:mi>
+                <mml:mi>x</mml:mi>
+                <mml:mi>y</mml:mi>
+                <mml:mi>x</mml:mi>
+                <mml:mi>y</mml:mi>
+                <mml:mo>(</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo>)</mml:mo>
+                <mml:mo>=</mml:mo>
+                <mml:mo>(</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo>)</mml:mo>
+                <mml:mo>+</mml:mo>
+                <mml:mo>(</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo>)</mml:mo>
+                <mml:msub>
+                  <mml:mi>I</mml:mi>
+                  <mml:mi>a</mml:mi>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>I</mml:mi>
+                  <mml:mi>b</mml:mi>
+                </mml:msub>
+              </mml:math>
+            </disp-formula>
+          
+          <p>Subsequently, the base layer, i.e., the main structural information of the image, was obtained by minimizing a specific objective function of <inline-formula>
+  <mml:math id="m5n5rh9fdh">
+    <mml:msubsup>
+      <mml:mrow/>
+      <mml:mrow>
+        <mml:msub>
+          <mml:mi>I</mml:mi>
+          <mml:mi>a</mml:mi>
+        </mml:msub>
+      </mml:mrow>
+      <mml:mrow>
+        <mml:mo>min</mml:mo>
+      </mml:mrow>
+    </mml:msubsup>
+    <mml:msubsup>
+      <mml:mrow>
+        <mml:mo>‖</mml:mo>
+        <mml:mo>(</mml:mo>
+        <mml:mo>,</mml:mo>
+        <mml:mo>)</mml:mo>
+        <mml:mo>−</mml:mo>
+        <mml:mo>(</mml:mo>
+        <mml:mo>,</mml:mo>
+        <mml:mo>)</mml:mo>
+        <mml:mo>‖</mml:mo>
+        <mml:msub>
+          <mml:mi>I</mml:mi>
+          <mml:mi>a</mml:mi>
+        </mml:msub>
+        <mml:mi>x</mml:mi>
+        <mml:mi>y</mml:mi>
+        <mml:mi>I</mml:mi>
+        <mml:mi>x</mml:mi>
+        <mml:mi>y</mml:mi>
+      </mml:mrow>
+      <mml:mn>2</mml:mn>
+      <mml:mn>2</mml:mn>
+    </mml:msubsup>
+    <mml:mo>+</mml:mo>
+    <mml:mi>η</mml:mi>
+    <mml:mrow>
+      <mml:mo>|</mml:mo>
+      <mml:mo>(</mml:mo>
+      <mml:mo>,</mml:mo>
+      <mml:mo>)</mml:mo>
+      <mml:mo>|</mml:mo>
+      <mml:mi>∇</mml:mi>
+      <mml:mi>x</mml:mi>
+      <mml:mi>y</mml:mi>
+      <mml:msub>
+        <mml:mi>I</mml:mi>
+        <mml:mi>a</mml:mi>
+      </mml:msub>
+    </mml:mrow>
+  </mml:math>
+</inline-formula>.</p><p>To ensure that noise can be effectively separated from the high-frequency detail to the detail layer, global noise estimation was implemented. In a static environment, the noise model is Gaussian noise, which can characterize the statistical properties of multiple random noise. However, under dynamic light conditions, the noise properties become more complex. In particular, when the light intensity changes dramatically, it may lead to a significant increase in salt and pepper noise, which appears as random bright or dark spots in the image, whose statistical properties are significantly different from Gaussian noise. To meet this challenge, a noise (<inline-formula>
+  <mml:math id="mc4vd8n84d">
+    <mml:mi>σ</mml:mi>
+  </mml:math>
+</inline-formula>) estimation formula for many different noise scenarios was proposed in this study as follows:</p>
+          
+            <disp-formula>
+              <label>(2)</label>
+              <mml:math id="m5sv9krxr7">
+                <mml:mi>σ</mml:mi>
+                <mml:mi>I</mml:mi>
+                <mml:mi>x</mml:mi>
+                <mml:mi>y</mml:mi>
+                <mml:mi>M</mml:mi>
+                <mml:mo>=</mml:mo>
+                <mml:mo>×</mml:mo>
+                <mml:mo>×</mml:mo>
+                <mml:mo>∑</mml:mo>
+                <mml:mo>(</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo>)</mml:mo>
+                <mml:mo>×</mml:mo>
+                <mml:mo>|</mml:mo>
+                <mml:msqrt>
+                  <mml:mfrac>
+                    <mml:mi>π</mml:mi>
+                    <mml:mn>2</mml:mn>
+                  </mml:mfrac>
+                </mml:msqrt>
+                <mml:mfrac>
+                  <mml:mn>1</mml:mn>
+                  <mml:mrow>
+                    <mml:mi>W</mml:mi>
+                    <mml:mi>H</mml:mi>
+                    <mml:mo>×</mml:mo>
+                  </mml:mrow>
+                </mml:mfrac>
+                <mml:mrow>
+                  <mml:mo>|</mml:mo>
+                </mml:mrow>
+              </mml:math>
+            </disp-formula>
+          
+          <p> where, $W<inline-formula>
+  <mml:math id="mv3cnwxq1g">
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+  </mml:math>
+</inline-formula>H<inline-formula>
+  <mml:math id="m1ggd9tr5u">
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>I(x, y)<inline-formula>
+  <mml:math id="mdb63iu34a">
+    <mml:mo>;</mml:mo>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+  </mml:math>
+</inline-formula>M$ is the convolutional template.</p><p>Eq. (2) allows a rough estimation of the amplitude of the high-frequency components, and the detail layer can be obtained by calculating the residuals as follows:</p>
+          
+            <disp-formula>
+              <label>(3)</label>
+              <mml:math id="mslltq9bok">
+                <mml:msub>
+                  <mml:mi>I</mml:mi>
+                  <mml:mi>b</mml:mi>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>I</mml:mi>
+                  <mml:mi>A</mml:mi>
+                </mml:msub>
+                <mml:mo>(</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo>)</mml:mo>
+                <mml:mo>=</mml:mo>
+                <mml:mo>(</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo>)</mml:mo>
+                <mml:mo>−</mml:mo>
+                <mml:mo>(</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo>)</mml:mo>
+                <mml:mi>x</mml:mi>
+                <mml:mi>y</mml:mi>
+                <mml:mi>I</mml:mi>
+                <mml:mi>x</mml:mi>
+                <mml:mi>y</mml:mi>
+                <mml:mi>x</mml:mi>
+                <mml:mi>y</mml:mi>
+              </mml:math>
+            </disp-formula>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>2.3. Adaptive thresholding segmentation of low-illumination images</title>
+          
+          <p>Under low-illumination conditions, defects or defects in images are often not easy to be directly observed by the naked eye, which poses a challenge to image defect detection. By segmenting a low-illumination image, the image can be divided into different regions or sets of pixels to better extract and analyze image contents at different illumination levels, highlight defects or possible defects, and mark their locations and shapes for subsequent defect detection and analysis [<xref ref-type="bibr" rid="ref_13">13</xref>], [<xref ref-type="bibr" rid="ref_14">14</xref>]. At the same time, segmentation can further help reduce the background interference in the image and improve the accuracy and stability of defect detection. Therefore, based on the decomposition of low-illumination images, the segmentation process was further carried out on low-illumination images.</p><p>Traditional methods are often limited by the lack of sensitivity, difficulty in parameter selection and sensitivity to noise, resulting in poor image segmentation results, while adaptive thresholding segmentation methods have strong adaptivity, which can reduce parameter dependence and achieve good anti-noise performance. By determining the threshold value according to the local features of the image, the adaptive thresholding method can better cope with the needs of image segmentation under low-illumination conditions, improve the segmentation accuracy, reduce the burden of manual parameter selection, and effectively reduce the interference of noise on the segmentation results, thereby better satisfying the requirements of low-illumination image segmentation. Therefore, the adaptive thresholding method was adopted in this study to segment low-illumination images.</p><p>Because the RGB color space is vulnerable to the interference of the correlation between colors during image segmentation, the image was first converted from the RGB space to the HSI space in this study to optimize the segmentation accuracy in the case of uneven light. In the preprocessing phase, the image was converted to different color channels and stored. On this basis, the HSI color space conversion was performed on the image. To achieve this conversion, the RGB values were first normalized to the range of [0,1], and the converted H value range was set at 0°<inline-formula>
+  <mml:math id="myy21802me">
+    <mml:mo>∼</mml:mo>
+  </mml:math>
+</inline-formula>360° while keeping the values of S and I within the range of [0,1]. The conversion formula from RGB to HSI is as follows:</p>
+          
+            <disp-formula>
+              <label>(4)</label>
+              <mml:math id="myaxohnlge">
+                <mml:mi>H</mml:mi>
+                <mml:mo>=</mml:mo>
+                <mml:mfrac>
+                  <mml:mrow>
+                    <mml:mi>arccos</mml:mi>
+                    <mml:mi>R</mml:mi>
+                    <mml:mi>G</mml:mi>
+                    <mml:mi>R</mml:mi>
+                    <mml:mi>B</mml:mi>
+                    <mml:mo>⁡</mml:mo>
+                    <mml:mo>[</mml:mo>
+                    <mml:mo>×</mml:mo>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>−</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:mo>+</mml:mo>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>−</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:mo>]</mml:mo>
+                    <mml:mn>0.5</mml:mn>
+                  </mml:mrow>
+                  <mml:msqrt>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>−</mml:mo>
+                    <mml:mo>+</mml:mo>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>−</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>−</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:mi>R</mml:mi>
+                    <mml:mi>G</mml:mi>
+                    <mml:mi>R</mml:mi>
+                    <mml:mi>B</mml:mi>
+                    <mml:mi>G</mml:mi>
+                    <mml:mi>B</mml:mi>
+                    <mml:msup>
+                      <mml:mo>)</mml:mo>
+                      <mml:mn>2</mml:mn>
+                    </mml:msup>
+                  </mml:msqrt>
+                </mml:mfrac>
+              </mml:math>
+            </disp-formula>
+          
+          
+            <disp-formula>
+              <label>(5)</label>
+              <mml:math id="mwc9q8e9ve">
+                <mml:mi>S</mml:mi>
+                <mml:mi>R</mml:mi>
+                <mml:mi>G</mml:mi>
+                <mml:mi>B</mml:mi>
+                <mml:mo>=</mml:mo>
+                <mml:mo>−</mml:mo>
+                <mml:mo>×</mml:mo>
+                <mml:mo>[</mml:mo>
+                <mml:mo>min</mml:mo>
+                <mml:mo>(</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo>)</mml:mo>
+                <mml:mo>]</mml:mo>
+                <mml:mn>1</mml:mn>
+                <mml:mfrac>
+                  <mml:mn>3</mml:mn>
+                  <mml:mrow>
+                    <mml:mi>R</mml:mi>
+                    <mml:mi>G</mml:mi>
+                    <mml:mi>B</mml:mi>
+                    <mml:mo>+</mml:mo>
+                    <mml:mo>+</mml:mo>
+                  </mml:mrow>
+                </mml:mfrac>
+              </mml:math>
+            </disp-formula>
+          
+          
+            <disp-formula>
+              <label>(6)</label>
+              <mml:math id="mx80xuzpoy">
+                <mml:mi>S</mml:mi>
+                <mml:mo>=</mml:mo>
+                <mml:mfrac>
+                  <mml:mrow>
+                    <mml:mn>3</mml:mn>
+                    <mml:mi>R</mml:mi>
+                    <mml:mi>G</mml:mi>
+                    <mml:mi>B</mml:mi>
+                    <mml:mo>+</mml:mo>
+                    <mml:mo>+</mml:mo>
+                  </mml:mrow>
+                  <mml:mn>3</mml:mn>
+                </mml:mfrac>
+              </mml:math>
+            </disp-formula>
+          
+          <p>The converted image was analyzed as a whole to determine the optimal threshold value <inline-formula>
+  <mml:math id="m646vvxjo1">
+    <mml:mi>ϕ</mml:mi>
+  </mml:math>
+</inline-formula>. Then, the color channel components of the image were processed by partitioning. On the basis of partitioning, adaptive thresholding was further solved to achieve more accurate image segmentation.</p><p>In order to effectively segment image foreground and background points, i.e., the target and the background parts, it is necessary to make judgments based on local variations. Therefore, the optimal threshold that can maximize the distinction between these two parts was calculated to achieve accurate segmentation of low-illumination images [<xref ref-type="bibr" rid="ref_15">15</xref>], [<xref ref-type="bibr" rid="ref_16">16</xref>]. The overall flow of the algorithm is as follows:</p><p>(a) After determining the optimal threshold <inline-formula>
+  <mml:math id="mi59nr7ela">
+    <mml:mi>ϕ</mml:mi>
+  </mml:math>
+</inline-formula> for the image by calculation, each color channel component was partitioned according to the threshold value to extract the HSI channel component of the corresponding region.</p><p>(b) A horizontal sliding window was set up and operated by sliding pixel by pixel in the order from left to right.</p><p>(c) After setting the initial gray level within each sliding window as $N<inline-formula>
+  <mml:math id="mn45z7mfpg">
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+  </mml:math>
+</inline-formula>i<inline-formula>
+  <mml:math id="mbt36nmw6f">
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+  </mml:math>
+</inline-formula>n_i<inline-formula>
+  <mml:math id="mfsonroqfa">
+    <mml:mo>,</mml:mo>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>H</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>S</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>k</mml:mi>
+  </mml:math>
+</inline-formula>H_{ij}<inline-formula>
+  <mml:math id="mzt4q4roaw">
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+  </mml:math>
+</inline-formula>S_{ij}$ was calculated. Finally, the grey-scale histograms were normalized to obtain the normalized results.</p>
+          
+            <disp-formula>
+              <label>(7)</label>
+              <mml:math id="mfpcfr9vrs">
+                <mml:msub>
+                  <mml:mi>W</mml:mi>
+                  <mml:mi>i</mml:mi>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>n</mml:mi>
+                  <mml:mi>i</mml:mi>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mrow>
+                  <mml:mo>/</mml:mo>
+                </mml:mrow>
+                <mml:mi>N</mml:mi>
+              </mml:math>
+            </disp-formula>
+          
+          <p>(d) For target and background, the probability of their occurrence is as follows:</p>
+          
+            <disp-formula>
+              <label>(8)</label>
+              <mml:math id="mjs6dtzkld">
+                <mml:msub>
+                  <mml:mi>P</mml:mi>
+                  <mml:mn>1</mml:mn>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>W</mml:mi>
+                  <mml:mi>i</mml:mi>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:munderover>
+                  <mml:mo>∑</mml:mo>
+                  <mml:mrow>
+                    <mml:mi>i</mml:mi>
+                    <mml:mo>=</mml:mo>
+                    <mml:mn>1</mml:mn>
+                  </mml:mrow>
+                  <mml:mi>t</mml:mi>
+                </mml:munderover>
+              </mml:math>
+            </disp-formula>
+          
+          
+            <disp-formula>
+              <label>(9)</label>
+              <mml:math id="mytvjfxfvn">
+                <mml:msub>
+                  <mml:mi>P</mml:mi>
+                  <mml:mn>2</mml:mn>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>W</mml:mi>
+                  <mml:mi>i</mml:mi>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>P</mml:mi>
+                  <mml:mn>1</mml:mn>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mo>=</mml:mo>
+                <mml:mo>−</mml:mo>
+                <mml:munderover>
+                  <mml:mo>∑</mml:mo>
+                  <mml:mrow>
+                    <mml:mi>i</mml:mi>
+                    <mml:mi>t</mml:mi>
+                    <mml:mo>=</mml:mo>
+                    <mml:mo>+</mml:mo>
+                    <mml:mn>1</mml:mn>
+                  </mml:mrow>
+                  <mml:mi>N</mml:mi>
+                </mml:munderover>
+                <mml:mn>1</mml:mn>
+              </mml:math>
+            </disp-formula>
+          
+          <p>Among them, $t$ is the image grayscale.</p><p>The average gray value for each category was calculated according to Eqs. (8) and (9).</p>
+          
+            <disp-formula>
+              <label>(10)</label>
+              <mml:math id="m6i0jxltqc">
+                <mml:msub>
+                  <mml:mi>δ</mml:mi>
+                  <mml:mn>1</mml:mn>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>W</mml:mi>
+                  <mml:mi>i</mml:mi>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mo>×</mml:mo>
+                <mml:munderover>
+                  <mml:mo>∑</mml:mo>
+                  <mml:mrow>
+                    <mml:mi>i</mml:mi>
+                    <mml:mo>=</mml:mo>
+                    <mml:mn>1</mml:mn>
+                  </mml:mrow>
+                  <mml:mi>t</mml:mi>
+                </mml:munderover>
+                <mml:mfrac>
+                  <mml:msub>
+                    <mml:mi>η</mml:mi>
+                    <mml:mi>t</mml:mi>
+                  </mml:msub>
+                  <mml:msub>
+                    <mml:mi>P</mml:mi>
+                    <mml:mn>1</mml:mn>
+                  </mml:msub>
+                </mml:mfrac>
+              </mml:math>
+            </disp-formula>
+          
+          
+            <disp-formula>
+              <label>(11)</label>
+              <mml:math id="mqztwtzaz8">
+                <mml:msub>
+                  <mml:mi>δ</mml:mi>
+                  <mml:mn>2</mml:mn>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mo>×</mml:mo>
+                <mml:mfrac>
+                  <mml:msub>
+                    <mml:mi>W</mml:mi>
+                    <mml:mi>i</mml:mi>
+                  </mml:msub>
+                  <mml:mrow>
+                    <mml:munderover>
+                      <mml:mo>∑</mml:mo>
+                      <mml:mrow>
+                        <mml:mi>i</mml:mi>
+                        <mml:mi>t</mml:mi>
+                        <mml:mo>=</mml:mo>
+                        <mml:mo>+</mml:mo>
+                        <mml:mn>1</mml:mn>
+                      </mml:mrow>
+                      <mml:mi>N</mml:mi>
+                    </mml:munderover>
+                    <mml:msub>
+                      <mml:mi>W</mml:mi>
+                      <mml:mi>i</mml:mi>
+                    </mml:msub>
+                  </mml:mrow>
+                </mml:mfrac>
+                <mml:mfrac>
+                  <mml:mrow>
+                    <mml:mi>η</mml:mi>
+                    <mml:mo>−</mml:mo>
+                    <mml:msub>
+                      <mml:mi>η</mml:mi>
+                      <mml:mi>t</mml:mi>
+                    </mml:msub>
+                  </mml:mrow>
+                  <mml:msub>
+                    <mml:mi>P</mml:mi>
+                    <mml:mn>2</mml:mn>
+                  </mml:msub>
+                </mml:mfrac>
+              </mml:math>
+            </disp-formula>
+          
+          <p> where, <inline-formula>
+  <mml:math id="mxqpfgwe7h">
+    <mml:msub>
+      <mml:mi>η</mml:mi>
+      <mml:mi>t</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> is the cumulative value at the time for a gray scale of $t$. Then the whole grayscale cumulative value is as follows:</p>
+          
+            <disp-formula>
+              <label>(12)</label>
+              <mml:math id="mcqcwlqlrd">
+                <mml:msub>
+                  <mml:mi>η</mml:mi>
+                  <mml:mi>T</mml:mi>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>W</mml:mi>
+                  <mml:mi>i</mml:mi>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:munderover>
+                  <mml:mo>∑</mml:mo>
+                  <mml:mrow>
+                    <mml:mi>i</mml:mi>
+                    <mml:mo>=</mml:mo>
+                    <mml:mn>1</mml:mn>
+                  </mml:mrow>
+                  <mml:mi>N</mml:mi>
+                </mml:munderover>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>+</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:msub>
+                    <mml:mi>δ</mml:mi>
+                    <mml:mn>1</mml:mn>
+                  </mml:msub>
+                  <mml:msub>
+                    <mml:mi>δ</mml:mi>
+                    <mml:mn>2</mml:mn>
+                  </mml:msub>
+                </mml:mrow>
+              </mml:math>
+            </disp-formula>
+          
+          <p>For the two types of pixels, target and background, the variances within each of them are as follows:</p>
+          
+            <disp-formula>
+              <label>(13)</label>
+              <mml:math id="md9qvbhn8b">
+                <mml:msubsup>
+                  <mml:mi>s</mml:mi>
+                  <mml:mn>1</mml:mn>
+                  <mml:mn>2</mml:mn>
+                </mml:msubsup>
+                <mml:mo>=</mml:mo>
+                <mml:munderover>
+                  <mml:mo>∑</mml:mo>
+                  <mml:mrow>
+                    <mml:mi>i</mml:mi>
+                    <mml:mo>=</mml:mo>
+                    <mml:mn>1</mml:mn>
+                  </mml:mrow>
+                  <mml:mi>t</mml:mi>
+                </mml:munderover>
+                <mml:mfrac>
+                  <mml:msup>
+                    <mml:mrow>
+                      <mml:mo>(</mml:mo>
+                      <mml:mo>−</mml:mo>
+                      <mml:mo>)</mml:mo>
+                      <mml:msub>
+                        <mml:mi>W</mml:mi>
+                        <mml:mi>i</mml:mi>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mi>δ</mml:mi>
+                        <mml:mn>1</mml:mn>
+                      </mml:msub>
+                    </mml:mrow>
+                    <mml:mn>2</mml:mn>
+                  </mml:msup>
+                  <mml:msub>
+                    <mml:mi>P</mml:mi>
+                    <mml:mn>1</mml:mn>
+                  </mml:msub>
+                </mml:mfrac>
+              </mml:math>
+            </disp-formula>
+          
+          
+            <disp-formula>
+              <label>(14)</label>
+              <mml:math id="mtpvt1pjpl">
+                <mml:msubsup>
+                  <mml:mi>s</mml:mi>
+                  <mml:mn>1</mml:mn>
+                  <mml:mn>2</mml:mn>
+                </mml:msubsup>
+                <mml:mo>=</mml:mo>
+                <mml:munderover>
+                  <mml:mo>∑</mml:mo>
+                  <mml:mrow>
+                    <mml:mi>i</mml:mi>
+                    <mml:mo>=</mml:mo>
+                    <mml:mn>1</mml:mn>
+                  </mml:mrow>
+                  <mml:mi>t</mml:mi>
+                </mml:munderover>
+                <mml:mfrac>
+                  <mml:msup>
+                    <mml:mrow>
+                      <mml:mo>(</mml:mo>
+                      <mml:mo>−</mml:mo>
+                      <mml:mo>)</mml:mo>
+                      <mml:msub>
+                        <mml:mi>W</mml:mi>
+                        <mml:mi>i</mml:mi>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mi>δ</mml:mi>
+                        <mml:mn>2</mml:mn>
+                      </mml:msub>
+                    </mml:mrow>
+                    <mml:mn>2</mml:mn>
+                  </mml:msup>
+                  <mml:msub>
+                    <mml:mi>P</mml:mi>
+                    <mml:mn>2</mml:mn>
+                  </mml:msub>
+                </mml:mfrac>
+              </mml:math>
+            </disp-formula>
+          
+          <p>(e) In order to effectively differentiate between target and background, the interclass variance was used as the objective function:</p>
+          
+            <disp-formula>
+              <label>(15)</label>
+              <mml:math id="m2dh4gre2w">
+                <mml:msubsup>
+                  <mml:mi>s</mml:mi>
+                  <mml:mi>u</mml:mi>
+                  <mml:mn>2</mml:mn>
+                </mml:msubsup>
+                <mml:mo>=</mml:mo>
+                <mml:mo>×</mml:mo>
+                <mml:msub>
+                  <mml:mi>P</mml:mi>
+                  <mml:mn>1</mml:mn>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>P</mml:mi>
+                  <mml:mn>2</mml:mn>
+                </mml:msub>
+                <mml:msup>
+                  <mml:mrow>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>−</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:msub>
+                      <mml:mi>δ</mml:mi>
+                      <mml:mn>1</mml:mn>
+                    </mml:msub>
+                    <mml:msub>
+                      <mml:mi>δ</mml:mi>
+                      <mml:mn>2</mml:mn>
+                    </mml:msub>
+                  </mml:mrow>
+                  <mml:mn>2</mml:mn>
+                </mml:msup>
+              </mml:math>
+            </disp-formula>
+          
+          <p>By traversing the gray level $0 \sim N-1$, a specific gray level that maximizes the above objective function was found and identified as the optimal segmentation threshold for the region.</p><p>(f) Considering the weight of H and S channel components, the objective function was optimized to obtain the optimal threshold as follows:</p>
+          
+            <disp-formula>
+              <label>(16)</label>
+              <mml:math id="mrxmmcxwtr">
+                <mml:msup>
+                  <mml:mi>ϕ</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>′</mml:mi>
+                  </mml:mrow>
+                </mml:msup>
+                <mml:mo>=</mml:mo>
+                <mml:mo>+</mml:mo>
+                <mml:mo>+</mml:mo>
+                <mml:mi>ϕ</mml:mi>
+                <mml:msub>
+                  <mml:mi>w</mml:mi>
+                  <mml:mi>h</mml:mi>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>w</mml:mi>
+                  <mml:mi>s</mml:mi>
+                </mml:msub>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>−</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:msub>
+                    <mml:mi>H</mml:mi>
+                    <mml:mrow>
+                      <mml:mi>i</mml:mi>
+                      <mml:mi>j</mml:mi>
+                    </mml:mrow>
+                  </mml:msub>
+                  <mml:msub>
+                    <mml:mi>H</mml:mi>
+                    <mml:mi>i</mml:mi>
+                  </mml:msub>
+                </mml:mrow>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>−</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:msub>
+                    <mml:mi>S</mml:mi>
+                    <mml:mrow>
+                      <mml:mi>i</mml:mi>
+                      <mml:mi>j</mml:mi>
+                    </mml:mrow>
+                  </mml:msub>
+                  <mml:msub>
+                    <mml:mi>S</mml:mi>
+                    <mml:mi>i</mml:mi>
+                  </mml:msub>
+                </mml:mrow>
+              </mml:math>
+            </disp-formula>
+          
+          <p>where, <inline-formula>
+  <mml:math id="mqs85bgn5f">
+    <mml:msub>
+      <mml:mi>w</mml:mi>
+      <mml:mi>h</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> and <inline-formula>
+  <mml:math id="max921qnfu">
+    <mml:msub>
+      <mml:mi>w</mml:mi>
+      <mml:mi>s</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> are the weights of H and S channel components in the threshold value.</p><p>(g) After determining the optimal threshold, all pixels in the binarized processing window were judged. If the variance of a window is below the threshold, it is considered a blank area. To more effectively address the challenge of image segmentation under low-illumination conditions, an adaptive approach was adopted in this study to calculate local thresholds based on the brightness distribution in different regions of the image, which can significantly improve the accuracy and reliability of defect detection. In order to accurately find out the illumination conditions and corresponding threshold values of the algorithm, the Receiver Operating Characteristic (ROC) curve was introduced in this study as an evaluation tool. The specific practice is to treat the samples under different lighting conditions as objects to be classified, and record the false positive rate (FPR) and true positive rate (TPR) data in each threshold classification result as the threshold gradually increases from 0 to 1. The ROC curves were plotted from the data, with FPR as the horizontal axis and TPR as the longitudinal axis. The Area Under the Curve (AUC) enclosed by the curve is an important indicator to measure the accuracy of the algorithm, and its value range is between 0 and 1. A larger AUC value indicates better algorithm performance. In particular, when the AUC value reaches 1, the TPR reaches 100% and the FPR is 0%. <xref ref-type="fig" rid="fig_2">Figure 2</xref> shows the ROC curves drawn under different light intensity conditions.</p><p>According to <xref ref-type="fig" rid="fig_2">Figure 2</xref>, when the FPR is less than 60%, the rising rate of the ROC curve increases with the increase of light intensity; when the FPR is greater than 60%, all ROC curves stabilize. However, when the light intensity becomes higher, the value of TPR is relatively small. Therefore, the optimal light intensity can be determined according to the actual work requirements. The mean gray level of the optimal light intensity selected in this study is 66.25 and the corresponding AUC is 0.96.</p>
+          
+            <fig id="fig_2">
+              <label>Figure 2</label>
+              <caption>
+                <title>ROC curves at different light intensities and their corresponding AUC values</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/2/img_kOV13O6MHJD6_FiA.png"/>
+            </fig>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>2.4. Defect point detection of low-illumination images</title>
+          
+          <p>After in-depth analysis of low-illumination images, it is found that the defect points often exhibit irregular and non-uniform characteristics and they vary in size from a few pixels to tens of pixels. Traditional detection methods cannot effectively distinguish between defect and normal points. Therefore, it is necessary to find an efficient image detection method for detecting defect points in low-illumination images. By mapping different pixel values into binary codes, the energy LBP operator can measure and extract the local texture energy information in the image, thus realizing the detection of defect points in low-illumination images [<xref ref-type="bibr" rid="ref_17">17</xref>], [<xref ref-type="bibr" rid="ref_18">18</xref>]. Therefore, the energy LBP operator was chosen in this study for low-illumination image defect detection.</p><p>In this method, the definition of the ELBP operator is as follows:</p>
+          
+            <disp-formula>
+              <label>(17)</label>
+              <mml:math id="m1cm4o6noz">
+                <mml:mi>E</mml:mi>
+                <mml:mi>L</mml:mi>
+                <mml:mi>B</mml:mi>
+                <mml:mi>g</mml:mi>
+                <mml:msub>
+                  <mml:mi>P</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>N</mml:mi>
+                    <mml:mi>L</mml:mi>
+                    <mml:mo>,</mml:mo>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:munderover>
+                  <mml:mo>∑</mml:mo>
+                  <mml:mrow>
+                    <mml:mi>i</mml:mi>
+                    <mml:mo>=</mml:mo>
+                    <mml:mn>1</mml:mn>
+                  </mml:mrow>
+                  <mml:mi>N</mml:mi>
+                </mml:munderover>
+                <mml:msup>
+                  <mml:mrow>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>−</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:msub>
+                      <mml:mi>d</mml:mi>
+                      <mml:mi>i</mml:mi>
+                    </mml:msub>
+                    <mml:msub>
+                      <mml:mi>d</mml:mi>
+                      <mml:mi>c</mml:mi>
+                    </mml:msub>
+                  </mml:mrow>
+                  <mml:mn>2</mml:mn>
+                </mml:msup>
+              </mml:math>
+            </disp-formula>
+          
+          <p> where, <inline-formula>
+  <mml:math id="m0hxagggh5">
+    <mml:msub>
+      <mml:mi>d</mml:mi>
+      <mml:mi>i</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> is the energy value of the $i<inline-formula>
+  <mml:math id="m5dw7utwuo">
+    <mml:mo>−</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+  </mml:math>
+</inline-formula>d_c<inline-formula>
+  <mml:math id="mvn9guhhfs">
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>L$ is the number of side pixels of the rectangular neighborhood block.</p><p>This method is mainly used to extract the feature vectors of the energy feature image and the detection pane for low-illumination image defect detection. In this process, the selection of the defect detection pane size is crucial, which is the unit area reflecting the accuracy of defect detection. The basic repeating unit of the image in low-illumination image defect detection determines the size of the defect detection pane, and according to experience, the detection pane of uniform texture is determined by Eq. (18):</p>
+          
+            <disp-formula>
+              <label>(18)</label>
+              <mml:math id="mnl5ipgnpk">
+                <mml:mo>(</mml:mo>
+                <mml:mo>−</mml:mo>
+                <mml:mo>+</mml:mo>
+                <mml:mo>≥</mml:mo>
+                <mml:mi>W</mml:mi>
+                <mml:mi>L</mml:mi>
+                <mml:mn>1</mml:mn>
+                <mml:mn>100</mml:mn>
+                <mml:msup>
+                  <mml:mo>)</mml:mo>
+                  <mml:mn>2</mml:mn>
+                </mml:msup>
+              </mml:math>
+            </disp-formula>
+          
+          <p>where, $W<inline-formula>
+  <mml:math id="miwoqbvst0">
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>z</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mo>.</mml:mo>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>16\times 16<inline-formula>
+  <mml:math id="m6mzwczg2a">
+    <mml:mo>(</mml:mo>
+  </mml:math>
+</inline-formula>W=16<inline-formula>
+  <mml:math id="mndopq8jjv">
+    <mml:mo>)</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mi>w</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>F</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>z</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+  </mml:math>
+</inline-formula>16\times 16<inline-formula>
+  <mml:math id="mjw8pydf3p">
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>S</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>k</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>k</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>S</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>z</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>z</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mo>.</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>[</mml:mo>
+    <mml:mo>]</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>[</mml:mo>
+    <mml:mo>]</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mn>19</mml:mn>
+    <mml:mn>20</mml:mn>
+  </mml:math>
+</inline-formula>16\times 16$ as the detection window size not only ensures the richness of the feature information but also takes into account the real-time nature and accuracy of the algorithm. Furthermore, in addition to satisfying the conditions of Eq. (18), the width of the defect detection window is the minimum width of the repeating unit in the image. If the size of the detection window is too small, it cannot capture the texture features completely, which may lead to the occurrence of false detection.</p><p>In order to determine whether the cell pane is a defect point area or not, it is necessary to compare the likelihood ratio of the cell pane with the threshold value. The log-likelihood ratio of the cell pane is calculated as follows:</p>
+          
+            <disp-formula>
+              <label>(19)</label>
+              <mml:math id="mwg0cvgjpl">
+                <mml:msub>
+                  <mml:mi>T</mml:mi>
+                  <mml:mi>r</mml:mi>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>B</mml:mi>
+                  <mml:mi>r</mml:mi>
+                </mml:msub>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>,</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:mi>A</mml:mi>
+                  <mml:msub>
+                    <mml:mi>B</mml:mi>
+                    <mml:mi>r</mml:mi>
+                  </mml:msub>
+                </mml:mrow>
+                <mml:mo>=</mml:mo>
+                <mml:mo>(</mml:mo>
+                <mml:mo>)</mml:mo>
+                <mml:mo>×</mml:mo>
+                <mml:mo>⁡</mml:mo>
+                <mml:mi>i</mml:mi>
+                <mml:mi>log</mml:mi>
+                <mml:mfrac>
+                  <mml:mrow>
+                    <mml:msub>
+                      <mml:mi>B</mml:mi>
+                      <mml:mi>r</mml:mi>
+                    </mml:msub>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:mi>i</mml:mi>
+                  </mml:mrow>
+                  <mml:mrow>
+                    <mml:mi>A</mml:mi>
+                    <mml:mi>i</mml:mi>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>)</mml:mo>
+                  </mml:mrow>
+                </mml:mfrac>
+              </mml:math>
+            </disp-formula>
+          
+          <p> where, $A<inline-formula>
+  <mml:math id="megfgjbgv2">
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mo>−</mml:mo>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>B_r<inline-formula>
+  <mml:math id="mqg5x1wm1u">
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+  </mml:math>
+</inline-formula>r$-th cell pane.</p><p>On the basis of the above processing, the specific steps for the detection of defect points in low-illumination images are given as follows:</p><p>(a) Calculation of the feature vectors of the defect-free point energy reference image.</p><p>(b) After chunking the defect-free point energy reference image and calculating the feature vector of each cell pane and the log-likelihood ratio of each chunk, the threshold value of the defect-free point cell pane was obtained as follows:</p>
+          
+            <disp-formula>
+              <label>(20)</label>
+              <mml:math id="mwzo73aysv">
+                <mml:mi>T</mml:mi>
+                <mml:mi>Max</mml:mi>
+                <mml:mo>=</mml:mo>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:msub>
+                    <mml:mi>T</mml:mi>
+                    <mml:mi>r</mml:mi>
+                  </mml:msub>
+                </mml:mrow>
+              </mml:math>
+            </disp-formula>
+          
+          <p>(c) In the detection stage, after similarly chunking the low-illumination energy image containing defect points to be detected and calculating the feature vector of each cell pane, the likelihood ratio of each chunk was calculated. If <inline-formula>
+  <mml:math id="mhvnb2j391">
+    <mml:msub>
+      <mml:mi>T</mml:mi>
+      <mml:mi>r</mml:mi>
+    </mml:msub>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mi>T</mml:mi>
+  </mml:math>
+</inline-formula>, the corresponding cell pane was classified as a defect point. Otherwise, the cell pane was identified as a non-defect region.</p>
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>3. Experimental studies</title>
+      
+        <sec>
+          
+            <title>3.1. Experimental sample</title>
+          
+          <p>Machine vision technology plays a crucial role in the experimental verification of the effectiveness of low-illumination image defect detection methods. The low-illumination image of the experimental sample can be captured by deploying a high-resolution industrial camera and equipping it with an appropriate low-illumination adaptive lens and light source. In this study, by deploying a high-resolution MV-SC2004M industrial camera equipped with an appropriate low-illumination adaptive lens and light source, the low-illumination image of the experimental sample was captured. The technical parameters of the MV-SC2004M industrial camera are shown in <xref ref-type="table" rid="table_1">Table 1</xref>.</p>
+          
+            <table-wrap id="table_1">
+              <label>Table 1</label>
+              <caption>
+                <title>Technical parameters of the MV-SC2004M industrial camera</title>
+              </caption>
+              <table><tbody><tr><td colspan="1" rowspan="1"><p>Parameters</p></td><td colspan="1" rowspan="1"><p>Description</p></td></tr><tr><td colspan="1" rowspan="1"><p>Sensors</p></td><td colspan="1" rowspan="1"><p>IMX430</p></td></tr><tr><td colspan="1" rowspan="1"><p>Resolution</p></td><td colspan="1" rowspan="1"><p>1624×1620</p></td></tr><tr><td colspan="1" rowspan="1"><p>Frame rate</p></td><td colspan="1" rowspan="1"><p>89 fps</p></td></tr><tr><td colspan="1" rowspan="1"><p>Bit deep</p></td><td colspan="1" rowspan="1"><p>12</p></td></tr><tr><td colspan="1" rowspan="1"><p>Pixel size<a target="_blank" rel="noopener noreferrer nofollow" class="msocomanchor" href="#_msocom_1">[Betty1]</a></p></td><td colspan="1" rowspan="1"><p>4.5 μm×4.5 μm</p></td></tr><tr><td colspan="1" rowspan="1"><p>Pixels</p></td><td colspan="1" rowspan="1"><p>2.01 MP</p></td></tr><tr><td colspan="1" rowspan="1"><p>Signal-to-noise ratio</p></td><td colspan="1" rowspan="1"><p>＞38 dB</p></td></tr><tr><td colspan="1" rowspan="1"><p>Cache</p></td><td colspan="1" rowspan="1"><p>64 MB</p></td></tr><tr><td colspan="1" rowspan="1"><p>Power consumption</p></td><td colspan="1" rowspan="1"><p>≈3.2 W</p></td></tr></tbody></table>
+            </table-wrap>
+          
+          <p>Calibrating the camera using a calibration board and making a precise adjustment of the camera according to the calibration results are a key step to ensure that image geometric distortion and aberrations are corrected. In order to obtain low-illumination images, in the process of image acquisition, measures such as turning off some lamps and using dimming light sources to dim the overall environment were taken in this study. At the same time, the number of surrounding light sources was minimized to avoid strong light interference and ensure the low-illumination characteristics of the image. Furthermore, in terms of sample size statistics, a sufficient number of image samples was collected to cover various possible shooting conditions and scenarios, thus improving the accuracy and reliability of the calibration results. In terms of data diversity, attention was paid to collecting image data from different angles, distances and lighting conditions to ensure that the calibration algorithm can learn various distortion characteristics of the camera and effectively correct them. Implementation of these measures further improved the imaging quality of the camera and met the needs of various application scenarios.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.2. Experimental indicators</title>
+          
+          <p>(a) Peak signal-to-noise ratio (PSNR)</p><p>The higher the value of PSNR, the smaller the distortion of the image, thus reflecting higher image quality. The calculation formula is as follows:</p>
+          
+            <disp-formula>
+              <label>(21)</label>
+              <mml:math id="mnydl0eogx">
+                <mml:mi>P</mml:mi>
+                <mml:mi>S</mml:mi>
+                <mml:mi>N</mml:mi>
+                <mml:mi>R</mml:mi>
+                <mml:mo>=</mml:mo>
+                <mml:mo>⁡</mml:mo>
+                <mml:mn>101</mml:mn>
+                <mml:msub>
+                  <mml:mi>log</mml:mi>
+                  <mml:mrow>
+                    <mml:mn>10</mml:mn>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:mfrac>
+                    <mml:mrow>
+                      <mml:mi>M</mml:mi>
+                      <mml:mi>A</mml:mi>
+                      <mml:msubsup>
+                        <mml:mi>X</mml:mi>
+                        <mml:mi>i</mml:mi>
+                        <mml:mn>2</mml:mn>
+                      </mml:msubsup>
+                    </mml:mrow>
+                    <mml:mrow>
+                      <mml:mi>M</mml:mi>
+                      <mml:mi>S</mml:mi>
+                      <mml:mi>E</mml:mi>
+                    </mml:mrow>
+                  </mml:mfrac>
+                </mml:mrow>
+              </mml:math>
+            </disp-formula>
+          
+          <p> where, <inline-formula>
+  <mml:math id="mvzct0f1dy">
+    <mml:mi>M</mml:mi>
+    <mml:mi>A</mml:mi>
+    <mml:msubsup>
+      <mml:mi>X</mml:mi>
+      <mml:mi>i</mml:mi>
+      <mml:mn>2</mml:mn>
+    </mml:msubsup>
+  </mml:math>
+</inline-formula> is the maximum image color pixel value, and <inline-formula>
+  <mml:math id="mapva8mklz">
+    <mml:mi>M</mml:mi>
+    <mml:mi>S</mml:mi>
+    <mml:mi>E</mml:mi>
+  </mml:math>
+</inline-formula> is the mean square error.</p><p>(b) SSIM</p><p>SSIM estimates the information difference between the sample image and the reference image from the human visual perception system behavior indicators to obtain an objective evaluation. The calculation formula is as follows:</p>
+          
+            <disp-formula>
+              <label>(22)</label>
+              <mml:math id="mwjdvaxd3u">
+                <mml:mi>SSIM</mml:mi>
+                <mml:mi>x</mml:mi>
+                <mml:mi>y</mml:mi>
+                <mml:mi>l</mml:mi>
+                <mml:mi>x</mml:mi>
+                <mml:mi>y</mml:mi>
+                <mml:mi>v</mml:mi>
+                <mml:mi>x</mml:mi>
+                <mml:mi>y</mml:mi>
+                <mml:mi>z</mml:mi>
+                <mml:mi>x</mml:mi>
+                <mml:mi>y</mml:mi>
+                <mml:mo>(</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo>)</mml:mo>
+                <mml:mo>=</mml:mo>
+                <mml:mo>(</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo>×</mml:mo>
+                <mml:mo>(</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo>×</mml:mo>
+                <mml:mo>(</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:msup>
+                  <mml:mo>)</mml:mo>
+                  <mml:mi>α</mml:mi>
+                </mml:msup>
+                <mml:msup>
+                  <mml:mo>)</mml:mo>
+                  <mml:mi>β</mml:mi>
+                </mml:msup>
+                <mml:msup>
+                  <mml:mo>)</mml:mo>
+                  <mml:mi>γ</mml:mi>
+                </mml:msup>
+              </mml:math>
+            </disp-formula>
+          
+          <p> where, <inline-formula>
+  <mml:math id="mvoyv1kw2w">
+    <mml:mi>l</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+  </mml:math>
+</inline-formula>, <inline-formula>
+  <mml:math id="mbnxx3vqe8">
+    <mml:mi>v</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+  </mml:math>
+</inline-formula> and <inline-formula>
+  <mml:math id="mtf0qoe2gf">
+    <mml:mi>z</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+  </mml:math>
+</inline-formula> are the mean, variance and covariance, respectively; and <inline-formula>
+  <mml:math id="m1pnamgdf3">
+    <mml:mi>α</mml:mi>
+  </mml:math>
+</inline-formula>, <inline-formula>
+  <mml:math id="mi4fpyifw3">
+    <mml:mi>β</mml:mi>
+  </mml:math>
+</inline-formula> and <inline-formula>
+  <mml:math id="m56o0sdggd">
+    <mml:mi>γ</mml:mi>
+  </mml:math>
+</inline-formula> are the proportions given to brightness, contrast and structure, respectively.</p><p>(c) Visual information fidelity (VIF)</p><p>VIF is a measure used for image quality inspection, which can quantify the information existing in the reference image and how much reference information can be extracted from the deformed image. The calculation formula is as follows:</p>
+          
+            <disp-formula>
+              <label>(23)</label>
+              <mml:math id="mnr8vjqgnk">
+                <mml:mi>VIF</mml:mi>
+                <mml:mi>y</mml:mi>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>,</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:mi>x</mml:mi>
+                  <mml:msub>
+                    <mml:mi>I</mml:mi>
+                    <mml:mi>b</mml:mi>
+                  </mml:msub>
+                </mml:mrow>
+                <mml:mo>=</mml:mo>
+                <mml:mfrac>
+                  <mml:mrow>
+                    <mml:munderover>
+                      <mml:mo>∑</mml:mo>
+                      <mml:mrow>
+                        <mml:mi>r</mml:mi>
+                        <mml:mo>=</mml:mo>
+                        <mml:mn>1</mml:mn>
+                      </mml:mrow>
+                      <mml:mi>N</mml:mi>
+                    </mml:munderover>
+                    <mml:mrow>
+                      <mml:mo>[</mml:mo>
+                      <mml:mo>]</mml:mo>
+                      <mml:mi>I</mml:mi>
+                      <mml:mrow>
+                        <mml:mo>(</mml:mo>
+                        <mml:mo>;</mml:mo>
+                        <mml:mo>∣</mml:mo>
+                        <mml:mo>)</mml:mo>
+                        <mml:msub>
+                          <mml:mi>C</mml:mi>
+                          <mml:mi>r</mml:mi>
+                        </mml:msub>
+                        <mml:msup>
+                          <mml:mi>G</mml:mi>
+                          <mml:mi>k</mml:mi>
+                        </mml:msup>
+                        <mml:msubsup>
+                          <mml:mi>Q</mml:mi>
+                          <mml:mi>r</mml:mi>
+                          <mml:mi>k</mml:mi>
+                        </mml:msubsup>
+                      </mml:mrow>
+                    </mml:mrow>
+                  </mml:mrow>
+                  <mml:mrow>
+                    <mml:munderover>
+                      <mml:mo>∑</mml:mo>
+                      <mml:mrow>
+                        <mml:mi>r</mml:mi>
+                        <mml:mo>=</mml:mo>
+                        <mml:mn>1</mml:mn>
+                      </mml:mrow>
+                      <mml:mi>N</mml:mi>
+                    </mml:munderover>
+                    <mml:mrow>
+                      <mml:mo>[</mml:mo>
+                      <mml:mo>]</mml:mo>
+                      <mml:mi>I</mml:mi>
+                      <mml:mrow>
+                        <mml:mo>(</mml:mo>
+                        <mml:mo>;</mml:mo>
+                        <mml:mo>∣</mml:mo>
+                        <mml:mo>)</mml:mo>
+                        <mml:msub>
+                          <mml:mi>C</mml:mi>
+                          <mml:mi>r</mml:mi>
+                        </mml:msub>
+                        <mml:msup>
+                          <mml:mi>S</mml:mi>
+                          <mml:mi>k</mml:mi>
+                        </mml:msup>
+                        <mml:msubsup>
+                          <mml:mi>Q</mml:mi>
+                          <mml:mi>r</mml:mi>
+                          <mml:mi>k</mml:mi>
+                        </mml:msubsup>
+                      </mml:mrow>
+                    </mml:mrow>
+                  </mml:mrow>
+                </mml:mfrac>
+              </mml:math>
+            </disp-formula>
+          
+          <p> where, <inline-formula>
+  <mml:math id="mhoe5805zy">
+    <mml:mi>I</mml:mi>
+    <mml:mrow>
+      <mml:mo>(</mml:mo>
+      <mml:mo>;</mml:mo>
+      <mml:mo>∣</mml:mo>
+      <mml:mo>)</mml:mo>
+      <mml:msub>
+        <mml:mi>C</mml:mi>
+        <mml:mi>r</mml:mi>
+      </mml:msub>
+      <mml:msup>
+        <mml:mi>G</mml:mi>
+        <mml:mi>k</mml:mi>
+      </mml:msup>
+      <mml:msubsup>
+        <mml:mi>Q</mml:mi>
+        <mml:mi>r</mml:mi>
+        <mml:mi>k</mml:mi>
+      </mml:msubsup>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> and <inline-formula>
+  <mml:math id="mzz2y3a6v1">
+    <mml:mi>I</mml:mi>
+    <mml:mrow>
+      <mml:mo>(</mml:mo>
+      <mml:mo>;</mml:mo>
+      <mml:mo>∣</mml:mo>
+      <mml:mo>)</mml:mo>
+      <mml:msub>
+        <mml:mi>C</mml:mi>
+        <mml:mi>r</mml:mi>
+      </mml:msub>
+      <mml:msup>
+        <mml:mi>S</mml:mi>
+        <mml:mi>k</mml:mi>
+      </mml:msup>
+      <mml:msubsup>
+        <mml:mi>Q</mml:mi>
+        <mml:mi>r</mml:mi>
+        <mml:mi>k</mml:mi>
+      </mml:msubsup>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> are the information extracted from specific subbands of the target image and the image to be measured, respectively; and $k$ is the number of subbands.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.3. Noise decomposition results</title>
+          
+          <p>The method presents the noise decomposition of low-illumination images, as shown in <xref ref-type="fig" rid="fig_3">Figure 3</xref>.</p>
+          
+            <fig id="fig_3">
+              <label>Figure 3</label>
+              <caption>
+                <title>Noise decomposition comparison diagram</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/2/img_55sinKN4GgXPPM6I.png"/>
+            </fig>
+          
+          <p>According to <xref ref-type="fig" rid="fig_3">Figure 3</xref>, before the noise decomposition, the original image may contain various sources of noise, which appear as irregular pixel changes in the image, masking the key details in the image and reducing the visual quality of the image. After the noise decomposition processing, the noise component in the image is effectively separated. This means that the boundary between the useful information in the image and the noise becomes more clear and regular. After the noise decomposition, it can be observed that the image details are better preserved, and the overall visual effect of the image is also significantly improved. This processing not only helps to improve the clarity of the image but also provides a more accurate and reliable basis for the subsequent image analysis and processing steps.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.4. Analysis of experimental results</title>
+          
+          <p>Based on the above, the PSNR, SSIM and VIF of the method proposed in this study and the methods proposed by Zhuang et al. [<xref ref-type="bibr" rid="ref_5">5</xref>] and Liu and Zhou [<xref ref-type="bibr" rid="ref_6">6</xref>] were calculated from Eqs. (21) to (23). The calculation results are shown in <xref ref-type="table" rid="table_2">Table 2</xref> to <xref ref-type="table" rid="table_4">Table 4</xref>.</p>
+          
+            <table-wrap id="table_2">
+              <label>Table 2</label>
+              <caption>
+                <title>PSNR comparison results</title>
+              </caption>
+              <table><tbody><tr><td colspan="1" rowspan="2"><p>Image Number</p></td><td colspan="3" rowspan="1"><p>PSNR</p></td></tr><tr><td colspan="1" rowspan="1"><p>Method Proposed in this Study</p></td><td colspan="1" rowspan="1"><p>Method Proposed by Zhuang et al. [<xref ref-type="bibr" rid="ref_5">5</xref>]</p></td><td colspan="1" rowspan="1"><p>Method Proposed by Liu &amp;amp; Zhou [<xref ref-type="bibr" rid="ref_6">6</xref>]</p></td></tr><tr><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>8.96</p></td><td colspan="1" rowspan="1"><p>7.51</p></td><td colspan="1" rowspan="1"><p>8.05</p></td></tr><tr><td colspan="1" rowspan="1"><p>2</p></td><td colspan="1" rowspan="1"><p>7.53</p></td><td colspan="1" rowspan="1"><p>6.97</p></td><td colspan="1" rowspan="1"><p>5.39</p></td></tr><tr><td colspan="1" rowspan="1"><p>3</p></td><td colspan="1" rowspan="1"><p>10.25</p></td><td colspan="1" rowspan="1"><p>7.36</p></td><td colspan="1" rowspan="1"><p>8.02</p></td></tr><tr><td colspan="1" rowspan="1"><p>4</p></td><td colspan="1" rowspan="1"><p>9.06</p></td><td colspan="1" rowspan="1"><p>6.28</p></td><td colspan="1" rowspan="1"><p>7.13</p></td></tr><tr><td colspan="1" rowspan="1"><p>5</p></td><td colspan="1" rowspan="1"><p>12.54</p></td><td colspan="1" rowspan="1"><p>10.05</p></td><td colspan="1" rowspan="1"><p>11.30</p></td></tr></tbody></table>
+            </table-wrap>
+          
+          
+            <table-wrap id="table_3">
+              <label>Table 3</label>
+              <caption>
+                <title>SSIM comparison results</title>
+              </caption>
+              <table><tbody><tr><td colspan="1" rowspan="2"><p>Image Number</p></td><td colspan="3" rowspan="1"><p>SSIM</p></td></tr><tr><td colspan="1" rowspan="1"><p>Method Proposed in this Study</p></td><td colspan="1" rowspan="1"><p>Method Proposed by Zhuang et al. [<xref ref-type="bibr" rid="ref_5">5</xref>]</p></td><td colspan="1" rowspan="1"><p>Method Proposed by Liu &amp;amp; Zhou [<xref ref-type="bibr" rid="ref_6">6</xref>]</p></td></tr><tr><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>0.87</p></td><td colspan="1" rowspan="1"><p>0.81</p></td><td colspan="1" rowspan="1"><p>0.65</p></td></tr><tr><td colspan="1" rowspan="1"><p>2</p></td><td colspan="1" rowspan="1"><p>0.95</p></td><td colspan="1" rowspan="1"><p>0.72</p></td><td colspan="1" rowspan="1"><p>0.63</p></td></tr><tr><td colspan="1" rowspan="1"><p>3</p></td><td colspan="1" rowspan="1"><p>0.96</p></td><td colspan="1" rowspan="1"><p>0.75</p></td><td colspan="1" rowspan="1"><p>0.70</p></td></tr><tr><td colspan="1" rowspan="1"><p>4</p></td><td colspan="1" rowspan="1"><p>0.94</p></td><td colspan="1" rowspan="1"><p>0.83</p></td><td colspan="1" rowspan="1"><p>0.15</p></td></tr><tr><td colspan="1" rowspan="1"><p>5</p></td><td colspan="1" rowspan="1"><p>0.88</p></td><td colspan="1" rowspan="1"><p>0.60</p></td><td colspan="1" rowspan="1"><p>0.37</p></td></tr></tbody></table>
+            </table-wrap>
+          
+          
+            <table-wrap id="table_4">
+              <label>Table 4</label>
+              <caption>
+                <title>VIF comparison results</title>
+              </caption>
+              <table><tbody><tr><td colspan="1" rowspan="2"><p>Image Number</p></td><td colspan="3" rowspan="1"><p>VIF</p></td></tr><tr><td colspan="1" rowspan="1"><p>Method Proposed in this Study</p></td><td colspan="1" rowspan="1"><p>Method Proposed by Zhuang et al. [<xref ref-type="bibr" rid="ref_5">5</xref>]</p></td><td colspan="1" rowspan="1"><p>Method Proposed by Liu &amp;amp; Zhou [<xref ref-type="bibr" rid="ref_6">6</xref>]</p></td></tr><tr><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>0.79</p></td><td colspan="1" rowspan="1"><p>0.63</p></td><td colspan="1" rowspan="1"><p>0.58</p></td></tr><tr><td colspan="1" rowspan="1"><p>2</p></td><td colspan="1" rowspan="1"><p>0.80</p></td><td colspan="1" rowspan="1"><p>0.81</p></td><td colspan="1" rowspan="1"><p>0.73</p></td></tr><tr><td colspan="1" rowspan="1"><p>3</p></td><td colspan="1" rowspan="1"><p>0.82</p></td><td colspan="1" rowspan="1"><p>0.74</p></td><td colspan="1" rowspan="1"><p>0.69</p></td></tr><tr><td colspan="1" rowspan="1"><p>4</p></td><td colspan="1" rowspan="1"><p>076</p></td><td colspan="1" rowspan="1"><p>0.66</p></td><td colspan="1" rowspan="1"><p>0.70</p></td></tr><tr><td colspan="1" rowspan="1"><p>5</p></td><td colspan="1" rowspan="1"><p>0.91</p></td><td colspan="1" rowspan="1"><p>0.81</p></td><td colspan="1" rowspan="1"><p>0.73</p></td></tr></tbody></table>
+            </table-wrap>
+          
+          <p>According to the data provided in <xref ref-type="table" rid="table_2">Table 2</xref>, it can be clearly seen that the PSNR of the method proposed in this study reaches 12.54, which is 2.49 and 1.24 higher than the methods proposed by Zhuang et al. [<xref ref-type="bibr" rid="ref_5">5</xref>] and Liu and Zhou [<xref ref-type="bibr" rid="ref_6">6</xref>], respectively, indicating that the method proposed in this study has excellent performance in maintaining image quality and can more accurately restore the original image information. According to the data in <xref ref-type="table" rid="table_3">Table 3</xref>, the SSIM value obtained by the method proposed in this study is closer to 1, showing higher image structure retention capability. It shows that this proposed method can improve the image quality and has less damage to the structure information of the image. In image detection, the greater the fidelity of visual information, the better. High fidelity means that the content and details of the original image can be kept as much as possible after the image is processed so that the human eye can accurately perceive the quality and information of the image. By comparing the data in <xref ref-type="table" rid="table_4">Table 4</xref>, it can be seen that the VIF of the method proposed in this study is higher, which indicates that the detection result is closer to the original image, and the image quality and visualization effect are better.</p><p>It can be seen from the above table that the method proposed in this study is better than the traditional methods under the three evaluation indicators of PSNR, SSIM and VIF, which verifies the application effect of the proposed method.</p><p>False detection rate can reflect the accuracy and reliability of the detection method in the detection process. Specifically, the leakage rate indicates the proportion of defect points that the detection method fails to detect successfully in the case of the actual existence of defect points. Therefore, the lower the leakage rate is, the better the performance of the detection method is, and the more accurately the defect points in the image can be recognized. The specific calculation formula is as follows:</p>
+          
+            <disp-formula>
+              <label>(24)</label>
+              <mml:math id="ma7ksuvd0w">
+                <mml:mi>f</mml:mi>
+                <mml:mo>=</mml:mo>
+                <mml:mfrac>
+                  <mml:msub>
+                    <mml:mi>n</mml:mi>
+                    <mml:mrow>
+                      <mml:mi>F</mml:mi>
+                      <mml:mi>P</mml:mi>
+                    </mml:mrow>
+                  </mml:msub>
+                  <mml:mrow>
+                    <mml:msub>
+                      <mml:mi>n</mml:mi>
+                      <mml:mrow>
+                        <mml:mi>T</mml:mi>
+                        <mml:mi>P</mml:mi>
+                      </mml:mrow>
+                    </mml:msub>
+                    <mml:msub>
+                      <mml:mi>n</mml:mi>
+                      <mml:mrow>
+                        <mml:mi>F</mml:mi>
+                        <mml:mi>P</mml:mi>
+                      </mml:mrow>
+                    </mml:msub>
+                    <mml:mo>−</mml:mo>
+                  </mml:mrow>
+                </mml:mfrac>
+              </mml:math>
+            </disp-formula>
+          
+          <p> where, $f<inline-formula>
+  <mml:math id="mbqnyeev2r">
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>n_{F P}<inline-formula>
+  <mml:math id="m2zx35r95s">
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>n_{T P}$ indicates the number of undetected defect points.</p><p>False detection rate was calculated using Eq. (24) and the results are shown in <xref ref-type="fig" rid="fig_4">Figure 4</xref>.</p>
+          
+            <fig id="fig_4">
+              <label>Figure 4</label>
+              <caption>
+                <title>False detection rate test results</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/2/img_4XEsX3NleHtHNWbS.png"/>
+            </fig>
+          
+          <p>Analysis of <xref ref-type="fig" rid="fig_4">Figure 4</xref> shows that, with the increase of the number of sample images, the leakage rate of the three methods shows an increasing trend, but the leakage rate of the method proposed in this study is lower compared with that of the methods proposed by Zhuang et al. [<xref ref-type="bibr" rid="ref_5">5</xref>] and Liu and Zhou [<xref ref-type="bibr" rid="ref_6">6</xref>]. In addition, the leakage rate is always lower than 8\%, while the highest value of the leakage rate of the defect points in the methods proposed by Zhuang et al. [<xref ref-type="bibr" rid="ref_5">5</xref>] and Liu and Zhou [<xref ref-type="bibr" rid="ref_6">6</xref>] reaches more than 13\%. It shows that the method proposed in this study is still able to accurately identify most of the defect points under the complex lighting conditions, which reflects the high detection accuracy and reliability.</p>
+          
+            <fig id="fig_5">
+              <label>Figure 5</label>
+              <caption>
+                <title>Defect point detection results of low-illumination images</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/2/img_hppRngAaywdQ2qKn.png"/>
+            </fig>
+          
+          <p>In order to verify the applicability of the method proposed in this study, two other comparison methods were introduced in this experiment. First, the MV-SC2004M industrial camera was used to collect the images of spiral material. Then the low-light enhancement method based on Transformer and the target detection method based on the You Only Look Once (YOLO) series were used to detect the defect points in the collected images. The experimental results are shown in <xref ref-type="fig" rid="fig_5">Figure 5</xref>.</p><p>By analyzing the results of <xref ref-type="fig" rid="fig_5">Figure 5</xref>, it is found that all three methods can achieve effective defect detection to some extent. However, in the detection of impurities and scratch defects, both the methods based on Transformer and the YOLO series are missing problems when compared with the method presented in this study. In contrast, the proposed method is able to comprehensively and effectively detect all impurities and scratches, which fully verifies the superiority and comprehensiveness of this method in defect detection.</p><p>To further verify the effectiveness of the method proposed in this study, the computational efficiency of RetinexNet, the Zero-Reference Deep Curve Estimation (Zero-DCE) method and the proposed method were compared. The experimental results are shown in the <xref ref-type="table" rid="table_5">Table 5</xref> below.</p>
+          
+            <table-wrap id="table_5">
+              <label>Table 5</label>
+              <caption>
+                <title>Computational efficiency of defect detection in low-illumination images</title>
+              </caption>
+              <table><tbody><tr><td colspan="1" rowspan="1"><p>Method</p></td><td colspan="1" rowspan="1"><p>Average Processing Time (sec/slice)</p></td><td colspan="1" rowspan="1"><p>Detection Accuracy (%)</p></td></tr><tr><td colspan="1" rowspan="1"><p>RetinexNet</p></td><td colspan="1" rowspan="1"><p>2.5</p></td><td colspan="1" rowspan="1"><p>85</p></td></tr><tr><td colspan="1" rowspan="1"><p>Zero-DCE</p></td><td colspan="1" rowspan="1"><p>1.9</p></td><td colspan="1" rowspan="1"><p>88</p></td></tr><tr><td colspan="1" rowspan="1"><p>Proposed method</p></td><td colspan="1" rowspan="1"><p>1.1</p></td><td colspan="1" rowspan="1"><p>98</p></td></tr></tbody></table>
+            </table-wrap>
+          
+          <p>As can be seen from <xref ref-type="table" rid="table_5">Table 5</xref>, the proposed method has significant advantages in terms of the average processing time and detection accuracy of low-illumination image defect detection tasks. The average processing time of the proposed method is only 1.1 seconds/slice, which is much lower than the 2.5 seconds/slice of the RetinexNet method and 1.8 seconds/slice of the Zero-DCE method, indicating the obvious advantages of computational efficiency. Meanwhile, the detection accuracy of the proposed method is 98%, which is higher than that of the RetinexNet method (85%) and the Zero-DCE method (88%), further verifying the superiority of the proposed method in defect detection accuracy. In conclusion, this method has high utility and application prospects in the field of low-illumination image defect detection.</p>
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>4. Conclusion</title>
+      <p>In order to improve the detection effect, this study proposes a machine vision-based defect point detection method for low-illumination images, which realizes the effective detection of defect points in low-illumination images by combining the techniques of machine vision, noise estimation, color space transformation, local change segmentation and energy LBP operator, which is innovative and practical. In practical applications, there may be other types of information (e.g., temperature, pressure, etc.) in addition to image information, which may be helpful for defect detection. Therefore, the fusion of multi-source information will be investigated in the future to characterize the defect points more comprehensively and improve the accuracy of detection.</p>
+    </sec>
+  </body>
+  <back>
+    <ack>
+      <title>Acknowledgments</title>
+      
+    </ack>
+    <app-group>
+      <app>
+        <title>Appendix</title>
+        
+      </app>
+    </app-group>
+    <notes>
+      <title>Author Contributions</title>
+      
+    </notes>
+    <notes>
+      <title>Funding</title>
+      <p>This paper was funded by High-end Training Support Project for Professional Leaders in Higher Vocational Colleges in Jiangsu Province (Grant No.: 2024GRFX031).</p>
+    </notes>
+    <notes>
+      <title>Informed Consent Statement</title>
+      
+    </notes>
+    <notes>
+      <title>Data Availability Statement</title>
+      <p><span style="color: rgb(0, 0, 0); font-family: Times New Roman, sans-serif">The data used to support the findings of this study are available from the corresponding author upon request.</p>
+    </notes>
+    <notes notes-type="COI-statement">
+      <title>Conflicts of Interest</title>
+      <p>The authors declare that they have no conflicts of interest.</p>
+    </notes>
+    <ref-list>
+      <title>References</title>
+      <ref id="ref_1">
+        <label>1.</label>
+        <element-citation publication-type="journal">
+          <volume>35</volume>
+          <page-range>321-324</page-range>
+          <issue>6</issue>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Riza</surname>
+              <given-names>N. A.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/LPT.2023.3243392</pub-id>
+          <article-title>Low image contrast detection in a bright light interference HDR scene using smart CAOS camera</article-title>
+          <source>IEEE Photonics Technol. Lett.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_2">
+        <label>2.</label>
+        <element-citation publication-type="journal">
+          <volume>36</volume>
+          <page-range>6503-6530</page-range>
+          <issue>11</issue>
+          <year>2021</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Vinolin</surname>
+              <given-names>V.</given-names>
+            </name>
+            <name>
+              <surname>Sucharitha</surname>
+              <given-names>M.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1002/int.22558</pub-id>
+          <article-title>Taylor-RNet: An approach for image forgery detection using Taylor-adaptive rag-bull rider-based deep convolutional neural network</article-title>
+          <source>Int. J. Intell. Syst.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_3">
+        <label>3.</label>
+        <element-citation publication-type="journal">
+          <volume>34</volume>
+          <page-range>21987-21997</page-range>
+          <issue>24</issue>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Siriani</surname>
+              <given-names>A. L. R.</given-names>
+            </name>
+            <name>
+              <surname>Kodaira</surname>
+              <given-names>V.</given-names>
+            </name>
+            <name>
+              <surname>Mehdizadeh</surname>
+              <given-names>S. A.</given-names>
+            </name>
+            <name>
+              <surname>de Alencar Naas</surname>
+              <given-names>I.</given-names>
+            </name>
+            <name>
+              <surname>de Moura</surname>
+              <given-names>D. J.</given-names>
+            </name>
+            <name>
+              <surname>Pereira</surname>
+              <given-names>D. F.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1007/s00521-022-07664-w</pub-id>
+          <article-title>Detection and tracking of chickens in low-light images using YOLO network and Kalman filter</article-title>
+          <source>Neural Comput. Appl.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_4">
+        <label>4.</label>
+        <element-citation publication-type="journal">
+          <volume>36</volume>
+          <page-range>57-67</page-range>
+          <issue>2</issue>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Liu</surname>
+              <given-names>Xingmou</given-names>
+            </name>
+            <name>
+              <surname>Tian</surname>
+              <given-names>Hao</given-names>
+            </name>
+            <name>
+              <surname>Yang</surname>
+              <given-names>Yongming</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>Yan</given-names>
+            </name>
+            <name>
+              <surname>Zhao</surname>
+              <given-names>Xiaoxiang</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.13382/j.jemi.B2104557</pub-id>
+          <article-title>Research on image detection method of insulator defects in complex background</article-title>
+          <source>J. Electron. Meas. Instrum.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_5">
+        <label>5.</label>
+        <element-citation publication-type="journal">
+          <volume>44</volume>
+          <page-range>178-185</page-range>
+          <issue>2</issue>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Zhuang</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Guo</surname>
+              <given-names>B.</given-names>
+            </name>
+            <name>
+              <surname>Wu</surname>
+              <given-names>F.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3969/j.issn.1000-1158.2023.02.04</pub-id>
+          <article-title>Fabric defect detection based on deformable dense convolutional neural network</article-title>
+          <source>Acta Metrol. Sin.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_6">
+        <label>6.</label>
+        <element-citation publication-type="journal">
+          <volume>37</volume>
+          <page-range>426-429,485</page-range>
+          <issue>2</issue>
+          <year>2020</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Liu</surname>
+              <given-names>Q.</given-names>
+            </name>
+            <name>
+              <surname>Zhou</surname>
+              <given-names>B.</given-names>
+            </name>
+          </person-group>
+          <article-title>Simulation of singular point detection of fuzzy fingerprint image assisted by artificial intelligence</article-title>
+          <source>Comput. Simul.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_7">
+        <label>7.</label>
+        <element-citation publication-type="journal">
+          <volume>43</volume>
+          <page-range>216-222</page-range>
+          <issue>S2</issue>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Xiao</surname>
+              <given-names>Bodian</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>Shaobing</given-names>
+            </name>
+            <name>
+              <surname>Cheng</surname>
+              <given-names>Miao</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.11772/j.issn.1001-9081.2022121888</pub-id>
+          <article-title>Image defect detection algorithm based on contrastive learning</article-title>
+          <source>J. Comput. Appl.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_8">
+        <label>8.</label>
+        <element-citation publication-type="journal">
+          <volume>49</volume>
+          <page-range>76-85,124</page-range>
+          <issue>7</issue>
+          <year>2021</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Hu</surname>
+              <given-names>G.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>N.</given-names>
+            </name>
+            <name>
+              <surname>He</surname>
+              <given-names>W.</given-names>
+            </name>
+            <name>
+              <surname>Tang</surname>
+              <given-names>H.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.12141/j.issn.1000-565X.200749</pub-id>
+          <article-title>Unsupervised surface defect detection method based on image inpainting</article-title>
+          <source>J. South China Univ. Technol.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_9">
+        <label>9.</label>
+        <element-citation publication-type="journal">
+          <volume>23</volume>
+          <page-range>3378-3394</page-range>
+          <issue>4</issue>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Alaba</surname>
+              <given-names>S. Y.</given-names>
+            </name>
+            <name>
+              <surname>Ball</surname>
+              <given-names>J. E.</given-names>
+            </name>
+          </person-group>
+          <article-title>Deep learning-based image 3-D object detection for autonomous driving: Review</article-title>
+          <source>IEEE Sens. J.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_10">
+        <label>10.</label>
+        <element-citation publication-type="journal">
+          <volume>14</volume>
+          <page-range>2799-2807</page-range>
+          <issue>12</issue>
+          <year>2020</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Hahialilu</surname>
+              <given-names>S. F.</given-names>
+            </name>
+            <name>
+              <surname>Azghani</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Kazemi</surname>
+              <given-names>N.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1049/iet-ipr.2018.6246</pub-id>
+          <article-title>Image copy-move forgery detection using sparse recovery and keypoint matching</article-title>
+          <source>IET Image Process.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_11">
+        <label>11.</label>
+        <element-citation publication-type="journal">
+          <volume>38</volume>
+          <page-range>45-57</page-range>
+          <issue>1</issue>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Lahoti</surname>
+              <given-names>G.</given-names>
+            </name>
+            <name>
+              <surname>Ranjan</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Chen</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Yan</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>C.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/MIS.2022.3215779</pub-id>
+          <article-title>Convolutional neural network-assisted adaptive sampling for sparse feature detection in image and video data</article-title>
+          <source>IEEE Intell. Syst.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_12">
+        <label>12.</label>
+        <element-citation publication-type="journal">
+          <volume>38</volume>
+          <page-range>6391-6401</page-range>
+          <issue>5</issue>
+          <year>2020</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Revi</surname>
+              <given-names>K. R.</given-names>
+            </name>
+            <name>
+              <surname>Wilscy</surname>
+              <given-names>M.</given-names>
+            </name>
+          </person-group>
+          <article-title>Image forgery detection using deep textural features from local binary pattern map</article-title>
+          <source>J. Intell. Fuzzy Syst.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_13">
+        <label>13.</label>
+        <element-citation publication-type="journal">
+          <volume>31</volume>
+          <page-range>051402.1-051402.16</page-range>
+          <issue>5</issue>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Rani</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Jain</surname>
+              <given-names>A.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1117/1.JEI.31.5.051402</pub-id>
+          <article-title>Digital image forgery detection under complex lighting using Phong reflection model</article-title>
+          <source>J. Electron. Imaging</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_14">
+        <label>14.</label>
+        <element-citation publication-type="journal">
+          <volume>192</volume>
+          <page-range>1164-1168</page-range>
+          <issue>4</issue>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Arruda</surname>
+              <given-names>V. F.</given-names>
+            </name>
+            <name>
+              <surname>Berriel</surname>
+              <given-names>R. F.</given-names>
+            </name>
+            <name>
+              <surname>Paix ao</surname>
+              <given-names>T. M.</given-names>
+            </name>
+            <name>
+              <surname>Badue</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>De Souza</surname>
+              <given-names>A. F.</given-names>
+            </name>
+            <name>
+              <surname>Sebe</surname>
+              <given-names>N.</given-names>
+            </name>
+            <name>
+              <surname>Oliveira-Santos</surname>
+              <given-names>T.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.eswa.2021.116334</pub-id>
+          <article-title>Cross-domain object detection using unsupervised image translation</article-title>
+          <source>Expert Syst. Appl.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_15">
+        <label>15.</label>
+        <element-citation publication-type="journal">
+          <volume>468</volume>
+          <page-range>317-334</page-range>
+          <issue>11</issue>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Fernandes</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Simsek</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Kantarci</surname>
+              <given-names>B. K. S.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.neucom.2021.10.023</pub-id>
+          <article-title>TableDet: An end-to-end deep learning approach for table detection and table image classification in data sheet images</article-title>
+          <source>Neurocomputing</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_16">
+        <label>16.</label>
+        <element-citation publication-type="journal">
+          <volume>45</volume>
+          <page-range>215-219</page-range>
+          <issue>5</issue>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Yang</surname>
+              <given-names>Xiaomi</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.14016/j.cnki.jgzz.2024.05.215</pub-id>
+          <article-title>Research on defect recognition of textile laser printing image based on sparse optimization</article-title>
+          <source>Laser J.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_17">
+        <label>17.</label>
+        <element-citation publication-type="journal">
+          <volume>44</volume>
+          <page-range>225-230</page-range>
+          <issue>2</issue>
+          <year>2020</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Woods</surname>
+              <given-names>N. C.</given-names>
+            </name>
+            <name>
+              <surname>Robert</surname>
+              <given-names>C. A.</given-names>
+            </name>
+          </person-group>
+          <article-title>Colour-range histogram technique for automatic image source detection</article-title>
+          <source>Informatica</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_18">
+        <label>18.</label>
+        <element-citation publication-type="journal">
+          <volume>547</volume>
+          <page-range>126384</page-range>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Wang</surname>
+              <given-names>T.</given-names>
+            </name>
+            <name>
+              <surname>Ma</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Yang</surname>
+              <given-names>T.</given-names>
+            </name>
+            <name>
+              <surname>Zou</surname>
+              <given-names>S.</given-names>
+            </name>
+          </person-group>
+          <article-title>PETNet: A YOLO-based prior enhanced transformer network for aerial image detection</article-title>
+          <source>Neurocomputing</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_19">
+        <label>19.</label>
+        <element-citation publication-type="journal">
+          <volume>42</volume>
+          <page-range>246-251</page-range>
+          <issue>3</issue>
+          <year>2021</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Qu</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Tang</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Ma</surname>
+              <given-names>X.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.19554/j.cnki.1001-3563.2021.03.035</pub-id>
+          <article-title>Defect detection algorithm of plain cloth based on deep neural network</article-title>
+          <source>Packag. Eng.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_20">
+        <label>20.</label>
+        <element-citation publication-type="journal">
+          <volume>52</volume>
+          <page-range>89-95</page-range>
+          <issue>6</issue>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Zhang</surname>
+              <given-names>Yuqin</given-names>
+            </name>
+            <name>
+              <surname>Yang</surname>
+              <given-names>Wenming</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.19333/j.mfkj.20240104507</pub-id>
+          <article-title>Detection of textile printing defects based on histogram equalization</article-title>
+          <source>Wool Text. J.</source>
+        </element-citation>
+      </ref>
+    </ref-list>
+  </back>
+</article>
