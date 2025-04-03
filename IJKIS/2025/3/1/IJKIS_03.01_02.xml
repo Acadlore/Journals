@@ -1,0 +1,2854 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.3 20210610//EN" "JATS-journalpublishing1-3.dtd">
+<article xml:lang="en" dtd-version="1.3" article-type="research-article" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mml="http://www.w3.org/1998/Math/MathML">
+  <front>
+    <journal-meta>
+      <journal-id journal-id-type="publisher-id">IJKIS</journal-id>
+      <journal-id journal-id-type="doi">10.56578</journal-id>
+      <journal-title-group>
+        <journal-title>International Journal of Knowledge and Innovation Studies</journal-title>
+        <abbrev-journal-title abbrev-type="issn">Int J. Knowl. Innov Stud.</abbrev-journal-title>
+        <abbrev-journal-title abbrev-type="publisher">IJKIS</abbrev-journal-title>
+      </journal-title-group>
+      <issn publication-format="electronic">3005-6101</issn>
+      <issn publication-format="print">3005-6098</issn>
+      <publisher>
+        <publisher-name>Acadlore</publisher-name>
+      </publisher>
+    </journal-meta>
+    <article-meta>
+      <article-id pub-id-type="publisher-id">AR-AxFsuwnlg41P5E_6wbAutTGA36CIpY4X</article-id>
+      <article-id pub-id-type="doi">10.56578/ijkis030102</article-id>
+      <article-categories>
+        <subj-group>
+          <subject>Articles</subject>
+        </subj-group>
+      </article-categories>
+      <title-group>
+        <article-title>Tea Leaf Picking Path Planning Based on an Improved Ant Colony Optimization Algorithm</article-title>
+      </title-group>
+      <contrib-group>
+        <contrib contrib-type="author" rid="aff_1">
+          <contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0009-0006-1506-2804</contrib-id>
+          <name>
+            <surname>Zhang</surname>
+            <given-names>Luqi</given-names>
+          </name>
+          <email>1945341775@qq.com</email>
+        </contrib>
+        <aff id="aff_1">College of Mechanical and Electrical Engineering, Nanjing University of Aeronautics and Astronautics, 210016 Nanjing, China</aff>
+      </contrib-group>
+      <pub-date publication-format="electronic" date-type="pub">
+        <day>20</day>
+        <month>03</month>
+        <year>2025</year>
+      </pub-date>
+      <volume>3</volume>
+      <issue>1</issue>
+      <fpage>12</fpage>
+      <lpage>25</lpage>
+      <page-range>12-25</page-range>
+      <history>
+        <date date-type="received">
+          <day>13</day>
+          <month>01</month>
+          <year>2025</year>
+        </date>
+        <date date-type="accepted">
+          <day>09</day>
+          <month>03</month>
+          <year>2025</year>
+        </date>
+      </history>
+      <permissions>
+        <copyright-statement>©2025 by the author(s)</copyright-statement>
+        <copyright-year>2025</copyright-year>
+        <license license-type="open-access" xlink:href="https://creativecommons.org/licenses/by/4.0/">
+          <license-p> Published by Acadlore Publishing Services Limited, Hong Kong. This article is available for free download and can be reused and cited, provided that the original published version is credited, under the CC BY 4.0 license.</license-p>
+        </license>
+      </permissions>
+      <abstract><p>With the rapid advancement of modern robotics and artificial intelligence, intelligent picking robots have been widely adopted in agricultural production. Global path planning techniques have been applied to crop harvesting, such as oranges, apples, tea leaves, and tomatoes, yielding promising results. This study focuses on the path planning problem for a robotic arm used in premium tea leaf picking. Experimental simulations reveal that the Ant Colony Optimization (ACO) algorithm performs particularly well in solving small-scale Traveling Salesman Problems (TSP), as it can incrementally construct initial paths and, with properly tuned parameters, produce higher-quality solutions and achieve faster convergence compared to other algorithms. However, the traditional ACO algorithm tends to fall into local optima and suffers from slow convergence. To address these challenges, this paper proposes a dynamically optimized ACO algorithm that enhances the pheromone update rules and optimizes the $\alpha$ and $\beta$ parameters during the search process. These parameters are updated according to the optimization results, and a ranking factor is introduced to prevent the optimal picking path from being overlooked. The proposed method demonstrates superior performance over the traditional ACO algorithm in terms of path quality and convergence speed.</p></abstract>
+      <kwd-group>
+        <kwd>Ant Colony Optimization (ACO)</kwd>
+        <kwd>Path planning</kwd>
+        <kwd>Picking robotic arm</kwd>
+      </kwd-group>
+      <counts>
+        <count count-type="contributors" count="1"/>
+        <fig-count count="13"/>
+        <table-count count="2"/>
+        <ref-count count="25"/>
+      </counts>
+    </article-meta>
+  </front>
+  <body>
+    <sec sec-type="intro">
+      <title>1. Introduction</title>
+      <p style="text-align: justify">In the agricultural field, crop harvesting, especially the harvesting of premium tea, is influenced by its growth characteristics and the strict standards for harvesting. This makes the task of picking premium tea not only require real-time performance but also ensure high efficiency and high-quality tea leaves. The efficiency of robotic harvesting operations is closely related to the rationality of the robot's path planning, which largely determines whether the quality of the harvested crops meets the basic quality requirements. Therefore, improving the ACO to allow the premium tea picking robot to efficiently complete the picking task is of great significance for the work of premium tea harvesting.</p><p style="text-align: justify">Global path planning is one of the core technologies for achieving autonomous operation of robots. Global path planning typically occurs under the condition that the robot has a thorough understanding of the obstacles in the work environment to ensure that the robot can efficiently and accurately complete the assigned tasks. Classical global path planning methods include genetic algorithms (GA), simulated annealing algorithms, and ACO algorithms, among others. Each has its advantages and can provide effective path planning strategies for robots in different scenarios. Among them, the research on ACO algorithms in the field of path planning is the most extensive. However, traditional ACO algorithms have problems such as long running times, slow convergence speeds, and the tendency to get stuck in local optima during path planning. To address these issues, Li and Yu [<xref ref-type="bibr" rid="ref_1">1</xref>] proposed a feature-point-based method that uses uneven pheromone allocation and a bidirectional parallel strategy to improve the algorithm's running efficiency. However, despite the excellent performance of this method in reducing running time, the planned path is relatively long. Guo et al. [<xref ref-type="bibr" rid="ref_2">2</xref>] designed a dispatchable-aware routing (SAR) algorithm based on an improved ACO to enhance the schedulability of time-triggered flows under non-waiting scheduling problems, thereby improving the capability of time-sensitive networks to accommodate time-triggered flows. Wang [<xref ref-type="bibr" rid="ref_3">3</xref>], in order to achieve automatic site selection for urban and rural emergency shelters, adopted a dynamic ant colony distributed optimization control method, successfully optimizing the site selection for emergency shelters in urban and rural areas. Lingkon and Ahmmed [<xref ref-type="bibr" rid="ref_4">4</xref>] divided the ant population into elite and regular populations and decomposed the optimization problem into multiple subproblems, which improved the convergence speed and prevented the algorithm from getting trapped in local optima. Fu et al. [<xref ref-type="bibr" rid="ref_5">5</xref>] proposed a bidirectional artificial potential field-based ACO algorithm (BAPFACO) that successfully reduced the path length, improved convergence speed, and prevented ant loss. Akpinar [<xref ref-type="bibr" rid="ref_6">6</xref>] designed a super-heuristic algorithm that uses an ACO algorithm to explore the search space composed of multiple assembly line balancing heuristics to solve the mixed-flow assembly line balancing problem with assembly stations.</p><p style="text-align: justify">To address the above-mentioned issues, this paper proposes a method based on a dynamically optimized ACO. Through comparative analysis of the results of GA, simulated annealing algorithms, and ACO algorithms in solving tea leaf picking path planning, it concludes that the ACO is suitable for solving the path planning problem of the tea picking robotic arm. The framework of the technical route is shown in <xref ref-type="fig" rid="fig_1">Figure 1</xref> below.</p>
+      
+        <fig id="fig_1">
+          <label>Figure 1</label>
+          <caption>
+            <title>Framework of the technical route in this paper</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/2/img_p-3VKWW8aCFyijzJ.png"/>
+        </fig>
+      
+    </sec>
+    <sec sec-type="">
+      <title>2. Tea picking path planning based on aco</title>
+      
+        <sec>
+          
+            <title>2.1. Tea picking path planning problem description</title>
+          
+          <p>In the mechanized harvesting process of premium tea, the first step is to take pictures of the tea leaves in the tea garden using a binocular camera installed on the picking robotic arm. However, due to the complexity of the tea garden environment and external factors such as natural light, the captured tea leaf images often contain noise. To improve image quality, preprocessing is necessary to remove the noise and provide more accurate image information for subsequent tea leaf recognition and localization. After image segmentation, a series of operations are performed to obtain the coordinates of the tea bud points. Faced with a large number of tea picking points, it is necessary to plan the path of the robotic arm’s tea picking efficiently and reasonably to improve picking efficiency.</p><p>The picking robotic arm, as one of the representatives of unmanned mechanical operations, has significant advantages. It can complete vegetable or fruit picking tasks in an automated and efficient manner without human supervision. The widespread application of the picking robotic arm has not only promoted the transformation of ecological agriculture toward large-scale, efficient, and mass production but has also significantly enhanced the intelligence level of agricultural production. This paper is dedicated to planning the tea picking path, aiming to find the optimal path with the shortest time and highest efficiency through careful calculation and comparative analysis.</p><p>Based on the trial picking characteristics and physical properties of premium tea, it is concluded that the number of tea buds in a certain range usually lies between 30 and 45. The distribution of tea buds within this range makes the path planning scale relatively small. Based on this characteristic, a more accurate and efficient algorithm can be used to solve the path planning problem, namely the ACO, which is an NP-complete problem. Given the large quantity of tea leaves that need to be harvested (thousands of tea buds are required to produce a pound of tea), the harvesting efficiency is highly demanding. Therefore, the core research in this paper is to achieve optimal path planning for tea picking, aiming to significantly reduce picking time through path optimization, ensuring the timeliness of premium tea picking, and thereby comprehensively improving tea picking efficiency.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>2.2. Selection of global path planning algorithms</title>
+          
+          <p>Since there are various methods for solving combinatorial optimization problems, such as ACO, GA, and simulated annealing algorithms, there are many different methods to choose from when planning the path of the tea picking robotic arm. However, due to the different characteristics and principles of each algorithm, the path planning results in solving the TSP problem vary, and there are distinctions in their performance. Therefore, a comparative analysis of three global path planning algorithms is conducted to ensure the optimal implementation of the tea picking robotic arm’s path planning.</p>
+          
+            <sec>
+              
+                <title>2.2.1 Ga</title>
+              
+              <p>GA is a powerful search and optimization algorithm based on Darwin's theory of evolution. It draws on the natural law of “survival of the fittest” [<xref ref-type="bibr" rid="ref_7">7</xref>]. By simulating the biological evolutionary processes of natural selection, mutation, and inheritance, it continuously generates a new generation of solution sets [<xref ref-type="bibr" rid="ref_8">8</xref>].</p><p>GA has gained widespread attention due to their parallelism, fault tolerance, and ability to handle multi-objective optimization problems. When faced with complex and high-dimensional problems, GA demonstrates strong adaptability and robustness, and their search process is less likely to be constrained by local optima [<xref ref-type="bibr" rid="ref_9">9</xref>]. However, the optimization results are often significantly influenced by the initial population and the design of the evaluation function. To ensure that the GA can fully exert its advantages, careful strategies need to be formulated [<xref ref-type="bibr" rid="ref_10">10</xref>]. First, the initialization of the population should be representative, covering multiple potential solution spaces. Secondly, the design of the evaluation function is crucial as it needs to accurately reflect the quality of the solutions, guiding the algorithm to efficiently search for the global optimal solution in the solution space [<xref ref-type="bibr" rid="ref_11">11</xref>].</p><p>Although the GA performs well in terms of convergence in the early stages, as the optimization process progresses, its convergence speed decreases and even stagnates, which results in a time-consuming optimization process with high resource consumption.</p><p>When ensuring that the coordinates of the tea buds are the same, the running time for solving the tea picking path planning problem with the traditional GA is 1.343483 seconds, and the best route is: 0 -&amp;amp;gt; 8 -&amp;amp;gt; 2 -&amp;amp;gt; 13 -&amp;amp;gt; 18 -&amp;amp;gt; 12 -&amp;amp;gt; 17 -&amp;amp;gt; 20 -&amp;amp;gt; 1 -&amp;amp;gt; 19 -&amp;amp;gt; 14 -&amp;amp;gt; 9 -&amp;amp;gt; 4 -&amp;amp;gt; 10 -&amp;amp;gt; 11 -&amp;amp;gt; 15 -&amp;amp;gt; 16 -&amp;amp;gt; 7 -&amp;amp;gt; 6 -&amp;amp;gt; 5 -&amp;amp;gt; 3 -&amp;amp;gt; 0, with a route length of 774.2036 km. The results of solving the tea picking path planning with the traditional GA are shown in <xref ref-type="fig" rid="fig_2">Figure 2</xref> and <xref ref-type="fig" rid="fig_3">Figure 3</xref>.</p>
+              
+                <fig id="fig_2">
+                  <label>Figure 2</label>
+                  <caption>
+                    <title>GA path length iteration chart</title>
+                  </caption>
+                  <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/2/img_MMlqCrtgRV7LqpaT.png"/>
+                </fig>
+              
+              
+                <fig id="fig_3">
+                  <label>Figure 3</label>
+                  <caption>
+                    <title>GA path trajectory chart</title>
+                  </caption>
+                  <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/2/img_0ANjFkIKbVyU-qV5.png"/>
+                </fig>
+              
+            </sec>
+          
+          
+            <sec>
+              
+                <title>2.2.2 Simulated annealing algorithm</title>
+              
+              <p>The simulated annealing algorithm is a general optimization algorithm that draws inspiration from the annealing process of solid materials. It starts from a random, higher initial temperature state. This method organically combines the characteristic of probabilistic jumps, enabling it to efficiently perform random search in a larger solution space and effectively solve optimization problems [<xref ref-type="bibr" rid="ref_12">12</xref>].</p><p>The algorithm cleverly balances global and local search during the search process by simulating the gradual reduction in temperature and energy minimization in the physical annealing process. It has been widely applied in combinatorial optimization, image processing, machine learning, and other fields [<xref ref-type="bibr" rid="ref_13">13</xref>].</p><p>Simulated annealing algorithm has attracted attention due to its ability to escape local optima, efficient iterative search, and good robustness. However, it also has some obvious drawbacks. When dealing with large-scale problems, although the simulated annealing algorithm can find the global optimal solution, the time required is usually long, resulting in relatively low efficiency. In addition, the algorithm is highly sensitive to parameter settings, and improper parameter adjustments may cause the algorithm to fail to converge to the optimal solution, thus severely affecting the quality of the solution [<xref ref-type="bibr" rid="ref_14">14</xref>].</p><p>When ensuring that the coordinates of the tea buds are the same, the running time for solving the tea picking path planning problem with the traditional simulated annealing algorithm is 0.498341 seconds, and the best route is: 0 -&amp;amp;gt; 8 -&amp;amp;gt; 2 -&amp;amp;gt; 3 -&amp;amp;gt; 13 -&amp;amp;gt; 19 -&amp;amp;gt; 18 -&amp;amp;gt; 12 -&amp;amp;gt; 17 -&amp;amp;gt; 20 -&amp;amp;gt; 1 -&amp;amp;gt; 14 -&amp;amp;gt; 9 -&amp;amp;gt; 15 -&amp;amp;gt; 16 -&amp;amp;gt; 11 -&amp;amp;gt; 7 -&amp;amp;gt; 6 -&amp;amp;gt; 5 -&amp;amp;gt; 10 -&amp;amp;gt; 4 -&amp;amp;gt; 0, with a route length of 776.0305 km. The results of solving the tea picking path planning with the traditional simulated annealing algorithm are shown in <xref ref-type="fig" rid="fig_4">Figure 4</xref> and <xref ref-type="fig" rid="fig_5">Figure 5</xref>.</p>
+              
+                <fig id="fig_4">
+                  <label>Figure 4</label>
+                  <caption>
+                    <title>Simulated annealing algorithm path length iteration chart</title>
+                  </caption>
+                  <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/2/img_w902h4m0fYfw4Fxl.png"/>
+                </fig>
+              
+              
+                <fig id="fig_5">
+                  <label>Figure 5</label>
+                  <caption>
+                    <title>Simulated annealing algorithm path trajectory chart</title>
+                  </caption>
+                  <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/2/img_ndLmI9p0oVjDCn29.png"/>
+                </fig>
+              
+            </sec>
+          
+          
+            <sec>
+              
+                <title>2.2.3 Aco</title>
+              
+              <p>ACO simulates the foraging behavior of ants in nature, using pheromones for global path planning. When ants forage, they release pheromones to mark their path, and other ants can sense this, thus increasing their chances of choosing the path with higher pheromone concentration [<xref ref-type="bibr" rid="ref_15">15</xref>]. As more ants search for food, positive feedback gradually forms, leading to the emergence of an optimal foraging path. Due to its property of constructing the optimal solution sequentially, the ACO is widely used in problems such as the TSP, graph coloring, and network routing problems [<xref ref-type="bibr" rid="ref_16">16</xref>].</p><p>The basic process of the traditional ACO is as follows:</p><p>(1) Initialize parameters such as the number of ants, the pheromone importance factor, the heuristic function importance factor, etc., and place each ant at different starting points.</p><p>(2) Each ant selects the next tea picking point to visit based on the probability transfer function as shown in Eq. (1), using the roulette wheel selection method.</p>
+              
+                <disp-formula>
+                  <label>(1)</label>
+                  <mml:math id="mpvw88fkm6">
+                    <mml:msubsup>
+                      <mml:mi>p</mml:mi>
+                      <mml:mi>k</mml:mi>
+                      <mml:mrow>
+                        <mml:mi>i</mml:mi>
+                        <mml:mi>j</mml:mi>
+                      </mml:mrow>
+                    </mml:msubsup>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:mo>=</mml:mo>
+                    <mml:mi>t</mml:mi>
+                    <mml:mrow>
+                      <mml:mo>{</mml:mo>
+                      <mml:mo fence="true"/>
+                      <mml:mtable columnalign="center center" columnspacing="1em" rowspacing="4pt">
+                        <mml:mtr>
+                          <mml:mtd>
+                            <mml:mfrac>
+                              <mml:mrow>
+                                <mml:msup>
+                                  <mml:mrow>
+                                    <mml:mo>[</mml:mo>
+                                    <mml:mo>(</mml:mo>
+                                    <mml:mo>)</mml:mo>
+                                    <mml:mo>]</mml:mo>
+                                    <mml:msub>
+                                      <mml:mi>τ</mml:mi>
+                                      <mml:mrow>
+                                        <mml:mi>i</mml:mi>
+                                        <mml:mi>j</mml:mi>
+                                      </mml:mrow>
+                                    </mml:msub>
+                                    <mml:mi>t</mml:mi>
+                                  </mml:mrow>
+                                  <mml:mi>α</mml:mi>
+                                </mml:msup>
+                                <mml:msup>
+                                  <mml:mrow>
+                                    <mml:mo>[</mml:mo>
+                                    <mml:mo>(</mml:mo>
+                                    <mml:mo>)</mml:mo>
+                                    <mml:mo>]</mml:mo>
+                                    <mml:msub>
+                                      <mml:mi>η</mml:mi>
+                                      <mml:mrow>
+                                        <mml:mi>i</mml:mi>
+                                        <mml:mi>k</mml:mi>
+                                      </mml:mrow>
+                                    </mml:msub>
+                                    <mml:mi>t</mml:mi>
+                                  </mml:mrow>
+                                  <mml:mi>β</mml:mi>
+                                </mml:msup>
+                                <mml:mo>∗</mml:mo>
+                              </mml:mrow>
+                              <mml:mrow>
+                                <mml:munder>
+                                  <mml:mo>∑</mml:mo>
+                                  <mml:mrow>
+                                    <mml:mi>s</mml:mi>
+                                    <mml:mo>⊂</mml:mo>
+                                    <mml:msub>
+                                      <mml:mtext> allowed </mml:mtext>
+                                      <mml:mi>k</mml:mi>
+                                    </mml:msub>
+                                  </mml:mrow>
+                                </mml:munder>
+                                <mml:msup>
+                                  <mml:mrow>
+                                    <mml:mo>[</mml:mo>
+                                    <mml:mo>(</mml:mo>
+                                    <mml:mo>)</mml:mo>
+                                    <mml:mo>]</mml:mo>
+                                    <mml:msub>
+                                      <mml:mi>τ</mml:mi>
+                                      <mml:mrow>
+                                        <mml:mi>i</mml:mi>
+                                        <mml:mi>s</mml:mi>
+                                      </mml:mrow>
+                                    </mml:msub>
+                                    <mml:mi>t</mml:mi>
+                                  </mml:mrow>
+                                  <mml:mi>α</mml:mi>
+                                </mml:msup>
+                                <mml:msup>
+                                  <mml:mrow>
+                                    <mml:mo>[</mml:mo>
+                                    <mml:mo>(</mml:mo>
+                                    <mml:mo>)</mml:mo>
+                                    <mml:mo>]</mml:mo>
+                                    <mml:msub>
+                                      <mml:mi>η</mml:mi>
+                                      <mml:mrow>
+                                        <mml:mi>i</mml:mi>
+                                        <mml:mi>s</mml:mi>
+                                      </mml:mrow>
+                                    </mml:msub>
+                                    <mml:mi>t</mml:mi>
+                                  </mml:mrow>
+                                  <mml:mi>β</mml:mi>
+                                </mml:msup>
+                                <mml:mo>∗</mml:mo>
+                                <mml:mo>,</mml:mo>
+                              </mml:mrow>
+                            </mml:mfrac>
+                          </mml:mtd>
+                          <mml:mtd>
+                            <mml:mtext> If </mml:mtext>
+                            <mml:mtext> </mml:mtext>
+                            <mml:mrow>
+                              <mml:mi>j</mml:mi>
+                            </mml:mrow>
+                            <mml:mo>∈</mml:mo>
+                            <mml:msub>
+                              <mml:mtext> allowed </mml:mtext>
+                              <mml:mi>k</mml:mi>
+                            </mml:msub>
+                          </mml:mtd>
+                        </mml:mtr>
+                        <mml:mtr>
+                          <mml:mtd>
+                            <mml:mn>0</mml:mn>
+                            <mml:mo>,</mml:mo>
+                          </mml:mtd>
+                          <mml:mtd>
+                            <mml:mtext> Otherwise </mml:mtext>
+                          </mml:mtd>
+                        </mml:mtr>
+                      </mml:mtable>
+                    </mml:mrow>
+                  </mml:math>
+                </disp-formula>
+              
+              <p>The pheromone importance factor <inline-formula>
+  <mml:math id="mqhv7kkkoy">
+    <mml:mi>α</mml:mi>
+  </mml:math>
+</inline-formula> is used to measure the influence of pheromone concentration in the transition process. The larger the value, the more significant the influence of pheromone on the ant's path selection. The heuristic function importance factor <inline-formula>
+  <mml:math id="m7ibdrmaq8">
+    <mml:mi>β</mml:mi>
+  </mml:math>
+</inline-formula> reflects the importance of the heuristic function in the transition process. The larger the value, the stronger the guiding role of the heuristic function in the ant's path selection;  <inline-formula>
+  <mml:math id="mb569rg9qr">
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:msub>
+      <mml:mi>d</mml:mi>
+      <mml:mi>k</mml:mi>
+    </mml:msub>
+    <mml:mo>=</mml:mo>
+    <mml:mo fence="false">{</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>∼</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo fence="false">}</mml:mo>
+    <mml:mn>0</mml:mn>
+    <mml:mn>1</mml:mn>
+    <mml:mn>1</mml:mn>
+  </mml:math>
+</inline-formula> represents the set of tea picking points that ant $k<inline-formula>
+  <mml:math id="m9mtom1noa">
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>k</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>k</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>;</mml:mo>
+    <mml:mn>0</mml:mn>
+  </mml:math>
+</inline-formula>D_{i j}<inline-formula>
+  <mml:math id="m93z89vvii">
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+  </mml:math>
+</inline-formula>i<inline-formula>
+  <mml:math id="mqpgxjxckh">
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+  </mml:math>
+</inline-formula>j<inline-formula>
+  <mml:math id="m77svpz7zn">
+    <mml:mo>;</mml:mo>
+  </mml:math>
+</inline-formula>\tau_{i j}(t)<inline-formula>
+  <mml:math id="mc26uu8nf7">
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mo>;</mml:mo>
+  </mml:math>
+</inline-formula>\eta_{i j}(t)<inline-formula>
+  <mml:math id="ml0daspb8a">
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>i<inline-formula>
+  <mml:math id="mxjkpkzrek">
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+  </mml:math>
+</inline-formula>j<inline-formula>
+  <mml:math id="mz0lvd91h1">
+    <mml:mo>.</mml:mo>
+    <mml:mo>:</mml:mo>
+    <mml:mi>T</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+  </mml:math>
+</inline-formula>\eta_{i j}=1 / D_{i j}$.</p><p>The roulette wheel selection method is an intuitive and easy-to-implement selection strategy. In the ACO, it is widely used to decide the selection of the next node or path. The basic idea is that the selection probability of each individual is proportional to its fitness value, so when the fitness of an individual is higher, the probability of it being selected is also higher. This selection mechanism ensures that excellent individuals are preserved and inherited during the algorithm's iteration process. In practical applications, the selection of individuals is not directly based on the selection probability, but on the “cumulative probability.” Cumulative probability can be likened to the “span” on a roulette wheel, which refers to the proportion or length of a region. In this analogy, regions with a larger “span” are more likely to be selected.</p><p>The main process is as follows:</p><p>(a) Calculate the selection probability of each node or path: The selection probability is proportional to the pheromone concentration and the heuristic information of the node or path.</p><p>(b) Calculate the total of the selection probabilities.</p><p>(c) Select the node or path based on the total selection probability: Generate a random number, compare it with the cumulative probability, and if the cumulative probability is greater than the random number, select it.</p><p>(d) Update pheromones: Update pheromones based on the path length of the ant's movement.</p><p>(e) Repeat steps 2-4.</p><p>(3) Record the path and distance of the ant.</p><p>(4) After all ants have completed one round, i.e., after one iteration, update the pheromone matrix based on the paths and distances traveled.</p><p>In the process of ants foraging, due to the residual pheromones, the heuristic information may be overwhelmed. This is because while ants release pheromones, the pheromones gradually evaporate over time, reducing their concentration [<xref ref-type="bibr" rid="ref_17">17</xref>]. Therefore, after completing one cycle, a parameter needs to be introduced to update the residual pheromone concentration in real-time. The specific pheromone update formula is as follows in Eq. (2):</p>
+              
+                <disp-formula>
+                  <label>(2)</label>
+                  <mml:math id="mwgdrg22ot">
+                    <mml:mtable displaystyle="true" columnalign="right left" columnspacing="0em" rowspacing="3pt">
+                      <mml:mtr>
+                        <mml:mtd/>
+                        <mml:mtd>
+                          <mml:mi>Δ</mml:mi>
+                          <mml:mi>t</mml:mi>
+                          <mml:mi>t</mml:mi>
+                          <mml:mi>ρ</mml:mi>
+                          <mml:mi>Δ</mml:mi>
+                          <mml:msub>
+                            <mml:mi>τ</mml:mi>
+                            <mml:mrow>
+                              <mml:mi>i</mml:mi>
+                              <mml:mi>j</mml:mi>
+                            </mml:mrow>
+                          </mml:msub>
+                          <mml:msub>
+                            <mml:mi>τ</mml:mi>
+                            <mml:mrow>
+                              <mml:mi>i</mml:mi>
+                              <mml:mi>j</mml:mi>
+                            </mml:mrow>
+                          </mml:msub>
+                          <mml:msub>
+                            <mml:mi>τ</mml:mi>
+                            <mml:mrow>
+                              <mml:mi>i</mml:mi>
+                              <mml:mi>j</mml:mi>
+                            </mml:mrow>
+                          </mml:msub>
+                          <mml:mo>(</mml:mo>
+                          <mml:mo>+</mml:mo>
+                          <mml:mo>)</mml:mo>
+                          <mml:mo>=</mml:mo>
+                          <mml:mo>(</mml:mo>
+                          <mml:mo>)</mml:mo>
+                          <mml:mo>∗</mml:mo>
+                          <mml:mo>(</mml:mo>
+                          <mml:mo>−</mml:mo>
+                          <mml:mo>)</mml:mo>
+                          <mml:mo>+</mml:mo>
+                          <mml:mn>1</mml:mn>
+                          <mml:mn>1</mml:mn>
+                        </mml:mtd>
+                      </mml:mtr>
+                      <mml:mtr>
+                        <mml:mtd/>
+                        <mml:mtd>
+                          <mml:mi>Δ</mml:mi>
+                          <mml:mi>Δ</mml:mi>
+                          <mml:msub>
+                            <mml:mi>τ</mml:mi>
+                            <mml:mrow>
+                              <mml:mi>i</mml:mi>
+                              <mml:mi>j</mml:mi>
+                            </mml:mrow>
+                          </mml:msub>
+                          <mml:mo>=</mml:mo>
+                          <mml:munderover>
+                            <mml:mo>∑</mml:mo>
+                            <mml:mrow>
+                              <mml:mi>k</mml:mi>
+                              <mml:mo>=</mml:mo>
+                              <mml:mn>1</mml:mn>
+                            </mml:mrow>
+                            <mml:mrow>
+                              <mml:msub>
+                                <mml:mi>m</mml:mi>
+                                <mml:mn>1</mml:mn>
+                              </mml:msub>
+                            </mml:mrow>
+                          </mml:munderover>
+                          <mml:msubsup>
+                            <mml:mi>τ</mml:mi>
+                            <mml:mi>k</mml:mi>
+                            <mml:mrow>
+                              <mml:mi>i</mml:mi>
+                              <mml:mi>j</mml:mi>
+                            </mml:mrow>
+                          </mml:msubsup>
+                        </mml:mtd>
+                      </mml:mtr>
+                    </mml:mtable>
+                  </mml:math>
+                </disp-formula>
+              
+              <p> where, <inline-formula>
+  <mml:math id="mymdqnjy9d">
+    <mml:msub>
+      <mml:mi>τ</mml:mi>
+      <mml:mrow>
+        <mml:mi>i</mml:mi>
+        <mml:mi>j</mml:mi>
+      </mml:mrow>
+    </mml:msub>
+    <mml:mo>(</mml:mo>
+    <mml:mo>+</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mi>t</mml:mi>
+    <mml:mn>1</mml:mn>
+  </mml:math>
+</inline-formula> represents the pheromone concentration between tea picking points $i<inline-formula>
+  <mml:math id="mlrpsadna2">
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+  </mml:math>
+</inline-formula>j<inline-formula>
+  <mml:math id="m74r96kwa5">
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+  </mml:math>
+</inline-formula>t+1<inline-formula>
+  <mml:math id="mgsxm0tqnv">
+    <mml:mo>;</mml:mo>
+  </mml:math>
+</inline-formula>\tau_{i j}(t)<inline-formula>
+  <mml:math id="mbm9nt9n2h">
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>k</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+  </mml:math>
+</inline-formula>i<inline-formula>
+  <mml:math id="mnvs22n7s6">
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+  </mml:math>
+</inline-formula>j<inline-formula>
+  <mml:math id="mj2t10sdqr">
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+  </mml:math>
+</inline-formula>t ; \rho<inline-formula>
+  <mml:math id="m38uwgk8w7">
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mo>;</mml:mo>
+  </mml:math>
+</inline-formula>\Delta \tau_{i j}<inline-formula>
+  <mml:math id="m7lxu5m4w8">
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>k</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+  </mml:math>
+</inline-formula>i<inline-formula>
+  <mml:math id="mpwel1jbp1">
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>k</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+  </mml:math>
+</inline-formula>j<inline-formula>
+  <mml:math id="mrld7w2l2t">
+    <mml:mo>;</mml:mo>
+  </mml:math>
+</inline-formula>m_1<inline-formula>
+  <mml:math id="m9tdxsuh7h">
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>A</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>A</mml:mi>
+    <mml:mi>C</mml:mi>
+    <mml:mi>O</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>q</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>z</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>I</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>I</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>q</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>k</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>z</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>I</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>k</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>j</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>A</mml:mi>
+    <mml:mi>C</mml:mi>
+    <mml:mi>O</mml:mi>
+    <mml:mi>A</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mo>.</mml:mo>
+    <mml:mo>&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>:</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>[</mml:mo>
+    <mml:mo>]</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mn>18</mml:mn>
+    <mml:msup>
+      <mml:mi>m</mml:mi>
+      <mml:mo>′</mml:mo>
+    </mml:msup>
+  </mml:math>
+</inline-formula>\Delta \tau_{i j}^k$, it is usually calculated using the ant cycle model, and this value has an important impact on the performance and efficiency of the entire ACO [<xref ref-type="bibr" rid="ref_19">19</xref>].</p>
+              <p>(5) Repeat steps 2-4 until the optimal path is found or the preset number of iterations is reached.</p><p>The program flowchart of the traditional ACO is shown in <xref ref-type="fig" rid="fig_6">Figure 6</xref>. With the coordinates of the tea buds kept the same, the running time for solving the tea picking path planning problem using the traditional ACO is 0.483266 seconds, and the best route is: 0 -&amp;amp;gt; 8 -&amp;amp;gt; 12 -&amp;amp;gt; 17 -&amp;amp;gt; 20 -&amp;amp;gt; 1 -&amp;amp;gt; 19 -&amp;amp;gt; 18 -&amp;amp;gt; 13 -&amp;amp;gt; 14 -&amp;amp;gt; 9 -&amp;amp;gt; 4 -&amp;amp;gt; 5 -&amp;amp;gt; 6 -&amp;amp;gt; 7 -&amp;amp;gt; 11 -&amp;amp;gt; 15 -&amp;amp;gt; 16 -&amp;amp;gt; 10 -&amp;amp;gt; 3 -&amp;amp;gt; 2 -&amp;amp;gt; 0, with a route length of 695.8212 km. The results of solving the tea picking path planning with the traditional ACO are shown in <xref ref-type="fig" rid="fig_7">Figure 7</xref> and <xref ref-type="fig" rid="fig_8">Figure 8</xref>.</p>
+              
+                <fig id="fig_6">
+                  <label>Figure 6</label>
+                  <caption>
+                    <title>Traditional ACO program flowchart</title>
+                  </caption>
+                  <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/2/img_ho-eGc1dSK6baWNy.png"/>
+                </fig>
+              
+              
+                <fig id="fig_7">
+                  <label>Figure 7</label>
+                  <caption>
+                    <title>ACO path length iteration diagram</title>
+                  </caption>
+                  <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/2/img_g8YnzWlAvOYSRJaC.png"/>
+                </fig>
+              
+              
+                <fig id="fig_8">
+                  <label>Figure 8</label>
+                  <caption>
+                    <title>ACO path trajectory diagram</title>
+                  </caption>
+                  <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/2/img_WIgqKLTpbOsbkdHN.png"/>
+                </fig>
+              
+            </sec>
+          
+          
+            <sec>
+              
+                <title>2.2.4 Comparison and analysis of ga, simulated annealing algorithm, and aco</title>
+              
+              <p>Although optimization algorithms such as GA, ACO, and simulated annealing algorithm have shown excellent performance and results in solving the TSP, they each have their own characteristics in dealing with specific problems. For the reasons above, scholars both domestically and internationally have dedicated efforts to explore the application of these three algorithms in the TSP problem to uncover their potential advantages and further improve their performance. Through the research of this project, a deeper understanding of the working principles of these algorithms has been gained, which will also provide strong theoretical support for some practical issues.</p><p>By comparing the route length and running time of the three algorithms, it was found that the ACO converges faster than the other two algorithms and provides better solution quality. Due to the characteristic of the ACO in constructing the initial paths step by step, by selecting appropriate parameters, the optimal solution obtained by this method performs better than the other two methods [<xref ref-type="bibr" rid="ref_20">20</xref>].</p><p>Dorigo also conducted experiments on this, and the results showed that when solving optimization combinatorial problems, the ACO has significant advantages and better performance compared to the other two algorithms. Additionally, Wang and others also conducted a comparative analysis of these three algorithms in solving the TSP problem. The simulation experiment results showed that when comparing the convergence speed of the three algorithms, the difference in the number of iterations to reach the optimal solution gradually widened as the number of cities increased. After comprehensive analysis, it was concluded that the ACO converges faster. In terms of solution quality, the ACO outperforms the other two algorithms. This further proves that the ACO has better performance when solving the TSP problem [<xref ref-type="bibr" rid="ref_21">21</xref>].</p><p>Since the number of tea buds recognized by the camera in a single scan is between 30-50, which is a small-scale TSP, the ACO is more suitable for the tea picking of the mechanical arm for famous and high-quality tea. It not only provides good solution quality but also has a fast solving speed. Therefore, in this study, the ACO is used to research the tea leaf picking path planning for the mechanical arm.</p>
+            </sec>
+          
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>3. Path planning for famous and high-quality tea picking based on improved aco</title>
+      
+        <sec>
+          
+            <title>3.1. Analysis of improvement strategy</title>
+          
+          <p>The traditional ACO simulates the foraging behavior of ants in nature, relying on pheromones to plan the global path. The walking path of the ants serves as the tea picking path to be optimized, and the paths traversed by a large number of ants form the solution space of the optimization problem. The amount of pheromone released by the ants is inversely proportional to the length of the path, with shorter paths having more pheromone released [<xref ref-type="bibr" rid="ref_22">22</xref>].</p><p>Ants have the ability to sense pheromones and will preferentially choose paths with higher pheromone concentrations. As the pheromone concentration accumulates on the shorter path, the number of ants choosing this path also increases, gradually forming a positive feedback loop [<xref ref-type="bibr" rid="ref_23">23</xref>]. Eventually, when the entire ant colony walks along the same path, that path becomes the optimal path, and the corresponding solution is the optimal solution to the tea picking path planning problem.</p><p>The problem studied in this paper is the tea picking path planning in a two-dimensional coordinate system, focusing on the horizontal plane. This problem can be viewed as a classical TSP, where the robotic arm is required to randomly select a starting picking point, then traverse and pick all the tea buds within its field of view. Each picking point is visited only once, and after completing all the picking tasks, the arm does not return to the starting point. The goal is to minimize the total travel distance, i.e., minimize the time spent on tea picking, to meet the real-time requirements of picking famous and high-quality tea, thereby ensuring the quality of the picked tea.</p><p>In the traditional ACO, there are important parameters, such as the number of ants, pheromone importance factor, heuristic function importance factor, pheromone evaporation factor, and pheromone constant. The optimization result of the traditional ACO is highly dependent on the pheromone importance factor <inline-formula>
+  <mml:math id="mvijzorxdr">
+    <mml:mi>α</mml:mi>
+  </mml:math>
+</inline-formula> and the heuristic function importance factor <inline-formula>
+  <mml:math id="mdpldgbvai">
+    <mml:mi>β</mml:mi>
+  </mml:math>
+</inline-formula>. During the foraging process, ants release pheromones, and the amount of pheromone is inversely proportional to the length of the path. However, when the pheromone factor is set too large, the likelihood of ants choosing previously traversed paths increases, which may weaken the random search ability and affect the global optimization performance of the algorithm. When the pheromone factor is set too small, the ants' decisions will rely more on randomness, which may lead the algorithm to fall into purely random search, making it difficult to find the global optimal solution. On the other hand, if the heuristic function factor is set too large, although it can accelerate the convergence speed of the algorithm, it may also lead the algorithm to prematurely fall into a local optimal solution, limiting the global search ability. Conversely, if the heuristic function factor is set too small, the algorithm will overly depend on random search, which also makes it difficult to find the optimal solution to the problem [<xref ref-type="bibr" rid="ref_24">24</xref>].</p><p>This paper proposes a dynamic parameter optimization method aimed at adjusting two key parameters in the ACO: the pheromone importance factor <inline-formula>
+  <mml:math id="mhetpuegbj">
+    <mml:mi>α</mml:mi>
+  </mml:math>
+</inline-formula> and the heuristic function importance factor <inline-formula>
+  <mml:math id="m7iv3rldct">
+    <mml:mi>β</mml:mi>
+  </mml:math>
+</inline-formula>. Through this method, it is expected to address the issue of the traditional ACO easily falling into local optima during the solving process. By dynamically adjusting these two parameters, a finer balance between global search and local search can be achieved. This balance not only improves the convergence speed of the algorithm but also significantly enhances its global optimization capability [<xref ref-type="bibr" rid="ref_25">25</xref>]. Therefore, the research in this paper is of significant theoretical and practical importance for optimizing the application of the ACO in solving complex optimization problems. </p><p>To optimize the performance of the ACO and avoid falling into local optima, the path lengths found by each ant are arranged in increasing order, and only the ants ranking in the top proportion are allowed to leave pheromones. This proportion weight is inversely proportional to the path length, i.e., the shorter the path, the greater the weight. At the same time, a factor that linearly decreases with the ranking is introduced. The value of this factor starts at 1 for the first-ranked ant and then decreases linearly as the ranking improves. When the ranking reaches the set proportion threshold, the value of this factor decreases to 0. This linear decrease ensures that the factor value changes smoothly with the ranking. In this way, it ensures that better paths receive more pheromone, while poorer paths gradually lose influence, thus improving the algorithm's search efficiency and global optimization capability.</p><p>To ensure that the best tea picking path found so far is not forgotten, during the iteration of the ACO, if the best path in the current round does not surpass the best path discovered so far, this optimal path will be treated as the "leading ant" and ranked first. The remaining ants are then ranked in order. Under such a rule, the distribution and updating of pheromones will be based on this ranking order, ensuring that when the algorithm explores new picking paths, it does not neglect the previously discovered optimal choices. By introducing the above factors, it ensures that the optimal tea picking path will not be forgotten until a better path is found. This mechanism not only guarantees the stability and continuity of the algorithm but also increases the possibility of discovering better tea picking paths.</p><p>According to the improved pheromone recording rule, the parameter distribution of the ants is optimized based on the parameter distribution characteristics of the ants discovering new paths, as shown in Eq. (3).</p>
+          
+            <disp-formula>
+              <label>(3)</label>
+              <mml:math id="m3hyjl3yo1">
+                <mml:mtable displaystyle="true" columnalign="right left" columnspacing="0em" rowspacing="3pt">
+                  <mml:mtr>
+                    <mml:mtd/>
+                    <mml:mtd>
+                      <mml:mi>β</mml:mi>
+                      <mml:mi>rand</mml:mi>
+                      <mml:mo>=</mml:mo>
+                      <mml:mo>∗</mml:mo>
+                      <mml:mn>5</mml:mn>
+                      <mml:mn>0.6</mml:mn>
+                      <mml:msup>
+                        <mml:mrow>
+                          <mml:mo>(</mml:mo>
+                          <mml:mo>,</mml:mo>
+                          <mml:mo>)</mml:mo>
+                          <mml:msub>
+                            <mml:mi>N</mml:mi>
+                            <mml:mrow>
+                              <mml:mo>−</mml:mo>
+                            </mml:mrow>
+                          </mml:msub>
+                          <mml:mrow>
+                            <mml:mi>a</mml:mi>
+                            <mml:mi>n</mml:mi>
+                            <mml:mi>t</mml:mi>
+                            <mml:mi>s</mml:mi>
+                          </mml:mrow>
+                          <mml:mn>1</mml:mn>
+                        </mml:mrow>
+                        <mml:mrow>
+                          <mml:mo>∧</mml:mo>
+                        </mml:mrow>
+                      </mml:msup>
+                    </mml:mtd>
+                  </mml:mtr>
+                  <mml:mtr>
+                    <mml:mtd/>
+                    <mml:mtd>
+                      <mml:mi>α</mml:mi>
+                      <mml:mi>rand</mml:mi>
+                      <mml:mi>β</mml:mi>
+                      <mml:mo>=</mml:mo>
+                      <mml:mo>−</mml:mo>
+                      <mml:mo>min</mml:mo>
+                      <mml:mo>(</mml:mo>
+                      <mml:mo>,</mml:mo>
+                      <mml:mo>+</mml:mo>
+                      <mml:mo>)</mml:mo>
+                      <mml:mn>3</mml:mn>
+                      <mml:mn>3</mml:mn>
+                      <mml:mn>2</mml:mn>
+                      <mml:mn>3</mml:mn>
+                      <mml:msup>
+                        <mml:mrow>
+                          <mml:mo>(</mml:mo>
+                          <mml:mo>,</mml:mo>
+                          <mml:mo>)</mml:mo>
+                          <mml:msub>
+                            <mml:mi>N</mml:mi>
+                            <mml:mrow>
+                              <mml:mo>−</mml:mo>
+                            </mml:mrow>
+                          </mml:msub>
+                          <mml:mrow>
+                            <mml:mi>a</mml:mi>
+                            <mml:mi>n</mml:mi>
+                            <mml:mi>t</mml:mi>
+                            <mml:mi>s</mml:mi>
+                          </mml:mrow>
+                          <mml:mn>1</mml:mn>
+                        </mml:mrow>
+                        <mml:mo>∗</mml:mo>
+                      </mml:msup>
+                      <mml:mrow>
+                        <mml:mo>/</mml:mo>
+                      </mml:mrow>
+                    </mml:mtd>
+                  </mml:mtr>
+                </mml:mtable>
+              </mml:math>
+            </disp-formula>
+          
+          <p>In order to enhance the stability and accuracy of ants' path selection during foraging, the pheromone concentration <inline-formula>
+  <mml:math id="m5qlgsiki8">
+    <mml:msub>
+      <mml:mi>τ</mml:mi>
+      <mml:mrow>
+        <mml:mrow>
+          <mml:mi data-mjx-auto-op="false">ij</mml:mi>
+        </mml:mrow>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula> is normalized and a base value of 0.01 is introduced. At the early stage of the algorithm’s iteration, more ants are allowed to release pheromones, and the pheromone factor value is correspondingly increased. This strategy aims to accelerate the pheromone accumulation process, enabling the algorithm to converge to a better solution more quickly. Through this adjustment, the search efficiency and performance of the algorithm can be improved. However, as the iteration progresses into the middle and later stages, only a certain proportion of ants are allowed to release pheromones, and the pheromone factor is gradually reduced to 0.1 to ensure stable convergence of the algorithm.</p><p>The steps of the improved ACO are as follows:</p><p>(1) Initialization: Create a city distance matrix D, which is used to store the actual distances between cities. Then, initialize the Tau matrix to zero, which will be used to store the pheromones, the key information that ants use to select paths. Also, initialize the best path Route_best as a zero vector, which will be used to record the best path found in the current iteration. In addition, initialize the best path length Length_best as a zero vector, which will record the total distance of the best path. Finally, initialize the average path length Length_avg as a zero vector, which will be used to record the average path length of all ants in each iteration to monitor the algorithm's performance.</p><p>(2) Main loop: Iterate N_iter times</p><p>a) Randomly generate <inline-formula>
+  <mml:math id="mfzq1ehfu0">
+    <mml:mi>β</mml:mi>
+  </mml:math>
+</inline-formula> and <inline-formula>
+  <mml:math id="mhwnz5mph6">
+    <mml:mi>α</mml:mi>
+  </mml:math>
+</inline-formula> values to calculate the weight for pheromone updates.</p><p>b) Generate TSP paths for N_ants ants: Randomly select a starting tender bud point as the departure point for the ants. Then, based on the current pheromone concentration and the distance between the tender bud coordinate points, calculate the probability of the ants choosing the next tender bud coordinate point. Specifically, the higher the pheromone concentration at a tender bud coordinate point, the greater the likelihood it will be selected; at the same time, the closer the tender bud coordinate point, the higher the probability of selection. Based on these probabilities, a tender bud coordinate point is randomly chosen as the next target and added to the current path.</p><p>c) Calculate the TSP path length for each ant group and update Length_avg.</p><p>d) Update the shortest path and the best path: If the current path is the first iteration or shorter than the last iteration, update the best path and the shortest path length. Otherwise, add the current path to the path table and keep the best path and the shortest path length unchanged.</p><p>e) Update the pheromone Tau matrix: Sort by path length, calculate the pheromone increment, and update the pheromone matrix. Adjust the pheromone evaporation rate and the pheromone increment ratio, and update the Tau matrix.</p><p>(3) Complete the preset iterations and output the global optimal path.</p><p>The relationships between the three major parameters in the algorithm and the actual application scenarios are shown in <xref ref-type="table" rid="table_1">Table 1</xref>.</p>
+          
+            <table-wrap id="table_1">
+              <label>Table 1</label>
+              <caption>
+                <title>Parameter and actual scenario association</title>
+              </caption>
+              <table><tbody><tr><td colspan="1" rowspan="1"><p>Parameter</p></td><td colspan="1" rowspan="1"><p>Physical Meaning</p></td><td colspan="1" rowspan="1"><p>Actual Scenario Mapping</p></td></tr><tr><td colspan="1" rowspan="1"><p>Ant Number</p></td><td colspan="1" rowspan="1"><p>Parallel search ability</p></td><td colspan="1" rowspan="1"><p>Number of robotic arms working together</p></td></tr><tr><td colspan="1" rowspan="1"><p>Pheromone Importance Factor <mml:math id="mimbij7sl8">
+  <mml:mi>α</mml:mi>
+</mml:math></p></td><td colspan="1" rowspan="1"><p>Environmental dynamics</p></td><td colspan="1" rowspan="1"><p>External disturbances like light, wind speed, etc.</p></td></tr><tr><td colspan="1" rowspan="1"><p>Heuristic Function Importance Factor <mml:math id="mmi3pme363">
+  <mml:mi>β</mml:mi>
+</mml:math></p></td><td colspan="1" rowspan="1"><p>Distance sensitivity</p></td><td colspan="1" rowspan="1"><p>Energy consumption constraints of robotic arm movement</p></td></tr></tbody></table>
+            </table-wrap>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.2. Simulation experiment analysis</title>
+          
+          <p>Using MATLAB software, simulations and analyses were conducted for both the traditional ant algorithm and the improved ant algorithm under different tender bud quantities. This method has strong practical value and can effectively solve complex computational problems, promoting the development of science and technology.</p><p>The simulation path programming results for different numbers of buds (10 buds, 20 buds, 30 buds, 40 buds, 50 buds) in the visible area were selected for comparison and analysis. The average results of the shortest picking paths obtained by both methods are shown in <xref ref-type="fig" rid="fig_9">Figure 9</xref>. The research results indicate that, compared to the traditional ant algorithm, the optimized picking path has a smaller convergence speed and a better optimal solution. The reason for this is that the improved ACO can dynamically adjust relevant parameters based on the original pheromone recording rules.</p>
+          
+            <fig id="fig_9">
+              <label>Figure 9</label>
+              <caption>
+                <title>Average shortest path length variation for traditional and improved ACO algorithms</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/2/img_hmYhwJTOfeHKbacX.png"/>
+            </fig>
+          
+          <p>Through computational analysis, it was found that under the 20-bud tender bud distribution, the picking path planning using both the traditional ACO and the improved ACO is shown in <xref ref-type="fig" rid="fig_10">Figure 10</xref>. The average shortest picking path lengths obtained were 1965.55 mm and 1962.04 mm, respectively. The picking path planned by the improved ACO was 0.18% shorter than the classical ACO.</p>
+          
+            <fig id="fig_10">
+              <label>Figure 10</label>
+              <caption>
+                <title>Comparison of picking 20 buds between the traditional and improved ACO algorithms. (a) Before optimization; (b) After optimization</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/2/img_gCX6JSc41Gw2--s0.png"/>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/2/img__SqPrAHs9UKmYGND.png"/>
+            </fig>
+          
+          <p>Through computational analysis, it was found that under the 30-bud tender bud distribution, the picking path planning using both the traditional ACO and the improved ACO is shown in <xref ref-type="fig" rid="fig_11">Figure 11</xref>. The average shortest picking path lengths obtained were 1964.97 mm and 1940.63 mm, respectively. The picking path planned by the improved ACO was 1.24% shorter than the classical ACO.</p>
+          
+            <fig id="fig_11">
+              <label>Figure 11</label>
+              <caption>
+                <title>Comparison of picking 30 buds between the traditional and improved ACO algorithms. (a) Before optimization; (b) After optimization</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/2/img_tUIqkH_xKnNg2mux.png"/>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/2/img_4ChVI7P3te_0yxRx.png"/>
+            </fig>
+          
+          <p>Through computational analysis, it was found that under the 40-bud tender bud distribution, the picking path planning using both the traditional ACO and the improved ACO is shown in <xref ref-type="fig" rid="fig_12">Figure 12</xref>. The average shortest picking path lengths obtained were 2686.43 mm and 2586.02 mm, respectively. The picking path planned by the improved ACO was 3.74% shorter than the classical ACO.</p>
+          
+            <fig id="fig_12">
+              <label>Figure 12</label>
+              <caption>
+                <title>Comparison of picking 40 buds between the traditional and improved ACO algorithms. (a) Before optimization; (b) After optimization</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/2/img_-hXqoOxBSoNkQ-VJ.png"/>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/2/img_vd54RzmJfbGvf8ot.png"/>
+            </fig>
+          
+          <p>Through computational analysis, it was found that under the 50-bud tender bud distribution, the picking path planning using both the traditional ACO and the improved ACO is shown in <xref ref-type="fig" rid="fig_13">Figure 13</xref>. The average shortest picking path lengths obtained were 2820.13 mm and 2762.87 mm, respectively. The picking path planned by the improved ACO was 2.03% shorter than the classical ACO.</p>
+          
+            <fig id="fig_13">
+              <label>Figure 13</label>
+              <caption>
+                <title>Comparison of picking 50 buds between the traditional and improved ACO algorithms. (a) Before optimization; (b) After optimization</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/2/img_ki1jo8A04l0igWRp.png"/>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/2/img_iKt5N0AgCGfPx59c.png"/>
+            </fig>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.3. Algorithm performance analysis in large-scale path planning scenarios</title>
+          
+          <p>To verify the applicability of the improved ACO in large-scale tea picking path planning, experiments were extended to scales of 100-500 buds, evaluating stability, efficiency, and parameter adaptability from three perspectives.</p>
+          
+            <sec>
+              
+                <title>3.3.1 Experimental design</title>
+              
+              <p>(1) Scenario Scale: 100 buds, 200 buds, 500 buds tea plantation environments.</p><p>(2) Comparison Algorithms: Improved ACO and traditional ACO.</p><p>(3) Parameter Settings: Number of ants = 100, <inline-formula>
+  <mml:math id="mcbsu08wsr">
+    <mml:mi>α</mml:mi>
+    <mml:mi>β</mml:mi>
+    <mml:mi>ρ</mml:mi>
+    <mml:mo>∈</mml:mo>
+    <mml:mo>[</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>]</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>∈</mml:mo>
+    <mml:mo>[</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>]</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>=</mml:mo>
+    <mml:mn>0.5</mml:mn>
+    <mml:mn>2</mml:mn>
+    <mml:mn>1</mml:mn>
+    <mml:mn>5</mml:mn>
+    <mml:mn>0.4</mml:mn>
+  </mml:math>
+</inline-formula>.</p><p>(4) Performance Metrics: Path length, runtime, convergence iteration count, result variance (stability).</p>
+            </sec>
+          
+          
+            <sec>
+              
+                <title>3.3.2 Experimental results and comparison</title>
+              
+              <p>Path quality and runtime are shown in <xref ref-type="table" rid="table_2">Table 2</xref>.</p>
+              
+                <table-wrap id="table_2">
+                  <label>Table 2</label>
+                  <caption>
+                    <title>Performance metrics comparison table</title>
+                  </caption>
+                  <table><tbody><tr><td colspan="1" rowspan="1"><p>Number of Buds</p></td><td colspan="1" rowspan="1"><p>Algorithm</p></td><td colspan="1" rowspan="1"><p>Average Path Length (mm)</p></td><td colspan="1" rowspan="1"><p>Runtime (s)</p></td><td colspan="1" rowspan="1"><p>Convergence Iteration Count</p></td></tr><tr><td colspan="1" rowspan="1"><p>100</p></td><td colspan="1" rowspan="1"><p>Improved ACO</p></td><td colspan="1" rowspan="1"><p>4215.32</p></td><td colspan="1" rowspan="1"><p>15.6</p></td><td colspan="1" rowspan="1"><p>120</p></td></tr><tr><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"><p>Traditional ACO</p></td><td colspan="1" rowspan="1"><p>4350.67 (+3.17%)</p></td><td colspan="1" rowspan="1"><p>18.2 (+16.7%)</p></td><td colspan="1" rowspan="1"><p>150</p></td></tr><tr><td colspan="1" rowspan="1"><p>200</p></td><td colspan="1" rowspan="1"><p>Improved ACO</p></td><td colspan="1" rowspan="1"><p>7824.15</p></td><td colspan="1" rowspan="1"><p>68.5</p></td><td colspan="1" rowspan="1"><p>200</p></td></tr><tr><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"><p>Traditional ACO</p></td><td colspan="1" rowspan="1"><p>8150.29 (+4.17%)</p></td><td colspan="1" rowspan="1"><p>85.3 (+24.5%)</p></td><td colspan="1" rowspan="1"><p>250</p></td></tr><tr><td colspan="1" rowspan="1"><p>500</p></td><td colspan="1" rowspan="1"><p>Improved ACO</p></td><td colspan="1" rowspan="1"><p>18540.76</p></td><td colspan="1" rowspan="1"><p>305.2</p></td><td colspan="1" rowspan="1"><p>350</p></td></tr><tr><td colspan="1" rowspan="1"><p> </p></td><td colspan="1" rowspan="1"><p>Traditional ACO</p></td><td colspan="1" rowspan="1"><p>19230.55 (+3.72%)</p></td><td colspan="1" rowspan="1"><p>402.7 (+31.9%)</p></td><td colspan="1" rowspan="1"><p>450</p></td></tr></tbody></table>
+                </table-wrap>
+              
+              <p>Key Conclusions:</p><p>(1) Path Quality: The improved ACO reduces the path length by 3.17% to 4.17% compared to the traditional ACO in the 100-500 bud scenarios, and by 6.51% to 8.2% compared to PSO.</p><p>(2) Efficiency Advantage: The increase in runtime for the improved ACO is significantly lower than that of the traditional ACO (100 buds: +16.7% → 500 buds: +31.9%), verifying the optimization effect of the dynamic parameter strategy on computational resources.</p><p>(3) Stability: The variance of the improved ACO results <inline-formula>
+  <mml:math id="mic3mzaqa5">
+    <mml:mrow>
+      <mml:mo>(</mml:mo>
+      <mml:mo>=</mml:mo>
+      <mml:mo>∼</mml:mo>
+      <mml:mo>)</mml:mo>
+      <mml:msup>
+        <mml:mi>σ</mml:mi>
+        <mml:mn>2</mml:mn>
+      </mml:msup>
+      <mml:mn>12.3</mml:mn>
+      <mml:mn>18.7</mml:mn>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> is lower than that of the traditional ACO <inline-formula>
+  <mml:math id="mefkm7prjk">
+    <mml:mrow>
+      <mml:mo>(</mml:mo>
+      <mml:mo>=</mml:mo>
+      <mml:mo>∼</mml:mo>
+      <mml:mo>)</mml:mo>
+      <mml:msup>
+        <mml:mi>σ</mml:mi>
+        <mml:mn>2</mml:mn>
+      </mml:msup>
+      <mml:mn>25.1</mml:mn>
+      <mml:mn>34.9</mml:mn>
+    </mml:mrow>
+  </mml:math>
+</inline-formula>, indicating that the ranking factor effectively suppresses random fluctuations.</p>
+            </sec>
+          
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>4. Conclusion</title>
+      <p>In practical applications, although ACO has many advantages over other intelligent path planning algorithms, it also faces challenges when handling complex and dynamic tea picking path planning problems. For example, ACO may exhibit slower convergence speed and are at risk of falling into local optima, which can reduce search efficiency and limit the discovery of global optimal solutions. Additionally, the convergence performance of the algorithm may not be stable, sometimes leading to premature convergence or stagnation.</p><p>To address the above issues and fully utilize the performance of the tea picking robotic arm while reducing the travel time between tender bud picking points, the dynamic parameter optimization ACO proposed in this paper optimizes the tea picking robotic arm's planned picking path. The picking paths for different numbers of tender buds are simulated and compared with the average shortest picking path length of the traditional ACO.</p><p>The simulation results show that using the dynamic parameter optimization method of the traditional ACO successfully shortened the path length, significantly reduced the picking time of the tea picking robotic arm, and improved the efficiency of the tea picking robotic arm’s path planning, making it more stable and convergent.</p>
+    </sec>
+  </body>
+  <back>
+    <ack>
+      <title>Acknowledgments</title>
+      
+    </ack>
+    <app-group>
+      <app>
+        <title>Appendix</title>
+        
+      </app>
+    </app-group>
+    <notes>
+      <title>Author Contributions</title>
+      
+    </notes>
+    <notes>
+      <title>Funding</title>
+      
+    </notes>
+    <notes>
+      <title>Informed Consent Statement</title>
+      
+    </notes>
+    <notes>
+      <title>Data Availability Statement</title>
+      <p>The data used to support the research findings are available from the corresponding author upon request.</p>
+    </notes>
+    <notes notes-type="COI-statement">
+      <title>Conflicts of Interest</title>
+      <p>The author declares no conflict of interest.</p>
+    </notes>
+    <ref-list>
+      <title>References</title>
+      <ref id="ref_1">
+        <label>1.</label>
+        <element-citation publication-type="journal">
+          <volume>53</volume>
+          <page-range>236-243</page-range>
+          <year>2019</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Li</surname>
+              <given-names>X. J.</given-names>
+            </name>
+            <name>
+              <surname>Yu</surname>
+              <given-names>D. M.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3103/S0146411619030064</pub-id>
+          <article-title>Study on an optimal path planning for a robot based on an improved ant colony algorithm</article-title>
+          <source>Aut. Control Comp. Sci.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_2">
+        <label>2.</label>
+        <element-citation publication-type="journal">
+          <volume>169</volume>
+          <page-range>103741</page-range>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Guo</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Luo</surname>
+              <given-names>F.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>Z. T.</given-names>
+            </name>
+            <name>
+              <surname>Tong</surname>
+              <given-names>Y. P.</given-names>
+            </name>
+            <name>
+              <surname>Ren</surname>
+              <given-names>Y.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.adhoc.2024.103741</pub-id>
+          <article-title>A schedulability-aware routing algorithm for time sensitive network based on improved ant colony algorithm</article-title>
+          <source>Ad Hoc Netw.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_3">
+        <label>3.</label>
+        <element-citation publication-type="journal">
+          <volume>2540074</volume>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Wang</surname>
+              <given-names>M. F.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1142/S0129156425400749</pub-id>
+          <article-title>Optimal location method of urban and rural emergency shelter based on improved ant colony algorithm</article-title>
+          <source>Int. J. High Speed Electron. Syst.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_4">
+        <label>4.</label>
+        <element-citation publication-type="journal">
+          <volume>10</volume>
+          <page-range>e40134</page-range>
+          <issue>22</issue>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Lingkon</surname>
+              <given-names>M. L. R.</given-names>
+            </name>
+            <name>
+              <surname>Ahmmed</surname>
+              <given-names>M. S.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.heliyon.2024.e40134</pub-id>
+          <article-title>Application of an improved ant colony optimization algorithm of hybrid strategies using scheduling for patient management in hospitals</article-title>
+          <source>Heliyon</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_5">
+        <label>5.</label>
+        <element-citation publication-type="journal">
+          <volume>183</volume>
+          <page-range>104834</page-range>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Fu</surname>
+              <given-names>B.</given-names>
+            </name>
+            <name>
+              <surname>Chen</surname>
+              <given-names>Y. M.</given-names>
+            </name>
+            <name>
+              <surname>Quan</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Zhou</surname>
+              <given-names>X. L.</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>C. S.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.robot.2024.104834</pub-id>
+          <article-title>Bidirectional artificial potential field-based ant colony optimization for robot path planning</article-title>
+          <source>Robotics and Autonomous Systems</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_6">
+        <label>6.</label>
+        <element-citation publication-type="journal">
+          <volume>28</volume>
+          <page-range>12587-12602</page-range>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Akpinar</surname>
+              <given-names>Ş.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1007/s00500-024-10299-9</pub-id>
+          <article-title>An ant colony optimization based hyper-heuristic for the mixed model assembly line balancing problem with setups</article-title>
+          <source>Soft Comput.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_7">
+        <label>7.</label>
+        <element-citation publication-type="journal">
+          <volume>38</volume>
+          <page-range>227-233</page-range>
+          <issue>11</issue>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Wang</surname>
+              <given-names>X. S.</given-names>
+            </name>
+            <name>
+              <surname>Liu</surname>
+              <given-names>L. X.</given-names>
+            </name>
+            <name>
+              <surname>Yang</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Xie</surname>
+              <given-names>J. Y.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Wu</surname>
+              <given-names>J. L.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3969/j.issn.1674-8425(z).2024.06.028</pub-id>
+          <article-title>Path planning for orchard mowers using an improved genetic algorithm</article-title>
+          <source>J. Chongqing Univ. Technol.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_8">
+        <label>8.</label>
+        <element-citation publication-type="journal">
+          <volume>62</volume>
+          <page-range>46-52</page-range>
+          <issue>9</issue>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Deng</surname>
+              <given-names>J. X.</given-names>
+            </name>
+            <name>
+              <surname>Tang</surname>
+              <given-names>H. W.</given-names>
+            </name>
+            <name>
+              <surname>He</surname>
+              <given-names>H. W.</given-names>
+            </name>
+            <name>
+              <surname>Liu</surname>
+              <given-names>S. J.</given-names>
+            </name>
+            <name>
+              <surname>Zhou</surname>
+              <given-names>C. Q.</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>J. L.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3969/j.issn.1673-3142.2024.09.008</pub-id>
+          <article-title>Low-carbon vehicle path planning using an improved simulated annealing algorithm</article-title>
+          <source>Agric. Equip. &amp; Veh. Eng.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_9">
+        <label>9.</label>
+        <element-citation publication-type="journal">
+          <page-range>100-108</page-range>
+          <issue>5</issue>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Wang</surname>
+              <given-names>J. L.</given-names>
+            </name>
+            <name>
+              <surname>Sun</surname>
+              <given-names>C. Y.</given-names>
+            </name>
+            <name>
+              <surname>Lan</surname>
+              <given-names>Y. K.</given-names>
+            </name>
+            <name>
+              <surname>He</surname>
+              <given-names>Y. Z.</given-names>
+            </name>
+            <name>
+              <surname>Ma</surname>
+              <given-names>Z.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.19609/j.cnki.cn10-1324/tp.2024.05.018</pub-id>
+          <article-title>Research on the application of improved genetic algorithm in mobile path planning for warehouse robots</article-title>
+          <source>Robot Ind.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_10">
+        <label>10.</label>
+        <element-citation publication-type="journal">
+          <volume>112</volume>
+          <page-range>296-305</page-range>
+          <year>2017</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Chaouch</surname>
+              <given-names>I.</given-names>
+            </name>
+            <name>
+              <surname>Driss</surname>
+              <given-names>O. B.</given-names>
+            </name>
+            <name>
+              <surname>Ghedira</surname>
+              <given-names>K.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.procs.2017.08.267</pub-id>
+          <article-title>A modified ant colony optimization algorithm for the distributed job shop scheduling problem</article-title>
+          <source>Procedia Comput. Sci.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_11">
+        <label>11.</label>
+        <element-citation publication-type="journal">
+          <volume>24</volume>
+          <page-range>1331-1340</page-range>
+          <issue>3</issue>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Yao</surname>
+              <given-names>Z. F.</given-names>
+            </name>
+            <name>
+              <surname>Xu</surname>
+              <given-names>Y.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3233/JCM-247133</pub-id>
+          <article-title>An improved genetic algorithm for robot path planning</article-title>
+          <source>J. Comput. Methods Sci. Eng.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_12">
+        <label>12.</label>
+        <element-citation publication-type="journal">
+          <volume>241</volume>
+          <page-range>109890</page-range>
+          <year>2021</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Lyridis</surname>
+              <given-names>D. V.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.oceaneng.2021.109890</pub-id>
+          <article-title>An improved ant colony optimization algorithm for unmanned surface vehicle local path planning with multi-modality constraints</article-title>
+          <source>Ocean Eng.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_13">
+        <label>13.</label>
+        <element-citation publication-type="journal">
+          <volume>23</volume>
+          <page-range>11-26</page-range>
+          <year>2015</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Ariyasingha</surname>
+              <given-names>I. D. I. D.</given-names>
+            </name>
+            <name>
+              <surname>Fernando</surname>
+              <given-names>T. G. I.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.swevo.2015.02.003</pub-id>
+          <article-title>Performance analysis of the multi-objective ant colony optimization algorithms for the traveling salesman problem</article-title>
+          <source>Swarm Evol. Comput.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_14">
+        <label>14.</label>
+        <element-citation publication-type="journal">
+          <volume>18</volume>
+          <page-range>3275-3284</page-range>
+          <issue>4</issue>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Shi</surname>
+              <given-names>K.</given-names>
+            </name>
+            <name>
+              <surname>Wu</surname>
+              <given-names>W. D.</given-names>
+            </name>
+            <name>
+              <surname>Wu</surname>
+              <given-names>Z. T.</given-names>
+            </name>
+            <name>
+              <surname>Jiang</surname>
+              <given-names>B. P.</given-names>
+            </name>
+            <name>
+              <surname>Karimi</surname>
+              <given-names>H. R.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1007/s11760-023-02989-y</pub-id>
+          <article-title>Coverage path planning for cleaning robot based on improved simulated annealing algorithm and ant colony algorithm</article-title>
+          <source>Signal Image Video Process.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_15">
+        <label>15.</label>
+        <element-citation publication-type="journal">
+          <volume>252</volume>
+          <page-range>111101</page-range>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Mayilvaganam</surname>
+              <given-names>K.</given-names>
+            </name>
+            <name>
+              <surname>Shrivastava</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Rajagopal</surname>
+              <given-names>P.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.oceaneng.2022.111101</pub-id>
+          <article-title>An optimal coverage path plan for an autonomous vehicle based on polygon decomposition and ant colony optimisation</article-title>
+          <source>Ocean Eng.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_16">
+        <label>16.</label>
+        <element-citation publication-type="journal">
+          <volume>113</volume>
+          <page-range>107877</page-range>
+          <year>2021</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Pasandi</surname>
+              <given-names>L.</given-names>
+            </name>
+            <name>
+              <surname>Hooshmand</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Rahbar</surname>
+              <given-names>M.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.asoc.2021.107877</pub-id>
+          <article-title>Modified A* Algorithm integrated with ant colony optimization for multi-objective route-finding; case study: Yazd</article-title>
+          <source>Appl. Soft Comput.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_17">
+        <label>17.</label>
+        <element-citation publication-type="journal">
+          <page-range>7-10</page-range>
+          <issue>17</issue>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Jiang</surname>
+              <given-names>B. H.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.13612/j.cnki.cntp.2024.17.033</pub-id>
+          <article-title>Improvement of global path planning algorithm for robots based on ant colony algorithm</article-title>
+          <source>New Technol. &amp; New Prod. China</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_18">
+        <label>18.</label>
+        <element-citation publication-type="journal">
+          <volume>37</volume>
+          <page-range>196-203</page-range>
+          <year>2015</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Abdulkader</surname>
+              <given-names>M. M.</given-names>
+            </name>
+            <name>
+              <surname>Gajpal</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Elmekkawy</surname>
+              <given-names>T. Y.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.asoc.2015.08.020</pub-id>
+          <article-title>Hybridized ant colony algorithm for the multi compartment vehicle routing problem</article-title>
+          <source>Appl. Soft Comput.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_19">
+        <label>19.</label>
+        <element-citation publication-type="book">
+          <person-group person-group-type="author">
+            <name>
+              <surname>Ikram</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>D’Adamo</surname>
+              <given-names>I.</given-names>
+            </name>
+            <name>
+              <surname>Jabbour</surname>
+              <given-names>C. J. C.</given-names>
+            </name>
+          </person-group>
+          <article-title>Role of unmanned air vehicles in sustainable supply chain: Queuing theory and ant colony optimization approach</article-title>
+          <source>Computational Intelligence Techniques for Sustainable Supply Chain Management</source>
+          <publisher-name>Academic Press</publisher-name>
+          <year>2024</year>
+          <page-range>57–86</page-range>
+          <pub-id pub-id-type="doi">10.1016/B978-0-443-18464-2.00013-3</pub-id>
+        </element-citation>
+      </ref>
+      <ref id="ref_20">
+        <label>20.</label>
+        <element-citation publication-type="journal">
+          <volume>69</volume>
+          <page-range>100993</page-range>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Skackauskas</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Kalganova</surname>
+              <given-names>T.</given-names>
+            </name>
+            <name>
+              <surname>Dear</surname>
+              <given-names>I.</given-names>
+            </name>
+            <name>
+              <surname>Janakiram</surname>
+              <given-names>M.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.swevo.2021.100993</pub-id>
+          <article-title>Dynamic impact for ant colony optimization algorithm</article-title>
+          <source>Swarm Evol. Comput.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_21">
+        <label>21.</label>
+        <element-citation publication-type="journal">
+          <volume>235</volume>
+          <page-range>109963</page-range>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Bine</surname>
+              <given-names>L. M.</given-names>
+            </name>
+            <name>
+              <surname>Boukerche</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Ruiz</surname>
+              <given-names>L. B.</given-names>
+            </name>
+            <name>
+              <surname>Loureiro</surname>
+              <given-names>A. A.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.comnet.2023.109963</pub-id>
+          <article-title>A novel ant colony-inspired coverage path planning for internet of drones</article-title>
+          <source>Comput. Netw.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_22">
+        <label>22.</label>
+        <element-citation publication-type="journal">
+          <volume>231</volume>
+          <page-range>109983</page-range>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Kato</surname>
+              <given-names>E. R. R.</given-names>
+            </name>
+            <name>
+              <surname>Inoue</surname>
+              <given-names>R. S.</given-names>
+            </name>
+            <name>
+              <surname>Santos Franco</surname>
+              <given-names>L.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.compag.2025.109983</pub-id>
+          <article-title>A method for planning multirotor unmanned aerial vehicle flight paths to cover areas using the ant colony optimization metaheuristic</article-title>
+          <source>Comput. Electron. Agric.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_23">
+        <label>23.</label>
+        <element-citation publication-type="journal">
+          <volume>252</volume>
+          <page-range>404-413</page-range>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Agrawal</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Pal</surname>
+              <given-names>A. K.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.procs.2024.12.041</pub-id>
+          <article-title>Adaptive hybrid genetic-ant colony optimization for dynamic self-healing and network performance optimization in 5G/6G networks</article-title>
+          <source>Procedia Comput. Sci.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_24">
+        <label>24.</label>
+        <element-citation publication-type="journal">
+          <volume>61</volume>
+          <page-range>3403-3415</page-range>
+          <issue>5</issue>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Di Caprio</surname>
+              <given-names>D.</given-names>
+            </name>
+            <name>
+              <surname>Ebrahimnejad</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Alrezaamiri</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Santos-Arteaga</surname>
+              <given-names>F. J.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.aej.2021.08.058</pub-id>
+          <article-title>A novel ant colony algorithm for solving shortest path problems with fuzzy arc weights</article-title>
+          <source>Alexandria Eng. J.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_25">
+        <label>25.</label>
+        <element-citation publication-type="journal">
+          <volume>69</volume>
+          <page-range>101024</page-range>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Rivera</surname>
+              <given-names>G.</given-names>
+            </name>
+            <name>
+              <surname>Coello</surname>
+              <given-names>C. A. C.</given-names>
+            </name>
+            <name>
+              <surname>Cruz-Reyes</surname>
+              <given-names>L.</given-names>
+            </name>
+            <name>
+              <surname>Fernandez</surname>
+              <given-names>E. R.</given-names>
+            </name>
+            <name>
+              <surname>Gomez-Santillan</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Rangel-Valdez</surname>
+              <given-names>N.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.swevo.2021.101024</pub-id>
+          <article-title>Preference incorporation into many-objective optimization: An Ant colony algorithm based on interval outranking</article-title>
+          <source>Swarm Evol. Comput.</source>
+        </element-citation>
+      </ref>
+    </ref-list>
+  </back>
+</article>
