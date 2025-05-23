@@ -1,0 +1,5343 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.3 20210610//EN" "JATS-journalpublishing1-3.dtd">
+<article xml:lang="en" dtd-version="1.3" article-type="research-article" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mml="http://www.w3.org/1998/Math/MathML">
+  <front>
+    <journal-meta>
+      <journal-id journal-id-type="publisher-id">ATAIML</journal-id>
+      <journal-id journal-id-type="doi">10.56578</journal-id>
+      <journal-title-group>
+        <journal-title>Acadlore Transactions on AI and Machine Learning</journal-title>
+        <abbrev-journal-title abbrev-type="issn">Acadlore Trans. Mach. Learn.</abbrev-journal-title>
+        <abbrev-journal-title abbrev-type="publisher">ATAIML</abbrev-journal-title>
+      </journal-title-group>
+      <issn publication-format="electronic">2957-9570</issn>
+      <issn publication-format="print">2957-9562</issn>
+      <publisher>
+        <publisher-name>Acadlore</publisher-name>
+      </publisher>
+    </journal-meta>
+    <article-meta>
+      <article-id pub-id-type="publisher-id">AR-K-_TcaiXAK_8E6SHSR5yYr99ryvsGorB</article-id>
+      <article-id pub-id-type="doi">10.56578/ataiml040205</article-id>
+      <article-categories>
+        <subj-group>
+          <subject>Articles</subject>
+        </subj-group>
+      </article-categories>
+      <title-group>
+        <article-title>A Stable Region-Based Image Segmentation Model Integrating Fuzzy Logic and Geometric Principles</article-title>
+      </title-group>
+      <contrib-group>
+        <contrib contrib-type="author" rid="aff_1">
+          <contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0000-0001-7540-6265</contrib-id>
+          <name>
+            <surname>Hussain</surname>
+            <given-names>Ibrar</given-names>
+          </name>
+          <email>ibrar786@uop.edu.pk</email>
+        </contrib>
+        <aff id="aff_1">Department of Mathematics, University of Peshawar, 25120 Peshawar, Pakistan</aff>
+      </contrib-group>
+      <pub-date publication-format="electronic" date-type="pub">
+        <day>22</day>
+        <month>05</month>
+        <year>2025</year>
+      </pub-date>
+      <volume>4</volume>
+      <issue>2</issue>
+      <fpage>124</fpage>
+      <lpage>136</lpage>
+      <page-range>124-136</page-range>
+      <history>
+        <date date-type="received">
+          <day>27</day>
+          <month>03</month>
+          <year>2025</year>
+        </date>
+        <date date-type="accepted">
+          <day>16</day>
+          <month>05</month>
+          <year>2025</year>
+        </date>
+      </history>
+      <permissions>
+        <copyright-statement>©2025 by the author(s)</copyright-statement>
+        <copyright-year>2025</copyright-year>
+        <license license-type="open-access" xlink:href="https://creativecommons.org/licenses/by/4.0/">
+          <license-p> Published by Acadlore Publishing Services Limited, Hong Kong. This article is available for free download and can be reused and cited, provided that the original published version is credited, under the CC BY 4.0 license.</license-p>
+        </license>
+      </permissions>
+      <abstract><p>Image segmentation remains a foundational task in computer vision, remote sensing, medical imaging, and object detection, serving as a critical step in delineating object boundaries and extracting meaningful regions from complex visual data. However, conventional segmentation methods often exhibit limited robustness in the presence of noise, intensity inhomogeneity, and intricate region geometries. To address these challenges, a novel segmentation framework was developed, integrating fuzzy logic with geometric principles. Uncertainty and overlapping intensity distributions within regions were modeled through fuzzy membership functions, allowing for more flexible and resilient region characterization. Simultaneously, geometric principles—specifically image gradients and curvature—were incorporated to guide boundary evolution, thereby improving delineation precision. A fuzzy energy functional was constructed to jointly optimize region homogeneity, edge preservation, and boundary smoothness. This functional was minimized through an iterative level-set evolution process, allowing dynamic adaptation to varying image characteristics while maintaining computational efficiency. The proposed model demonstrated robust performance across diverse image modalities, including those with high noise levels and complex regional structures, outperforming traditional methods in terms of segmentation accuracy and stability. Its applicability to tasks demanding high-precision region-based analysis highlights its potential for widespread deployment in advanced imaging applications.</p></abstract>
+      <kwd-group>
+        <kwd>Image segmentation</kwd>
+        <kwd>Fuzzy membership function</kwd>
+        <kwd>Geometric principles</kwd>
+        <kwd>Stability</kwd>
+        <kwd>Noise robustness</kwd>
+        <kwd>Level-set method</kwd>
+      </kwd-group>
+      <counts>
+        <count count-type="contributors" count="1"/>
+        <fig-count count="4"/>
+        <table-count count="1"/>
+        <ref-count count="24"/>
+      </counts>
+    </article-meta>
+  </front>
+  <body>
+    <sec sec-type="intro">
+      <title>1. Introduction</title>
+      <p>Dividing an image into distinct, interpretable regions is a core task in image analysis and computer vision. This process, known as image segmentation, is essential for enabling detailed interpretation and is widely applied in areas like healthcare diagnostics, satellite image analysis, and automated industrial systems. Despite notable progress in this area, segmenting images with inhomogeneous intensity, noise, and blurry transitions remains a significant challenge [<xref ref-type="bibr" rid="ref_1">1</xref>], [<xref ref-type="bibr" rid="ref_2">2</xref>], [<xref ref-type="bibr" rid="ref_3">3</xref>], [<xref ref-type="bibr" rid="ref_4">4</xref>]. Achieving precise segmentation is critical for subsequent tasks like object detection and scene understanding. Over time, a wide array of methods has been developed to address image segmentation, underscoring its importance in applications like medical diagnostics, remote sensing, and autonomous systems [<xref ref-type="bibr" rid="ref_5">5</xref>], [<xref ref-type="bibr" rid="ref_6">6</xref>], [<xref ref-type="bibr" rid="ref_7">7</xref>], [<xref ref-type="bibr" rid="ref_8">8</xref>].</p><p>Contour-based segmentation techniques, especially those built on the level-set methodology, have gained prominence for their balance between computational efficiency and accuracy. These approaches are generally divided into two categories: edge-driven [<xref ref-type="bibr" rid="ref_9">9</xref>], [<xref ref-type="bibr" rid="ref_10">10</xref>], [<xref ref-type="bibr" rid="ref_11">11</xref>], [<xref ref-type="bibr" rid="ref_12">12</xref>], [<xref ref-type="bibr" rid="ref_13">13</xref>], [<xref ref-type="bibr" rid="ref_14">14</xref>] and region-driven models [<xref ref-type="bibr" rid="ref_15">15</xref>], [<xref ref-type="bibr" rid="ref_16">16</xref>], [<xref ref-type="bibr" rid="ref_17">17</xref>], [<xref ref-type="bibr" rid="ref_18">18</xref>]. Region-based methods, in particular, rely on the statistical characteristics of pixel intensities within defined areas, rather than on image gradients. This makes them more effective in handling challenges such as image noise and indistinct boundaries. By leveraging contextual information from broader regions, these models tend to produce more consistent and accurate segmentation outcomes. However, they struggle with intensity inhomogeneity, as variations within an object’s region can mislead the segmentation process. Additionally, region-based methods assume homogeneity within each segmented region, which is not always valid in complex images containing texture variations or non-uniform lighting conditions.</p><p>Edge-based ACMs, in contrast, rely on gradient information to guide the contour toward object boundaries. While effective in well-structured images with clear edges, they suffer in the presence of noise, weak boundaries, or blurred edges. Many real-world images, such as medical and remote sensing images, contain low-contrast boundaries that edge-based ACMs fail to detect accurately. Furthermore, these models are sensitive to initial contour placement, requiring careful parameter tuning to ensure convergence toward the correct object boundaries. Among region-based approaches, the level-set variational method proposed by Niaz et al. [<xref ref-type="bibr" rid="ref_15">15</xref>] has gained significant recognition for its ability to segment images into two homogeneous regions. However, it encounters difficulties in handling images with intensity inhomogeneity, noise, or textured regions. Its reliance on global intensity averages makes it less effective in cases where objects exhibit gradual intensity variations, often leading to segmentation leakage or incomplete boundary detection.</p><p>Traditional segmentation techniques, such as thresholding, edge detection, and region growing, also struggle in handling complex images. These methods typically assume well-defined intensity distributions or sharp boundaries, making them ineffective when dealing with overlapping structures, occlusions, or objects with smooth transitions between regions. Machine learning-based segmentation methods, including deep learning models, have shown great success in many applications [<xref ref-type="bibr" rid="ref_19">19</xref>], [<xref ref-type="bibr" rid="ref_20">20</xref>]. However, they come with their own set of limitations. These models require large annotated datasets for training, which may not always be available, especially in specialized domains like medical imaging. Their performance is also highly dependent on training data quality, making them less adaptable to variations in illumination, contrast, or texture. Furthermore, deep learning models often act as black boxes, lacking interpretability and requiring substantial computational resources, which can limit their applicability in real-time or resource-constrained environments.</p><p>To overcome these limitations, numerous extensions and improvements have been proposed. The Segment Anything Model (SAM) for medical image analysis, introduced by Mazurowski et al. [<xref ref-type="bibr" rid="ref_21">21</xref>], represents a significant advancement in image segmentation tasks. This model leverages the power of foundation models, providing a flexible and generalizable framework for segmenting various medical images without requiring extensive retraining. Its significance lies in its ability to handle diverse medical imaging modalities, potentially improving diagnostic accuracy and efficiency across multiple healthcare domains. However, a key limitation of SAM is that the model may struggle with domain-specific challenges such as noise, low contrast, and complex anatomical structures, highlighting the need for further optimization and adaptation for medical applications.</p><p>The improved level-set image segmentation method proposed by Zhang et al. [<xref ref-type="bibr" rid="ref_22">22</xref>] addresses the limitations of traditional level-set models, particularly their robustness to weak boundaries and strong noise. The methodology integrates a no-weight initialization approach with bilateral filters and implicit surface level sets to enhance edge detection and noise reduction during the evolution process. This allows for more accurate and intuitive extraction of target image contours. The experimental results demonstrate superior edge contour extraction and noise reduction compared to conventional non-reinitialized level-set models. However, while the method shows promise in improving segmentation accuracy and computational efficiency, its reliance on specific parameter tuning and the complexity of bilateral filtering may limit its generalizability to diverse datasets or real-time applications.</p><p>The proposed integration of fuzzy logic and geometric principles offers a powerful solution to the limitations of traditional segmentation methods by enhancing adaptability, robustness, and accuracy in complex image scenarios. Fuzzy logic-based models have been employed to address uncertainties and ambiguities at object boundaries, making them particularly useful for handling intensity inhomogeneity, noise, and gradual transitions between regions—challenges that often degrade the performance of conventional ACMs and machine learning-based approaches. Unlike region-based ACMs that assume intensity homogeneity or edge-based ones that depend on strong gradients, fuzzy functions allow for a more flexible representation of object boundaries, ensuring more accurate segmentation even in low-contrast and textured images. Meanwhile, geometric principles play a crucial role in refining contour evolution by enforcing smoothness constraints and preventing segmentation leakage, which is a common issue in the Chan–Vese model and other region-based approaches. By integrating these two complementary techniques, the proposed model achieves superior segmentation performance, particularly in challenging scenarios where traditional methods struggle. This combination not only enhances boundary localization but also improves robustness against noise and illumination variations, providing a more adaptive and efficient framework for image segmentation.</p><p>The integration of Einstein aggregation operations within the fuzzy energy functional enhances the segmentation process by effectively handling uncertainty and overlapping intensities. Unlike classical Zadeh operators, which employ standard fuzzy set operations, the Einstein aggregation product rule provides a nonlinear combination of fuzzy memberships, allowing for a more balanced and adaptive fusion of information. This property enables the proposed model to better preserve fine structural details while mitigating the influence of noise and intensity variations. Compared to traditional fuzzy operators, the Einstein product rule offers improved robustness in cases where image regions exhibit gradual transitions, leading to more precise segmentation results. The effectiveness of this approach is further demonstrated through experimental comparisons, highlighting its advantages in achieving accurate and reliable segmentation across diverse imaging conditions.</p><p>The proposed segmentation model introduces several innovative elements:</p><p>• Fuzzy membership functions: The model employs fuzzy Einstein geometric aggregate operators to classify pixels into regions based on their intensity values. These functions effectively capture the uncertainty and overlapping distributions, enabling robust region classification.</p><p>• Curvature-aware aggregation using Einstein operators: This approach incorporates local geometric features into fuzzy classification, allowing segmentation boundaries to follow the natural contours of the image more smoothly. By combining curvature constraints with Einstein aggregation, the method enhances segmentation robustness, reducing sensitivity to noise and improving the accuracy of distinguishing between different regions.</p><p>• Fuzzy energy functional: A fuzzy energy functional is formulated by combining fuzzy membership functions, geometric features, and regularization terms. This functional governs the segmentation process, balancing region homogeneity, edge preservation, and boundary smoothness.</p><p>• Level-set evolution: The boundary evolution is modeled using a level-set function, which represents the evolving boundaries in a continuous domain. The energy functional drives the evolution, ensuring adaptive and precise segmentation.</p>
+      
+        <sec>
+          
+            <title>1.1. Novelty and significance of the proposed model</title>
+          
+          <p>The developed model overcomes the shortcomings observed in conventional segmentation techniques by offering a unified framework that combines fuzzy logic and geometric principles, specifically leveraging fuzzy Einstein geometric aggregate operators to enhance segmentation accuracy. Unlike traditional fuzzy logic-based segmentation techniques, which often rely on standard fuzzy membership functions and simple aggregation rules, the proposed approach introduces Einstein geometric operators to achieve more precise fusion of intensity and spatial information. This enhancement allows for better differentiation between object boundaries and background regions, particularly in images with complex intensity distributions. </p><p>Compared to existing geometric-based models, which primarily focus on curvature constraints and variational energy functionals, the proposed method introduces a more adaptive energy formulation that integrates fuzzy uncertainty modeling with geometric boundary refinement. This synergy improves the robustness of segmentation in challenging conditions such as intensity inhomogeneity, noise, and blurry transitions. Additionally, by formulating the segmentation process within a unified energy functional, the proposed approach ensures a balanced trade-off between region homogeneity, edge preservation, and boundary smoothness, leading to superior segmentation performance. </p><p>One of the key advantages of the proposed approach is its computational efficiency. Traditional fuzzy segmentation methods often involve iterative optimization techniques with high computational costs, while deep learning-based approaches require extensive labeled datasets and significant computational resources. In contrast, the proposed model maintains computational feasibility by utilizing Einstein geometric aggregation, which efficiently refines boundary evolution without requiring complex training processes. However, a potential trade-off is the reliance on parameter selection for optimal performance, which may require tuning for different imaging contexts. </p><p>The versatility of the proposed model makes it suitable for diverse applications as follows: </p><p>• Medical imaging: Accurate segmentation of tumors, lesions, and anatomical structures in medical images, even in the presence of intensity inhomogeneity and noise. Unlike conventional fuzzy clustering methods, the proposed model adapts to variations in tissue intensity while preserving anatomical boundaries.</p><p>• Remote sensing: Delineation of land cover types, water bodies, and urban areas in satellite images with complex intensity patterns. The integration of fuzzy Einstein geometric aggregation enables improved segmentation of mixed land cover classes. </p><p>• Industrial automation: Precise segmentation of objects in industrial settings, such as quality control and defect detection, where conventional edge-based methods struggle due to variable lighting conditions. </p><p>• Scientific research: Analysis of biological and physical phenomena in various scientific domains requiring robust segmentation methods. The proposed model’s ability to handle noisy and low-contrast data enhances its applicability in experimental research. </p><p>By combining fuzzy logic, geometric constraints, and efficient aggregation operators, the proposed model provides a novel, computationally efficient, and adaptable segmentation framework, distinguishing it from existing methods and offering significant improvements in segmentation accuracy and robustness.</p><p>The structure of the paper is organized as follows. Section 2 reviews the existing literature, summarizing current segmentation methods and outlining their shortcomings. In Section 3, the proposed segmentation framework is introduced, emphasizing its use of fuzzy logic and geometric features to enhance boundary detection. Section 4 outlines the experimental procedures, including the evaluation criteria and the results derived from comprehensive testing. The final section offers a summary of the key findings and discusses possible avenues for future investigation.</p>
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>2. Related work</title>
+      <p>Shi and Hussain [<xref ref-type="bibr" rid="ref_23">23</xref>] introduced a novel approach to enhance the robustness of region-based ACMs for image segmentation, addressing challenges such as noise sensitivity and intensity variations. By integrating average convolution with entropy-based mean gray level values, the proposed model incorporates local statistical information through a local similarity factor and a local region relative entropy, resulting in a robust energy functional. The energy functional is given by: </p>
+      
+        <disp-formula>
+          <label>(1)</label>
+          <mml:math id="mferdu3s3i">
+            <mml:mtable displaystyle="true" columnalign="right left" columnspacing="0em" rowspacing="3pt">
+              <mml:mtr>
+                <mml:mtd>
+                  <mml:msub>
+                    <mml:mi>E</mml:mi>
+                    <mml:mrow>
+                      <mml:mrow>
+                        <mml:mo>(</mml:mo>
+                        <mml:mo>,</mml:mo>
+                        <mml:mo>,</mml:mo>
+                        <mml:mo>)</mml:mo>
+                        <mml:mi>ψ</mml:mi>
+                        <mml:msub>
+                          <mml:mi>a</mml:mi>
+                          <mml:mn>1</mml:mn>
+                        </mml:msub>
+                        <mml:msub>
+                          <mml:mi>a</mml:mi>
+                          <mml:mn>2</mml:mn>
+                        </mml:msub>
+                      </mml:mrow>
+                    </mml:mrow>
+                  </mml:msub>
+                  <mml:mo>=</mml:mo>
+                </mml:mtd>
+                <mml:mtd>
+                  <mml:msub>
+                    <mml:mi>α</mml:mi>
+                    <mml:mn>1</mml:mn>
+                  </mml:msub>
+                  <mml:mrow>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo fence="true"/>
+                    <mml:msub>
+                      <mml:mo>∫</mml:mo>
+                      <mml:mrow>
+                        <mml:mrow>
+                          <mml:mo>(</mml:mo>
+                          <mml:mo>∈</mml:mo>
+                          <mml:mo>)</mml:mo>
+                          <mml:msub>
+                            <mml:mi>η</mml:mi>
+                            <mml:mn>2</mml:mn>
+                          </mml:msub>
+                          <mml:msub>
+                            <mml:mrow>
+                              <mml:mi data-mjx-auto-op="false">Nbh</mml:mi>
+                            </mml:mrow>
+                            <mml:mi>y</mml:mi>
+                          </mml:msub>
+                        </mml:mrow>
+                      </mml:mrow>
+                    </mml:msub>
+                    <mml:msub>
+                      <mml:mrow>
+                        <mml:mi>H</mml:mi>
+                        <mml:mi>a</mml:mi>
+                        <mml:mi>v</mml:mi>
+                      </mml:mrow>
+                      <mml:mi>ϵ</mml:mi>
+                    </mml:msub>
+                    <mml:mfrac>
+                      <mml:mn>1</mml:mn>
+                      <mml:mi>N</mml:mi>
+                    </mml:mfrac>
+                    <mml:mrow>
+                      <mml:mo>(</mml:mo>
+                      <mml:mo>)</mml:mo>
+                      <mml:msup>
+                        <mml:mrow>
+                          <mml:mo>|</mml:mo>
+                          <mml:mo>∗</mml:mo>
+                          <mml:mo>−</mml:mo>
+                          <mml:mo>−</mml:mo>
+                          <mml:mo>|</mml:mo>
+                          <mml:mi>h</mml:mi>
+                          <mml:mi>J</mml:mi>
+                          <mml:mi>J</mml:mi>
+                          <mml:mrow>
+                            <mml:mo>(</mml:mo>
+                            <mml:mo>,</mml:mo>
+                            <mml:mo>)</mml:mo>
+                            <mml:msub>
+                              <mml:mi>η</mml:mi>
+                              <mml:mn>1</mml:mn>
+                            </mml:msub>
+                            <mml:msub>
+                              <mml:mi>η</mml:mi>
+                              <mml:mn>2</mml:mn>
+                            </mml:msub>
+                          </mml:mrow>
+                          <mml:mrow>
+                            <mml:mo>(</mml:mo>
+                            <mml:mo>,</mml:mo>
+                            <mml:mo>)</mml:mo>
+                            <mml:msub>
+                              <mml:mi>η</mml:mi>
+                              <mml:mn>1</mml:mn>
+                            </mml:msub>
+                            <mml:msub>
+                              <mml:mi>η</mml:mi>
+                              <mml:mn>2</mml:mn>
+                            </mml:msub>
+                          </mml:mrow>
+                          <mml:msub>
+                            <mml:mi>a</mml:mi>
+                            <mml:mn>1</mml:mn>
+                          </mml:msub>
+                        </mml:mrow>
+                        <mml:mn>2</mml:mn>
+                      </mml:msup>
+                    </mml:mrow>
+                    <mml:mrow>
+                      <mml:mo>(</mml:mo>
+                      <mml:mo>)</mml:mo>
+                      <mml:mi>ψ</mml:mi>
+                      <mml:mrow>
+                        <mml:mo>(</mml:mo>
+                        <mml:mo>)</mml:mo>
+                        <mml:msub>
+                          <mml:mi>η</mml:mi>
+                          <mml:mn>1</mml:mn>
+                        </mml:msub>
+                      </mml:mrow>
+                    </mml:mrow>
+                    <mml:mi>d</mml:mi>
+                    <mml:mi>η</mml:mi>
+                  </mml:mrow>
+                </mml:mtd>
+              </mml:mtr>
+              <mml:mtr>
+                <mml:mtd/>
+                <mml:mtd>
+                  <mml:mrow>
+                    <mml:mo fence="true"/>
+                    <mml:mo>+</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:msub>
+                      <mml:mo>∫</mml:mo>
+                      <mml:mrow>
+                        <mml:mrow>
+                          <mml:mo>(</mml:mo>
+                          <mml:mo>∈</mml:mo>
+                          <mml:mo>)</mml:mo>
+                          <mml:msub>
+                            <mml:mi>η</mml:mi>
+                            <mml:mn>2</mml:mn>
+                          </mml:msub>
+                          <mml:msub>
+                            <mml:mrow>
+                              <mml:mi data-mjx-auto-op="false">Nbh</mml:mi>
+                            </mml:mrow>
+                            <mml:mi>y</mml:mi>
+                          </mml:msub>
+                        </mml:mrow>
+                      </mml:mrow>
+                    </mml:msub>
+                    <mml:mfrac>
+                      <mml:mn>1</mml:mn>
+                      <mml:mi>N</mml:mi>
+                    </mml:mfrac>
+                    <mml:mrow>
+                      <mml:mo>(</mml:mo>
+                      <mml:mo>)</mml:mo>
+                      <mml:msup>
+                        <mml:mrow>
+                          <mml:mo>|</mml:mo>
+                          <mml:mo>∗</mml:mo>
+                          <mml:mo>−</mml:mo>
+                          <mml:mo>−</mml:mo>
+                          <mml:mo>|</mml:mo>
+                          <mml:mi>h</mml:mi>
+                          <mml:mi>J</mml:mi>
+                          <mml:mi>J</mml:mi>
+                          <mml:mrow>
+                            <mml:mo>(</mml:mo>
+                            <mml:mo>,</mml:mo>
+                            <mml:mo>)</mml:mo>
+                            <mml:msub>
+                              <mml:mi>η</mml:mi>
+                              <mml:mn>1</mml:mn>
+                            </mml:msub>
+                            <mml:msub>
+                              <mml:mi>η</mml:mi>
+                              <mml:mn>2</mml:mn>
+                            </mml:msub>
+                          </mml:mrow>
+                          <mml:mrow>
+                            <mml:mo>(</mml:mo>
+                            <mml:mo>,</mml:mo>
+                            <mml:mo>)</mml:mo>
+                            <mml:msub>
+                              <mml:mi>η</mml:mi>
+                              <mml:mn>1</mml:mn>
+                            </mml:msub>
+                            <mml:msub>
+                              <mml:mi>η</mml:mi>
+                              <mml:mn>2</mml:mn>
+                            </mml:msub>
+                          </mml:mrow>
+                          <mml:msub>
+                            <mml:mi>a</mml:mi>
+                            <mml:mn>2</mml:mn>
+                          </mml:msub>
+                        </mml:mrow>
+                        <mml:mn>2</mml:mn>
+                      </mml:msup>
+                    </mml:mrow>
+                    <mml:mrow>
+                      <mml:mo>(</mml:mo>
+                      <mml:mo>−</mml:mo>
+                      <mml:mo>)</mml:mo>
+                      <mml:mn>1</mml:mn>
+                      <mml:msub>
+                        <mml:mrow>
+                          <mml:mi>H</mml:mi>
+                          <mml:mi>a</mml:mi>
+                          <mml:mi>v</mml:mi>
+                        </mml:mrow>
+                        <mml:mi>ϵ</mml:mi>
+                      </mml:msub>
+                      <mml:mrow>
+                        <mml:mo>(</mml:mo>
+                        <mml:mo>)</mml:mo>
+                        <mml:mi>ψ</mml:mi>
+                        <mml:mrow>
+                          <mml:mo>(</mml:mo>
+                          <mml:mo>)</mml:mo>
+                          <mml:msub>
+                            <mml:mi>η</mml:mi>
+                            <mml:mn>1</mml:mn>
+                          </mml:msub>
+                        </mml:mrow>
+                      </mml:mrow>
+                    </mml:mrow>
+                    <mml:mi>d</mml:mi>
+                    <mml:mi>η</mml:mi>
+                  </mml:mrow>
+                </mml:mtd>
+              </mml:mtr>
+              <mml:mtr>
+                <mml:mtd/>
+                <mml:mtd>
+                  <mml:mi/>
+                  <mml:mo>+</mml:mo>
+                  <mml:msub>
+                    <mml:mi>α</mml:mi>
+                    <mml:mn>2</mml:mn>
+                  </mml:msub>
+                  <mml:mrow>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo fence="true"/>
+                    <mml:msub>
+                      <mml:mo>∫</mml:mo>
+                      <mml:mrow>
+                        <mml:mrow>
+                          <mml:mo>(</mml:mo>
+                          <mml:mo>∈</mml:mo>
+                          <mml:mo>)</mml:mo>
+                          <mml:msub>
+                            <mml:mi>η</mml:mi>
+                            <mml:mn>2</mml:mn>
+                          </mml:msub>
+                          <mml:msub>
+                            <mml:mrow>
+                              <mml:mi data-mjx-auto-op="false">Nbh</mml:mi>
+                            </mml:mrow>
+                            <mml:mi>y</mml:mi>
+                          </mml:msub>
+                        </mml:mrow>
+                      </mml:mrow>
+                    </mml:msub>
+                    <mml:msub>
+                      <mml:mrow>
+                        <mml:mi>H</mml:mi>
+                        <mml:mi>a</mml:mi>
+                        <mml:mi>v</mml:mi>
+                      </mml:mrow>
+                      <mml:mi>ϵ</mml:mi>
+                    </mml:msub>
+                    <mml:msup>
+                      <mml:mrow>
+                        <mml:mo>|</mml:mo>
+                        <mml:mo>−</mml:mo>
+                        <mml:mo>|</mml:mo>
+                        <mml:mi>J</mml:mi>
+                        <mml:mrow>
+                          <mml:mo>(</mml:mo>
+                          <mml:mo>,</mml:mo>
+                          <mml:mo>)</mml:mo>
+                          <mml:msub>
+                            <mml:mi>η</mml:mi>
+                            <mml:mn>1</mml:mn>
+                          </mml:msub>
+                          <mml:msub>
+                            <mml:mi>η</mml:mi>
+                            <mml:mn>2</mml:mn>
+                          </mml:msub>
+                        </mml:mrow>
+                        <mml:msub>
+                          <mml:mi>b</mml:mi>
+                          <mml:mn>1</mml:mn>
+                        </mml:msub>
+                      </mml:mrow>
+                      <mml:mn>2</mml:mn>
+                    </mml:msup>
+                    <mml:mrow>
+                      <mml:mo>(</mml:mo>
+                      <mml:mo>)</mml:mo>
+                      <mml:mi>ψ</mml:mi>
+                      <mml:mrow>
+                        <mml:mo>(</mml:mo>
+                        <mml:mo>)</mml:mo>
+                        <mml:msub>
+                          <mml:mi>η</mml:mi>
+                          <mml:mn>1</mml:mn>
+                        </mml:msub>
+                      </mml:mrow>
+                    </mml:mrow>
+                    <mml:mi>d</mml:mi>
+                    <mml:mi>η</mml:mi>
+                  </mml:mrow>
+                </mml:mtd>
+              </mml:mtr>
+              <mml:mtr>
+                <mml:mtd/>
+                <mml:mtd>
+                  <mml:mrow>
+                    <mml:mo fence="true"/>
+                    <mml:mo>+</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:msub>
+                      <mml:mo>∫</mml:mo>
+                      <mml:mrow>
+                        <mml:mrow>
+                          <mml:mo>(</mml:mo>
+                          <mml:mo>∈</mml:mo>
+                          <mml:mo>)</mml:mo>
+                          <mml:msub>
+                            <mml:mi>η</mml:mi>
+                            <mml:mn>2</mml:mn>
+                          </mml:msub>
+                          <mml:msub>
+                            <mml:mrow>
+                              <mml:mi data-mjx-auto-op="false">Nbh</mml:mi>
+                            </mml:mrow>
+                            <mml:mi>y</mml:mi>
+                          </mml:msub>
+                        </mml:mrow>
+                      </mml:mrow>
+                    </mml:msub>
+                    <mml:msup>
+                      <mml:mrow>
+                        <mml:mo>|</mml:mo>
+                        <mml:mo>−</mml:mo>
+                        <mml:mo>|</mml:mo>
+                        <mml:mi>J</mml:mi>
+                        <mml:mrow>
+                          <mml:mo>(</mml:mo>
+                          <mml:mo>,</mml:mo>
+                          <mml:mo>)</mml:mo>
+                          <mml:msub>
+                            <mml:mi>η</mml:mi>
+                            <mml:mn>1</mml:mn>
+                          </mml:msub>
+                          <mml:msub>
+                            <mml:mi>η</mml:mi>
+                            <mml:mn>2</mml:mn>
+                          </mml:msub>
+                        </mml:mrow>
+                        <mml:msub>
+                          <mml:mi>b</mml:mi>
+                          <mml:mn>2</mml:mn>
+                        </mml:msub>
+                      </mml:mrow>
+                      <mml:mn>2</mml:mn>
+                    </mml:msup>
+                    <mml:mrow>
+                      <mml:mo>(</mml:mo>
+                      <mml:mo>−</mml:mo>
+                      <mml:mo>)</mml:mo>
+                      <mml:mn>1</mml:mn>
+                      <mml:msub>
+                        <mml:mrow>
+                          <mml:mi>H</mml:mi>
+                          <mml:mi>a</mml:mi>
+                          <mml:mi>v</mml:mi>
+                        </mml:mrow>
+                        <mml:mi>ϵ</mml:mi>
+                      </mml:msub>
+                      <mml:mrow>
+                        <mml:mo>(</mml:mo>
+                        <mml:mo>)</mml:mo>
+                        <mml:mi>ψ</mml:mi>
+                        <mml:mrow>
+                          <mml:mo>(</mml:mo>
+                          <mml:mo>)</mml:mo>
+                          <mml:msub>
+                            <mml:mi>η</mml:mi>
+                            <mml:mn>1</mml:mn>
+                          </mml:msub>
+                        </mml:mrow>
+                      </mml:mrow>
+                    </mml:mrow>
+                    <mml:mi>d</mml:mi>
+                    <mml:mi>η</mml:mi>
+                  </mml:mrow>
+                </mml:mtd>
+              </mml:mtr>
+              <mml:mtr>
+                <mml:mtd/>
+                <mml:mtd>
+                  <mml:mi/>
+                  <mml:mi>β</mml:mi>
+                  <mml:mi>d</mml:mi>
+                  <mml:mi>η</mml:mi>
+                  <mml:mo>+</mml:mo>
+                  <mml:msub>
+                    <mml:mo>∫</mml:mo>
+                    <mml:mrow>
+                      <mml:mrow>
+                        <mml:mo>(</mml:mo>
+                        <mml:mo>∈</mml:mo>
+                        <mml:mo>)</mml:mo>
+                        <mml:msub>
+                          <mml:mi>η</mml:mi>
+                          <mml:mn>2</mml:mn>
+                        </mml:msub>
+                        <mml:msub>
+                          <mml:mrow>
+                            <mml:mi data-mjx-auto-op="false">Nbh</mml:mi>
+                          </mml:mrow>
+                          <mml:mi>y</mml:mi>
+                        </mml:msub>
+                      </mml:mrow>
+                    </mml:mrow>
+                  </mml:msub>
+                  <mml:msub>
+                    <mml:mi>γ</mml:mi>
+                    <mml:mi>ϵ</mml:mi>
+                  </mml:msub>
+                  <mml:mrow>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:mi>ψ</mml:mi>
+                    <mml:mrow>
+                      <mml:mo>(</mml:mo>
+                      <mml:mo>)</mml:mo>
+                      <mml:msub>
+                        <mml:mi>η</mml:mi>
+                        <mml:mn>1</mml:mn>
+                      </mml:msub>
+                    </mml:mrow>
+                  </mml:mrow>
+                  <mml:mrow>
+                    <mml:mo>|</mml:mo>
+                    <mml:mo>|</mml:mo>
+                    <mml:mi>∇</mml:mi>
+                    <mml:mi>ψ</mml:mi>
+                    <mml:mrow>
+                      <mml:mo>(</mml:mo>
+                      <mml:mo>)</mml:mo>
+                      <mml:msub>
+                        <mml:mi>η</mml:mi>
+                        <mml:mn>1</mml:mn>
+                      </mml:msub>
+                    </mml:mrow>
+                  </mml:mrow>
+                </mml:mtd>
+              </mml:mtr>
+            </mml:mtable>
+          </mml:math>
+        </disp-formula>
+      
+      <p>where, $h<inline-formula>
+  <mml:math id="mbii8vrx2x">
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+  </mml:math>
+</inline-formula>{{J}\left(\eta_1, \eta_2\right)}<inline-formula>
+  <mml:math id="mk6ogqygmv">
+    <mml:mo>;</mml:mo>
+  </mml:math>
+</inline-formula>a_1<inline-formula>
+  <mml:math id="mdyr9ucaop">
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+  </mml:math>
+</inline-formula>b_1<inline-formula>
+  <mml:math id="mzj3vx5yer">
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mo>;</mml:mo>
+  </mml:math>
+</inline-formula>a_2<inline-formula>
+  <mml:math id="mnk8pqrqco">
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+  </mml:math>
+</inline-formula>b_2$ denote the average intensities outside the contour. This energy functional incorporates local image statistics and regularization terms to improve the segmentation process, balancing intensity variations between the interior and exterior of the contour. </p><p>This approach improves segmentation accuracy by effectively distinguishing between interior and exterior regions, even in noisy environments. The significance of the method lies in its potential applications in medical imaging, object detection, and texture classification. However, it relies on parameter tuning and struggles to accurately capture objects in regions with excessive noise or poor visibility, as these conditions hinder its ability to distinguish between the interior and exterior regions effectively. </p><p>The proposed high-precision inhomogeneous image segmentation model based on an adaptive parameter level-set method significantly advances the field of image segmentation [<xref ref-type="bibr" rid="ref_24">24</xref>]. Its use of an adaptive velocity correction function enhances segmentation accuracy, particularly for images with intensity inhomogeneity and weak boundaries, addressing challenges that traditional models often fail to overcome. The mathematical framework of this model is defined as follows: </p>
+      
+        <disp-formula>
+          <label>(2)</label>
+          <mml:math id="mnlh4i0f91">
+            <mml:mtable displaystyle="true" columnalign="right left" columnspacing="0em" rowspacing="3pt">
+              <mml:mtr>
+                <mml:mtd>
+                  <mml:mi>E</mml:mi>
+                  <mml:mi>ϕ</mml:mi>
+                  <mml:mi>x</mml:mi>
+                  <mml:mi>g</mml:mi>
+                  <mml:mi>x</mml:mi>
+                  <mml:mi>v</mml:mi>
+                  <mml:mi>x</mml:mi>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:mo>,</mml:mo>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:mo>,</mml:mo>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:mo>)</mml:mo>
+                </mml:mtd>
+                <mml:mtd>
+                  <mml:mi/>
+                  <mml:mi>μ</mml:mi>
+                  <mml:mi>p</mml:mi>
+                  <mml:mi>∇</mml:mi>
+                  <mml:mi>ϕ</mml:mi>
+                  <mml:mi>x</mml:mi>
+                  <mml:mi>d</mml:mi>
+                  <mml:mi>x</mml:mi>
+                  <mml:mi>λ</mml:mi>
+                  <mml:mi>g</mml:mi>
+                  <mml:mi>x</mml:mi>
+                  <mml:mi>δ</mml:mi>
+                  <mml:mi>ϕ</mml:mi>
+                  <mml:mi>x</mml:mi>
+                  <mml:mi>∇</mml:mi>
+                  <mml:mi>ϕ</mml:mi>
+                  <mml:mi>x</mml:mi>
+                  <mml:mi>d</mml:mi>
+                  <mml:mi>x</mml:mi>
+                  <mml:mo>=</mml:mo>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:mo>+</mml:mo>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:msub>
+                    <mml:mo>∫</mml:mo>
+                    <mml:mrow>
+                      <mml:mi>Ω</mml:mi>
+                    </mml:mrow>
+                  </mml:msub>
+                  <mml:msub>
+                    <mml:mo>∫</mml:mo>
+                    <mml:mrow>
+                      <mml:mi>Ω</mml:mi>
+                    </mml:mrow>
+                  </mml:msub>
+                  <mml:mrow>
+                    <mml:mo>|</mml:mo>
+                  </mml:mrow>
+                  <mml:mrow>
+                    <mml:mo>|</mml:mo>
+                  </mml:mrow>
+                  <mml:mrow>
+                    <mml:mo>|</mml:mo>
+                  </mml:mrow>
+                  <mml:mrow>
+                    <mml:mo>|</mml:mo>
+                  </mml:mrow>
+                </mml:mtd>
+              </mml:mtr>
+              <mml:mtr>
+                <mml:mtd/>
+                <mml:mtd>
+                  <mml:mi/>
+                  <mml:mi>v</mml:mi>
+                  <mml:mi>x</mml:mi>
+                  <mml:mi>g</mml:mi>
+                  <mml:mi>x</mml:mi>
+                  <mml:mi>H</mml:mi>
+                  <mml:mi>ϕ</mml:mi>
+                  <mml:mi>x</mml:mi>
+                  <mml:mi>d</mml:mi>
+                  <mml:mi>x</mml:mi>
+                  <mml:mo>+</mml:mo>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>−</mml:mo>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:msub>
+                    <mml:mo>∫</mml:mo>
+                    <mml:mrow>
+                      <mml:mi>Ω</mml:mi>
+                    </mml:mrow>
+                  </mml:msub>
+                </mml:mtd>
+              </mml:mtr>
+            </mml:mtable>
+          </mml:math>
+        </disp-formula>
+      
+      <p>where, <inline-formula>
+  <mml:math id="mirnkq7hps">
+    <mml:mi>ϕ</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+  </mml:math>
+</inline-formula> is the level-set function that represents the evolving contour used for segmentation, which is initialized as a signed distance function and represents the inside and outside region of the contour; and <inline-formula>
+  <mml:math id="mdkvcnbz2b">
+    <mml:mi>v</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+  </mml:math>
+</inline-formula> is the velocity function, which controls the movement of the contour towards the object region. A positive <inline-formula>
+  <mml:math id="mxls86n1np">
+    <mml:mi>v</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+  </mml:math>
+</inline-formula> attracts the contour to the object boundary, while a negative <inline-formula>
+  <mml:math id="m71u0zeqz3">
+    <mml:mi>v</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+  </mml:math>
+</inline-formula> repels it. In addition, <inline-formula>
+  <mml:math id="muu32g5yec">
+    <mml:mi>μ</mml:mi>
+  </mml:math>
+</inline-formula> is the weight of the penalty term, which stabilizes the evolution of the level-set function by ensuring smoothness and avoiding re-initialization of the function; and <inline-formula>
+  <mml:math id="mhltx7dkmt">
+    <mml:mi>λ</mml:mi>
+  </mml:math>
+</inline-formula> is the weight of the length term, which controls the contribution of the curve evolution to segment the object edges accurately. <inline-formula>
+  <mml:math id="m7eenxh8sa">
+    <mml:mi>g</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+  </mml:math>
+</inline-formula> is the edge-stopping function, which is defined as: </p>
+      
+        <disp-formula>
+          <label>(3)</label>
+          <mml:math id="misnn1prqq">
+            <mml:mi>g</mml:mi>
+            <mml:mi>x</mml:mi>
+            <mml:mo>(</mml:mo>
+            <mml:mo>)</mml:mo>
+            <mml:mo>=</mml:mo>
+            <mml:mfrac>
+              <mml:mn>1</mml:mn>
+              <mml:mrow>
+                <mml:mn>1</mml:mn>
+                <mml:mo>+</mml:mo>
+                <mml:mo>(</mml:mo>
+                <mml:mo>)</mml:mo>
+                <mml:mrow>
+                  <mml:mo>|</mml:mo>
+                </mml:mrow>
+                <mml:mi>∇</mml:mi>
+                <mml:mi>I</mml:mi>
+                <mml:mi>x</mml:mi>
+                <mml:msup>
+                  <mml:mo>|</mml:mo>
+                  <mml:mn>2</mml:mn>
+                </mml:msup>
+              </mml:mrow>
+            </mml:mfrac>
+          </mml:math>
+        </disp-formula>
+      
+      <p>where, <inline-formula>
+  <mml:math id="ms3841233f">
+    <mml:mi>I</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+  </mml:math>
+</inline-formula> is the image intensity, and <inline-formula>
+  <mml:math id="mxachzszo7">
+    <mml:mi>∇</mml:mi>
+    <mml:mi>I</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+  </mml:math>
+</inline-formula> is the gradient of the image. This function slows down the evolution of the curve near object boundaries to improve accuracy. </p><p>Additionally, the incorporation of entropy-based edge stop functions further refines the segmentation by leveraging edge information effectively, ensuring stability even in noisy or low-contrast images. These features make the model particularly suited for applications requiring high precision in complex imaging conditions. However, the approach has limitations, including potentially higher computational costs due to the adaptive parameterization and the need for fine-tuning parameters for specific image datasets. Moreover, the method’s performance may be influenced by the initial contour placement, which could lead to suboptimal segmentation in cases with challenging initializations or ambiguous edge structures. </p>
+    </sec>
+    <sec sec-type="">
+      <title>3. Proposed mathematical approach</title>
+      <p>The segmentation model introduces a robust framework that integrates fuzzy logic with geometric principles to achieve precise and adaptive boundary detection in images. To enhance the robustness of boundary detection and segmentation, fuzzy Einstein geometric aggregate operators were integrated. These operators provide a nonlinear mechanism to aggregate membership values while preserving geometric relationships within the image. Unlike conventional aggregation methods, Einstein operators ensure smoother transitions and improved robustness against noise. By leveraging these operators, a more refined segmentation approach was achieved, which effectively balances membership uncertainties while maintaining structural integrity in images. This functional governs the segmentation process by guiding the evolution of a level-set function, which represents the evolving boundaries in a continuous domain. The proposed approach ensures a balance between region homogeneity, edge preservation, and boundary smoothness, making it well-suited for complex segmentation tasks in diverse imaging contexts. </p><p>a) Einstein sum and product for membership aggregation</p><p>In fuzzy set theory, the aggregation of membership values plays a crucial role in defining region classifications. The Einstein sum and product are two fundamental operators that facilitate nonlinear membership aggregation while preventing overestimation or underestimation of region associations. Given two fuzzy membership values <inline-formula>
+  <mml:math id="mfd59ek0rx">
+    <mml:msub>
+      <mml:mi>μ</mml:mi>
+      <mml:mi>a</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> and <inline-formula>
+  <mml:math id="mw31lfv3ut">
+    <mml:msub>
+      <mml:mi>μ</mml:mi>
+      <mml:mi>b</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula>, the Einstein sum is defined as follows: </p>
+      
+        <disp-formula>
+          <label>(4)</label>
+          <mml:math id="mja122zcxj">
+            <mml:msub>
+              <mml:mi>E</mml:mi>
+              <mml:mrow>
+                <mml:mo>+</mml:mo>
+              </mml:mrow>
+            </mml:msub>
+            <mml:mrow>
+              <mml:mo>(</mml:mo>
+              <mml:mo>,</mml:mo>
+              <mml:mo>)</mml:mo>
+              <mml:msub>
+                <mml:mi>μ</mml:mi>
+                <mml:mi>a</mml:mi>
+              </mml:msub>
+              <mml:msub>
+                <mml:mi>μ</mml:mi>
+                <mml:mi>b</mml:mi>
+              </mml:msub>
+            </mml:mrow>
+            <mml:mo>=</mml:mo>
+            <mml:mfrac>
+              <mml:mrow>
+                <mml:msub>
+                  <mml:mi>μ</mml:mi>
+                  <mml:mi>a</mml:mi>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>μ</mml:mi>
+                  <mml:mi>b</mml:mi>
+                </mml:msub>
+                <mml:mo>+</mml:mo>
+              </mml:mrow>
+              <mml:mrow>
+                <mml:mn>1</mml:mn>
+                <mml:mo>+</mml:mo>
+                <mml:msub>
+                  <mml:mi>μ</mml:mi>
+                  <mml:mi>a</mml:mi>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>μ</mml:mi>
+                  <mml:mi>b</mml:mi>
+                </mml:msub>
+              </mml:mrow>
+            </mml:mfrac>
+          </mml:math>
+        </disp-formula>
+      
+      <p>This operator ensures that the combined membership value remains within a normalized range while adapting to the degree of association between the two memberships. Similarly, the Einstein product is formulated as: </p>
+      
+        <disp-formula>
+          <label>(5)</label>
+          <mml:math id="mu87979jr5">
+            <mml:msub>
+              <mml:mi>E</mml:mi>
+              <mml:mo>∗</mml:mo>
+            </mml:msub>
+            <mml:mrow>
+              <mml:mo>(</mml:mo>
+              <mml:mo>,</mml:mo>
+              <mml:mo>)</mml:mo>
+              <mml:msub>
+                <mml:mi>μ</mml:mi>
+                <mml:mi>a</mml:mi>
+              </mml:msub>
+              <mml:msub>
+                <mml:mi>μ</mml:mi>
+                <mml:mi>b</mml:mi>
+              </mml:msub>
+            </mml:mrow>
+            <mml:mo>=</mml:mo>
+            <mml:mfrac>
+              <mml:mrow>
+                <mml:msub>
+                  <mml:mi>μ</mml:mi>
+                  <mml:mi>a</mml:mi>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>μ</mml:mi>
+                  <mml:mi>b</mml:mi>
+                </mml:msub>
+              </mml:mrow>
+              <mml:mrow>
+                <mml:mn>2</mml:mn>
+                <mml:mo>−</mml:mo>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>+</mml:mo>
+                  <mml:mo>−</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:msub>
+                    <mml:mi>μ</mml:mi>
+                    <mml:mi>a</mml:mi>
+                  </mml:msub>
+                  <mml:msub>
+                    <mml:mi>μ</mml:mi>
+                    <mml:mi>b</mml:mi>
+                  </mml:msub>
+                  <mml:msub>
+                    <mml:mi>μ</mml:mi>
+                    <mml:mi>a</mml:mi>
+                  </mml:msub>
+                  <mml:msub>
+                    <mml:mi>μ</mml:mi>
+                    <mml:mi>b</mml:mi>
+                  </mml:msub>
+                </mml:mrow>
+              </mml:mrow>
+            </mml:mfrac>
+          </mml:math>
+        </disp-formula>
+      
+      <p>This product operator provides an alternative means of membership aggregation that emphasizes geometric consistency while reducing sensitivity to noise or abrupt intensity variations in the image. These operations facilitate a more reliable decision-making process in fuzzy classification models by enhancing membership coherence. </p><p>b) Fuzzy Einstein geometric mean for region classification</p><p>To further improve the classification of regions in an image, the fuzzy Einstein geometric mean was employed, which extends the Einstein aggregation principles to multiple fuzzy membership values. The Einstein geometric mean is defined as: </p>
+      
+        <disp-formula>
+          <label>(6)</label>
+          <mml:math id="mkuyhnm0r4">
+            <mml:msub>
+              <mml:mi>E</mml:mi>
+              <mml:mi>G</mml:mi>
+            </mml:msub>
+            <mml:mrow>
+              <mml:mo>(</mml:mo>
+              <mml:mo>,</mml:mo>
+              <mml:mo>,</mml:mo>
+              <mml:mo>…</mml:mo>
+              <mml:mo>,</mml:mo>
+              <mml:mo>)</mml:mo>
+              <mml:msub>
+                <mml:mi>μ</mml:mi>
+                <mml:mn>1</mml:mn>
+              </mml:msub>
+              <mml:msub>
+                <mml:mi>μ</mml:mi>
+                <mml:mn>2</mml:mn>
+              </mml:msub>
+              <mml:msub>
+                <mml:mi>μ</mml:mi>
+                <mml:mi>n</mml:mi>
+              </mml:msub>
+            </mml:mrow>
+            <mml:mo>=</mml:mo>
+            <mml:msup>
+              <mml:mrow>
+                <mml:mo>(</mml:mo>
+                <mml:mo>)</mml:mo>
+                <mml:munderover>
+                  <mml:mo>∏</mml:mo>
+                  <mml:mrow>
+                    <mml:mi>k</mml:mi>
+                    <mml:mo>=</mml:mo>
+                    <mml:mn>1</mml:mn>
+                  </mml:mrow>
+                  <mml:mi>n</mml:mi>
+                </mml:munderover>
+                <mml:mfrac>
+                  <mml:msub>
+                    <mml:mi>μ</mml:mi>
+                    <mml:mi>k</mml:mi>
+                  </mml:msub>
+                  <mml:mrow>
+                    <mml:mn>2</mml:mn>
+                    <mml:mo>−</mml:mo>
+                    <mml:msub>
+                      <mml:mi>μ</mml:mi>
+                      <mml:mi>k</mml:mi>
+                    </mml:msub>
+                  </mml:mrow>
+                </mml:mfrac>
+              </mml:mrow>
+              <mml:mrow>
+                <mml:mfrac>
+                  <mml:mn>1</mml:mn>
+                  <mml:mi>n</mml:mi>
+                </mml:mfrac>
+              </mml:mrow>
+            </mml:msup>
+          </mml:math>
+        </disp-formula>
+      
+      <p>This operator provides a robust approach for aggregating multiple membership values while maintaining their structural relationships within the image. Unlike arithmetic means, which can introduce distortions in fuzzy classification, the Einstein geometric mean ensures a more stable and accurate representation of membership values. The use of this operator is particularly beneficial in scenarios where image regions exhibit overlapping intensities or gradual transitions between classes.</p><p>c) Curvature-aware aggregation using Einstein operators</p><p>In image segmentation, boundary detection relies heavily on the curvature of region contours. Curvature measures the rate of change of the boundary shape and plays a vital role in ensuring smooth region transitions. By incorporating Einstein aggregation into curvature computations, the segmentation boundaries were refined with enhanced accuracy. Given the curvature <inline-formula>
+  <mml:math id="mz0cd849kn">
+    <mml:mi>K</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+  </mml:math>
+</inline-formula> at a point $x<inline-formula>
+  <mml:math id="mj782yl4k5">
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>z</mml:mi>
+    <mml:mi>z</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+  </mml:math>
+</inline-formula>\mu_r(x)$, the curvature-aware fuzzy membership is defined as:</p>
+      
+        <disp-formula>
+          <label>(7)</label>
+          <mml:math id="mn5m1a3v0o">
+            <mml:msubsup>
+              <mml:mi>μ</mml:mi>
+              <mml:mi>r</mml:mi>
+              <mml:mi>E</mml:mi>
+            </mml:msubsup>
+            <mml:mo>(</mml:mo>
+            <mml:mo>)</mml:mo>
+            <mml:mo>=</mml:mo>
+            <mml:mi>x</mml:mi>
+            <mml:msub>
+              <mml:mi>E</mml:mi>
+              <mml:mrow>
+                <mml:mo>+</mml:mo>
+              </mml:mrow>
+            </mml:msub>
+            <mml:mrow>
+              <mml:mo>(</mml:mo>
+              <mml:mo>(</mml:mo>
+              <mml:mo>)</mml:mo>
+              <mml:mo>,</mml:mo>
+              <mml:mo>(</mml:mo>
+              <mml:mo>)</mml:mo>
+              <mml:mo>)</mml:mo>
+              <mml:msub>
+                <mml:mi>μ</mml:mi>
+                <mml:mi>r</mml:mi>
+              </mml:msub>
+              <mml:mi>x</mml:mi>
+              <mml:mi>K</mml:mi>
+              <mml:mi>x</mml:mi>
+            </mml:mrow>
+          </mml:math>
+        </disp-formula>
+      
+      <p>This formulation integrates local geometric properties into fuzzy classification, ensuring that segmentation boundaries align smoothly with natural contours in the image. The combination of curvature constraints and Einstein aggregation provides a powerful mechanism for noise-resistant segmentation, effectively distinguishing between different regions with improved precision. </p><p>By integrating fuzzy Einstein geometric aggregation operators with gradient- and curvature-based boundary detection, a segmentation framework was established, which is highly robust to intensity variations and noise. The Einstein operators facilitate adaptive region classification, ensuring that regions with similar characteristics are grouped cohesively while maintaining smooth transitions at boundaries. This approach enhances segmentation accuracy and provides a reliable methodology for processing complex image structures. </p>
+      
+        <sec>
+          
+            <title>3.1. Fuzzy energy functional for image segmentation using einstein operators</title>
+          
+          <p>The proposed fuzzy energy functional integrates fuzzy membership functions, geometric operators (gradient and curvature), and Einstein aggregation operators to enhance segmentation robustness. By incorporating the Einstein sum and product, smoother boundary evolution and improved noise resistance were achieved. The updated fuzzy energy functional is formulated as: </p>
+          
+            <disp-formula>
+              <label>(8)</label>
+              <mml:math id="m8fdph8mwr">
+                <mml:msub>
+                  <mml:mi>F</mml:mi>
+                  <mml:mrow>
+                    <mml:mtext>fuzzy </mml:mtext>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mo>∫</mml:mo>
+                  <mml:mrow>
+                    <mml:mi>Ω</mml:mi>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:mo>(</mml:mo>
+                <mml:mo>)</mml:mo>
+                <mml:mo>=</mml:mo>
+                <mml:mi>φ</mml:mi>
+                <mml:mi>d</mml:mi>
+                <mml:mi>x</mml:mi>
+                <mml:mrow>
+                  <mml:mo>[</mml:mo>
+                  <mml:mo>+</mml:mo>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:mo>+</mml:mo>
+                  <mml:mo>]</mml:mo>
+                  <mml:msub>
+                    <mml:mi>E</mml:mi>
+                    <mml:mrow>
+                      <mml:mo>+</mml:mo>
+                    </mml:mrow>
+                  </mml:msub>
+                  <mml:msub>
+                    <mml:mi>ζ</mml:mi>
+                    <mml:mn>1</mml:mn>
+                  </mml:msub>
+                  <mml:msub>
+                    <mml:mi>δ</mml:mi>
+                    <mml:mi>ϵ</mml:mi>
+                  </mml:msub>
+                  <mml:msub>
+                    <mml:mi>ζ</mml:mi>
+                    <mml:mn>2</mml:mn>
+                  </mml:msub>
+                  <mml:msub>
+                    <mml:mi>E</mml:mi>
+                    <mml:mo>∗</mml:mo>
+                  </mml:msub>
+                  <mml:mrow>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:mo>,</mml:mo>
+                    <mml:mo fence="false">‖</mml:mo>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:msub>
+                      <mml:mi>μ</mml:mi>
+                      <mml:mi>r</mml:mi>
+                    </mml:msub>
+                    <mml:mi>x</mml:mi>
+                    <mml:mi>∇</mml:mi>
+                    <mml:mi>φ</mml:mi>
+                    <mml:mi>x</mml:mi>
+                    <mml:msup>
+                      <mml:mo fence="false">‖</mml:mo>
+                      <mml:mn>2</mml:mn>
+                    </mml:msup>
+                  </mml:mrow>
+                  <mml:mrow>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>−</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:msub>
+                      <mml:mi>γ</mml:mi>
+                      <mml:mn>1</mml:mn>
+                    </mml:msub>
+                    <mml:msub>
+                      <mml:mi>γ</mml:mi>
+                      <mml:mn>2</mml:mn>
+                    </mml:msub>
+                  </mml:mrow>
+                  <mml:mrow>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo fence="false">‖</mml:mo>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:mo>,</mml:mo>
+                    <mml:mo>⋅</mml:mo>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:mi>∇</mml:mi>
+                    <mml:mi>I</mml:mi>
+                    <mml:mi>x</mml:mi>
+                    <mml:mi>κ</mml:mi>
+                    <mml:mi>x</mml:mi>
+                    <mml:msup>
+                      <mml:mo fence="false">‖</mml:mo>
+                      <mml:mn>2</mml:mn>
+                    </mml:msup>
+                    <mml:msubsup>
+                      <mml:mi>μ</mml:mi>
+                      <mml:mi>r</mml:mi>
+                      <mml:mi>E</mml:mi>
+                    </mml:msubsup>
+                  </mml:mrow>
+                  <mml:mi>φ</mml:mi>
+                </mml:mrow>
+              </mml:math>
+            </disp-formula>
+          
+          <p>where, <inline-formula>
+  <mml:math id="m4e5hh552m">
+    <mml:mi>φ</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+  </mml:math>
+</inline-formula> represents the level-set function that defines the evolving segmentation boundary; and <inline-formula>
+  <mml:math id="msqan1h0yv">
+    <mml:mo fence="false">‖</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo fence="false">‖</mml:mo>
+    <mml:mi>∇</mml:mi>
+    <mml:mi>φ</mml:mi>
+    <mml:mi>x</mml:mi>
+  </mml:math>
+</inline-formula> represents the gradient of the level-set function, enforcing smooth boundary transitions. The Dirac delta function <inline-formula>
+  <mml:math id="mptm1ip73e">
+    <mml:msub>
+      <mml:mi>δ</mml:mi>
+      <mml:mi>ϵ</mml:mi>
+    </mml:msub>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mi>φ</mml:mi>
+  </mml:math>
+</inline-formula> detects the boundary, ensuring localized updates. In addition, <inline-formula>
+  <mml:math id="mfunrcwzho">
+    <mml:msub>
+      <mml:mi>γ</mml:mi>
+      <mml:mn>1</mml:mn>
+    </mml:msub>
+  </mml:math>
+</inline-formula> and <inline-formula>
+  <mml:math id="mh44ukjfoa">
+    <mml:msub>
+      <mml:mi>γ</mml:mi>
+      <mml:mn>2</mml:mn>
+    </mml:msub>
+  </mml:math>
+</inline-formula> regulate regional intensity homogeneity, while <inline-formula>
+  <mml:math id="muzmmwv65k">
+    <mml:msub>
+      <mml:mi>ζ</mml:mi>
+      <mml:mn>1</mml:mn>
+    </mml:msub>
+  </mml:math>
+</inline-formula> and <inline-formula>
+  <mml:math id="m4uimei0ki">
+    <mml:msub>
+      <mml:mi>ζ</mml:mi>
+      <mml:mn>2</mml:mn>
+    </mml:msub>
+  </mml:math>
+</inline-formula> control the influence of fuzzy and geometric terms, respectively. The parameter <inline-formula>
+  <mml:math id="msm8ss261c">
+    <mml:mi>κ</mml:mi>
+  </mml:math>
+</inline-formula> dictates the impact of curvature <inline-formula>
+  <mml:math id="mtczzhodef">
+    <mml:msubsup>
+      <mml:mi>μ</mml:mi>
+      <mml:mi>r</mml:mi>
+      <mml:mi>E</mml:mi>
+    </mml:msubsup>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mi>x</mml:mi>
+  </mml:math>
+</inline-formula> on segmentation. </p><p>The incorporation of Einstein operators enhances the segmentation framework by adapting membership aggregation dynamically: </p><p>• Einstein-enhanced fuzzy term: The Einstein sum <inline-formula>
+  <mml:math id="msyotwagjk">
+    <mml:msub>
+      <mml:mi>E</mml:mi>
+      <mml:mrow>
+        <mml:mo>+</mml:mo>
+      </mml:mrow>
+    </mml:msub>
+    <mml:mrow>
+      <mml:mo>(</mml:mo>
+      <mml:mo>(</mml:mo>
+      <mml:mo>)</mml:mo>
+      <mml:mo>,</mml:mo>
+      <mml:mo fence="false">‖</mml:mo>
+      <mml:mo>(</mml:mo>
+      <mml:mo>)</mml:mo>
+      <mml:mo>)</mml:mo>
+      <mml:msub>
+        <mml:mi>μ</mml:mi>
+        <mml:mi>r</mml:mi>
+      </mml:msub>
+      <mml:mi>x</mml:mi>
+      <mml:mi>∇</mml:mi>
+      <mml:mi>φ</mml:mi>
+      <mml:mi>x</mml:mi>
+      <mml:msup>
+        <mml:mo fence="false">‖</mml:mo>
+        <mml:mn>2</mml:mn>
+      </mml:msup>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> ensures that the fuzzy membership function integrates smoothly with boundary evolution constraints. </p><p>• Einstein-enhanced geometric term: The Einstein product <inline-formula>
+  <mml:math id="m0eidu2wgu">
+    <mml:msub>
+      <mml:mi>E</mml:mi>
+      <mml:mo>∗</mml:mo>
+    </mml:msub>
+    <mml:mrow>
+      <mml:mo>(</mml:mo>
+      <mml:mo fence="false">‖</mml:mo>
+      <mml:mo>(</mml:mo>
+      <mml:mo>)</mml:mo>
+      <mml:mo>,</mml:mo>
+      <mml:mo fence="true"/>
+      <mml:mi>∇</mml:mi>
+      <mml:mi>I</mml:mi>
+      <mml:mi>x</mml:mi>
+      <mml:mi>κ</mml:mi>
+      <mml:msup>
+        <mml:mo fence="false">‖</mml:mo>
+        <mml:mn>2</mml:mn>
+      </mml:msup>
+    </mml:mrow>
+  </mml:math>
+</inline-formula>. <inline-formula>
+  <mml:math id="mx0ku7j020">
+    <mml:mrow>
+      <mml:mo fence="true"/>
+      <mml:mo>(</mml:mo>
+      <mml:mo>)</mml:mo>
+      <mml:mo>)</mml:mo>
+      <mml:msubsup>
+        <mml:mi>μ</mml:mi>
+        <mml:mi>r</mml:mi>
+        <mml:mi>E</mml:mi>
+      </mml:msubsup>
+      <mml:mi>x</mml:mi>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> refines boundary evolution by robustly combining gradient and curvature information. </p><p>• Regularization term: The term <inline-formula>
+  <mml:math id="m8jtzc16kz">
+    <mml:msub>
+      <mml:mi>ζ</mml:mi>
+      <mml:mn>1</mml:mn>
+    </mml:msub>
+    <mml:msub>
+      <mml:mi>δ</mml:mi>
+      <mml:mi>ϵ</mml:mi>
+    </mml:msub>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mi>φ</mml:mi>
+    <mml:mrow>
+      <mml:mo>(</mml:mo>
+      <mml:mo>−</mml:mo>
+      <mml:mo>)</mml:mo>
+      <mml:msub>
+        <mml:mi>γ</mml:mi>
+        <mml:mn>1</mml:mn>
+      </mml:msub>
+      <mml:msub>
+        <mml:mi>γ</mml:mi>
+        <mml:mn>2</mml:mn>
+      </mml:msub>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> ensures stability by preserving homogeneous region characteristics. </p><p>To optimize the energy functional, the level-set method was employed, where the boundary evolves by minimizing <inline-formula>
+  <mml:math id="m4789m67xh">
+    <mml:msub>
+      <mml:mi>F</mml:mi>
+      <mml:mrow>
+        <mml:mtext>fuzzy</mml:mtext>
+      </mml:mrow>
+    </mml:msub>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mi>φ</mml:mi>
+  </mml:math>
+</inline-formula>. The evolution process is governed by the following partial differential equation (PDE): </p>
+          
+            <disp-formula>
+              <label>(9)</label>
+              <mml:math id="mua245u9ci">
+                <mml:mfrac>
+                  <mml:mrow>
+                    <mml:mi>∂</mml:mi>
+                    <mml:mi>φ</mml:mi>
+                    <mml:mi>x</mml:mi>
+                    <mml:mi>t</mml:mi>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>,</mml:mo>
+                    <mml:mo>)</mml:mo>
+                  </mml:mrow>
+                  <mml:mrow>
+                    <mml:mi>∂</mml:mi>
+                    <mml:mi>t</mml:mi>
+                  </mml:mrow>
+                </mml:mfrac>
+                <mml:mfrac>
+                  <mml:mrow>
+                    <mml:mi>δ</mml:mi>
+                    <mml:mi>φ</mml:mi>
+                    <mml:msub>
+                      <mml:mi>F</mml:mi>
+                      <mml:mrow>
+                        <mml:mtext>fuzzy </mml:mtext>
+                      </mml:mrow>
+                    </mml:msub>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>)</mml:mo>
+                  </mml:mrow>
+                  <mml:mrow>
+                    <mml:mi>δ</mml:mi>
+                    <mml:mi>φ</mml:mi>
+                    <mml:mi>x</mml:mi>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>)</mml:mo>
+                  </mml:mrow>
+                </mml:mfrac>
+                <mml:mo>=</mml:mo>
+                <mml:mo>−</mml:mo>
+              </mml:math>
+            </disp-formula>
+          
+          <p>where, <inline-formula>
+  <mml:math id="mtjhpk01uh">
+    <mml:mfrac>
+      <mml:mrow>
+        <mml:mi>δ</mml:mi>
+        <mml:mi>φ</mml:mi>
+        <mml:msub>
+          <mml:mi>F</mml:mi>
+          <mml:mrow>
+            <mml:mtext>fuzzy </mml:mtext>
+          </mml:mrow>
+        </mml:msub>
+        <mml:mo>(</mml:mo>
+        <mml:mo>)</mml:mo>
+      </mml:mrow>
+      <mml:mrow>
+        <mml:mi>δ</mml:mi>
+        <mml:mi>φ</mml:mi>
+        <mml:mi>x</mml:mi>
+        <mml:mo>(</mml:mo>
+        <mml:mo>)</mml:mo>
+      </mml:mrow>
+    </mml:mfrac>
+  </mml:math>
+</inline-formula> denotes the functional derivative of the energy with respect to the level-set function. The iterative update of <inline-formula>
+  <mml:math id="mdj3up3v0f">
+    <mml:mi>φ</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+  </mml:math>
+</inline-formula> ensures a progressive refinement of the segmentation boundary, balancing fuzzy membership constraints, geometric information, and Einstein-enhanced aggregation mechanisms. The interpretability of the proposed segmentation model is crucial for practical applications, as it enables users to understand how and why specific regions are segmented. The model integrates fuzzy membership functions and geometric constraints, which provide insights into the significance of different image regions. For instance, the fuzzy membership function assigns a degree of belonging to each pixel, allowing users to observe gradual transitions between segmented and non-segmented areas rather than abrupt boundaries. Additionally, the model’s gradient-based energy term ensures that prominent edges and structural information are preserved, making it easier for practitioners to identify key features. These properties are particularly beneficial in applications such as medical imaging, where segmentation outcomes must be interpretable for diagnostic purposes, and in remote sensing, where understanding surface variations is essential for decision-making. By offering a clear representation of segmented regions, the model enhances user confidence and facilitates informed decision-making based on the extracted image features. </p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.2. Theorem: constraints on the fuzzy energy functional's range</title>
+          
+          <p>Statement: After being given the following fuzzy energy functional <inline-formula>
+  <mml:math id="mkjmlrdc1z">
+    <mml:msub>
+      <mml:mi>F</mml:mi>
+      <mml:mrow>
+        <mml:mtext>fuzzy</mml:mtext>
+      </mml:mrow>
+    </mml:msub>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mi>φ</mml:mi>
+  </mml:math>
+</inline-formula> for image segmentation, this study aims to prove that this functional is bounded:</p>
+          
+            <disp-formula>
+              <label>(10)</label>
+              <mml:math id="mzvc2sijjq">
+                <mml:msub>
+                  <mml:mi>F</mml:mi>
+                  <mml:mrow>
+                    <mml:mtext>fuzzy </mml:mtext>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mo>∫</mml:mo>
+                  <mml:mrow>
+                    <mml:mi>Ω</mml:mi>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:mo>(</mml:mo>
+                <mml:mo>)</mml:mo>
+                <mml:mo>=</mml:mo>
+                <mml:mi>φ</mml:mi>
+                <mml:mi>d</mml:mi>
+                <mml:mi>x</mml:mi>
+                <mml:mrow>
+                  <mml:mo>[</mml:mo>
+                  <mml:mo>+</mml:mo>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:mo>+</mml:mo>
+                  <mml:mo>]</mml:mo>
+                  <mml:msub>
+                    <mml:mi>E</mml:mi>
+                    <mml:mrow>
+                      <mml:mo>+</mml:mo>
+                    </mml:mrow>
+                  </mml:msub>
+                  <mml:msub>
+                    <mml:mi>ζ</mml:mi>
+                    <mml:mn>1</mml:mn>
+                  </mml:msub>
+                  <mml:msub>
+                    <mml:mi>δ</mml:mi>
+                    <mml:mi>ϵ</mml:mi>
+                  </mml:msub>
+                  <mml:msub>
+                    <mml:mi>ζ</mml:mi>
+                    <mml:mn>2</mml:mn>
+                  </mml:msub>
+                  <mml:msub>
+                    <mml:mi>E</mml:mi>
+                    <mml:mo>∗</mml:mo>
+                  </mml:msub>
+                  <mml:mrow>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:mo>,</mml:mo>
+                    <mml:mo fence="false">‖</mml:mo>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:msub>
+                      <mml:mi>μ</mml:mi>
+                      <mml:mi>r</mml:mi>
+                    </mml:msub>
+                    <mml:mi>x</mml:mi>
+                    <mml:mi>∇</mml:mi>
+                    <mml:mi>φ</mml:mi>
+                    <mml:mi>x</mml:mi>
+                    <mml:msup>
+                      <mml:mo fence="false">‖</mml:mo>
+                      <mml:mn>2</mml:mn>
+                    </mml:msup>
+                  </mml:mrow>
+                  <mml:mrow>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>−</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:msub>
+                      <mml:mi>γ</mml:mi>
+                      <mml:mn>1</mml:mn>
+                    </mml:msub>
+                    <mml:msub>
+                      <mml:mi>γ</mml:mi>
+                      <mml:mn>2</mml:mn>
+                    </mml:msub>
+                  </mml:mrow>
+                  <mml:mrow>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo fence="false">‖</mml:mo>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:mo>,</mml:mo>
+                    <mml:mo>⋅</mml:mo>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:mi>∇</mml:mi>
+                    <mml:mi>I</mml:mi>
+                    <mml:mi>x</mml:mi>
+                    <mml:mi>κ</mml:mi>
+                    <mml:mi>x</mml:mi>
+                    <mml:msup>
+                      <mml:mo fence="false">‖</mml:mo>
+                      <mml:mn>2</mml:mn>
+                    </mml:msup>
+                    <mml:msubsup>
+                      <mml:mi>μ</mml:mi>
+                      <mml:mi>r</mml:mi>
+                      <mml:mi>E</mml:mi>
+                    </mml:msubsup>
+                  </mml:mrow>
+                  <mml:mi>φ</mml:mi>
+                </mml:mrow>
+              </mml:math>
+            </disp-formula>
+          
+          <p>Theorem 1. Let <inline-formula>
+  <mml:math id="m1ujrs5s0w">
+    <mml:mi>φ</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>Ω</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>∈</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:msup>
+      <mml:mi>W</mml:mi>
+      <mml:mrow>
+        <mml:mn>1</mml:mn>
+        <mml:mn>2</mml:mn>
+        <mml:mo>,</mml:mo>
+      </mml:mrow>
+    </mml:msup>
+  </mml:math>
+</inline-formula> be the level-set function defining the segmentation contour, and consider the fuzzy energy functional as shown in Eq. (10).</p>
+          <p>Then, under suitable assumptions, <inline-formula>
+  <mml:math id="mjla1njdae">
+    <mml:msub>
+      <mml:mi>F</mml:mi>
+      <mml:mrow>
+        <mml:mtext>fuzzy</mml:mtext>
+      </mml:mrow>
+    </mml:msub>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mi>φ</mml:mi>
+  </mml:math>
+</inline-formula> is bounded. </p><p>Proof. </p><p>Step 1: Justification for <inline-formula>
+  <mml:math id="mokhpiocpi">
+    <mml:mi>φ</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>Ω</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>∈</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:msup>
+      <mml:mi>W</mml:mi>
+      <mml:mrow>
+        <mml:mn>1</mml:mn>
+        <mml:mn>2</mml:mn>
+        <mml:mo>,</mml:mo>
+      </mml:mrow>
+    </mml:msup>
+  </mml:math>
+</inline-formula></p><p>The function <inline-formula>
+  <mml:math id="ml17pz9sgg">
+    <mml:mi>φ</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+  </mml:math>
+</inline-formula> represents the evolving segmentation contour and is governed by an energy minimization framework. To ensure well-posedness, it is assumed that <inline-formula>
+  <mml:math id="mm79ouerqy">
+    <mml:mi>φ</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>Ω</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>∈</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:msup>
+      <mml:mi>W</mml:mi>
+      <mml:mrow>
+        <mml:mn>1</mml:mn>
+        <mml:mn>2</mml:mn>
+        <mml:mo>,</mml:mo>
+      </mml:mrow>
+    </mml:msup>
+  </mml:math>
+</inline-formula>, meaning <inline-formula>
+  <mml:math id="m1h07vr6x2">
+    <mml:mi>φ</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+  </mml:math>
+</inline-formula> <inline-formula>
+  <mml:math id="md63fygd8g">
+    <mml:mo>∈</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:msup>
+      <mml:mi>L</mml:mi>
+      <mml:mn>2</mml:mn>
+    </mml:msup>
+    <mml:mi>Ω</mml:mi>
+  </mml:math>
+</inline-formula>, and <inline-formula>
+  <mml:math id="mobrl4mri5">
+    <mml:mi>∇</mml:mi>
+    <mml:mi>φ</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>Ω</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>∈</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:msup>
+      <mml:mi>L</mml:mi>
+      <mml:mn>2</mml:mn>
+    </mml:msup>
+  </mml:math>
+</inline-formula>.</p><p>This assumption is practically valid since:</p><p>- Numerical level-set implementations naturally enforce smoothness constraints.</p><p>- Empirical observations confirm the smoothness of <inline-formula>
+  <mml:math id="ms002o198h">
+    <mml:mi>φ</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+  </mml:math>
+</inline-formula> in real segmentation tasks.</p><p>- Regularization terms in segmentation models further ensure that <inline-formula>
+  <mml:math id="mhbfpphhne">
+    <mml:mi>φ</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+  </mml:math>
+</inline-formula> does not develop singularities.</p><p>Thus, it is assumed that <inline-formula>
+  <mml:math id="m1gh18s9n3">
+    <mml:mi>φ</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>Ω</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>∈</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:msup>
+      <mml:mi>W</mml:mi>
+      <mml:mrow>
+        <mml:mn>1</mml:mn>
+        <mml:mn>2</mml:mn>
+        <mml:mo>,</mml:mo>
+      </mml:mrow>
+    </mml:msup>
+  </mml:math>
+</inline-formula> aligns with both theoretical and practical considerations.</p><p>Step 2: Bounding the fuzzy membership function <inline-formula>
+  <mml:math id="m0ddznsq9t">
+    <mml:msub>
+      <mml:mi>μ</mml:mi>
+      <mml:mi>r</mml:mi>
+    </mml:msub>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mi>x</mml:mi>
+  </mml:math>
+</inline-formula></p><p>By definition, the fuzzy membership function satisfies $0 \leq \mu_r(x) \leq 1<inline-formula>
+  <mml:math id="mlpsao8n05">
+    <mml:mo>,</mml:mo>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+  </mml:math>
+</inline-formula>\forall x \in \Omega<inline-formula>
+  <mml:math id="ms7cqmu5c3">
+    <mml:mo>.</mml:mo>
+    <mml:mo>:&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>⋅</mml:mo>
+    <mml:mo fence="false">‖</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>≤</mml:mo>
+    <mml:mo fence="false">‖</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mi>T</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>∇</mml:mi>
+    <mml:mi>φ</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>∇</mml:mi>
+    <mml:mi>φ</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>S</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mtext mathcolor="red">\[</mml:mtext>
+    <mml:mtext mathcolor="red">\]</mml:mtext>
+    <mml:msub>
+      <mml:mi>μ</mml:mi>
+      <mml:mi>r</mml:mi>
+    </mml:msub>
+    <mml:msup>
+      <mml:mo fence="false">‖</mml:mo>
+      <mml:mn>2</mml:mn>
+    </mml:msup>
+    <mml:msup>
+      <mml:mo fence="false">‖</mml:mo>
+      <mml:mn>2</mml:mn>
+    </mml:msup>
+  </mml:math>
+</inline-formula>\varphi(x) \in W^{1,2}(\Omega)<inline-formula>
+  <mml:math id="mvp4er1vmp">
+    <mml:merror data-mjx-error="Misplaced &amp;amp;">
+      <mml:mtext>Misplaced &amp;amp;</mml:mtext>
+    </mml:merror>
+  </mml:math>
+</inline-formula>F_{\text{fuzzy}}(\varphi)<inline-formula>
+  <mml:math id="m5lfi1q32j">
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>S</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>B</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>D</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mo>.</mml:mo>
+    <mml:mo>&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mo>:</mml:mo>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mn>3</mml:mn>
+  </mml:math>
+</inline-formula>\delta_\epsilon(\varphi)<inline-formula>
+  <mml:math id="m0iqwyhi1u">
+    <mml:mo>&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+  </mml:math>
+</inline-formula>\delta_\epsilon(\varphi)<inline-formula>
+  <mml:math id="muec1m7q6z">
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>φ</mml:mi>
+    <mml:mi>∀</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>Ω</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>φ</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>Ω</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mo>:&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>≤</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>∈</mml:mo>
+    <mml:mo>&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mo>&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>≤</mml:mo>
+    <mml:mo>&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>|</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>|</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mtext mathcolor="red">\[</mml:mtext>
+    <mml:mtext mathcolor="red">\]</mml:mtext>
+    <mml:mtext mathcolor="red">\[</mml:mtext>
+    <mml:mtext mathcolor="red">\]</mml:mtext>
+    <mml:msub>
+      <mml:mi>δ</mml:mi>
+      <mml:mi>ϵ</mml:mi>
+    </mml:msub>
+    <mml:msub>
+      <mml:mo>∫</mml:mo>
+      <mml:mrow>
+        <mml:mi>Ω</mml:mi>
+      </mml:mrow>
+    </mml:msub>
+    <mml:msub>
+      <mml:mi>δ</mml:mi>
+      <mml:mi>ϵ</mml:mi>
+    </mml:msub>
+    <mml:mfrac>
+      <mml:mi>C</mml:mi>
+      <mml:mi>ϵ</mml:mi>
+    </mml:mfrac>
+    <mml:mfrac>
+      <mml:mi>C</mml:mi>
+      <mml:mi>ϵ</mml:mi>
+    </mml:mfrac>
+    <mml:mstyle scriptlevel="0">
+      <mml:mspace width="1em"/>
+    </mml:mstyle>
+  </mml:math>
+</inline-formula>\zeta_1 \delta_\epsilon(\varphi)\left(\gamma_1-\gamma_2\right)<inline-formula>
+  <mml:math id="mnvlw7b3a7">
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>S</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>B</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mo>.</mml:mo>
+    <mml:mo>&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mo>:</mml:mo>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mn>4</mml:mn>
+  </mml:math>
+</inline-formula>\|\nabla I(x)\|^2<inline-formula>
+  <mml:math id="mw2otrcnc6">
+    <mml:mo>&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>F</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+  </mml:math>
+</inline-formula>I(x)<inline-formula>
+  <mml:math id="mtmoqj4qnc">
+    <mml:merror data-mjx-error="Misplaced &amp;amp;">
+      <mml:mtext>Misplaced &amp;amp;</mml:mtext>
+    </mml:merror>
+  </mml:math>
+</inline-formula>\zeta_2 E_*\left(\|\nabla I(x)\|^2, \kappa \cdot \mu_r^E(x)\right)<inline-formula>
+  <mml:math id="mx07rtjv5j">
+    <mml:mi>d</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>S</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>B</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mo>.</mml:mo>
+    <mml:mo>&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mo>:</mml:mo>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mn>5</mml:mn>
+  </mml:math>
+</inline-formula>\boldsymbol{K}(\boldsymbol{x})<inline-formula>
+  <mml:math id="muo7j13ibx">
+    <mml:mo>&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+  </mml:math>
+</inline-formula>K(x)<inline-formula>
+  <mml:math id="mnw2xxbndy">
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>K</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>∇</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>F</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mo>−</mml:mo>
+    <mml:mo>:&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>=</mml:mo>
+    <mml:mo>⋅</mml:mo>
+    <mml:mo>&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>(</mml:mo>
+      <mml:mo>)</mml:mo>
+      <mml:mfrac>
+        <mml:mrow>
+          <mml:mi>∇</mml:mi>
+          <mml:mi>φ</mml:mi>
+        </mml:mrow>
+        <mml:mrow>
+          <mml:mo fence="false">‖</mml:mo>
+          <mml:mo fence="false">‖</mml:mo>
+          <mml:mi>∇</mml:mi>
+          <mml:mi>φ</mml:mi>
+        </mml:mrow>
+      </mml:mfrac>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mtext mathcolor="red">\[</mml:mtext>
+    <mml:mtext mathcolor="red">\]</mml:mtext>
+  </mml:math>
+</inline-formula>\varphi(x)<inline-formula>
+  <mml:math id="mp5ba9u8rw">
+    <mml:mo>,</mml:mo>
+    <mml:mo>:&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>≤</mml:mo>
+    <mml:mo>&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>:&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>≤</mml:mo>
+    <mml:mo>&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>K</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>Ω</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>U</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>S</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>φ</mml:mi>
+    <mml:mi>Ω</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>S</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>|</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>|</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>|</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>|</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>|</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>(</mml:mo>
+      <mml:mo>+</mml:mo>
+      <mml:mo>+</mml:mo>
+      <mml:mo>+</mml:mo>
+      <mml:mo>)</mml:mo>
+      <mml:msubsup>
+        <mml:mi>C</mml:mi>
+        <mml:mrow>
+          <mml:mi>∇</mml:mi>
+          <mml:mi>φ</mml:mi>
+        </mml:mrow>
+        <mml:mn>2</mml:mn>
+      </mml:msubsup>
+      <mml:msubsup>
+        <mml:mi>C</mml:mi>
+        <mml:mrow>
+          <mml:mi>∇</mml:mi>
+          <mml:mi>I</mml:mi>
+        </mml:mrow>
+        <mml:mn>2</mml:mn>
+      </mml:msubsup>
+      <mml:msubsup>
+        <mml:mi>C</mml:mi>
+        <mml:mi>K</mml:mi>
+        <mml:mn>2</mml:mn>
+      </mml:msubsup>
+      <mml:msub>
+        <mml:mi>ζ</mml:mi>
+        <mml:mn>1</mml:mn>
+      </mml:msub>
+      <mml:mrow>
+        <mml:mo>(</mml:mo>
+        <mml:mo>−</mml:mo>
+        <mml:mo>)</mml:mo>
+        <mml:msub>
+          <mml:mi>γ</mml:mi>
+          <mml:mn>1</mml:mn>
+        </mml:msub>
+        <mml:msub>
+          <mml:mi>γ</mml:mi>
+          <mml:mn>2</mml:mn>
+        </mml:msub>
+      </mml:mrow>
+      <mml:mfrac>
+        <mml:mi>C</mml:mi>
+        <mml:mi>ϵ</mml:mi>
+      </mml:mfrac>
+      <mml:mi>κ</mml:mi>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mtext mathcolor="red">\[</mml:mtext>
+    <mml:mtext mathcolor="red">\]</mml:mtext>
+    <mml:mtext mathcolor="red">\[</mml:mtext>
+    <mml:mtext mathcolor="red">\]</mml:mtext>
+    <mml:msub>
+      <mml:mo>∫</mml:mo>
+      <mml:mrow>
+        <mml:mi>Ω</mml:mi>
+      </mml:mrow>
+    </mml:msub>
+    <mml:msub>
+      <mml:mi>F</mml:mi>
+      <mml:mrow>
+        <mml:mtext>fuzzy </mml:mtext>
+      </mml:mrow>
+    </mml:msub>
+    <mml:msup>
+      <mml:mrow>
+        <mml:mo>|</mml:mo>
+      </mml:mrow>
+      <mml:mn>2</mml:mn>
+    </mml:msup>
+    <mml:msubsup>
+      <mml:mi>C</mml:mi>
+      <mml:mi>K</mml:mi>
+      <mml:mn>2</mml:mn>
+    </mml:msubsup>
+    <mml:mn>1</mml:mn>
+    <mml:mn>5</mml:mn>
+  </mml:math>
+</inline-formula>|\Omega|<inline-formula>
+  <mml:math id="mhiaut6o0z">
+    <mml:merror data-mjx-error="Misplaced &amp;amp;">
+      <mml:mtext>Misplaced &amp;amp;</mml:mtext>
+    </mml:merror>
+  </mml:math>
+</inline-formula>\square<inline-formula>
+  <mml:math id="m9ipl26shf">
+    <mml:mo>&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+  </mml:math>
+</inline-formula>\varphi(x)<inline-formula>
+  <mml:math id="mfnqaa70yi">
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+  </mml:math>
+</inline-formula>I(x)$. This ensures the optimization problem is well-posed, and the segmentation process is stable.</p>
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>4. Experimental results</title>
+      <p>The effectiveness of the proposed segmentation model was thoroughly assessed through a series of experiments aimed at testing its robustness in dealing with noise, intensity fluctuations, and complex boundary structures. In contrast, existing methods like the Shi model [<xref ref-type="bibr" rid="ref_23">23</xref>] and Yu model [<xref ref-type="bibr" rid="ref_24">24</xref>] often struggle with challenges such as noise sensitivity, poor boundary preservation, and limited adaptability to changes in intensity distributions. To overcome these limitations, the proposed method combines fuzzy membership functions with geometric constraints, ensuring reliable segmentation results. The experiments were executed in MATLAB R2015a, ensuring compatibility with older computational setups. For consistency across evaluations, the input images were resized to 255 × 255 pixels. The validation dataset is publicly available, making it possible to reproduce the results and compare them against existing models. To maintain transparency, the MATLAB implementation of the proposed model can be shared upon request via email.</p><p>To achieve optimal segmentation performance, the parameters of the proposed model were carefully fine-tuned. The fuzzy membership function was set with a reference value of <inline-formula>
+  <mml:math id="my8dw6rv30">
+    <mml:msub>
+      <mml:mi>c</mml:mi>
+      <mml:mi>r</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> = 128 and a spread parameter <inline-formula>
+  <mml:math id="mssan8uj7c">
+    <mml:msub>
+      <mml:mi>σ</mml:mi>
+      <mml:mi>r</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> = 30, aimed at classifying regions with gradual transitions. Geometric operators were used, with the gradient of intensity <inline-formula>
+  <mml:math id="m27bdz5xze">
+    <mml:mi>∇</mml:mi>
+    <mml:mi>I</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+  </mml:math>
+</inline-formula> for edge detection and a boundary smoothness term <inline-formula>
+  <mml:math id="mvqh3tcwb1">
+    <mml:mi>K</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+  </mml:math>
+</inline-formula>, and a curvature weight <inline-formula>
+  <mml:math id="mb4kan3424">
+    <mml:mi>κ</mml:mi>
+  </mml:math>
+</inline-formula> = 0.1. The fuzzy energy functional integrates these elements with a fuzzy membership influence coefficient <inline-formula>
+  <mml:math id="m73wuzw7zm">
+    <mml:msub>
+      <mml:mi>ζ</mml:mi>
+      <mml:mn>1</mml:mn>
+    </mml:msub>
+  </mml:math>
+</inline-formula> = 1.5 and geometric constraint factor <inline-formula>
+  <mml:math id="mt0rqieedc">
+    <mml:msub>
+      <mml:mi>ζ</mml:mi>
+      <mml:mn>2</mml:mn>
+    </mml:msub>
+  </mml:math>
+</inline-formula> = 0.8. The intensity homogeneity parameters were set to <inline-formula>
+  <mml:math id="mir29uqpp5">
+    <mml:msub>
+      <mml:mi>γ</mml:mi>
+      <mml:mn>1</mml:mn>
+    </mml:msub>
+  </mml:math>
+</inline-formula> = 0.6 and <inline-formula>
+  <mml:math id="me5z1ohd0e">
+    <mml:msub>
+      <mml:mi>γ</mml:mi>
+      <mml:mn>2</mml:mn>
+    </mml:msub>
+  </mml:math>
+</inline-formula> = 0.4. This configuration ensures that the model performs effectively across a variety of conditions, including noise and intensity variation.</p><p> <xref ref-type="fig" rid="fig_1">Figure 1</xref> illustrates the complete workflow of the proposed segmentation framework, highlighting each stage of the process. The first panel shows the original input image, which includes regions of interest with varying intensity levels—posing challenges for standard segmentation approaches. The second panel visualizes the fuzzy membership map, where pixel intensities are transformed into fuzzy values to improve the separation of foreground and background. The third panel displays the gradient image, emphasizing edges by highlighting intensity transitions between neighboring pixels. The final panel presents the segmentation outcome produced by the proposed model, revealing a precise and well-defined extraction of the regions of interest. This sequence demonstrates how the integration of fuzzy logic and gradient-based analysis contributes to the model's high segmentation accuracy and resilience to intensity variations.</p>
+      
+        <fig id="fig_1">
+          <label>Figure 1</label>
+          <caption>
+            <title>Illustration of the proposed segmentation framework</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/4/img_n1Vn0Pwf54WXkKh-.png"/>
+        </fig>
+      
+      <p> <xref ref-type="fig" rid="fig_2">Figure 2</xref> offers a side-by-side visual comparison of segmentation performance across different models. The first column displays the ground truth image, which serves as a reference for evaluation. The second column includes a noise-corrupted version of the original image (noise level = 0.01), mimicking real-world challenges. The third and fourth columns show the segmentation results from the Yu and Shi models, respectively—both of which exhibit boundary inconsistencies and incomplete segmentation in noisy conditions. In contrast, the fifth column reveals the segmentation result generated by the proposed approach, which demonstrates enhanced precision and boundary clarity under the same noisy conditions. The sixth column presents the final refined output of the proposed model, emphasizing its ability to produce accurate and noise-resilient segmentation, outperforming existing methods.</p>
+      
+        <fig id="fig_2">
+          <label>Figure 2</label>
+          <caption>
+            <title>Visual comparison of segmentation results</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/4/img_na2f20g07Hdb2dtU.png"/>
+        </fig>
+      
+      <p> <xref ref-type="fig" rid="fig_3">Figure 3</xref> displays the segmentation capabilities of various models when applied to images with inhomogeneous intensity distributions and complex textures. The first column presents the test image, characterized by non-uniform intensity and noise, which complicate segmentation tasks. The second and third columns show the outputs of the Yu and Shi models, respectively. The Yu model fails to preserve boundary integrity, while the Shi model exhibits slight improvements but still struggles to segment the regions accurately. The fourth column presents the result of the proposed model, which effectively handles the intensity inconsistencies and delivers a clean, well-bounded segmentation. This visual evidence highlights the proposed model’s superior ability to manage intensity fluctuations and texture complexities, setting it apart from the other models in challenging segmentation scenarios.</p>
+      
+        <fig id="fig_3">
+          <label>Figure 3</label>
+          <caption>
+            <title>Segmentation results for inhomogeneous images</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/4/img_hQpfvHMK_SZgfOh6.png"/>
+        </fig>
+      
+      <p> <xref ref-type="table" rid="table_1">Table 1</xref> provides a comprehensive comparison of the proposed segmentation approach with two established models—Yu’s model and Shi’s model—evaluated across six critical performance indicators: accuracy, precision, recall, F-score, sensitivity, and specificity. The reported values represent the mean ± standard deviation obtained over several experimental trials. Across all metrics, the proposed model consistently delivers superior outcomes, underscoring its robustness and improved segmentation capability.</p>
+      
+        <table-wrap id="table_1">
+          <label>Table 1</label>
+          <caption>
+            <title> Performance metrics for the proposed model and existing models (Yu model and Shi model)</title>
+          </caption>
+          <table><tbody><tr><td colspan="1" rowspan="1"><p>Metric</p></td><td colspan="1" rowspan="1"><p>Proposed Model</p></td><td colspan="1" rowspan="1"><p>Yu Model</p></td><td colspan="1" rowspan="1"><p>Shi Model</p></td><td colspan="1" rowspan="1"><p>p-value</p></td></tr><tr><td colspan="1" rowspan="1"><p>Accuracy (%)</p></td><td colspan="1" rowspan="1"><p>$96.8 \pm 1.0<mml:math id="msgqj4d111">
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+</mml:math>91.2 \pm 1.5<mml:math id="mstngfw3l9">
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+</mml:math>89.5 \pm 2.0<mml:math id="m4slw4um7h">
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+</mml:math>p&lt;0.01<mml:math id="moqrnb7zvp">
+  <mml:mo>(</mml:mo>
+  <mml:mo>)</mml:mo>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mo>(</mml:mo>
+  <mml:mi>A</mml:mi>
+  <mml:mi>N</mml:mi>
+  <mml:mi>O</mml:mi>
+  <mml:mi>V</mml:mi>
+  <mml:mi>A</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>P</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>i</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>i</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+</mml:math>95.5 \pm 1.2<mml:math id="mhdn9imkw2">
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+</mml:math>89.8 \pm 2.0<mml:math id="mxvar41fmc">
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+</mml:math>87.3 \pm 2.4<mml:math id="m2xve2wplu">
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+</mml:math>p&lt;0.01<mml:math id="mo91n0ffiy">
+  <mml:mo>(</mml:mo>
+  <mml:mo>)</mml:mo>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mo>(</mml:mo>
+  <mml:mi>A</mml:mi>
+  <mml:mi>N</mml:mi>
+  <mml:mi>O</mml:mi>
+  <mml:mi>V</mml:mi>
+  <mml:mi>A</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>R</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+</mml:math>94.7 \pm 1.5<mml:math id="m6gg0hkel4">
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+</mml:math>88.5 \pm 2.1<mml:math id="min6da5uoc">
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+</mml:math>86.0 \pm 2.5<mml:math id="m97n2jtxpu">
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+</mml:math>p&lt;0.01<mml:math id="mw3nw3br85">
+  <mml:mo>(</mml:mo>
+  <mml:mo>−</mml:mo>
+  <mml:mo>)</mml:mo>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mo>−</mml:mo>
+  <mml:mo>(</mml:mo>
+  <mml:mi>T</mml:mi>
+  <mml:mi>T</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>F</mml:mi>
+  <mml:mi>S</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+</mml:math>95.1 \pm 1.3<mml:math id="mfjtrvgn4u">
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+</mml:math>89.1 \pm 1.8<mml:math id="mm7389q2zu">
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+</mml:math>86.6 \pm 2.3<mml:math id="mac2j0ed2k">
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+</mml:math>p&lt;0.01<mml:math id="m5lvxhs5uo">
+  <mml:mo>(</mml:mo>
+  <mml:mo>)</mml:mo>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mo>(</mml:mo>
+  <mml:mi>A</mml:mi>
+  <mml:mi>N</mml:mi>
+  <mml:mi>O</mml:mi>
+  <mml:mi>V</mml:mi>
+  <mml:mi>A</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>S</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>i</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>i</mml:mi>
+  <mml:mi>v</mml:mi>
+  <mml:mi>i</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>y</mml:mi>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+</mml:math>96.2 \pm 1.1<mml:math id="m4kqso7jny">
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+</mml:math>90.3 \pm 1.7<mml:math id="m56lzegz3i">
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+</mml:math>88.2 \pm 2.1<mml:math id="mko2iy2amp">
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+</mml:math>p&lt;0.01<mml:math id="mm5rzyv80g">
+  <mml:mo>(</mml:mo>
+  <mml:mo>−</mml:mo>
+  <mml:mo>)</mml:mo>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mo>(</mml:mo>
+  <mml:mi>T</mml:mi>
+  <mml:mi>T</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>S</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>i</mml:mi>
+  <mml:mi>f</mml:mi>
+  <mml:mi>i</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>i</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>y</mml:mi>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+</mml:math>97.4 \pm 0.8<mml:math id="mw8essegtq">
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+</mml:math>92.5 \pm 1.3<mml:math id="mqln86699k">
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+</mml:math>91.0 \pm 1.6<mml:math id="mplsverjja">
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+</mml:math>p&lt;0.01<mml:math id="msuwqk38q3">
+  <mml:mo>(</mml:mo>
+  <mml:mo>−</mml:mo>
+  <mml:mo>)</mml:mo>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mi>T</mml:mi>
+  <mml:mi>T</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>C</mml:mi>
+  <mml:mi>P</mml:mi>
+  <mml:mi>U</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+</mml:math>18.5 \pm 0.3<mml:math id="mct6syhwbj">
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+</mml:math>24.8 \pm 0.5<mml:math id="mf43miww03">
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+</mml:math>28.6 \pm 0.6$</p></td><td colspan="1" rowspan="1"></td></tr></tbody></table>
+        </table-wrap>
+      
+      <p>Notably, the proposed model attains the highest accuracy rate of 96.8%, indicating its strong performance in correctly segmenting both relevant and irrelevant regions. The precision score of 95.5% demonstrates its strength in minimizing incorrect positive identifications, while the recall value of 94.7% reflects its effectiveness in capturing a large portion of true positives. Furthermore, its F-score of 95.1%, which balances precision and recall, significantly surpasses those of the Yu model (89.1%) and the Shi model (86.6%), confirming its overall effectiveness.</p><p>The sensitivity and specificity values—96.2% and 97.4%, respectively—further highlight the reliability of the proposed method in detecting relevant segments and avoiding false alarms. In comparison, both the Yu and Shi models show reduced scores in these areas, reflecting limitations in their consistency and precision. The final column in <xref ref-type="table" rid="table_1">Table 1</xref> presents statistical significance, with all performance gains validated at <italic>p</italic> $&lt;$ 0.01, affirming that the enhancements offered by the proposed model are not due to random variation. As shown in <xref ref-type="fig" rid="fig_4">Figure 4</xref>, these results position the proposed approach as a highly dependable solution for image segmentation tasks.</p>
+      
+        <fig id="fig_4">
+          <label>Figure 4</label>
+          <caption>
+            <title>Assessment of segmentation capabilities across various methods</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/4/img_ZmK7EjdCZBUJLy_4.jpeg"/>
+        </fig>
+      
+      <p>The computational efficiency of the proposed model is a significant advantage over existing segmentation methods. As shown in <xref ref-type="table" rid="table_1">Table 1</xref>, the proposed model achieves an average Central Processing Unit (CPU) execution time of 18.5 ± 0.3 seconds, which is considerably lower than the Yu model (24.8 ± 0.5 seconds) and the Shi model (28.6 ± 0.6 seconds). This improvement is primarily attributed to the integration of fuzzy Einstein geometric aggregate operators, which enhance computational efficiency by reducing iterative complexity and improving convergence speed. In contrast, the Yu model and the Shi model rely on more computationally intensive optimization techniques, leading to longer execution times. The reduced computational burden of the proposed model makes it particularly suitable for real-time and large-scale segmentation tasks, where both accuracy and processing speed are crucial. </p><p>While the proposed model demonstrates superior accuracy and reduced execution times, certain trade-offs must be considered. One key aspect is parameter selection, as the model, despite reducing dependency on manual tuning, still requires careful selection of fuzzy membership functions and geometric parameters. This necessitates domain expertise to ensure optimal segmentation performance across different imaging applications. Additionally, while the model is computationally efficient for moderate-sized images, its applicability to large datasets may require further optimizations, such as parallelization or Graphics Processing Unit (GPU) acceleration, to maintain efficiency in large-scale real-world scenarios. Another factor to consider is the balance between complexity and accuracy. The integration of fuzzy Einstein geometric operators enhances segmentation quality, but their application in highly dynamic or real-time systems may introduce computational overhead. In such cases, additional optimizations may be necessary to further accelerate processing without compromising accuracy. Moreover, although the proposed framework reduces the reliance on extensive labeled datasets, its segmentation accuracy could still be influenced by variations in image characteristics, requiring adaptive parameter tuning for optimal results. </p>
+      
+        <sec>
+          
+            <title>4.1. Sensitivity analysis of model parameters</title>
+          
+          <p>To ensure the robustness and reproducibility of the proposed segmentation model, a sensitivity analysis was conducted by systematically varying key parameters, including the curvature weight <inline-formula>
+  <mml:math id="mxzurhsqnv">
+    <mml:mi>κ</mml:mi>
+  </mml:math>
+</inline-formula>, fuzzy membership influence <inline-formula>
+  <mml:math id="m6722odw3t">
+    <mml:msub>
+      <mml:mi>ζ</mml:mi>
+      <mml:mn>1</mml:mn>
+    </mml:msub>
+  </mml:math>
+</inline-formula>, and geometric constraint <inline-formula>
+  <mml:math id="m6z9rk9797">
+    <mml:msub>
+      <mml:mi>ζ</mml:mi>
+      <mml:mn>2</mml:mn>
+    </mml:msub>
+  </mml:math>
+</inline-formula>. The analysis examined the impact of these parameters on segmentation performance metrics, including accuracy, precision, recall, F-score, sensitivity, specificity, and computational efficiency. Experimental results indicate that while small variations in <inline-formula>
+  <mml:math id="moy01yw90o">
+    <mml:mi>κ</mml:mi>
+  </mml:math>
+</inline-formula> and <inline-formula>
+  <mml:math id="m13247652m">
+    <mml:msub>
+      <mml:mi>ζ</mml:mi>
+      <mml:mn>1</mml:mn>
+    </mml:msub>
+  </mml:math>
+</inline-formula> influence boundary smoothness and segmentation accuracy, the model maintains stable performance within the range <inline-formula>
+  <mml:math id="moss8evk8x">
+    <mml:mi>κ</mml:mi>
+  </mml:math>
+</inline-formula> <inline-formula>
+  <mml:math id="mljt1nlh4z">
+    <mml:mo>∈</mml:mo>
+  </mml:math>
+</inline-formula> [0.05, 0.3] and <inline-formula>
+  <mml:math id="mrzbp80q7c">
+    <mml:msub>
+      <mml:mi>ζ</mml:mi>
+      <mml:mn>1</mml:mn>
+    </mml:msub>
+  </mml:math>
+</inline-formula> <inline-formula>
+  <mml:math id="meu0x8r714">
+    <mml:mo>∈</mml:mo>
+  </mml:math>
+</inline-formula> [1.0, 2.5]. The selected values (<inline-formula>
+  <mml:math id="mik988rbip">
+    <mml:mi>κ</mml:mi>
+  </mml:math>
+</inline-formula> = 0.1, <inline-formula>
+  <mml:math id="m8y5auu34r">
+    <mml:msub>
+      <mml:mi>ζ</mml:mi>
+      <mml:mn>1</mml:mn>
+    </mml:msub>
+  </mml:math>
+</inline-formula> = 1.5) provide an optimal balance, ensuring accurate segmentation while minimizing computational cost. This sensitivity analysis validates the parameter selection and enhances the reliability of the proposed method for real-world applications. </p>
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>5. Conclusion</title>
+      <p>This work presents a novel image segmentation framework that combines fuzzy logic with geometric constraints within a well-structured energy functional. The proposed approach successfully overcomes several challenges associated with conventional segmentation methods, including sensitivity to noise and intensity fluctuations. By employing region-based strategies and integrating local similarity measures, relative entropy, and geometric cues, the model delivers improved segmentation accuracy, enhanced robustness, and greater adaptability to diverse image conditions.</p><p>The proposed energy functional is carefully designed to ensure stable optimization, leading to reliable and consistent results across varied datasets. Comprehensive experiments, evaluated using metrics such as accuracy, precision, recall, F-score, sensitivity, and specificity, confirm the effectiveness of the model. Furthermore, rigorous statistical validation through ANOVA and T-tests (<italic>p</italic> $&lt;$ 0.01) demonstrates that the model significantly outperforms established techniques.</p><p>Despite its promising performance, the model has certain limitations. Notably, it demands considerable computational resources, which can impact its efficiency on large-scale or real-time datasets. Additionally, scalability remains a challenge, particularly when processing high-resolution images or extensive datasets.</p><p>To address the limitations, future work could focus on optimizing the model by integrating emerging technologies such as deep learning and GPU acceleration. Employing parallel processing techniques or more efficient optimization algorithms can significantly reduce computational costs while maintaining segmentation accuracy.</p><p>Specifically, hybrid models that combine fuzzy logic-based segmentation with deep learning frameworks could enhance feature extraction and decision-making capabilities, making the model more adaptable to complex image variations. Additionally, scalability can be improved by leveraging GPU acceleration, which enables real-time processing for large datasets. This enhancement is particularly beneficial for applications requiring high-speed image analysis, such as medical diagnostics, satellite image interpretation, and autonomous navigation.</p><p>Beyond optimization, exploring the model’s applicability in other domains such as industrial automation (e.g., defect detection in manufacturing) and scientific research (e.g., microscopic image analysis) could further demonstrate its versatility. Tailoring the model for these contexts by refining its energy functional and tuning its fuzzy membership functions for domain-specific characteristics will improve its practical impact. By pursuing these advancements, the proposed model can evolve into a more comprehensive and efficient segmentation framework for a wide range of real-world applications.</p>
+    </sec>
+  </body>
+  <back>
+    <ack>
+      <title>Acknowledgments</title>
+      
+    </ack>
+    <app-group>
+      <app>
+        <title>Appendix</title>
+        
+      </app>
+    </app-group>
+    <notes>
+      <title>Author Contributions</title>
+      
+    </notes>
+    <notes>
+      <title>Funding</title>
+      
+    </notes>
+    <notes>
+      <title>Informed Consent Statement</title>
+      
+    </notes>
+    <notes>
+      <title>Data Availability Statement</title>
+      <p>The data used to support the findings of this study are available from the corresponding author upon request.</p>
+    </notes>
+    <notes notes-type="COI-statement">
+      <title>Conflicts of Interest</title>
+      <p>The author declares that they have no conflicts of interest.</p>
+    </notes>
+    <ref-list>
+      <title>References</title>
+      <ref id="ref_1">
+        <label>1.</label>
+        <element-citation publication-type="journal">
+          <volume>17</volume>
+          <page-range>708-725</page-range>
+          <issue>3</issue>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Hussain</surname>
+              <given-names>Ibrar</given-names>
+            </name>
+            <name>
+              <surname>Muhammad</surname>
+              <given-names>Jan</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3934/ipi.2022074</pub-id>
+          <article-title>Efficient convex region-based segmentation for noising and inhomogeneous patterns</article-title>
+          <source>Inverse Probl. Imag.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_2">
+        <label>2.</label>
+        <element-citation publication-type="journal">
+          <volume>arXiv:2304.13785</volume>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Zhang</surname>
+              <given-names>Kai Dong</given-names>
+            </name>
+            <name>
+              <surname>Liu</surname>
+              <given-names>Dong</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.48550/arXiv.2304.13785</pub-id>
+          <article-title>Customized segment anything model for medical image segmentation</article-title>
+          <source>arXiv preprint</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_3">
+        <label>3.</label>
+        <element-citation publication-type="journal">
+          <volume>43</volume>
+          <page-range>3377-3390</page-range>
+          <issue>9</issue>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Shaker</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Maaz</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Rasheed</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Khan</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Yang</surname>
+              <given-names>M. H.</given-names>
+            </name>
+            <name>
+              <surname>Khan</surname>
+              <given-names>F. S.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/TMI.2024.3398728</pub-id>
+          <article-title>UNETR++: Delving into efficient and accurate 3D medical image segmentation</article-title>
+          <source>IEEE Trans. Med. Imaging</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_4">
+        <label>4.</label>
+        <element-citation publication-type="journal">
+          <volume>506</volume>
+          <page-range>311-335</page-range>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Aljabri</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>AlGhamdi</surname>
+              <given-names>M.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.neucom.2022.07.070</pub-id>
+          <article-title>A review on the use of deep learning for medical images segmentation</article-title>
+          <source>Neurocomputing</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_5">
+        <label>5.</label>
+        <element-citation publication-type="journal">
+          <volume>15</volume>
+          <page-range>4389</page-range>
+          <issue>17</issue>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Isaksson</surname>
+              <given-names>Lars Johannes</given-names>
+            </name>
+            <name>
+              <surname>Summers</surname>
+              <given-names>Paul</given-names>
+            </name>
+            <name>
+              <surname>Mastroleo</surname>
+              <given-names>Federico</given-names>
+            </name>
+            <name>
+              <surname>Marvaso</surname>
+              <given-names>Giulia</given-names>
+            </name>
+            <name>
+              <surname>Corrao</surname>
+              <given-names>Giulia</given-names>
+            </name>
+            <name>
+              <surname>Vincini</surname>
+              <given-names>Maria Giulia</given-names>
+            </name>
+            <name>
+              <surname>Zaffaroni</surname>
+              <given-names>Mattia</given-names>
+            </name>
+            <name>
+              <surname>Ceci</surname>
+              <given-names>Francesco</given-names>
+            </name>
+            <name>
+              <surname>Petralia</surname>
+              <given-names>Giuseppe</given-names>
+            </name>
+            <name>
+              <surname>Orecchia</surname>
+              <given-names>Roberto</given-names>
+            </name>
+            <name>
+              <surname>Jereczek-Fossa</surname>
+              <given-names>Barbara Alicja</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3390/cancers15174389</pub-id>
+          <article-title>Automatic segmentation with deep learning in radiotherapy</article-title>
+          <source>Cancers</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_6">
+        <label>6.</label>
+        <element-citation publication-type="journal">
+          <volume>15</volume>
+          <page-range>654</page-range>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Ma</surname>
+              <given-names>Jun</given-names>
+            </name>
+            <name>
+              <surname>He</surname>
+              <given-names>Yu Ting</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>Fei Fei</given-names>
+            </name>
+            <name>
+              <surname>Han</surname>
+              <given-names>Lin</given-names>
+            </name>
+            <name>
+              <surname>You</surname>
+              <given-names>Chen Yu</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>Bo</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1038/s41467-024-44824-z</pub-id>
+          <article-title>Segment anything in medical images</article-title>
+          <source>Nat. Commun.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_7">
+        <label>7.</label>
+        <element-citation publication-type="journal">
+          <volume>1</volume>
+          <page-range>103-111</page-range>
+          <issue>2</issue>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Preethi</surname>
+              <given-names>Padmaprabha</given-names>
+            </name>
+            <name>
+              <surname>Mamatha</surname>
+              <given-names>Hosahalli Ramappa</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.47852/bonviewAIA2202293</pub-id>
+          <article-title>Region-based convolutional neural network for segmenting text in epigraphical images</article-title>
+          <source>Artif. Intell. Appl.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_8">
+        <label>8.</label>
+        <element-citation publication-type="journal">
+          <volume>23</volume>
+          <page-range>22694-22715</page-range>
+          <issue>12</issue>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Muhammad</surname>
+              <given-names>K.</given-names>
+            </name>
+            <name>
+              <surname>Hussain</surname>
+              <given-names>T.</given-names>
+            </name>
+            <name>
+              <surname>Ullah</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Del Ser</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Rezaei</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Kumar</surname>
+              <given-names>N.</given-names>
+            </name>
+            <name>
+              <surname>Hijji</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Bellavista</surname>
+              <given-names>P.</given-names>
+            </name>
+            <name>
+              <surname>Albuquerque</surname>
+              <given-names>V. H. C.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/TITS.2022.3207665</pub-id>
+          <article-title>Vision-based semantic segmentation in scene understanding for autonomous driving: Recent achievements, challenges, and outlooks</article-title>
+          <source>IEEE Trans. Intell. Transp. Syst.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_9">
+        <label>9.</label>
+        <element-citation publication-type="journal">
+          <volume>139</volume>
+          <page-range>110239</page-range>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Karthick</surname>
+              <given-names>P.</given-names>
+            </name>
+            <name>
+              <surname>Mohiuddine</surname>
+              <given-names>S. A.</given-names>
+            </name>
+            <name>
+              <surname>Tamilvanan</surname>
+              <given-names>K.</given-names>
+            </name>
+            <name>
+              <surname>Narayanamoorthy</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Maheswari</surname>
+              <given-names>S.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.asoc.2023.110239</pub-id>
+          <article-title>Investigations of color image segmentation based on connectivity measure, shape priority and normalized fuzzy graph cut</article-title>
+          <source>Appl. Soft Comput.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_10">
+        <label>10.</label>
+        <element-citation publication-type="journal">
+          <volume>6</volume>
+          <page-range>29-39</page-range>
+          <issue>1</issue>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Zangana</surname>
+              <given-names>H. M.</given-names>
+            </name>
+            <name>
+              <surname>Mohammed</surname>
+              <given-names>A. K.</given-names>
+            </name>
+            <name>
+              <surname>Mustafa</surname>
+              <given-names>F. M.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.25139/ijair.v6i1.8217</pub-id>
+          <article-title>Advancements in edge detection techniques for image enhancement: A comprehensive review</article-title>
+          <source>Int. J. Artif. Intell. Robot.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_11">
+        <label>11.</label>
+        <element-citation publication-type="journal">
+          <volume>79</volume>
+          <page-range>104189</page-range>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Sinitca</surname>
+              <given-names>A. M.</given-names>
+            </name>
+            <name>
+              <surname>Kayumov</surname>
+              <given-names>A. R.</given-names>
+            </name>
+            <name>
+              <surname>Zelenikhin</surname>
+              <given-names>P. V.</given-names>
+            </name>
+            <name>
+              <surname>Porfiriev</surname>
+              <given-names>A. G.</given-names>
+            </name>
+            <name>
+              <surname>Kaplun</surname>
+              <given-names>D. I.</given-names>
+            </name>
+            <name>
+              <surname>Bogachev</surname>
+              <given-names>M. I.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.bspc.2022.104189</pub-id>
+          <article-title>Segmentation of patchy areas in biomedical images based on local edge density estimation</article-title>
+          <source>Biomed. Signal Process. Control</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_12">
+        <label>12.</label>
+        <element-citation publication-type="journal">
+          <volume>17</volume>
+          <page-range>131-137</page-range>
+          <issue>2</issue>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Soares</surname>
+              <given-names>F.</given-names>
+            </name>
+            <name>
+              <surname>Barbon</surname>
+              <given-names>V.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1515/jag-2022-0044</pub-id>
+          <article-title>Image segmentation of breakwater blocks by edge-base Hough transformation</article-title>
+          <source>J. Appl. Geod.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_13">
+        <label>13.</label>
+        <element-citation publication-type="journal">
+          <volume>8</volume>
+          <page-range>1522730</page-range>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Mochurad</surname>
+              <given-names>Lesia</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3389/frai.2025.1522730</pub-id>
+          <article-title>Approach for enhancing the accuracy of semantic segmentation of chest X-ray images by edge detection and deep learning integration</article-title>
+          <source>Front. Artif. Intell.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_14">
+        <label>14.</label>
+        <element-citation publication-type="journal">
+          <volume>2022</volume>
+          <page-range>5968939</page-range>
+          <issue>1</issue>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Hema</surname>
+              <given-names>L. K.</given-names>
+            </name>
+            <name>
+              <surname>Manikandan</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Alhomrani</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Pradeep</surname>
+              <given-names>N.</given-names>
+            </name>
+            <name>
+              <surname>Alamri</surname>
+              <given-names>A. S.</given-names>
+            </name>
+            <name>
+              <surname>Sharma</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Alhassan</surname>
+              <given-names>M.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1155/2022/5968939</pub-id>
+          <article-title>Region‐based segmentation and classification for ovarian cancer detection using convolution neural network</article-title>
+          <source>Contrast Media Mol. Imaging</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_15">
+        <label>15.</label>
+        <element-citation publication-type="journal">
+          <volume>72</volume>
+          <page-range>1-14</page-range>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Niaz</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Iqbal</surname>
+              <given-names>E.</given-names>
+            </name>
+            <name>
+              <surname>Memon</surname>
+              <given-names>A. A.</given-names>
+            </name>
+            <name>
+              <surname>Munir</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Kim</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Choi</surname>
+              <given-names>K. N.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/TIM.2023.3317481</pub-id>
+          <article-title>Edge-based local and global energy active contour model driven by signed pressure force for image segmentation</article-title>
+          <source>IEEE Trans. Instrum. Meas.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_16">
+        <label>16.</label>
+        <element-citation publication-type="journal">
+          <volume>16</volume>
+          <page-range>2680-2696</page-range>
+          <issue>10</issue>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Mlyahilu</surname>
+              <given-names>J. N.</given-names>
+            </name>
+            <name>
+              <surname>Lee</surname>
+              <given-names>J. E.</given-names>
+            </name>
+            <name>
+              <surname>Kim</surname>
+              <given-names>Y. B.</given-names>
+            </name>
+            <name>
+              <surname>Kim</surname>
+              <given-names>J. N.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1049/ipr2.12517</pub-id>
+          <article-title>Morphological geodesic active contour algorithm for the segmentation of the histogram‐equalized welding bead image edges</article-title>
+          <source>IET Image Process.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_17">
+        <label>17.</label>
+        <element-citation publication-type="journal">
+          <volume>16</volume>
+          <page-range>2563-2579</page-range>
+          <issue>4</issue>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Chen</surname>
+              <given-names>Xiao Hong</given-names>
+            </name>
+            <name>
+              <surname>Jiang</surname>
+              <given-names>Ju Feng</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>Xiao Feng</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.21037/jtd-24-421</pub-id>
+          <article-title>Automatic 3D coronary artery segmentation based on local region active contour model</article-title>
+          <source>J. Thorac. Dis.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_18">
+        <label>18.</label>
+        <element-citation publication-type="journal">
+          <volume>89</volume>
+          <page-range>105816</page-range>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Zhao</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Shen</surname>
+              <given-names>X. Y.</given-names>
+            </name>
+            <name>
+              <surname>Chen</surname>
+              <given-names>J. D.</given-names>
+            </name>
+            <name>
+              <surname>Qian</surname>
+              <given-names>W.</given-names>
+            </name>
+            <name>
+              <surname>Sang</surname>
+              <given-names>L.</given-names>
+            </name>
+            <name>
+              <surname>Ma</surname>
+              <given-names>H.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.bspc.2023.105816</pub-id>
+          <article-title>Learning active contour models based on self-attention for breast ultrasound image segmentation</article-title>
+          <source>Biomed. Signal Process. Control</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_19">
+        <label>19.</label>
+        <element-citation publication-type="journal">
+          <volume>25</volume>
+          <page-range>100454</page-range>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Almukhtar</surname>
+              <given-names>Firas H.</given-names>
+            </name>
+            <name>
+              <surname>Kareem</surname>
+              <given-names>Shahab Wahhab</given-names>
+            </name>
+            <name>
+              <surname>Khoshaba</surname>
+              <given-names>Farah Sami</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.eij.2024.100454</pub-id>
+          <article-title>Design and development of an effective classifier for medical images based on machine learning and image segmentation</article-title>
+          <source>Egypt. Inform. J.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_20">
+        <label>20.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>1-5</page-range>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Sany</surname>
+              <given-names>N. H.</given-names>
+            </name>
+            <name>
+              <surname>Chandra Shill</surname>
+              <given-names>P.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/icicacs60521.2024.10498287</pub-id>
+          <article-title>Image segmentation based approach for skin disease detection and classification using machine learning algorithms</article-title>
+          <source>2024 International Conference on Integrated Circuits and Communication Systems (ICICACS), Raichur, India</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_21">
+        <label>21.</label>
+        <element-citation publication-type="journal">
+          <volume>89</volume>
+          <page-range>102918</page-range>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Mazurowski</surname>
+              <given-names>M. A.</given-names>
+            </name>
+            <name>
+              <surname>Dong</surname>
+              <given-names>H. Y.</given-names>
+            </name>
+            <name>
+              <surname>Gu</surname>
+              <given-names>H. X.</given-names>
+            </name>
+            <name>
+              <surname>Yang</surname>
+              <given-names>J. C.</given-names>
+            </name>
+            <name>
+              <surname>Konz</surname>
+              <given-names>N.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>Y. X.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.media.2023.102918</pub-id>
+          <article-title>Segment anything model for medical image analysis: An experimental study</article-title>
+          <source>Med. Image Anal.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_22">
+        <label>22.</label>
+        <element-citation publication-type="journal">
+          <volume>18</volume>
+          <page-range>e0282909</page-range>
+          <issue>6</issue>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Zhang</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Meng</surname>
+              <given-names>D.</given-names>
+            </name>
+            <name>
+              <surname>Liu</surname>
+              <given-names>L. L.</given-names>
+            </name>
+            <name>
+              <surname>Wen</surname>
+              <given-names>J. H.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1371/journal.pone.0282909</pub-id>
+          <article-title>Research on improved level set image segmentation method</article-title>
+          <source>PLoS ONE</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_23">
+        <label>23.</label>
+        <element-citation publication-type="journal">
+          <volume>10</volume>
+          <page-range>654-671</page-range>
+          <issue>1</issue>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Shi</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Hussain</surname>
+              <given-names>I.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3934/math.2025029</pub-id>
+          <article-title>Improved region-based active contour segmentation through divergence</article-title>
+          <source>AIMS Mathematics</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_24">
+        <label>24.</label>
+        <element-citation publication-type="journal">
+          <volume>18</volume>
+          <page-range>1-12</page-range>
+          <issue>3</issue>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Yu</surname>
+              <given-names>H. P.</given-names>
+            </name>
+            <name>
+              <surname>Ma</surname>
+              <given-names>K.</given-names>
+            </name>
+            <name>
+              <surname>Lin</surname>
+              <given-names>X. L.</given-names>
+            </name>
+            <name>
+              <surname>Sun</surname>
+              <given-names>P.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1299/jamdsm.2024jamdsm0027</pub-id>
+          <article-title>High-precision inhomogeneous image segmentation based on adaptive parameter level set method</article-title>
+          <source>J. Adv. Mech. Des. Syst. Manuf.</source>
+        </element-citation>
+      </ref>
+    </ref-list>
+  </back>
+</article>
