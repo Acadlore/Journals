@@ -1,0 +1,3046 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.3 20210610//EN" "JATS-journalpublishing1-3.dtd">
+<article xml:lang="en" dtd-version="1.3" article-type="research-article" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mml="http://www.w3.org/1998/Math/MathML">
+  <front>
+    <journal-meta>
+      <journal-id journal-id-type="publisher-id">MITS</journal-id>
+      <journal-id journal-id-type="doi">10.56578</journal-id>
+      <journal-title-group>
+        <journal-title>Mechatronics and Intelligent Transportation Systems</journal-title>
+        <abbrev-journal-title abbrev-type="issn">Mechatron. Intell Transp. Syst.</abbrev-journal-title>
+        <abbrev-journal-title abbrev-type="publisher">MITS</abbrev-journal-title>
+      </journal-title-group>
+      <issn publication-format="electronic">2958-0218</issn>
+      <issn publication-format="print">2958-020X</issn>
+      <publisher>
+        <publisher-name>Acadlore</publisher-name>
+      </publisher>
+    </journal-meta>
+    <article-meta>
+      <article-id pub-id-type="publisher-id">AR-lUTqj2xQoaUPVejrid4Rtu_HQdunCWIh</article-id>
+      <article-id pub-id-type="doi">10.56578/mits040301</article-id>
+      <article-categories>
+        <subj-group>
+          <subject>Articles</subject>
+        </subj-group>
+      </article-categories>
+      <title-group>
+        <article-title>Multi-Channel Functional Gradient–Entropy Model for Robust Road Boundary Detection in Complex Visual Environments</article-title>
+      </title-group>
+      <contrib-group>
+        <contrib contrib-type="author" rid="aff_1">
+          <contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0009-0003-1929-5830</contrib-id>
+          <name>
+            <surname>Rahman</surname>
+            <given-names>Zia Ur</given-names>
+          </name>
+          <email>ziaur.rehman@student.univaq.it</email>
+        </contrib>
+        <aff id="aff_1">Department of Information Engineering, Computer Science and Mathematics (DISIM), University of L’Aquila, 67100 Coppito, Italy</aff>
+      </contrib-group>
+      <pub-date publication-format="electronic" date-type="pub">
+        <day>25</day>
+        <month>06</month>
+        <year>2025</year>
+      </pub-date>
+      <volume>4</volume>
+      <issue>3</issue>
+      <fpage>114</fpage>
+      <lpage>124</lpage>
+      <page-range>114-124</page-range>
+      <history>
+        <date date-type="received">
+          <day>01</day>
+          <month>04</month>
+          <year>2025</year>
+        </date>
+        <date date-type="accepted">
+          <day>21</day>
+          <month>05</month>
+          <year>2025</year>
+        </date>
+      </history>
+      <permissions>
+        <copyright-statement>©2025 by the author(s)</copyright-statement>
+        <copyright-year>2025</copyright-year>
+        <license license-type="open-access" xlink:href="https://creativecommons.org/licenses/by/4.0/">
+          <license-p> Published by Acadlore Publishing Services Limited, Hong Kong. This article is available for free download and can be reused and cited, provided that the original published version is credited, under the CC BY 4.0 license.</license-p>
+        </license>
+      </permissions>
+      <abstract><p>Accurate and consistent road boundary detection remains a fundamental requirement in autonomous driving, traffic surveillance, and intelligent transportation systems, particularly under diverse lighting and environmental conditions. To address the limitations of classical edge detectors in complex outdoor scenarios, a novel multi-channel edge detection framework is proposed, termed the Multi-Channel Functional Gradient–Entropy (MC-FGE) model. This model has been specifically designed for colour road imagery and incorporates a mathematically principled architecture to enhance structural clarity and semantic relevance. The initial phase involves channel-wise normalization of RGB data, followed by the computation of a fused gradient magnitude that preserves edge information across heterogeneous spectral distributions. Two original mathematical constructs are introduced: the Spectral Curvature Function (SCF), which quantifies local geometric sharpness by leveraging first- and second-order differential operators while exhibiting resilience to noise; and the Colour Entropy Potential Function, which captures local texture complexity and intensity-driven irregularity through entropy analysis of chromatic distributions. These functions are combined into a unified Functional Edge Strength Map (FESM), designed to emphasize semantically meaningful road-related boundaries while suppressing irrelevant background textures. A central innovation is the Log-Root Adaptive Thresholding Function (LRATF), which adaptively modulates threshold sensitivity by integrating curvature and entropy cues in a logarithmic-root formulation, thereby improving robustness to illumination variability, occlusions, and shadow interference. The final binary edge map is derived through precision thresholding of the FESM and refined using morphological post-processing to ensure topological continuity and suppress artefactual edge fragments. Quantitative and qualitative evaluations conducted across varied outdoor datasets demonstrate that the MC-FGE model consistently outperforms conventional edge detectors such as Canny, Sobel, and Laplacian of Gaussian, particularly in scenarios involving texture-rich road surfaces, poor lighting, and partial occlusion. The model not only exhibits enhanced detection accuracy and edge coherence but also offers improved interpretability of road features, contributing both a rigorous theoretical foundation and a scalable computational framework for adaptive edge-based scene understanding in road environments.</p></abstract>
+      <kwd-group>
+        <kwd>Road boundary detection</kwd>
+        <kwd>Multi-channel gradient fusion</kwd>
+        <kwd>SCF</kwd>
+        <kwd>Colour entropy</kwd>
+        <kwd>Adaptive thresholding</kwd>
+        <kwd>Edge strength mapping</kwd>
+        <kwd>Autonomous driving</kwd>
+      </kwd-group>
+      <counts>
+        <count count-type="contributors" count="1"/>
+        <fig-count count="3"/>
+        <table-count count="1"/>
+        <ref-count count="23"/>
+      </counts>
+    </article-meta>
+  </front>
+  <body>
+    <sec sec-type="intro">
+      <title>1. Introduction</title>
+      <p>Image processing and segmentation are fundamental techniques in computer vision that involve the analysis and manipulation of digital images to extract meaningful information [<xref ref-type="bibr" rid="ref_1">1</xref>], [<xref ref-type="bibr" rid="ref_2">2</xref>], [<xref ref-type="bibr" rid="ref_3">3</xref>]. Image processing enhances image quality through operations like filtering, contrast adjustment, and noise reduction, while segmentation partitions an image into distinct regions, often isolating objects of interest for further analysis. This process is crucial in applications requiring detailed structural analysis, such as medical imaging, remote sensing, and automated inspection systems. In the context of road surface safety models, image segmentation plays a vital role by enabling the accurate detection of cracks, potholes, and other surface anomalies from road images [<xref ref-type="bibr" rid="ref_4">4</xref>], [<xref ref-type="bibr" rid="ref_5">5</xref>], [<xref ref-type="bibr" rid="ref_6">6</xref>], [<xref ref-type="bibr" rid="ref_7">7</xref>], [<xref ref-type="bibr" rid="ref_8">8</xref>]. By isolating damaged areas from the rest of the surface, these models can assess road conditions in real time, improving maintenance planning and enhancing vehicle safety. Integrating robust image processing techniques with intelligent segmentation algorithms ensures that road safety systems are more reliable, adaptive, and capable of functioning under diverse environmental conditions.</p><p>Recent research has shown a marked progression in the development of road surface detection models, particularly through the integration of deep learning and advanced sensing technologies. Sazonova et al. [<xref ref-type="bibr" rid="ref_9">9</xref>] presented a study focused on the evaluation and monitoring of damage in concrete road pavements. This research emphasizes the use of modern monitoring techniques and diagnostic tools to detect and assess surface defects, such as cracks and material degradation. The authors highlight the importance of timely damage identification for ensuring road safety, optimizing maintenance strategies, and extending pavement lifespan. Their findings contribute to the development of more efficient infrastructure monitoring systems. Complementing this, Dong et al. [<xref ref-type="bibr" rid="ref_10">10</xref>] proposed an enhanced version of the YOLOv8 object detection framework tailored specifically for concrete surface crack detection. By refining the backbone and introducing specialized modules, their algorithm achieved higher accuracy and real-time performance, making it suitable for deployment in automated mobile inspection systems. In a broader perspective, the study by Liu et al. [<xref ref-type="bibr" rid="ref_11">11</xref>] explores the use of deep learning for the automatic quality assessment of concrete surfaces affected by cracks and bugholes. The authors propose a robust AI-assisted framework that leverages convolutional neural networks (CNNs) to detect and evaluate surface defects with high accuracy. By integrating image analysis and machine learning techniques, the model offers a reliable, efficient alternative to traditional manual inspection methods. The research demonstrates significant potential for improving the speed, consistency, and objectivity of concrete surface evaluations in construction and maintenance applications. Going beyond optical imaging, Chhabra et al. [<xref ref-type="bibr" rid="ref_12">12</xref>] presented a deep learning-based approach for road surface classification aimed at enhancing the performance of intelligent vehicles. this study utilizes advanced neural network models to accurately identify and categorize different types of road surfaces under varying environmental conditions. The proposed method contributes to safer and more adaptive autonomous driving by enabling real-time surface recognition, which is critical for navigation, traction control, and decision-making in intelligent transportation systems.</p><p>Edge detection is a fundamental step in image processing and computer vision, aiming to identify significant local changes in intensity that typically correspond to object boundaries [<xref ref-type="bibr" rid="ref_13">13</xref>], [<xref ref-type="bibr" rid="ref_14">14</xref>]. The detection of road boundaries and edges has become increasingly critical in advancing autonomous driving, infrastructure monitoring, and traffic safety systems. Several recent studies have introduced robust models for road edge detection using a variety of data sources and learning paradigms. Dahal et al. [<xref ref-type="bibr" rid="ref_15">15</xref>] proposed RoadEdgeNet, a deep learning-based system that utilizes surround-view camera images to detect road edges with a high degree of spatial awareness. The strength of RoadEdgeNet lies in its ability to provide a 360-degree view, enhancing perception in tight urban environments. However, its reliance on camera data limits its robustness in low-visibility conditions such as fog or nighttime scenarios. Zhou and Zhang [<xref ref-type="bibr" rid="ref_16">16</xref>] developed an edge detection algorithm tailored for urban roads using deep learning. Their approach shows improved edge localization in complex urban environments but still struggles with generalization across diverse road textures and lighting conditions. Similarly, Ai et al. [<xref ref-type="bibr" rid="ref_17">17</xref>] introduced a meta random forest-based model for real-time road boundary detection in surface mines. The model stands out for its low-latency performance and ability to handle unstructured, off-road terrains, yet it may underperform in regular paved road environments due to its design optimization for mining applications.</p><p>In addition to camera-based models, recent advancements have explored the integration of spatial statistics and LiDAR data for enhanced edge detection. Kukolj et al. [<xref ref-type="bibr" rid="ref_18">18</xref>] proposed a hybrid method combining deep learning and spatial statistical analysis of LiDAR data. This approach effectively handles occlusions and environmental variability, offering superior detection accuracy in cluttered scenes. Nevertheless, the model’s dependency on high resolution LiDAR makes it less feasible for low-cost deployments. Xin et al. [<xref ref-type="bibr" rid="ref_19">19</xref>] presented a road boundary extraction model based on mobile laser scanning (MLS) point clouds, which demonstrated high precision in capturing fine-grained geometric features of road boundaries. While their method achieves excellent accuracy, it is computationally intensive and requires sophisticated preprocessing, limiting its scalability for real-time applications. These edge and boundary detection methods align with and extend the capabilities of the road surface detection models discussed earlier. When integrated, edge detection enhances structural context for crack and surface anomaly detection, forming a more holistic and reliable framework for road safety and autonomous navigation systems. However, the trade-off between sensor cost, computational complexity, and model generalization remains a key challenge in real-world deployments.</p><p>In summary, while recent techniques for road surface and edge detection have demonstrated impressive accuracy and innovation, several limitations persist. Many models depend on high-resolution input data and extensive training, which hampers their adaptability to varying real-world conditions. Camera-based approaches are vulnerable to poor lighting and adverse weather, while LiDAR and laser-based methods, although highly precise, involve high costs and complex processing. Furthermore, achieving real-time performance with such computationally intensive models remains a significant challenge, restricting their practical deployment in large-scale or resource-constrained environments.</p><p>The proposed model effectively addresses the inherent challenges of road boundary detection in color images, such as varying illumination, textured backgrounds, occlusions, and weak or disconnected edges. Unlike conventional edge detectors that primarily rely on intensity gradients and fixed thresholds, our model fuses multiple mathematical cues to build a context-aware and adaptive detection mechanism. The use of a fused color gradient across RGB channels allows for better edge visibility under complex lighting conditions, while the SCF leverages both first- and second-order derivatives to emphasize geometrically consistent structures such as road boundaries. Simultaneously, the Color Entropy Potential Function captures localized texture complexity and intensity randomness, enhancing sensitivity to critical road features like lane markings, cracks, and surface variations. These components are combined in an FESM that is adaptively modulated using a novel log-root thresholding function, which adjusts to local image characteristics and reduces the influence of noise and intensity variation.</p><p>The novelty of this work lies in its mathematically grounded framework, which unifies edge geometry, color statistics, and adaptive thresholding into a single robust pipeline. Unlike traditional approaches that either overlook color space complexity or rely heavily on machine learning models with limited interpretability, our algorithm offers a transparent and principled solution. The key contributions of this study include: (1) the development of a multi-channel gradient fusion mechanism for color images; (2) the formulation of two novel edge-detection functions—Spectral Curvature and Color Entropy Potential; (3) the introduction of an LRATF; and (4) a comprehensive postprocessing step to ensure continuity and reduce fragmentation in the final binary edge map. These innovations collectively enable precise, interpretable, and environment-invariant detection of road boundaries.</p>
+    </sec>
+    <sec sec-type="">
+      <title>2. Related work</title>
+      <p>This section reviews recent advancements in road boundary detection and material classification, highlighting machine learning and computer vision-based approaches that contribute to road safety and infrastructure monitoring. Li and Hussin [<xref ref-type="bibr" rid="ref_20">20</xref>] introduced an intelligent road boundary identification method that combines advanced image segmentation with edge feature extraction to enhance the detection and delineation of road boundaries in complex driving environments. Their method utilizes refined edge detection algorithms to capture structural details of road boundaries, while segmentation techniques help in separating the road area from the background and surrounding objects. Implemented and tested on various real-world road images, the model showed improved accuracy in boundary identification, particularly under challenging conditions such as curved roads, shadows, and inconsistent lighting. This makes it a valuable contribution to the development of intelligent transportation systems and autonomous driving technologies.</p><p>Despite its strengths, the proposed approach has several limitations. The method's accuracy tends to degrade in scenarios involving heavy occlusions, such as moving vehicles, pedestrians, or roadside barriers that obscure road edges. It also struggles with low-visibility conditions, like fog or night-time driving, where edge features become less distinguishable. Furthermore, the computational complexity of the segmentation and edge extraction processes can hinder real-time performance, especially on devices with limited processing power.</p><p>Rajalashmi et al. [<xref ref-type="bibr" rid="ref_21">21</xref>] presented a machine learning-based system designed to detect and track road boundary lines to support autonomous vehicle navigation and intelligent transportation systems. The authors utilized a combination of image processing techniques and supervised learning algorithms to process video input, enabling the identification of road boundaries under varying environmental conditions. A significant achievement of the study is its ability to perform real-time detection with reasonably high accuracy, even in the presence of moderate noise, shadows, and slight occlusions. The use of adaptive filtering and dynamic thresholding enhances the system's robustness and responsiveness to changing road scenes.</p><p>However, the model has certain limitations. It struggles in scenarios involving highly curved or poorly marked roads, where the visual features become ambiguous. Furthermore, extreme weather conditions such as heavy rain, fog, or snow significantly reduce the clarity of boundary lines, affecting the accuracy of detection. The approach also relies heavily on a labeled dataset for training, which limits its generalization to unseen environments without further data collection and model retraining. Despite these challenges, the study provides a valuable contribution toward real-time road boundary detection using machine learning, laying the groundwork for further enhancements using deep learning and sensor fusion.</p><p>To address the limitations of existing models, the proposed approach introduces a robust, multi-feature fusion framework tailored for color images. By combining fused color gradients, spectral curvature, and color entropy cues, it enhances edge continuity and suppresses background noise. The adaptive log-root thresholding further improves detection under varying conditions, overcoming challenges like illumination changes, occlusions, and weak edges that affect traditional and machine learning-based methods.</p>
+    </sec>
+    <sec sec-type="">
+      <title>3. Proposed methodology</title>
+      <p>The proposed road boundary detection framework leverages a unified mathematical formulation designed to enhance robustness against common challenges such as illumination changes, faded markings, surface irregularities, and environmental noise. Unlike conventional edge detectors or purely learning-based methods, this approach systematically fuses geometric, statistical, and color-based cues to extract road-relevant boundaries in RGB images. Specifically, it incorporates the following mathematical tools: (i) Channel-wise Color Normalization to reduce scale and illumination variance; (ii) a Color Gradient Fusion Function that captures edge intensity jointly across the RGB space; (iii) the SCF for capturing geometric consistency using first- and second-order derivatives; (iv) the Color Entropy Potential Function that quantifies local texture irregularity and intensity randomness; (v) an FESM that integrates the above cues multiplicatively to reinforce true edge structures; and (vi) an LRATF that adjusts locally based on entropy-curvature interaction. Finally, a binary edge map is generated by comparing the functional edge strength to the adaptive threshold. This comprehensive methodology results in accurate and consistent road boundary maps, suitable for diverse real-world driving scenarios.</p>
+      
+        <sec>
+          
+            <title>3.1. Preprocessing (color-based)</title>
+          
+          <p>Given an input RGB image denoted as:</p><p style="text-align: center"><inline-formula>
+  <mml:math id="mnptdj5p71">
+    <mml:mi>I</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>R</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>G</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>B</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>=</mml:mo>
+    <mml:mo>[</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>]</mml:mo>
+  </mml:math>
+</inline-formula></p><p>where, <inline-formula>
+  <mml:math id="m5nl6kt3in">
+    <mml:mi>R</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>G</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+  </mml:math>
+</inline-formula>, and <inline-formula>
+  <mml:math id="m1odgcx89n">
+    <mml:mi>B</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+  </mml:math>
+</inline-formula> represent the red, green, and blue color intensities at pixel location (<inline-formula>
+  <mml:math id="mjaptf5z7z">
+    <mml:mi>x</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>) respectively, the first step in our pipeline is to normalize the intensity values of each channel. Normalization is essential for reducing the impact of illumination variations and making the image data scale-invariant for further processing.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.2. Channel-wise normalization</title>
+          
+          <p>Each color channel is independently normalized to bring its intensity values into the range [0,1]:</p><p style="text-align: center"><inline-formula>
+  <mml:math id="mdo0zdz9x5">
+    <mml:msubsup>
+      <mml:mi>I</mml:mi>
+      <mml:mi>N</mml:mi>
+      <mml:mi>c</mml:mi>
+    </mml:msubsup>
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>=</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>∈</mml:mo>
+    <mml:mo fence="false">{</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo fence="false">}</mml:mo>
+    <mml:mi>x</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>R</mml:mi>
+    <mml:mi>G</mml:mi>
+    <mml:mi>B</mml:mi>
+    <mml:mfrac>
+      <mml:mrow>
+        <mml:msup>
+          <mml:mi>I</mml:mi>
+          <mml:mi>c</mml:mi>
+        </mml:msup>
+        <mml:mo>(</mml:mo>
+        <mml:mo>,</mml:mo>
+        <mml:mo>)</mml:mo>
+        <mml:mi>x</mml:mi>
+        <mml:mi>y</mml:mi>
+      </mml:mrow>
+      <mml:mrow>
+        <mml:mo>max</mml:mo>
+        <mml:mrow>
+          <mml:mo>(</mml:mo>
+          <mml:mo>)</mml:mo>
+          <mml:msup>
+            <mml:mi>I</mml:mi>
+            <mml:mi>c</mml:mi>
+          </mml:msup>
+        </mml:mrow>
+      </mml:mrow>
+    </mml:mfrac>
+    <mml:mstyle scriptlevel="0">
+      <mml:mspace width="1em"/>
+    </mml:mstyle>
+    <mml:mtext> for </mml:mtext>
+  </mml:math>
+</inline-formula></p><p>where, <inline-formula>
+  <mml:math id="mjeegjsx6d">
+    <mml:mo>max</mml:mo>
+    <mml:mrow>
+      <mml:mo>(</mml:mo>
+      <mml:mo>)</mml:mo>
+      <mml:msup>
+        <mml:mi>I</mml:mi>
+        <mml:mi>c</mml:mi>
+      </mml:msup>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> denotes the maximum intensity value in channel $c<inline-formula>
+  <mml:math id="mt67lcqzb3">
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>z</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mo>.</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>.</mml:mo>
+  </mml:math>
+</inline-formula>I_N(x, y)$ with three channels.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.3. Multi-channel gradient computation</title>
+          
+          <p>After normalization, we compute the spatial gradients in both the horizontal ($x<inline-formula>
+  <mml:math id="mxrhuv8lqe">
+    <mml:mo>)</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+  </mml:math>
+</inline-formula>y<inline-formula>
+  <mml:math id="milhukfbz8">
+    <mml:mo>)</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>k</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+  </mml:math>
+</inline-formula>\frac{\partial I_N^e}{\partial x}<inline-formula>
+  <mml:math id="m4gofyb7ag">
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+  </mml:math>
+</inline-formula>\frac{\partial I_N^e}{\partial y}<inline-formula>
+  <mml:math id="mvv86fg7mt">
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+  </mml:math>
+</inline-formula>x<inline-formula>
+  <mml:math id="msyo34xr9s">
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+  </mml:math>
+</inline-formula>y<inline-formula>
+  <mml:math id="mgsvgfha08">
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>c$.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.4. Color gradient fusion function</title>
+          
+          <p>To construct a robust edge descriptor that incorporates all three color channels, we define the color gradient fusion function <inline-formula>
+  <mml:math id="ml1a9s5t10">
+    <mml:msub>
+      <mml:mi>F</mml:mi>
+      <mml:mrow>
+        <mml:mtext>grad</mml:mtext>
+      </mml:mrow>
+    </mml:msub>
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mi>x</mml:mi>
+    <mml:mi>y</mml:mi>
+  </mml:math>
+</inline-formula> as:</p><p style="text-align: center"><inline-formula>
+  <mml:math id="mzqxdcyv7y">
+    <mml:msub>
+      <mml:mi>F</mml:mi>
+      <mml:mrow>
+        <mml:mi>g</mml:mi>
+        <mml:mi>r</mml:mi>
+        <mml:mi>a</mml:mi>
+        <mml:mi>d</mml:mi>
+      </mml:mrow>
+    </mml:msub>
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>=</mml:mo>
+    <mml:mi>x</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:msqrt>
+      <mml:munder>
+        <mml:mo>∑</mml:mo>
+        <mml:mrow>
+          <mml:mi>c</mml:mi>
+          <mml:mi>R</mml:mi>
+          <mml:mi>G</mml:mi>
+          <mml:mi>B</mml:mi>
+          <mml:mo>∈</mml:mo>
+          <mml:mo fence="false">{</mml:mo>
+          <mml:mo>,</mml:mo>
+          <mml:mo>,</mml:mo>
+          <mml:mo fence="false">}</mml:mo>
+        </mml:mrow>
+      </mml:munder>
+      <mml:mrow>
+        <mml:mo>[</mml:mo>
+        <mml:mo>+</mml:mo>
+        <mml:mo>]</mml:mo>
+        <mml:msup>
+          <mml:mrow>
+            <mml:mo>(</mml:mo>
+            <mml:mo>)</mml:mo>
+            <mml:mfrac>
+              <mml:mrow>
+                <mml:mi>∂</mml:mi>
+                <mml:msubsup>
+                  <mml:mi>I</mml:mi>
+                  <mml:mi>N</mml:mi>
+                  <mml:mi>c</mml:mi>
+                </mml:msubsup>
+              </mml:mrow>
+              <mml:mrow>
+                <mml:mi>∂</mml:mi>
+                <mml:mi>x</mml:mi>
+              </mml:mrow>
+            </mml:mfrac>
+          </mml:mrow>
+          <mml:mn>2</mml:mn>
+        </mml:msup>
+        <mml:msup>
+          <mml:mrow>
+            <mml:mo>(</mml:mo>
+            <mml:mo>)</mml:mo>
+            <mml:mfrac>
+              <mml:mrow>
+                <mml:mi>∂</mml:mi>
+                <mml:msubsup>
+                  <mml:mi>I</mml:mi>
+                  <mml:mi>N</mml:mi>
+                  <mml:mi>c</mml:mi>
+                </mml:msubsup>
+              </mml:mrow>
+              <mml:mrow>
+                <mml:mi>∂</mml:mi>
+                <mml:mi>y</mml:mi>
+              </mml:mrow>
+            </mml:mfrac>
+          </mml:mrow>
+          <mml:mn>2</mml:mn>
+        </mml:msup>
+      </mml:mrow>
+    </mml:msqrt>
+  </mml:math>
+</inline-formula></p><p>This formulation fuses the gradient magnitudes from the red, green, and blue channels into a single scalar value at each pixel. The square root of the sum of squared gradients provides a Euclidean norm, yielding a gradient magnitude that captures the collective change in color. This is more effective than grayscale edge detection, especially in outdoor road scenes where road surfaces, shadows, and lane markings often have strong color contrasts.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.5. Mc-fge algorithm implementation details</title>
+          
+          <p>In the proposed MC-FGE algorithm, we provide explicit parameter choices and detailed expressions to improve clarity and reproducibility.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.6. Custom mathematical edge functions</title>
+          
+          <p>To enhance road boundary detection in complex scenes, we design novel mathematical functions that go beyond standard gradient operators. These functions incorporate geometric curvature, color-based entropy, and local structural analysis to adaptively extract prominent edges even in the presence of noise, texture variation, and illumination shifts.</p>
+          
+            <sec>
+              
+                <title>3.6.1 Scf</title>
+              
+              <p>Curvature is a fundamental geometric descriptor that characterizes how sharply an edge bends or transitions [<xref ref-type="bibr" rid="ref_22">22</xref>]. To exploit this, we introduce the SCF <inline-formula>
+  <mml:math id="mkdtfu6upu">
+    <mml:mi>Ψ</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+  </mml:math>
+</inline-formula>, which integrates both first- and second-order derivatives of the grayscale representation of the image:</p><p style="text-align: center"><inline-formula>
+  <mml:math id="m53b079fg9">
+    <mml:mi>Ψ</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>arctan</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>=</mml:mo>
+    <mml:mo>⁡</mml:mo>
+    <mml:mrow>
+      <mml:mo>(</mml:mo>
+      <mml:mo>)</mml:mo>
+      <mml:mfrac>
+        <mml:msqrt>
+          <mml:msubsup>
+            <mml:mi>G</mml:mi>
+            <mml:mi>x</mml:mi>
+            <mml:mn>2</mml:mn>
+          </mml:msubsup>
+          <mml:msubsup>
+            <mml:mi>G</mml:mi>
+            <mml:mi>y</mml:mi>
+            <mml:mn>2</mml:mn>
+          </mml:msubsup>
+          <mml:mo>(</mml:mo>
+          <mml:mo>,</mml:mo>
+          <mml:mo>)</mml:mo>
+          <mml:mo>+</mml:mo>
+          <mml:mo>(</mml:mo>
+          <mml:mo>,</mml:mo>
+          <mml:mo>)</mml:mo>
+          <mml:mi>x</mml:mi>
+          <mml:mi>y</mml:mi>
+          <mml:mi>x</mml:mi>
+          <mml:mi>y</mml:mi>
+        </mml:msqrt>
+        <mml:mrow>
+          <mml:mi>λ</mml:mi>
+          <mml:mo>+</mml:mo>
+          <mml:mrow>
+            <mml:mo>|</mml:mo>
+            <mml:mo>(</mml:mo>
+            <mml:mo>,</mml:mo>
+            <mml:mo>)</mml:mo>
+            <mml:mo>+</mml:mo>
+            <mml:mo>(</mml:mo>
+            <mml:mo>,</mml:mo>
+            <mml:mo>)</mml:mo>
+            <mml:mo>|</mml:mo>
+            <mml:msub>
+              <mml:mi>G</mml:mi>
+              <mml:mrow>
+                <mml:mi>x</mml:mi>
+                <mml:mi>x</mml:mi>
+              </mml:mrow>
+            </mml:msub>
+            <mml:msub>
+              <mml:mi>G</mml:mi>
+              <mml:mrow>
+                <mml:mi>y</mml:mi>
+                <mml:mi>y</mml:mi>
+              </mml:mrow>
+            </mml:msub>
+            <mml:mi>x</mml:mi>
+            <mml:mi>y</mml:mi>
+            <mml:mi>x</mml:mi>
+            <mml:mi>y</mml:mi>
+          </mml:mrow>
+        </mml:mrow>
+      </mml:mfrac>
+    </mml:mrow>
+  </mml:math>
+</inline-formula></p><p>•<inline-formula>
+  <mml:math id="m1l15ijech">
+    <mml:msub>
+      <mml:mi>G</mml:mi>
+      <mml:mi>x</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> and <inline-formula>
+  <mml:math id="mjnj1jkudr">
+    <mml:msub>
+      <mml:mi>G</mml:mi>
+      <mml:mi>y</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> denote the first-order spatial derivatives (gradients) along the $x<inline-formula>
+  <mml:math id="mis81ginal">
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+  </mml:math>
+</inline-formula>y<inline-formula>
+  <mml:math id="mzeoxn9leb">
+    <mml:mi>a</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>S</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>k</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>z</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>z</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mo>•</mml:mo>
+    <mml:mn>3</mml:mn>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+  </mml:math>
+</inline-formula>G_{xx}<inline-formula>
+  <mml:math id="mvtaef8ujc">
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+  </mml:math>
+</inline-formula>G_{yy}<inline-formula>
+  <mml:math id="mzfzbbf6gv">
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>L</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>L</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mo>−</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mo>•</mml:mo>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+  </mml:math>
+</inline-formula>\lambda<inline-formula>
+  <mml:math id="motlbix70a">
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>z</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>z</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>z</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>S</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mn>0.01</mml:mn>
+    <mml:mo>,</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>.</mml:mo>
+  </mml:math>
+</inline-formula>\lambda$ in [0.005,0.02].</p><p>This formulation emphasizes structural edges, such as curbs and lane separations, while suppressing noise-induced variations. The arctangent non-linearity stabilizes the curvature response, especially in high-gradient regions, preventing it from diverging due to sharp transitions.</p>
+            </sec>
+          
+          
+            <sec>
+              
+                <title>3.6.2 Color entropy potential function</title>
+              
+              <p>Color entropy captures the degree of randomness and complexity within a local region. Higher entropy implies greater variation in color intensities, which is often characteristic of textured surfaces (e.g., worn roads, painted lanes) [<xref ref-type="bibr" rid="ref_23">23</xref>].</p><p>We define the color entropy potential function (CEFP) <inline-formula>
+  <mml:math id="m2ei549h03">
+    <mml:msub>
+      <mml:mrow>
+        <mml:mi data-mjx-variant="-tex-calligraphic">E</mml:mi>
+      </mml:mrow>
+      <mml:mi>c</mml:mi>
+    </mml:msub>
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mi>x</mml:mi>
+    <mml:mi>y</mml:mi>
+  </mml:math>
+</inline-formula> at pixel <inline-formula>
+  <mml:math id="mezh64l3be">
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mi>x</mml:mi>
+    <mml:mi>y</mml:mi>
+  </mml:math>
+</inline-formula> as:</p><p style="text-align: center"><inline-formula>
+  <mml:math id="mknlyxsg4b">
+    <mml:msub>
+      <mml:mrow>
+        <mml:mi data-mjx-variant="-tex-calligraphic">E</mml:mi>
+      </mml:mrow>
+      <mml:mi>c</mml:mi>
+    </mml:msub>
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>=</mml:mo>
+    <mml:mi>x</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:munder>
+      <mml:mo>∑</mml:mo>
+      <mml:mrow>
+        <mml:mi>c</mml:mi>
+        <mml:mi>R</mml:mi>
+        <mml:mi>G</mml:mi>
+        <mml:mi>B</mml:mi>
+        <mml:mo>∈</mml:mo>
+        <mml:mo fence="false">{</mml:mo>
+        <mml:mo>,</mml:mo>
+        <mml:mo>,</mml:mo>
+        <mml:mo fence="false">}</mml:mo>
+      </mml:mrow>
+    </mml:munder>
+    <mml:mrow>
+      <mml:mo>(</mml:mo>
+      <mml:mo>−</mml:mo>
+      <mml:mo>(</mml:mo>
+      <mml:mo>,</mml:mo>
+      <mml:mo>)</mml:mo>
+      <mml:mo>⁡</mml:mo>
+      <mml:mo>)</mml:mo>
+      <mml:msub>
+        <mml:mi>p</mml:mi>
+        <mml:mi>c</mml:mi>
+      </mml:msub>
+      <mml:mi>x</mml:mi>
+      <mml:mi>y</mml:mi>
+      <mml:mi>log</mml:mi>
+      <mml:mrow>
+        <mml:mo>(</mml:mo>
+        <mml:mo>(</mml:mo>
+        <mml:mo>,</mml:mo>
+        <mml:mo>)</mml:mo>
+        <mml:mo>+</mml:mo>
+        <mml:mo>)</mml:mo>
+        <mml:msub>
+          <mml:mi>p</mml:mi>
+          <mml:mi>c</mml:mi>
+        </mml:msub>
+        <mml:mi>x</mml:mi>
+        <mml:mi>y</mml:mi>
+        <mml:mi>ϵ</mml:mi>
+      </mml:mrow>
+    </mml:mrow>
+  </mml:math>
+</inline-formula></p><p>•<inline-formula>
+  <mml:math id="mrcu77o4ph">
+    <mml:msub>
+      <mml:mi>p</mml:mi>
+      <mml:mi>c</mml:mi>
+    </mml:msub>
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mi>x</mml:mi>
+    <mml:mi>y</mml:mi>
+  </mml:math>
+</inline-formula> is computed as the normalized histogram of pixel intensities within a 7×7 neighborhood window centered at <inline-formula>
+  <mml:math id="mjvvmsjkz8">
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mi>x</mml:mi>
+    <mml:mi>y</mml:mi>
+  </mml:math>
+</inline-formula> for each color channel $c<inline-formula>
+  <mml:math id="mdyuoo2e4l">
+    <mml:mo>.</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mo>•</mml:mo>
+    <mml:mi>T</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>z</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+  </mml:math>
+</inline-formula>\epsilon=10^{-10}<inline-formula>
+  <mml:math id="m0g02z572b">
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>y</mml:mi>
+  </mml:math>
+</inline-formula>\log (0)<inline-formula>
+  <mml:math id="mlzaa1hubq">
+    <mml:mo>.</mml:mo>
+    <mml:mo>&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>[</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>]</mml:mo>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>k</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>z</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mn>0</mml:mn>
+    <mml:mn>1</mml:mn>
+  </mml:math>
+</inline-formula>\log (N)<inline-formula>
+  <mml:math id="m9303rinft">
+    <mml:mi>w</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+  </mml:math>
+</inline-formula>N$ is the number of bins (set to 256), ensuring a consistent scale across images.</p><p>Together, the SCF and CEFP functions form the core of the MC-FGE algorithm, integrating geometric and statistical cues to robustly detect road boundaries under varying environmental conditions.</p>
+            </sec>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.7. Functional edge strength computation</title>
+          
+          <p>To create a unified and robust edge descriptor, we combine the previously defined color gradient fusion, spectral curvature, and entropy potential into a single functional form. The resulting edge strength function <inline-formula>
+  <mml:math id="m5vuvgwqpb">
+    <mml:mi>S</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+  </mml:math>
+</inline-formula> is given by:</p><p style="text-align: center"><inline-formula>
+  <mml:math id="myyqongrgm">
+    <mml:mi>S</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>η</mml:mi>
+    <mml:mi>Ψ</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>=</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>⋅</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>+</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>⋅</mml:mo>
+    <mml:msub>
+      <mml:mi>F</mml:mi>
+      <mml:mrow>
+        <mml:mi>g</mml:mi>
+        <mml:mi>r</mml:mi>
+        <mml:mi>a</mml:mi>
+        <mml:mi>d</mml:mi>
+      </mml:mrow>
+    </mml:msub>
+    <mml:mn>1</mml:mn>
+    <mml:mrow>
+      <mml:mo>(</mml:mo>
+      <mml:mo>+</mml:mo>
+      <mml:mo>(</mml:mo>
+      <mml:mo>,</mml:mo>
+      <mml:mo>)</mml:mo>
+      <mml:mo>)</mml:mo>
+      <mml:mn>1</mml:mn>
+      <mml:mi>μ</mml:mi>
+      <mml:mi>x</mml:mi>
+      <mml:mi>y</mml:mi>
+      <mml:msub>
+        <mml:mrow>
+          <mml:mi data-mjx-variant="-tex-calligraphic">E</mml:mi>
+        </mml:mrow>
+        <mml:mi>c</mml:mi>
+      </mml:msub>
+    </mml:mrow>
+  </mml:math>
+</inline-formula></p><p>•<inline-formula>
+  <mml:math id="mu6ph9zxh0">
+    <mml:msub>
+      <mml:mi>F</mml:mi>
+      <mml:mrow>
+        <mml:mtext>grad</mml:mtext>
+      </mml:mrow>
+    </mml:msub>
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mi>x</mml:mi>
+    <mml:mi>y</mml:mi>
+  </mml:math>
+</inline-formula> is the fused color gradient magnitude defined earlier.</p><p>•<inline-formula>
+  <mml:math id="mvwc8ircnq">
+    <mml:mi>Ψ</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+  </mml:math>
+</inline-formula> boosts regions with strong curvature, emphasizing road-edge geometry.</p><p>•<inline-formula>
+  <mml:math id="m627c6gct9">
+    <mml:msub>
+      <mml:mrow>
+        <mml:mi data-mjx-variant="-tex-calligraphic">E</mml:mi>
+      </mml:mrow>
+      <mml:mi>c</mml:mi>
+    </mml:msub>
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mi>x</mml:mi>
+    <mml:mi>y</mml:mi>
+  </mml:math>
+</inline-formula> increases the response in regions with high textural entropy-important for detecting faint or worn-out markings.</p><p>•<inline-formula>
+  <mml:math id="mz34fkwkm9">
+    <mml:mi>η</mml:mi>
+  </mml:math>
+</inline-formula> and <inline-formula>
+  <mml:math id="mgotaydxb2">
+    <mml:mi>μ</mml:mi>
+  </mml:math>
+</inline-formula> are user-defined hyperparameters controlling the influence of the curvature and entropy terms, respectively.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.8. Adaptive thresholding using log-root function</title>
+          
+          <p>After computing the combined edge strength map <inline-formula>
+  <mml:math id="mf1umm7irk">
+    <mml:mi>S</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+  </mml:math>
+</inline-formula>, it is crucial to distinguish significant edges (such as road boundaries) from spurious responses (e.g., texture or noise). Traditional global thresholding techniques (like Otsu's method) may fail under varying illumination or road textures. To address this, we propose a novel “adaptive thresholding function” based on the joint interaction of curvature and entropy:</p><p style="text-align: center"><inline-formula>
+  <mml:math id="mn38f6lgyf">
+    <mml:mi>T</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>γ</mml:mi>
+    <mml:mi>log</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>=</mml:mo>
+    <mml:mo>⋅</mml:mo>
+    <mml:mo>⁡</mml:mo>
+    <mml:mrow>
+      <mml:mo>(</mml:mo>
+      <mml:mo>+</mml:mo>
+      <mml:mo>)</mml:mo>
+      <mml:mn>1</mml:mn>
+      <mml:msqrt>
+        <mml:msub>
+          <mml:mrow>
+            <mml:mi data-mjx-variant="-tex-calligraphic">E</mml:mi>
+          </mml:mrow>
+          <mml:mi>c</mml:mi>
+        </mml:msub>
+        <mml:mo>(</mml:mo>
+        <mml:mo>,</mml:mo>
+        <mml:mo>)</mml:mo>
+        <mml:mo>⋅</mml:mo>
+        <mml:mo>(</mml:mo>
+        <mml:mo>,</mml:mo>
+        <mml:mo>)</mml:mo>
+        <mml:mi>x</mml:mi>
+        <mml:mi>y</mml:mi>
+        <mml:mi>Ψ</mml:mi>
+        <mml:mi>x</mml:mi>
+        <mml:mi>y</mml:mi>
+      </mml:msqrt>
+    </mml:mrow>
+  </mml:math>
+</inline-formula></p><p><inline-formula>
+  <mml:math id="mn5tfp5w0s">
+    <mml:msub>
+      <mml:mrow>
+        <mml:mi data-mjx-variant="-tex-calligraphic">E</mml:mi>
+      </mml:mrow>
+      <mml:mi>c</mml:mi>
+    </mml:msub>
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mi>x</mml:mi>
+    <mml:mi>y</mml:mi>
+  </mml:math>
+</inline-formula> is the color entropy potential function, capturing local randomness in color patterns. <inline-formula>
+  <mml:math id="mvsm2w2k6v">
+    <mml:mi>Ψ</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+  </mml:math>
+</inline-formula> is the SCF, representing geometric edge intensity. The product <inline-formula>
+  <mml:math id="m35ksvsfqr">
+    <mml:msub>
+      <mml:mrow>
+        <mml:mi data-mjx-variant="-tex-calligraphic">E</mml:mi>
+      </mml:mrow>
+      <mml:mi>c</mml:mi>
+    </mml:msub>
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>⋅</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mi>x</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>Ψ</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>y</mml:mi>
+  </mml:math>
+</inline-formula> identifies regions with both texture complexity and shape consistency-characteristic of road edges. The square root operation smooths the sharp interactions between curvature and entropy.</p><p>The logarithmic operation <inline-formula>
+  <mml:math id="m5h3iv92u3">
+    <mml:mi>log</mml:mi>
+    <mml:mo>⁡</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>+</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mn>1</mml:mn>
+    <mml:msqrt>
+      <mml:mo>⋅</mml:mo>
+    </mml:msqrt>
+  </mml:math>
+</inline-formula> is chosen due to its nonlinear compressive behavior, which compresses high-magnitude edge responses to reduce the effect of outliers and over-segmentation, while preserving contrast in subtle edge regions. This is especially beneficial when detecting weak yet semantically important edges in low-light or uneven illumination scenarios.</p><p><inline-formula>
+  <mml:math id="m0vvftziaa">
+    <mml:mi>γ</mml:mi>
+  </mml:math>
+</inline-formula> is a tunable parameter (typically in the range [0.5,2.0]) that globally scales the threshold based on image characteristics or the desired sensitivity of edge detection.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.9. Binary edge map generation</title>
+          
+          <p>The binary edge map <inline-formula>
+  <mml:math id="m73pme89uq">
+    <mml:mi>E</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+  </mml:math>
+</inline-formula> is constructed by comparing the edge strength function <inline-formula>
+  <mml:math id="mpulckre8i">
+    <mml:mi>S</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+  </mml:math>
+</inline-formula> with the adaptive threshold <inline-formula>
+  <mml:math id="mth10lnbxw">
+    <mml:mi>T</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+  </mml:math>
+</inline-formula>:</p><p style="text-align: center"><inline-formula>
+  <mml:math id="mmqtlg9h6f">
+    <mml:mi>E</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>=</mml:mo>
+    <mml:mrow>
+      <mml:mo>{</mml:mo>
+      <mml:mo fence="true"/>
+      <mml:mtable columnalign="left left" columnspacing="1em" rowspacing=".2em">
+        <mml:mtr>
+          <mml:mtd>
+            <mml:mn>1</mml:mn>
+            <mml:mo>,</mml:mo>
+          </mml:mtd>
+          <mml:mtd>
+            <mml:mi>a</mml:mi>
+            <mml:mi>m</mml:mi>
+            <mml:mi>p</mml:mi>
+            <mml:mi>S</mml:mi>
+            <mml:mi>x</mml:mi>
+            <mml:mi>y</mml:mi>
+            <mml:mi>T</mml:mi>
+            <mml:mi>x</mml:mi>
+            <mml:mi>y</mml:mi>
+            <mml:mo>;</mml:mo>
+            <mml:mo>(</mml:mo>
+            <mml:mo>,</mml:mo>
+            <mml:mo>)</mml:mo>
+            <mml:mo>&amp;gt;</mml:mo>
+            <mml:mo>(</mml:mo>
+            <mml:mo>,</mml:mo>
+            <mml:mo>)</mml:mo>
+            <mml:mtext> if </mml:mtext>
+          </mml:mtd>
+        </mml:mtr>
+        <mml:mtr>
+          <mml:mtd>
+            <mml:mn>0</mml:mn>
+            <mml:mo>,</mml:mo>
+          </mml:mtd>
+          <mml:mtd>
+            <mml:mi>a</mml:mi>
+            <mml:mi>m</mml:mi>
+            <mml:mi>p</mml:mi>
+            <mml:mo>;</mml:mo>
+            <mml:mtext> otherwise </mml:mtext>
+          </mml:mtd>
+        </mml:mtr>
+      </mml:mtable>
+    </mml:mrow>
+  </mml:math>
+</inline-formula></p><p>•If the computed edge strength <inline-formula>
+  <mml:math id="m9yxehx7q5">
+    <mml:mi>S</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+  </mml:math>
+</inline-formula> at pixel <inline-formula>
+  <mml:math id="mla1dv14b0">
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mi>x</mml:mi>
+    <mml:mi>y</mml:mi>
+  </mml:math>
+</inline-formula> exceeds the adaptive threshold <inline-formula>
+  <mml:math id="m48bg7un20">
+    <mml:mi>T</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+  </mml:math>
+</inline-formula>, that pixel is labeled as an edge (i.e., part of a road boundary).</p><p>•Otherwise, it is marked as background (non-boundary).</p><p>•This binary map <inline-formula>
+  <mml:math id="mwubap3p1h">
+    <mml:mi>E</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+  </mml:math>
+</inline-formula> represents a spatially resolved edge mask highlighting likely road boundaries.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.10. Postprocessing steps</title>
+          
+          <p>Although the initial binary map captures edges effectively, minor artifacts and discontinuities may remain due to environmental noise or incomplete boundaries. To enhance the structural coherence of the edge map, we apply morphological postprocessing techniques:</p><p><italic>Morphological closing</italic>: Fills small gaps and bridges narrow breaks between adjacent edge segments.</p><p><italic>Dilation</italic>: Slightly enlarges the boundary regions to ensure edge connectivity, especially around curves or junctions.</p><p><italic>Largest connected component extraction</italic>: Retains the largest edge-connected structure, typically corresponding to the dominant road boundary, and suppresses smaller noisy fragments.</p><p>This proposed algorithm offers a robust mathematical framework for road boundary detection from color images. It combines spatial derivatives, spectral curvature, and entropy-driven thresholds in a novel way. This approach is especially useful in challenging environments where illumination and road textures vary significantly.</p>
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>4. Discussion and results</title>
+      <p>The proposed model demonstrates a robust and adaptive framework for road boundary detection by integrating fused gradient magnitude, curvature enhancement, and textural entropy into a unified edge strength representation. Unlike traditional methods that rely solely on intensity gradients or fixed thresholding schemes, our approach dynamically adjusts to local variations in geometry and texture, making it highly effective under diverse real-world conditions such as poor lighting, occlusions, or degraded lane markings. To validate its performance, we conducted a comparative analysis with two recent machine learning-based models (Li's model [<xref ref-type="bibr" rid="ref_20">20</xref>] and Rajalashmi's model [<xref ref-type="bibr" rid="ref_21">21</xref>]), both of which focus on road line detection under varying environmental conditions. Our model consistently outperformed these methods in terms of precision, boundary continuity, and resilience to noise and visual distortions.</p><p>The evaluation was conducted using the KITTI Road and Lane Detection Benchmark-a publicly available dataset widely used for autonomous driving research. It includes real-world road images captured from a vehicle-mounted camera across various urban, rural, and highway environments. For this study, a subset of 500 randomly selected images was chosen and resized to a standard resolution of 255×255 pixels to ensure computational uniformity. Preprocessing steps included normalization and noise reduction to enhance image quality. The implementation was carried out in MATLAB R2015a on a Windows 10 (64-bit) platform with 8 GB RAM and a high-performance CPU, which ensured smooth processing during experiments. Each experiment was repeated five times to ensure consistency, and the results were averaged. Statistical measures were calculated to assess the robustness of the model. The model's superior performance on the KITTI dataset, compared to Li's model [<xref ref-type="bibr" rid="ref_20">20</xref>] and Rajalashmi's model [<xref ref-type="bibr" rid="ref_21">21</xref>], confirms its effectiveness and potential for real-time application in intelligent transportation systems.</p><p>In the proposed model, careful tuning of key parameters is essential to optimize road boundary detection performance. Based on empirical evaluation across a diverse road scene dataset, the best-performing configuration includes setting the curvature weight parameter <inline-formula>
+  <mml:math id="m7domie6p3">
+    <mml:mi>η</mml:mi>
+  </mml:math>
+</inline-formula> to 1.2 and the entropy weight <inline-formula>
+  <mml:math id="mr3b3gienc">
+    <mml:mi>μ</mml:mi>
+  </mml:math>
+</inline-formula> to 0.8, balancing geometric sharpness and textural detail. The global scaling parameter <inline-formula>
+  <mml:math id="mjgpgqqpz3">
+    <mml:mi>γ</mml:mi>
+  </mml:math>
+</inline-formula> for the adaptive thresholding function is set to 1.0, offering an effective trade-off between sensitivity to subtle boundaries and resistance to over-segmentation in noisy areas. These values were chosen after extensive grid-search testing, where combinations of <inline-formula>
+  <mml:math id="m9vbjlbq5y">
+    <mml:mi>η</mml:mi>
+    <mml:mo>∈</mml:mo>
+  </mml:math>
+</inline-formula>[0.5,2.0], <inline-formula>
+  <mml:math id="m28zycmyj5">
+    <mml:mi>μ</mml:mi>
+    <mml:mo>∈</mml:mo>
+  </mml:math>
+</inline-formula>[0.5,2.0], and <inline-formula>
+  <mml:math id="mruj3qmxh3">
+    <mml:mi>γ</mml:mi>
+    <mml:mo>∈</mml:mo>
+  </mml:math>
+</inline-formula>[0.5,2.0] were evaluated using metrics such as precision, recall, and F1-score on annotated images. The selected parameter setup consistently yielded sharp, continuous boundary lines with minimal false positives, especially under challenging conditions such as faded markings, uneven lighting, and road textures with high entropy.</p><p> <xref ref-type="fig" rid="fig_1">Figure 1</xref> illustrates the complete workflow of the proposed road boundary detection algorithm, which is designed to accurately identify road edges in complex environmental conditions. The process begins with preprocessing, where input road images undergo initial enhancement and noise reduction. Following this, Channel Wise Color Normalization is applied to standardize color intensity across channels, reducing the effect of variable illumination and shadows on detection performance.</p>
+      
+        <fig id="fig_1">
+          <label>Figure 1</label>
+          <caption>
+            <title>Workflow of the proposed road boundary detection model</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/5/img_vdTURLFsGYhikKbz.png"/>
+        </fig>
+      
+      <p>The normalized image is then processed through the SCF module, which extracts curvature-based edge information that helps in identifying road structure more reliably. This data is integrated with information from the Color Gradient Fusion Function, which captures gradient variations across color channels to enhance edge clarity. Together, these modules generate an FESM, a refined representation of potential edge locations based on both color and spectral cues.</p><p>To isolate true road boundaries, the edge strength map is processed using a Log Root Adaptive Thresholding technique. This adaptive approach dynamically adjusts the threshold based on local image statistics, making it robust against variations in texture and lighting. The result is a Binary Edge Map, where pixels corresponding to probable road boundaries are highlighted.</p><p>Finally, a postprocessing step overlays the detected boundaries (marked in red) onto the original image, providing a visual verification of the model's performance. This overlay aids in assessing the accuracy and coherence of the detected road edges. Overall, this integrated framework effectively combines color, curvature, and gradient features with adaptive thresholding to achieve robust road boundary detection in real-world scenarios.</p>
+      
+        <fig id="fig_2">
+          <label>Figure 2</label>
+          <caption>
+            <title>Comparative results of road boundary detection on various road scenes</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/5/img_wrURveGW7gxrcSOQ.png"/>
+        </fig>
+      
+      <p><xref ref-type="fig" rid="fig_2">Figure 2</xref> illustrates the visual comparison between two existing road boundary detection methods [<xref ref-type="bibr" rid="ref_20">20</xref>], [<xref ref-type="bibr" rid="ref_21">21</xref>], applied to various road scenes. The first row displays the original input images under diverse environmental conditions. The second row shows the results obtained using the method proposed by Li and Hussin [<xref ref-type="bibr" rid="ref_20">20</xref>], while the third row presents the results from the method described by Rajalashmi et al. [<xref ref-type="bibr" rid="ref_21">21</xref>].</p><p>This comparison highlights the strengths and limitations of the competing models. Li's method [<xref ref-type="bibr" rid="ref_20">20</xref>] generally performs better in maintaining boundary continuity but struggles with shadows and low-contrast regions. On the other hand, the Rajalashmi's method [<xref ref-type="bibr" rid="ref_21">21</xref>] is more sensitive to edge variations but often produces noisy or fragmented boundaries in complex scenes. These results help identify the practical challenges in road boundary detection and underscore the need for further improvement in robustness, especially in real-world conditions involving noise, illumination changes, and texture variability.</p>
+      
+        <fig id="fig_3">
+          <label>Figure 3</label>
+          <caption>
+            <title>Visual comparison of road boundary detection results</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/5/img_V_yJsrlp4xxCsYHZ.png"/>
+        </fig>
+      
+      <p> <xref ref-type="fig" rid="fig_3">Figure 3</xref> presents a visual comparison between the original input road scenes (first row) and the corresponding boundary detection results generated by the proposed model (second row). The original images depict diverse road conditions, including variations in lighting, surface textures, and potential obstructions such as shadows or pavement markings, which are common challenges in real-world scenarios. The second row showcases the model's output, where detected road boundaries are highlighted in red, demonstrating its ability to accurately identify edges even in complex environments. The proposed framework integrates color gradient fusion and curvature analysis to enhance edge clarity, while its adaptive thresholding technique dynamically adjusts to local image statistics, ensuring robustness against noise and illumination changes. This results in continuous, well-defined boundaries that align precisely with the actual road edges, as evidenced by the overlaid detections. The figure highlights the model's superior performance compared to existing methods, particularly in maintaining edge continuity and reducing fragmentation, which is critical for applications like autonomous driving and road safety systems. By effectively combining multi-feature analysis with adaptive postprocessing, the model achieves reliable detection across varying conditions, addressing key limitations of previous approaches discussed in the text.</p>
+      
+        <sec>
+          
+            <title>4.1. Statistical analysis and performance comparison</title>
+          
+          <p>To assess the effectiveness and robustness of the proposed road boundary detection model (refer to <xref ref-type="table" rid="table_1">Table 1</xref>), we conducted a comprehensive statistical analysis using multiple performance metrics: Precision, Recall, F1-score, Intersection over Union (IoU), Average Precision (AP), and Specificity. The evaluation was performed on test images. The proposed model achieved impressive results: Precision=92.6%, Recall=89.3%, F1-score=90.9%, IoU=84.5%, AP=91.2%, and Specificity=94.1%. These results demonstrate the model's ability to accurately detect road boundaries while minimizing false positives and false negatives, with a well-balanced performance between Precision and Recall as indicated by the high F1-score.</p>
+          
+            <table-wrap id="table_1">
+              <label>Table 1</label>
+              <caption>
+                <title>Quantitative performance comparison of road boundary detection models</title>
+              </caption>
+              <table><tr><th >Model</th><th >Precision</th><th >Recall</th><th >F1-Score</th><th >IoU</th><th >AP</th><th >Specificity</th><th >P-Value</th></tr><tr><td >Proposed</td><td >92.6</td><td >89.3</td><td >90.9</td><td >84.5</td><td >91.2</td><td >94.1</td><td >$&lt;$ 0.01</td></tr><tr><td >Li's method [<xref ref-type="bibr" rid="ref_20">20</xref>]</td><td >85.4</td><td >81.2</td><td >83.3</td><td >76.8</td><td >80.5</td><td >86.7</td><td >--</td></tr><tr><td >Rajalashmi's method [<xref ref-type="bibr" rid="ref_21">21</xref>]</td><td >88.7</td><td >83.5</td><td >86.0</td><td >80.2</td><td >84.7</td><td >89.5</td><td >--</td></tr></table>
+            </table-wrap>
+          
+          <p>In comparison, Li's method [<xref ref-type="bibr" rid="ref_20">20</xref>] and Rajalashmi's method [<xref ref-type="bibr" rid="ref_21">21</xref>] were also evaluated on the same dataset. The Li's model achieved a Precision of 85.4%, Recall of 81.2%, F1-score of 83.3%, IoU of 76.8%, AP of 80.5%, and Specificity of 86.7%. The Rajalashmi's model showed a Precision of 88.7%, Recall of 83.5%, F1-score of 86.0%, IoU of 80.2%, AP of 84.7%, and Specificity of 89.5%.</p><p>The statistical analysis, including a paired t-test, revealed that the proposed model outperforms both Li's model and Rajalashmi's model with statistically significant improvements (p$&lt;$0.01) in all metrics. These results clearly demonstrate that the proposed model offers superior performance in terms of both detection accuracy and robustness, confirming its potential for deployment in real-world intelligent transportation systems and autonomous driving applications.</p><p>The proposed model demonstrates robust performance across a variety of lighting conditions, including daytime, nighttime, shadows, and glare. This resilience is primarily attributed to the MC-FGE algorithm's capability to integrate color gradient fusion and entropy-based features, which effectively capture salient edge information despite illumination changes. For instance, in daytime scenarios with strong natural light, the model accurately detects road boundaries by leveraging rich color contrasts. During nighttime or low-light conditions, the incorporation of gradient and curvature-based features helps maintain edge detection accuracy by emphasizing structural information over raw intensity values. Furthermore, the entropy potential function enhances the model's adaptability in shadowed regions and areas affected by glare by identifying regions with higher color complexity and irregularity. Although quantitative results under extreme lighting variations are limited in this study, qualitative assessments indicate that the model maintains stable edge detection performance, making it suitable for practical applications in diverse real-world environments.</p><p>In addition to the experimental results presented, the proposed model's advantages are supported by relevant literature that highlights the effectiveness of combining image segmentation and edge features for road boundary detection. For instance, Li and Hussin [<xref ref-type="bibr" rid="ref_20">20</xref>] demonstrated how integrating intelligent image segmentation with edge analysis improves boundary identification under varying road conditions. Similarly, Rajalashmi et al. [<xref ref-type="bibr" rid="ref_21">21</xref>] showed that machine learning approaches combined with edge tracking yield robust detection of road boundaries in complex environments. Our model builds upon and extends these findings by incorporating a unified mathematical framework that fuses color, curvature, and entropy cues, resulting in improved accuracy and robustness as confirmed by our comparative experiments. These studies provide both practical and theoretical support for the enhancements observed in the proposed methodology.</p>
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>5. Conclusion</title>
+      <p>In this paper, we presented a novel and efficient road boundary detection model that leverages fused color gradient information, spectral curvature enhancement, and entropy-based texture analysis to generate a robust edge strength map. The proposed adaptive thresholding technique, based on a log-root interaction between curvature and entropy, enables precise discrimination between actual road boundaries and background noise under varying lighting, surface textures, and occlusion conditions. Extensive experiments on the publicly available KITTI dataset demonstrated that our model achieves superior performance compared to existing methods such as Li's method [<xref ref-type="bibr" rid="ref_20">20</xref>] and Rajalashmi's method [<xref ref-type="bibr" rid="ref_21">21</xref>], particularly in challenging real-world scenarios. Overall, the proposed method offers a promising solution for road boundary detection in advanced driver assistance systems and autonomous vehicle navigation, with potential for further extension to multi-lane detection and integration with deep learning-based tracking modules.</p><p>Although the proposed model performs effectively in detecting road boundaries under a wide range of conditions, it does exhibit certain limitations. The reliance on hand-crafted features such as curvature and entropy, while beneficial for interpretability, may not fully capture the diversity of road environments, particularly in highly cluttered or non-standard scenes like construction zones or roads with heavy occlusion. Additionally, reducing the input resolution to 255×255 pixels for computational efficiency may lead to a slight loss in the precision of boundary localization, especially in high-detail areas.</p><p>For future work, we plan to enhance the robustness of the model by incorporating multiscale processing strategies to preserve both global structure and local details. We also intend to evaluate the proposed method across a broader range of publicly available road datasets to confirm its generalizability. Furthermore, integration with complementary modules such as semantic segmentation or road surface classification could further boost its effectiveness in diverse autonomous driving scenarios.</p>
+    </sec>
+  </body>
+  <back>
+    <ack>
+      <title>Acknowledgments</title>
+      
+    </ack>
+    <app-group>
+      <app>
+        <title>Appendix</title>
+        
+      </app>
+    </app-group>
+    <notes>
+      <title>Author Contributions</title>
+      
+    </notes>
+    <notes>
+      <title>Funding</title>
+      
+    </notes>
+    <notes>
+      <title>Informed Consent Statement</title>
+      
+    </notes>
+    <notes>
+      <title>Data Availability Statement</title>
+      <p>The data used to support the findings of this study are available from the corresponding author upon request.</p>
+    </notes>
+    <notes notes-type="COI-statement">
+      <title>Conflicts of Interest</title>
+      <p>The author declares that there are no conflicts of interest.</p>
+    </notes>
+    <ref-list>
+      <title>References</title>
+      <ref id="ref_1">
+        <label>1.</label>
+        <element-citation publication-type="journal">
+          <volume>16</volume>
+          <page-range>1113-1136</page-range>
+          <issue>5</issue>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Hussain</surname>
+              <given-names>Ibrar</given-names>
+            </name>
+            <name>
+              <surname>Ali</surname>
+              <given-names>Haider</given-names>
+            </name>
+            <name>
+              <surname>Khan</surname>
+              <given-names>Muhammad Shahkar</given-names>
+            </name>
+            <name>
+              <surname>Niu</surname>
+              <given-names>Sijie</given-names>
+            </name>
+            <name>
+              <surname>Rada</surname>
+              <given-names>Lavdie</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3934/ipi.2022014</pub-id>
+          <article-title>Robust region-based active contour models via local statistical similarity and local similarity factor for intensity inhomogeneity and high noise image segmentation</article-title>
+          <source>Inverse Probl. Imaging</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_2">
+        <label>2.</label>
+        <element-citation publication-type="journal">
+          <volume>43</volume>
+          <page-range>119-134</page-range>
+          <issue>1</issue>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Wang</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Guo</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Hu</surname>
+              <given-names>K.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>W.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1080/19392699.2021.2024173</pub-id>
+          <article-title>Coal gangue image segmentation method based on edge detection theory of star algorithm</article-title>
+          <source>Int. J. Coal Prep. Util.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_3">
+        <label>3.</label>
+        <element-citation publication-type="journal">
+          <volume>17</volume>
+          <page-range>708-725</page-range>
+          <issue>3</issue>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Hussain</surname>
+              <given-names>Ibrar</given-names>
+            </name>
+            <name>
+              <surname>Muhammad</surname>
+              <given-names>J.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3934/ipi.2022074</pub-id>
+          <article-title>Efficient convex region-based segmentation for noising and inhomogeneous patterns</article-title>
+          <source>Inverse Probl. Imaging</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_4">
+        <label>4.</label>
+        <element-citation publication-type="journal">
+          <volume>74</volume>
+          <page-range>250-270</page-range>
+          <year>2015</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Hughes</surname>
+              <given-names>B.P.</given-names>
+            </name>
+            <name>
+              <surname>Newstead</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Anund</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Shu</surname>
+              <given-names>C.C.</given-names>
+            </name>
+            <name>
+              <surname>Falkmer</surname>
+              <given-names>T.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.aap.2014.06.003</pub-id>
+          <article-title>A review of models relevant to road safety</article-title>
+          <source>Accid. Anal. Prev.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_5">
+        <label>5.</label>
+        <element-citation publication-type="journal">
+          <volume>23</volume>
+          <page-range>8844</page-range>
+          <issue>21</issue>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Du</surname>
+              <given-names>Yingjie</given-names>
+            </name>
+            <name>
+              <surname>Liu</surname>
+              <given-names>Xiaofeng</given-names>
+            </name>
+            <name>
+              <surname>Yi</surname>
+              <given-names>Yuwei</given-names>
+            </name>
+            <name>
+              <surname>Wei</surname>
+              <given-names>Kun</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3390/s23218844</pub-id>
+          <article-title>Optimizing road safety: Advancements in lightweight YOLOv8 models and GhostC2f design for real-time distracted driving detection</article-title>
+          <source>Sensors</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_6">
+        <label>6.</label>
+        <element-citation publication-type="journal">
+          <volume>5</volume>
+          <page-range>2</page-range>
+          <issue>1</issue>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Zia</surname>
+              <given-names>Huma</given-names>
+            </name>
+            <name>
+              <surname>Hassan</surname>
+              <given-names>Imtiaz ul</given-names>
+            </name>
+            <name>
+              <surname>Khurram</surname>
+              <given-names>Muhammad</given-names>
+            </name>
+            <name>
+              <surname>Harris</surname>
+              <given-names>Nicholas</given-names>
+            </name>
+            <name>
+              <surname>Shah</surname>
+              <given-names>Fatima</given-names>
+            </name>
+            <name>
+              <surname>Imran</surname>
+              <given-names>Nimra</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3390/futuretransp5010002</pub-id>
+          <article-title>Advancing road safety: A comprehensive evaluation of object detection models for commercial driver monitoring systems</article-title>
+          <source>Future Transp.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_7">
+        <label>7.</label>
+        <element-citation publication-type="journal">
+          <volume>3</volume>
+          <page-range>213-226</page-range>
+          <issue>4</issue>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Hussain</surname>
+              <given-names>Ibrar</given-names>
+            </name>
+            <name>
+              <surname>Alam</surname>
+              <given-names>Luqman</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.56578/jisc030402</pub-id>
+          <article-title>Adaptive road crack detection and segmentation using Einstein operators and ANFIS for real-time applications</article-title>
+          <source>J. Intell Syst. Control</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_8">
+        <label>8.</label>
+        <element-citation publication-type="journal">
+          <volume>25</volume>
+          <page-range>11282-11303</page-range>
+          <issue>9</issue>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Zhang</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Dong</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>He</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Liu</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Zhan</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>K.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/TITS.2024.3360263</pub-id>
+          <article-title>Robust semantic segmentation for automatic crack detection within pavement images using multi-mixing of global context and local image features</article-title>
+          <source>IEEE Trans. Intell. Transp. Syst.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_9">
+        <label>9.</label>
+        <element-citation publication-type="journal">
+          <volume>988</volume>
+          <page-range>052054</page-range>
+          <issue>5</issue>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Sazonova</surname>
+              <given-names>S.A.</given-names>
+            </name>
+            <name>
+              <surname>Nikolenko</surname>
+              <given-names>S.D.</given-names>
+            </name>
+            <name>
+              <surname>Akamsina</surname>
+              <given-names>N.V.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1088/1755-1315/988/5/052054</pub-id>
+          <article-title>Monitoring concrete road pavement damages</article-title>
+          <source>IOP Conf. Ser. Earth Environ. Sci.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_10">
+        <label>10.</label>
+        <element-citation publication-type="journal">
+          <volume>24</volume>
+          <page-range>5252</page-range>
+          <issue>16</issue>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Dong</surname>
+              <given-names>Xuwei</given-names>
+            </name>
+            <name>
+              <surname>Liu</surname>
+              <given-names>Yang</given-names>
+            </name>
+            <name>
+              <surname>Dai</surname>
+              <given-names>Jinpeng</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3390/s24165252</pub-id>
+          <article-title>Concrete surface crack detection algorithm based on improved YOLOv8</article-title>
+          <source>Sensors</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_11">
+        <label>11.</label>
+        <element-citation publication-type="journal">
+          <volume>62</volume>
+          <page-range>102577</page-range>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Liu</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Yang</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Qi</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>et al.</surname>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.aei.2024.102577</pub-id>
+          <article-title>Deep learning-assisted automatic quality assessment of concrete surfaces with cracks and bugholes</article-title>
+          <source>Adv. Eng. Inform.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_12">
+        <label>12.</label>
+        <element-citation publication-type="book">
+          <person-group person-group-type="author">
+            <name>
+              <surname>Chhabra</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>S. Singh</surname>
+            </name>
+            <name>
+              <surname>Kaur</surname>
+              <given-names>R.</given-names>
+            </name>
+          </person-group>
+          <article-title>Deep-learning-based road surface classification for intelligent vehicles</article-title>
+          <source>Manufacturing Technologies and Production Systems</source>
+          <publisher-name>2023</publisher-name>
+          <page-range>163–170</page-range>
+        </element-citation>
+      </ref>
+      <ref id="ref_13">
+        <label>13.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>13–18</page-range>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Xu</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>P.</given-names>
+            </name>
+            <name>
+              <surname>X. Song</surname>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>R.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/ICCCS61882.2024.10603317</pub-id>
+          <article-title>Application of improved canny algorithm in image edge detection</article-title>
+          <source>2024 9th International Conference on Computer and Communication Systems (ICCCS), Xi’an, China</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_14">
+        <label>14.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>714–719</page-range>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Zhang</surname>
+              <given-names>J.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/AEECA62331.2024.00126</pub-id>
+          <article-title>Edge detection of noise images based on improved canny algorithm with adaptive threshold</article-title>
+          <source>2024 International Conference on Advances in Electrical Engineering and Computer Applications (AEECA), Dalian, China</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_15">
+        <label>15.</label>
+        <element-citation publication-type="journal">
+          <volume>33</volume>
+          <page-range>art00014</page-range>
+          <year>2021</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Dahal</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Golab</surname>
+              <given-names>E.</given-names>
+            </name>
+            <name>
+              <surname>Garlapati</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Kumar</surname>
+              <given-names>V. R.</given-names>
+            </name>
+            <name>
+              <surname>Yogamani</surname>
+              <given-names>S.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.2352/ISSN.2470-1173.2021.17.AVM-210</pub-id>
+          <article-title>RoadEdgeNet: Road edge detection system using surround view camera images</article-title>
+          <source>Electron. Imaging</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_16">
+        <label>16.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>1–4</page-range>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Zhou</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>L.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/ICDCECE60827.2024.10548328</pub-id>
+          <article-title>Edge detection algorithm for urban road images based on deep learning</article-title>
+          <source>2024 Third International Conference on Distributed Computing and Electrical Circuits and Electronics (ICDCECE), Ballari, India</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_17">
+        <label>17.</label>
+        <element-citation publication-type="journal">
+          <volume>9</volume>
+          <page-range>1989-2001</page-range>
+          <issue>1</issue>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Ai</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Song</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Huang</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Cui</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Tian</surname>
+              <given-names>B.</given-names>
+            </name>
+            <name>
+              <surname>Chen</surname>
+              <given-names>L.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/TIV.2023.3296767</pub-id>
+          <article-title>A real-time road boundary detection approach in surface mine based on meta random forest</article-title>
+          <source>IEEE Trans. Intell. Veh.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_18">
+        <label>18.</label>
+        <element-citation publication-type="journal">
+          <volume>68</volume>
+          <page-range>245-259</page-range>
+          <issue>2</issue>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Kukolj</surname>
+              <given-names>D.</given-names>
+            </name>
+            <name>
+              <surname>Marinović</surname>
+              <given-names>I.</given-names>
+            </name>
+            <name>
+              <surname>Nemet</surname>
+              <given-names>S.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1080/14498596.2021.1960912</pub-id>
+          <article-title>Road edge detection based on combined deep learning and spatial statistics of LiDAR data</article-title>
+          <source>J. Spatial Sci.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_19">
+        <label>19.</label>
+        <element-citation publication-type="journal">
+          <volume>36</volume>
+          <page-range>015213</page-range>
+          <issue>1</issue>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Xin</surname>
+              <given-names>G.</given-names>
+            </name>
+            <name>
+              <surname>Cong</surname>
+              <given-names>B.</given-names>
+            </name>
+            <name>
+              <surname>Liu</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Liu</surname>
+              <given-names>M.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1088/1361-6501/ad89ec</pub-id>
+          <article-title>Road boundary extraction method from mobile laser scanning point clouds</article-title>
+          <source>Meas. Sci. Technol.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_20">
+        <label>20.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>303–307</page-range>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Li</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Hussin</surname>
+              <given-names>N.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1117/12.3014460</pub-id>
+          <article-title>Intelligent road boundary identification method based on image segmentation and edge features</article-title>
+          <source>International Conference on Algorithm, Imaging Processing, and Machine Vision (AIPMV 2023), Qingdao, China</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_21">
+        <label>21.</label>
+        <element-citation publication-type="journal">
+          <volume>18</volume>
+          <page-range>477-486</page-range>
+          <issue>6</issue>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Rajalashmi</surname>
+              <given-names>K.</given-names>
+            </name>
+            <name>
+              <surname>Manivannan</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Subbulakshmi</surname>
+              <given-names>R.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.17485/IJST/v18i6.3685</pub-id>
+          <article-title>Detecting and tracking of road boundary lines using machine learning approach</article-title>
+          <source>Indian J. Sci. Technol.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_22">
+        <label>22.</label>
+        <element-citation publication-type="journal">
+          <volume>22</volume>
+          <page-range>5001605</page-range>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Hu</surname>
+              <given-names>W.</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>G.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>G.</given-names>
+            </name>
+            <name>
+              <surname>Chang</surname>
+              <given-names>L.</given-names>
+            </name>
+            <name>
+              <surname>Zeng</surname>
+              <given-names>D.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/LGRS.2025.3561935</pub-id>
+          <article-title>Learning instructive frequency spectral and curvature features for cloud detection</article-title>
+          <source>IEEE Geosci. Remote Sens. Lett.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_23">
+        <label>23.</label>
+        <element-citation publication-type="journal">
+          <volume>77</volume>
+          <page-range>2031-2047</page-range>
+          <issue>2</issue>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Khalil</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Sharif</surname>
+              <given-names>M.I.</given-names>
+            </name>
+            <name>
+              <surname>Naeem</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Chaudhry</surname>
+              <given-names>M.U.</given-names>
+            </name>
+            <name>
+              <surname>Rauf</surname>
+              <given-names>H.T.</given-names>
+            </name>
+            <name>
+              <surname>Ragab</surname>
+              <given-names>A.E.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.32604/cmc.2023.043687</pub-id>
+          <article-title>Deep learning-enhanced brain tumor prediction via entropy-coded BPSO in CIELAB color space</article-title>
+          <source>Comput. Mater. Continua</source>
+        </element-citation>
+      </ref>
+    </ref-list>
+  </back>
+</article>
