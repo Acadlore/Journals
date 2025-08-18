@@ -172,7 +172,7 @@
                 <title>1.1.8 Successive halving and hyperband for early stopping</title>
               
               <p>While the conventional early stopping is applied to a single training run so as to prevent the occurrence of overfitting, similar principles could be employed in hyperparameter search at a higher level when running numerous trainings. Previous sections in this study have covered the notion that algorithms like Successive Halving and Hyperband implement systematic early stopping of multiple trials. In these contexts, early stopping is not primarily about avoiding overfitting but about efficient allocation of computational resources among competing hyperparameter candidates. The design of Successive Halving (SHA) helps save running a large fraction of trials after a few epochs and permits a selective subset to continue. This method is useful in performing automated early stopping for trials that appear least promising. Any single model might have stopped in advance before it overfits and its performance is worse than others.</p><p>The efficacy of SHA/Hyperband as early stopping strategies relies on the assumption of correlation in which a hyperparameter configuration that yields poor validation accuracy after, say 1 epoch, is likely to be subpar after 50 epochs [<xref ref-type="bibr" rid="ref_25">25</xref>]. This assumption could be upheld most of the time as some configurations might learn slowly and eventually outperform others if there is sufficient time allocation. The bracket strategy of Hyperband functions partially as a hedge against such cases by allotting certain configurations more initial budget in some brackets. If a configuration is truly a “late bloomer”, one of the brackets with a larger initial budget might catch its potential whereas the most aggressive bracket might stop it too early. Thus, Hyperband is robust since it depends not just on a single stopping schedule.</p><p>These multi-trial early stopping methods directly impact the practical HPO. When tuning a deep neural network on an image classification task instead of training each candidate for a fixed 100 epochs, one could use Hyperband to train, namely 50 candidates for 10 epochs, then continue only the top 10 of those to 30 epochs, and afterwards, continue the top 3 to the full 100 epochs. The final result, i.e., the best of those 3 fully trained models, will be nearly as good as the best out of training all 50 for 100 epochs, but the total computation used is only a fraction of training 50×100 epochs (roughly, it trained 50 for 10 + 10 for 20 more + 3 for 70 more, which is about 50×10 + 10×20 + 3×70 = 500 + 200 + 210 = 910 epoch-equivalents, versus 5000 epoch-equivalents if all were trained fully). In this hypothetical theory, Hyperband used <inline-formula>
-  <mml:math id="m4y9xbyus4">
+  <mml:math id="mbilktlo4u">
     <mml:mo>∼</mml:mo>
   </mml:math>
 </inline-formula>18% of the computation of exhaustive search, hence an enormous saving. In exchange, one accepts a small risk: it might miss a configuration that would have eventually been the best because it looked mediocre in the first 10 epochs and got terminated. Empirical evidence and benchmarks suggest that this trade-off is worthwhile in most of the cases. The opportunity of missing the global optimum is low if the performance after a small fraction of training is at least somewhat predictive of final performance, as is the case in many tasks.</p><p>In summary, SHA and Hyperband generalize the idea of early stopping from “stop training when there is no improvement” (single run to avoid overfitting) to “stop training this configuration if it is unlikely to be the best” (multiple runs to allocate effort properly). Both uses of early stopping are complementary: one can and should use validation-based stopping within each training run to avoid overfitting and use SHA/Hyperband logic across runs to budget evaluation time. Modern HPO frameworks do both. For instance, they might run many trials with a scheduler like ASHA, and within each trial, the training code uses an early stopping callback for its own training convergence; whichever criterion triggers first will stop that trial (either outperformed by peers or plateaued on validation). This layering of early stopping ensures maximal efficiency in searching hyperparameters for deep learning.</p>
@@ -184,14 +184,14 @@
                 <title>1.1.9 Pruning models during training (structured and unstructured)</title>
               
               <p>Pruning in deep learning refers to techniques that remove parameters or structures from a neural network that are deemed unnecessary for making predictions, thus yielding a smaller (and often faster or more efficient) model with minimal loss in accuracy [<xref ref-type="bibr" rid="ref_43">43</xref>], [<xref ref-type="bibr" rid="ref_44">44</xref>]. Pruning is generally implemented subsequent to or during the training process to achieve model compression or to diminish computational requirements.</p><p>Two broad categories of pruning are in practice and they involve unstructured pruning and structured pruning. Unstructured pruning removes individual weights from the weight matrices of the network (i.e., setting certain weight values to zero and eliminating their influence effectively). This leads to a sparse network: the original architecture/number of layers and neurons remains constant but many connections have zero weight and can be omitted from computation [<xref ref-type="bibr" rid="ref_45">45</xref>]. A common criterion for unstructured pruning is magnitude; in other words, after training a model, one could remove all weights whose absolute values are below a certain threshold or simply remove the smallest X% of weights globally or per layer, on the intuition that those contribute least to the output [<xref ref-type="bibr" rid="ref_46">46</xref>].</p><p>Structured pruning removes higher-level structures; for example, entire neurons in a fully-connected layer, entire channels or filters in a convolutional layer, or whole attention heads in a transformer model [<xref ref-type="bibr" rid="ref_47">47</xref>], [<xref ref-type="bibr" rid="ref_48">48</xref>], [<xref ref-type="bibr" rid="ref_49">49</xref>]. The architecture of the network in structured pruning is changed effectively; therefore, if we remove 2 out of 64 filters in a convolutional layer, the input channels of subsequent layers are reduced. Structured pruning is advantageous in yielding a smaller dense network, which could directly translate to faster inference and less memory usage without the support of special hardware. The criteria for structured pruning include metrics like the <inline-formula>
-  <mml:math id="mzd4i3zzzi">
+  <mml:math id="mnbsfmh0c2">
     <mml:msub>
       <mml:mi>l</mml:mi>
       <mml:mn>1</mml:mn>
     </mml:msub>
   </mml:math>
 </inline-formula> or <inline-formula>
-  <mml:math id="mjmrrruadp">
+  <mml:math id="ms0z2opmyv">
     <mml:msub>
       <mml:mi>l</mml:mi>
       <mml:mn>2</mml:mn>
@@ -214,7 +214,7 @@
                 <title>1.1.11 Bounding box tuner (bbt) in context</title>
               
               <p>The Bounding Box Tuner (BBT) is an innovation in hyperparameter optimization that builds upon the above approaches by introducing a dynamic space refinement mechanism [<xref ref-type="bibr" rid="ref_63">63</xref>], [<xref ref-type="bibr" rid="ref_64">64</xref>]. At its core, BBT adapts the search space itself during the optimization process, effectively tightening the bounds, i.e., the “bounding box” in hyperparameter space around regions with promising hyperparameters. This approach contrasts with most traditional HPO methods, which keep the hyperparameter search domain static throughout the search. As evidence accumulates, the search space shrinks, BBT could successfully focus computational effort on the most relevant areas and exclude regions that are unlikely to contain good solutions[<xref ref-type="bibr" rid="ref_65">65</xref>], [<xref ref-type="bibr" rid="ref_66">66</xref>].</p><p>The proposed Bounding Box Tuner might practically operate as follows: it commences with user-specified broad ranges for each hyperparameter (e.g., learning rate in [1e-5, 1e-1], number of layers in <inline-formula>
-  <mml:math id="mqad7hm0rq">
+  <mml:math id="mmmcrptnxy">
     <mml:mo>[</mml:mo>
     <mml:mo>,</mml:mo>
     <mml:mo>]</mml:mo>
@@ -225,7 +225,7 @@
     </mml:mstyle>
   </mml:math>
 </inline-formula>, etc.). It then samples and evaluates a number of configurations by using random sampling or another strategy initially. Based on the results, BBT identifies a subset of the space where high-performing configurations are concentrated. The most optimal outcomes achieved to date might be achieved when learning rate is between 1e-3 and 5e-3 and the number of layers is between 4 and 6. It then updates the search bounds to that sub-region, possibly with some margins to allow exploration around it. Subsequent hyperparameter proposals are restricted to this smaller hyper-rectangle region. As the search progresses and more data points are gathered, the bounding box could be further adjusted, either contracted or slightly shifted, to continuously home in on the area yielding the best results. This iterative bounding process continues until the algorithm converges or a maximum number of trials is reached and the outcome is a progressively narrowing search that zooms into the likely optimum.</p><p>BBT complements existing HPO methods rather than replacing them as it is considered an outer loop around any base optimizer. Bayesian optimization or evolutionary search as the internal method could suggest new points after each iteration or a set of iterations and apply the bounding heuristic to adjust the domain fed into that internal optimizer [<xref ref-type="bibr" rid="ref_64">64</xref>]. Through this approach, BBT provides a form of memory or meta-learning that standard optimizers lack as it obviously remembers the region of interests. Bayesian optimization implicitly performs similar function as its surrogate by becoming very flat/uncertain in unvisited regions and sharper around visited good regions; however, it will still occasionally sample the far corners of the original space if the acquisition function visualizes the potential. BBT would outright eliminate those corners from consideration after the optimum is ascertained to lie elsewhere, thereby potentially saving the exploratory evaluations. BBT is exploitative to a certain extent since this technique assumes that once a region with good hyperparameters is found, the global optimum will be nearby, yet this conjecture is to be confirmed. The implementation of BBT might allow some mechanisms to occasionally test beyond the current bounds so as to avoid local optimum traps, akin to a cooling schedule in simulated annealing, so the search is sometimes allowed to escape the current region.</p><p>The idea of narrowing search bounds has antecedents in iterative deepening and zooming algorithms in global optimization. The DIRECT algorithm (DIviding RECTangles) systematically partitions the search space into increasingly smaller hyper-rectangles focusing on regions with low function values. Bounding Box Tuner brings a similar spirit to hyperparameter tuning but in a more heuristic-driven way, is tailored to machine learning. The operation works under the assumption that users begin with rather wide hyperparameter ranges, but not all of that space is indeed reasonable. By identifying and zooming to an identified region, BBT effectively performs a form of automated range tuning, which is manually prepared by practitioners. Subsequent to a preliminary search, one might realize that “all the best models had learning rate <inline-formula>
-  <mml:math id="mrd4akf9se">
+  <mml:math id="mz9zxijmsl">
     <mml:mo>∼</mml:mo>
   </mml:math>
 </inline-formula>0.001, so let's search more closely around that value”. BBT formalizes and automates this intuition to reveal more intriguing findings.</p><p>In the context of pruning and early stopping, the philosophy of BBT is analogous. Since unnecessary model parameters are pruned or unpromising trials are stopped to save resources, BBT prunes away swathes of hyperparameter space that appear unpromising. BBT might use early-stopped results from many configurations to identify the focused region. It could run a Hyperband-like procedure on the full space to get an initial mapping of performance, then define a bounding box around the top performers and continue the search with Bayesian optimization in that reduced space for more fine-grained exploration. Such a two-phase approach, global exploration preceding local exploitation, is not novel, but BBT provides a systematic way to carry out the transition by modifying bounds.</p><p>The introduction of BBT extends the hyperparameter optimization toolkit by emphasizing adaptive search space shaping and is particularly useful in high-dimensional problems or cases with mixed continuous and categorical parameters, where certain combinations of categories and ranges of values are recognized to be irrelevant or suboptimal. By cutting those out, BBT could reduce the dimensionality or effective volume of the search, turning subsequent optimization simpler and potentially improving the convergence speed. BBT is viewed as imposing a kind of prior or trust region that becomes tighter over time, which may assist surrogate-model-based optimizers like GPs in avoiding the distraction by too-large domains where their models are uninformative.</p><p>The drawback of BBT is its inherent incompetence to guarantee the finding of the global optimum; if the initial bounding decision is too aggressive, it might exclude the authentic best early on. Therefore, an important aspect of this innovation is the way for it to decide the timing and degree of bounding. Statistical tests or heuristic thresholds could be used to only shrink bounds when there is high confidence that the best lies within a certain interval for each hyperparameter. For example, if all top N performers have a learning rate in a narrow range, with none coming close outside that range. BBT should therefore be configured to retain some exploration, like allowing an occasional point outside the box, until late in the search.</p><p>To sum up, BBT fits into the landscape of HPO and training optimization as a higher-level strategy that can work alongside Bayesian, random, evolutionary, and multi-fidelity methods. It complements these methods by addressing a different facet, i.e., the adaptation of the search space. The attempt to overcome one of the practical challenges in HPO requires the initial guess of a reasonable search range, and it can potentially accelerate the finding of the optimum by discarding irrelevant regions earlier. This approach extends existing work by pushing more adaptivity into the HPO process, and early reports indicate that it can lead to quicker convergence in tuning tasks without sacrificing the solution quality. As with any new methods, further benchmarking (e.g., comparing BBT-augmented search versus standard search on image classification or NLP tuning tasks) will clarify its strengths and limitations. BBT is well-aligned with the prevailing trend of improving the efficiency and hands-free operation of hyperparameter optimization, hence reducing the need for manual intervention in trimming search spaces, much as algorithms like Hyperband in reducing the need for manual early stopping for trials.</p>
@@ -255,7 +255,7 @@
             <title>1.4. Innovation and contributions</title>
           
           <p><p>Top-2 Bounding-Box Contraction. After an initial quasi-random seeding phase, BBT identifies the two highest-scoring configurations and defines an axis-aligned bounding box whose limits are their dimension-wise minima and maxima. All exploitative samples are drawn uniformly from this convex hull, thereby preserving cross-parameter interactions without expensive kernel learning.</p><p>Probabilistic Global Exploration with Budget-Aware Decay. A time-dependent exploration probability <inline-formula>
-  <mml:math id="m2ll22tul5">
+  <mml:math id="m3hgw1y15h">
     <mml:mi>p</mml:mi>
     <mml:mi>t</mml:mi>
     <mml:mo>(</mml:mo>
@@ -273,7 +273,7 @@
             <title>2.1. Bounding box tuner (bbt)</title>
           
           <p>BBT is a derivative-free optimizer that contracts its sampling region around the two best performing configurations observed to date [<xref ref-type="bibr" rid="ref_69">69</xref>], [<xref ref-type="bibr" rid="ref_70">70</xref>]. The algorithm proceeds as shown in <xref ref-type="table" rid="table_1">Table 1</xref>. An initial quasi-random seed of <inline-formula>
-  <mml:math id="m30kz2m6j7">
+  <mml:math id="mpb9w3q2zs">
     <mml:msub>
       <mml:mi>n</mml:mi>
       <mml:mn>0</mml:mn>
@@ -282,7 +282,7 @@
     <mml:mn>10</mml:mn>
   </mml:math>
 </inline-formula> trials populates a leaderboard sorted by validation accuracy. The two leaders, <inline-formula>
-  <mml:math id="m9w8nksrw5">
+  <mml:math id="m35hatnde2">
     <mml:msubsup>
       <mml:mi>θ</mml:mi>
       <mml:mn>1</mml:mn>
@@ -290,7 +290,7 @@
     </mml:msubsup>
   </mml:math>
 </inline-formula>  and <inline-formula>
-  <mml:math id="mv1o5udzqo">
+  <mml:math id="mxbp8wcwts">
     <mml:msubsup>
       <mml:mi>θ</mml:mi>
       <mml:mn>2</mml:mn>
@@ -298,7 +298,7 @@
     </mml:msubsup>
   </mml:math>
 </inline-formula>, define an axis-aligned hyper-rectangle (the “bounding box”) whose edges are the component-wise minima and maxima of these anchors. Subsequent proposals are drawn either uniformly inside this box (focused search) or uniformly from the global space <inline-formula>
-  <mml:math id="mbnm7q0rkk">
+  <mml:math id="mdzps7snsv">
     <mml:mi>Ω</mml:mi>
   </mml:math>
 </inline-formula> (exploration) with a probability that decays linearly from 0.35 to 0.10 over the course of the trial budget. Each candidate is evaluated under identical early pruning rules; if 30 consecutive proposals fail to improve the performance, the search halts early at each epoch. Early stopping will be applied with the median validation accuracy of the completed runs to be computed; trials falling below this median will be terminated. Trials that are pruned will receive a score of 0.</p>
@@ -308,9 +308,9 @@
               <caption>
                 <title>Algorithm of Bounding Box Tuner</title>
               </caption>
-              <table><tbody><tr><th colspan="1" rowspan="1"><p>Input</p></th><th colspan="1" rowspan="1"><p>Search space <mml:math id="mdqzbijw8p">
+              <table><tbody><tr><th colspan="1" rowspan="1"><p>Input</p></th><th colspan="1" rowspan="1"><p>Search space <mml:math id="m788wyiufs">
   <mml:mi>Ω</mml:mi>
-</mml:math> of $d<mml:math id="misl4q8rga">
+</mml:math> of $d<mml:math id="mc1vhm0ccg">
   <mml:mi>h</mml:mi>
   <mml:mi>y</mml:mi>
   <mml:mi>p</mml:mi>
@@ -333,7 +333,7 @@
   <mml:mi>e</mml:mi>
   <mml:mi>t</mml:mi>
   <mml:mo>;</mml:mo>
-</mml:math>T \cdot<mml:math id="mtzw9r4saj">
+</mml:math>T \cdot<mml:math id="murov38ebw">
   <mml:mi>t</mml:mi>
   <mml:mi>r</mml:mi>
   <mml:mi>i</mml:mi>
@@ -355,7 +355,7 @@
   <mml:mi>e</mml:mi>
   <mml:mi>s</mml:mi>
   <mml:mo>;</mml:mo>
-</mml:math>n_0=10<mml:math id="mdc011i8so">
+</mml:math>n_0=10<mml:math id="m87o4qbmry">
   <mml:mo>;</mml:mo>
   <mml:mi>e</mml:mi>
   <mml:mi>x</mml:mi>
@@ -373,7 +373,7 @@
   <mml:mi>t</mml:mi>
   <mml:mi>e</mml:mi>
   <mml:mi>s</mml:mi>
-</mml:math>p_0=0.35 \rightarrow p_1=0.10<mml:math id="mjpzr81ert">
+</mml:math>p_0=0.35 \rightarrow p_1=0.10<mml:math id="mcwwe3qd9z">
   <mml:mo>;</mml:mo>
   <mml:mi>p</mml:mi>
   <mml:mi>a</mml:mi>
@@ -383,7 +383,7 @@
   <mml:mi>n</mml:mi>
   <mml:mi>c</mml:mi>
   <mml:mi>e</mml:mi>
-</mml:math>\boldsymbol{\tau}=\mathbf{3 0}<mml:math id="m1jfu08t7p">
+</mml:math>\boldsymbol{\tau}=\mathbf{3 0}<mml:math id="m5yn70e4we">
   <mml:mo>.</mml:mo>
   <mml:mo>&amp;lt;</mml:mo>
   <mml:mo>&amp;gt;&amp;lt;</mml:mo>
@@ -532,7 +532,7 @@
   <mml:mn>1</mml:mn>
   <mml:mn>1</mml:mn>
   <mml:mn>1</mml:mn>
-</mml:math>\left\{\theta^1, \ldots, \theta^{\mathrm{n_0}} \right\} \sim \mathrm{U}(\Omega)<mml:math id="mq384xxvz7">
+</mml:math>\left\{\theta^1, \ldots, \theta^{\mathrm{n_0}} \right\} \sim \mathrm{U}(\Omega)<mml:math id="mubxo8qgjd">
   <mml:mo>;</mml:mo>
   <mml:mo>;</mml:mo>
   <mml:mi>e</mml:mi>
@@ -569,7 +569,7 @@
   <mml:mi>o</mml:mi>
   <mml:mi>r</mml:mi>
   <mml:mi>e</mml:mi>
-</mml:math>s<mml:math id="mxt4n5x3te">
+</mml:math>s<mml:math id="mu6y2nk5st">
   <mml:mo>.</mml:mo>
   <mml:mo>&amp;lt;</mml:mo>
   <mml:mo>&amp;gt;&amp;lt;</mml:mo>
@@ -692,7 +692,7 @@
   <mml:mn>2</mml:mn>
   <mml:mn>1</mml:mn>
   <mml:mn>1</mml:mn>
-</mml:math>\theta^*{ }_1, \theta^*{ }_2<mml:math id="mmpw64bcem">
+</mml:math>\theta^*{ }_1, \theta^*{ }_2<mml:math id="mb0w77p8de">
   <mml:mi>b</mml:mi>
   <mml:mi>e</mml:mi>
   <mml:mi>t</mml:mi>
@@ -849,21 +849,21 @@
   <mml:mn>3</mml:mn>
   <mml:mn>1</mml:mn>
   <mml:mn>1</mml:mn>
-</mml:math>j<mml:math id="m1ozq8776e">
+</mml:math>j<mml:math id="ma3h8hc30r">
   <mml:mo>:</mml:mo>
   <mml:mi>l</mml:mi>
   <mml:mi>o</mml:mi>
   <mml:mi>w</mml:mi>
   <mml:mi>e</mml:mi>
   <mml:mi>r</mml:mi>
-</mml:math>{ }_{\mathrm{j}}=\min \left(\theta^*{ }_{1 \mathrm{j}}, \theta^*{ }_{2 \mathrm{j}}\right)<mml:math id="m19pi53uie">
+</mml:math>{ }_{\mathrm{j}}=\min \left(\theta^*{ }_{1 \mathrm{j}}, \theta^*{ }_{2 \mathrm{j}}\right)<mml:math id="mur89fm45v">
   <mml:mo>;</mml:mo>
   <mml:mi>u</mml:mi>
   <mml:mi>p</mml:mi>
   <mml:mi>p</mml:mi>
   <mml:mi>e</mml:mi>
   <mml:mi>r</mml:mi>
-</mml:math>{ }_{\mathrm{j}}=\max \left(\theta^*{ }_{1 \mathrm{j}}, \theta^*{ }_{2 \mathrm{j}}\right)<mml:math id="mvr75faeav">
+</mml:math>{ }_{\mathrm{j}}=\max \left(\theta^*{ }_{1 \mathrm{j}}, \theta^*{ }_{2 \mathrm{j}}\right)<mml:math id="mcm0f71i1l">
   <mml:mo>.</mml:mo>
   <mml:mo>&amp;lt;</mml:mo>
   <mml:mo>&amp;gt;&amp;lt;</mml:mo>
@@ -980,7 +980,7 @@
   <mml:mn>4</mml:mn>
   <mml:mn>1</mml:mn>
   <mml:mn>1</mml:mn>
-</mml:math>\theta\tilde{} \sim \mathrm{U}(\Omega)<mml:math id="mnua483dxr">
+</mml:math>\theta\tilde{} \sim \mathrm{U}(\Omega)<mml:math id="myga51qzzg">
   <mml:mi>w</mml:mi>
   <mml:mi>i</mml:mi>
   <mml:mi>t</mml:mi>
@@ -996,13 +996,13 @@
   <mml:mi>i</mml:mi>
   <mml:mi>t</mml:mi>
   <mml:mi>y</mml:mi>
-</mml:math>p=\operatorname{linear}\left(p_0 \rightarrow p_1\right)<mml:math id="mq8py44tqm">
+</mml:math>p=\operatorname{linear}\left(p_0 \rightarrow p_1\right)<mml:math id="m31jwhbd3r">
   <mml:mo>;</mml:mo>
   <mml:mi>e</mml:mi>
   <mml:mi>l</mml:mi>
   <mml:mi>s</mml:mi>
   <mml:mi>e</mml:mi>
-</mml:math>\theta\tilde{} \sim \mathrm{U}(\mathrm{box})<mml:math id="mv5fulotbx">
+</mml:math>\theta\tilde{} \sim \mathrm{U}(\mathrm{box})<mml:math id="mkyr6xrw36">
   <mml:mo>.</mml:mo>
   <mml:mi>R</mml:mi>
   <mml:mi>e</mml:mi>
@@ -1017,7 +1017,7 @@
   <mml:mi>t</mml:mi>
   <mml:mi>i</mml:mi>
   <mml:mi>l</mml:mi>
-</mml:math>\theta<mml:math id="m3h09trmbt">
+</mml:math>\theta<mml:math id="mans7qvkhh">
   <mml:mi>s</mml:mi>
   <mml:mi>a</mml:mi>
   <mml:mi>t</mml:mi>
@@ -1164,7 +1164,7 @@
   <mml:mn>5</mml:mn>
   <mml:mn>1</mml:mn>
   <mml:mn>1</mml:mn>
-</mml:math>\theta\tilde{}<mml:math id="m74q4nn6yp">
+</mml:math>\theta\tilde{}<mml:math id="m6z1cja1oo">
   <mml:mi>w</mml:mi>
   <mml:mi>i</mml:mi>
   <mml:mi>t</mml:mi>
@@ -1191,7 +1191,7 @@
   <mml:mi>r</mml:mi>
   <mml:mi>d</mml:mi>
   <mml:mo>;</mml:mo>
-</mml:math>s(\theta\tilde{})<mml:math id="m10oaue6bt">
+</mml:math>s(\theta\tilde{})<mml:math id="my3jvnjxm5">
   <mml:mo>.</mml:mo>
   <mml:mo>&amp;lt;</mml:mo>
   <mml:mo>&amp;gt;&amp;lt;</mml:mo>
@@ -1310,7 +1310,7 @@
   <mml:mn>6</mml:mn>
   <mml:mn>1</mml:mn>
   <mml:mn>1</mml:mn>
-</mml:math>(\theta\tilde{}, s)<mml:math id="mzk600h7ne">
+</mml:math>(\theta\tilde{}, s)<mml:math id="mr0ffmo7ak">
   <mml:mi>i</mml:mi>
   <mml:mi>n</mml:mi>
   <mml:mi>t</mml:mi>
@@ -1329,7 +1329,7 @@
   <mml:mi>I</mml:mi>
   <mml:mi>f</mml:mi>
   <mml:mo>.</mml:mo>
-</mml:math>s(\theta\tilde{})<mml:math id="m7dk650ea8">
+</mml:math>s(\theta\tilde{})<mml:math id="mdo9305k2t">
   <mml:mi>i</mml:mi>
   <mml:mi>m</mml:mi>
   <mml:mi>p</mml:mi>
@@ -1338,10 +1338,10 @@
   <mml:mi>v</mml:mi>
   <mml:mi>e</mml:mi>
   <mml:mi>s</mml:mi>
-</mml:math>\theta^*{ }_1<mml:math id="msnl1ar8ou">
+</mml:math>\theta^*{ }_1<mml:math id="mh1cu4ntcw">
   <mml:mi>o</mml:mi>
   <mml:mi>r</mml:mi>
-</mml:math>\theta^*{ }_2<mml:math id="mq0txujxwb">
+</mml:math>\theta^*{ }_2<mml:math id="m5xpjf9wt7">
   <mml:mo>,</mml:mo>
   <mml:mo>(</mml:mo>
   <mml:mo>)</mml:mo>
@@ -1375,7 +1375,7 @@
   <mml:mi>n</mml:mi>
   <mml:mi>c</mml:mi>
   <mml:mi>e</mml:mi>
-</mml:math>\kappa<mml:math id="m86k47zmqn">
+</mml:math>\kappa<mml:math id="mbxofh9etg">
   <mml:mo>;</mml:mo>
   <mml:mi>o</mml:mi>
   <mml:mi>t</mml:mi>
@@ -1386,7 +1386,7 @@
   <mml:mi>i</mml:mi>
   <mml:mi>s</mml:mi>
   <mml:mi>e</mml:mi>
-</mml:math>\kappa \leftarrow \kappa+1<mml:math id="mghgl2jj13">
+</mml:math>\kappa \leftarrow \kappa+1<mml:math id="m18rujepii">
   <mml:mo>.</mml:mo>
   <mml:mo>&amp;lt;</mml:mo>
   <mml:mo>&amp;gt;&amp;lt;</mml:mo>
@@ -1508,7 +1508,7 @@
   <mml:mn>7</mml:mn>
   <mml:mn>1</mml:mn>
   <mml:mn>1</mml:mn>
-</mml:math>k \ge \tau<mml:math id="m3z8mfxe53">
+</mml:math>k \ge \tau<mml:math id="m3ki9aonj1">
   <mml:mi>o</mml:mi>
   <mml:mi>r</mml:mi>
   <mml:mi>t</mml:mi>
@@ -1521,11 +1521,11 @@
             </table-wrap>
           
           <p>Step 1: Draw initial trials <inline-formula>
-  <mml:math id="m1ue4xcsgh">
+  <mml:math id="mcsfga4k25">
     <mml:mo>→</mml:mo>
   </mml:math>
 </inline-formula> Sample <inline-formula>
-  <mml:math id="mdw54yo83h">
+  <mml:math id="mvc54re44n">
     <mml:msub>
       <mml:mi>n</mml:mi>
       <mml:mn>0</mml:mn>
@@ -1534,25 +1534,25 @@
     <mml:mn>10</mml:mn>
   </mml:math>
 </inline-formula> configurations uniformly from the full hyper-parameter space <inline-formula>
-  <mml:math id="m6nfofuhbt">
+  <mml:math id="mudpjs107l">
     <mml:mi>Ω</mml:mi>
   </mml:math>
 </inline-formula> (quasi-random). Evaluate &amp;amp; record <inline-formula>
-  <mml:math id="m3x3gwu19o">
+  <mml:math id="mf68kqjhj5">
     <mml:mo>→</mml:mo>
   </mml:math>
 </inline-formula> Train each configuration for up to the prescribed epoch budget while applying pruning rules (e.g., median-of-rung). Create leaderboard <inline-formula>
-  <mml:math id="mqg4yh1ig1">
+  <mml:math id="mu5pdoo0zl">
     <mml:mo>→</mml:mo>
   </mml:math>
 </inline-formula> Store every pair (<inline-formula>
-  <mml:math id="m2epzpg5qg">
+  <mml:math id="mwjtf5duh1">
     <mml:mi>θ</mml:mi>
     <mml:mi>s</mml:mi>
     <mml:mo>,</mml:mo>
   </mml:math>
 </inline-formula>) where $s<inline-formula>
-  <mml:math id="m9rpa2oobk">
+  <mml:math id="mji6lcimmo">
     <mml:mi>i</mml:mi>
     <mml:mi>s</mml:mi>
     <mml:mi>t</mml:mi>
@@ -1618,7 +1618,7 @@
     <mml:mo>.</mml:mo>
   </mml:math>
 </inline-formula>s<inline-formula>
-  <mml:math id="me9iz9xe2t">
+  <mml:math id="mgs7h7i0fm">
     <mml:mo>.</mml:mo>
     <mml:mo>&amp;lt;</mml:mo>
     <mml:mo>&amp;gt;&amp;lt;</mml:mo>
@@ -1716,7 +1716,7 @@
     <mml:mn>2</mml:mn>
   </mml:math>
 </inline-formula>\left(\theta^*{ }_1, \theta^*{ }_2\right)<inline-formula>
-  <mml:math id="mywng1v1w5">
+  <mml:math id="mgxhilw7br">
     <mml:mo>,</mml:mo>
     <mml:mo>.</mml:mo>
     <mml:mo>&amp;lt;</mml:mo>
@@ -1833,7 +1833,7 @@
           
             <disp-formula>
               <label>(1)</label>
-              <mml:math id="mvybvkgzq8">
+              <mml:math id="m2ogj0op3m">
                 <mml:msub>
                   <mml:mtext> lower </mml:mtext>
                   <mml:mi>j</mml:mi>
@@ -1901,7 +1901,7 @@
           
             <disp-formula>
               <label>(2)</label>
-              <mml:math id="mrk5g8lc32">
+              <mml:math id="mmn5plcux6">
                 <mml:mi>p</mml:mi>
                 <mml:mi>t</mml:mi>
                 <mml:mo>(</mml:mo>
@@ -1961,7 +1961,7 @@
             </disp-formula>
           
           <p>where, $t<inline-formula>
-  <mml:math id="mpz7qab05n">
+  <mml:math id="mefdrfw1f5">
     <mml:mi>i</mml:mi>
     <mml:mi>s</mml:mi>
     <mml:mi>t</mml:mi>
@@ -1989,7 +1989,7 @@
     <mml:mi>d</mml:mi>
   </mml:math>
 </inline-formula>T<inline-formula>
-  <mml:math id="mfhn2qidma">
+  <mml:math id="mahwdhvfex">
     <mml:mi>t</mml:mi>
     <mml:mi>h</mml:mi>
     <mml:mi>e</mml:mi>
@@ -2050,7 +2050,7 @@
     </mml:mrow>
   </mml:math>
 </inline-formula>p_t \rightarrow<inline-formula>
-  <mml:math id="mldzarhtab">
+  <mml:math id="mikkm7b6hq">
     <mml:mi>p</mml:mi>
     <mml:mi>i</mml:mi>
     <mml:mi>c</mml:mi>
@@ -2076,7 +2076,7 @@
     <mml:mi>m</mml:mi>
   </mml:math>
 </inline-formula>\Omega<inline-formula>
-  <mml:math id="mvw4gntntk">
+  <mml:math id="mh6s819l0v">
     <mml:mo>(</mml:mo>
     <mml:mo>)</mml:mo>
     <mml:mo>;</mml:mo>
@@ -2117,7 +2117,7 @@
     </mml:mrow>
   </mml:math>
 </inline-formula>\rightarrow<inline-formula>
-  <mml:math id="mrymcert73">
+  <mml:math id="mpphmo6epw">
     <mml:mi>p</mml:mi>
     <mml:mi>i</mml:mi>
     <mml:mi>c</mml:mi>
@@ -2539,7 +2539,7 @@
     <mml:mn>6</mml:mn>
   </mml:math>
 </inline-formula>s=0<inline-formula>
-  <mml:math id="mdaekvlxdk">
+  <mml:math id="msv2pnazml">
     <mml:mo>;</mml:mo>
     <mml:mo>.</mml:mo>
     <mml:mo>&amp;lt;</mml:mo>
@@ -2651,7 +2651,7 @@
     <mml:mn>7</mml:mn>
   </mml:math>
 </inline-formula>\theta_{\text {new }}, s_{\text {new }}<inline-formula>
-  <mml:math id="m6tfywjaaa">
+  <mml:math id="msysuu21pk">
     <mml:mo>)</mml:mo>
     <mml:mo>.</mml:mo>
     <mml:mi>i</mml:mi>
@@ -2683,7 +2683,7 @@
     <mml:mi>f</mml:mi>
   </mml:math>
 </inline-formula>s_{\text {new }}<inline-formula>
-  <mml:math id="mysuy9drae">
+  <mml:math id="mdxzau56rw">
     <mml:mi>e</mml:mi>
     <mml:mi>x</mml:mi>
     <mml:mi>c</mml:mi>
@@ -2693,7 +2693,7 @@
     <mml:mi>s</mml:mi>
   </mml:math>
 </inline-formula>\theta^*{ }_1, \theta^*{ }_2<inline-formula>
-  <mml:math id="m1bleqcdtr">
+  <mml:math id="mnsayhnvpk">
     <mml:mi>r</mml:mi>
     <mml:mi>e</mml:mi>
     <mml:mi>p</mml:mi>
@@ -2753,7 +2753,7 @@
     <mml:mo>.</mml:mo>
   </mml:math>
 </inline-formula>\kappa<inline-formula>
-  <mml:math id="m5eggeupln">
+  <mml:math id="mhtiu9v7xp">
     <mml:mo>:&amp;lt;</mml:mo>
     <mml:mo>&amp;gt;&amp;lt;</mml:mo>
     <mml:mo>&amp;gt;</mml:mo>
@@ -2778,7 +2778,7 @@
     <mml:mi>t</mml:mi>
   </mml:math>
 </inline-formula>\rightarrow \kappa \leftarrow 0<inline-formula>
-  <mml:math id="m0g4t7tvhg">
+  <mml:math id="mjhfkdjqty">
     <mml:mo>,</mml:mo>
     <mml:mo>&amp;lt;</mml:mo>
     <mml:mo>&amp;gt;&amp;lt;</mml:mo>
@@ -2795,7 +2795,7 @@
     <mml:mi>e</mml:mi>
   </mml:math>
 </inline-formula>\rightarrow \kappa \leftarrow \kappa+1<inline-formula>
-  <mml:math id="mkye11tirg">
+  <mml:math id="ma4l39t72r">
     <mml:mo>.</mml:mo>
     <mml:mo>&amp;lt;</mml:mo>
     <mml:mo>&amp;gt;&amp;lt;</mml:mo>
@@ -2923,7 +2923,7 @@
     <mml:mn>8</mml:mn>
   </mml:math>
 </inline-formula>\tau<inline-formula>
-  <mml:math id="mhbfxadzug">
+  <mml:math id="m5429mp119">
     <mml:mo>(</mml:mo>
     <mml:mi>n</mml:mi>
     <mml:mi>o</mml:mi>
@@ -2942,7 +2942,7 @@
     <mml:mi>n</mml:mi>
   </mml:math>
 </inline-formula>\tau<inline-formula>
-  <mml:math id="mn4u0mv6ig">
+  <mml:math id="mh9go87gwm">
     <mml:mi>c</mml:mi>
     <mml:mi>o</mml:mi>
     <mml:mi>n</mml:mi>
@@ -2987,7 +2987,7 @@
     </mml:mrow>
   </mml:math>
 </inline-formula>t=T<inline-formula>
-  <mml:math id="mycqgls4wr">
+  <mml:math id="mseuwggjeo">
     <mml:mi>i</mml:mi>
     <mml:mi>s</mml:mi>
     <mml:mi>e</mml:mi>
@@ -3160,7 +3160,7 @@
     <mml:mn>9</mml:mn>
   </mml:math>
 </inline-formula>\theta_{\text {best }}<inline-formula>
-  <mml:math id="m2itmlxxjp">
+  <mml:math id="m2jm2fuwpi">
     <mml:mi>a</mml:mi>
     <mml:mi>n</mml:mi>
     <mml:mi>d</mml:mi>
@@ -3182,7 +3182,7 @@
             <title>2.2. Core features of bbt</title>
           
           <p><p>The sampling region contracts automatically around the empirical optima, concentrating effort where payoff is the highest while still allowing global search.</p><p>As every new proposal is drawn between two feasible anchors, architectural divisibility constraints (e.g., embedding dimension divisible by the number of heads) are always satisfied [<xref ref-type="bibr" rid="ref_71">71</xref>].</p><p>BBT inherits rung-based or median-of-rung pruning rules, discarding low-quality trials early and allocating compute to promising ones.</p><p>A time decaying exploration probability prevents entrapment in the local optima, ensuring adequate coverage of <inline-formula>
-  <mml:math id="mp00i8pszy">
+  <mml:math id="msg47zucn9">
     <mml:mi>Ω</mml:mi>
   </mml:math>
 </inline-formula> throughout the budget.</p></p>
@@ -3202,7 +3202,7 @@
             <title>2.4. Models and search spaces</title>
           
           <p>Two architectures were optimized:</p><p>Multi-layer perceptron (MLP).</p><p>Search dimensions:</p><p><p style="text-align: justify">learning rate <inline-formula>
-  <mml:math id="mglf7fpw14">
+  <mml:math id="me83yihroe">
     <mml:mi>L</mml:mi>
     <mml:mi>R</mml:mi>
     <mml:mo>∈</mml:mo>
@@ -3231,7 +3231,7 @@
     </mml:mrow>
   </mml:math>
 </inline-formula>, log-uniform,</p><p style="text-align: justify">batch size <inline-formula>
-  <mml:math id="m2yoehyekd">
+  <mml:math id="m3ckslgg5j">
     <mml:mi>B</mml:mi>
     <mml:mi>S</mml:mi>
     <mml:mo>∈</mml:mo>
@@ -3257,18 +3257,18 @@
     </mml:mrow>
   </mml:math>
 </inline-formula>,</p><p style="text-align: justify">hidden layers <inline-formula>
-  <mml:math id="mv9os75ew3">
+  <mml:math id="mvlsw9tg59">
     <mml:mi>L</mml:mi>
     <mml:mo>∈</mml:mo>
     <mml:mo>[</mml:mo>
   </mml:math>
 </inline-formula>1, 3]</p><p style="text-align: justify">units per layer <inline-formula>
-  <mml:math id="m0tgwu6ch2">
+  <mml:math id="mxdl60kh09">
     <mml:mi>U</mml:mi>
     <mml:mo>∈</mml:mo>
   </mml:math>
 </inline-formula>[$32<inline-formula>
-  <mml:math id="mi0b4iu4hp">
+  <mml:math id="mbah48a5p9">
     <mml:mo>,</mml:mo>
     <mml:mo>]</mml:mo>
     <mml:mo>.</mml:mo>
@@ -3376,7 +3376,7 @@
     <mml:mi>p</mml:mi>
   </mml:math>
 </inline-formula>L R \in\left[1 \times 10^{-5}, 5 \times 10^{-3}\right]<inline-formula>
-  <mml:math id="m9lk09cvaf">
+  <mml:math id="mfc1q3ua53">
     <mml:mo>,</mml:mo>
     <mml:mo>&amp;lt;</mml:mo>
     <mml:mo>&amp;gt;&amp;lt;</mml:mo>
@@ -3397,7 +3397,7 @@
     <mml:mi>p</mml:mi>
   </mml:math>
 </inline-formula>B S \in\left\{2^4, 2^5, \ldots, 2^7\right\}<inline-formula>
-  <mml:math id="mqk17r7ned">
+  <mml:math id="mxa3onwuoz">
     <mml:mo>,</mml:mo>
     <mml:mo>&amp;lt;</mml:mo>
     <mml:mo>&amp;gt;&amp;lt;</mml:mo>
@@ -3423,19 +3423,19 @@
     <mml:mi>h</mml:mi>
   </mml:math>
 </inline-formula>D \in[$1$,$6],</p><p>embedding dimension <inline-formula>
-  <mml:math id="mddcbblo1v">
+  <mml:math id="mararhi3l3">
     <mml:mi>E</mml:mi>
     <mml:mo>∈</mml:mo>
     <mml:mo>[</mml:mo>
   </mml:math>
 </inline-formula>32, 256],</p><p>attention heads <inline-formula>
-  <mml:math id="mozy6cfvyy">
+  <mml:math id="mlsq6pd33x">
     <mml:mi>H</mml:mi>
     <mml:mo>∈</mml:mo>
     <mml:mo>[</mml:mo>
   </mml:math>
 </inline-formula>1, 8] with <inline-formula>
-  <mml:math id="msz8t5z6fr">
+  <mml:math id="mh600hfn3m">
     <mml:mo lspace="thickmathspace" rspace="thickmathspace">mod</mml:mo>
     <mml:mo>(</mml:mo>
     <mml:mo lspace="thickmathspace" rspace="thickmathspace">mod</mml:mo>
@@ -3452,12 +3452,12 @@
             <title>2.5. Trial budget and early stopping</title>
           
           <p>Each configuration was trained for at most five epochs.</p><p><p>MLP: Trials with validation accuracy <inline-formula>
-  <mml:math id="meb61976co">
+  <mml:math id="mg9eyfl6ff">
     <mml:mo>&amp;lt;</mml:mo>
     <mml:mn>0.30</mml:mn>
   </mml:math>
 </inline-formula> after epoch 1 or <inline-formula>
-  <mml:math id="m513t8f6pp">
+  <mml:math id="ma62z5xr21">
     <mml:mo>&amp;lt;</mml:mo>
     <mml:mn>0.60</mml:mn>
   </mml:math>
@@ -3470,7 +3470,7 @@
             <title>2.6. Benchmarking</title>
           
           <p>BBT was compared with five baselines under identical budgets of 50 scored trials per model: random search, Gaussian-Process Bayesian Optimization, Tree Structured Parzen Estimator, an <inline-formula>
-  <mml:math id="m4ewdxrlvj">
+  <mml:math id="mdsadwqgl3">
     <mml:mo>(</mml:mo>
     <mml:mo>+</mml:mo>
     <mml:mo>)</mml:mo>
@@ -3508,7 +3508,7 @@
             <title>3.1. Multi-layer perceptron (mlp)</title>
           
           <p>Accuracy landscape. All surrogate-based methods (Bayesian, TPE) and the performance-based method, BBT, converged within 0.20 percentage points of one another by the end of the 50-trial budget. The final score of BBT, 0.9788, was only 0.10 points lower than the joint leaders (TPE and Bayesian) and 0.20 points higher than uniform Random Search. Evolutionary search sat midway between Random Search and BBT.</p><p>Wall-clock efficiency. BBT reached its peak score after 1994 s-- 982 s faster than TPE and 1277 s faster than GP-Bayesian--despite executing exactly the same number of scored trials. The algorithm therefore delivered 99.9% of the best observed accuracy at <inline-formula>
-  <mml:math id="mqwit0pmjg">
+  <mml:math id="m2t89exwto">
     <mml:mo>∼</mml:mo>
   </mml:math>
 </inline-formula>34% lower cost than the nearest high-accuracy baseline. Local Search was the only faster method (898 s) but plateaued at 0.9608 after just 16 improving moves; the remaining 34 budgeted trials were left unused because the adaptive neighbor procedure could no longer locate an ascent direction.</p>
@@ -3536,7 +3536,7 @@
             <title>3.4. Practical ramifications</title>
           
           <p><p>Deploying BBT in place of TPE or GP-Bayesian would reduce tuning time for lightweight CNN backbones such as MLP by $&gt;$1000, s while preserving sub-0.1-% accuracy differences.</p><p>For transformer-style models with tighter architectural constraints, BBT is both the most accurate and the most time-efficient among methods that exceed 0.94 validation accuracy, rending it the obvious first choice when quick iteration cycles are paramount.</p><p>Random search remains a viable baseline when the wall-clock time is not critical, but it requires <inline-formula>
-  <mml:math id="mfc2oxz42x">
+  <mml:math id="m6gbngryvo">
     <mml:mo>∼</mml:mo>
   </mml:math>
 </inline-formula>30% more time than BBT to reach nearly the same score on Tiny-ViT and still underperforms when BBT is on MLP.</p><p>Evolutionary search might appeal in highly multi-modal or discrete spaces, yet its two-fold time overhead relative to BBT is not compensated by the advantages of accuracy in either benchmark.</p></p><p>Overall speaking, these results demonstrate that a simple axis-aligned bounding-box strategy could rival and outperform sophisticated surrogate-based hyperparameter optimizers, especially in face of stringent compute budgets and substantial architectural feasibility constraints.</p>
@@ -3592,7 +3592,7 @@
         </fig>
       
       <p>Adaptive locality without surrogate overhead. Modern Bayesian and density-estimation strategies allocate substantial runtime to fitting probabilistic models over the search space. BBT attains similar or better (As shown in <xref ref-type="fig" rid="fig_3">Figure 3-5</xref>) end-point accuracies by exploiting a far simpler signal, i.e., the geometric span of the two best configurations. Subsequent to merely ten random seed trials, the bounding box contracts around high-payoff regions and continues to refine as new top candidates emerge. This strategy reduces both the computational overhead of surrogate maintenance and the sample complexity required to learn a useful global model, especially in low-epoch regimes where observations are noisy.</p><p>Constraint awareness. Surrogate-based optimizers such as GP-Bayesian and TPE sometimes emit transformer settings in which the embedding dimension E is not divisible by the number of attention heads H. In the implementation, these infeasible proposals are retained but assigned a validation score of 0, effectively wasting a trial. BBT avoids the issue entirely as every new candidate is sampled between two anchor configurations that already satisfy E mod H = 0, so feasibility is guaranteed with no additional rejection logic. This intrinsic constraint handling is valuable in hardware-bound searches that mix continuous and discrete parameters, e.g., channel counts, attention heads, or quantization widths where enforcing validity often dominates the implementation complexity.</p><p>Graceful cost scaling. BBT requires no extra meta-parameters beyond a decaying exploration rate, a patience counter, and initial sample seeds (10 in this research), and its early-stop mechanism never fires within the 50-trial budget, so larger budgets would only amortize its modest overhead further. On the MLP task, as shown in <xref ref-type="fig" rid="fig_3">Figure 3</xref>, BBT achieved the lowest wall-clock time per scored trial (<inline-formula>
-  <mml:math id="m963wn6u8m">
+  <mml:math id="meci4988fy">
     <mml:mo>≈</mml:mo>
     <mml:mn>39</mml:mn>
     <mml:mstyle scriptlevel="0">
@@ -3603,7 +3603,7 @@
     </mml:mrow>
   </mml:math>
 </inline-formula>) among all methods, including both surrogate-based baselines. On the TinyViT task, GP-Bayesian was slightly faster per trial (<inline-formula>
-  <mml:math id="mf0m8ahmtv">
+  <mml:math id="mlp6vgat2">
     <mml:mo>≈</mml:mo>
     <mml:mn>44</mml:mn>
     <mml:mstyle scriptlevel="0">
@@ -3614,7 +3614,7 @@
     </mml:mrow>
   </mml:math>
 </inline-formula>), yet delivered the lowest accuracy of the surrogate group. BBT maintained a competitive per-trial cost (<inline-formula>
-  <mml:math id="mzhy7s978o">
+  <mml:math id="m8m6bqrkdl">
     <mml:mo>≈</mml:mo>
     <mml:mn>47</mml:mn>
     <mml:mstyle scriptlevel="0">
