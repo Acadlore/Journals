@@ -1,0 +1,3176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.3 20210610//EN" "JATS-journalpublishing1-3.dtd">
+<article xml:lang="en" dtd-version="1.3" article-type="research-article" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mml="http://www.w3.org/1998/Math/MathML">
+  <front>
+    <journal-meta>
+      <journal-id journal-id-type="publisher-id">IDA</journal-id>
+      <journal-id journal-id-type="doi">10.56578</journal-id>
+      <journal-title-group>
+        <journal-title>Information Dynamics and Applications</journal-title>
+        <abbrev-journal-title abbrev-type="issn">Inf. Dyn. Appl.</abbrev-journal-title>
+        <abbrev-journal-title abbrev-type="publisher">IDA</abbrev-journal-title>
+      </journal-title-group>
+      <issn publication-format="electronic">2958-1494</issn>
+      <issn publication-format="print">2958-1486</issn>
+      <publisher>
+        <publisher-name>Acadlore</publisher-name>
+      </publisher>
+    </journal-meta>
+    <article-meta>
+      <article-id pub-id-type="publisher-id">AR-YM3PJQ7a_t0feclA9DoxEzwzVTXJuzMM</article-id>
+      <article-id pub-id-type="doi">10.56578/ida040205</article-id>
+      <article-categories>
+        <subj-group>
+          <subject>Articles</subject>
+        </subj-group>
+      </article-categories>
+      <title-group>
+        <article-title>A Computational Framework for Apple Detection Using Fuzzy Logic and Structural Cues</article-title>
+      </title-group>
+      <contrib-group>
+        <contrib contrib-type="author" rid="aff_1">
+          <contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0000-0002-2526-6927</contrib-id>
+          <name>
+            <surname>Yow</surname>
+            <given-names>Kai Siong</given-names>
+          </name>
+          <email>ksyow@upm.edu.my</email>
+        </contrib>
+        <aff id="aff_1">Department of Mathematics and Statistics, Faculty of Science, Universiti Putra Malaysia, 43400 Serdang, Malaysia</aff>
+      </contrib-group>
+      <pub-date publication-format="electronic" date-type="pub">
+        <day>29</day>
+        <month>06</month>
+        <year>2025</year>
+      </pub-date>
+      <volume>4</volume>
+      <issue>2</issue>
+      <fpage>115</fpage>
+      <lpage>126</lpage>
+      <page-range>115-126</page-range>
+      <history>
+        <date date-type="received">
+          <day>19</day>
+          <month>05</month>
+          <year>2025</year>
+        </date>
+        <date date-type="accepted">
+          <day>25</day>
+          <month>06</month>
+          <year>2025</year>
+        </date>
+      </history>
+      <permissions>
+        <copyright-statement>©2025 by the author(s)</copyright-statement>
+        <copyright-year>2025</copyright-year>
+        <license license-type="open-access" xlink:href="https://creativecommons.org/licenses/by/4.0/">
+          <license-p> Published by Acadlore Publishing Services Limited, Hong Kong. This article is available for free download and can be reused and cited, provided that the original published version is credited, under the CC BY 4.0 license.</license-p>
+        </license>
+      </permissions>
+      <abstract><p>Accurate and reliable detection of apples in complex orchard environments remains a challenging task due to varying illumination, cluttering backgrounds, and overlapping fruits. In this paper, the difficulties were tackled with a novel edge-enhanced detection framework proposed to integrate dynamic image smoothing, entropy-based edge amplification, and directional energy-driven contour extraction. An adaptive smoothing filter was adopted with a sigmoid-based weighting function to selectively preserve edge structures while suppressing noise in homogeneous regions. The input of Red Green Blue (RGB) image was subsequently transformed into the Hue, Saturation, and Value (HSV) color space to exploit hue information, thereby improving color-based feature discrimination. The introduction of a hybrid entropy-weighted gradient scheme helped strengthen edge detection, that is, the local image entropy modulated gradient magnitudes to emphasize structured regions. A global threshold was then applied to refine the enhanced edge map. Ultimately, continuous apple contours were extracted using a direction-constrained energy propagation approach, in which connected edge pixels were traced according to compass orientations, thus ensuring accurate contour assembly even under occlusion or low contrast. Experimental evaluations confirmed that the proposed framework substantially improved the accuracy of boundary detection across diverse imaging conditions; its potential application in automated fruit detection and precision harvesting was therefore highlighted.</p></abstract>
+      <kwd-group>
+        <kwd>Apple detection</kwd>
+        <kwd>Adaptive smoothing</kwd>
+        <kwd>Entropy-weighted gradient</kwd>
+        <kwd>Edge enhancement</kwd>
+        <kwd>Directional energy contour tracing</kwd>
+      </kwd-group>
+      <counts>
+        <count count-type="contributors" count="1"/>
+        <fig-count count="4"/>
+        <table-count count="2"/>
+        <ref-count count="21"/>
+      </counts>
+    </article-meta>
+  </front>
+  <body>
+    <sec sec-type="intro">
+      <title>1. Introduction</title>
+      <p>Image processing is a rapidly evolving field that plays a vital role in numerous applications, including medical imaging, remote sensing, surveillance, and computer vision. It encompasses a diverse set of methodologies developed to improve and examine, segment, and interpret visual information from digital images. Traditional image processing methods often struggle with challenges, such as intensity inhomogeneity, noise, and low contrast, which limit their effectiveness in real-world scenarios. To address these challenges, scholars have proposed high technologies in models and algorithms that deploy region-based segmentation, active contour models, and deep learning. These methods enhance the meticulousness and durability of the image processing, especially when there is a complicated environment. The introduction of Graphics Processing Units (GPU) optimized computation has greatly increased the speed of processing related to deep learning-based methods, thus enabling the application of real time more easily. The combination of statistical modeling, convolutional processing, and artificial intelligence persists to spur innovations and provides more accurate and less energy-consuming solutions to various imaging issues [<xref ref-type="bibr" rid="ref_1">1</xref>], [<xref ref-type="bibr" rid="ref_2">2</xref>], [<xref ref-type="bibr" rid="ref_3">3</xref>], [<xref ref-type="bibr" rid="ref_4">4</xref>], [<xref ref-type="bibr" rid="ref_5">5</xref>].</p><p>Based on the progress of the image processing, recent research activities have engaged in the use of incredible image smoothing algorithms to increase the quality of the image formation and at the same time it retains the vital edge information by giving a fair amount of discussion. Common problems with traditional smoothing techniques include smoothing of important structures or the presence of stair case artifacts. In order to deal with these issues, new techniques are introduced such as edge-aware smoothing model and gradient reconstructions. To take an example, Zeng et al. [<xref ref-type="bibr" rid="ref_6">6</xref>] suggested the weighted sparse gradient reconstruction, which keeps its sharp edges and smooths the flat areas efficiently. This was further elaborated by Matsuoka and Okuda [<xref ref-type="bibr" rid="ref_7">7</xref>], who reduced the gradient0 in the objective smaller stair casing effects and included new constraints to address this issue and resulted in increased robustness. Yada and Sarawadekar [<xref ref-type="bibr" rid="ref_8">8</xref>] were able to formulate multiple-scale edge-smoothing filter in the context of the dehazing of images, which can adapt to different densities of the haze, hence showing better visual clarity. Besides, Al-Ameen [<xref ref-type="bibr" rid="ref_9">9</xref>] proposed an algorithm based on directional variance specifically dedicated to digital image smoothing which softly suppresses noise with a directional awareness.</p><p>Expanding on the foundations of image smoothing and segmentation [<xref ref-type="bibr" rid="ref_10">10</xref>], [<xref ref-type="bibr" rid="ref_11">11</xref>], the field of object detection in remote sensing and agricultural imagery has seen substantial growth through the integration of deep learning techniques. Researchers have increasingly turned to convolutional neural networks and object detection frameworks like You Only Look Once (YOLO) to address challenges such as small object detection, varying lighting conditions, and complex backgrounds. Bai et al. [<xref ref-type="bibr" rid="ref_12">12</xref>] and Yi et al. [<xref ref-type="bibr" rid="ref_13">13</xref>] proposed significant improvements in remote sensing applications by reviewing and enhancing YOLO-based models for small object detection. Similarly, Zhang et al. [<xref ref-type="bibr" rid="ref_14">14</xref>] and Wang et al. [<xref ref-type="bibr" rid="ref_15">15</xref>] introduced customized YOLOv5-based frameworks for greenhouse tomato and apple fruit detection, respectively; their studies demonstrated the effectiveness of the frameworks in structured agricultural environments. In addition, Kılıçarslan et al. [<xref ref-type="bibr" rid="ref_16">16</xref>] employed hybrid transfer learning and multi-level feature extraction techniques to distinguish apple varieties with high accuracy. Despite the remarkable progress achieved through the above deep learning-based object detection and classification methods, several limitations persist. Many YOLO-based models, while efficient, often struggle with accurately detecting very small or densely clustered objects in high-resolution remote sensing images, thus leading to missed detection or false positives. In agricultural scenarios, these models could be sensitive to occlusions, overlapping fruits, and seasonal variations in appearance, which may degrade their abilities of generalization across different datasets. Furthermore, the reliance on large annotated datasets poses a challenge in domains where labeled data are scarce or labor-intensive to obtain. From a computational standpoint, the deployment of deep models in real-time or resource-constrained environments remains difficult, especially when model complexity increases. These challenges underline the need for robust and adaptive segmentation as well as smoothing techniques.</p><p>In this research paper, we proposed an entropy-weighted gradient and directional edge-enhancement-based model for accurate apple detection in natural orchard scenes. The model functioned through a structured pipeline beginning with adaptive smoothing to suppress background noise while retaining essential image features. It then calculated entropy-weighted gradients to emphasize regions with high information content, particularly around the edges of the object [<xref ref-type="bibr" rid="ref_17">17</xref>], [<xref ref-type="bibr" rid="ref_18">18</xref>]. These enhanced gradients were processed through a directional edge amplification mechanism to strengthen the continuity of the apple boundaries. Finally, an energy-based contour tracing strategy was applied, leveraging both local edge strength and orientation to delineate apple regions accurately, in spite of the occurrence of occlusions, overlapping branches, and varying lighting conditions.</p><p>Unlike traditional methods or popular deep learning frameworks like YOLO, which often require extensive labeled datasets and computational resources, our model emphasizes interpretability and data efficiency. By integrating entropy-guided edge analysis with directional reinforcement and fuzzy-driven energy minimization, we provide a rule-based mechanism that performs competitively in challenging real-world orchard environments without requiring massive training efforts. This makes the proposed model especially suitable for low-resource settings where annotated data and GPU support may be limited. Furthermore, YOLO-based models may struggle with occlusions and non-uniform illumination unless retrained on orchard-specific datasets, whereas our approach explicitly incorporates these structural and contextual variances through handcrafted entropy and edge metrics.</p><p>The novel contributions of the proposed model are summarized as follows:</p><p><p>Entropy-weighted gradient computation: A new handcrafted approach that assigns local entropy as a weight to gradient magnitudes, is introduced to enable context-aware edge emphasis. Unlike previous works that apply uniform edge enhancement or use fixed weighting schemes, our entropy-guided computation dynamically adapts to local texture variations, hence providing superior differentiation of object boundaries in cluttered backgrounds.</p><p>Directional edge enhancement mechanism: A novel directional filtering technique is proposed to enhance edge continuity along dominant orientations. While direction-aware edge processing is not new, our model uniquely combines it with entropy-weighted cues to retain boundary consistency under heavy occlusion and illumination noise; this creates a scenario in which traditional methods and even some Convolutional Neural Network (CNN) may underperform.</p><p>Energy-based contour tracing algorithm: A robust contour detection strategy is formulated with a fuzzy energy minimization principle, which balances local edge strength and gradient directionality. This differs from classical snakes or graph-cut methods by integrating contextual entropy cues and fuzzy logic rules, resulting in high boundary adherence with minimal false positives.</p><p>Fuzzy feature extraction: A fuzzy logic-based mechanism is employed to extract uncertainty-aware features that capture both intensity variation and contextual texture. This enhances the ability of the model to discern subtle boundaries and structure in low-contrast regions. By leveraging fuzzy membership functions, the model ensures robustness to noise and illumination changes, thus outperforming crisp thresholding or hard segmentation techniques.</p><p>Computational efficiency and scalability: The model is lightweight, interpretable, and highly parallelizable. Compared to deep models like YOLOv5 that require pre-trained weights and fine-tuning on apple datasets, our approach runs in real time with minimal memory usage and achieves comparable segmentation accuracy without deep learning infrastructure.</p></p>
+    </sec>
+    <sec sec-type="">
+      <title>2. Literature review</title>
+      <p>In recent years, several studies have explored entropy-based and learning-driven image seg-mentation and enhancement methods, thus contributing significantly to applications in biomedical imaging, agriculture, and object grading.</p><p>Gupta et al. [<xref ref-type="bibr" rid="ref_19">19</xref>] proposed a deep learning-enhanced automated mitochondrial segmentation framework for Focused Ion Beam Scanning Electron Microscope (FIB-SEM) images using an entropy-weighted ensemble of multiple convolutional neural networks. The approach assigns adaptive weights based on entropy to improve segmentation confidence and accuracy. This method achieved high precision in segmenting complex cellular structures. Nonetheless, the primary drawback of the model is its high computational complexity and the need to consider extensive and high-quality annotated data sets, which would be inapplicable in real-time processing or environment where computer resources are insufficient. </p><p>Gill and Khehra [<xref ref-type="bibr" rid="ref_20">20</xref>] also proposed a segmentation of apple image using Teaching Learning Based Optimization (TLBO) with minimum cross entropy thresholding. The model is able to partition boundaries of an apple satisfactorily even in different lighting situations. It is unique because it is optimized to choose the threshold and makes it robust to variations in image brightness. Although this model works well, it could falsely recognize objects or noise around the apple as an apple, in particular when the apple overlaps or there are some occluding elements. The process of optimization is computationally costly, thus impairing its real-time applicability.</p><p>According to Wang et al. [<xref ref-type="bibr" rid="ref_21">21</xref>], multi-featured grading model of apples combined the benefits of entropy-based weighting-mechanism and multi-layered perceptron (MLP). The model densely extracted and incorporated several features including color, texture, and shape; apple grades were then classified with an MLP. Although the hybrid structure enhanced grading error rates in terms of different lighting conditions, surface features, leaves, stems, and close fruits, some misclassifications were presented as part of the non-apple features which are similar to those of the apple. Moreover, the model depended on handcrafted feature extraction, which prevents its generalization to unseen apple varieties and backgrounds.</p><p>All these studies demonstrated the opportunities of combining entropy and learning so as to build a metal framework for better image processing. Despite satisfactory results in performance, the drawbacks of the combination include complexity of calculations, misidentification of non-targeted items, and over-reliance on manually crafted features; all these require more robust and adaptable solutions in real-world scenarios.</p>
+    </sec>
+    <sec sec-type="">
+      <title>3. Proposed model</title>
+      <p>On the basis of the advantages and identified deficiencies of the models previously examined, a new entropy-based framework of image segmentation was proposed and implemented in this study to support robust and accurate detection of objects, especially apple objects, by bounding boxes. The proffered model incorporated an entropy-weighted feature separation unit of the kind with the help of a purified module. It also provided fuzzy energy that was functional to improve the precision of the segmentation with a reduction in the amount of confusing non-targets, which could be leaves, branches, and clusters of fruits. As illustrated in <xref ref-type="fig" rid="fig_1">Figure 1</xref>, by leveraging adaptive local entropy and statistical similarity, the model could accurately delineate object boundaries and generate reliable bounding boxes even under noisy, low-contrast, and occluded conditions. Furthermore, a lightweight computational structure was adopted to ensure rapid inference and enabled the model to function effectively in real-time farming scenarios and smart farming systems.</p>
+      
+        <sec>
+          
+            <title>3.1. Preprocessing and smoothing</title>
+          
+          
+            <sec>
+              
+                <title>3.1.1 Adaptive smoothing function</title>
+              
+              <p>Instead of applying a traditional Gaussian filter, which tends to blur edges and fine details, we introduce a nonlinear adaptive smoothing mechanism that selectively smooths homogeneous regions while preserving edge information. The smoothed image is computed as:</p>
+              
+                <disp-formula>
+                  <label>(1)</label>
+                  <mml:math id="m9q5xpanvm">
+                    <mml:msub>
+                      <mml:mi>I</mml:mi>
+                      <mml:mi>s</mml:mi>
+                    </mml:msub>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>,</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:mo>=</mml:mo>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>+</mml:mo>
+                    <mml:mo>,</mml:mo>
+                    <mml:mo>+</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:mo>⋅</mml:mo>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>,</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:mi>x</mml:mi>
+                    <mml:mi>y</mml:mi>
+                    <mml:mi>I</mml:mi>
+                    <mml:mi>x</mml:mi>
+                    <mml:mi>m</mml:mi>
+                    <mml:mi>y</mml:mi>
+                    <mml:mi>n</mml:mi>
+                    <mml:mi>ϕ</mml:mi>
+                    <mml:mi>Δ</mml:mi>
+                    <mml:mi>I</mml:mi>
+                    <mml:mi>m</mml:mi>
+                    <mml:mi>n</mml:mi>
+                    <mml:mfrac>
+                      <mml:mn>1</mml:mn>
+                      <mml:mrow>
+                        <mml:mi>K</mml:mi>
+                        <mml:mi>x</mml:mi>
+                        <mml:mi>y</mml:mi>
+                        <mml:mo>(</mml:mo>
+                        <mml:mo>,</mml:mo>
+                        <mml:mo>)</mml:mo>
+                      </mml:mrow>
+                    </mml:mfrac>
+                    <mml:munder>
+                      <mml:mo>∑</mml:mo>
+                      <mml:mrow>
+                        <mml:mo>(</mml:mo>
+                        <mml:mo>,</mml:mo>
+                        <mml:mo>)</mml:mo>
+                        <mml:mo>∈</mml:mo>
+                        <mml:mi>m</mml:mi>
+                        <mml:mi>n</mml:mi>
+                        <mml:mi>Ω</mml:mi>
+                      </mml:mrow>
+                    </mml:munder>
+                  </mml:math>
+                </disp-formula>
+              
+              <p>where, is a local neighborhood window centered around pixel, typically a square region (e.g., or).</p><p>The term represents the absolute intensity difference between the central pixel and its neighboring pixel within the window:</p><p>\[\Delta I(m, n)=|I(x, y)-I(x+m, y+n)|\]</p><p>To control the contribution of each neighboring pixel based on its similarity to the center pixel, we introduce a sigmoid weighting function:</p><p>\[\phi(\Delta I)=\frac{1}{1+e^{\alpha(\Delta I-T)}}\]</p><p>Here, control the sharpness of the transition in the sigmoid function, higher values lead to more selective filtering, a threshold that defines the sensitivity to intensity differences. Pixels with intensity values close to the center will yield higher weights while those with large differences, likely representing edges, will have lower weights.</p><p>To normalize the result and ensure proper scaling, we use a normalization factor:</p>
+              
+                <disp-formula>
+                  <label>(2)</label>
+                  <mml:math id="maycd0tfzn">
+                    <mml:mi>K</mml:mi>
+                    <mml:mi>x</mml:mi>
+                    <mml:mi>y</mml:mi>
+                    <mml:mi>ϕ</mml:mi>
+                    <mml:mi>Δ</mml:mi>
+                    <mml:mi>I</mml:mi>
+                    <mml:mi>i</mml:mi>
+                    <mml:mi>j</mml:mi>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>,</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:mo>=</mml:mo>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>,</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:munder>
+                      <mml:mo>∑</mml:mo>
+                      <mml:mrow>
+                        <mml:mo>(</mml:mo>
+                        <mml:mo>,</mml:mo>
+                        <mml:mo>)</mml:mo>
+                        <mml:mo>∈</mml:mo>
+                        <mml:mi>i</mml:mi>
+                        <mml:mi>j</mml:mi>
+                        <mml:mi>Ω</mml:mi>
+                      </mml:mrow>
+                    </mml:munder>
+                  </mml:math>
+                </disp-formula>
+              
+              <p>This formulation allows the filter to perform edge-preserving smoothing: flat (low-texture) regions are smoothed aggressively while edges and boundaries are preserved, due to their larger intensity variations.</p>
+              
+                <fig id="fig_1">
+                  <label>Figure 1</label>
+                  <caption>
+                    <title>Workflow diagram of the proposed entropy-weighted directional energy model for apple contour detection</title>
+                  </caption>
+                  <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/8/img_bL8mE4cfk7PgjdwB.png"/>
+                </fig>
+              
+            </sec>
+          
+          
+            <sec>
+              
+                <title>3.1.2 Color space transformation</title>
+              
+              <p>After applying the adaptive smoothing filter, the resulting image was converted from the RGB color space to the Hue-Saturation-Value (HSV) color space, which separated chromatic content (hue) from intensity and colorfulness. This transformation facilitated tasks like segmentation, edge detection, and classification, as hue is often more robust to lighting variations. The transformation is expressed as:</p>
+              
+                <disp-formula>
+                  <label>(3)</label>
+                  <mml:math id="m9va16kmjs">
+                    <mml:mi>H</mml:mi>
+                    <mml:mi>S</mml:mi>
+                    <mml:mi>V</mml:mi>
+                    <mml:mi>x</mml:mi>
+                    <mml:mi>y</mml:mi>
+                    <mml:mi>rgb</mml:mi>
+                    <mml:mi>hsv</mml:mi>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>,</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:mo>=</mml:mo>
+                    <mml:mn>2</mml:mn>
+                    <mml:mrow>
+                      <mml:mo>(</mml:mo>
+                      <mml:mo>(</mml:mo>
+                      <mml:mo>,</mml:mo>
+                      <mml:mo>)</mml:mo>
+                      <mml:mo>)</mml:mo>
+                      <mml:msub>
+                        <mml:mi>I</mml:mi>
+                        <mml:mi>s</mml:mi>
+                      </mml:msub>
+                      <mml:mi>x</mml:mi>
+                      <mml:mi>y</mml:mi>
+                    </mml:mrow>
+                  </mml:math>
+                </disp-formula>
+              
+              <p>Based on the HSV representation, we can derive the hue channel, which captures the prevailing color wavelength of wavelength per pixel:</p><p>\[H(x, y)=H S V_H(x, y)\]</p><p>The information of this hue is applied later in feature extraction or classification. It will fall under the specific application.</p><p>The edges need to be detected in the image with improved tolerance of noise and lighting variations that should be detected by the above algorithm. We used a fusion method which provides both gradient information and local entropy. This fusion would exaggerate non-weak edges with respect to both gradient and structure, being complex in the distribution of local intensity.</p>
+            </sec>
+          
+        </sec>
+      
+      <p>Let the input RGB image be denoted by: <inline-formula>
+  <mml:math id="myso4mqsgx">
+    <mml:mi>I</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>∈</mml:mo>
+    <mml:msup>
+      <mml:mrow>
+        <mml:mi>R</mml:mi>
+      </mml:mrow>
+      <mml:mrow>
+        <mml:mi>M</mml:mi>
+        <mml:mi>N</mml:mi>
+        <mml:mo>×</mml:mo>
+        <mml:mo>×</mml:mo>
+        <mml:mn>3</mml:mn>
+      </mml:mrow>
+    </mml:msup>
+  </mml:math>
+</inline-formula> where and represent the spatial dimensions, height and width, of the image, and the third dimension corresponds to the Red, Green, and Blue (RGB) color channels. This image undergoes a two-step preprocessing procedure: (i) adaptive smoothing; and (ii) color space transformation.</p>
+      
+        <sec>
+          
+            <title>3.2. Gradient magnitude and local entropy computation</title>
+          
+          <p>As the first step in extracting relevant features of an image, we first computed the gradient magnitude with different intensities at every pixel point and reflected the intensity variation strength. The areas that had sharp sides were emphasized. The gradient magnitude is mathematically expressed as:</p>
+          
+            <disp-formula>
+              <label>(4)</label>
+              <mml:math id="mpy2ianwze">
+                <mml:mi>G</mml:mi>
+                <mml:mi>x</mml:mi>
+                <mml:mi>y</mml:mi>
+                <mml:mo>(</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo>)</mml:mo>
+                <mml:mo>=</mml:mo>
+                <mml:msqrt>
+                  <mml:msub>
+                    <mml:mi>I</mml:mi>
+                    <mml:mi>x</mml:mi>
+                  </mml:msub>
+                  <mml:msub>
+                    <mml:mi>I</mml:mi>
+                    <mml:mi>y</mml:mi>
+                  </mml:msub>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>,</mml:mo>
+                  <mml:mo>+</mml:mo>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>,</mml:mo>
+                  <mml:mi>x</mml:mi>
+                  <mml:mi>y</mml:mi>
+                  <mml:mi>x</mml:mi>
+                  <mml:mi>y</mml:mi>
+                  <mml:msup>
+                    <mml:mo>)</mml:mo>
+                    <mml:mn>2</mml:mn>
+                  </mml:msup>
+                  <mml:msup>
+                    <mml:mo>)</mml:mo>
+                    <mml:mn>2</mml:mn>
+                  </mml:msup>
+                </mml:msqrt>
+              </mml:math>
+            </disp-formula>
+          
+          <p> where, <inline-formula>
+  <mml:math id="mzv033gmrb">
+    <mml:msub>
+      <mml:mi>I</mml:mi>
+      <mml:mi>x</mml:mi>
+    </mml:msub>
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mi>x</mml:mi>
+    <mml:mi>y</mml:mi>
+  </mml:math>
+</inline-formula> and <inline-formula>
+  <mml:math id="mcrphshmm8">
+    <mml:msub>
+      <mml:mi>I</mml:mi>
+      <mml:mi>y</mml:mi>
+    </mml:msub>
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mi>x</mml:mi>
+    <mml:mi>y</mml:mi>
+  </mml:math>
+</inline-formula> denote the partial derivatives of the image intensity I in the horizontal and vertical directions, respectively. These derivatives are commonly approximated using Sobel filters, which convolve the input image with predefined kernel masks designed to emphasize horizontal and vertical intensity transitions.</p><p>Once the gradient information was obtained, we proceeded to estimate the local entropy within a neighborhood around each pixel. Entropy is a statistical measure that quantifies the degree of randomness or the complexity of intensity values, which are often used to detect textured or information-rich regions in an image. The value of local entropy at the position <inline-formula>
+  <mml:math id="maj9ak4rz5">
+    <mml:mrow>
+      <mml:mo>(</mml:mo>
+      <mml:mo>,</mml:mo>
+      <mml:mo>−</mml:mo>
+      <mml:mo>)</mml:mo>
+      <mml:msub>
+        <mml:mi>x</mml:mi>
+        <mml:mi>m</mml:mi>
+      </mml:msub>
+      <mml:mi>y</mml:mi>
+      <mml:mi>n</mml:mi>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> is calculated using the following expression:</p>
+          
+            <disp-formula>
+              <label>(5)</label>
+              <mml:math id="m60q88sop6">
+                <mml:mi>H</mml:mi>
+                <mml:mi>log</mml:mi>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>,</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:msub>
+                    <mml:mi>x</mml:mi>
+                    <mml:mi>m</mml:mi>
+                  </mml:msub>
+                  <mml:msub>
+                    <mml:mi>y</mml:mi>
+                    <mml:mi>n</mml:mi>
+                  </mml:msub>
+                </mml:mrow>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>,</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:msub>
+                    <mml:mi>x</mml:mi>
+                    <mml:mi>m</mml:mi>
+                  </mml:msub>
+                  <mml:msub>
+                    <mml:mi>y</mml:mi>
+                    <mml:mi>n</mml:mi>
+                  </mml:msub>
+                </mml:mrow>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>+</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:msub>
+                    <mml:mi>p</mml:mi>
+                    <mml:mi>k</mml:mi>
+                  </mml:msub>
+                  <mml:mrow>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>,</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:msub>
+                      <mml:mi>x</mml:mi>
+                      <mml:mi>m</mml:mi>
+                    </mml:msub>
+                    <mml:msub>
+                      <mml:mi>y</mml:mi>
+                      <mml:mi>n</mml:mi>
+                    </mml:msub>
+                  </mml:mrow>
+                  <mml:mi>ϵ</mml:mi>
+                </mml:mrow>
+                <mml:mo>=</mml:mo>
+                <mml:mo>−</mml:mo>
+                <mml:mo>⁡</mml:mo>
+                <mml:munderover>
+                  <mml:mo>∑</mml:mo>
+                  <mml:mrow>
+                    <mml:mi>k</mml:mi>
+                    <mml:mo>=</mml:mo>
+                    <mml:mn>0</mml:mn>
+                  </mml:mrow>
+                  <mml:mrow>
+                    <mml:mi>L</mml:mi>
+                    <mml:mo>−</mml:mo>
+                    <mml:mn>1</mml:mn>
+                  </mml:mrow>
+                </mml:munderover>
+                <mml:msub>
+                  <mml:mi>p</mml:mi>
+                  <mml:mi>k</mml:mi>
+                </mml:msub>
+              </mml:math>
+            </disp-formula>
+          
+          <p>where:</p><p><p><inline-formula>
+  <mml:math id="mnjgviw6u7">
+    <mml:msub>
+      <mml:mi>p</mml:mi>
+      <mml:mi>k</mml:mi>
+    </mml:msub>
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mi>x</mml:mi>
+    <mml:mi>y</mml:mi>
+  </mml:math>
+</inline-formula>is the normalized histogram (i.e., probability distribution) of intensity level $k<inline-formula>
+  <mml:math id="mecw8jm8wr">
+    <mml:mi>w</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+  </mml:math>
+</inline-formula>(x, y)<inline-formula>
+  <mml:math id="m2ht8n6udc">
+    <mml:mo>,</mml:mo>
+    <mml:mo>&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mi>p</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>p</mml:mi>
+  </mml:math>
+</inline-formula>L<inline-formula>
+  <mml:math id="mkvakd4zml">
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>L<inline-formula>
+  <mml:math id="mumu5x62zd">
+    <mml:mo>=</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mn>256</mml:mn>
+    <mml:mn>8</mml:mn>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+  </mml:math>
+</inline-formula>\epsilon<inline-formula>
+  <mml:math id="mddiwo912b">
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>\epsilon=10^{-8}<inline-formula>
+  <mml:math id="m6ivy9uiql">
+    <mml:mo>)</mml:mo>
+    <mml:mi>a</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+  </mml:math>
+</inline-formula>p_k(x, y)<inline-formula>
+  <mml:math id="m7sgit58ue">
+    <mml:mo>=</mml:mo>
+    <mml:mo>&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mn>0.</mml:mn>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mi>p</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>A</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>e</mml:mi>
+  </mml:math>
+</inline-formula>H(x, y)$ typically corresponds to regions with greater intensity variation, hence indicating the presence of textures, edges, and object boundaries. This metric is especially useful in tasks like image segmentation, where the distinction between homogeneous and heterogeneous regions is crucial.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.3. Entropy-weighted edge enhancement for apple detection</title>
+          
+          <p>Accurate edge extraction is essential for distinguishing apple boundaries from complex orchard backgrounds. We combine gradient magnitude with local entropy to form an entropy-weighted edge strength measure to improve robustness. In this context, entropy, complementing the local intensity variation captured by the gradient magnitude, is used as a measure of uncertainty or textural richness. The entropy-weighted formulation is expressed as:</p>
+          
+            <disp-formula>
+              <label>(6)</label>
+              <mml:math id="mwu822t555">
+                <mml:msub>
+                  <mml:mi>E</mml:mi>
+                  <mml:mrow>
+                    <mml:mtext>custom </mml:mtext>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:mo>(</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo>)</mml:mo>
+                <mml:mo>=</mml:mo>
+                <mml:mo>(</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo>)</mml:mo>
+                <mml:mo>⋅</mml:mo>
+                <mml:mi>x</mml:mi>
+                <mml:mi>y</mml:mi>
+                <mml:mi>G</mml:mi>
+                <mml:mi>x</mml:mi>
+                <mml:mi>y</mml:mi>
+                <mml:msup>
+                  <mml:mrow>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:mfrac>
+                      <mml:mrow>
+                        <mml:mi>H</mml:mi>
+                        <mml:mi>x</mml:mi>
+                        <mml:mi>y</mml:mi>
+                        <mml:mo>(</mml:mo>
+                        <mml:mo>,</mml:mo>
+                        <mml:mo>)</mml:mo>
+                      </mml:mrow>
+                      <mml:mrow>
+                        <mml:mo>max</mml:mo>
+                        <mml:mi>H</mml:mi>
+                      </mml:mrow>
+                    </mml:mfrac>
+                  </mml:mrow>
+                  <mml:mi>β</mml:mi>
+                </mml:msup>
+              </mml:math>
+            </disp-formula>
+          
+          <p>where:</p><p><p><inline-formula>
+  <mml:math id="mwxlk9jd7u">
+    <mml:mi>G</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+  </mml:math>
+</inline-formula> denotes the gradient magnitude at pixel <inline-formula>
+  <mml:math id="mgro33a8uu">
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mi>x</mml:mi>
+    <mml:mi>y</mml:mi>
+  </mml:math>
+</inline-formula>, typically computed using Sobel or Prewitt operators as <inline-formula>
+  <mml:math id="mrdatpsxyb">
+    <mml:mi>G</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>=</mml:mo>
+    <mml:msqrt>
+      <mml:msup>
+        <mml:mrow>
+          <mml:mo>(</mml:mo>
+          <mml:mo>)</mml:mo>
+          <mml:msub>
+            <mml:mi>I</mml:mi>
+            <mml:mi>x</mml:mi>
+          </mml:msub>
+        </mml:mrow>
+        <mml:mn>2</mml:mn>
+      </mml:msup>
+      <mml:msup>
+        <mml:mrow>
+          <mml:mo>(</mml:mo>
+          <mml:mo>)</mml:mo>
+          <mml:msub>
+            <mml:mi>I</mml:mi>
+            <mml:mi>y</mml:mi>
+          </mml:msub>
+        </mml:mrow>
+        <mml:mn>2</mml:mn>
+      </mml:msup>
+      <mml:mo>+</mml:mo>
+    </mml:msqrt>
+  </mml:math>
+</inline-formula>, where <inline-formula>
+  <mml:math id="mo7ll9frsz">
+    <mml:msub>
+      <mml:mi>I</mml:mi>
+      <mml:mi>x</mml:mi>
+    </mml:msub>
+    <mml:msub>
+      <mml:mi>I</mml:mi>
+      <mml:mi>y</mml:mi>
+    </mml:msub>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula> are partial derivatives of the image intensity,</p><p><inline-formula>
+  <mml:math id="m960h0yt9l">
+    <mml:mi>H</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+  </mml:math>
+</inline-formula> represents the local entropy, computed over an <inline-formula>
+  <mml:math id="m02bjs05q0">
+    <mml:mi>m</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mo>×</mml:mo>
+  </mml:math>
+</inline-formula> neighborhood window centered at <inline-formula>
+  <mml:math id="mrm5jhj7e8">
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mi>x</mml:mi>
+    <mml:mi>y</mml:mi>
+  </mml:math>
+</inline-formula>. Formally, if <inline-formula>
+  <mml:math id="m53exh718v">
+    <mml:msub>
+      <mml:mi>p</mml:mi>
+      <mml:mi>i</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> denotes the probability of gray-level $i<inline-formula>
+  <mml:math id="miv0gm1n4r">
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>H</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>log</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mo>,</mml:mo>
+    <mml:mo>&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>=</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>⁡</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>(</mml:mo>
+      <mml:mo>)</mml:mo>
+      <mml:msub>
+        <mml:mi>p</mml:mi>
+        <mml:mi>i</mml:mi>
+      </mml:msub>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mtext mathcolor="red">\[</mml:mtext>
+    <mml:mtext mathcolor="red">\]</mml:mtext>
+    <mml:munderover>
+      <mml:mo>∑</mml:mo>
+      <mml:mrow>
+        <mml:mi>i</mml:mi>
+        <mml:mo>=</mml:mo>
+        <mml:mn>1</mml:mn>
+      </mml:mrow>
+      <mml:mi>L</mml:mi>
+    </mml:munderover>
+    <mml:msub>
+      <mml:mi>p</mml:mi>
+      <mml:mi>i</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula>L<inline-formula>
+  <mml:math id="m6wcx5c1c0">
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>z</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mo>.</mml:mo>
+  </mml:math>
+</inline-formula>m<inline-formula>
+  <mml:math id="my3hkiarss">
+    <mml:mi>b</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mo>:</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>m<inline-formula>
+  <mml:math id="md6o4yoi3o">
+    <mml:mo>=</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mn>5</mml:mn>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>g</mml:mi>
+  </mml:math>
+</inline-formula>m<inline-formula>
+  <mml:math id="m97jwmkhjb">
+    <mml:mo>=</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mn>15</mml:mn>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>I</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>k</mml:mi>
+  </mml:math>
+</inline-formula>m<inline-formula>
+  <mml:math id="m31a1qrn8a">
+    <mml:mo>=</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mn>9</mml:mn>
+    <mml:mi>w</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+  </mml:math>
+</inline-formula>H<inline-formula>
+  <mml:math id="moq9ipyhvl">
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>z</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>H(x, y) / \max H \in[ 0,1]<inline-formula>
+  <mml:math id="mcp86x17fo">
+    <mml:mo>,</mml:mo>
+    <mml:mo>&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mi>p</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>p</mml:mi>
+  </mml:math>
+</inline-formula>\beta<inline-formula>
+  <mml:math id="m19srqr8dj">
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>\beta<inline-formula>
+  <mml:math id="m8w9imgob5">
+    <mml:mo>=</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>;</mml:mo>
+    <mml:mn>1.5</mml:mn>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+  </mml:math>
+</inline-formula>\beta<inline-formula>
+  <mml:math id="mrnjy0p4fm">
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>z</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mo>−</mml:mo>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>\beta<inline-formula>
+  <mml:math id="m7jmv0n3ta">
+    <mml:mo>=</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mo>;</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mn>1</mml:mn>
+    <mml:mi>y</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>z</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>k</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>k</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+  </mml:math>
+</inline-formula>\tau_E<inline-formula>
+  <mml:math id="minrk8b6si">
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>F</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mo>.</mml:mo>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>\tau_E$ can be determined adaptively, e.g., by Otsu’s method, which minimizes intra-class variance, rather than being set manually:</p>
+          
+            <disp-formula>
+              <label>(7)</label>
+              <mml:math id="mt44jdguhy">
+                <mml:msub>
+                  <mml:mi>E</mml:mi>
+                  <mml:mi>B</mml:mi>
+                </mml:msub>
+                <mml:mo>(</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo>)</mml:mo>
+                <mml:mo>=</mml:mo>
+                <mml:mi>x</mml:mi>
+                <mml:mi>y</mml:mi>
+                <mml:mrow>
+                  <mml:mo>{</mml:mo>
+                  <mml:mo fence="true"/>
+                  <mml:mtable columnalign="left left" columnspacing="1em" rowspacing=".2em">
+                    <mml:mtr>
+                      <mml:mtd>
+                        <mml:mn>1</mml:mn>
+                        <mml:mo>,</mml:mo>
+                      </mml:mtd>
+                      <mml:mtd>
+                        <mml:mtext> if </mml:mtext>
+                        <mml:msub>
+                          <mml:mi>E</mml:mi>
+                          <mml:mrow>
+                            <mml:mtext>custom </mml:mtext>
+                          </mml:mrow>
+                        </mml:msub>
+                        <mml:msub>
+                          <mml:mi>τ</mml:mi>
+                          <mml:mi>E</mml:mi>
+                        </mml:msub>
+                        <mml:mo>(</mml:mo>
+                        <mml:mo>,</mml:mo>
+                        <mml:mo>)</mml:mo>
+                        <mml:mo>≥</mml:mo>
+                        <mml:mi>x</mml:mi>
+                        <mml:mi>y</mml:mi>
+                      </mml:mtd>
+                    </mml:mtr>
+                    <mml:mtr>
+                      <mml:mtd>
+                        <mml:mn>0</mml:mn>
+                        <mml:mo>,</mml:mo>
+                      </mml:mtd>
+                      <mml:mtd>
+                        <mml:mtext> otherwise </mml:mtext>
+                      </mml:mtd>
+                    </mml:mtr>
+                  </mml:mtable>
+                </mml:mrow>
+              </mml:math>
+            </disp-formula>
+          
+          <p>This step ensures a principled extraction of edges and yields a clean structural outline of apples to serve as a foundation for subsequent contour-based segmentation, object detection, and quality assessment.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.4. Directional energy computation for contour tracing</title>
+          
+          <p>After generating the binary edge map <inline-formula>
+  <mml:math id="mp1igyn6q8">
+    <mml:msub>
+      <mml:mi>E</mml:mi>
+      <mml:mi>B</mml:mi>
+    </mml:msub>
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mi>x</mml:mi>
+    <mml:mi>y</mml:mi>
+  </mml:math>
+</inline-formula>, the next step involves extracting the contours of objects such as apples by tracing the connected edge pixels. This is achieved by analyzing the directional energy propagation, which refers to the presence of edge pixels in specific directions around a given location.</p><p>For each edge pixel <inline-formula>
+  <mml:math id="m4eikl0ups">
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>∈</mml:mo>
+    <mml:mi>x</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:msub>
+      <mml:mi>E</mml:mi>
+      <mml:mi>B</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula>, we examined its 8-connected neighbors in standard compass directions: North (N), North-East (NE), East (E), South-East (SE), South (S), South-West (SW), West (W), and North-West (NW). The directional energy in a given direction <inline-formula>
+  <mml:math id="m3rc0d4lpk">
+    <mml:mi>θ</mml:mi>
+  </mml:math>
+</inline-formula> is defined as:</p>
+          
+            <disp-formula>
+              <label>(8)</label>
+              <mml:math id="m1du3209b3">
+                <mml:msub>
+                  <mml:mrow>
+                    <mml:mi data-mjx-variant="-tex-calligraphic">D</mml:mi>
+                  </mml:mrow>
+                  <mml:mi>θ</mml:mi>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>E</mml:mi>
+                  <mml:mi>B</mml:mi>
+                </mml:msub>
+                <mml:mo>(</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo>)</mml:mo>
+                <mml:mo>=</mml:mo>
+                <mml:mi>x</mml:mi>
+                <mml:mi>y</mml:mi>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>+</mml:mo>
+                  <mml:mo>,</mml:mo>
+                  <mml:mo>+</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:mi>x</mml:mi>
+                  <mml:mi>y</mml:mi>
+                  <mml:msubsup>
+                    <mml:mi>δ</mml:mi>
+                    <mml:mi>x</mml:mi>
+                    <mml:mi>θ</mml:mi>
+                  </mml:msubsup>
+                  <mml:msubsup>
+                    <mml:mi>δ</mml:mi>
+                    <mml:mi>y</mml:mi>
+                    <mml:mi>θ</mml:mi>
+                  </mml:msubsup>
+                </mml:mrow>
+              </mml:math>
+            </disp-formula>
+          
+          <p>where, <inline-formula>
+  <mml:math id="mah6o7nqhn">
+    <mml:msubsup>
+      <mml:mi>δ</mml:mi>
+      <mml:mi>x</mml:mi>
+      <mml:mi>θ</mml:mi>
+    </mml:msubsup>
+  </mml:math>
+</inline-formula> and <inline-formula>
+  <mml:math id="mffyrpgs5m">
+    <mml:msubsup>
+      <mml:mi>δ</mml:mi>
+      <mml:mi>y</mml:mi>
+      <mml:mi>θ</mml:mi>
+    </mml:msubsup>
+  </mml:math>
+</inline-formula> are the direction-specific offsets associated with direction <inline-formula>
+  <mml:math id="mxwipfoix7">
+    <mml:mi>θ</mml:mi>
+  </mml:math>
+</inline-formula>. These offsets guide the traversal to neighboring pixels; for instance:</p><p><p><inline-formula>
+  <mml:math id="m6bzs22ttu">
+    <mml:mi>θ</mml:mi>
+    <mml:mo>=</mml:mo>
+    <mml:mo>⇒</mml:mo>
+    <mml:mo>=</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mrow>
+      <mml:mi>E</mml:mi>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>(</mml:mo>
+      <mml:mo>,</mml:mo>
+      <mml:mo>)</mml:mo>
+      <mml:msub>
+        <mml:mi>δ</mml:mi>
+        <mml:mi>x</mml:mi>
+      </mml:msub>
+      <mml:msub>
+        <mml:mi>δ</mml:mi>
+        <mml:mi>y</mml:mi>
+      </mml:msub>
+    </mml:mrow>
+    <mml:mn>1</mml:mn>
+    <mml:mn>0</mml:mn>
+  </mml:math>
+</inline-formula></p><p><inline-formula>
+  <mml:math id="m9kne8s31e">
+    <mml:mi>θ</mml:mi>
+    <mml:mo>=</mml:mo>
+    <mml:mo>⇒</mml:mo>
+    <mml:mo>=</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mrow>
+      <mml:mi data-mjx-auto-op="false">NE</mml:mi>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>(</mml:mo>
+      <mml:mo>,</mml:mo>
+      <mml:mo>)</mml:mo>
+      <mml:msub>
+        <mml:mi>δ</mml:mi>
+        <mml:mi>x</mml:mi>
+      </mml:msub>
+      <mml:msub>
+        <mml:mi>δ</mml:mi>
+        <mml:mi>y</mml:mi>
+      </mml:msub>
+    </mml:mrow>
+    <mml:mn>1</mml:mn>
+    <mml:mn>1</mml:mn>
+  </mml:math>
+</inline-formula></p><p><inline-formula>
+  <mml:math id="m880ecpf3e">
+    <mml:mi>θ</mml:mi>
+    <mml:mo>=</mml:mo>
+    <mml:mo>⇒</mml:mo>
+    <mml:mo>=</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mrow>
+      <mml:mi>S</mml:mi>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>(</mml:mo>
+      <mml:mo>,</mml:mo>
+      <mml:mo>)</mml:mo>
+      <mml:msub>
+        <mml:mi>δ</mml:mi>
+        <mml:mi>x</mml:mi>
+      </mml:msub>
+      <mml:msub>
+        <mml:mi>δ</mml:mi>
+        <mml:mi>y</mml:mi>
+      </mml:msub>
+    </mml:mrow>
+    <mml:mn>0</mml:mn>
+    <mml:mn>1</mml:mn>
+  </mml:math>
+</inline-formula>, etc.</p></p><p>Mathematically, the continuity of the contour can be ensured by maximizing a connectivity functional:</p><p>\[\theta^*(x, y)=\arg \max _\theta\left[\mathcal{D}_\theta(x, y) \cdot w_\theta\right],\]</p><p>where, <inline-formula>
+  <mml:math id="mas8jxr7x9">
+    <mml:msub>
+      <mml:mrow>
+        <mml:mi data-mjx-variant="-tex-calligraphic">D</mml:mi>
+      </mml:mrow>
+      <mml:mi>θ</mml:mi>
+    </mml:msub>
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>∈</mml:mo>
+    <mml:mo fence="false">{</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo fence="false">}</mml:mo>
+    <mml:mi>x</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mn>0</mml:mn>
+    <mml:mn>1</mml:mn>
+  </mml:math>
+</inline-formula> and <inline-formula>
+  <mml:math id="mz7ajcih0d">
+    <mml:msub>
+      <mml:mi>w</mml:mi>
+      <mml:mi>θ</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> is a directional weight. For isotropic tracing, <inline-formula>
+  <mml:math id="m4geols34i">
+    <mml:msub>
+      <mml:mi>w</mml:mi>
+      <mml:mi>θ</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> = 1. For directional smoothing, weights can be biased according to the gradient orientation at <inline-formula>
+  <mml:math id="mp57a1041t">
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mi>x</mml:mi>
+    <mml:mi>y</mml:mi>
+  </mml:math>
+</inline-formula>, ensuring that tracing aligns with the dominant edge direction. This formalization makes the method reproducible and adaptable to other datasets.</p><p>The pixel in the optimal direction <inline-formula>
+  <mml:math id="mfvibria8r">
+    <mml:msup>
+      <mml:mi>θ</mml:mi>
+      <mml:mo>∗</mml:mo>
+    </mml:msup>
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mi>x</mml:mi>
+    <mml:mi>y</mml:mi>
+  </mml:math>
+</inline-formula> is then selected as the next point on the contour. This process is iteratively applied until a closed loop is formed as in the case of closed objects like apples or until a stopping condition is met.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.5. Bounding box generation for object localization</title>
+          
+          <p>Once the complete contour <inline-formula>
+  <mml:math id="m3peqksaz2">
+    <mml:msub>
+      <mml:mi>C</mml:mi>
+      <mml:mi>k</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> of an object, e.g., apple, is extracted, we compute the axis-aligned bounding box (AABB) that minimally encloses the contour:</p><p>\[B_k=\left(\min _x C_k, \min _y C_k, \max _x C_k, \max _y C_k\right).\]</p><p>This definition ensures rigor by providing a mathematically minimal enclosing rectangle. Bounding boxes are widely used in object detection benchmarks, thus allowing direct comparison with standard metrics such as Intersection over Union (IoU). In the context of apple detection, bounding boxes localize individual apples so as to aid in automated harvesting, grading, and yield estimating.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.6. Fuzzy feature extraction</title>
+          
+          <p>Feature extraction using fuzzy logic is employed to support intelligent classification of apples within detected bounding boxes. Unlike crisp thresholds, fuzzy sets accommodate uncertainty and natural variability in color and shape. The process begins by extracting key features of each candidate region, including hue (color information), geometric descriptors like aspect, ratio, and roundness as well as edge compactness. These features are normalized into the interval [0,1] before fuzzification.</p><p>Formally, a fuzzy set $F<inline-formula>
+  <mml:math id="mjr5mp4cqe">
+    <mml:mi>o</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+  </mml:math>
+</inline-formula>X<inline-formula>
+  <mml:math id="mniz1vts4b">
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>F</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mo>:&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mo>=</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>{</mml:mo>
+      <mml:mo>∣</mml:mo>
+      <mml:mo>∈</mml:mo>
+      <mml:mo>,</mml:mo>
+      <mml:mo>(</mml:mo>
+      <mml:mo>)</mml:mo>
+      <mml:mo>∈</mml:mo>
+      <mml:mo>[</mml:mo>
+      <mml:mo>,</mml:mo>
+      <mml:mo>]</mml:mo>
+      <mml:mo>}</mml:mo>
+      <mml:mrow>
+        <mml:mo>(</mml:mo>
+        <mml:mo>,</mml:mo>
+        <mml:mo>(</mml:mo>
+        <mml:mo>)</mml:mo>
+        <mml:mo>)</mml:mo>
+        <mml:mi>x</mml:mi>
+        <mml:mi>x</mml:mi>
+        <mml:msub>
+          <mml:mi>μ</mml:mi>
+          <mml:mi>F</mml:mi>
+        </mml:msub>
+      </mml:mrow>
+      <mml:mi>x</mml:mi>
+      <mml:mi>X</mml:mi>
+      <mml:mi>x</mml:mi>
+      <mml:msub>
+        <mml:mi>μ</mml:mi>
+        <mml:mi>F</mml:mi>
+      </mml:msub>
+      <mml:mn>0</mml:mn>
+      <mml:mn>1</mml:mn>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mtext mathcolor="red">\[</mml:mtext>
+    <mml:mtext mathcolor="red">\]</mml:mtext>
+  </mml:math>
+</inline-formula>\mu_F(x)<inline-formula>
+  <mml:math id="mjlkphg4cj">
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>e</mml:mi>
+  </mml:math>
+</inline-formula>x$ to a degree of membership. For hue-based detection of red apples, we define:</p>
+          
+            <disp-formula>
+              <label>(9)</label>
+              <mml:math id="my6v9rpy7j">
+                <mml:msub>
+                  <mml:mi>μ</mml:mi>
+                  <mml:mrow>
+                    <mml:mtext>red </mml:mtext>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:mo>(</mml:mo>
+                <mml:mo>)</mml:mo>
+                <mml:mo>=</mml:mo>
+                <mml:mi>H</mml:mi>
+                <mml:mrow>
+                  <mml:mo>{</mml:mo>
+                  <mml:mo fence="true"/>
+                  <mml:mtable columnalign="left left" columnspacing="1em" rowspacing=".2em">
+                    <mml:mtr>
+                      <mml:mtd>
+                        <mml:mn>1</mml:mn>
+                        <mml:mo>,</mml:mo>
+                      </mml:mtd>
+                      <mml:mtd>
+                        <mml:mi>H</mml:mi>
+                        <mml:mo>&lt;</mml:mo>
+                        <mml:mn>0.05</mml:mn>
+                      </mml:mtd>
+                    </mml:mtr>
+                    <mml:mtr>
+                      <mml:mtd>
+                        <mml:mfrac>
+                          <mml:mrow>
+                            <mml:mn>0.1</mml:mn>
+                            <mml:mo>−</mml:mo>
+                            <mml:mi>H</mml:mi>
+                          </mml:mrow>
+                          <mml:mn>0.05</mml:mn>
+                        </mml:mfrac>
+                        <mml:mo>,</mml:mo>
+                      </mml:mtd>
+                      <mml:mtd>
+                        <mml:mn>0.05</mml:mn>
+                        <mml:mn>0.1</mml:mn>
+                        <mml:mo>≤</mml:mo>
+                        <mml:mo>&lt;</mml:mo>
+                        <mml:mi>H</mml:mi>
+                      </mml:mtd>
+                    </mml:mtr>
+                    <mml:mtr>
+                      <mml:mtd>
+                        <mml:mn>0</mml:mn>
+                        <mml:mo>,</mml:mo>
+                      </mml:mtd>
+                      <mml:mtd>
+                        <mml:mi>H</mml:mi>
+                        <mml:mo>≥</mml:mo>
+                        <mml:mn>0.1</mml:mn>
+                      </mml:mtd>
+                    </mml:mtr>
+                  </mml:mtable>
+                </mml:mrow>
+              </mml:math>
+            </disp-formula>
+          
+          <p>which is a piecewise linear triangular membership function. Unlike the earlier simplified version, this formulation ensures continuity and smooth transitions. Membership functions for shape descriptors such as roundness and elongation, are similarly defined using normalized geometric measures. Visualizations of these functions are provided in <xref ref-type="fig" rid="fig_2">Figure 2</xref> to confirm validity and interpretability.</p>
+          
+            <fig id="fig_2">
+              <label>Figure 2</label>
+              <caption>
+                <title>Sample images of apples used to assess the effectiveness of the suggested fuzzy logic-based detection model</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/8/img_E7zCkPSFwRntmLZp.png"/>
+            </fig>
+          
+          <p>The fuzzy inference rules are expressed in the standard Mamdani form. While initial rules are handcrafted based on domain expertise, reproducibility is ensured by validating them against labeled datasets. Moreover, rule optimization can be achieved through adaptive techniques such as genetic algorithms or neuro-fuzzy learning, which tune membership parameters and rule weights based on performance metrics such as accuracy or F1-score. This establishes a pathway for generalization beyond handcrafted rules.</p><p>For example:</p><p><p>Rule 1: IF hue <italic>is red</italic> AND shape is round, THEN object is classified as <italic>apple</italic>.</p><p>Rule 2: IF hue is <italic>not red</italic> OR shape is elongated, THEN object is classified as <italic>not apple</italic>.</p></p><p>These rules allow flexible decision-making. In practice, the fuzzy inference system aggregates rule outputs using max-min composition and defuzzifies the result into a binary apple/non-apple decision. This mathematically grounded pipeline reduces false positives; for example, red leaves and tomatoes while ensuring reproducibility and robustness across datasets.</p>
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>4. Discussion and results</title>
+      <p>This section shows the results of the experiments and the detailed description of the proposed fuzzy logic-based apple detection model. The model was tested on different types of images of real-world apples (refers to <xref ref-type="fig" rid="fig_2">Figure 2</xref>) to determine the performance of the model in locating apples with bounding box and feature extraction. The assessment was based on particular features, such as the accuracy of detection working under different lighting and background conditions, and the model capability to identify an apple object among the similarities in terms of color or shape properties. The experiments show that the combination of characteristics such as color in the hue domain with shape descriptors within the fuzzy inference system has a great impact on the improvement of the accuracy of the detection, especially in tricky orchard images.</p><p>The experiment set contained 300 real orchard images, which were retrieved publicly by the MinneApple dataset, in the field scenes. MinneApple dataset served with high spatial resolution apple orchard images and extensive annotations was captured in different occlusions and lighting conditions, so it was a good choice to test apple detectors. The images were all manually checked and extra field images were included to add a variety. The process of annotations was done in the PASCAL VOC scheme and bounding boxes were used to identify instances of the apples.</p><p>All experiments and image processing tasks were conducted using MATLAB R2019b, a high-level technical computing environment widely used for image analysis, visualization, and algorithm development. MATLAB offers built-in functions and toolboxes that facilitate efficient matrix manipulation, filtering operations, and edge detection techniques. The software was run on a Windows 10 (64-bit) operating system, equipped with an Intel Core i7 processor and 8 Gigabyte (GB) random access memory (RAM), to ensure the smooth execution of all algorithms, including those requiring substantial computational resources such as entropy-based filtering and gradient computations.</p><p>All input images were resized to a fixed resolution of 255×255 pixels using the imresize function to guarantee uniformity and reduce computational complexity. This standardization allows consistent spatial analysis and facilitates a fair comparison across different image samples, particularly during feature extraction and contour detection stages.</p><p>We employed a 5-fold cross-validation approach to assess the generalizability of the model. The dataset was randomly split into 80% of training and 20% of testing subsets in each fold. The average precision, recall, and F1-score were computed across all folds to ensure statistical robustness and minimize overfitting. This experimental design supports reproducibility and provides a comprehensive overview of the effectiveness of the model.</p><p>To optimize the performance of the proposed apple detection framework, we empirically selected the parameter values listed in <xref ref-type="table" rid="table_1">Table 1</xref> These values were determined through extensive cross-validation and visual analysis across diverse image samples. The selected configuration strikes a balance between edge preservation, noise suppression, and resilience to illumination changes, thus ensuring reliable detection across varying conditions.</p>
+      
+        <table-wrap id="table_1">
+          <label>Table 1</label>
+          <caption>
+            <title>Parameter setup with numerical values and optimal selections for apple detection</title>
+          </caption>
+          <table><tbody><tr><th colspan="1" rowspan="1"><p>Parameter</p></th><th colspan="1" rowspan="1"><p>Description</p></th><th colspan="1" rowspan="1"><p>Range Tested</p></th><th colspan="1" rowspan="1"><p>Best Value</p></th></tr><tr><td colspan="1" rowspan="1"><p><mml:math id="mgckec0zyi">
+  <mml:mi>α</mml:mi>
+</mml:math></p></td><td colspan="1" rowspan="1"><p>Sigmoid sharpness for smoothing</p></td><td colspan="1" rowspan="1"><p>5, 10, 15, 20, 25</p></td><td colspan="1" rowspan="1"><p>15</p></td></tr><tr><td colspan="1" rowspan="1"><p>T</p></td><td colspan="1" rowspan="1"><p>Intensity threshold in sigmoid</p></td><td colspan="1" rowspan="1"><p>0.05, 0.1, 0.15, 0.2</p></td><td colspan="1" rowspan="1"><p>0.1</p></td></tr><tr><td colspan="1" rowspan="1"><p><mml:math id="mi6us83ttv">
+  <mml:mo>|</mml:mo>
+  <mml:mo>|</mml:mo>
+  <mml:mi>Ω</mml:mi>
+</mml:math></p></td><td colspan="1" rowspan="1"><p>Local window size for smoothing</p></td><td colspan="1" rowspan="1"><p>3 <mml:math id="mpqoqeznk1">
+  <mml:mo>×</mml:mo>
+</mml:math> 3, 5 <mml:math id="mtyfprbjhk">
+  <mml:mo>×</mml:mo>
+</mml:math> 5, 7 <mml:math id="mf0a2ck25w">
+  <mml:mo>×</mml:mo>
+</mml:math> 7</p></td><td colspan="1" rowspan="1"><p>5 <mml:math id="m0bgxwya9q">
+  <mml:mo>×</mml:mo>
+</mml:math> 5</p></td></tr><tr><td colspan="1" rowspan="1"><p><mml:math id="mdeyeld6rf">
+  <mml:mi>ϵ</mml:mi>
+</mml:math></p></td><td colspan="1" rowspan="1"><p>Constant to avoid log (0)</p></td><td colspan="1" rowspan="1"><p>1e<sup>-10</sup>, 1e<sup>-8</sup>, 1e<sup>-6</sup></p></td><td colspan="1" rowspan="1"><p>1 <mml:math id="m85txdrabs">
+  <mml:mo>×</mml:mo>
+</mml:math> 10<sup>-8</sup></p></td></tr><tr><td colspan="1" rowspan="1"><p><mml:math id="mon3o9de9y">
+  <mml:mi>β</mml:mi>
+</mml:math></p></td><td colspan="1" rowspan="1"><p>Entropy weight exponent</p></td><td colspan="1" rowspan="1"><p>1.0, 1.2, 1.5, 1.8, 2.0</p></td><td colspan="1" rowspan="1"><p>1.5</p></td></tr><tr><td colspan="1" rowspan="1"><p><mml:math id="m3pe3hsmgk">
+  <mml:msub>
+    <mml:mi>τ</mml:mi>
+    <mml:mi>E</mml:mi>
+  </mml:msub>
+</mml:math></p></td><td colspan="1" rowspan="1"><p>Threshold for edge map</p></td><td colspan="1" rowspan="1"><p>0.2, 0.3, 0.4, 0.5, 0.6</p></td><td colspan="1" rowspan="1"><p>0.4</p></td></tr><tr><td colspan="1" rowspan="1"><p>$r$</p></td><td colspan="1" rowspan="1"><p>Radius for local entropy window</p></td><td colspan="1" rowspan="1"><p>1, 2, 3</p></td><td colspan="1" rowspan="1"><p>2</p></td></tr></tbody></table>
+        </table-wrap>
+      
+      <p><xref ref-type="fig" rid="fig_2">Figure 2</xref> presents representative apple images used to evaluate the proposed fuzzy logic-based detection model. The dataset includes diverse visual challenges, such as varied lighting conditions, occlusion by foliage, changes in viewing angles, and complex backgrounds. These variations simulate real-world scenarios in which detection systems have to perform accurately despite environmental variability. Apples were detected using bounding boxes applied to each image processed by the model.</p><p><xref ref-type="fig" rid="fig_3">Figure 3</xref> presents the step-by-step workflow of the proposed apple detection model, designed to accurately localize apples in diverse image conditions. The process began with image acquisition to capture raw apple images. This was followed by preprocessing and smoothing to enhance image quality by reducing noise and improving clarity for effective feature extraction. The next step involved color space transformation, converting the image into a more suitable color model to emphasize discriminative features, particularly the red-green hues of apples. Edge detection was then performed using the Gradient Weighted Edge (GWE) method to leverage the gradient information to precisely delineate object boundaries. The final detection and localization stage identifies the segmented apple region, hence demonstrating the capacity of the model for accurate fruit isolation. Collectively, this pipeline integrates image enhancement, chromatic feature extraction, and edge-based segmentation to ensure reliable apple detection.</p><p><xref ref-type="fig" rid="fig_4">Figure 4</xref> demonstrates the effectiveness of the model by means of the visual comparison of the originals of the input images printed on the left and the obtained results of the detection in the right column. The initial pictures captured a diverse set of real-world situations such as different lightings, partial road fades caused by vegetation as well as complicated backgrounds resulted from manmade orchards. Colored boxes were used as a representation of detected apples in the output images (marked with yellow), as this color showed its maximum difference among the red fruits and green surroundings. The performance of the model was facilitated by an organized pipeline including adaptive preprocessing, color transformation, and GWE-based edge detection. The method increased sensitivity, especially when handling a difficult situation.</p>
+      
+        <fig id="fig_3">
+          <label>Figure 3</label>
+          <caption>
+            <title>Workflow of the proposed apple detection model, showing the stages of image acquisition, preprocessing, color space transformation, edge detection with the Gradient Weighted Edge (GWE) method, and final apple region localization</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/8/img_gzBlbfVFr8h6HH_U.png"/>
+        </fig>
+      
+      
+        <fig id="fig_4">
+          <label>Figure 4</label>
+          <caption>
+            <title>Results of apple detection: The first column displays the original input images whereas the second column presents the output of the proposed model with detected apple regions highlighted by yellow bounding boxes</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/8/img_P79IAzqfQFK_tRGu.png"/>
+        </fig>
+      
+      <p>The model has its key strengths in terms of being able to detect the partially obscured apples, being used in a variety of sized, positioned, and illuminated apples, and generating fewer false positives by excluding non-apple areas. The bounding boxes do not only visually represent reliable instances of detection but also reflect the model confidence. In general, the findings testify to the strength of the system and its real-life usefulness in actual agricultural applications, including yield estimation, automated harvesting, and orchard surveillance, where recognizing targets to a high degree of precision and sensitivity in natural conditions plays a critical role in it. The table below demonstrates that a combination of color analyzing, edge-sensitive processing, and adaptive thresholding could equip the model with a high degree of detection capability.</p>
+      
+        <sec>
+          
+            <title>4.1. Statistical results of the proposed apple detection model</title>
+          
+          <p><xref ref-type="table" rid="table_2">Table 2</xref> presents an elaborated statistical evaluation of the proposed apple detection model to confirm both robustness and reliability. The model achieved a Precision of 0.97, indicating highly accurate identification of apples among all detected positives. A Recall of 0.95 demonstrated that most actual apple instances were successfully detected, while the F1-Score of 0.96 confirmed a strong trade-off between precision and recall. The Intersection over Union (IoU) score of 0.91 further validated the spatial consistency between predicted apple regions and ground truth annotations.</p>
+          
+            <table-wrap id="table_2">
+              <label>Table 2</label>
+              <caption>
+                <title>Statistical results of the proposed apple detection model</title>
+              </caption>
+              <table><tr><th >Metric</th><th >Our Model (Best Value)</th><th >Interpretation</th></tr><tr><td >Precision (P)</td><td >0.97</td><td >High accuracy of apple detection</td></tr><tr><td >Recall (R)</td><td >0.95</td><td >Most actual apples detected</td></tr><tr><td >F1-Score</td><td >0.96</td><td >Strong balance between P and R</td></tr><tr><td >IoU</td><td >0.91</td><td >High pixel-wise overlap accuracy</td></tr><tr><td >MOS</td><td >4.8 / 5</td><td >Expert visual quality assessment (10 reviewers, 1-5 scale)</td></tr><tr><td >NIQE</td><td >2.5</td><td >Lower indicates better image naturalness</td></tr><tr><td >BRISQUE</td><td >19.2</td><td >Lower value indicates better quality</td></tr><tr><td >PSNR (dB)</td><td >33.8</td><td >High fidelity w.r.t. ground truth apple masks</td></tr><tr><td >SSIM</td><td >0.96</td><td >Strong similarity to ground truth annotations</td></tr></table>
+            </table-wrap>
+          
+          <p><xref ref-type="table" rid="table_2">Table 2</xref> presents an elaborated statistical evaluation of the proposed apple detection model to confirm both robustness and reliability. The model achieved a Precision of 0.97, indicating highly accurate identification of apples among all detected positives. A Recall of 0.95 demonstrated that most actual apple instances were successfully detected, while the F1-Score of 0.96 confirmed a strong trade-off between precision and recall. The Intersection over Union (IoU) score of 0.91 further validated the spatial consistency between predicted apple regions and ground truth annotations.</p><p>As regards subjective evaluation, the Mean Opinion Score (MOS) was obtained through a controlled experiment involving 10 independent human evaluators with expertise in image analysis. Each evaluator rated the visual quality of segmented apple regions on a 5-point scale (1 = poor, 5 = excellent). The aggregated MOS value of 4.8/5 indicates excellent perceptual quality and strong consensus among reviewers.</p><p>Regarding objective metrics involving peak signal-to-noise ratio (PSNR) and structural similarity index measure (SSIM), the reference images were the manually annotated ground truth apple masks provided in the dataset. The PSNR value of 33.8 decibel (dB) indicates high-fidelity segmentation output with minimal noise relative to the reference whereas the SSIM score of 0.96 demonstrates strong structural similarity to ground truth annotations.</p><p>Besides, perceptual quality metrics, like natural image quality evaluator (NIQE) with a score of 2.5 and blind/referenceless image spatial quality evaluator (BRISQUE) with a score of 19.2, confirm low levels of distortion and high naturalness of the detection results. The evaluation process therefore combines both subjective (MOS) and objective (PSNR, SSIM, NIQE, and BRISQUE) measures to ensure comprehensive and transparent performance assessments. Visual evidence of intermediate processing steps is provided in <xref ref-type="fig" rid="fig_3">Figure 3</xref> to illustrate the contributions of each stage of the pipeline.</p><p>In summary, these analysis results highlight that the proposed model is accurate, perceptually reliable, and suitable for practical orchard environments.</p>
+        </sec>
+      
+    </sec>
+    <sec sec-type="conclusions">
+      <title>5. Conclusions</title>
+      <p>Through synergetic integration of the fuzzy logic theory into the self-developed or molded mathematical set, in this study, a powerful and effective framework for detecting apples is proposed to fit the realistic agricultural imagery. In contrast to the methodology of other standard approaches, here adaptive smoothing is combined with entropy-weighted edge detector and directional tracing contours; therefore, methods adopted subsequently could lead to higher resistance levels to common difficulties such as noise, highly lit and darkened environments, and complicated natural backgrounds. The fuzzy logic module allows simple and soft classification as well as uncertainty modelling; this improves the reliability of detection in situations of ambiguity. In addition, the entropy-oriented mechanisms will drive the process of segmentation to more informative areas and directional contour tracking will allow exact localization of the object boundaries. The effectiveness and perceptual quality of the model are further confirmed by copious experimental validation against metrics such as Precision, Recall, IoU, PSNR, SSIM, MOS, NIQE, and BRISQUE measured at both objective and subjective levels. This model has a high potential of applications in precision agriculture, automation of farm harvesting, and real-time fruit observation systems. Real-time implementation and multifruit environment application will be carried out in the future.</p><p>Although the proposed fuzzy-based apple detection model has positive outcomes, limitations have to be resolved prior to progressing towards future development initiatives. The first weakness is that the model would be sensitive to severe lighting conditions, in other words, high shadow half-way light glare or over-saturation, with concomitant effects of weakening the precision of edge locations and contour findings. The other limitation is that fuzzy membership functions and thresholds are manually tuned and the model becomes neither flexible nor suitable in various data sets and in varied environments. Despite these limitations, future work will explicitly focus on developing illumination-invariant preprocessing strategies. For instance, integrating Retinex-based enhancement, histogram equalization, or adaptive illumination normalization could significantly improve edge precision and contour robustness under severe shadows or glares. Instead of relying on manually tuned fuzzy membership functions, optimization-driven techniques such as genetic algorithms or reinforcement learning will be investigated to automate the selection and adjustment of fuzzy rules. This automation will ensure adaptability across different datasets and diverse environmental conditions. Another direction will be the exploration of hybrid neuro-fuzzy systems, where the learning capability of neural networks could be combined with the interpretability of fuzzy logic to dynamically adjust thresholds and rules in real time. Such extensions would not only mitigate the current shortcomings but also extend the general capacity of the model, hence rendering it robust and scalable for deployment in dynamic agricultural settings.</p>
+    </sec>
+  </body>
+  <back>
+    <ack>
+      <title>Acknowledgments</title>
+      
+    </ack>
+    <app-group>
+      <app>
+        <title>Appendix</title>
+        
+      </app>
+    </app-group>
+    <notes>
+      <title>Author Contributions</title>
+      
+    </notes>
+    <notes>
+      <title>Funding</title>
+      
+    </notes>
+    <notes>
+      <title>Informed Consent Statement</title>
+      
+    </notes>
+    <notes>
+      <title>Data Availability Statement</title>
+      <p>The data used to support the findings of this study are available from the corresponding author upon request.</p>
+    </notes>
+    <notes notes-type="COI-statement">
+      <title>Conflicts of Interest</title>
+      <p>The author declares that they have no conflicts of interest.</p>
+    </notes>
+    <ref-list>
+      <title>References</title>
+      <ref id="ref_1">
+        <label>1.</label>
+        <element-citation publication-type="journal">
+          <volume>5</volume>
+          <page-range>39-49</page-range>
+          <issue>1</issue>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Lin</surname>
+              <given-names>Yiyu</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>Ang</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>Huixiang</given-names>
+            </name>
+            <name>
+              <surname>Shi</surname>
+              <given-names>Yadong</given-names>
+            </name>
+            <name>
+              <surname>Zhan</surname>
+              <given-names>Xiaoan</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.60087/jaigs.v5i1.162</pub-id>
+          <article-title>GPU-optimized image processing and generation based on deep learning and computer vision</article-title>
+          <source>J. Artif. Intell. Gen. Sci.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_2">
+        <label>2.</label>
+        <element-citation publication-type="journal">
+          <volume>16</volume>
+          <page-range>1113-1136</page-range>
+          <issue>5</issue>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Hussain</surname>
+              <given-names>Ibrar</given-names>
+            </name>
+            <name>
+              <surname>Ali</surname>
+              <given-names>Haider</given-names>
+            </name>
+            <name>
+              <surname>Khan</surname>
+              <given-names>Muhammad Shahkar</given-names>
+            </name>
+            <name>
+              <surname>Niu</surname>
+              <given-names>Sijie</given-names>
+            </name>
+            <name>
+              <surname>Rada</surname>
+              <given-names>Lavdie</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3934/ipi.2022014</pub-id>
+          <article-title>Robust region-based active contour models via local statistical similarity and local similarity factor for intensity inhomogeneity and high noise image segmentation</article-title>
+          <source>Inverse. Probl. Imag.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_3">
+        <label>3.</label>
+        <element-citation publication-type="journal">
+          <volume>57</volume>
+          <page-range>11</page-range>
+          <issue>1</issue>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Archana</surname>
+              <given-names>R</given-names>
+            </name>
+            <name>
+              <surname>Jeevaraj</surname>
+              <given-names>PS Eliahim</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1007/s10462-023-10631-z</pub-id>
+          <article-title>Deep learning models for digital image processing: A review.</article-title>
+          <source>Artif. Intell. Rev.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_4">
+        <label>4.</label>
+        <element-citation publication-type="journal">
+          <volume>17</volume>
+          <page-range>708-725</page-range>
+          <issue>3</issue>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Hussain</surname>
+              <given-names>Ibrar</given-names>
+            </name>
+            <name>
+              <surname>Muhammad</surname>
+              <given-names>Jan</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3934/ipi.2022074</pub-id>
+          <article-title>Efficient convex region-based segmentation for noising and inhomogeneous patterns</article-title>
+          <source>Inverse. Probl. Imag.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_5">
+        <label>5.</label>
+        <element-citation publication-type="journal">
+          <volume>10</volume>
+          <page-range>654-671</page-range>
+          <issue>1</issue>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Shi</surname>
+              <given-names>Ming</given-names>
+            </name>
+            <name>
+              <surname>Hussain</surname>
+              <given-names>Ibrar</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3934/math.2025029</pub-id>
+          <article-title>Improved region-based active contour segmentation through divergence and convolution techniques</article-title>
+          <source>AIMS Math.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_6">
+        <label>6.</label>
+        <element-citation publication-type="journal">
+          <volume>17</volume>
+          <page-range>4285-4293</page-range>
+          <issue>8</issue>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Zeng</surname>
+              <given-names>Lanling</given-names>
+            </name>
+            <name>
+              <surname>Chen</surname>
+              <given-names>Yucheng</given-names>
+            </name>
+            <name>
+              <surname>Yang</surname>
+              <given-names>Yang</given-names>
+            </name>
+            <name>
+              <surname>Pan</surname>
+              <given-names>Zhigeng</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1007/s11760-023-02661-5</pub-id>
+          <article-title>Edge-aware image smoothing via weighted sparse gradient reconstruction</article-title>
+          <source>Signal. Image. Video. P.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_7">
+        <label>7.</label>
+        <element-citation publication-type="journal">
+          <volume>4</volume>
+          <page-range>669-686</page-range>
+          <issue>4</issue>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Matsuoka</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Okuda</surname>
+              <given-names>M.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3390/signals4040037</pub-id>
+          <article-title>Beyond staircasing effect: Robust image smoothing via ℓ0 gradient minimization and novel gradient constraints</article-title>
+          <source>Signals</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_8">
+        <label>8.</label>
+        <element-citation publication-type="journal">
+          <volume>149</volume>
+          <page-range>110137</page-range>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Yadav</surname>
+              <given-names>Sumit Kr</given-names>
+            </name>
+            <name>
+              <surname>Sarawadekar</surname>
+              <given-names>Kishor</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.patcog.2023.110137</pub-id>
+          <article-title>Robust multi-scale weighting-based edge-smoothing filter for single image dehazing</article-title>
+          <source>Pattern Recogn.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_9">
+        <label>9.</label>
+        <element-citation publication-type="journal">
+          <volume>25</volume>
+          <page-range>78-86</page-range>
+          <issue>1</issue>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Al-Ameen</surname>
+              <given-names>Zohair</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">{10.17586/2226-1494-2025-25-1-78-86</pub-id>
+          <article-title>Directional variance-based algorithm for digital image smoothing</article-title>
+          <source>Sci. Tech. J. Inf. Technol. Mech. Opt.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_10">
+        <label>10.</label>
+        <element-citation publication-type="conf-paper">
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Zhang</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Wu</surname>
+              <given-names>C.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/ICCVW60793.2023.00468</pub-id>
+          <article-title>Unsupervised camouflaged object segmentation as domain adaptation</article-title>
+          <source>Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV) Workshops, Paris, France</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_11">
+        <label>11.</label>
+        <element-citation publication-type="journal">
+          <volume>32</volume>
+          <page-range>101031</page-range>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Ez-zahouani</surname>
+              <given-names>Badia</given-names>
+            </name>
+            <name>
+              <surname>Teodoro</surname>
+              <given-names>Ana</given-names>
+            </name>
+            <name>
+              <surname>El Kharki</surname>
+              <given-names>Omar</given-names>
+            </name>
+            <name>
+              <surname>Jianhua</surname>
+              <given-names>Liu</given-names>
+            </name>
+            <name>
+              <surname>Kotaridis</surname>
+              <given-names>Ioannis</given-names>
+            </name>
+            <name>
+              <surname>Yuan</surname>
+              <given-names>Xiaohui</given-names>
+            </name>
+            <name>
+              <surname>Ma</surname>
+              <given-names>Lei</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.rsase.2023.101031</pub-id>
+          <article-title>Remote sensing imagery segmentation in object-based analysis: A review of methods, optimization, and quality evaluation over the past 20 years</article-title>
+          <source>Remote Sens. Appl: Soc. Environ.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_12">
+        <label>12.</label>
+        <element-citation publication-type="journal">
+          <volume>12</volume>
+          <page-range>4902</page-range>
+          <issue>24</issue>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Bai</surname>
+              <given-names>Chenshuai</given-names>
+            </name>
+            <name>
+              <surname>Bai</surname>
+              <given-names>Xiaofeng</given-names>
+            </name>
+            <name>
+              <surname>Wu</surname>
+              <given-names>Kaijun</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3390/electronics12244902</pub-id>
+          <article-title>A review: Remote sensing image object detection algorithm based on deep learning</article-title>
+          <source>Electronics</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_13">
+        <label>13.</label>
+        <element-citation publication-type="journal">
+          <volume>17</volume>
+          <page-range>1734-1747</page-range>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Yi</surname>
+              <given-names>Hao</given-names>
+            </name>
+            <name>
+              <surname>Liu</surname>
+              <given-names>Bo</given-names>
+            </name>
+            <name>
+              <surname>Zhao</surname>
+              <given-names>Bin</given-names>
+            </name>
+            <name>
+              <surname>Liu</surname>
+              <given-names>Enhai</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/JSTARS.2023.3339235</pub-id>
+          <article-title>Small object detection algorithm based on improved YOLOv8 for remote sensing</article-title>
+          <source>IEEE J-STARS</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_14">
+        <label>14.</label>
+        <element-citation publication-type="journal">
+          <volume>216</volume>
+          <page-range>108519</page-range>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Zhang</surname>
+              <given-names>Junxiong</given-names>
+            </name>
+            <name>
+              <surname>Xie</surname>
+              <given-names>Jinyi</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>Fan</given-names>
+            </name>
+            <name>
+              <surname>Gao</surname>
+              <given-names>Jin</given-names>
+            </name>
+            <name>
+              <surname>Yang</surname>
+              <given-names>Chen</given-names>
+            </name>
+            <name>
+              <surname>Song</surname>
+              <given-names>Chaoyu</given-names>
+            </name>
+            <name>
+              <surname>Rao</surname>
+              <given-names>Weijie</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>Yu</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.compag.2023.108519</pub-id>
+          <article-title>Greenhouse tomato detection and pose classification algorithm based on improved YOLOv5</article-title>
+          <source>Comput. Electron. Agr.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_15">
+        <label>15.</label>
+        <element-citation publication-type="journal">
+          <volume>13</volume>
+          <page-range>2167</page-range>
+          <issue>11</issue>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Wang</surname>
+              <given-names>Huaiwen</given-names>
+            </name>
+            <name>
+              <surname>Feng</surname>
+              <given-names>Jianguo</given-names>
+            </name>
+            <name>
+              <surname>Yin</surname>
+              <given-names>Honghuan</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3390/agriculture13112167</pub-id>
+          <article-title>Improved method for apple fruit target detection based on YOLOv5s</article-title>
+          <source>Agriculture</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_16">
+        <label>16.</label>
+        <element-citation publication-type="journal">
+          <volume>250</volume>
+          <page-range>895-909</page-range>
+          <issue>3</issue>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Kılıçarslan</surname>
+              <given-names>Serhat</given-names>
+            </name>
+            <name>
+              <surname>Dönmez</surname>
+              <given-names>Emrah</given-names>
+            </name>
+            <name>
+              <surname>Kılıçarslan</surname>
+              <given-names>Sabire</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1007/s00217-023-04436-1</pub-id>
+          <article-title>Identification of apple varieties using hybrid transfer learning and multi-level feature extraction</article-title>
+          <source>Eur. Food Res. Technol.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_17">
+        <label>17.</label>
+        <element-citation publication-type="journal">
+          <volume>15</volume>
+          <page-range>1549544</page-range>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Cao</surname>
+              <given-names>Xueying</given-names>
+            </name>
+            <name>
+              <surname>Gao</surname>
+              <given-names>Hongmin</given-names>
+            </name>
+            <name>
+              <surname>Qin</surname>
+              <given-names>Ting</given-names>
+            </name>
+            <name>
+              <surname>Zhu</surname>
+              <given-names>Min</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>Ping</given-names>
+            </name>
+            <name>
+              <surname>Xu</surname>
+              <given-names>Peipei</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3389/fonc.2025.1549544</pub-id>
+          <article-title>Boundary aware microscopic hyperspectral pathology image segmentation network guided by information entropy weight</article-title>
+          <source>Front. Oncol.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_18">
+        <label>18.</label>
+        <element-citation publication-type="journal">
+          <volume>6</volume>
+          <page-range>29-39</page-range>
+          <issue>1</issue>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Zangana</surname>
+              <given-names>Hewa Majeed</given-names>
+            </name>
+            <name>
+              <surname>Mohammed</surname>
+              <given-names>Ayaz Khalid</given-names>
+            </name>
+            <name>
+              <surname>Mustafa</surname>
+              <given-names>Firas Mahmood</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.25139/ijair.v6i1.8217</pub-id>
+          <article-title>Advancements in edge detection techniques for image enhancement: A comprehensive review</article-title>
+          <source>Int. J. Artif. Intell. Robot.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_19">
+        <label>19.</label>
+        <element-citation publication-type="journal">
+          <volume>19</volume>
+          <page-range>e0313000</page-range>
+          <issue>11</issue>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Gupta</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Heintzmann</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Costa</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Jesus</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Pinho</surname>
+              <given-names>E.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1371/journal.pone.0313000</pub-id>
+          <article-title>Deep learning-enhanced automated mitochondrial segmentation in FIB-SEM images using an entropy-weighted ensemble approach</article-title>
+          <source>PloS ONE</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_20">
+        <label>20.</label>
+        <element-citation publication-type="journal">
+          <volume>81</volume>
+          <page-range>11005-11026</page-range>
+          <issue>8</issue>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Gill</surname>
+              <given-names>H. S.</given-names>
+            </name>
+            <name>
+              <surname>Khehra</surname>
+              <given-names>B. S.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1007/s11042-022-12093-x</pub-id>
+          <article-title>Apple image segmentation using teacher learner based optimization based minimum cross entropy thresholding</article-title>
+          <source>Multimed. Tools Appl.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_21">
+        <label>21.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>1136-1143</page-range>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Wang</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>N.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Ma</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Sun</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Kong</surname>
+              <given-names>L.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/ICPECA60615.2024.10471090</pub-id>
+          <article-title>Multi feature apple grading based on entropy method and MLP</article-title>
+          <source>2024 IEEE 4th International Conference on Power, Electronics and Computer Applications (ICPECA), Shenyang, China</source>
+        </element-citation>
+      </ref>
+    </ref-list>
+  </back>
+</article>
