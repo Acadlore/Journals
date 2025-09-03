@@ -1,0 +1,2968 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.3 20210610//EN" "JATS-journalpublishing1-3.dtd">
+<article xml:lang="en" dtd-version="1.3" article-type="research-article" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mml="http://www.w3.org/1998/Math/MathML">
+  <front>
+    <journal-meta>
+      <journal-id journal-id-type="publisher-id">IDA</journal-id>
+      <journal-id journal-id-type="doi">10.56578</journal-id>
+      <journal-title-group>
+        <journal-title>Information Dynamics and Applications</journal-title>
+        <abbrev-journal-title abbrev-type="issn">Inf. Dyn. Appl.</abbrev-journal-title>
+        <abbrev-journal-title abbrev-type="publisher">IDA</abbrev-journal-title>
+      </journal-title-group>
+      <issn publication-format="electronic">2958-1494</issn>
+      <issn publication-format="print">2958-1486</issn>
+      <publisher>
+        <publisher-name>Acadlore</publisher-name>
+      </publisher>
+    </journal-meta>
+    <article-meta>
+      <article-id pub-id-type="publisher-id">AR-9c-gnbDxwQTDRfWJRnf8VDynTcv-hgmI</article-id>
+      <article-id pub-id-type="doi">10.56578/ida040202</article-id>
+      <article-categories>
+        <subj-group>
+          <subject>Articles</subject>
+        </subj-group>
+      </article-categories>
+      <title-group>
+        <article-title>A Model for Energy Consumption Estimation in Computer Systems: The CMP Approach</article-title>
+      </title-group>
+      <contrib-group>
+        <contrib contrib-type="author" rid="aff_1,2">
+          <contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0009-0000-8460-9697</contrib-id>
+          <name>
+            <surname>Yu</surname>
+            <given-names>Suping</given-names>
+          </name>
+          <email>badkid@126.com</email>
+        </contrib>
+        <contrib contrib-type="author" rid="aff_1,2">
+          <contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0009-0001-7525-4764</contrib-id>
+          <name>
+            <surname>Wang</surname>
+            <given-names>Weijing</given-names>
+          </name>
+          <email>badkid@126.com</email>
+        </contrib>
+        <contrib contrib-type="author" rid="aff_1,2">
+          <contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0009-0003-3463-3594</contrib-id>
+          <name>
+            <surname>Mao</surname>
+            <given-names>Weiwei</given-names>
+          </name>
+          <email>mw116@lit.edu.cn</email>
+        </contrib>
+        <aff id="aff_1">College of Computer and Information Engineering, Luoyang Institute of Science and Technology, 471023 Luoyang, China</aff>
+        <aff id="aff_2">Henan Key Laboratory of Green Building Materials Manufacturing and Intelligent Equipment, Luoyang Institute of Science and Technology, 471023 Luoyang, China</aff>
+      </contrib-group>
+      <pub-date publication-format="electronic" date-type="pub">
+        <day>14</day>
+        <month>05</month>
+        <year>2025</year>
+      </pub-date>
+      <volume>4</volume>
+      <issue>2</issue>
+      <fpage>76</fpage>
+      <lpage>84</lpage>
+      <page-range>76-84</page-range>
+      <history>
+        <date date-type="received">
+          <day>19</day>
+          <month>03</month>
+          <year>2025</year>
+        </date>
+        <date date-type="accepted">
+          <day>09</day>
+          <month>05</month>
+          <year>2025</year>
+        </date>
+      </history>
+      <permissions>
+        <copyright-statement>©2025 by the author(s)</copyright-statement>
+        <copyright-year>2025</copyright-year>
+        <license license-type="open-access" xlink:href="https://creativecommons.org/licenses/by/4.0/">
+          <license-p> Published by Acadlore Publishing Services Limited, Hong Kong. This article is available for free download and can be reused and cited, provided that the original published version is credited, under the CC BY 4.0 license.</license-p>
+        </license>
+      </permissions>
+      <abstract><p>To address the issue of estimating energy consumption in computer systems, this study investigates the contribution of various hardware parameters to energy fluctuations, as well as the correlation between these parameters. Based on this analysis, the CM model was proposed, selecting the most representative and monitorable parameters that reflect changes in system energy consumption. The CMP (Chip Multiprocessors) model adapts to different task states of the computer system by identifying primary components driving energy consumption under varying conditions. Energy consumption estimation was then conducted by monitoring these dominant parameters. Experiments across various task states demonstrate that the CMP model outperforms traditional FAN (Fuzzy Attack Net) and Cubic models, particularly when the computer system engages in data-intensive tasks.</p></abstract>
+      <kwd-group>
+        <kwd>CMP model</kwd>
+        <kwd>Energy consumption model</kwd>
+        <kwd>Energy efficiency</kwd>
+        <kwd>Energy consumption estimation</kwd>
+      </kwd-group>
+      <counts>
+        <count count-type="contributors" count="3"/>
+        <fig-count count="4"/>
+        <table-count count="3"/>
+        <ref-count count="20"/>
+      </counts>
+    </article-meta>
+  </front>
+  <body>
+    <sec sec-type="intro">
+      <title>1. Introduction</title>
+      <p>Traditional data centres, often limited in scale, have historically received insufficient attention regarding energy consumption and efficiency. However, the advent of cloud computing and large-scale data centres has introduced vast service node networks, making energy consumption a critical aspect of cost management. The growth of cloud computing is significantly constrained by electricity costs [<xref ref-type="bibr" rid="ref_1">1</xref>]. Studies indicate that the energy consumption of a service node over four years is approximately equivalent to its hardware cost. Although cloud platforms can employ energy-saving strategies, such as virtual machine migration and energy efficiency replica management, a crucial issue remains, i.e., the development of a precise model for estimating energy consumption in computer systems.</p><p>In smaller computer systems, energy usage in computing clusters can be measured directly using monitoring devices. However, in cloud computing platforms and extensive data centres, exclusive reliance on such devices is challenging, both economically and in terms of deployment feasibility.</p>
+    </sec>
+    <sec sec-type="">
+      <title>2. Methodology</title>
+      <p>Current models for estimating the energy consumption of individual computer systems can broadly be classified into two types: proportional models and two-tier models. Both types assess energy consumption based on resource utilisation rates. Proportional models adopt a straightforward approach, assuming that a computer’s energy consumption is directly proportional to the utilisation of its hardware components. In contrast, two-tier models divide energy consumption into fixed and variable components. Fixed energy consumption is attributed to baseline functions, such as the initial power required to activate diodes, while variable energy consumption is related to system load, including Central Processing Unit (CPU) usage and disk speed. Two-tier models are generally more accurate, given that computers consume power continuously once powered on. The study by Qandeel et al. [<xref ref-type="bibr" rid="ref_2">2</xref>] indicates that an idle eight-core Xeon processor consumes approximately 60% of the energy it would under full utilisation. Nevertheless, both proportional and two-tier models establish a direct relationship between energy consumption and workload.</p><p>Several energy consumption models based on resource utilisation have been proposed. For instance, Velasquez and Filian-Gomez [<xref ref-type="bibr" rid="ref_3">3</xref>] utilised hardware counters to monitor CPU usage, thereby enabling a model for predicting overall energy consumption. Yadav et al. [<xref ref-type="bibr" rid="ref_4">4</xref>] introduced a linear model grounded in hardware performance counters, with the model by Zhang et al. [<xref ref-type="bibr" rid="ref_5">5</xref>] being among the most widely adopted. This linear model estimates energy consumption by monitoring CPU utilisation, with its fundamental expression as follows:</p>
+      
+        <disp-formula>
+          <label>(1)</label>
+          <mml:math id="mp702yn5uy">
+            <mml:mrow>
+              <mml:msub>
+                <mml:mi>P</mml:mi>
+                <mml:mrow>
+                  <mml:mi>p</mml:mi>
+                  <mml:mi>r</mml:mi>
+                  <mml:mi>e</mml:mi>
+                </mml:mrow>
+              </mml:msub>
+              <mml:msub>
+                <mml:mi>c</mml:mi>
+                <mml:mn>0</mml:mn>
+              </mml:msub>
+              <mml:msub>
+                <mml:mi>c</mml:mi>
+                <mml:mn>1</mml:mn>
+              </mml:msub>
+              <mml:msub>
+                <mml:mi>u</mml:mi>
+                <mml:mrow>
+                  <mml:mi>c</mml:mi>
+                  <mml:mi>p</mml:mi>
+                  <mml:mi>u</mml:mi>
+                </mml:mrow>
+              </mml:msub>
+              <mml:msub>
+                <mml:mi>c</mml:mi>
+                <mml:mn>2</mml:mn>
+              </mml:msub>
+              <mml:mo>=</mml:mo>
+              <mml:mo>+</mml:mo>
+              <mml:mo>+</mml:mo>
+              <mml:msubsup>
+                <mml:mi>u</mml:mi>
+                <mml:mi>r</mml:mi>
+                <mml:mrow>
+                  <mml:mi>c</mml:mi>
+                  <mml:mi>p</mml:mi>
+                  <mml:mi>u</mml:mi>
+                </mml:mrow>
+              </mml:msubsup>
+            </mml:mrow>
+          </mml:math>
+        </disp-formula>
+      
+      <p>Based on this foundation, Baker et al. [<xref ref-type="bibr" rid="ref_6">6</xref>] introduced the Cubic model, which also centres on CPU utilisation. Google has similarly employed a CPU-utilisation-based linear model to estimate the energy consumption of each server node in its data centres [<xref ref-type="bibr" rid="ref_7">7</xref>]. In practice, however, CPU energy consumption accounts for only about 25\% of the total energy consumption of a computer system [<xref ref-type="bibr" rid="ref_8">8</xref>], with this proportion being even lower in distributed data centres [<xref ref-type="bibr" rid="ref_9">9</xref>]. Therefore, as data-intensive tasks become increasingly common, energy consumption models that rely solely on CPU utilisation as the primary variable prove insufficiently accurate in estimating total system energy consumption.</p><p> <xref ref-type="fig" rid="fig_1">Figure 1</xref> illustrates the energy consumption distribution across various components for three typical servers—IBM P670, Sun Ultra Sparc T2000, and a custom-designed server by Google [<xref ref-type="bibr" rid="ref_10">10</xref>]. It is evident that no single component entirely dominates energy consumption.</p>
+      
+        <fig id="fig_1">
+          <label>Figure 1</label>
+          <caption>
+            <title>Percentage of energy consumption by each component in a computer system</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/5/img_OoUCbv0doHc9oYZQ.png"/>
+        </fig>
+      
+      <p>In response to this distribution, the CMP model was proposed in this study. The model is based on the premise that, in a computer system, the dominant contributors to energy consumption, namely the CPU, disk, and memory, vary according to the system’s task state. Thus, the model was designed by selecting a minimal set of parameters that adequately represent the load on these three components. The goal of the model is not only to enable accurate energy estimation for compute-intensive tasks but also to maintain a high level of accuracy for World Wide Web (WEB) transaction-based and data-intensive tasks.</p>
+    </sec>
+    <sec sec-type="">
+      <title>3. Model parameter selection</title>
+      
+        <sec>
+          
+            <title>3.1. Energy consumption measurement parameters of key components</title>
+          
+          <p>The selection of measurement parameters is crucial to the accuracy of any computer energy consumption model. In a computer system, the three most critical components with the largest range of energy consumption variation are the CPU, disk, and memory. Other components, such as fans and power supplies, exhibit limited power variation, while elements like network cards show minimal fluctuation in power usage. Therefore, the model parameters for energy consumption were selected from these three primary components.</p><p>The criteria for parameter selection include the following: a) Representativeness: Parameters should sufficiently capture energy consumption variations in the primary components; b) Ease of monitoring: Selected parameters must be easily accessible on both Windows and Linux systems; c) Minimised parameter count: Reducing the number of parameters supports model portability and prevents additional computational burdens on the system during energy estimation.</p><p>Let P represent the power of the computer system, then:</p>
+          
+            <disp-formula>
+              <label>(2)</label>
+              <mml:math id="m0wsnd2bgy">
+                <mml:mrow>
+                  <mml:mi>P</mml:mi>
+                  <mml:mi>σ</mml:mi>
+                  <mml:mo>=</mml:mo>
+                  <mml:mo>+</mml:mo>
+                  <mml:mo>+</mml:mo>
+                  <mml:mo>+</mml:mo>
+                  <mml:msub>
+                    <mml:mi>P</mml:mi>
+                    <mml:mrow>
+                      <mml:mi>c</mml:mi>
+                      <mml:mi>p</mml:mi>
+                      <mml:mi>u</mml:mi>
+                    </mml:mrow>
+                  </mml:msub>
+                  <mml:msub>
+                    <mml:mi>P</mml:mi>
+                    <mml:mrow>
+                      <mml:mrow>
+                        <mml:mi>m</mml:mi>
+                        <mml:mi>e</mml:mi>
+                        <mml:mi>m</mml:mi>
+                        <mml:mi>o</mml:mi>
+                        <mml:mi>r</mml:mi>
+                        <mml:mi>y</mml:mi>
+                      </mml:mrow>
+                    </mml:mrow>
+                  </mml:msub>
+                  <mml:msub>
+                    <mml:mi>P</mml:mi>
+                    <mml:mrow>
+                      <mml:mrow>
+                        <mml:mi>d</mml:mi>
+                        <mml:mi>i</mml:mi>
+                        <mml:mi>s</mml:mi>
+                        <mml:mi>k</mml:mi>
+                      </mml:mrow>
+                    </mml:mrow>
+                  </mml:msub>
+                </mml:mrow>
+              </mml:math>
+            </disp-formula>
+          
+          <p> where, <inline-formula>
+  <mml:math id="mctzkvy5pt">
+    <mml:mi>σ</mml:mi>
+  </mml:math>
+</inline-formula> denotes the power of other system components apart from the CPU, disk, and memory. The power consumption of the CPU is related to its utilisation rate, which yields:</p>
+          
+            <disp-formula>
+              <label>(3)</label>
+              <mml:math id="mrdpjrisqb">
+                <mml:mrow>
+                  <mml:msub>
+                    <mml:mi>P</mml:mi>
+                    <mml:mrow>
+                      <mml:mrow>
+                        <mml:mi>c</mml:mi>
+                        <mml:mi>p</mml:mi>
+                        <mml:mi>u</mml:mi>
+                      </mml:mrow>
+                    </mml:mrow>
+                  </mml:msub>
+                  <mml:msub>
+                    <mml:mi>u</mml:mi>
+                    <mml:mrow>
+                      <mml:mrow>
+                        <mml:mi>u</mml:mi>
+                        <mml:mi>t</mml:mi>
+                        <mml:mi>i</mml:mi>
+                        <mml:mi>l</mml:mi>
+                        <mml:mi>i</mml:mi>
+                        <mml:mi>z</mml:mi>
+                        <mml:mi>a</mml:mi>
+                        <mml:mi>t</mml:mi>
+                        <mml:mi>i</mml:mi>
+                        <mml:mi>o</mml:mi>
+                        <mml:mi>n</mml:mi>
+                      </mml:mrow>
+                    </mml:mrow>
+                  </mml:msub>
+                  <mml:msub>
+                    <mml:mi>P</mml:mi>
+                    <mml:mrow>
+                      <mml:mrow>
+                        <mml:mi>c</mml:mi>
+                        <mml:mi>p</mml:mi>
+                        <mml:mi>u</mml:mi>
+                        <mml:mi>i</mml:mi>
+                        <mml:mi>d</mml:mi>
+                        <mml:mi>l</mml:mi>
+                        <mml:mi>e</mml:mi>
+                      </mml:mrow>
+                    </mml:mrow>
+                  </mml:msub>
+                  <mml:mo>=</mml:mo>
+                  <mml:mo>+</mml:mo>
+                  <mml:mrow>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>−</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:msub>
+                      <mml:mi>P</mml:mi>
+                      <mml:mrow>
+                        <mml:mrow>
+                          <mml:mi>c</mml:mi>
+                          <mml:mi>p</mml:mi>
+                          <mml:mi>u</mml:mi>
+                          <mml:mi>m</mml:mi>
+                          <mml:mi>a</mml:mi>
+                          <mml:mi>x</mml:mi>
+                        </mml:mrow>
+                      </mml:mrow>
+                    </mml:msub>
+                    <mml:msub>
+                      <mml:mi>P</mml:mi>
+                      <mml:mrow>
+                        <mml:mrow>
+                          <mml:mi>i</mml:mi>
+                          <mml:mi>d</mml:mi>
+                          <mml:mi>l</mml:mi>
+                          <mml:mi>e</mml:mi>
+                        </mml:mrow>
+                      </mml:mrow>
+                    </mml:msub>
+                  </mml:mrow>
+                  <mml:mi>c</mml:mi>
+                  <mml:mi>p</mml:mi>
+                </mml:mrow>
+              </mml:math>
+            </disp-formula>
+          
+          <p>In selecting a monitoring parameter that represents changes in CPU energy consumption, % Processor Time was used. This parameter represents the percentage of time the processor spends executing non-idle threads. The determination of whether the processor is idle is performed during internal sampling intervals of the system clock (10 ms). As one of the most widely used counters for the CPU, % Processor Time effectively indicates CPU utilisation.</p><p>Memory energy consumption is primarily influenced by its utilisation rate, with an increase of 512 MB in memory capacity generally adding 1-3 W to power consumption. The energy consumption of memory can be expressed as follows [<xref ref-type="bibr" rid="ref_11">11</xref>]:</p>
+          
+            <disp-formula>
+              <label>(4)</label>
+              <mml:math id="mpl77z9duk">
+                <mml:mrow>
+                  <mml:msub>
+                    <mml:mi>E</mml:mi>
+                    <mml:mrow>
+                      <mml:mtext>memory </mml:mtext>
+                    </mml:mrow>
+                  </mml:msub>
+                  <mml:msub>
+                    <mml:mi>P</mml:mi>
+                    <mml:mrow>
+                      <mml:mtext>pre </mml:mtext>
+                    </mml:mrow>
+                  </mml:msub>
+                  <mml:msub>
+                    <mml:mi>P</mml:mi>
+                    <mml:mrow>
+                      <mml:mtext>read </mml:mtext>
+                    </mml:mrow>
+                  </mml:msub>
+                  <mml:msub>
+                    <mml:mi>P</mml:mi>
+                    <mml:mrow>
+                      <mml:mtext>write </mml:mtext>
+                    </mml:mrow>
+                  </mml:msub>
+                  <mml:msub>
+                    <mml:mi>P</mml:mi>
+                    <mml:mrow>
+                      <mml:mtext>active </mml:mtext>
+                    </mml:mrow>
+                  </mml:msub>
+                  <mml:msub>
+                    <mml:mi>P</mml:mi>
+                    <mml:mrow>
+                      <mml:mtext>ref </mml:mtext>
+                    </mml:mrow>
+                  </mml:msub>
+                  <mml:mo>=</mml:mo>
+                  <mml:mo>+</mml:mo>
+                  <mml:mo>+</mml:mo>
+                  <mml:mo>+</mml:mo>
+                  <mml:mo>+</mml:mo>
+                  <mml:msubsup>
+                    <mml:mo>∫</mml:mo>
+                    <mml:mrow>
+                      <mml:msub>
+                        <mml:mi>t</mml:mi>
+                        <mml:mi>n</mml:mi>
+                      </mml:msub>
+                    </mml:mrow>
+                    <mml:mrow>
+                      <mml:msub>
+                        <mml:mi>t</mml:mi>
+                        <mml:mrow>
+                          <mml:mtext>pre </mml:mtext>
+                        </mml:mrow>
+                      </mml:msub>
+                    </mml:mrow>
+                  </mml:msubsup>
+                  <mml:msubsup>
+                    <mml:mo>∫</mml:mo>
+                    <mml:mrow>
+                      <mml:msub>
+                        <mml:mi>t</mml:mi>
+                        <mml:mi>n</mml:mi>
+                      </mml:msub>
+                    </mml:mrow>
+                    <mml:mrow>
+                      <mml:msub>
+                        <mml:mi>t</mml:mi>
+                        <mml:mrow>
+                          <mml:mtext>read </mml:mtext>
+                        </mml:mrow>
+                      </mml:msub>
+                    </mml:mrow>
+                  </mml:msubsup>
+                  <mml:msubsup>
+                    <mml:mo>∫</mml:mo>
+                    <mml:mrow>
+                      <mml:msub>
+                        <mml:mi>t</mml:mi>
+                        <mml:mi>n</mml:mi>
+                      </mml:msub>
+                    </mml:mrow>
+                    <mml:mrow>
+                      <mml:msub>
+                        <mml:mi>t</mml:mi>
+                        <mml:mrow>
+                          <mml:mtext>write </mml:mtext>
+                        </mml:mrow>
+                      </mml:msub>
+                    </mml:mrow>
+                  </mml:msubsup>
+                  <mml:msubsup>
+                    <mml:mo>∫</mml:mo>
+                    <mml:mrow>
+                      <mml:msub>
+                        <mml:mi>t</mml:mi>
+                        <mml:mi>n</mml:mi>
+                      </mml:msub>
+                    </mml:mrow>
+                    <mml:mrow>
+                      <mml:msub>
+                        <mml:mi>t</mml:mi>
+                        <mml:mrow>
+                          <mml:mtext>ac </mml:mtext>
+                        </mml:mrow>
+                      </mml:msub>
+                    </mml:mrow>
+                  </mml:msubsup>
+                  <mml:msubsup>
+                    <mml:mo>∫</mml:mo>
+                    <mml:mrow>
+                      <mml:msub>
+                        <mml:mi>t</mml:mi>
+                        <mml:mi>n</mml:mi>
+                      </mml:msub>
+                    </mml:mrow>
+                    <mml:mrow>
+                      <mml:msub>
+                        <mml:mi>t</mml:mi>
+                        <mml:mrow>
+                          <mml:mtext>ref </mml:mtext>
+                        </mml:mrow>
+                      </mml:msub>
+                    </mml:mrow>
+                  </mml:msubsup>
+                  <mml:mi>d</mml:mi>
+                  <mml:mi>t</mml:mi>
+                  <mml:mi>d</mml:mi>
+                  <mml:mi>t</mml:mi>
+                  <mml:mi>d</mml:mi>
+                  <mml:mi>t</mml:mi>
+                  <mml:mi>d</mml:mi>
+                  <mml:mi>t</mml:mi>
+                  <mml:mi>d</mml:mi>
+                  <mml:mi>t</mml:mi>
+                </mml:mrow>
+              </mml:math>
+            </disp-formula>
+          
+          <p>where, <italic><span style="color: black; font-family: Times New Roman, serif">P<sub><span style="color: black; font-family: Times New Roman, serif">read</sub></italic> denotes power in the read state, <italic><span style="color: black; font-family: Times New Roman, serif">P<sub><span style="color: black; font-family: Times New Roman, serif">write</sub></italic> <span style="color: black; font-family: Times New Roman, serif">represents power in the write state, <italic><span style="color: black; font-family: Times New Roman, serif">P<sub><span style="color: black; font-family: Times New Roman, serif">active</sub> </italic><span style="color: black; font-family: Times New Roman, serif">denotes the active state, <italic><span style="color: black; font-family: Times New Roman, serif">P<sub>ref</sub></italic> <span style="color: black; font-family: Times New Roman, serif">represents the refresh state, and <italic><span style="color: black; font-family: Times New Roman, serif">P<sub>pre</sub></italic> denotes the precharge consumption. Given that memory refresh operates automatically with a fixed frequency, both refresh and precharge can be considered constants. Thus, memory energy consumption is influenced by both utilisation and read-write frequency. For this reason, % Memory Used and Page Faults/sec were chosen as representative parameters for memory energy consumption.</p><p>% Memory Used denotes actual memory utilisation and reflects the portion of memory in use. Page Faults/sec represents the average number of page faults per second, with each fault indicating an incorrect page access. This parameter is calculated as the number of page faults per second, where a higher value of Page Faults typically indicates increased memory activity and a higher memory read-write frequency. Page faults, encompassing both hard and soft faults, are directly related to memory read-write frequency; hard faults require access to the disk. Therefore, this parameter not only reflects memory read-write frequency but also indirectly reflects disk read-write activity.</p><p>In linear models, variations in disk energy consumption are given relatively little consideration. This is because linear models are fundamentally designed for compute-intensive applications, where energy fluctuations are primarily attributed to CPU activity, with the assumption that energy changes in other components have a limited impact on overall system energy consumption or vary in alignment with CPU energy usage. However, this assumption does not hold in data-intensive tasks, where CPU utilisation is limited, with minimal variation and influence on system-wide energy consumption, while disk load and energy usage vary significantly. Disk energy consumption is analysed based on disk states and corresponding head operations. Typical disk operations include seek, read, write, and idle states, with energy consumption generally calculated as follows:</p>
+          
+            <disp-formula>
+              <label>(5)</label>
+              <mml:math id="mm4nxhnil8">
+                <mml:mrow>
+                  <mml:msub>
+                    <mml:mi>E</mml:mi>
+                    <mml:mrow>
+                      <mml:mrow>
+                        <mml:mi>d</mml:mi>
+                        <mml:mi>i</mml:mi>
+                        <mml:mi>s</mml:mi>
+                        <mml:mi>k</mml:mi>
+                      </mml:mrow>
+                    </mml:mrow>
+                  </mml:msub>
+                  <mml:msub>
+                    <mml:mi>P</mml:mi>
+                    <mml:mrow>
+                      <mml:mrow>
+                        <mml:mi>r</mml:mi>
+                        <mml:mi>e</mml:mi>
+                        <mml:mi>a</mml:mi>
+                        <mml:mi>d</mml:mi>
+                      </mml:mrow>
+                    </mml:mrow>
+                  </mml:msub>
+                  <mml:msub>
+                    <mml:mi>P</mml:mi>
+                    <mml:mrow>
+                      <mml:mrow>
+                        <mml:mi>w</mml:mi>
+                        <mml:mi>r</mml:mi>
+                        <mml:mi>i</mml:mi>
+                        <mml:mi>t</mml:mi>
+                        <mml:mi>e</mml:mi>
+                      </mml:mrow>
+                    </mml:mrow>
+                  </mml:msub>
+                  <mml:msub>
+                    <mml:mi>P</mml:mi>
+                    <mml:mrow>
+                      <mml:mrow>
+                        <mml:mi>i</mml:mi>
+                        <mml:mi>d</mml:mi>
+                        <mml:mi>l</mml:mi>
+                        <mml:mi>e</mml:mi>
+                      </mml:mrow>
+                    </mml:mrow>
+                  </mml:msub>
+                  <mml:mo>=</mml:mo>
+                  <mml:mo>+</mml:mo>
+                  <mml:mo>+</mml:mo>
+                  <mml:msubsup>
+                    <mml:mo>∫</mml:mo>
+                    <mml:mrow>
+                      <mml:msub>
+                        <mml:mi>t</mml:mi>
+                        <mml:mn>0</mml:mn>
+                      </mml:msub>
+                    </mml:mrow>
+                    <mml:mrow>
+                      <mml:msub>
+                        <mml:mi>t</mml:mi>
+                        <mml:mrow>
+                          <mml:mrow>
+                            <mml:mi>r</mml:mi>
+                            <mml:mi>e</mml:mi>
+                            <mml:mi>a</mml:mi>
+                            <mml:mi>d</mml:mi>
+                          </mml:mrow>
+                        </mml:mrow>
+                      </mml:msub>
+                    </mml:mrow>
+                  </mml:msubsup>
+                  <mml:msubsup>
+                    <mml:mo>∫</mml:mo>
+                    <mml:mrow>
+                      <mml:msub>
+                        <mml:mi>t</mml:mi>
+                        <mml:mn>0</mml:mn>
+                      </mml:msub>
+                    </mml:mrow>
+                    <mml:mrow>
+                      <mml:msub>
+                        <mml:mi>t</mml:mi>
+                        <mml:mrow>
+                          <mml:mrow>
+                            <mml:mi>w</mml:mi>
+                            <mml:mi>r</mml:mi>
+                            <mml:mi>i</mml:mi>
+                            <mml:mi>t</mml:mi>
+                            <mml:mi>e</mml:mi>
+                          </mml:mrow>
+                        </mml:mrow>
+                      </mml:msub>
+                    </mml:mrow>
+                  </mml:msubsup>
+                  <mml:msubsup>
+                    <mml:mo>∫</mml:mo>
+                    <mml:mrow>
+                      <mml:msub>
+                        <mml:mi>t</mml:mi>
+                        <mml:mn>0</mml:mn>
+                      </mml:msub>
+                    </mml:mrow>
+                    <mml:mrow>
+                      <mml:msub>
+                        <mml:mi>t</mml:mi>
+                        <mml:mrow>
+                          <mml:mrow>
+                            <mml:mi>i</mml:mi>
+                            <mml:mi>d</mml:mi>
+                            <mml:mi>l</mml:mi>
+                            <mml:mi>e</mml:mi>
+                          </mml:mrow>
+                        </mml:mrow>
+                      </mml:msub>
+                    </mml:mrow>
+                  </mml:msubsup>
+                  <mml:mi>d</mml:mi>
+                  <mml:mi>t</mml:mi>
+                  <mml:mi>d</mml:mi>
+                  <mml:mi>t</mml:mi>
+                  <mml:mi>d</mml:mi>
+                  <mml:mi>t</mml:mi>
+                </mml:mrow>
+              </mml:math>
+            </disp-formula>
+          
+          <p>For this study, % Idle Time and Disk Bytes/sec of the disk were collected as key parameters. % Idle Time represents the disk’s idle time, during which no read, write, or seek operations are performed, indicating the time spent in idle mode. The remaining time reflects the active read, write, and seek operations. Disk Bytes/sec measures the data read or written per second, representing the specific data throughput during read/write operations.</p><p>Following the analysis of system energy consumption, five parameters were identified in this study. The next step involves analysing these parameters further to select an optimal subset for energy estimation.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.2. Analysis and selection of energy consumption parameters</title>
+          
+          <p>Given the unique role of the CPU in computer systems, % Processor Time is an essential parameter in nearly all energy consumption models. Therefore, it was firmly established in this study. The focus then shifts to analysing the relationships among % Memory Used, Page Faults/sec, % Disk Idle Time, and Disk Bytes/sec. To illustrate the selection and analysis of parameters in detail, a DELL 2950 server configured with the corresponding parameters was used as an example, as shown in <xref ref-type="table" rid="table_1">Table 1</xref>.</p>
+          
+            <table-wrap id="table_1">
+              <label>Table 1</label>
+              <caption>
+                <title>Configuration of the server used in the experiment</title>
+              </caption>
+              <table><tbody><tr><td colspan="1" rowspan="1" colwidth="150"><p>Component</p></td><td colspan="1" rowspan="1" colwidth="264"><p>Model</p></td></tr><tr><td colspan="1" rowspan="1" colwidth="150"><p>Processor</p></td><td colspan="1" rowspan="1" colwidth="264"><p>2*QuadCore Intel Xeon E5420</p></td></tr><tr><td colspan="1" rowspan="1" colwidth="150"><p>Motherboard</p></td><td colspan="1" rowspan="1" colwidth="264"><p>Dell PowerEdge 2950</p></td></tr><tr><td colspan="1" rowspan="1" colwidth="150"><p>Chipset</p></td><td colspan="1" rowspan="1" colwidth="264"><p>Intel Greencreek 5000X</p></td></tr><tr><td colspan="1" rowspan="1" colwidth="150"><p>System memory</p></td><td colspan="1" rowspan="1" colwidth="264"><p>8 186 MB (DDR2-667)</p></td></tr><tr><td colspan="1" rowspan="1" colwidth="150"><p>Disk</p></td><td colspan="1" rowspan="1" colwidth="264"><p>3*300 GB SAS Drives</p></td></tr><tr><td colspan="1" rowspan="1" colwidth="150"><p>Network adapter</p></td><td colspan="1" rowspan="1" colwidth="264"><p>2*Broadcom BCM5708CNetXtreme II GigE</p></td></tr></tbody></table>
+            </table-wrap>
+          
+          <p> <xref ref-type="table" rid="table_2">Table 2</xref> presents the monitored parameter changes on the DELL 2950 server under progressively increasing loads, as assessed using the HP LoadRunner tool.</p>
+          
+            <table-wrap id="table_2">
+              <label>Table 2</label>
+              <caption>
+                <title>Parameter changes under different loads</title>
+              </caption>
+              <table><tbody><tr><td colspan="1" rowspan="1" colwidth="127"><p>% Memory Used</p></td><td colspan="1" rowspan="1" colwidth="116"><p>Page Faults/sec</p></td><td colspan="1" rowspan="1" colwidth="117"><p>% Disk Idle Time</p></td><td colspan="1" rowspan="1" colwidth="102"><p>Disk Bytes/sec</p></td></tr><tr><td colspan="1" rowspan="1" colwidth="127"><p>0.06</p></td><td colspan="1" rowspan="1" colwidth="116"><p>674</p></td><td colspan="1" rowspan="1" colwidth="117"><p>1.0</p></td><td colspan="1" rowspan="1" colwidth="102"><p>54 046     </p></td></tr><tr><td colspan="1" rowspan="1" colwidth="127"><p>0.15</p></td><td colspan="1" rowspan="1" colwidth="116"><p>2 415</p></td><td colspan="1" rowspan="1" colwidth="117"><p>0.96</p></td><td colspan="1" rowspan="1" colwidth="102"><p>709 105</p></td></tr><tr><td colspan="1" rowspan="1" colwidth="127"><p>0.23</p></td><td colspan="1" rowspan="1" colwidth="116"><p>3 932</p></td><td colspan="1" rowspan="1" colwidth="117"><p>0.86</p></td><td colspan="1" rowspan="1" colwidth="102"><p>1 652 008</p></td></tr><tr><td colspan="1" rowspan="1" colwidth="127"><p>0.30</p></td><td colspan="1" rowspan="1" colwidth="116"><p>6 091</p></td><td colspan="1" rowspan="1" colwidth="117"><p>0.68</p></td><td colspan="1" rowspan="1" colwidth="102"><p>3 410 577</p></td></tr><tr><td colspan="1" rowspan="1" colwidth="127"><p>0.37</p></td><td colspan="1" rowspan="1" colwidth="116"><p>8 840</p></td><td colspan="1" rowspan="1" colwidth="117"><p>0.59</p></td><td colspan="1" rowspan="1" colwidth="102"><p>4 544 997</p></td></tr><tr><td colspan="1" rowspan="1" colwidth="127"><p>0.43</p></td><td colspan="1" rowspan="1" colwidth="116"><p>7 735</p></td><td colspan="1" rowspan="1" colwidth="117"><p>0.46</p></td><td colspan="1" rowspan="1" colwidth="102"><p>4 563 334</p></td></tr><tr><td colspan="1" rowspan="1" colwidth="127"><p>0.07</p></td><td colspan="1" rowspan="1" colwidth="116"><p>54 244</p></td><td colspan="1" rowspan="1" colwidth="117"><p>0.2</p></td><td colspan="1" rowspan="1" colwidth="102"><p>93 183 319</p></td></tr></tbody></table>
+            </table-wrap>
+          
+          <p>Since the data units in <xref ref-type="table" rid="table_2">Table 2</xref> are not uniform, standardisation of the data is required. In this study, the horizontal axis is denoted by $Y<inline-formula>
+  <mml:math id="m5tp4x8jsp">
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>y</mml:mi>
+  </mml:math>
+</inline-formula>X<inline-formula>
+  <mml:math id="ml2xy70srv">
+    <mml:mo>.</mml:mo>
+    <mml:mi>T</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+  </mml:math>
+</inline-formula>j<inline-formula>
+  <mml:math id="mukm2odk2l">
+    <mml:mo>−</mml:mo>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+  </mml:math>
+</inline-formula>\bar{Y}_j=\frac{1}{m} \sum_{i=1}^m Y_{i j}(j=1,2, \cdots, n)<inline-formula>
+  <mml:math id="mptylch5b2">
+    <mml:mo>,</mml:mo>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+  </mml:math>
+</inline-formula>j<inline-formula>
+  <mml:math id="mawjf7p29t">
+    <mml:mo>−</mml:mo>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+  </mml:math>
+</inline-formula>S_j^2=\frac{1}{m-1} \sum_{i=1}^m\left(Y_{i j}-\bar{Y}_j\right)^2(j=1,2, \cdots, n)<inline-formula>
+  <mml:math id="mlb22ik1j0">
+    <mml:mo>.</mml:mo>
+    <mml:mo>:</mml:mo>
+    <mml:mi>S</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>s</mml:mi>
+  </mml:math>
+</inline-formula>X_{i j}=\frac{Y_{i j}-\bar{Y}_j}{S_j}$. After standardisation, the standardised matrix can be obtained as follows:</p>
+          
+            <disp-formula>
+              <label>(6)</label>
+              <mml:math id="m8zqst0r6o">
+                <mml:mrow>
+                  <mml:mrow>
+                    <mml:mi>X</mml:mi>
+                  </mml:mrow>
+                  <mml:mrow>
+                    <mml:mo>[</mml:mo>
+                    <mml:mo>]</mml:mo>
+                    <mml:mtable columnalign="center center center center" columnspacing="1em" rowspacing="4pt">
+                      <mml:mtr>
+                        <mml:mtd>
+                          <mml:msub>
+                            <mml:mi>X</mml:mi>
+                            <mml:mrow>
+                              <mml:mn>11</mml:mn>
+                            </mml:mrow>
+                          </mml:msub>
+                        </mml:mtd>
+                        <mml:mtd>
+                          <mml:msub>
+                            <mml:mi>X</mml:mi>
+                            <mml:mrow>
+                              <mml:mn>12</mml:mn>
+                            </mml:mrow>
+                          </mml:msub>
+                        </mml:mtd>
+                        <mml:mtd>
+                          <mml:mo>⋯</mml:mo>
+                        </mml:mtd>
+                        <mml:mtd>
+                          <mml:msub>
+                            <mml:mi>X</mml:mi>
+                            <mml:mrow>
+                              <mml:mn>1</mml:mn>
+                              <mml:mi>n</mml:mi>
+                            </mml:mrow>
+                          </mml:msub>
+                        </mml:mtd>
+                      </mml:mtr>
+                      <mml:mtr>
+                        <mml:mtd>
+                          <mml:msub>
+                            <mml:mi>X</mml:mi>
+                            <mml:mrow>
+                              <mml:mn>21</mml:mn>
+                            </mml:mrow>
+                          </mml:msub>
+                        </mml:mtd>
+                        <mml:mtd>
+                          <mml:msub>
+                            <mml:mi>X</mml:mi>
+                            <mml:mrow>
+                              <mml:mn>22</mml:mn>
+                            </mml:mrow>
+                          </mml:msub>
+                        </mml:mtd>
+                        <mml:mtd>
+                          <mml:mo>⋯</mml:mo>
+                        </mml:mtd>
+                        <mml:mtd>
+                          <mml:msub>
+                            <mml:mi>X</mml:mi>
+                            <mml:mrow>
+                              <mml:mn>2</mml:mn>
+                              <mml:mi>n</mml:mi>
+                            </mml:mrow>
+                          </mml:msub>
+                        </mml:mtd>
+                      </mml:mtr>
+                      <mml:mtr>
+                        <mml:mtd>
+                          <mml:mrow>
+                            <mml:mo>⋮</mml:mo>
+                          </mml:mrow>
+                        </mml:mtd>
+                        <mml:mtd>
+                          <mml:mrow>
+                            <mml:mo>⋮</mml:mo>
+                          </mml:mrow>
+                        </mml:mtd>
+                        <mml:mtd>
+                          <mml:mrow>
+                            <mml:mo>⋮</mml:mo>
+                          </mml:mrow>
+                        </mml:mtd>
+                        <mml:mtd>
+                          <mml:mrow>
+                            <mml:mo>⋮</mml:mo>
+                          </mml:mrow>
+                        </mml:mtd>
+                      </mml:mtr>
+                      <mml:mtr>
+                        <mml:mtd>
+                          <mml:msub>
+                            <mml:mi>X</mml:mi>
+                            <mml:mrow>
+                              <mml:mi>m</mml:mi>
+                              <mml:mn>1</mml:mn>
+                            </mml:mrow>
+                          </mml:msub>
+                        </mml:mtd>
+                        <mml:mtd>
+                          <mml:msub>
+                            <mml:mi>X</mml:mi>
+                            <mml:mrow>
+                              <mml:mi>m</mml:mi>
+                              <mml:mn>1</mml:mn>
+                            </mml:mrow>
+                          </mml:msub>
+                        </mml:mtd>
+                        <mml:mtd>
+                          <mml:msub>
+                            <mml:mi>X</mml:mi>
+                            <mml:mrow>
+                              <mml:mn>11</mml:mn>
+                            </mml:mrow>
+                          </mml:msub>
+                        </mml:mtd>
+                        <mml:mtd>
+                          <mml:msub>
+                            <mml:mi>X</mml:mi>
+                            <mml:mrow>
+                              <mml:mi>m</mml:mi>
+                              <mml:mi>n</mml:mi>
+                            </mml:mrow>
+                          </mml:msub>
+                        </mml:mtd>
+                      </mml:mtr>
+                    </mml:mtable>
+                  </mml:mrow>
+                  <mml:mo>=</mml:mo>
+                </mml:mrow>
+              </mml:math>
+            </disp-formula>
+          
+          <p>Using the standardised data, the correlation coefficient matrix <inline-formula>
+  <mml:math id="mkn3e8xdj0">
+    <mml:mi>R</mml:mi>
+    <mml:mo>=</mml:mo>
+    <mml:msub>
+      <mml:mrow>
+        <mml:mo>(</mml:mo>
+        <mml:mo>)</mml:mo>
+        <mml:msub>
+          <mml:mi>r</mml:mi>
+          <mml:mrow>
+            <mml:mi>i</mml:mi>
+            <mml:mi>j</mml:mi>
+          </mml:mrow>
+        </mml:msub>
+      </mml:mrow>
+      <mml:mrow>
+        <mml:mi>m</mml:mi>
+        <mml:mi>m</mml:mi>
+        <mml:mo>×</mml:mo>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula> can then be calculated, where:</p>
+          
+            <disp-formula>
+              <label>(7)</label>
+              <mml:math id="mramif1xp0">
+                <mml:mrow>
+                  <mml:mrow>
+                    <mml:msub>
+                      <mml:mi>r</mml:mi>
+                      <mml:mrow>
+                        <mml:mi>i</mml:mi>
+                        <mml:mi>j</mml:mi>
+                      </mml:mrow>
+                    </mml:msub>
+                    <mml:mo>=</mml:mo>
+                    <mml:mo>,</mml:mo>
+                    <mml:mo>=</mml:mo>
+                    <mml:mo>,</mml:mo>
+                    <mml:mo>,</mml:mo>
+                    <mml:mo>…</mml:mo>
+                    <mml:mo>,</mml:mo>
+                    <mml:mfrac>
+                      <mml:mrow>
+                        <mml:munderover>
+                          <mml:mo>∑</mml:mo>
+                          <mml:mrow>
+                            <mml:mi>k</mml:mi>
+                            <mml:mo>=</mml:mo>
+                            <mml:mn>1</mml:mn>
+                          </mml:mrow>
+                          <mml:mi>n</mml:mi>
+                        </mml:munderover>
+                        <mml:msub>
+                          <mml:mi>x</mml:mi>
+                          <mml:mrow>
+                            <mml:mi>k</mml:mi>
+                            <mml:mi>i</mml:mi>
+                          </mml:mrow>
+                        </mml:msub>
+                        <mml:msub>
+                          <mml:mi>x</mml:mi>
+                          <mml:mrow>
+                            <mml:mi>k</mml:mi>
+                            <mml:mi>j</mml:mi>
+                          </mml:mrow>
+                        </mml:msub>
+                      </mml:mrow>
+                      <mml:mrow>
+                        <mml:mi>n</mml:mi>
+                        <mml:mo>−</mml:mo>
+                        <mml:mn>1</mml:mn>
+                      </mml:mrow>
+                    </mml:mfrac>
+                    <mml:mstyle scriptlevel="0">
+                      <mml:mspace width="1em"/>
+                    </mml:mstyle>
+                    <mml:mi>i</mml:mi>
+                    <mml:mi>j</mml:mi>
+                    <mml:mi>m</mml:mi>
+                    <mml:mn>1</mml:mn>
+                    <mml:mn>2</mml:mn>
+                  </mml:mrow>
+                </mml:mrow>
+              </mml:math>
+            </disp-formula>
+          
+          <p>Following these steps, a correlation coefficient matrix was derived for the four parameters, expressed as follows:</p>
+          
+            <disp-formula>
+              <label>(8)</label>
+              <mml:math id="msj18rkmc8">
+                <mml:mrow>
+                  <mml:mrow>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:mtable columnalign="center center center center center" columnspacing="1em" rowspacing="4pt">
+                      <mml:mtr>
+                        <mml:mtd/>
+                        <mml:mtd>
+                          <mml:msub>
+                            <mml:mi>x</mml:mi>
+                            <mml:mn>1</mml:mn>
+                          </mml:msub>
+                        </mml:mtd>
+                        <mml:mtd>
+                          <mml:msub>
+                            <mml:mi>x</mml:mi>
+                            <mml:mn>2</mml:mn>
+                          </mml:msub>
+                        </mml:mtd>
+                        <mml:mtd>
+                          <mml:msub>
+                            <mml:mi>x</mml:mi>
+                            <mml:mn>3</mml:mn>
+                          </mml:msub>
+                        </mml:mtd>
+                        <mml:mtd>
+                          <mml:msub>
+                            <mml:mi>x</mml:mi>
+                            <mml:mn>4</mml:mn>
+                          </mml:msub>
+                        </mml:mtd>
+                      </mml:mtr>
+                      <mml:mtr>
+                        <mml:mtd>
+                          <mml:msub>
+                            <mml:mi>x</mml:mi>
+                            <mml:mn>1</mml:mn>
+                          </mml:msub>
+                        </mml:mtd>
+                        <mml:mtd>
+                          <mml:mn>1.0000</mml:mn>
+                        </mml:mtd>
+                        <mml:mtd>
+                          <mml:mn>0.9853</mml:mn>
+                        </mml:mtd>
+                        <mml:mtd>
+                          <mml:mo>−</mml:mo>
+                          <mml:mn>0.9721</mml:mn>
+                        </mml:mtd>
+                        <mml:mtd>
+                          <mml:mn>0.9757</mml:mn>
+                        </mml:mtd>
+                      </mml:mtr>
+                      <mml:mtr>
+                        <mml:mtd>
+                          <mml:msub>
+                            <mml:mi>x</mml:mi>
+                            <mml:mn>2</mml:mn>
+                          </mml:msub>
+                        </mml:mtd>
+                        <mml:mtd>
+                          <mml:mn>0.9853</mml:mn>
+                        </mml:mtd>
+                        <mml:mtd>
+                          <mml:mn>1.0000</mml:mn>
+                        </mml:mtd>
+                        <mml:mtd>
+                          <mml:mo>−</mml:mo>
+                          <mml:mn>0.9979</mml:mn>
+                        </mml:mtd>
+                        <mml:mtd>
+                          <mml:mn>0.9988</mml:mn>
+                        </mml:mtd>
+                      </mml:mtr>
+                      <mml:mtr>
+                        <mml:mtd>
+                          <mml:msub>
+                            <mml:mi>x</mml:mi>
+                            <mml:mn>3</mml:mn>
+                          </mml:msub>
+                        </mml:mtd>
+                        <mml:mtd>
+                          <mml:mo>−</mml:mo>
+                          <mml:mn>0.9721</mml:mn>
+                        </mml:mtd>
+                        <mml:mtd>
+                          <mml:mo>−</mml:mo>
+                          <mml:mn>0.9979</mml:mn>
+                        </mml:mtd>
+                        <mml:mtd>
+                          <mml:mn>1.0000</mml:mn>
+                        </mml:mtd>
+                        <mml:mtd>
+                          <mml:mo>−</mml:mo>
+                          <mml:mn>0.9999</mml:mn>
+                        </mml:mtd>
+                      </mml:mtr>
+                      <mml:mtr>
+                        <mml:mtd>
+                          <mml:msub>
+                            <mml:mi>x</mml:mi>
+                            <mml:mn>4</mml:mn>
+                          </mml:msub>
+                        </mml:mtd>
+                        <mml:mtd>
+                          <mml:mn>0.9757</mml:mn>
+                        </mml:mtd>
+                        <mml:mtd>
+                          <mml:mn>0.9988</mml:mn>
+                        </mml:mtd>
+                        <mml:mtd>
+                          <mml:mo>−</mml:mo>
+                          <mml:mn>0.9999</mml:mn>
+                        </mml:mtd>
+                        <mml:mtd>
+                          <mml:mn>1.0000</mml:mn>
+                        </mml:mtd>
+                      </mml:mtr>
+                    </mml:mtable>
+                  </mml:mrow>
+                </mml:mrow>
+              </mml:math>
+            </disp-formula>
+          
+          <p>This matrix reveals the correlation between each pair of parameters.</p>
+          
+            <fig id="fig_2">
+              <label>Figure 2</label>
+              <caption>
+                <title>Trends in disk load and page faults Over a single minute: (a) Disk load trend over one minute; (b) Page faults trend over one minute</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/5/img_ngufAVPvLOd1_frA.png"/>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/5/img_UDkXk4XuWX5P_qjJ.png"/>
+            </fig>
+          
+          <p>In this analysis, <inline-formula>
+  <mml:math id="m286ieozvd">
+    <mml:msub>
+      <mml:mi>x</mml:mi>
+      <mml:mn>1</mml:mn>
+    </mml:msub>
+    <mml:msub>
+      <mml:mi>x</mml:mi>
+      <mml:mn>2</mml:mn>
+    </mml:msub>
+    <mml:msub>
+      <mml:mi>x</mml:mi>
+      <mml:mn>3</mml:mn>
+    </mml:msub>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula> and <inline-formula>
+  <mml:math id="muwsff4q5l">
+    <mml:msub>
+      <mml:mi>x</mml:mi>
+      <mml:mn>4</mml:mn>
+    </mml:msub>
+  </mml:math>
+</inline-formula> represent % Memory Used, Page Faults/sec, % Disk Idle Time, and Disk Bytes/sec, respectively. From the correlation matrix, it is evident that <inline-formula>
+  <mml:math id="mz90r00chl">
+    <mml:msub>
+      <mml:mi>x</mml:mi>
+      <mml:mn>1</mml:mn>
+    </mml:msub>
+  </mml:math>
+</inline-formula> has the lowest correlation with the other three parameters, indicating that it cannot be accurately represented by them. Therefore, % Memory Used was selected as the second parameter in this study. Among the remaining three parameters, <inline-formula>
+  <mml:math id="mqn99amuzz">
+    <mml:msub>
+      <mml:mi>x</mml:mi>
+      <mml:mn>2</mml:mn>
+    </mml:msub>
+  </mml:math>
+</inline-formula> demonstrates the highest average correlation with the four parameters, effectively bridging information on both memory and disk components. Consequently, Page Faults/sec was chosen as the third parameter. Theoretical analysis indicates that whenever a page fault occurs, a hard fault necessitates reading or writing data from the disk, implying that disk read/write frequency correlates with page faults in memory. The relationship between Page Faults/sec and disk activity is thus proportional, and Page Faults/sec maintains a dominant relationship with % Memory Used in the parameter group. <xref ref-type="fig" rid="fig_2">Figure 2</xref> illustrates the trend in Page Faults/sec and disk load (read, write, and seek operations) over one minute, where a consistent trend between these parameters can be observed. This correlation suggests that Page Faults/sec accurately reflects both % Disk Idle Time and Disk Bytes/sec, theoretically and empirically capturing disk load and read/write activity.</p><p>Accordingly, % Processor Time, % Memory Used, and Page Faults/sec were selected as the fundamental parameters for modelling computer system energy consumption in this study. The next step involves developing an energy estimation model based on these parameters.</p>
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>4. Development of the cmp model</title>
+      <p>Based on the observations and analysis above, a three-parameter energy estimation model—the CMP model—was proposed in this study. The modelling process primarily considers two scenarios: compute-intensive states and non-compute-intensive states of computer systems. In compute-intensive states, CPU activity predominantly drives energy fluctuations, while memory and disk remain in low-load states, exerting minimal impact on energy consumption. Conversely, non-compute-intensive states arise mainly during WEB transactional tasks and data-intensive operations, where the CPU, memory, and disk are all moderately loaded, and energy consumption is collectively determined by these components. Historically, energy consumption models have tended to focus on compute-intensive scenarios due to the substantial CPU variation in such tasks, with minimal memory and disk fluctuations. However, in data-intensive scenarios, CPU variation is relatively minor, exerting limited influence on total system energy consumption, whereas disk energy consumption undergoes more significant changes.</p><p>The rationale for distinguishing between these two states lies in the fact that, under low memory and disk loads, their impact on overall system energy consumption is comparable to that of Input/Output (I/O), motherboard, and other devices; they resemble background noise that obscures their influence. Moreover, the CPU maintains a baseline level of energy consumption even at low utilisation, indicating that, in compute-intensive states, the CPU primarily dictates system energy variations. In non-compute-intensive states, where memory and disk utilisation reaches a certain threshold, or when energy consumption exceeds a specific range, the energy consumption of the computer system is determined collectively by the CPU, memory, and disk.</p><p>To establish thresholds for compute-intensive and non-compute-intensive states, <inline-formula>
+  <mml:math id="mec03okulq">
+    <mml:mi>Δ</mml:mi>
+    <mml:msub>
+      <mml:mi>P</mml:mi>
+      <mml:mrow>
+        <mml:mi>c</mml:mi>
+        <mml:mi>p</mml:mi>
+        <mml:mi>u</mml:mi>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula> was defined as (<inline-formula>
+  <mml:math id="mz07p45y03">
+    <mml:msub>
+      <mml:mi>P</mml:mi>
+      <mml:mrow>
+        <mml:mrow>
+          <mml:mi>c</mml:mi>
+          <mml:mi>p</mml:mi>
+          <mml:mi>u</mml:mi>
+          <mml:mi>m</mml:mi>
+          <mml:mi>a</mml:mi>
+          <mml:mi>x</mml:mi>
+        </mml:mrow>
+      </mml:mrow>
+    </mml:msub>
+    <mml:msub>
+      <mml:mi>P</mml:mi>
+      <mml:mrow>
+        <mml:mrow>
+          <mml:mi>i</mml:mi>
+          <mml:mi>d</mml:mi>
+          <mml:mi>l</mml:mi>
+          <mml:mi>e</mml:mi>
+        </mml:mrow>
+      </mml:mrow>
+    </mml:msub>
+    <mml:mo>−</mml:mo>
+  </mml:math>
+</inline-formula>) in Eq. (3). In this example, after the operating system initiates essential services (excluding test tasks), CPU load variations exceed 5%. For this server, a 5% CPU utilisation is considered a basic fluctuation threshold. Furthermore, 5% of <inline-formula>
+  <mml:math id="mipg70pc7k">
+    <mml:mi>Δ</mml:mi>
+    <mml:msub>
+      <mml:mi>P</mml:mi>
+      <mml:mrow>
+        <mml:mi>c</mml:mi>
+        <mml:mi>p</mml:mi>
+        <mml:mi>u</mml:mi>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula> represents a relatively small proportion of the system’s overall energy consumption. If the energy consumption due to disk and memory load is below 5% of <inline-formula>
+  <mml:math id="m933vzoggc">
+    <mml:mi>Δ</mml:mi>
+    <mml:msub>
+      <mml:mi>P</mml:mi>
+      <mml:mrow>
+        <mml:mi>c</mml:mi>
+        <mml:mi>p</mml:mi>
+        <mml:mi>u</mml:mi>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula>, these components cease to be primary contributors to system energy variation. Therefore, the energy variation threshold for this server was set at 5% of <inline-formula>
+  <mml:math id="mvmz9iabih">
+    <mml:mi>Δ</mml:mi>
+    <mml:msub>
+      <mml:mi>P</mml:mi>
+      <mml:mrow>
+        <mml:mi>c</mml:mi>
+        <mml:mi>p</mml:mi>
+        <mml:mi>u</mml:mi>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula> (the higher the CPU performance, the lower this threshold). Consequently, this threshold can be expressed as follows:</p>
+      
+        <disp-formula>
+          <label>(9)</label>
+          <mml:math id="m70jd1zue1">
+            <mml:mrow>
+              <mml:mrow>
+                <mml:mo>{</mml:mo>
+                <mml:mo fence="true"/>
+                <mml:mtable columnalign="left" columnspacing="1em" rowspacing="4pt">
+                  <mml:mtr>
+                    <mml:mtd>
+                      <mml:mfrac>
+                        <mml:mrow>
+                          <mml:mi>Δ</mml:mi>
+                          <mml:msub>
+                            <mml:mi>P</mml:mi>
+                            <mml:mrow>
+                              <mml:mi>c</mml:mi>
+                              <mml:mi>p</mml:mi>
+                              <mml:mi>u</mml:mi>
+                            </mml:mrow>
+                          </mml:msub>
+                        </mml:mrow>
+                        <mml:mn>20</mml:mn>
+                      </mml:mfrac>
+                      <mml:mo>≥</mml:mo>
+                      <mml:mi>Δ</mml:mi>
+                      <mml:msub>
+                        <mml:mi>P</mml:mi>
+                        <mml:mrow>
+                          <mml:mrow>
+                            <mml:mi>m</mml:mi>
+                            <mml:mi>e</mml:mi>
+                            <mml:mi>m</mml:mi>
+                            <mml:mi>o</mml:mi>
+                            <mml:mi>r</mml:mi>
+                            <mml:mi>y</mml:mi>
+                          </mml:mrow>
+                        </mml:mrow>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mrow>
+                          <mml:mi>M</mml:mi>
+                          <mml:mi>e</mml:mi>
+                          <mml:mi>m</mml:mi>
+                          <mml:mi>o</mml:mi>
+                          <mml:mi>r</mml:mi>
+                          <mml:mi>y</mml:mi>
+                        </mml:mrow>
+                        <mml:mrow>
+                          <mml:mrow>
+                            <mml:mi>u</mml:mi>
+                            <mml:mi>t</mml:mi>
+                            <mml:mi>i</mml:mi>
+                            <mml:mi>l</mml:mi>
+                            <mml:mi>i</mml:mi>
+                            <mml:mi>z</mml:mi>
+                            <mml:mi>a</mml:mi>
+                            <mml:mi>t</mml:mi>
+                            <mml:mi>i</mml:mi>
+                            <mml:mi>o</mml:mi>
+                            <mml:mi>n</mml:mi>
+                          </mml:mrow>
+                        </mml:mrow>
+                      </mml:msub>
+                    </mml:mtd>
+                  </mml:mtr>
+                  <mml:mtr>
+                    <mml:mtd>
+                      <mml:mfrac>
+                        <mml:mrow>
+                          <mml:mi>Δ</mml:mi>
+                          <mml:msub>
+                            <mml:mi>P</mml:mi>
+                            <mml:mrow>
+                              <mml:mi>c</mml:mi>
+                              <mml:mi>p</mml:mi>
+                              <mml:mi>u</mml:mi>
+                            </mml:mrow>
+                          </mml:msub>
+                        </mml:mrow>
+                        <mml:mn>20</mml:mn>
+                      </mml:mfrac>
+                      <mml:mfrac>
+                        <mml:mrow>
+                          <mml:mi>P</mml:mi>
+                          <mml:mi>f</mml:mi>
+                        </mml:mrow>
+                        <mml:mrow>
+                          <mml:mi>P</mml:mi>
+                          <mml:msub>
+                            <mml:mi>f</mml:mi>
+                            <mml:mrow>
+                              <mml:mo>max</mml:mo>
+                            </mml:mrow>
+                          </mml:msub>
+                        </mml:mrow>
+                      </mml:mfrac>
+                      <mml:mo>≥</mml:mo>
+                      <mml:mi>Δ</mml:mi>
+                      <mml:msub>
+                        <mml:mi>P</mml:mi>
+                        <mml:mrow>
+                          <mml:mrow>
+                            <mml:mi>d</mml:mi>
+                            <mml:mi>i</mml:mi>
+                            <mml:mi>s</mml:mi>
+                            <mml:mi>k</mml:mi>
+                          </mml:mrow>
+                        </mml:mrow>
+                      </mml:msub>
+                    </mml:mtd>
+                  </mml:mtr>
+                </mml:mtable>
+              </mml:mrow>
+            </mml:mrow>
+          </mml:math>
+        </disp-formula>
+      
+      <p>where, <inline-formula>
+  <mml:math id="m47g952tw3">
+    <mml:mi>Δ</mml:mi>
+    <mml:msub>
+      <mml:mi>P</mml:mi>
+      <mml:mrow>
+        <mml:mrow>
+          <mml:mi>m</mml:mi>
+          <mml:mi>e</mml:mi>
+          <mml:mi>m</mml:mi>
+          <mml:mi>o</mml:mi>
+          <mml:mi>r</mml:mi>
+          <mml:mi>y</mml:mi>
+        </mml:mrow>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula> and <inline-formula>
+  <mml:math id="mmz5ds2v9b">
+    <mml:mi>Δ</mml:mi>
+    <mml:msub>
+      <mml:mi>P</mml:mi>
+      <mml:mrow>
+        <mml:mrow>
+          <mml:mi>d</mml:mi>
+          <mml:mi>i</mml:mi>
+          <mml:mi>s</mml:mi>
+          <mml:mi>k</mml:mi>
+        </mml:mrow>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula> represent the difference in energy consumption between full load and idle states for memory and disk, respectively; <inline-formula>
+  <mml:math id="mpa6nuqfjq">
+    <mml:mi>M</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:msub>
+      <mml:mi>y</mml:mi>
+      <mml:mrow>
+        <mml:mrow>
+          <mml:mi>u</mml:mi>
+          <mml:mi>t</mml:mi>
+          <mml:mi>i</mml:mi>
+          <mml:mi>l</mml:mi>
+          <mml:mi>i</mml:mi>
+          <mml:mi>z</mml:mi>
+          <mml:mi>a</mml:mi>
+          <mml:mi>t</mml:mi>
+          <mml:mi>i</mml:mi>
+          <mml:mi>o</mml:mi>
+          <mml:mi>n</mml:mi>
+        </mml:mrow>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula> denotes memory usage; <inline-formula>
+  <mml:math id="mdpnfgzih4">
+    <mml:mi>P</mml:mi>
+    <mml:mi>f</mml:mi>
+  </mml:math>
+</inline-formula> denotes Page Faults/sec; and <inline-formula>
+  <mml:math id="mph4j2i8ix">
+    <mml:mi>P</mml:mi>
+    <mml:msub>
+      <mml:mi>f</mml:mi>
+      <mml:mrow>
+        <mml:mi>m</mml:mi>
+        <mml:mi>a</mml:mi>
+        <mml:mi>x</mml:mi>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula> represents the average Page Faults/sec during full disk load. For this example, the compute-intensive range can be defined as follows: <inline-formula>
+  <mml:math id="m81rzk7qn7">
+    <mml:mi>M</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:msub>
+      <mml:mi>y</mml:mi>
+      <mml:mrow>
+        <mml:mrow>
+          <mml:mi>u</mml:mi>
+          <mml:mi>t</mml:mi>
+          <mml:mi>i</mml:mi>
+          <mml:mi>l</mml:mi>
+          <mml:mi>i</mml:mi>
+          <mml:mi>z</mml:mi>
+          <mml:mi>a</mml:mi>
+          <mml:mi>t</mml:mi>
+          <mml:mi>i</mml:mi>
+          <mml:mi>o</mml:mi>
+          <mml:mi>n</mml:mi>
+        </mml:mrow>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula> <inline-formula>
+  <mml:math id="mk5sfid0t2">
+    <mml:mo>≤</mml:mo>
+  </mml:math>
+</inline-formula> 40% and <inline-formula>
+  <mml:math id="mz4krbvgd6">
+    <mml:mi>P</mml:mi>
+    <mml:mi>f</mml:mi>
+  </mml:math>
+</inline-formula> <inline-formula>
+  <mml:math id="mexqquu2w8">
+    <mml:mo>≤</mml:mo>
+  </mml:math>
+</inline-formula> 1094. These two conditions must both be satisfied for CPU to dominate energy variations; if either condition exceeds this threshold, the system energy variation is influenced collectively by CPU, memory, and disk.</p>
+      
+        <table-wrap id="table_3">
+          <label>Table 3</label>
+          <caption>
+            <title>Energy consumption of the server under different loads</title>
+          </caption>
+          <table><tbody><tr><td colspan="1" rowspan="1" colwidth="157"><p>% Processor Time</p></td><td colspan="1" rowspan="1" colwidth="109"><p>% Memory Used</p></td><td colspan="1" rowspan="1" colwidth="127"><p>Page Faults/sec</p></td><td colspan="1" rowspan="1" colwidth="130"><p>Energy/w</p></td></tr><tr><td colspan="1" rowspan="1" colwidth="157"><p>0</p></td><td colspan="1" rowspan="1" colwidth="109"><p>6</p></td><td colspan="1" rowspan="1" colwidth="127"><p>674</p></td><td colspan="1" rowspan="1" colwidth="130"><p>209.12</p></td></tr><tr><td colspan="1" rowspan="1" colwidth="157"><p>19</p></td><td colspan="1" rowspan="1" colwidth="109"><p>23</p></td><td colspan="1" rowspan="1" colwidth="127"><p>3 932</p></td><td colspan="1" rowspan="1" colwidth="130"><p>242.83</p></td></tr><tr><td colspan="1" rowspan="1" colwidth="157"><p>64</p></td><td colspan="1" rowspan="1" colwidth="109"><p>37</p></td><td colspan="1" rowspan="1" colwidth="127"><p>5 205</p></td><td colspan="1" rowspan="1" colwidth="130"><p>275.53</p></td></tr><tr><td colspan="1" rowspan="1" colwidth="157"><p>75</p></td><td colspan="1" rowspan="1" colwidth="109"><p>43</p></td><td colspan="1" rowspan="1" colwidth="127"><p>7 735</p></td><td colspan="1" rowspan="1" colwidth="130"><p>281.92</p></td></tr><tr><td colspan="1" rowspan="1" colwidth="157"><p>93</p></td><td colspan="1" rowspan="1" colwidth="109"><p>8</p></td><td colspan="1" rowspan="1" colwidth="127"><p>406</p></td><td colspan="1" rowspan="1" colwidth="130"><p>294.76</p></td></tr></tbody></table>
+        </table-wrap>
+      
+      <p> <xref ref-type="table" rid="table_3">Table 3</xref> presents the energy consumption values of the server under different loads. Based on this data, the threshold values were used to define states, and a plot of CPU utilisation versus energy consumption in compute-intensive states is shown in <xref ref-type="fig" rid="fig_3">Figure 3</xref>, where y represents energy consumption, and x represents CPU utilisation. The FAN model posits that CPU variations primarily drive overall system changes and therefore employs a linear model. However, according to <xref ref-type="fig" rid="fig_3">Figure 3</xref>, and corroborated by publicly available CPU-to-energy data from Standard Performance Evaluation Corporation (SPEC) [<xref ref-type="bibr" rid="ref_12">12</xref>], it becomes apparent that even in compute-intensive tasks, the relationship between CPU utilisation and energy consumption is not strictly linear. As CPU load increases, energy consumption converges towards a fixed value, displaying a degree of curvature. Thus, the modelling approach may benefit from considering linear regression, exponential regression, and power regression models.</p>
+      
+        <fig id="fig_3">
+          <label>Figure 3</label>
+          <caption>
+            <title>Plot of CPU utilisation versus energy consumption in compute-intensive states</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/5/img_wPSrhL6PGnkimrel.png"/>
+        </fig>
+      
+      <p>Using the existing data, linear regression, exponential regression, and power regression models were each applied, and their goodness-of-fit R2 was calculated. The highest R2 value, 0.9917, was achieved with the power regression model. Consequently, the energy consumption model for typical compute-intensive states adopts the power regression approach, yielding the following Eq. (10):</p>
+      
+        <disp-formula>
+          <label>(10)</label>
+          <mml:math id="mrj8odyoa6">
+            <mml:mrow>
+              <mml:mrow>
+                <mml:mi>y</mml:mi>
+              </mml:mrow>
+              <mml:mo>=</mml:mo>
+              <mml:msup>
+                <mml:mrow>
+                  <mml:mi>e</mml:mi>
+                </mml:mrow>
+                <mml:mrow>
+                  <mml:mn>5.6851</mml:mn>
+                </mml:mrow>
+              </mml:msup>
+              <mml:msup>
+                <mml:mi>x</mml:mi>
+                <mml:mrow>
+                  <mml:mn>0.1257</mml:mn>
+                </mml:mrow>
+              </mml:msup>
+            </mml:mrow>
+          </mml:math>
+        </disp-formula>
+      
+      <p> where, $x$ represents the percentage of time the CPU spends on non-idle threads. For non-compute-intensive states, a multiple linear regression equation can be constructed as follows:</p>
+      
+        <disp-formula>
+          <label>(11)</label>
+          <mml:math id="maeqgjecgw">
+            <mml:mrow>
+              <mml:mrow>
+                <mml:mi>y</mml:mi>
+              </mml:mrow>
+              <mml:mo>=</mml:mo>
+              <mml:mo>+</mml:mo>
+              <mml:mo>+</mml:mo>
+              <mml:mo>+</mml:mo>
+              <mml:mo>+</mml:mo>
+              <mml:msub>
+                <mml:mi>β</mml:mi>
+                <mml:mn>0</mml:mn>
+              </mml:msub>
+              <mml:msub>
+                <mml:mi>β</mml:mi>
+                <mml:mn>1</mml:mn>
+              </mml:msub>
+              <mml:msub>
+                <mml:mrow>
+                  <mml:mi>x</mml:mi>
+                </mml:mrow>
+                <mml:mn>1</mml:mn>
+              </mml:msub>
+              <mml:msub>
+                <mml:mi>β</mml:mi>
+                <mml:mn>2</mml:mn>
+              </mml:msub>
+              <mml:msub>
+                <mml:mi>x</mml:mi>
+                <mml:mn>2</mml:mn>
+              </mml:msub>
+              <mml:msub>
+                <mml:mi>β</mml:mi>
+                <mml:mn>3</mml:mn>
+              </mml:msub>
+              <mml:msub>
+                <mml:mi>x</mml:mi>
+                <mml:mn>3</mml:mn>
+              </mml:msub>
+              <mml:mi>ε</mml:mi>
+            </mml:mrow>
+          </mml:math>
+        </disp-formula>
+      
+      <p>where, $y<inline-formula>
+  <mml:math id="mpipyd8ube">
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mo>;</mml:mo>
+    <mml:mo>;</mml:mo>
+  </mml:math>
+</inline-formula>x_1<inline-formula>
+  <mml:math id="ms63ql5e9n">
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>x_2<inline-formula>
+  <mml:math id="mhotknsc8n">
+    <mml:mo>,</mml:mo>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+  </mml:math>
+</inline-formula>x_3<inline-formula>
+  <mml:math id="mkch9pr8ws">
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>C</mml:mi>
+    <mml:mi>P</mml:mi>
+    <mml:mi>U</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>P</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>F</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mo>,</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>;</mml:mo>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+  </mml:math>
+</inline-formula>\beta_0<inline-formula>
+  <mml:math id="memclot48a">
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mo>;</mml:mo>
+  </mml:math>
+</inline-formula>\varepsilon<inline-formula>
+  <mml:math id="m0p9ibiafp">
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>F</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mo>.</mml:mo>
+    <mml:mo>&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+  </mml:math>
+</inline-formula>n<inline-formula>
+  <mml:math id="mbsw0b6olg">
+    <mml:mi>o</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>q</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mo>,</mml:mo>
+    <mml:mo>:&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>=</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>:</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>"</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>"</mml:mo>
+    </mml:mrow>
+  </mml:math>
+</inline-formula>y=\beta_0+\beta_1 x_{1 i}+\beta_2 x_{2 i}+\beta_3 x_{3 i}+\varepsilon_1$</p><p>That is,</p>
+      
+        <disp-formula>
+          <label>(12)</label>
+          <mml:math id="m3g98hp0go">
+            <mml:mrow>
+              <mml:mrow>
+                <mml:mo>{</mml:mo>
+                <mml:mo fence="true"/>
+                <mml:mtable columnspacing="1em" rowspacing="4pt">
+                  <mml:mtr>
+                    <mml:mtd>
+                      <mml:msub>
+                        <mml:mi>y</mml:mi>
+                        <mml:mn>1</mml:mn>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mi>β</mml:mi>
+                        <mml:mn>0</mml:mn>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mi>β</mml:mi>
+                        <mml:mn>1</mml:mn>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mi>x</mml:mi>
+                        <mml:mrow>
+                          <mml:mn>11</mml:mn>
+                        </mml:mrow>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mi>β</mml:mi>
+                        <mml:mn>2</mml:mn>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mi>x</mml:mi>
+                        <mml:mrow>
+                          <mml:mn>21</mml:mn>
+                        </mml:mrow>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mi>β</mml:mi>
+                        <mml:mn>3</mml:mn>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mi>x</mml:mi>
+                        <mml:mrow>
+                          <mml:mn>31</mml:mn>
+                        </mml:mrow>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mi>μ</mml:mi>
+                        <mml:mn>1</mml:mn>
+                      </mml:msub>
+                      <mml:mo>=</mml:mo>
+                      <mml:mo>+</mml:mo>
+                      <mml:mo>+</mml:mo>
+                      <mml:mo>+</mml:mo>
+                      <mml:mo>+</mml:mo>
+                    </mml:mtd>
+                  </mml:mtr>
+                  <mml:mtr>
+                    <mml:mtd>
+                      <mml:msub>
+                        <mml:mi>y</mml:mi>
+                        <mml:mn>2</mml:mn>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mi>β</mml:mi>
+                        <mml:mn>0</mml:mn>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mi>β</mml:mi>
+                        <mml:mn>1</mml:mn>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mi>x</mml:mi>
+                        <mml:mrow>
+                          <mml:mn>12</mml:mn>
+                        </mml:mrow>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mi>β</mml:mi>
+                        <mml:mn>2</mml:mn>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mi>x</mml:mi>
+                        <mml:mrow>
+                          <mml:mn>22</mml:mn>
+                        </mml:mrow>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mi>β</mml:mi>
+                        <mml:mn>3</mml:mn>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mi>x</mml:mi>
+                        <mml:mrow>
+                          <mml:mn>32</mml:mn>
+                        </mml:mrow>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mi>μ</mml:mi>
+                        <mml:mn>2</mml:mn>
+                      </mml:msub>
+                      <mml:mo>=</mml:mo>
+                      <mml:mo>+</mml:mo>
+                      <mml:mo>+</mml:mo>
+                      <mml:mo>+</mml:mo>
+                      <mml:mo>+</mml:mo>
+                    </mml:mtd>
+                  </mml:mtr>
+                  <mml:mtr>
+                    <mml:mtd>
+                      <mml:mo>…</mml:mo>
+                    </mml:mtd>
+                  </mml:mtr>
+                  <mml:mtr>
+                    <mml:mtd>
+                      <mml:msub>
+                        <mml:mi>y</mml:mi>
+                        <mml:mi>n</mml:mi>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mi>β</mml:mi>
+                        <mml:mn>0</mml:mn>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mi>β</mml:mi>
+                        <mml:mn>1</mml:mn>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mi>x</mml:mi>
+                        <mml:mrow>
+                          <mml:mn>1</mml:mn>
+                          <mml:mi>n</mml:mi>
+                        </mml:mrow>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mi>β</mml:mi>
+                        <mml:mn>2</mml:mn>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mi>x</mml:mi>
+                        <mml:mrow>
+                          <mml:mn>2</mml:mn>
+                          <mml:mi>n</mml:mi>
+                        </mml:mrow>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mi>β</mml:mi>
+                        <mml:mn>3</mml:mn>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mi>x</mml:mi>
+                        <mml:mrow>
+                          <mml:mn>3</mml:mn>
+                          <mml:mi>n</mml:mi>
+                        </mml:mrow>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mi>μ</mml:mi>
+                        <mml:mi>n</mml:mi>
+                      </mml:msub>
+                      <mml:mo>=</mml:mo>
+                      <mml:mo>+</mml:mo>
+                      <mml:mo>+</mml:mo>
+                      <mml:mo>+</mml:mo>
+                      <mml:mo>+</mml:mo>
+                    </mml:mtd>
+                  </mml:mtr>
+                </mml:mtable>
+              </mml:mrow>
+            </mml:mrow>
+          </mml:math>
+        </disp-formula>
+      
+      <p>By substituting the data from the table into this equation, a system of equations can be established. Using the least squares method to minimise the sum of squared errors, the parameters were estimated to derive the model. The resulting equation is as follows:</p><p style="text-align: center"><inline-formula>
+  <mml:math id="m44hvq91bf">
+    <mml:mi>y</mml:mi>
+    <mml:mo>=</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>+</mml:mo>
+    <mml:mo>+</mml:mo>
+    <mml:mn>198.20737</mml:mn>
+    <mml:mn>6.23549</mml:mn>
+    <mml:mn>200.28839</mml:mn>
+    <mml:mn>0.00033479</mml:mn>
+    <mml:msub>
+      <mml:mi>x</mml:mi>
+      <mml:mn>1</mml:mn>
+    </mml:msub>
+    <mml:msub>
+      <mml:mi>x</mml:mi>
+      <mml:mn>2</mml:mn>
+    </mml:msub>
+    <mml:msub>
+      <mml:mi>x</mml:mi>
+      <mml:mn>3</mml:mn>
+    </mml:msub>
+  </mml:math>
+</inline-formula></p><p>In summary, the CMP energy consumption model for the DELL 2950 server is as follows:</p><p style="text-align: center"><inline-formula>
+  <mml:math id="m3b718uc6l">
+    <mml:mrow>
+      <mml:mo>{</mml:mo>
+      <mml:mo fence="true"/>
+      <mml:mtable columnalign="left" columnspacing="1em" rowspacing="4pt">
+        <mml:mtr>
+          <mml:mtd>
+            <mml:mi>y</mml:mi>
+            <mml:mi>%</mml:mi>
+            <mml:mo>=</mml:mo>
+            <mml:mo>⩽</mml:mo>
+            <mml:mo>)</mml:mo>
+            <mml:msup>
+              <mml:mrow>
+                <mml:mi>e</mml:mi>
+              </mml:mrow>
+              <mml:mrow>
+                <mml:mn>5.6851</mml:mn>
+              </mml:mrow>
+            </mml:msup>
+            <mml:msup>
+              <mml:mi>x</mml:mi>
+              <mml:mrow>
+                <mml:mn>0.1257</mml:mn>
+              </mml:mrow>
+            </mml:msup>
+            <mml:mrow>
+              <mml:mo>(</mml:mo>
+              <mml:mo>⩽</mml:mo>
+              <mml:mo fence="true"/>
+              <mml:msub>
+                <mml:mtext> Memory </mml:mtext>
+                <mml:mrow>
+                  <mml:mtext>utilization </mml:mtext>
+                </mml:mrow>
+              </mml:msub>
+            </mml:mrow>
+            <mml:mstyle scriptlevel="0">
+              <mml:mspace width="1em"/>
+            </mml:mstyle>
+            <mml:mn>40</mml:mn>
+            <mml:mn>1094</mml:mn>
+            <mml:mtext> And Pf </mml:mtext>
+          </mml:mtd>
+        </mml:mtr>
+        <mml:mtr>
+          <mml:mtd>
+            <mml:mi>y</mml:mi>
+            <mml:mo>=</mml:mo>
+            <mml:mo>−</mml:mo>
+            <mml:mo>+</mml:mo>
+            <mml:mo>+</mml:mo>
+            <mml:mn>198.20737</mml:mn>
+            <mml:mn>6.23549</mml:mn>
+            <mml:mn>200.28839</mml:mn>
+            <mml:mn>0.0003348</mml:mn>
+            <mml:msub>
+              <mml:mi>x</mml:mi>
+              <mml:mn>1</mml:mn>
+            </mml:msub>
+            <mml:msub>
+              <mml:mi>x</mml:mi>
+              <mml:mn>2</mml:mn>
+            </mml:msub>
+            <mml:msub>
+              <mml:mi>x</mml:mi>
+              <mml:mn>3</mml:mn>
+            </mml:msub>
+            <mml:mrow>
+              <mml:mo>(</mml:mo>
+              <mml:mo>&amp;gt;</mml:mo>
+              <mml:mo>&amp;gt;</mml:mo>
+              <mml:mo>)</mml:mo>
+              <mml:msub>
+                <mml:mtext> Memory </mml:mtext>
+                <mml:mrow>
+                  <mml:mtext>utilization </mml:mtext>
+                </mml:mrow>
+              </mml:msub>
+              <mml:mn>40</mml:mn>
+              <mml:mn>1094</mml:mn>
+              <mml:mi>%</mml:mi>
+              <mml:mtext> Or Pf </mml:mtext>
+            </mml:mrow>
+          </mml:mtd>
+        </mml:mtr>
+      </mml:mtable>
+    </mml:mrow>
+  </mml:math>
+</inline-formula></p>
+    </sec>
+    <sec sec-type="">
+      <title>5. Experiments</title>
+      <p>The CMP model was compared with the commonly used FAN and Cubic models in terms of accuracy [<xref ref-type="bibr" rid="ref_12">12</xref>]. The energy consumption model for the DELL 2950 server, developed in Section 3, was employed to evaluate these three models. For the experimental tests, SPEC's JVM2008 suite [<xref ref-type="bibr" rid="ref_13">13</xref>], [<xref ref-type="bibr" rid="ref_14">14</xref>] was selected as the compute-intensive benchmark, as it includes various algorithmic tests and serves as a representative compute-intensive workload. WEB transactional tasks were simulated using HP LoadRunner [<xref ref-type="bibr" rid="ref_14">14</xref>], [<xref ref-type="bibr" rid="ref_15">15</xref>] with 4000 virtual users, and data-intensive tasks were tested using iozone [<xref ref-type="bibr" rid="ref_16">16</xref>], [<xref ref-type="bibr" rid="ref_17">17</xref>]. The energy measurement tool used was Northmeter's Power Bay-SSM [<xref ref-type="bibr" rid="ref_18">18</xref>].</p><p>SPEC is a U.S.-based third-party standards association [<xref ref-type="bibr" rid="ref_19">19</xref>]. The SPEC-JVM suite includes a wide range of data-intensive algorithm tests, while iozone is an internationally recognised tool for file system read/write testing and is commonly employed in energy consumption studies of data-intensive operations.</p><p>As shown in <xref ref-type="fig" rid="fig_4">Figure 4</xref>, the energy estimation differences between FAN and CMP models in the WEB transactional LoadRunner tests are minimal, with CMP showing a slight advantage, nearly equalling FAN. In the compute-intensive SPEC JVM2008 tests, the CMP model slightly outperformed the FAN model. However, in the data-intensive iozone tests, the CMP model demonstrated a marked improvement over the FAN model. These results indicate that while the FAN model maintains a certain level of accuracy, it does not consider energy-dominant components as comprehensively as the CMP model, resulting in noticeably lower accuracy in certain scenarios.</p>
+      
+        <fig id="fig_4">
+          <label>Figure 4</label>
+          <caption>
+            <title>Comparison of energy consumption estimation using CMP, Cubic, and FAN models</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/5/img_wsKomPkAx5Ds2xS-.png"/>
+        </fig>
+      
+      <p>The CMP model was also applied to IBM X3650 and HP Proliant DL380 G5 for similar modelling. Test results indicate that for compute-intensive tasks, the CMP model improves accuracy over the FAN model by an average of approximately 1%. For data-intensive tasks, accuracy increases by 2-3%. Furthermore, as disk configuration volume increases within server configurations, the advantage of the CMP model becomes increasingly evident. Given that storage systems now account for 27%-40% of data centre energy consumption [<xref ref-type="bibr" rid="ref_20">20</xref>], this approach to energy consumption estimation for service nodes holds significant potential.</p><p>The experimental findings demonstrate that, in computer systems, the contributions of various components to energy consumption fluctuations vary according to the task type and system state, indicating that no single component consistently dominates energy consumption changes.</p>
+    </sec>
+    <sec sec-type="">
+      <title>6. Conclusion</title>
+      <p>The experiments indicate that the CMP model achieves a higher accuracy in estimating computer system energy consumption than the FAN and Cubic models. Once the CMP model is established, overall energy consumption can be swiftly estimated by monitoring only three parameters within the system, demonstrating strong operational feasibility and portability.</p><p>The analysis conducted during CMP modelling reveals that managing CPU utilisation and controlling disk I/O speed (disk rotation speed) are both effective methods for reducing energy consumption and improving computer system efficiency. These methods align with current research trends in cloud computing focused on enhancing computer energy efficiency. Thus, the CMP energy model provides a foundational framework for improving power utilisation efficiency in computer systems, increasing the number of tasks completed per unit of energy consumed. Accordingly, future research should focus on leveraging these models to further explore the relationship between computer tasks and energy efficiency. Additionally, the design of operational modes to improve computer efficiency and task scheduling methods for enhancing energy efficiency on cloud platforms are recommended as areas for continued investigation.</p>
+    </sec>
+  </body>
+  <back>
+    <ack>
+      <title>Acknowledgments</title>
+      
+    </ack>
+    <app-group>
+      <app>
+        <title>Appendix</title>
+        
+      </app>
+    </app-group>
+    <notes>
+      <title>Author Contributions</title>
+      
+    </notes>
+    <notes>
+      <title>Funding</title>
+      <p>This study was funded by the Postgraduate Education Reform and Quality Improvement Project of Henan Province (Grant No.: YJS2024AL134) and Graduate Education Reform Project of Henan Province (Grant No.: 2023SJGLX345Y).</p>
+    </notes>
+    <notes>
+      <title>Informed Consent Statement</title>
+      
+    </notes>
+    <notes>
+      <title>Data Availability Statement</title>
+      <p>The data used to support the research findings are available from the corresponding author upon request.</p>
+    </notes>
+    <notes notes-type="COI-statement">
+      <title>Conflicts of Interest</title>
+      <p>The authors declare no conflict of interest.</p>
+    </notes>
+    <ref-list>
+      <title>References</title>
+      <ref id="ref_1">
+        <label>1.</label>
+        <element-citation publication-type="journal">
+          <volume>19</volume>
+          <page-range>1731-1743</page-range>
+          <issue>3</issue>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Chen</surname>
+              <given-names>Lulu</given-names>
+            </name>
+            <name>
+              <surname>Lu</surname>
+              <given-names>Zhihui</given-names>
+            </name>
+            <name>
+              <surname>Xiao</surname>
+              <given-names>Ai</given-names>
+            </name>
+            <name>
+              <surname>Duan</surname>
+              <given-names>Qiang</given-names>
+            </name>
+            <name>
+              <surname>Wu</surname>
+              <given-names>Jie</given-names>
+            </name>
+            <name>
+              <surname>Hung</surname>
+              <given-names>Patrick C.K.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/TASE.2022.3141590</pub-id>
+          <article-title>A resource recommendation model for heterogeneous workloads in fog-based smart factory environment</article-title>
+          <source>IEEE Trans. Autom. Sci. Eng.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_2">
+        <label>2.</label>
+        <element-citation publication-type="journal">
+          <volume>36</volume>
+          <page-range>4124-4128</page-range>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Qandeel</surname>
+              <given-names>Haitham</given-names>
+            </name>
+            <name>
+              <surname>Chew</surname>
+              <given-names>Cindy</given-names>
+            </name>
+            <name>
+              <surname>Tanner</surname>
+              <given-names>K E</given-names>
+            </name>
+            <name>
+              <surname>O’Dwyer</surname>
+              <given-names>Patrick J</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1007/s00464-021-08735-0</pub-id>
+          <article-title>Testing meshes in a computer model of a laparoscopic ventral hernia repair</article-title>
+          <source>Surg. Endosc.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_3">
+        <label>3.</label>
+        <element-citation publication-type="journal">
+          <volume>18</volume>
+          <page-range>2073-2080</page-range>
+          <issue>12</issue>
+          <year>2020</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Velasquez</surname>
+              <given-names>Washington</given-names>
+            </name>
+            <name>
+              <surname>Filian-Gomez</surname>
+              <given-names>Margarita</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/TLA.2020.9400434</pub-id>
+          <article-title>Communication network model for a computer management and control system implemented using fiware platform: Case study</article-title>
+          <source>IEEE Latin America Trans.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_4">
+        <label>4.</label>
+        <element-citation publication-type="journal">
+          <volume>26</volume>
+          <page-range>1905-1919</page-range>
+          <year>2020</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Yadav</surname>
+              <given-names>Rahul</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>Weizhe</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>Keqin</given-names>
+            </name>
+            <name>
+              <surname>Liu</surname>
+              <given-names>Chuanyi</given-names>
+            </name>
+            <name>
+              <surname>Shafiq</surname>
+              <given-names>Muhammad</given-names>
+            </name>
+            <name>
+              <surname>Karn</surname>
+              <given-names>Nabin Kumar</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1007/s11276-018-1874-1</pub-id>
+          <article-title>An adaptive heuristic for managing energy consumption and overloaded hosts in a cloud data center</article-title>
+          <source>Wireless Netw.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_5">
+        <label>5.</label>
+        <element-citation publication-type="journal">
+          <volume>470</volume>
+          <page-range>125750</page-range>
+          <year>2020</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Zhang</surname>
+              <given-names>Sulan</given-names>
+            </name>
+            <name>
+              <surname>Shen</surname>
+              <given-names>Yunfu</given-names>
+            </name>
+            <name>
+              <surname>Zhao</surname>
+              <given-names>Zheyu</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.optcom.2020.125750</pub-id>
+          <article-title>Design and implementation of a three-lane CA traffic flow model on ternary optical computer</article-title>
+          <source>Opt. Commun.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_6">
+        <label>6.</label>
+        <element-citation publication-type="journal">
+          <volume>29</volume>
+          <page-range>786-797</page-range>
+          <issue>4</issue>
+          <year>2020</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Baker</surname>
+              <given-names>Evan</given-names>
+            </name>
+            <name>
+              <surname>Challenor</surname>
+              <given-names>Peter</given-names>
+            </name>
+            <name>
+              <surname>Eames</surname>
+              <given-names>Matt</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1080/10618600.2020.1750416</pub-id>
+          <article-title>Predicting the output from a stochastic computer model when a deterministic approximation is available</article-title>
+          <source>J. Comput. Graph. Stat.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_7">
+        <label>7.</label>
+        <element-citation publication-type="journal">
+          <volume>72</volume>
+          <page-range>3458-3472</page-range>
+          <issue>12</issue>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Zhao</surname>
+              <given-names>Han</given-names>
+            </name>
+            <name>
+              <surname>Cui</surname>
+              <given-names>Weihao</given-names>
+            </name>
+            <name>
+              <surname>Chen</surname>
+              <given-names>Quan</given-names>
+            </name>
+            <name>
+              <surname>Leng</surname>
+              <given-names>Jingwen</given-names>
+            </name>
+            <name>
+              <surname>Zeng</surname>
+              <given-names>Deze</given-names>
+            </name>
+            <name>
+              <surname>Guo</surname>
+              <given-names>Minyi</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/TC.2023.3303988</pub-id>
+          <article-title>Improving cluster utilization through adaptive resource management for deep neural network and CPU jobs colocation</article-title>
+          <source>IEEE Trans. Comput.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_8">
+        <label>8.</label>
+        <element-citation publication-type="journal">
+          <volume>60</volume>
+          <page-range>710-726</page-range>
+          <issue>2</issue>
+          <year>2021</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Aerts</surname>
+              <given-names>Diederik</given-names>
+            </name>
+            <name>
+              <surname>Beltran</surname>
+              <given-names>Lester</given-names>
+            </name>
+            <name>
+              <surname>Geriente</surname>
+              <given-names>Suzette</given-names>
+            </name>
+            <name>
+              <surname>Sozzo</surname>
+              <given-names>Sandro</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1007/s10773-019-04155-y</pub-id>
+          <article-title>Quantum-theoretic modeling in computer science: A complex Hilbert space model for entangled concepts in corpuses of documents</article-title>
+          <source>Int. J. Theor. Phys.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_9">
+        <label>9.</label>
+        <element-citation publication-type="journal">
+          <volume>108</volume>
+          <page-range>022612</page-range>
+          <issue>2</issue>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Wang</surname>
+              <given-names>Xiaoyang</given-names>
+            </name>
+            <name>
+              <surname>Feng</surname>
+              <given-names>Xu</given-names>
+            </name>
+            <name>
+              <surname>Hartung</surname>
+              <given-names>Tobias</given-names>
+            </name>
+            <name>
+              <surname>Jansen</surname>
+              <given-names>Karl</given-names>
+            </name>
+            <name>
+              <surname>Stornati</surname>
+              <given-names>Paolo</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1103/PhysRevA.108.022612</pub-id>
+          <article-title>Critical behavior of the Ising model by preparing the thermal state on a quantum computer</article-title>
+          <source>Phys. Rev. A</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_10">
+        <label>10.</label>
+        <element-citation publication-type="journal">
+          <volume>59</volume>
+          <page-range>684-694</page-range>
+          <issue>5</issue>
+          <year>2020</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Gruzlikov</surname>
+              <given-names>A M</given-names>
+            </name>
+            <name>
+              <surname>Kolesov</surname>
+              <given-names>N V</given-names>
+            </name>
+            <name>
+              <surname>Lukoyanov</surname>
+              <given-names>E V</given-names>
+            </name>
+            <name>
+              <surname>Tolmacheva</surname>
+              <given-names>M V</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1134/S1064230720050068</pub-id>
+          <article-title>Diagnostic model for a distributed computer system in real time</article-title>
+          <source>J. Comput. Syst. Sci. Int.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_11">
+        <label>11.</label>
+        <element-citation publication-type="journal">
+          <volume>70</volume>
+          <page-range>94-103</page-range>
+          <issue>2</issue>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Heidary</surname>
+              <given-names>Majid</given-names>
+            </name>
+            <name>
+              <surname>Pour</surname>
+              <given-names>Ehsan Sadeghi</given-names>
+            </name>
+            <name>
+              <surname>Noori</surname>
+              <given-names>Azad</given-names>
+            </name>
+            <name>
+              <surname>Bagha</surname>
+              <given-names>Maedeh Abedini</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1504/IJCAT.2022.130295</pub-id>
+          <article-title>Optimisation of energy consumption in cloud video surveillance centre based on monitoring and placement of virtual machines</article-title>
+          <source>Int. J. Comput. Appl. Technol.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_12">
+        <label>12.</label>
+        <element-citation publication-type="journal">
+          <volume>1992</volume>
+          <page-range>022172</page-range>
+          <issue>2</issue>
+          <year>2021</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Bi</surname>
+              <given-names>Kegang</given-names>
+            </name>
+            <name>
+              <surname>Yu</surname>
+              <given-names>Bao</given-names>
+            </name>
+            <name>
+              <surname>Guo</surname>
+              <given-names>Baojin</given-names>
+            </name>
+            <name>
+              <surname>Bi</surname>
+              <given-names>Yongjiang</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1088/1742-6596/1992/2/022172</pub-id>
+          <article-title>On the basis of computer analysis of the current situation of energy conservation and consumption reduction in China's iron and steel industry and research measures</article-title>
+          <source>J. Phys.: Conf. Ser.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_13">
+        <label>13.</label>
+        <element-citation publication-type="journal">
+          <volume>31</volume>
+          <page-range>9307-9319</page-range>
+          <issue>12</issue>
+          <year>2019</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Ou</surname>
+              <given-names>Yang</given-names>
+            </name>
+            <name>
+              <surname>Luo</surname>
+              <given-names>Jianqiao</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>Bailin</given-names>
+            </name>
+            <name>
+              <surname>He</surname>
+              <given-names>Biao</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1007/s00521-019-04337-z</pub-id>
+          <article-title>A classification model of railway fasteners based on computer vision</article-title>
+          <source>Neural Comput. Appl.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_14">
+        <label>14.</label>
+        <element-citation publication-type="journal">
+          <volume>11</volume>
+          <page-range>1015</page-range>
+          <issue>11</issue>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Ströbel</surname>
+              <given-names>Robin</given-names>
+            </name>
+            <name>
+              <surname>Probst</surname>
+              <given-names>Yannik</given-names>
+            </name>
+            <name>
+              <surname>Deucker</surname>
+              <given-names>Samuel</given-names>
+            </name>
+            <name>
+              <surname>Fleischer</surname>
+              <given-names>Jürgen</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3390/machines11111015</pub-id>
+          <article-title>Time series prediction for energy consumption of computer numerical control axes using hybrid machine learning models</article-title>
+          <source>Machines</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_15">
+        <label>15.</label>
+        <element-citation publication-type="journal">
+          <volume>208</volume>
+          <page-range>107899</page-range>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Ma</surname>
+              <given-names>Haizhou</given-names>
+            </name>
+            <name>
+              <surname>Ding</surname>
+              <given-names>Aiping</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.epsr.2022.107899</pub-id>
+          <article-title>Method for evaluation on energy consumption of cloud computing data center based on deep reinforcement learning</article-title>
+          <source>Electr. Power Syst. Res.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_16">
+        <label>16.</label>
+        <element-citation publication-type="journal">
+          <volume>643</volume>
+          <page-range>119218</page-range>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Li</surname>
+              <given-names>Chuang</given-names>
+            </name>
+            <name>
+              <surname>Zhu</surname>
+              <given-names>Dan</given-names>
+            </name>
+            <name>
+              <surname>Hu</surname>
+              <given-names>Chunhua</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>Xiaolong</given-names>
+            </name>
+            <name>
+              <surname>Nan</surname>
+              <given-names>Suqin</given-names>
+            </name>
+            <name>
+              <surname>Huang</surname>
+              <given-names>Hua</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.ins.2023.119218</pub-id>
+          <article-title>ECDX: Energy consumption prediction model based on distance correlation and XGBoost for edge data center</article-title>
+          <source>Inf. Sci.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_17">
+        <label>17.</label>
+        <element-citation publication-type="journal">
+          <volume>18</volume>
+          <page-range>225-247</page-range>
+          <issue>2</issue>
+          <year>2019</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Karimpour</surname>
+              <given-names>Reza</given-names>
+            </name>
+            <name>
+              <surname>Ballini</surname>
+              <given-names>Fabio</given-names>
+            </name>
+            <name>
+              <surname>Ölcer</surname>
+              <given-names>Aykut I</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1007/s13437-019-00170-2</pub-id>
+          <article-title>Circular economy approach to facilitate the transition of the port cities into self-sustainable energy ports—A case study in Copenhagen-Malmö Port (CMP)</article-title>
+          <source>WMU J. Marit. Aff.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_18">
+        <label>18.</label>
+        <element-citation publication-type="journal">
+          <volume>159</volume>
+          <page-range>379-394</page-range>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Guo</surname>
+              <given-names>Binglei</given-names>
+            </name>
+            <name>
+              <surname>Wu</surname>
+              <given-names>Junqi</given-names>
+            </name>
+            <name>
+              <surname>Pu</surname>
+              <given-names>Yonglin</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>Jun</given-names>
+            </name>
+            <name>
+              <surname>Yu</surname>
+              <given-names>Jiong</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.future.2024.04.059</pub-id>
+          <article-title>Energy consumption estimation and profiling for queries in distributed database systems based on a bottom-up comprehensive energy model</article-title>
+          <source>Future Gener. Comput. Syst.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_19">
+        <label>19.</label>
+        <element-citation publication-type="journal">
+          <volume>18</volume>
+          <page-range>8182-8190</page-range>
+          <issue>11</issue>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Hua</surname>
+              <given-names>Yining</given-names>
+            </name>
+            <name>
+              <surname>Sevegnani</surname>
+              <given-names>Michele</given-names>
+            </name>
+            <name>
+              <surname>Yi</surname>
+              <given-names>Dewei</given-names>
+            </name>
+            <name>
+              <surname>Birnie</surname>
+              <given-names>Andrew</given-names>
+            </name>
+            <name>
+              <surname>McAslan</surname>
+              <given-names>Steve</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/TII.2022.3143155</pub-id>
+          <article-title>Fine-grained RNN with transfer learning for energy consumption estimation on EVs</article-title>
+          <source>IEEE Trans. Ind. Inform.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_20">
+        <label>20.</label>
+        <element-citation publication-type="journal">
+          <volume>115</volume>
+          <page-range>45-58</page-range>
+          <year>2021</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Ciżnicki</surname>
+              <given-names>Miłosz</given-names>
+            </name>
+            <name>
+              <surname>Kurowski</surname>
+              <given-names>Krzysztof</given-names>
+            </name>
+            <name>
+              <surname>Weglarz</surname>
+              <given-names>Jan</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.future.2020.08.018</pub-id>
+          <article-title>Energy and performance improvements in stencil computations on multi-node HPC systems with different network and communication topologies</article-title>
+          <source>Future Gener. Comput. Syst.</source>
+        </element-citation>
+      </ref>
+    </ref-list>
+  </back>
+</article>
