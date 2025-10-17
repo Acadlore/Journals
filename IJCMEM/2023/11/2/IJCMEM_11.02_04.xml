@@ -1,0 +1,2794 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.3 20210610//EN" "JATS-journalpublishing1-3.dtd">
+<article xml:lang="en" dtd-version="1.3" article-type="research-article" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mml="http://www.w3.org/1998/Math/MathML">
+  <front>
+    <journal-meta>
+      <journal-id journal-id-type="publisher-id">IJCMEM</journal-id>
+      <journal-id journal-id-type="doi">10.18280</journal-id>
+      <journal-title-group>
+        <journal-title>International Journal of Computational Methods and Experimental Measurements</journal-title>
+        <abbrev-journal-title abbrev-type="issn">Int. J. Comput. Methods Exp. Meas.</abbrev-journal-title>
+        <abbrev-journal-title abbrev-type="publisher">IJCMEM</abbrev-journal-title>
+      </journal-title-group>
+      <issn publication-format="electronic">2046-0554</issn>
+      <issn publication-format="print">2046-0546</issn>
+      <publisher>
+        <publisher-name>Acadlore</publisher-name>
+      </publisher>
+    </journal-meta>
+    <article-meta>
+      <article-id pub-id-type="publisher-id">AR-hS7cGIhdeAmZWGpQHJe48VY0wAfFUKtW</article-id>
+      <article-id pub-id-type="doi">10.18280/ijcmem.110204</article-id>
+      <article-categories>
+        <subj-group>
+          <subject>Articles</subject>
+        </subj-group>
+      </article-categories>
+      <title-group>
+        <article-title>The Mathematical Framework for Simulating an Air-To-Air Missile Operation on Fighter Aircraft</article-title>
+      </title-group>
+      <contrib-group>
+        <contrib contrib-type="author" rid="aff_1">
+          <contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0000-0002-6767-323X</contrib-id>
+          <name>
+            <surname>Dang</surname>
+            <given-names>Son Tung</given-names>
+          </name>
+          <email/>
+        </contrib>
+        <contrib contrib-type="author" rid="aff_1">
+          <contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0009-0003-9023-3691</contrib-id>
+          <name>
+            <surname>Nguyen</surname>
+            <given-names>Hai Anh</given-names>
+          </name>
+          <email>anhnh114@viettel.com.vn</email>
+        </contrib>
+        <contrib contrib-type="author" rid="aff_1">
+          <name>
+            <surname>Nguyen</surname>
+            <given-names>Hai Duong</given-names>
+          </name>
+          <email/>
+        </contrib>
+        <contrib contrib-type="author" rid="aff_2">
+          <name>
+            <surname>Kieu</surname>
+            <given-names>Tran Thi Minh</given-names>
+          </name>
+          <email/>
+        </contrib>
+        <aff id="aff_1">Viettel High Technology Industries Corporation, Hanoi 100000, Vietnam</aff>
+        <aff id="aff_2">Hanoi University of Science and Technology, Hanoi 100000, Vietnam</aff>
+      </contrib-group>
+      <pub-date publication-format="electronic" date-type="pub"/>
+      <volume>11</volume>
+      <issue>2</issue>
+      <fpage>97</fpage>
+      <lpage>104</lpage>
+      <page-range>97-104</page-range>
+      <history>
+        <date date-type="received">
+          <day>15</day>
+          <month>05</month>
+          <year>2022</year>
+        </date>
+        <date date-type="accepted">
+          <day>12</day>
+          <month>03</month>
+          <year>2023</year>
+        </date>
+      </history>
+      <permissions>
+        <copyright-statement>©2023 by the author(s)</copyright-statement>
+        <copyright-year>2023</copyright-year>
+        <license license-type="open-access" xlink:href="https://creativecommons.org/licenses/by/4.0/">
+          <license-p> Published by Acadlore Publishing Services Limited, Hong Kong. This article is available for free download and can be reused and cited, provided that the original published version is credited, under the CC BY 4.0 license.</license-p>
+        </license>
+      </permissions>
+      <abstract><p><span style="font-family: Times New Roman, serif">In this paper, we will present a numerical framework to simulate the weapon operation for air-to-air missiles (AAM) on the super manoeuvrable fighter aircraft (Flanker C). We focus on creating a flexible and robust framework to insert into any flight simulator for training pilots to operate the air-to-air missile system. In general, the framework contains four main parts: (1) virtual target; (2) avionics systems; (3) head-up display system; (4) missile flight dynamics. The results of both semi-active radar and infrared homing missiles show the flexibility and robustness of the proposed framework in simulating the weapon operation.</p></abstract>
+      <kwd-group>
+        <kwd>Weapon operation simulation</kwd>
+        <kwd>Modelling and simulation</kwd>
+        <kwd>Avionics system</kwd>
+        <kwd>Air-to-air missiles</kwd>
+      </kwd-group>
+      <counts>
+        <count count-type="contributors" count="4"/>
+        <fig-count count="17"/>
+        <table-count count="4"/>
+        <ref-count count="21"/>
+      </counts>
+    </article-meta>
+  </front>
+  <body>
+    <sec sec-type="intro">
+      <title>1. Introduction</title>
+      <p>The fighter jet simulation, nowadays, becomes more prevalent due to the fact that it will reduce the cost for training pilots. In addition, the simulation will be able to create various test cases, which rarely occur in the actual combat. Several computer-based flights have been developed in recent years to simulate aircraft aerodynamics such as the F-22 simulator [<xref ref-type="bibr" rid="ref_1">1</xref>]. The weapon system is an important and complicated unit of the jet fighter such that it decides the outcome of air combat. Therefore, simulation is a suitable and economical method for training pilots and enhancing the operational ability of weapon system, which are missiles and avionic units. There are several methods to compute the missile trajectory. The first method employs 3DOF equations of motion [<xref ref-type="bibr" rid="ref_2">2</xref>], which ignores all rotational motion of the missile. In comparison with the 6DOF equations, the application of the 3DOF formulas is less time-consuming, although the result is less accurate when the missile operates in a low altitude. The 6DOF equations [<xref ref-type="bibr" rid="ref_3">3</xref>], [<xref ref-type="bibr" rid="ref_4">4</xref>], [<xref ref-type="bibr" rid="ref_5">5</xref>] are applied to predict the missile trajectory for both aerial and ground targets. In complex simulation scenarios, which involve multi-object simulations, the most important factor is the computing time. All equations have to be solved as fast as possible such that results are available for visualization process. Especially, for smooth dynamic motion, the frame rate can be up to 120 Hz. Therefore, in this study, we will present a method to calculate the missile trajectory, which will ensure the missile hit the target. For avionic systems, which are electrom/agnetic radar and infrared search and track system (IRTS), we will assume that systems will always detect targets inside their effective range except for particular cases. This assumption is needed to re-create a good working condition system for training purposes. It is meaningful for students when they make manipulations and observe, evaluate the results. In addition, this will reduce the complexity of radar simulation, which requires solving the wave transform equation [<xref ref-type="bibr" rid="ref_6">6</xref>], five warnings scattering and absorption [<xref ref-type="bibr" rid="ref_7">7</xref>], and the cross-section of object [<xref ref-type="bibr" rid="ref_8">8</xref>]. As a result, the time needed for spotting targets on HUD will be small enough that the weapon system operator can lock on targets quickly.</p><p>The objective of research is to propose a mathematical framework simulating an air-to-air missile operation on fighter aircraft, in which, the missile trajectory and avionics systems are modelled for training purposes (ideal working condition, high performances and sufficient functions). The framework is designed to be robust and able to simulate various missile models. Major novelty contributions of the paper are listed as follows:</p><p>1. A complete mathematical framework of weapon simulation is proposed and validated for two different types of missiles. Hence, the weapon operation process is fully simulated for training purpose.</p><p>2. In the operation process, detecting a target using the radar system is an important step. It is sensitive with type, state of target, and surrounding environment. Therefore, in this work, the characteristic of radar systems is an in-depth analysis, then, re-created in the simulation.</p><p>3. A mathematical model is proposed to compute the trajectory of missile. The method will simulate a sequence of missile flight phases which is typical to the air to air missile.</p><p>The content of paper consists of three main parts: (1) Introduction section presents an overview and scope of research; (2) Mathematical model will define coordinate systems and give more details about the target simulation, avionics systems, and the missile dynamic equations; (3) Simulation results validated our work for two types of missiles. Finally, Conclusion part briefly summarise our contribution and results of the study.</p>
+    </sec>
+    <sec sec-type="">
+      <title>2. Mathematical model</title>
+      
+        <sec>
+          
+            <title>2.1. Coordinate systems</title>
+          
+          <p>The inertial coordinate (<italic>F<sup>i</sup></italic>) is a Cartesian earth-fixed frame whose origin is defined at a given location. The coordinate is sometimes referred to as the north-east-down (NED) reference frame. The vehicle coordinate (<italic>F<sup>v</sup></italic>) is a frame whose origins is defined at the center of mass of the aircraft. Its axes will be aligned with corresponding axes in the inertial frame as in <xref ref-type="fig" rid="fig_1">Figure 1</xref>. The body coordinate is a frame that sticks to the aircraft as in <xref ref-type="fig" rid="fig_2">Figure 2</xref>. Therefore, it will rotate following the jet motion. In general, the relation between the inertial and vehicle coordinate is translation. The body frame, on the other hand, is obtained from the vehicle frame by rotation. The rotation matrix that is derived from rotating the vehicle frame to achieve the body frame is given by Beard and McLain [<xref ref-type="bibr" rid="ref_9">9</xref>].</p>
+          
+            <disp-formula>
+              <label>(1)</label>
+              <mml:math id="m3iq5vh6mc">
+                <mml:msubsup>
+                  <mml:mi>R</mml:mi>
+                  <mml:mi>v</mml:mi>
+                  <mml:mi>b</mml:mi>
+                </mml:msubsup>
+                <mml:mo>=</mml:mo>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:mtable columnalign="center center center" columnspacing="1em" rowspacing="4pt">
+                    <mml:mtr>
+                      <mml:mtd>
+                        <mml:msub>
+                          <mml:mi>c</mml:mi>
+                          <mml:mi>θ</mml:mi>
+                        </mml:msub>
+                        <mml:msub>
+                          <mml:mi>c</mml:mi>
+                          <mml:mi>ψ</mml:mi>
+                        </mml:msub>
+                      </mml:mtd>
+                      <mml:mtd>
+                        <mml:msub>
+                          <mml:mi>c</mml:mi>
+                          <mml:mi>θ</mml:mi>
+                        </mml:msub>
+                        <mml:msub>
+                          <mml:mi>s</mml:mi>
+                          <mml:mi>ψ</mml:mi>
+                        </mml:msub>
+                      </mml:mtd>
+                      <mml:mtd>
+                        <mml:mo>−</mml:mo>
+                        <mml:msub>
+                          <mml:mi>s</mml:mi>
+                          <mml:mi>θ</mml:mi>
+                        </mml:msub>
+                      </mml:mtd>
+                    </mml:mtr>
+                    <mml:mtr>
+                      <mml:mtd>
+                        <mml:msub>
+                          <mml:mi>s</mml:mi>
+                          <mml:mi>ϕ</mml:mi>
+                        </mml:msub>
+                        <mml:msub>
+                          <mml:mi>s</mml:mi>
+                          <mml:mi>θ</mml:mi>
+                        </mml:msub>
+                        <mml:msub>
+                          <mml:mi>c</mml:mi>
+                          <mml:mi>ψ</mml:mi>
+                        </mml:msub>
+                        <mml:msub>
+                          <mml:mi>c</mml:mi>
+                          <mml:mi>θ</mml:mi>
+                        </mml:msub>
+                        <mml:msub>
+                          <mml:mi>s</mml:mi>
+                          <mml:mi>ψ</mml:mi>
+                        </mml:msub>
+                        <mml:mo>−</mml:mo>
+                      </mml:mtd>
+                      <mml:mtd>
+                        <mml:msub>
+                          <mml:mi>s</mml:mi>
+                          <mml:mi>ϕ</mml:mi>
+                        </mml:msub>
+                        <mml:msub>
+                          <mml:mi>s</mml:mi>
+                          <mml:mi>θ</mml:mi>
+                        </mml:msub>
+                        <mml:msub>
+                          <mml:mi>s</mml:mi>
+                          <mml:mi>ψ</mml:mi>
+                        </mml:msub>
+                        <mml:msub>
+                          <mml:mi>c</mml:mi>
+                          <mml:mi>ϕ</mml:mi>
+                        </mml:msub>
+                        <mml:msub>
+                          <mml:mi>c</mml:mi>
+                          <mml:mi>ψ</mml:mi>
+                        </mml:msub>
+                        <mml:mo>+</mml:mo>
+                      </mml:mtd>
+                      <mml:mtd>
+                        <mml:msub>
+                          <mml:mi>s</mml:mi>
+                          <mml:mi>ϕ</mml:mi>
+                        </mml:msub>
+                        <mml:msub>
+                          <mml:mi>c</mml:mi>
+                          <mml:mi>θ</mml:mi>
+                        </mml:msub>
+                      </mml:mtd>
+                    </mml:mtr>
+                    <mml:mtr>
+                      <mml:mtd>
+                        <mml:msub>
+                          <mml:mi>c</mml:mi>
+                          <mml:mi>ϕ</mml:mi>
+                        </mml:msub>
+                        <mml:msub>
+                          <mml:mi>s</mml:mi>
+                          <mml:mi>θ</mml:mi>
+                        </mml:msub>
+                        <mml:msub>
+                          <mml:mi>c</mml:mi>
+                          <mml:mi>ψ</mml:mi>
+                        </mml:msub>
+                        <mml:msub>
+                          <mml:mi>s</mml:mi>
+                          <mml:mi>ϕ</mml:mi>
+                        </mml:msub>
+                        <mml:msub>
+                          <mml:mi>s</mml:mi>
+                          <mml:mi>ψ</mml:mi>
+                        </mml:msub>
+                        <mml:mo>+</mml:mo>
+                      </mml:mtd>
+                      <mml:mtd>
+                        <mml:msub>
+                          <mml:mi>c</mml:mi>
+                          <mml:mi>ϕ</mml:mi>
+                        </mml:msub>
+                        <mml:msub>
+                          <mml:mi>s</mml:mi>
+                          <mml:mi>θ</mml:mi>
+                        </mml:msub>
+                        <mml:msub>
+                          <mml:mi>s</mml:mi>
+                          <mml:mi>ψ</mml:mi>
+                        </mml:msub>
+                        <mml:msub>
+                          <mml:mi>s</mml:mi>
+                          <mml:mi>ϕ</mml:mi>
+                        </mml:msub>
+                        <mml:msub>
+                          <mml:mi>c</mml:mi>
+                          <mml:mi>ψ</mml:mi>
+                        </mml:msub>
+                        <mml:mo>−</mml:mo>
+                      </mml:mtd>
+                      <mml:mtd>
+                        <mml:msub>
+                          <mml:mi>c</mml:mi>
+                          <mml:mi>ϕ</mml:mi>
+                        </mml:msub>
+                        <mml:msub>
+                          <mml:mi>c</mml:mi>
+                          <mml:mi>θ</mml:mi>
+                        </mml:msub>
+                      </mml:mtd>
+                    </mml:mtr>
+                  </mml:mtable>
+                </mml:mrow>
+              </mml:math>
+            </disp-formula>
+          
+          <p>where, c<sub>ϕ</sub> = cos(ϕ) and s<sub>ϕ</sub> = sin(ϕ). ϕ, θ, and ψ are Euler angles, which are also referred as roll, pitch, and yaw respectively as in <xref ref-type="fig" rid="fig_3">Figure 3</xref>. The rotation matrix from the body frame to the vehicle frame is given by</p>
+          
+            <disp-formula>
+              <label>(2)</label>
+              <mml:math id="muyp83nexn">
+                <mml:mtable displaystyle="true" columnalign="right left" columnspacing="0em" rowspacing="3pt">
+                  <mml:mtr>
+                    <mml:mtd/>
+                    <mml:mtd>
+                      <mml:msubsup>
+                        <mml:mi>R</mml:mi>
+                        <mml:mi>b</mml:mi>
+                        <mml:mi>v</mml:mi>
+                      </mml:msubsup>
+                      <mml:mo>=</mml:mo>
+                      <mml:mo>=</mml:mo>
+                      <mml:msup>
+                        <mml:mrow>
+                          <mml:mo>(</mml:mo>
+                          <mml:mo>)</mml:mo>
+                          <mml:msubsup>
+                            <mml:mi>R</mml:mi>
+                            <mml:mi>v</mml:mi>
+                            <mml:mi>b</mml:mi>
+                          </mml:msubsup>
+                        </mml:mrow>
+                        <mml:mi>T</mml:mi>
+                      </mml:msup>
+                      <mml:mrow>
+                        <mml:mo>(</mml:mo>
+                        <mml:mo>)</mml:mo>
+                        <mml:mtable columnalign="center center center" columnspacing="1em" rowspacing="4pt">
+                          <mml:mtr>
+                            <mml:mtd>
+                              <mml:msub>
+                                <mml:mi>c</mml:mi>
+                                <mml:mi>θ</mml:mi>
+                              </mml:msub>
+                              <mml:msub>
+                                <mml:mi>c</mml:mi>
+                                <mml:mi>ψ</mml:mi>
+                              </mml:msub>
+                            </mml:mtd>
+                            <mml:mtd>
+                              <mml:msub>
+                                <mml:mi>s</mml:mi>
+                                <mml:mi>ϕ</mml:mi>
+                              </mml:msub>
+                              <mml:msub>
+                                <mml:mi>s</mml:mi>
+                                <mml:mi>θ</mml:mi>
+                              </mml:msub>
+                              <mml:msub>
+                                <mml:mi>c</mml:mi>
+                                <mml:mi>ψ</mml:mi>
+                              </mml:msub>
+                              <mml:msub>
+                                <mml:mi>c</mml:mi>
+                                <mml:mi>θ</mml:mi>
+                              </mml:msub>
+                              <mml:msub>
+                                <mml:mi>s</mml:mi>
+                                <mml:mi>ψ</mml:mi>
+                              </mml:msub>
+                              <mml:mo>−</mml:mo>
+                            </mml:mtd>
+                            <mml:mtd>
+                              <mml:msub>
+                                <mml:mi>c</mml:mi>
+                                <mml:mi>ϕ</mml:mi>
+                              </mml:msub>
+                              <mml:msub>
+                                <mml:mi>s</mml:mi>
+                                <mml:mi>θ</mml:mi>
+                              </mml:msub>
+                              <mml:msub>
+                                <mml:mi>c</mml:mi>
+                                <mml:mi>ψ</mml:mi>
+                              </mml:msub>
+                              <mml:msub>
+                                <mml:mi>s</mml:mi>
+                                <mml:mi>ϕ</mml:mi>
+                              </mml:msub>
+                              <mml:msub>
+                                <mml:mi>s</mml:mi>
+                                <mml:mi>ψ</mml:mi>
+                              </mml:msub>
+                              <mml:mo>+</mml:mo>
+                            </mml:mtd>
+                          </mml:mtr>
+                          <mml:mtr>
+                            <mml:mtd>
+                              <mml:msub>
+                                <mml:mi>c</mml:mi>
+                                <mml:mi>θ</mml:mi>
+                              </mml:msub>
+                              <mml:msub>
+                                <mml:mi>s</mml:mi>
+                                <mml:mi>ψ</mml:mi>
+                              </mml:msub>
+                            </mml:mtd>
+                            <mml:mtd>
+                              <mml:msub>
+                                <mml:mi>s</mml:mi>
+                                <mml:mi>ϕ</mml:mi>
+                              </mml:msub>
+                              <mml:msub>
+                                <mml:mi>s</mml:mi>
+                                <mml:mi>θ</mml:mi>
+                              </mml:msub>
+                              <mml:msub>
+                                <mml:mi>s</mml:mi>
+                                <mml:mi>ψ</mml:mi>
+                              </mml:msub>
+                              <mml:msub>
+                                <mml:mi>c</mml:mi>
+                                <mml:mi>ϕ</mml:mi>
+                              </mml:msub>
+                              <mml:msub>
+                                <mml:mi>c</mml:mi>
+                                <mml:mi>ψ</mml:mi>
+                              </mml:msub>
+                              <mml:mo>+</mml:mo>
+                            </mml:mtd>
+                            <mml:mtd>
+                              <mml:msub>
+                                <mml:mi>c</mml:mi>
+                                <mml:mi>ϕ</mml:mi>
+                              </mml:msub>
+                              <mml:msub>
+                                <mml:mi>s</mml:mi>
+                                <mml:mi>θ</mml:mi>
+                              </mml:msub>
+                              <mml:msub>
+                                <mml:mi>s</mml:mi>
+                                <mml:mi>ψ</mml:mi>
+                              </mml:msub>
+                              <mml:msub>
+                                <mml:mi>s</mml:mi>
+                                <mml:mi>ϕ</mml:mi>
+                              </mml:msub>
+                              <mml:msub>
+                                <mml:mi>c</mml:mi>
+                                <mml:mi>ψ</mml:mi>
+                              </mml:msub>
+                              <mml:mo>−</mml:mo>
+                            </mml:mtd>
+                          </mml:mtr>
+                          <mml:mtr>
+                            <mml:mtd>
+                              <mml:mo>−</mml:mo>
+                              <mml:msub>
+                                <mml:mi>s</mml:mi>
+                                <mml:mi>θ</mml:mi>
+                              </mml:msub>
+                            </mml:mtd>
+                            <mml:mtd>
+                              <mml:msub>
+                                <mml:mi>s</mml:mi>
+                                <mml:mi>ϕ</mml:mi>
+                              </mml:msub>
+                              <mml:msub>
+                                <mml:mi>c</mml:mi>
+                                <mml:mi>θ</mml:mi>
+                              </mml:msub>
+                            </mml:mtd>
+                            <mml:mtd>
+                              <mml:msub>
+                                <mml:mi>c</mml:mi>
+                                <mml:mi>ϕ</mml:mi>
+                              </mml:msub>
+                              <mml:msub>
+                                <mml:mi>c</mml:mi>
+                                <mml:mi>θ</mml:mi>
+                              </mml:msub>
+                            </mml:mtd>
+                          </mml:mtr>
+                        </mml:mtable>
+                      </mml:mrow>
+                    </mml:mtd>
+                  </mml:mtr>
+                </mml:mtable>
+              </mml:math>
+            </disp-formula>
+          
+          
+            <fig id="fig_1">
+              <label>Figure 1</label>
+              <caption>
+                <title>The definition of initial and vehicle frame [<xref ref-type="bibr" rid="ref_9">9</xref>]</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/9/img_vXS_pC0tQNmOSsQM.png"/>
+            </fig>
+          
+          
+            <fig id="fig_2">
+              <label>Figure 2</label>
+              <caption>
+                <title>The definition of the body frame [<xref ref-type="bibr" rid="ref_9">9</xref>]</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/9/img_lutQ5Y-JfQgJfGgf.png"/>
+            </fig>
+          
+          
+            <fig id="fig_3">
+              <label>Figure 3</label>
+              <caption>
+                <title>The definition of roll ($ϕ$), pitch ($θ$), and yaw ($ψ$) angles and how to obtain the body frame from the vehicle frame [<xref ref-type="bibr" rid="ref_9">9</xref>]</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/9/img_qbVOlQSuhjYQeUYI.png"/>
+            </fig>
+          
+          <p>The translation matrix from the vehicle frame to the inertial frame is obtained as follows:</p>
+          
+            <disp-formula>
+              <label>(3)</label>
+              <mml:math id="majvo6x0so">
+                <mml:msubsup>
+                  <mml:mi>T</mml:mi>
+                  <mml:mi>v</mml:mi>
+                  <mml:mi>i</mml:mi>
+                </mml:msubsup>
+                <mml:mo>=</mml:mo>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:mtable columnalign="center center center center" columnspacing="1em" rowspacing="4pt">
+                    <mml:mtr>
+                      <mml:mtd>
+                        <mml:mn>1</mml:mn>
+                      </mml:mtd>
+                      <mml:mtd>
+                        <mml:mn>0</mml:mn>
+                      </mml:mtd>
+                      <mml:mtd>
+                        <mml:mn>0</mml:mn>
+                      </mml:mtd>
+                      <mml:mtd>
+                        <mml:msubsup>
+                          <mml:mi>x</mml:mi>
+                          <mml:mi>v</mml:mi>
+                          <mml:mi>i</mml:mi>
+                        </mml:msubsup>
+                      </mml:mtd>
+                    </mml:mtr>
+                    <mml:mtr>
+                      <mml:mtd>
+                        <mml:mn>0</mml:mn>
+                      </mml:mtd>
+                      <mml:mtd>
+                        <mml:mn>1</mml:mn>
+                      </mml:mtd>
+                      <mml:mtd>
+                        <mml:mn>0</mml:mn>
+                      </mml:mtd>
+                      <mml:mtd>
+                        <mml:msubsup>
+                          <mml:mi>y</mml:mi>
+                          <mml:mi>v</mml:mi>
+                          <mml:mi>i</mml:mi>
+                        </mml:msubsup>
+                      </mml:mtd>
+                    </mml:mtr>
+                    <mml:mtr>
+                      <mml:mtd>
+                        <mml:mn>0</mml:mn>
+                      </mml:mtd>
+                      <mml:mtd>
+                        <mml:mn>0</mml:mn>
+                      </mml:mtd>
+                      <mml:mtd>
+                        <mml:mn>1</mml:mn>
+                      </mml:mtd>
+                      <mml:mtd>
+                        <mml:msubsup>
+                          <mml:mi>z</mml:mi>
+                          <mml:mi>v</mml:mi>
+                          <mml:mi>i</mml:mi>
+                        </mml:msubsup>
+                      </mml:mtd>
+                    </mml:mtr>
+                    <mml:mtr>
+                      <mml:mtd>
+                        <mml:mn>0</mml:mn>
+                      </mml:mtd>
+                      <mml:mtd>
+                        <mml:mn>0</mml:mn>
+                      </mml:mtd>
+                      <mml:mtd>
+                        <mml:mn>0</mml:mn>
+                      </mml:mtd>
+                      <mml:mtd>
+                        <mml:mn>1</mml:mn>
+                      </mml:mtd>
+                    </mml:mtr>
+                  </mml:mtable>
+                </mml:mrow>
+              </mml:math>
+            </disp-formula>
+          
+          <p>where, <inline-formula>
+  <mml:math id="m14m8p2tqn">
+    <mml:msub>
+      <mml:mi>x</mml:mi>
+      <mml:mi>v</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula>, <inline-formula>
+  <mml:math id="m4iltrhong">
+    <mml:msub>
+      <mml:mi>y</mml:mi>
+      <mml:mi>v</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula>, and <inline-formula>
+  <mml:math id="m1qbk4hueq">
+    <mml:msub>
+      <mml:mi>z</mml:mi>
+      <mml:mi>v</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> are the location of vehicle’s origin in the inertial frame. The position of an object converted from the body frame to the inertial frame is obtained by</p>
+          
+            <disp-formula>
+              <label>(4)</label>
+              <mml:math id="mmgve3aisz">
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:mtable columnspacing="1em" rowspacing="4pt">
+                    <mml:mtr>
+                      <mml:mtd>
+                        <mml:msup>
+                          <mml:mi>x</mml:mi>
+                          <mml:mi>i</mml:mi>
+                        </mml:msup>
+                      </mml:mtd>
+                    </mml:mtr>
+                    <mml:mtr>
+                      <mml:mtd>
+                        <mml:msup>
+                          <mml:mi>y</mml:mi>
+                          <mml:mi>i</mml:mi>
+                        </mml:msup>
+                      </mml:mtd>
+                    </mml:mtr>
+                    <mml:mtr>
+                      <mml:mtd>
+                        <mml:msup>
+                          <mml:mi>z</mml:mi>
+                          <mml:mi>i</mml:mi>
+                        </mml:msup>
+                      </mml:mtd>
+                    </mml:mtr>
+                    <mml:mtr>
+                      <mml:mtd>
+                        <mml:mn>1</mml:mn>
+                      </mml:mtd>
+                    </mml:mtr>
+                  </mml:mtable>
+                </mml:mrow>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:mtable columnspacing="1em" rowspacing="4pt">
+                    <mml:mtr>
+                      <mml:mtd>
+                        <mml:msup>
+                          <mml:mi>x</mml:mi>
+                          <mml:mi>b</mml:mi>
+                        </mml:msup>
+                      </mml:mtd>
+                    </mml:mtr>
+                    <mml:mtr>
+                      <mml:mtd>
+                        <mml:msup>
+                          <mml:mi>y</mml:mi>
+                          <mml:mi>b</mml:mi>
+                        </mml:msup>
+                      </mml:mtd>
+                    </mml:mtr>
+                    <mml:mtr>
+                      <mml:mtd>
+                        <mml:msup>
+                          <mml:mi>z</mml:mi>
+                          <mml:mi>b</mml:mi>
+                        </mml:msup>
+                      </mml:mtd>
+                    </mml:mtr>
+                    <mml:mtr>
+                      <mml:mtd>
+                        <mml:mn>1</mml:mn>
+                      </mml:mtd>
+                    </mml:mtr>
+                  </mml:mtable>
+                </mml:mrow>
+                <mml:mo>=</mml:mo>
+                <mml:msubsup>
+                  <mml:mi>M</mml:mi>
+                  <mml:mi>b</mml:mi>
+                  <mml:mi>i</mml:mi>
+                </mml:msubsup>
+              </mml:math>
+            </disp-formula>
+          
+          <p>where, <inline-formula>
+  <mml:math id="m1fflp9elb">
+    <mml:msup>
+      <mml:mi>x</mml:mi>
+      <mml:mi>i</mml:mi>
+    </mml:msup>
+  </mml:math>
+</inline-formula>, <inline-formula>
+  <mml:math id="my09cevmj0">
+    <mml:msup>
+      <mml:mi>y</mml:mi>
+      <mml:mi>i</mml:mi>
+    </mml:msup>
+  </mml:math>
+</inline-formula>, and <inline-formula>
+  <mml:math id="mrdp3nzpn1">
+    <mml:msup>
+      <mml:mi>z</mml:mi>
+      <mml:mi>i</mml:mi>
+    </mml:msup>
+  </mml:math>
+</inline-formula> are the location of a target in the inertial frame while <inline-formula>
+  <mml:math id="mq31eq7lcw">
+    <mml:msup>
+      <mml:mi>x</mml:mi>
+      <mml:mi>b</mml:mi>
+    </mml:msup>
+  </mml:math>
+</inline-formula>, <inline-formula>
+  <mml:math id="maheqwpxjm">
+    <mml:msup>
+      <mml:mi>y</mml:mi>
+      <mml:mi>b</mml:mi>
+    </mml:msup>
+  </mml:math>
+</inline-formula>, and <inline-formula>
+  <mml:math id="mbdkq0kefb">
+    <mml:msup>
+      <mml:mi>z</mml:mi>
+      <mml:mi>b</mml:mi>
+    </mml:msup>
+  </mml:math>
+</inline-formula> are its value in the body frame. The complete transform matrix <inline-formula>
+  <mml:math id="m6k0k8cslo">
+    <mml:msubsup>
+      <mml:mi>M</mml:mi>
+      <mml:mi>b</mml:mi>
+      <mml:mi>i</mml:mi>
+    </mml:msubsup>
+  </mml:math>
+</inline-formula> are computed by</p>
+          
+            <disp-formula>
+              <label>(5)</label>
+              <mml:math id="mqcs8thuq0">
+                <mml:mtable displaystyle="true" columnalign="right left" columnspacing="0em" rowspacing="3pt">
+                  <mml:mtr>
+                    <mml:mtd/>
+                    <mml:mtd>
+                      <mml:msubsup>
+                        <mml:mi>M</mml:mi>
+                        <mml:mi>b</mml:mi>
+                        <mml:mi>i</mml:mi>
+                      </mml:msubsup>
+                      <mml:msubsup>
+                        <mml:mi>T</mml:mi>
+                        <mml:mi>v</mml:mi>
+                        <mml:mi>i</mml:mi>
+                      </mml:msubsup>
+                      <mml:mo>=</mml:mo>
+                      <mml:mo>=</mml:mo>
+                      <mml:mrow>
+                        <mml:mo>(</mml:mo>
+                        <mml:mo>)</mml:mo>
+                        <mml:mtable columnalign="center center" columnspacing="1em" rowspacing="4pt">
+                          <mml:mtr>
+                            <mml:mtd>
+                              <mml:msubsup>
+                                <mml:mi>R</mml:mi>
+                                <mml:mi>b</mml:mi>
+                                <mml:mi>v</mml:mi>
+                              </mml:msubsup>
+                            </mml:mtd>
+                            <mml:mtd>
+                              <mml:mn>0</mml:mn>
+                            </mml:mtd>
+                          </mml:mtr>
+                          <mml:mtr>
+                            <mml:mtd>
+                              <mml:mn>0</mml:mn>
+                            </mml:mtd>
+                            <mml:mtd>
+                              <mml:mn>1</mml:mn>
+                            </mml:mtd>
+                          </mml:mtr>
+                        </mml:mtable>
+                      </mml:mrow>
+                      <mml:mrow>
+                        <mml:mo>(</mml:mo>
+                        <mml:mo>)</mml:mo>
+                        <mml:mtable columnalign="center center center center" columnspacing="1em" rowspacing="4pt">
+                          <mml:mtr>
+                            <mml:mtd>
+                              <mml:msub>
+                                <mml:mi>c</mml:mi>
+                                <mml:mi>θ</mml:mi>
+                              </mml:msub>
+                              <mml:msub>
+                                <mml:mi>c</mml:mi>
+                                <mml:mi>ψ</mml:mi>
+                              </mml:msub>
+                            </mml:mtd>
+                            <mml:mtd>
+                              <mml:msub>
+                                <mml:mi>s</mml:mi>
+                                <mml:mi>ϕ</mml:mi>
+                              </mml:msub>
+                              <mml:msub>
+                                <mml:mi>s</mml:mi>
+                                <mml:mi>θ</mml:mi>
+                              </mml:msub>
+                              <mml:msub>
+                                <mml:mi>c</mml:mi>
+                                <mml:mi>ψ</mml:mi>
+                              </mml:msub>
+                              <mml:msub>
+                                <mml:mi>c</mml:mi>
+                                <mml:mi>θ</mml:mi>
+                              </mml:msub>
+                              <mml:msub>
+                                <mml:mi>s</mml:mi>
+                                <mml:mi>ψ</mml:mi>
+                              </mml:msub>
+                              <mml:mo>−</mml:mo>
+                            </mml:mtd>
+                            <mml:mtd>
+                              <mml:msub>
+                                <mml:mi>c</mml:mi>
+                                <mml:mi>ϕ</mml:mi>
+                              </mml:msub>
+                              <mml:msub>
+                                <mml:mi>s</mml:mi>
+                                <mml:mi>θ</mml:mi>
+                              </mml:msub>
+                              <mml:msub>
+                                <mml:mi>c</mml:mi>
+                                <mml:mi>ψ</mml:mi>
+                              </mml:msub>
+                              <mml:msub>
+                                <mml:mi>s</mml:mi>
+                                <mml:mi>ϕ</mml:mi>
+                              </mml:msub>
+                              <mml:msub>
+                                <mml:mi>s</mml:mi>
+                                <mml:mi>ψ</mml:mi>
+                              </mml:msub>
+                              <mml:mo>+</mml:mo>
+                            </mml:mtd>
+                            <mml:mtd>
+                              <mml:msubsup>
+                                <mml:mi>x</mml:mi>
+                                <mml:mi>v</mml:mi>
+                                <mml:mi>i</mml:mi>
+                              </mml:msubsup>
+                            </mml:mtd>
+                          </mml:mtr>
+                          <mml:mtr>
+                            <mml:mtd>
+                              <mml:msub>
+                                <mml:mi>c</mml:mi>
+                                <mml:mi>θ</mml:mi>
+                              </mml:msub>
+                              <mml:msub>
+                                <mml:mi>s</mml:mi>
+                                <mml:mi>ψ</mml:mi>
+                              </mml:msub>
+                            </mml:mtd>
+                            <mml:mtd>
+                              <mml:msub>
+                                <mml:mi>s</mml:mi>
+                                <mml:mi>ϕ</mml:mi>
+                              </mml:msub>
+                              <mml:msub>
+                                <mml:mi>s</mml:mi>
+                                <mml:mi>θ</mml:mi>
+                              </mml:msub>
+                              <mml:msub>
+                                <mml:mi>s</mml:mi>
+                                <mml:mi>ψ</mml:mi>
+                              </mml:msub>
+                              <mml:msub>
+                                <mml:mi>c</mml:mi>
+                                <mml:mi>ϕ</mml:mi>
+                              </mml:msub>
+                              <mml:msub>
+                                <mml:mi>c</mml:mi>
+                                <mml:mi>ψ</mml:mi>
+                              </mml:msub>
+                              <mml:mo>+</mml:mo>
+                            </mml:mtd>
+                            <mml:mtd>
+                              <mml:msub>
+                                <mml:mi>c</mml:mi>
+                                <mml:mi>ϕ</mml:mi>
+                              </mml:msub>
+                              <mml:msub>
+                                <mml:mi>s</mml:mi>
+                                <mml:mi>θ</mml:mi>
+                              </mml:msub>
+                              <mml:msub>
+                                <mml:mi>s</mml:mi>
+                                <mml:mi>ψ</mml:mi>
+                              </mml:msub>
+                              <mml:msub>
+                                <mml:mi>s</mml:mi>
+                                <mml:mi>ϕ</mml:mi>
+                              </mml:msub>
+                              <mml:msub>
+                                <mml:mi>c</mml:mi>
+                                <mml:mi>ψ</mml:mi>
+                              </mml:msub>
+                              <mml:mo>−</mml:mo>
+                            </mml:mtd>
+                            <mml:mtd>
+                              <mml:msubsup>
+                                <mml:mi>y</mml:mi>
+                                <mml:mi>v</mml:mi>
+                                <mml:mi>i</mml:mi>
+                              </mml:msubsup>
+                            </mml:mtd>
+                          </mml:mtr>
+                          <mml:mtr>
+                            <mml:mtd>
+                              <mml:mo>−</mml:mo>
+                              <mml:msub>
+                                <mml:mi>s</mml:mi>
+                                <mml:mi>θ</mml:mi>
+                              </mml:msub>
+                            </mml:mtd>
+                            <mml:mtd>
+                              <mml:msub>
+                                <mml:mi>s</mml:mi>
+                                <mml:mi>ϕ</mml:mi>
+                              </mml:msub>
+                              <mml:msub>
+                                <mml:mi>c</mml:mi>
+                                <mml:mi>θ</mml:mi>
+                              </mml:msub>
+                            </mml:mtd>
+                            <mml:mtd>
+                              <mml:msub>
+                                <mml:mi>c</mml:mi>
+                                <mml:mi>ϕ</mml:mi>
+                              </mml:msub>
+                              <mml:msub>
+                                <mml:mi>c</mml:mi>
+                                <mml:mi>θ</mml:mi>
+                              </mml:msub>
+                            </mml:mtd>
+                            <mml:mtd>
+                              <mml:msubsup>
+                                <mml:mi>z</mml:mi>
+                                <mml:mi>v</mml:mi>
+                                <mml:mi>i</mml:mi>
+                              </mml:msubsup>
+                            </mml:mtd>
+                          </mml:mtr>
+                          <mml:mtr>
+                            <mml:mtd>
+                              <mml:mn>0</mml:mn>
+                            </mml:mtd>
+                            <mml:mtd>
+                              <mml:mn>0</mml:mn>
+                            </mml:mtd>
+                            <mml:mtd>
+                              <mml:mn>0</mml:mn>
+                            </mml:mtd>
+                            <mml:mtd>
+                              <mml:mn>1</mml:mn>
+                            </mml:mtd>
+                          </mml:mtr>
+                        </mml:mtable>
+                      </mml:mrow>
+                    </mml:mtd>
+                  </mml:mtr>
+                </mml:mtable>
+              </mml:math>
+            </disp-formula>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>2.2. Target simulation</title>
+          
+          <p>Target simulation is an important task of the proposed framework. The main goal of this task is to re-create the action of the target following the demand of training. In general, target simulation which is presented in <xref ref-type="fig" rid="fig_4">Figure 4</xref>, focus on three main aspects: (1) target type, (2) target behaviours [<xref ref-type="bibr" rid="ref_10">10</xref>], [<xref ref-type="bibr" rid="ref_11">11</xref>], and (3) flight dynamics referring to the study [<xref ref-type="bibr" rid="ref_12">12</xref>]. The target type defines the characteristic of target, the dynamical features and the corresponding set of actions. Target behaviours are the set of predefined actions for airborne target, which is classified by the level of task difficulty. In a given scenario, and at the same level of task difficulty, the behaviour of the target is defined by the conditional selection sets of action. In this work, 30 actions and 05 levels are implemented to simulate the common behaviours of the target. For example, steady moving is the simplest action at the lowest level. Kulbit [<xref ref-type="bibr" rid="ref_13">13</xref>] is the most complicated action at the highest level. Target flight dynamics solves a set of derivative equations to calculate the trajectory of target.</p>
+          
+            <fig id="fig_4">
+              <label>Figure 4</label>
+              <caption>
+                <title>Target simulation diagram</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/9/img_CX8aPokX_ZMu0r_d.png"/>
+            </fig>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>2.3. Avionic systems</title>
+          
+          
+            <sec>
+              
+                <title>2.3.1 Phased array radar</title>
+              
+              <p>In the fighter aircraft, the phased bar array radar is used to detect targets. Then, targets will be depicted on the HUD to indicate that they are found by the radar as shown in <xref ref-type="fig" rid="fig_5">Figure 5</xref>. In this study, we simplify the principles of phased bar array radar such that we can reduce the complexity of mathematical modelling, and the computational time. <xref ref-type="fig" rid="fig_6">Figure 6</xref> represents the radar beam. Flying objects are detected if their position is inside, and their relative distance to the radar is smaller than the maximum detection range. In our work, the opening azimuth (α) and elevation angle (β) are 60<sup>o</sup> and 30<sup>o</sup> respectively. Several 2D coordinate systems are used to compute the position of targets on the HUD. The first coordinate system is azimuth-radial distance, where the width of HUD is aligned with the azimuth axis varying from -30<sup>o</sup> to 30<sup>o</sup>, and the height is aligned with the radial distance axis ranging from 0 to 100km. This coordinate is usually applied for targets moving in the opposite direction to the jet motion. The second coordinate system is azimuth-velocity, in which the height of HUD represents the relative velocity between the jet and the target. It will be employed when targets and jet fly in the same direction. Because it is more difficult for electromagnetic radar to spot objects when the relative velocity between the aircraft and targets are small, in this paper, we will focus on the azimuth-radial distance. Giving the position of the target (<span style="font-family: Times, serif"><inline-formula>
+  <mml:math id="mmsjlgfrkm">
+    <mml:msubsup>
+      <mml:mi>x</mml:mi>
+      <mml:mi>t</mml:mi>
+      <mml:mi>i</mml:mi>
+    </mml:msubsup>
+    <mml:msubsup>
+      <mml:mi>y</mml:mi>
+      <mml:mi>t</mml:mi>
+      <mml:mi>i</mml:mi>
+    </mml:msubsup>
+    <mml:msubsup>
+      <mml:mi>z</mml:mi>
+      <mml:mi>t</mml:mi>
+      <mml:mi>i</mml:mi>
+    </mml:msubsup>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>) and the jet (<span style="font-family: Times, serif"><inline-formula>
+  <mml:math id="mv2c3novpl">
+    <mml:msubsup>
+      <mml:mi>x</mml:mi>
+      <mml:mi>j</mml:mi>
+      <mml:mi>i</mml:mi>
+    </mml:msubsup>
+    <mml:msubsup>
+      <mml:mi>y</mml:mi>
+      <mml:mi>j</mml:mi>
+      <mml:mi>i</mml:mi>
+    </mml:msubsup>
+    <mml:msubsup>
+      <mml:mi>z</mml:mi>
+      <mml:mi>j</mml:mi>
+      <mml:mi>i</mml:mi>
+    </mml:msubsup>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>) in the inertial frame, the location of target (<span style="font-family: Times, serif"><inline-formula>
+  <mml:math id="m7g8fjka5h">
+    <mml:msubsup>
+      <mml:mi>x</mml:mi>
+      <mml:mi>t</mml:mi>
+      <mml:mi>b</mml:mi>
+    </mml:msubsup>
+    <mml:msubsup>
+      <mml:mi>y</mml:mi>
+      <mml:mi>t</mml:mi>
+      <mml:mi>b</mml:mi>
+    </mml:msubsup>
+    <mml:msubsup>
+      <mml:mi>z</mml:mi>
+      <mml:mi>t</mml:mi>
+      <mml:mi>b</mml:mi>
+    </mml:msubsup>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>) in the body frame is computed as follows:</p>
+              
+                <disp-formula>
+                  <label>(6)</label>
+                  <mml:math id="mc3xpkhij7">
+                    <mml:mrow>
+                      <mml:mo>(</mml:mo>
+                      <mml:mo>)</mml:mo>
+                      <mml:mtable columnspacing="1em" rowspacing="4pt">
+                        <mml:mtr>
+                          <mml:mtd>
+                            <mml:msubsup>
+                              <mml:mi>x</mml:mi>
+                              <mml:mi>t</mml:mi>
+                              <mml:mi>b</mml:mi>
+                            </mml:msubsup>
+                          </mml:mtd>
+                        </mml:mtr>
+                        <mml:mtr>
+                          <mml:mtd>
+                            <mml:msubsup>
+                              <mml:mi>y</mml:mi>
+                              <mml:mi>t</mml:mi>
+                              <mml:mi>b</mml:mi>
+                            </mml:msubsup>
+                          </mml:mtd>
+                        </mml:mtr>
+                        <mml:mtr>
+                          <mml:mtd>
+                            <mml:msubsup>
+                              <mml:mi>z</mml:mi>
+                              <mml:mi>t</mml:mi>
+                              <mml:mi>b</mml:mi>
+                            </mml:msubsup>
+                          </mml:mtd>
+                        </mml:mtr>
+                        <mml:mtr>
+                          <mml:mtd>
+                            <mml:mn>1</mml:mn>
+                          </mml:mtd>
+                        </mml:mtr>
+                      </mml:mtable>
+                    </mml:mrow>
+                    <mml:mrow>
+                      <mml:mo>(</mml:mo>
+                      <mml:mo>)</mml:mo>
+                      <mml:mtable columnspacing="1em" rowspacing="4pt">
+                        <mml:mtr>
+                          <mml:mtd>
+                            <mml:msubsup>
+                              <mml:mi>x</mml:mi>
+                              <mml:mi>t</mml:mi>
+                              <mml:mi>i</mml:mi>
+                            </mml:msubsup>
+                          </mml:mtd>
+                        </mml:mtr>
+                        <mml:mtr>
+                          <mml:mtd>
+                            <mml:msubsup>
+                              <mml:mi>y</mml:mi>
+                              <mml:mi>t</mml:mi>
+                              <mml:mi>i</mml:mi>
+                            </mml:msubsup>
+                          </mml:mtd>
+                        </mml:mtr>
+                        <mml:mtr>
+                          <mml:mtd>
+                            <mml:msubsup>
+                              <mml:mi>z</mml:mi>
+                              <mml:mi>t</mml:mi>
+                              <mml:mi>i</mml:mi>
+                            </mml:msubsup>
+                          </mml:mtd>
+                        </mml:mtr>
+                        <mml:mtr>
+                          <mml:mtd>
+                            <mml:mn>1</mml:mn>
+                          </mml:mtd>
+                        </mml:mtr>
+                      </mml:mtable>
+                    </mml:mrow>
+                    <mml:mo>=</mml:mo>
+                    <mml:msubsup>
+                      <mml:mi>M</mml:mi>
+                      <mml:mi>i</mml:mi>
+                      <mml:mi>b</mml:mi>
+                    </mml:msubsup>
+                  </mml:math>
+                </disp-formula>
+              
+              <p>where, the transform matrix (<inline-formula>
+  <mml:math id="mjgp0lv322">
+    <mml:msubsup>
+      <mml:mi>M</mml:mi>
+      <mml:mi>b</mml:mi>
+      <mml:mi>i</mml:mi>
+    </mml:msubsup>
+  </mml:math>
+</inline-formula>) is computed by</p>
+              
+                <disp-formula>
+                  <label>(7)</label>
+                  <mml:math id="m4c9m673yj">
+                    <mml:msubsup>
+                      <mml:mi>M</mml:mi>
+                      <mml:mi>i</mml:mi>
+                      <mml:mi>b</mml:mi>
+                    </mml:msubsup>
+                    <mml:mo>=</mml:mo>
+                    <mml:msup>
+                      <mml:mrow>
+                        <mml:mo>(</mml:mo>
+                        <mml:mo>)</mml:mo>
+                        <mml:msubsup>
+                          <mml:mi>M</mml:mi>
+                          <mml:mi>b</mml:mi>
+                          <mml:mi>i</mml:mi>
+                        </mml:msubsup>
+                      </mml:mrow>
+                      <mml:mrow>
+                        <mml:mo>−</mml:mo>
+                        <mml:mn>1</mml:mn>
+                      </mml:mrow>
+                    </mml:msup>
+                  </mml:math>
+                </disp-formula>
+              
+              <p>with <inline-formula>
+  <mml:math id="m6nk9x8e3s">
+    <mml:msubsup>
+      <mml:mi>M</mml:mi>
+      <mml:mi>b</mml:mi>
+      <mml:mi>i</mml:mi>
+    </mml:msubsup>
+  </mml:math>
+</inline-formula> is determined from Eq. 5. The azimuthal angle of the target in the body frame is estimated by</p>
+              
+                <disp-formula>
+                  <label>(8)</label>
+                  <mml:math id="mpg3gl620b">
+                    <mml:msubsup>
+                      <mml:mi>θ</mml:mi>
+                      <mml:mi>t</mml:mi>
+                      <mml:mi>b</mml:mi>
+                    </mml:msubsup>
+                    <mml:mo>=</mml:mo>
+                    <mml:mo>⁡</mml:mo>
+                    <mml:msup>
+                      <mml:mi>tan</mml:mi>
+                      <mml:mrow>
+                        <mml:mo>−</mml:mo>
+                        <mml:mn>1</mml:mn>
+                      </mml:mrow>
+                    </mml:msup>
+                    <mml:mfrac>
+                      <mml:msubsup>
+                        <mml:mi>y</mml:mi>
+                        <mml:mi>t</mml:mi>
+                        <mml:mi>b</mml:mi>
+                      </mml:msubsup>
+                      <mml:msubsup>
+                        <mml:mi>x</mml:mi>
+                        <mml:mi>t</mml:mi>
+                        <mml:mi>b</mml:mi>
+                      </mml:msubsup>
+                    </mml:mfrac>
+                  </mml:math>
+                </disp-formula>
+              
+              <p>In order to search in other region in air space, the radar can change the direction as shown in <xref ref-type="fig" rid="fig_7">Figure 7</xref>. The radar beam can move in both elevation and azimuth plane following the elevation and azimuth coverage bar as in <xref ref-type="fig" rid="fig_5">Figure 5</xref>. In this study, the azimuth varies from -30<sup>o</sup> to 30<sup>o</sup> while the elevation angle range is from -7.5<sup>o </sup>to 15.0<sup>o</sup>. Assume that we switch the radar heading direction to -30<sup>o</sup> on the left as in <xref ref-type="fig" rid="fig_5">Figure 5</xref>, the new azimuthal angle of target is computed by</p>
+              
+                <disp-formula>
+                  <label>(9)</label>
+                  <mml:math id="myvnvilb5v">
+                    <mml:msubsup>
+                      <mml:mi>θ</mml:mi>
+                      <mml:mi>t</mml:mi>
+                      <mml:mrow>
+                        <mml:mi>b</mml:mi>
+                        <mml:mo>,</mml:mo>
+                        <mml:mtext> new </mml:mtext>
+                      </mml:mrow>
+                    </mml:msubsup>
+                    <mml:mo>=</mml:mo>
+                    <mml:mo>⁡</mml:mo>
+                    <mml:mo>+</mml:mo>
+                    <mml:msup>
+                      <mml:mi>tan</mml:mi>
+                      <mml:mrow>
+                        <mml:mo>−</mml:mo>
+                        <mml:mn>1</mml:mn>
+                      </mml:mrow>
+                    </mml:msup>
+                    <mml:msup>
+                      <mml:mn>30</mml:mn>
+                      <mml:mi>o</mml:mi>
+                    </mml:msup>
+                    <mml:mfrac>
+                      <mml:msubsup>
+                        <mml:mi>y</mml:mi>
+                        <mml:mi>t</mml:mi>
+                        <mml:mi>b</mml:mi>
+                      </mml:msubsup>
+                      <mml:msubsup>
+                        <mml:mi>x</mml:mi>
+                        <mml:mi>t</mml:mi>
+                        <mml:mi>b</mml:mi>
+                      </mml:msubsup>
+                    </mml:mfrac>
+                  </mml:math>
+                </disp-formula>
+              
+              <p>As a result, the target will appear on the right side of HUD if <inline-formula>
+  <mml:math id="m47tre4wfw">
+    <mml:msubsup>
+      <mml:mi>θ</mml:mi>
+      <mml:mi>t</mml:mi>
+      <mml:mrow>
+        <mml:mi>b</mml:mi>
+        <mml:mo>,</mml:mo>
+        <mml:mtext> new </mml:mtext>
+      </mml:mrow>
+    </mml:msubsup>
+  </mml:math>
+</inline-formula> is still inside the radar beam.</p>
+              
+                <fig id="fig_5">
+                  <label>Figure 5</label>
+                  <caption>
+                    <title>The HUD displays the seeking mode with phased array radar, which can operate in several scan modes. If the anonymous flying objects are inside the detected region that is bounded by elevation, azimuth coverage, and expected target range they will be spotted on HUD screen. The target is selected by moving the radar cursor over identified flying object, and then pressing a lock button [<xref ref-type="bibr" rid="ref_14">14</xref>]</title>
+                  </caption>
+                  <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/9/img_srhZrK-PrN1nmtf2.png"/>
+                </fig>
+              
+              
+                <fig id="fig_6">
+                  <label>Figure 6</label>
+                  <caption>
+                    <title>The radar beam in which targets can be tracked down. α is opening azimuth, β is opening elevation angle</title>
+                  </caption>
+                  <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/9/img_zD5tEsgxWa30SZYV.png"/>
+                </fig>
+              
+              
+                <fig id="fig_7">
+                  <label>Figure 7</label>
+                  <caption>
+                    <title>Moving radar direction to change the detection region of radar: a) Change the radar beam heading in the elevation plane; (b) Change the radar beam heading in the azimuth plane</title>
+                  </caption>
+                  <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/9/img_oXtwuAx6yOLt0htG.png"/>
+                  <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/9/img_FhfueKFExKb3gIal.png"/>
+                </fig>
+              
+            </sec>
+          
+          
+            <sec>
+              
+                <title>2.3.2 Infrared search and track system</title>
+              
+              <p>Infrared search and track system (IRTS) is a technique for detecting and tracking anonymous objects, which generate infrared radiation as shown in <xref ref-type="fig" rid="fig_8">Figure 8</xref> and <xref ref-type="fig" rid="fig_9">Figure 9</xref>. The IRTS is usually employed when the target transport in the same direction as the jet, because the target’s engine is the main thermal source pointing directly to the jet front. The IRTS will operate in the seeking mode first to depict anonymous flying objects on HUD as represented in <xref ref-type="fig" rid="fig_8">Figure 8</xref>. <xref ref-type="fig" rid="fig_9">Figure 9</xref> shows the identification mode after the seeking mode determine the region where the target is possibly located. The IRTS cannot provide information about the distance between an object and the jet. Therefore, in this work, object positions are computed in the elevation angle-azimuth coordinates to indicate the direction from the jet to an infrared radiation source. The elevation angle can be computed by</p>
+              
+                <disp-formula>
+                  <label>(10)</label>
+                  <mml:math id="meu8ith36v">
+                    <mml:mi>ϕ</mml:mi>
+                    <mml:mo>=</mml:mo>
+                    <mml:mo>⁡</mml:mo>
+                    <mml:msup>
+                      <mml:mi>tan</mml:mi>
+                      <mml:mrow>
+                        <mml:mo>−</mml:mo>
+                        <mml:mn>1</mml:mn>
+                      </mml:mrow>
+                    </mml:msup>
+                    <mml:mfrac>
+                      <mml:mrow>
+                        <mml:mo>−</mml:mo>
+                        <mml:msubsup>
+                          <mml:mi>y</mml:mi>
+                          <mml:mi>t</mml:mi>
+                          <mml:mi>b</mml:mi>
+                        </mml:msubsup>
+                      </mml:mrow>
+                      <mml:msqrt>
+                        <mml:msup>
+                          <mml:mrow>
+                            <mml:mo>(</mml:mo>
+                            <mml:mo>)</mml:mo>
+                            <mml:msubsup>
+                              <mml:mi>x</mml:mi>
+                              <mml:mi>t</mml:mi>
+                              <mml:mi>b</mml:mi>
+                            </mml:msubsup>
+                          </mml:mrow>
+                          <mml:mn>2</mml:mn>
+                        </mml:msup>
+                        <mml:msup>
+                          <mml:mrow>
+                            <mml:mo>(</mml:mo>
+                            <mml:mo>)</mml:mo>
+                            <mml:msubsup>
+                              <mml:mi>y</mml:mi>
+                              <mml:mi>t</mml:mi>
+                              <mml:mi>b</mml:mi>
+                            </mml:msubsup>
+                          </mml:mrow>
+                          <mml:mn>2</mml:mn>
+                        </mml:msup>
+                        <mml:msup>
+                          <mml:mrow>
+                            <mml:mo>(</mml:mo>
+                            <mml:mo>)</mml:mo>
+                            <mml:msubsup>
+                              <mml:mi>z</mml:mi>
+                              <mml:mi>t</mml:mi>
+                              <mml:mi>b</mml:mi>
+                            </mml:msubsup>
+                          </mml:mrow>
+                          <mml:mn>2</mml:mn>
+                        </mml:msup>
+                        <mml:mo>+</mml:mo>
+                        <mml:mo>+</mml:mo>
+                      </mml:msqrt>
+                    </mml:mfrac>
+                  </mml:math>
+                </disp-formula>
+              
+              <p>where, (<span style="font-family: Times, serif"><inline-formula>
+  <mml:math id="mw6blv64ql">
+    <mml:msubsup>
+      <mml:mi>x</mml:mi>
+      <mml:mi>t</mml:mi>
+      <mml:mi>b</mml:mi>
+    </mml:msubsup>
+    <mml:msubsup>
+      <mml:mi>y</mml:mi>
+      <mml:mi>t</mml:mi>
+      <mml:mi>b</mml:mi>
+    </mml:msubsup>
+    <mml:msubsup>
+      <mml:mi>z</mml:mi>
+      <mml:mi>t</mml:mi>
+      <mml:mi>b</mml:mi>
+    </mml:msubsup>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula> ) is location of target in the body frame, which is computed from Eq. 6. The HUD height will coincide with the elevation angle varying from -30<sup>o</sup> to 30<sup>o</sup>, while the HUD width will align with azimuth ranging from -30<sup>o</sup> to 30<sup>o</sup>. The size of large view cursor is 20<sup>o</sup> width x 30<sup>o</sup> height. After moving the cursor to the region containing the suspected target, a button is released to change HUD screen to small view mode such that targets can be distinguished from the other objects. In this mode, the dimension of HUD will coincide with the size of large view cursor depicted in <xref ref-type="fig" rid="fig_8">Figure 8</xref>. The size of small view cursor in <xref ref-type="fig" rid="fig_9">Figure 9</xref> is 7<sup>o</sup> width × 15<sup>o</sup> height. In this mode, the target will be locked, then, its location will be used for guiding missile.</p>
+              
+                <fig id="fig_8">
+                  <label>Figure 8</label>
+                  <caption>
+                    <title>The HUD displays the large view mode with infrared search and track system, where flying objects are detected due to their thermal radiation. They are spotted on HUD screen by target marks. The IRTS large view cursor will move around HUD looking for potential targets. After the suspected target is determined, the large view mode will change to small view mode [<xref ref-type="bibr" rid="ref_14">14</xref>]</title>
+                  </caption>
+                  <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/9/img_oVzgsj0pTgBNp26T.png"/>
+                </fig>
+              
+              
+                <fig id="fig_9">
+                  <label>Figure 9</label>
+                  <caption>
+                    <title>The HUD displays the small view mode with infrared search and track system. In this mode, the target is determined by moving the IRTS mall view cursor over identified flying object, and then pressing a lock button [<xref ref-type="bibr" rid="ref_14">14</xref>]</title>
+                  </caption>
+                  <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/9/img_BWqK_7Ir5ZDvV5qo.png"/>
+                </fig>
+              
+            </sec>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>2.4. Missile dynamic</title>
+          
+          <p>After the target is locked-on, the pilot will decide to launch the missile when the threat inside the missile range. There are two modes in the missile operation. At first, the missile will slide on the launching rail until it detaches entirely from the jet. Then, the missile will change its direction such that it will follow and destroy the target. The equation describing the motion of missile is given as follows:</p>
+          
+            <disp-formula>
+              <label>(11)</label>
+              <mml:math id="m1xoir6w2x">
+                <mml:msub>
+                  <mml:mrow>
+                    <mml:mi>m</mml:mi>
+                    <mml:mi>a</mml:mi>
+                  </mml:mrow>
+                  <mml:mi>m</mml:mi>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>F</mml:mi>
+                  <mml:mrow>
+                    <mml:mrow>
+                      <mml:mi>t</mml:mi>
+                      <mml:mi>h</mml:mi>
+                      <mml:mi>r</mml:mi>
+                      <mml:mi>u</mml:mi>
+                      <mml:mi>s</mml:mi>
+                      <mml:mi>t</mml:mi>
+                    </mml:mrow>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>F</mml:mi>
+                  <mml:mi>D</mml:mi>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mo>−</mml:mo>
+              </mml:math>
+            </disp-formula>
+          
+          <p>where, <inline-formula>
+  <mml:math id="mn7pgfpg5p">
+    <mml:msub>
+      <mml:mi>F</mml:mi>
+      <mml:mrow>
+        <mml:mrow>
+          <mml:mi>t</mml:mi>
+          <mml:mi>h</mml:mi>
+          <mml:mi>r</mml:mi>
+          <mml:mi>u</mml:mi>
+          <mml:mi>s</mml:mi>
+          <mml:mi>t</mml:mi>
+        </mml:mrow>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula> is thrust force produced by missile engine, <inline-formula>
+  <mml:math id="msshcbzvvp">
+    <mml:msub>
+      <mml:mi>F</mml:mi>
+      <mml:mi>D</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> is the drag force, which can computed by</p>
+          
+            <disp-formula>
+              <label>(12)</label>
+              <mml:math id="mekq2m5eu8">
+                <mml:msub>
+                  <mml:mi>F</mml:mi>
+                  <mml:mi>D</mml:mi>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>C</mml:mi>
+                  <mml:mi>D</mml:mi>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mfrac>
+                  <mml:mrow>
+                    <mml:msub>
+                      <mml:mi>ρ</mml:mi>
+                      <mml:mrow>
+                        <mml:mtext>air </mml:mtext>
+                      </mml:mrow>
+                    </mml:msub>
+                    <mml:msup>
+                      <mml:mi>v</mml:mi>
+                      <mml:mn>2</mml:mn>
+                    </mml:msup>
+                  </mml:mrow>
+                  <mml:mn>2</mml:mn>
+                </mml:mfrac>
+                <mml:mi>A</mml:mi>
+              </mml:math>
+            </disp-formula>
+          
+          <p>where, <italic>ρ<sub>air</sub></italic> is air density, <italic>C<sub>D</sub></italic> is the drag coefficient, <italic>v</italic> is the missile velocity vector, and A is the missile reference area, which is evaluated by</p>
+          
+            <disp-formula>
+              <label>(13)</label>
+              <mml:math id="mmfs2712l8">
+                <mml:mi>A</mml:mi>
+                <mml:mi>π</mml:mi>
+                <mml:mo>=</mml:mo>
+                <mml:mfrac>
+                  <mml:msup>
+                    <mml:mi>D</mml:mi>
+                    <mml:mn>2</mml:mn>
+                  </mml:msup>
+                  <mml:mn>4</mml:mn>
+                </mml:mfrac>
+              </mml:math>
+            </disp-formula>
+          
+          <p>where, D is the missile diameter. In this paper, we ignore the lift force and gravity. We only focus on the thrust and drag forces, which are the main forces contributing to the missile acceleration. The missile operation consists of two phases. The first phase is a sliding mode, in which the missile slide on the trailing rail. In this case, the missile steers the same direction as the jet motion. After the missile complete sliding on the trail, the second phase takes place. In this phase, the missile head directly to the target. The position of the missile in the inertial frame (<inline-formula>
+  <mml:math id="mq49w9zz04">
+    <mml:msubsup>
+      <mml:mi>x</mml:mi>
+      <mml:mi>m</mml:mi>
+      <mml:mi>i</mml:mi>
+    </mml:msubsup>
+    <mml:msubsup>
+      <mml:mi>y</mml:mi>
+      <mml:mi>m</mml:mi>
+      <mml:mi>i</mml:mi>
+    </mml:msubsup>
+    <mml:msubsup>
+      <mml:mi>z</mml:mi>
+      <mml:mi>m</mml:mi>
+      <mml:mi>i</mml:mi>
+    </mml:msubsup>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>) can be computed from its location in the body frame (<inline-formula>
+  <mml:math id="mcs8j8lxal">
+    <mml:msubsup>
+      <mml:mi>x</mml:mi>
+      <mml:mi>m</mml:mi>
+      <mml:mi>b</mml:mi>
+    </mml:msubsup>
+    <mml:msubsup>
+      <mml:mi>y</mml:mi>
+      <mml:mi>m</mml:mi>
+      <mml:mi>b</mml:mi>
+    </mml:msubsup>
+    <mml:msubsup>
+      <mml:mi>z</mml:mi>
+      <mml:mi>m</mml:mi>
+      <mml:mi>b</mml:mi>
+    </mml:msubsup>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>) by</p>
+          
+            <disp-formula>
+              <label>(14)</label>
+              <mml:math id="mtwex9p6us">
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:mtable columnspacing="1em" rowspacing="4pt">
+                    <mml:mtr>
+                      <mml:mtd>
+                        <mml:msubsup>
+                          <mml:mi>x</mml:mi>
+                          <mml:mi>m</mml:mi>
+                          <mml:mi>i</mml:mi>
+                        </mml:msubsup>
+                      </mml:mtd>
+                    </mml:mtr>
+                    <mml:mtr>
+                      <mml:mtd>
+                        <mml:msubsup>
+                          <mml:mi>y</mml:mi>
+                          <mml:mi>m</mml:mi>
+                          <mml:mi>i</mml:mi>
+                        </mml:msubsup>
+                      </mml:mtd>
+                    </mml:mtr>
+                    <mml:mtr>
+                      <mml:mtd>
+                        <mml:msubsup>
+                          <mml:mi>z</mml:mi>
+                          <mml:mi>m</mml:mi>
+                          <mml:mi>i</mml:mi>
+                        </mml:msubsup>
+                      </mml:mtd>
+                    </mml:mtr>
+                    <mml:mtr>
+                      <mml:mtd>
+                        <mml:mn>1</mml:mn>
+                      </mml:mtd>
+                    </mml:mtr>
+                  </mml:mtable>
+                </mml:mrow>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:mtable columnspacing="1em" rowspacing="4pt">
+                    <mml:mtr>
+                      <mml:mtd>
+                        <mml:msubsup>
+                          <mml:mi>x</mml:mi>
+                          <mml:mi>m</mml:mi>
+                          <mml:mi>b</mml:mi>
+                        </mml:msubsup>
+                      </mml:mtd>
+                    </mml:mtr>
+                    <mml:mtr>
+                      <mml:mtd>
+                        <mml:msubsup>
+                          <mml:mi>y</mml:mi>
+                          <mml:mi>m</mml:mi>
+                          <mml:mi>b</mml:mi>
+                        </mml:msubsup>
+                      </mml:mtd>
+                    </mml:mtr>
+                    <mml:mtr>
+                      <mml:mtd>
+                        <mml:msubsup>
+                          <mml:mi>z</mml:mi>
+                          <mml:mi>m</mml:mi>
+                          <mml:mi>b</mml:mi>
+                        </mml:msubsup>
+                      </mml:mtd>
+                    </mml:mtr>
+                    <mml:mtr>
+                      <mml:mtd>
+                        <mml:mn>1</mml:mn>
+                      </mml:mtd>
+                    </mml:mtr>
+                  </mml:mtable>
+                </mml:mrow>
+                <mml:mo>=</mml:mo>
+                <mml:msubsup>
+                  <mml:mi>M</mml:mi>
+                  <mml:mi>b</mml:mi>
+                  <mml:mi>i</mml:mi>
+                </mml:msubsup>
+              </mml:math>
+            </disp-formula>
+          
+          <p>The velocity of missile in the body frame (<inline-formula>
+  <mml:math id="mkvy7d8m81">
+    <mml:msubsup>
+      <mml:mi>u</mml:mi>
+      <mml:mi>m</mml:mi>
+      <mml:mi>b</mml:mi>
+    </mml:msubsup>
+    <mml:msubsup>
+      <mml:mi>v</mml:mi>
+      <mml:mi>m</mml:mi>
+      <mml:mi>b</mml:mi>
+    </mml:msubsup>
+    <mml:msubsup>
+      <mml:mi>w</mml:mi>
+      <mml:mi>m</mml:mi>
+      <mml:mi>b</mml:mi>
+    </mml:msubsup>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>) is determined in the inertial frame (<span style="font-family: Times, serif"><inline-formula>
+  <mml:math id="mpzcqmlm69">
+    <mml:msubsup>
+      <mml:mi>u</mml:mi>
+      <mml:mi>m</mml:mi>
+      <mml:mi>i</mml:mi>
+    </mml:msubsup>
+    <mml:msubsup>
+      <mml:mi>v</mml:mi>
+      <mml:mi>m</mml:mi>
+      <mml:mi>i</mml:mi>
+    </mml:msubsup>
+    <mml:msubsup>
+      <mml:mi>w</mml:mi>
+      <mml:mi>m</mml:mi>
+      <mml:mi>i</mml:mi>
+    </mml:msubsup>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>) as follows:</p>
+          
+            <disp-formula>
+              <label>(15)</label>
+              <mml:math id="m64pm85kc8">
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:mtable columnspacing="1em" rowspacing="4pt">
+                    <mml:mtr>
+                      <mml:mtd>
+                        <mml:msubsup>
+                          <mml:mi>u</mml:mi>
+                          <mml:mi>m</mml:mi>
+                          <mml:mi>i</mml:mi>
+                        </mml:msubsup>
+                      </mml:mtd>
+                    </mml:mtr>
+                    <mml:mtr>
+                      <mml:mtd>
+                        <mml:msubsup>
+                          <mml:mi>v</mml:mi>
+                          <mml:mi>m</mml:mi>
+                          <mml:mi>i</mml:mi>
+                        </mml:msubsup>
+                      </mml:mtd>
+                    </mml:mtr>
+                    <mml:mtr>
+                      <mml:mtd>
+                        <mml:msubsup>
+                          <mml:mi>w</mml:mi>
+                          <mml:mi>m</mml:mi>
+                          <mml:mi>i</mml:mi>
+                        </mml:msubsup>
+                      </mml:mtd>
+                    </mml:mtr>
+                    <mml:mtr>
+                      <mml:mtd>
+                        <mml:mn>0</mml:mn>
+                      </mml:mtd>
+                    </mml:mtr>
+                  </mml:mtable>
+                </mml:mrow>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:mtable columnspacing="1em" rowspacing="4pt">
+                    <mml:mtr>
+                      <mml:mtd>
+                        <mml:msubsup>
+                          <mml:mi>u</mml:mi>
+                          <mml:mi>m</mml:mi>
+                          <mml:mi>b</mml:mi>
+                        </mml:msubsup>
+                      </mml:mtd>
+                    </mml:mtr>
+                    <mml:mtr>
+                      <mml:mtd>
+                        <mml:msubsup>
+                          <mml:mi>v</mml:mi>
+                          <mml:mi>m</mml:mi>
+                          <mml:mi>b</mml:mi>
+                        </mml:msubsup>
+                      </mml:mtd>
+                    </mml:mtr>
+                    <mml:mtr>
+                      <mml:mtd>
+                        <mml:msubsup>
+                          <mml:mi>w</mml:mi>
+                          <mml:mi>m</mml:mi>
+                          <mml:mi>b</mml:mi>
+                        </mml:msubsup>
+                      </mml:mtd>
+                    </mml:mtr>
+                    <mml:mtr>
+                      <mml:mtd>
+                        <mml:mn>0</mml:mn>
+                      </mml:mtd>
+                    </mml:mtr>
+                  </mml:mtable>
+                </mml:mrow>
+                <mml:mo>=</mml:mo>
+                <mml:msubsup>
+                  <mml:mi>M</mml:mi>
+                  <mml:mi>b</mml:mi>
+                  <mml:mi>i</mml:mi>
+                </mml:msubsup>
+              </mml:math>
+            </disp-formula>
+          
+          
+            <sec>
+              
+                <title>2.4.1 Sliding mode</title>
+              
+              <p>In this mode, the missile will slide on the rail. Before the missile is launched, its initial velocity is identical to the jet velocity. The missile velocity in the roll axis <inline-formula>
+  <mml:math id="me6eqh18ek">
+    <mml:msubsup>
+      <mml:mi>u</mml:mi>
+      <mml:mi>m</mml:mi>
+      <mml:mi>b</mml:mi>
+    </mml:msubsup>
+  </mml:math>
+</inline-formula> is updated by</p>
+              
+                <disp-formula>
+                  <label>(16)</label>
+                  <mml:math id="mzm7zed6g7">
+                    <mml:msubsup>
+                      <mml:mi>u</mml:mi>
+                      <mml:mi>m</mml:mi>
+                      <mml:mrow>
+                        <mml:mi>b</mml:mi>
+                        <mml:mi>n</mml:mi>
+                        <mml:mo>,</mml:mo>
+                        <mml:mo>+</mml:mo>
+                        <mml:mn>1</mml:mn>
+                      </mml:mrow>
+                    </mml:msubsup>
+                    <mml:msubsup>
+                      <mml:mi>u</mml:mi>
+                      <mml:mi>m</mml:mi>
+                      <mml:mrow>
+                        <mml:mi>b</mml:mi>
+                        <mml:mi>n</mml:mi>
+                        <mml:mo>,</mml:mo>
+                      </mml:mrow>
+                    </mml:msubsup>
+                    <mml:msubsup>
+                      <mml:mi>a</mml:mi>
+                      <mml:mi>m</mml:mi>
+                      <mml:mrow>
+                        <mml:mi>b</mml:mi>
+                        <mml:mi>n</mml:mi>
+                        <mml:mo>,</mml:mo>
+                      </mml:mrow>
+                    </mml:msubsup>
+                    <mml:mo>=</mml:mo>
+                    <mml:mo>+</mml:mo>
+                    <mml:mi>Δ</mml:mi>
+                    <mml:mi>t</mml:mi>
+                  </mml:math>
+                </disp-formula>
+              
+              <p>where, <italic>n</italic> + 1 and <italic>n</italic> represent the time step, <inline-formula>
+  <mml:math id="m1a2ov0qpq">
+    <mml:msubsup>
+      <mml:mi>a</mml:mi>
+      <mml:mi>m</mml:mi>
+      <mml:mrow>
+        <mml:mi>b</mml:mi>
+        <mml:mi>n</mml:mi>
+        <mml:mo>,</mml:mo>
+      </mml:mrow>
+    </mml:msubsup>
+  </mml:math>
+</inline-formula> is the missile acceleration, and <inline-formula>
+  <mml:math id="minuzrl9kv">
+    <mml:mi>Δ</mml:mi>
+    <mml:mi>t</mml:mi>
+  </mml:math>
+</inline-formula> is a time step size. In this study, the time step size 0.01 is used. The relative distance <italic>L</italic> between the missile and the jet in the roll axis is computed by</p>
+              
+                <disp-formula>
+                  <label>(17)</label>
+                  <mml:math id="mqiv76zm8c">
+                    <mml:msup>
+                      <mml:mi>L</mml:mi>
+                      <mml:mrow>
+                        <mml:mi>n</mml:mi>
+                        <mml:mo>+</mml:mo>
+                        <mml:mn>1</mml:mn>
+                      </mml:mrow>
+                    </mml:msup>
+                    <mml:msup>
+                      <mml:mi>L</mml:mi>
+                      <mml:mi>n</mml:mi>
+                    </mml:msup>
+                    <mml:msup>
+                      <mml:mi>L</mml:mi>
+                      <mml:mrow>
+                        <mml:mi>n</mml:mi>
+                        <mml:mo>+</mml:mo>
+                        <mml:mn>1</mml:mn>
+                      </mml:mrow>
+                    </mml:msup>
+                    <mml:mo>=</mml:mo>
+                    <mml:mo>+</mml:mo>
+                    <mml:mi>Δ</mml:mi>
+                  </mml:math>
+                </disp-formula>
+              
+              <p>where, <inline-formula>
+  <mml:math id="m2811mh6z0">
+    <mml:mi>Δ</mml:mi>
+    <mml:mi>L</mml:mi>
+  </mml:math>
+</inline-formula> is a distance the missile moved in <inline-formula>
+  <mml:math id="m8u3vp4af3">
+    <mml:mi>Δ</mml:mi>
+    <mml:mi>L</mml:mi>
+  </mml:math>
+</inline-formula>. The variable is computed by</p>
+              
+                <disp-formula>
+                  <label>(18)</label>
+                  <mml:math id="moqxf0oysz">
+                    <mml:mi>Δ</mml:mi>
+                    <mml:mi>Δ</mml:mi>
+                    <mml:mi>t</mml:mi>
+                    <mml:mi>Δ</mml:mi>
+                    <mml:msup>
+                      <mml:mi>L</mml:mi>
+                      <mml:mrow>
+                        <mml:mi>n</mml:mi>
+                        <mml:mo>+</mml:mo>
+                        <mml:mn>1</mml:mn>
+                      </mml:mrow>
+                    </mml:msup>
+                    <mml:msup>
+                      <mml:mi>t</mml:mi>
+                      <mml:mn>2</mml:mn>
+                    </mml:msup>
+                    <mml:mo>=</mml:mo>
+                    <mml:mo>+</mml:mo>
+                    <mml:mrow>
+                      <mml:mo>(</mml:mo>
+                      <mml:mo>−</mml:mo>
+                      <mml:mo>)</mml:mo>
+                      <mml:msubsup>
+                        <mml:mi>u</mml:mi>
+                        <mml:mi>m</mml:mi>
+                        <mml:mrow>
+                          <mml:mi>b</mml:mi>
+                          <mml:mi>n</mml:mi>
+                          <mml:mo>,</mml:mo>
+                        </mml:mrow>
+                      </mml:msubsup>
+                      <mml:msubsup>
+                        <mml:mi>u</mml:mi>
+                        <mml:mi>j</mml:mi>
+                        <mml:mrow>
+                          <mml:mi>b</mml:mi>
+                          <mml:mi>n</mml:mi>
+                          <mml:mo>,</mml:mo>
+                        </mml:mrow>
+                      </mml:msubsup>
+                    </mml:mrow>
+                    <mml:mfrac>
+                      <mml:mn>1</mml:mn>
+                      <mml:mn>2</mml:mn>
+                    </mml:mfrac>
+                    <mml:msubsup>
+                      <mml:mi>a</mml:mi>
+                      <mml:mi>m</mml:mi>
+                      <mml:mrow>
+                        <mml:mi>b</mml:mi>
+                        <mml:mi>n</mml:mi>
+                        <mml:mo>,</mml:mo>
+                      </mml:mrow>
+                    </mml:msubsup>
+                  </mml:math>
+                </disp-formula>
+              
+              <p>The position of missile is updated in the body frame by</p>
+              
+                <disp-formula>
+                  <label>(19)</label>
+                  <mml:math id="m2rg6o4p1x">
+                    <mml:mtable displaystyle="true" columnspacing="1em" rowspacing="3pt">
+                      <mml:mtr>
+                        <mml:mtd>
+                          <mml:msubsup>
+                            <mml:mi>x</mml:mi>
+                            <mml:mi>m</mml:mi>
+                            <mml:mrow>
+                              <mml:mi>b</mml:mi>
+                              <mml:mi>n</mml:mi>
+                              <mml:mo>,</mml:mo>
+                              <mml:mo>+</mml:mo>
+                              <mml:mn>1</mml:mn>
+                            </mml:mrow>
+                          </mml:msubsup>
+                          <mml:msubsup>
+                            <mml:mi>x</mml:mi>
+                            <mml:mi>j</mml:mi>
+                            <mml:mrow>
+                              <mml:mi>b</mml:mi>
+                              <mml:mi>n</mml:mi>
+                              <mml:mo>,</mml:mo>
+                              <mml:mo>+</mml:mo>
+                              <mml:mn>1</mml:mn>
+                            </mml:mrow>
+                          </mml:msubsup>
+                          <mml:mo>=</mml:mo>
+                          <mml:mo>+</mml:mo>
+                          <mml:msup>
+                            <mml:mi>L</mml:mi>
+                            <mml:mrow>
+                              <mml:mi>n</mml:mi>
+                              <mml:mo>+</mml:mo>
+                              <mml:mn>1</mml:mn>
+                            </mml:mrow>
+                          </mml:msup>
+                        </mml:mtd>
+                      </mml:mtr>
+                      <mml:mtr>
+                        <mml:mtd>
+                          <mml:msubsup>
+                            <mml:mi>y</mml:mi>
+                            <mml:mi>m</mml:mi>
+                            <mml:mrow>
+                              <mml:mi>b</mml:mi>
+                              <mml:mi>n</mml:mi>
+                              <mml:mo>,</mml:mo>
+                              <mml:mo>+</mml:mo>
+                              <mml:mn>1</mml:mn>
+                            </mml:mrow>
+                          </mml:msubsup>
+                          <mml:msubsup>
+                            <mml:mi>y</mml:mi>
+                            <mml:mi>j</mml:mi>
+                            <mml:mrow>
+                              <mml:mi>b</mml:mi>
+                              <mml:mi>n</mml:mi>
+                              <mml:mo>,</mml:mo>
+                              <mml:mo>+</mml:mo>
+                              <mml:mn>1</mml:mn>
+                            </mml:mrow>
+                          </mml:msubsup>
+                          <mml:mo>=</mml:mo>
+                        </mml:mtd>
+                      </mml:mtr>
+                      <mml:mtr>
+                        <mml:mtd>
+                          <mml:msubsup>
+                            <mml:mi>z</mml:mi>
+                            <mml:mi>m</mml:mi>
+                            <mml:mrow>
+                              <mml:mi>b</mml:mi>
+                              <mml:mi>n</mml:mi>
+                              <mml:mo>,</mml:mo>
+                              <mml:mo>+</mml:mo>
+                              <mml:mn>1</mml:mn>
+                            </mml:mrow>
+                          </mml:msubsup>
+                          <mml:msubsup>
+                            <mml:mi>z</mml:mi>
+                            <mml:mi>j</mml:mi>
+                            <mml:mrow>
+                              <mml:mi>b</mml:mi>
+                              <mml:mi>n</mml:mi>
+                              <mml:mo>,</mml:mo>
+                              <mml:mo>+</mml:mo>
+                              <mml:mn>1</mml:mn>
+                            </mml:mrow>
+                          </mml:msubsup>
+                          <mml:mo>=</mml:mo>
+                        </mml:mtd>
+                      </mml:mtr>
+                    </mml:mtable>
+                  </mml:math>
+                </disp-formula>
+              
+              <p>Inserting Eq. 19 into Eq. 14, the position of the missile in the inertial frame can be computed accordingly. This mode is terminated when the relative distance <italic>L</italic> exceeds the rail length. Then, the missile will switch to a target heading mode.</p>
+            </sec>
+          
+          
+            <sec>
+              
+                <title>2.4.2 Target heading mode</title>
+              
+              <p>In this mode, the target position will be used to modify the shift distance, which the missile transport in a time step size <inline-formula>
+  <mml:math id="ma08pklqmb">
+    <mml:mi>Δ</mml:mi>
+    <mml:mi>t</mml:mi>
+  </mml:math>
+</inline-formula>. This mode will mimic the principle of radar guidance. The equation to compute the missile position is given by</p>
+              
+                <disp-formula>
+                  <label>(20)</label>
+                  <mml:math id="mebsbdmi45">
+                    <mml:mfrac>
+                      <mml:mrow>
+                        <mml:msup>
+                          <mml:mi>d</mml:mi>
+                          <mml:mn>2</mml:mn>
+                        </mml:msup>
+                        <mml:mi>x</mml:mi>
+                      </mml:mrow>
+                      <mml:mrow>
+                        <mml:mi>d</mml:mi>
+                        <mml:msup>
+                          <mml:mi>t</mml:mi>
+                          <mml:mn>2</mml:mn>
+                        </mml:msup>
+                      </mml:mrow>
+                    </mml:mfrac>
+                    <mml:mo>=</mml:mo>
+                    <mml:msub>
+                      <mml:mi>a</mml:mi>
+                      <mml:mi>m</mml:mi>
+                    </mml:msub>
+                  </mml:math>
+                </disp-formula>
+              
+              <p>In this stage, the missile will head toward the target and change direction following target motion.</p>
+              
+                <disp-formula>
+                  <label>(21)</label>
+                  <mml:math id="m4k074t5by">
+                    <mml:mtable displaystyle="true" columnalign="right left" columnspacing="0em" rowspacing="3pt">
+                      <mml:mtr>
+                        <mml:mtd>
+                          <mml:mi>Δ</mml:mi>
+                          <mml:msubsup>
+                            <mml:mi>x</mml:mi>
+                            <mml:mi>m</mml:mi>
+                            <mml:mrow>
+                              <mml:mi>n</mml:mi>
+                              <mml:mo>+</mml:mo>
+                              <mml:mn>1</mml:mn>
+                            </mml:mrow>
+                          </mml:msubsup>
+                        </mml:mtd>
+                        <mml:mtd>
+                          <mml:mi/>
+                          <mml:mi>Δ</mml:mi>
+                          <mml:mi>t</mml:mi>
+                          <mml:mi>Δ</mml:mi>
+                          <mml:mo>=</mml:mo>
+                          <mml:mo>+</mml:mo>
+                          <mml:msubsup>
+                            <mml:mi>u</mml:mi>
+                            <mml:mi>m</mml:mi>
+                            <mml:mi>n</mml:mi>
+                          </mml:msubsup>
+                          <mml:msubsup>
+                            <mml:mi>a</mml:mi>
+                            <mml:mi>n</mml:mi>
+                            <mml:mrow>
+                              <mml:mi>m</mml:mi>
+                              <mml:mi>x</mml:mi>
+                              <mml:mo>,</mml:mo>
+                            </mml:mrow>
+                          </mml:msubsup>
+                          <mml:mfrac>
+                            <mml:mn>1</mml:mn>
+                            <mml:mn>2</mml:mn>
+                          </mml:mfrac>
+                          <mml:msup>
+                            <mml:mi>t</mml:mi>
+                            <mml:mn>2</mml:mn>
+                          </mml:msup>
+                        </mml:mtd>
+                      </mml:mtr>
+                      <mml:mtr>
+                        <mml:mtd>
+                          <mml:mi>Δ</mml:mi>
+                          <mml:msubsup>
+                            <mml:mi>y</mml:mi>
+                            <mml:mi>m</mml:mi>
+                            <mml:mrow>
+                              <mml:mi>n</mml:mi>
+                              <mml:mo>+</mml:mo>
+                              <mml:mn>1</mml:mn>
+                            </mml:mrow>
+                          </mml:msubsup>
+                        </mml:mtd>
+                        <mml:mtd>
+                          <mml:mi/>
+                          <mml:mi>Δ</mml:mi>
+                          <mml:mi>t</mml:mi>
+                          <mml:mi>Δ</mml:mi>
+                          <mml:mo>=</mml:mo>
+                          <mml:mo>+</mml:mo>
+                          <mml:msubsup>
+                            <mml:mi>v</mml:mi>
+                            <mml:mi>m</mml:mi>
+                            <mml:mi>n</mml:mi>
+                          </mml:msubsup>
+                          <mml:msubsup>
+                            <mml:mi>a</mml:mi>
+                            <mml:mi>n</mml:mi>
+                            <mml:mrow>
+                              <mml:mi>m</mml:mi>
+                              <mml:mi>y</mml:mi>
+                              <mml:mo>,</mml:mo>
+                            </mml:mrow>
+                          </mml:msubsup>
+                          <mml:mfrac>
+                            <mml:mn>1</mml:mn>
+                            <mml:mn>2</mml:mn>
+                          </mml:mfrac>
+                          <mml:msup>
+                            <mml:mi>t</mml:mi>
+                            <mml:mn>2</mml:mn>
+                          </mml:msup>
+                        </mml:mtd>
+                      </mml:mtr>
+                      <mml:mtr>
+                        <mml:mtd>
+                          <mml:mi>Δ</mml:mi>
+                          <mml:msubsup>
+                            <mml:mi>z</mml:mi>
+                            <mml:mi>m</mml:mi>
+                            <mml:mrow>
+                              <mml:mi>n</mml:mi>
+                              <mml:mo>+</mml:mo>
+                              <mml:mn>1</mml:mn>
+                            </mml:mrow>
+                          </mml:msubsup>
+                        </mml:mtd>
+                        <mml:mtd>
+                          <mml:mi/>
+                          <mml:mi>Δ</mml:mi>
+                          <mml:mi>t</mml:mi>
+                          <mml:mi>Δ</mml:mi>
+                          <mml:mo>=</mml:mo>
+                          <mml:mo>+</mml:mo>
+                          <mml:msubsup>
+                            <mml:mi>w</mml:mi>
+                            <mml:mi>m</mml:mi>
+                            <mml:mi>n</mml:mi>
+                          </mml:msubsup>
+                          <mml:msubsup>
+                            <mml:mi>a</mml:mi>
+                            <mml:mi>n</mml:mi>
+                            <mml:mrow>
+                              <mml:mi>m</mml:mi>
+                              <mml:mi>z</mml:mi>
+                              <mml:mo>,</mml:mo>
+                            </mml:mrow>
+                          </mml:msubsup>
+                          <mml:mfrac>
+                            <mml:mn>1</mml:mn>
+                            <mml:mn>2</mml:mn>
+                          </mml:mfrac>
+                          <mml:msup>
+                            <mml:mi>t</mml:mi>
+                            <mml:mn>2</mml:mn>
+                          </mml:msup>
+                        </mml:mtd>
+                      </mml:mtr>
+                    </mml:mtable>
+                  </mml:math>
+                </disp-formula>
+              
+              <p>The Rodriquez rotation [<xref ref-type="bibr" rid="ref_15">15</xref>] is employed to re-compute the distance that the missile flew in <inline-formula>
+  <mml:math id="m4t1u8g6bj">
+    <mml:mi>Δ</mml:mi>
+    <mml:mi>t</mml:mi>
+  </mml:math>
+</inline-formula>. It will rotate to the direction from the previous missile position to the most updated target location as in <xref ref-type="fig" rid="fig_10">Figure 10</xref>. Set <inline-formula>
+  <mml:math id="m2emln3azb">
+    <mml:msub>
+      <mml:mi>k</mml:mi>
+      <mml:mrow>
+        <mml:mi>m</mml:mi>
+        <mml:mi>t</mml:mi>
+        <mml:mo>,</mml:mo>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula> is the vector connecting the target and the missile, (<inline-formula>
+  <mml:math id="mnpnzr030u">
+    <mml:mi>Δ</mml:mi>
+    <mml:msup>
+      <mml:mi>s</mml:mi>
+      <mml:mrow>
+        <mml:mi>n</mml:mi>
+        <mml:mo>+</mml:mo>
+        <mml:mn>1</mml:mn>
+      </mml:mrow>
+    </mml:msup>
+    <mml:mrow>
+      <mml:mo>(</mml:mo>
+      <mml:mo>,</mml:mo>
+      <mml:mo>,</mml:mo>
+      <mml:mo fence="true"/>
+      <mml:mi>Δ</mml:mi>
+      <mml:mi>Δ</mml:mi>
+      <mml:mi>Δ</mml:mi>
+      <mml:msubsup>
+        <mml:mi>x</mml:mi>
+        <mml:mi>m</mml:mi>
+        <mml:mrow>
+          <mml:mi>n</mml:mi>
+          <mml:mo>+</mml:mo>
+          <mml:mn>1</mml:mn>
+        </mml:mrow>
+      </mml:msubsup>
+      <mml:msubsup>
+        <mml:mi>y</mml:mi>
+        <mml:mi>m</mml:mi>
+        <mml:mrow>
+          <mml:mi>n</mml:mi>
+          <mml:mo>+</mml:mo>
+          <mml:mn>1</mml:mn>
+        </mml:mrow>
+      </mml:msubsup>
+      <mml:msubsup>
+        <mml:mi>z</mml:mi>
+        <mml:mi>m</mml:mi>
+        <mml:mrow>
+          <mml:mi>n</mml:mi>
+          <mml:mo>+</mml:mo>
+          <mml:mn>1</mml:mn>
+        </mml:mrow>
+      </mml:msubsup>
+    </mml:mrow>
+  </mml:math>
+</inline-formula>) is shifting vector. The new distance is computed based on Rodriquez rotation as follows:</p>
+              
+                <disp-formula>
+                  <label>(22)</label>
+                  <mml:math id="mfuk2jqz6u">
+                    <mml:mtable columnalign="right" columnspacing="1em" rowspacing="4pt">
+                      <mml:mtr>
+                        <mml:mtd>
+                          <mml:mi>Δ</mml:mi>
+                          <mml:mi>Δ</mml:mi>
+                          <mml:mi>cos</mml:mi>
+                          <mml:mi>α</mml:mi>
+                          <mml:mi>sin</mml:mi>
+                          <mml:mi>α</mml:mi>
+                          <mml:mi>k</mml:mi>
+                          <mml:mi>cos</mml:mi>
+                          <mml:mi>α</mml:mi>
+                          <mml:msubsup>
+                            <mml:mi>s</mml:mi>
+                            <mml:mrow>
+                              <mml:mtext>rot </mml:mtext>
+                            </mml:mrow>
+                            <mml:mrow>
+                              <mml:mi>n</mml:mi>
+                              <mml:mo>+</mml:mo>
+                              <mml:mn>1</mml:mn>
+                            </mml:mrow>
+                          </mml:msubsup>
+                          <mml:mo>=</mml:mo>
+                          <mml:mo>⁡</mml:mo>
+                          <mml:mo>+</mml:mo>
+                          <mml:mo>⁡</mml:mo>
+                          <mml:mo>+</mml:mo>
+                          <mml:mo>(</mml:mo>
+                          <mml:mo>−</mml:mo>
+                          <mml:mo>⁡</mml:mo>
+                          <mml:mo>)</mml:mo>
+                          <mml:msup>
+                            <mml:mi>s</mml:mi>
+                            <mml:mrow>
+                              <mml:mi>n</mml:mi>
+                              <mml:mo>+</mml:mo>
+                              <mml:mn>1</mml:mn>
+                            </mml:mrow>
+                          </mml:msup>
+                          <mml:mrow>
+                            <mml:mo>(</mml:mo>
+                            <mml:mo>×</mml:mo>
+                            <mml:mo>)</mml:mo>
+                            <mml:mi>k</mml:mi>
+                            <mml:mi>Δ</mml:mi>
+                            <mml:msup>
+                              <mml:mi>s</mml:mi>
+                              <mml:mrow>
+                                <mml:mi>n</mml:mi>
+                                <mml:mo>+</mml:mo>
+                                <mml:mn>1</mml:mn>
+                              </mml:mrow>
+                            </mml:msup>
+                          </mml:mrow>
+                          <mml:mrow>
+                            <mml:mo>(</mml:mo>
+                            <mml:mo>⋅</mml:mo>
+                            <mml:mo>)</mml:mo>
+                            <mml:mi>k</mml:mi>
+                            <mml:mi>Δ</mml:mi>
+                            <mml:msup>
+                              <mml:mi>s</mml:mi>
+                              <mml:mrow>
+                                <mml:mi>n</mml:mi>
+                                <mml:mo>+</mml:mo>
+                                <mml:mn>1</mml:mn>
+                              </mml:mrow>
+                            </mml:msup>
+                          </mml:mrow>
+                          <mml:mn>1</mml:mn>
+                        </mml:mtd>
+                      </mml:mtr>
+                    </mml:mtable>
+                  </mml:math>
+                </disp-formula>
+              
+              <p>where, $k$ is determined by</p>
+              
+                <disp-formula>
+                  <label>(23)</label>
+                  <mml:math id="my780vg905">
+                    <mml:mi>k</mml:mi>
+                    <mml:mi>Δ</mml:mi>
+                    <mml:mi>s</mml:mi>
+                    <mml:mo>=</mml:mo>
+                    <mml:mo>×</mml:mo>
+                    <mml:msub>
+                      <mml:mi>v</mml:mi>
+                      <mml:mrow>
+                        <mml:mi>m</mml:mi>
+                        <mml:mi>i</mml:mi>
+                      </mml:mrow>
+                    </mml:msub>
+                  </mml:math>
+                </disp-formula>
+              
+              <p>where, <inline-formula>
+  <mml:math id="mu4sxcs9gc">
+    <mml:msub>
+      <mml:mi>v</mml:mi>
+      <mml:mrow>
+        <mml:mi>m</mml:mi>
+        <mml:mi>i</mml:mi>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula> is the vector connecting the missile and jet position at the time step n and n + 1 respectively. Then, the new position of missile can be updated by</p>
+              
+                <disp-formula>
+                  <label>(24)</label>
+                  <mml:math id="m5n50jm8fy">
+                    <mml:mtable displaystyle="true" columnalign="right left" columnspacing="0em" rowspacing="3pt">
+                      <mml:mtr>
+                        <mml:mtd/>
+                        <mml:mtd>
+                          <mml:msubsup>
+                            <mml:mi>x</mml:mi>
+                            <mml:mi>m</mml:mi>
+                            <mml:mrow>
+                              <mml:mi>n</mml:mi>
+                              <mml:mo>+</mml:mo>
+                              <mml:mn>1</mml:mn>
+                            </mml:mrow>
+                          </mml:msubsup>
+                          <mml:msubsup>
+                            <mml:mi>x</mml:mi>
+                            <mml:mi>m</mml:mi>
+                            <mml:mi>n</mml:mi>
+                          </mml:msubsup>
+                          <mml:msubsup>
+                            <mml:mi>x</mml:mi>
+                            <mml:mrow>
+                              <mml:mtext>rot </mml:mtext>
+                            </mml:mrow>
+                            <mml:mrow>
+                              <mml:mi>n</mml:mi>
+                              <mml:mo>+</mml:mo>
+                              <mml:mn>1</mml:mn>
+                            </mml:mrow>
+                          </mml:msubsup>
+                          <mml:mo>=</mml:mo>
+                          <mml:mo>+</mml:mo>
+                          <mml:mi>Δ</mml:mi>
+                        </mml:mtd>
+                      </mml:mtr>
+                      <mml:mtr>
+                        <mml:mtd/>
+                        <mml:mtd>
+                          <mml:msubsup>
+                            <mml:mi>y</mml:mi>
+                            <mml:mi>m</mml:mi>
+                            <mml:mrow>
+                              <mml:mi>n</mml:mi>
+                              <mml:mo>+</mml:mo>
+                              <mml:mn>1</mml:mn>
+                            </mml:mrow>
+                          </mml:msubsup>
+                          <mml:msubsup>
+                            <mml:mi>y</mml:mi>
+                            <mml:mi>m</mml:mi>
+                            <mml:mi>n</mml:mi>
+                          </mml:msubsup>
+                          <mml:msubsup>
+                            <mml:mi>y</mml:mi>
+                            <mml:mrow>
+                              <mml:mtext>rot </mml:mtext>
+                            </mml:mrow>
+                            <mml:mrow>
+                              <mml:mi>n</mml:mi>
+                              <mml:mo>+</mml:mo>
+                              <mml:mn>1</mml:mn>
+                            </mml:mrow>
+                          </mml:msubsup>
+                          <mml:mo>=</mml:mo>
+                          <mml:mo>+</mml:mo>
+                          <mml:mi>Δ</mml:mi>
+                        </mml:mtd>
+                      </mml:mtr>
+                      <mml:mtr>
+                        <mml:mtd/>
+                        <mml:mtd>
+                          <mml:msubsup>
+                            <mml:mi>z</mml:mi>
+                            <mml:mi>m</mml:mi>
+                            <mml:mrow>
+                              <mml:mi>n</mml:mi>
+                              <mml:mo>+</mml:mo>
+                              <mml:mn>1</mml:mn>
+                            </mml:mrow>
+                          </mml:msubsup>
+                          <mml:msubsup>
+                            <mml:mi>z</mml:mi>
+                            <mml:mi>m</mml:mi>
+                            <mml:mi>n</mml:mi>
+                          </mml:msubsup>
+                          <mml:msubsup>
+                            <mml:mi>z</mml:mi>
+                            <mml:mrow>
+                              <mml:mtext>rot </mml:mtext>
+                            </mml:mrow>
+                            <mml:mrow>
+                              <mml:mi>n</mml:mi>
+                              <mml:mo>+</mml:mo>
+                              <mml:mn>1</mml:mn>
+                            </mml:mrow>
+                          </mml:msubsup>
+                          <mml:mo>=</mml:mo>
+                          <mml:mo>+</mml:mo>
+                          <mml:mi>Δ</mml:mi>
+                        </mml:mtd>
+                      </mml:mtr>
+                    </mml:mtable>
+                  </mml:math>
+                </disp-formula>
+              
+              
+                <fig id="fig_10">
+                  <label>Figure 10</label>
+                  <caption>
+                    <title>Redirect the missile such that it keeps heading to the target</title>
+                  </caption>
+                  <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/9/img_MHqVwONHvP_FGRuU.png"/>
+                </fig>
+              
+            </sec>
+          
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>3. Simulation result</title>
+      <p><xref ref-type="fig" rid="fig_11">Figure 11</xref> depicts the representation of targets on the HUD screen as they are detected by electromagnetic radar. <xref ref-type="table" rid="table_1">Table 1</xref> shows the initial position of the jet and five Anonymous Flying Vehicles (AFVs) in the inertial frame for testing the phased array radar. In order to detect targets, there are several researches [<xref ref-type="bibr" rid="ref_16">16</xref>], [<xref ref-type="bibr" rid="ref_17">17</xref>] in literature employ novel signal processing method. However, this method is rather complicated to implement in simulation platform [<xref ref-type="bibr" rid="ref_18">18</xref>], [<xref ref-type="bibr" rid="ref_19">19</xref>], which require fast and robust computation. Therefore, our method, which apply simplistic principles will be suitable for such platforms. <xref ref-type="fig" rid="fig_11">Figure 11</xref> illustrates the AFVs position in the HUD screen. In this paper, the maximum detected range is approximately 150000 m. The open-angle of radar varies from -30o to 30o in the wing direction, which is from the left to the right. It can be seen that the position of AFVs in the HUD plane varies depending on the relative location of targets and the jet. All 5 AFVs are detected by the radar as their locations are inside the effective range of the radar. <xref ref-type="fig" rid="fig_12">Figure 12</xref> shows the target selection procedure. At first, the radar box will move to the region where the target locates. Then, a button is released to lock-on target. If there are several enemy airborne targets in the same region, the target, which is closest to the box’s centre will be chosen. After the target is selected, its position will be used in the missile dynamic computation to mimic the phenomenon that the missile is guided by the radar system. The initial position of jet and AFVs in the inertial frame, which is used for validating the infrared search and track system, are given in the <xref ref-type="table" rid="table_2">Table 2</xref>. The AFVs in this case will be closer to the jet compared to the radar test case. The HUD display will be in the seeking mode as presented in <xref ref-type="fig" rid="fig_13">Figure 13</xref>. Several works [<xref ref-type="bibr" rid="ref_20">20</xref>], [<xref ref-type="bibr" rid="ref_21">21</xref>] have proposed a complex method, which require additional information about environment temperature and IRTS sensor. However, this data is not always available due to lacking of reference source and massive data storage requirements. Simulators such as Unity [<xref ref-type="bibr" rid="ref_18">18</xref>] or VBS3 [<xref ref-type="bibr" rid="ref_19">19</xref>] provide features to add models and create a virtual environment. However, there is no option to insert the thermal data into specific regions in the virtual environment. Therefore, our method which does not require additional information about our surroundings is easily implemented in these platforms. In this mode, the box will move around to select the region that might contain the target. After choosing the region at the centre of HUD, the system will change to identification mode, which is shown in <xref ref-type="fig" rid="fig_14">Figure 14</xref>. The position of AFVs on the HUD, in this case, is their relative positions in the large box in <xref ref-type="fig" rid="fig_13">Figure 13</xref>. Only three of five AFVs are depicted on the HUD as they are inside the box in the seeking mode. The remaining AFVs are not displayed as they are outside the box. By moving the radar box around the HUD, the target will be selected if its location is closest to the radar box’s centre as in <xref ref-type="fig" rid="fig_15">Figure 15</xref>. Similar to the radar system, after the IRTS determined the target, its location will be used for guiding the missile to destroy the threat. The missile dynamics is applied to compute the missile trajectory after the target is chosen. In this paper, the missile mass is 230 kg. The engine thrust is set up at 9900 N. The length of missile is 4.08 m while its diameter is 0.23 m. Firstly, the test where the jet and the target move in the opposite direction is performed to validate our method. In this test, the initial value of acceleration, velocity, and position for the jet and target are provided in <xref ref-type="table" rid="table_3">Table 3</xref>. Their x-component of the velocity have a different sign as they travel in the confrontational direction. In this case, the semi-active radar homing missile is deployed. And it will be activated by using the phased array radar to lock-on the target.</p><p><xref ref-type="fig" rid="fig_16">Figure 16</xref> shows the computed missile trajectory as well as the jet and target path in 3D view, in the x-z, and y-z planes respectively. The missile is launched at t = 0, then it moved in the same direction of jet motion, as the missile slides on the launching trail. After that, it will slightly change the heading direction such that it will hit the target eventually as represented in <xref ref-type="fig" rid="fig_16">Figure 16</xref>. <xref ref-type="table" rid="table_4">Table 4</xref> provides the initial condition for the jet and target when the infrared homing missile is used. Because the jet and the enemy aircraft move in the same direction, the target engine, which is the main heat source is placed ahead of the missile. The IRTS is deployed for tracking the target. <xref ref-type="fig" rid="fig_17">Figure 17</xref> depicted the missile trajectory in 3D view, in the x-y, and y-z planes. In general, the missile path is similar to the previous test, although it requires slightly more time to reach the target.</p>
+      
+        <table-wrap id="table_1">
+          <label>Table 1</label>
+          <caption>
+            <title>The initial states of jet and target for testing the phased array radar</title>
+          </caption>
+          <table><tbody><tr><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"><p>Initial Position</p></td></tr><tr><td colspan="1" rowspan="1"><p>jet</p></td><td colspan="1" rowspan="1"><p>6370 m, -1430 m, -5043 m</p></td></tr><tr><td colspan="1" rowspan="1"><p>aerial vehicle 1</p></td><td colspan="1" rowspan="1"><p>13970 m, -2450 m, -5277 m</p></td></tr><tr><td colspan="1" rowspan="1"><p>aerial vehicle 2</p></td><td colspan="1" rowspan="1"><p>57670 m, -21590 m, -5395 m</p></td></tr><tr><td colspan="1" rowspan="1"><p>aerial vehicle 3</p></td><td colspan="1" rowspan="1"><p>69970 m, 2260 m, -4812 m</p></td></tr><tr><td colspan="1" rowspan="1"><p>aerial vehicle 4</p></td><td colspan="1" rowspan="1"><p>89170 m, 8830 m, -4922 m</p></td></tr><tr><td colspan="1" rowspan="1"><p>aerial vehicle 5</p></td><td colspan="1" rowspan="1"><p>123370 m, 14290 m, -4611 m</p></td></tr></tbody></table>
+        </table-wrap>
+      
+      
+        <table-wrap id="table_2">
+          <label>Table 2</label>
+          <caption>
+            <title>The initial states of jet and target for testing the IRTS system</title>
+          </caption>
+          <table><tbody><tr><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"><p>Initial Position</p></td></tr><tr><td colspan="1" rowspan="1"><p>jet</p></td><td colspan="1" rowspan="1"><p>6370 m, -1430 m, -5043 m</p></td></tr><tr><td colspan="1" rowspan="1"><p>aerial vehicle 1</p></td><td colspan="1" rowspan="1"><p>17570 m, -1770 m, -5979 m</p></td></tr><tr><td colspan="1" rowspan="1"><p>aerial vehicle 2</p></td><td colspan="1" rowspan="1"><p>22470 m, -8150 m, -6451 m</p></td></tr><tr><td colspan="1" rowspan="1"><p>aerial vehicle 3</p></td><td colspan="1" rowspan="1"><p>27570 m, -200 m, -4119 m</p></td></tr><tr><td colspan="1" rowspan="1"><p>aerial vehicle 4</p></td><td colspan="1" rowspan="1"><p>33970 m, 1990 m, -4559 m</p></td></tr><tr><td colspan="1" rowspan="1"><p>aerial vehicle 5</p></td><td colspan="1" rowspan="1"><p>40370 m, 5810 m, -2515 m</p></td></tr></tbody></table>
+        </table-wrap>
+      
+      
+        <table-wrap id="table_3">
+          <label>Table 3</label>
+          <caption>
+            <title>The initial states of jet and target for the front approach</title>
+          </caption>
+          <table><tbody><tr><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"><p>Initial Velocity</p></td><td colspan="1" rowspan="1"><p>Initial Position</p></td><td colspan="1" rowspan="1"><p>Initial Acceleration</p></td></tr><tr><td colspan="1" rowspan="1"><p>jet</p></td><td colspan="1" rowspan="1"><p>-154 m/s, -72 m/s, -6 m/s</p></td><td colspan="1" rowspan="1"><p>-370 m, -1430 m, -843 m</p></td><td colspan="1" rowspan="1"><p>-5.2 m/s<sup>2</sup>, -1.4 m/s<sup>2</sup>, 1.0 m/s<sup>2</sup></p></td></tr><tr><td colspan="1" rowspan="1"><p>target</p></td><td colspan="1" rowspan="1"><p>200 m/s, 20 m/s, -30 m/s</p></td><td colspan="1" rowspan="1"><p>-19443 m,</p><p>-3435 m,</p><p>-2920 m</p></td><td colspan="1" rowspan="1"><p>-4.3 m/s<sup>2</sup>, -3.4 m/s<sup>2</sup>, -1.2 m/s<sup>2</sup></p></td></tr></tbody></table>
+        </table-wrap>
+      
+      
+        <table-wrap id="table_4">
+          <label>Table 4</label>
+          <caption>
+            <title>The initial states of jet and target for the back approach</title>
+          </caption>
+          <table><tbody><tr><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"><p>Initial Velocity</p></td><td colspan="1" rowspan="1"><p>Initial Position</p></td><td colspan="1" rowspan="1"><p>Initial Acceleration</p></td></tr><tr><td colspan="1" rowspan="1"><p>jet</p></td><td colspan="1" rowspan="1"><p>-135 m/s, -64 m/s, 5 m/s</p></td><td colspan="1" rowspan="1"><p>-370 m, -1430 m, -843 m</p></td><td colspan="1" rowspan="1"><p>-5.2 m/s<sup>2</sup>, -1.4 m/s2, 1.0 m/s<sup>2</sup></p></td></tr><tr><td colspan="1" rowspan="1"><p>target</p></td><td colspan="1" rowspan="1"><p>-220 m/s, 10 m/s, -15 m/s</p></td><td colspan="1" rowspan="1"><p>-12443 m, -3435 m,</p><p>-2920 m</p></td><td colspan="1" rowspan="1"><p>-5.3 m/s<sup>2</sup>, -2.4 m/s<sup>2</sup>, -0.2 m/s<sup>2</sup></p></td></tr></tbody></table>
+        </table-wrap>
+      
+      
+        <fig id="fig_11">
+          <label>Figure 11</label>
+          <caption>
+            <title>Electromagnetic radar box and targets depict on the HUD screen</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/9/img_hNDWBZExiiD7VEPQ.png"/>
+        </fig>
+      
+      
+        <fig id="fig_12">
+          <label>Figure 12</label>
+          <caption>
+            <title>The target is locked on the HUD screen</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/9/img_nwGHRTzlcB_hj-_g.png"/>
+        </fig>
+      
+      
+        <fig id="fig_13">
+          <label>Figure 13</label>
+          <caption>
+            <title>IRTS in the searching mode and targets depict on the HUD screen</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/9/img_pWxH1XVGZPc0AyNU.png"/>
+        </fig>
+      
+      
+        <fig id="fig_14">
+          <label>Figure 14</label>
+          <caption>
+            <title>IRTS in the search-to-lock mode on the HUD screen</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/9/img_8lXAD7QwgKXDyfi7.png"/>
+        </fig>
+      
+      
+        <fig id="fig_15">
+          <label>Figure 15</label>
+          <caption>
+            <title>IRTS system and lock-on target</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/9/img_PZnitpbKN_I7w_yt.png"/>
+        </fig>
+      
+      
+        <fig id="fig_16">
+          <label>Figure 16</label>
+          <caption>
+            <title>The missile, jet, and target computed trajectory when the target moves in the opposite direction with the jet: (a) The missile path in 3D; (b) The missile path in the x-z plane; (c) The missile path in the y-z plane</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/9/img_1BAgYdo0BqiLeWRP.png"/>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/9/img_RdBOPahTMeHH52Rm.png"/>
+        </fig>
+      
+      
+        <fig id="fig_17">
+          <label>Figure 17</label>
+          <caption>
+            <title>The missile, jet, and target computed trajectory when the target moves in the same direction with the jet: (a) The missile path in 3D; (b) The missile path in the x-z plane; (c) The missile path in the y-z plane</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/9/img_y6GO9k3__bmdjZED.png"/>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/9/img_FqgUyPJ7dISsGtVq.png"/>
+        </fig>
+      
+    </sec>
+    <sec sec-type="conclusions">
+      <title>4. Conclusions</title>
+      <p>In this paper, we have already presented mathematical methods to simulate air-to-air missile operation on fighter aircraft. Methods are flexible and robust, therefore, they can be applied easily on any simulation system. The computed results show that avionic systems can depict the position of anonymous flying objects in both altitude-azimuth and elevation angle-azimuth coordinates. In addition, the missile dynamics equation can predict the missile path, which leads to the target accurately.</p>
+    </sec>
+  </body>
+  <back>
+    <ack>
+      <title>Acknowledgments</title>
+      <p>We would like to thank the Modelling and Simulation Centre, Viettel High Technology Industries Corporation for supporting our research.</p>
+    </ack>
+    <app-group>
+      <app>
+        <title>Appendix</title>
+        
+      </app>
+    </app-group>
+    <notes>
+      <title>Author Contributions</title>
+      
+    </notes>
+    <notes>
+      <title>Funding</title>
+      
+    </notes>
+    <notes>
+      <title>Informed Consent Statement</title>
+      
+    </notes>
+    <notes>
+      <title>Data Availability Statement</title>
+      
+    </notes>
+    <notes notes-type="COI-statement">
+      <title>Conflicts of Interest</title>
+      
+    </notes>
+    <ref-list>
+      <title>References</title>
+      <ref id="ref_1">
+        <label>1.</label>
+        <element-citation/>
+      </ref>
+      <ref id="ref_2">
+        <label>2.</label>
+        <element-citation/>
+      </ref>
+      <ref id="ref_3">
+        <label>3.</label>
+        <element-citation/>
+      </ref>
+      <ref id="ref_4">
+        <label>4.</label>
+        <element-citation/>
+      </ref>
+      <ref id="ref_5">
+        <label>5.</label>
+        <element-citation/>
+      </ref>
+      <ref id="ref_6">
+        <label>6.</label>
+        <element-citation/>
+      </ref>
+      <ref id="ref_7">
+        <label>7.</label>
+        <element-citation/>
+      </ref>
+      <ref id="ref_8">
+        <label>8.</label>
+        <element-citation/>
+      </ref>
+      <ref id="ref_9">
+        <label>9.</label>
+        <element-citation/>
+      </ref>
+      <ref id="ref_10">
+        <label>10.</label>
+        <element-citation/>
+      </ref>
+      <ref id="ref_11">
+        <label>11.</label>
+        <element-citation/>
+      </ref>
+      <ref id="ref_12">
+        <label>12.</label>
+        <element-citation/>
+      </ref>
+      <ref id="ref_13">
+        <label>13.</label>
+        <element-citation/>
+      </ref>
+      <ref id="ref_14">
+        <label>14.</label>
+        <element-citation/>
+      </ref>
+      <ref id="ref_15">
+        <label>15.</label>
+        <element-citation/>
+      </ref>
+      <ref id="ref_16">
+        <label>16.</label>
+        <element-citation/>
+      </ref>
+      <ref id="ref_17">
+        <label>17.</label>
+        <element-citation/>
+      </ref>
+      <ref id="ref_18">
+        <label>18.</label>
+        <element-citation/>
+      </ref>
+      <ref id="ref_19">
+        <label>19.</label>
+        <element-citation/>
+      </ref>
+      <ref id="ref_20">
+        <label>20.</label>
+        <element-citation/>
+      </ref>
+      <ref id="ref_21">
+        <label>21.</label>
+        <element-citation/>
+      </ref>
+    </ref-list>
+  </back>
+</article>
