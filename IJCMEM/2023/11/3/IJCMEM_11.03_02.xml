@@ -1,0 +1,775 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.3 20210610//EN" "JATS-journalpublishing1-3.dtd">
+<article xml:lang="en" dtd-version="1.3" article-type="research-article" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mml="http://www.w3.org/1998/Math/MathML">
+  <front>
+    <journal-meta>
+      <journal-id journal-id-type="publisher-id">IJCMEM</journal-id>
+      <journal-id journal-id-type="doi">10.18280</journal-id>
+      <journal-title-group>
+        <journal-title>International Journal of Computational Methods and Experimental Measurements</journal-title>
+        <abbrev-journal-title abbrev-type="issn">Int. J. Comput. Methods Exp. Meas.</abbrev-journal-title>
+        <abbrev-journal-title abbrev-type="publisher">IJCMEM</abbrev-journal-title>
+      </journal-title-group>
+      <issn publication-format="electronic">2046-0554</issn>
+      <issn publication-format="print">2046-0546</issn>
+      <publisher>
+        <publisher-name>Acadlore</publisher-name>
+      </publisher>
+    </journal-meta>
+    <article-meta>
+      <article-id pub-id-type="publisher-id">AR-pHsmmkZLbwii2xshSF8SrFDxDVD0pe6T</article-id>
+      <article-id pub-id-type="doi">10.18280/ijcmem.110302</article-id>
+      <article-categories>
+        <subj-group>
+          <subject>Articles</subject>
+        </subj-group>
+      </article-categories>
+      <title-group>
+        <article-title>Comparison of Current Complex Variable Boundary Element Method (CVBEM) Capabilities in Basis Functions, Node Positioning Algorithms (NPAs), and Coefficient Determination Methods</article-title>
+      </title-group>
+      <contrib-group>
+        <contrib contrib-type="author" rid="aff_1">
+          <contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0000-0002-5484-0465</contrib-id>
+          <name>
+            <surname>Ali</surname>
+            <given-names>Saleem A.</given-names>
+          </name>
+          <email>saleem.ali@westpoint.edu</email>
+        </contrib>
+        <contrib contrib-type="author" rid="aff_1">
+          <name>
+            <surname>Hromadka</surname>
+            <given-names>Theodore V.</given-names>
+          </name>
+          <email/>
+        </contrib>
+        <aff id="aff_1">Department of Mathematical Sciences, United States Military Academy, West Point, NY 10996, USA</aff>
+      </contrib-group>
+      <pub-date publication-format="electronic" date-type="pub">
+        <day>25</day>
+        <month>09</month>
+        <year>2023</year>
+      </pub-date>
+      <volume>11</volume>
+      <issue>3</issue>
+      <fpage>143</fpage>
+      <lpage>148</lpage>
+      <page-range>143-148</page-range>
+      <history>
+        <date date-type="received">
+          <day>06</day>
+          <month>07</month>
+          <year>2023</year>
+        </date>
+        <date date-type="accepted">
+          <day>03</day>
+          <month>09</month>
+          <year>2023</year>
+        </date>
+      </history>
+      <permissions>
+        <copyright-statement>©2023 by the author(s)</copyright-statement>
+        <copyright-year>2023</copyright-year>
+        <license license-type="open-access" xlink:href="https://creativecommons.org/licenses/by/4.0/">
+          <license-p> Published by Acadlore Publishing Services Limited, Hong Kong. This article is available for free download and can be reused and cited, provided that the original published version is credited, under the CC BY 4.0 license.</license-p>
+        </license>
+      </permissions>
+      <abstract><p><span style="font-family: Times New Roman, serif">CVBEM is a numerical method of solving boundary value problems that satisfy Laplace's Equation in two dimensions. Three key parameters that impact the computational error and functionality of CVBEM are the basis function, the positions of the modeling nodes, and the coefficient determination methodology. To demonstrate the importance of these parameters, a case study of 2D ideal fluid flow into a 90-degree bend and over a semicircular hump was conducted comparing models using original CVBEM, complex log, complex pole, and digamma function variants basis functions, using two different NPAs, NPA1 and NPA2, and using collocation and least squares methods to determine coefficients. Results indicate that the combination of the original CVBEM basis function, NPA2, and least squares results in an approximation with the least computational error. Moreover, least squares appear to enable stability in both NPAs regarding reduction of computational error due to taking advantage of all boundary data and more stable condition number growth.  By exploring the interaction of the three main CVBEM parameters, this paper clarifies the unique impact they have on the modelling process and explicitly identifies a fourth parameter, collocation point placement, as being impactful on computational error.</p></abstract>
+      <kwd-group>
+        <kwd>Complex variable boundary element method</kwd>
+        <kwd>Harmonic function</kwd>
+        <kwd>Numerical solutions</kwd>
+        <kwd>Least squares</kwd>
+        <kwd>Computational Fluid Dynamics</kwd>
+      </kwd-group>
+      <counts>
+        <count count-type="contributors" count="2"/>
+        <fig-count count="4"/>
+        <table-count count="1"/>
+        <ref-count count="14"/>
+      </counts>
+    </article-meta>
+  </front>
+  <body>
+    <sec sec-type="intro">
+      <title>1. Introduction</title>
+      <p>The traditional computational methods of finite element, finite difference, control volume and similar, boundary element, meshless methods among others, use the problem boundary to develop a modeling node placement pattern. The literature contains numerous examples of model nodes being placed on the problem boundary and then an interpolation scheme is applied to develop an approximation function defined along the problem boundary. Indeed, model nodes are typically placed before any modeling is undertaken. The methodology discussed in the current paper, CVBEM, uses modeling results to determine computational error along the problem boundary for subsequent use in model node positioning. Algorithms have been developed to accomplish this search and adjustment task called Nodal Positioning Algorithms or NPA [<xref ref-type="bibr" rid="ref_1">1</xref>], [<xref ref-type="bibr" rid="ref_2">2</xref>], [<xref ref-type="bibr" rid="ref_3">3</xref>]. Thus, the model node distribution is developed as part of the presented modeling procedure. Use of nodes exterior of the problem domain are commonplace, however, because of the singularities typically involved with many types of basis functions, nodes are usually excluded from the problem interior. The final node distribution developed by application of the NPA (such as presented below) is therefore dependent not only upon the type of basis functions used in the approximation but the problem definition itself. Numerous tests of the presented computational procedure show that final node positions seldom occur on the problem boundary, but instead arise in the problem domain exterior such as seen in the example problem.</p><p>Use of the described modeling procedure has been highly successful in achieving computational error reduction in comparison to other computational methods such as domain methods and the like. In this paper, we use MATLAB software on a laptop as the computational engine. The presented methodology leverages application of a defined computational error to formulate model node spatial patterns from which a plot of computational error versus model number of nodes is developed as a modeling outcome.</p>
+      
+        <sec>
+          
+            <title>1.1. The approximation function</title>
+          
+          <p>The approximation function used is the linear sum of complex basis functions multiplied term-wise by complex coefficients. Complex coefficients are determined by equating the approximation with known values of the problem solution in a collocation process. Initially, the collocation process is part of an iterative process where approximation coefficients are determined in their entirety as a sequence of values for both the real and imaginary parts of each coefficient. Assuming that the domain of interest is a simply connected domain <inline-formula>
+  <mml:math id="mb34pu5c5r">
+    <mml:mi>Ω</mml:mi>
+    <mml:mo>⊂</mml:mo>
+    <mml:msup>
+      <mml:mrow>
+        <mml:mi>R</mml:mi>
+      </mml:mrow>
+      <mml:mn>2</mml:mn>
+    </mml:msup>
+  </mml:math>
+</inline-formula> where Laplace’s equation holds, and <inline-formula>
+  <mml:math id="m7gadgpl1s">
+    <mml:mi>Ω</mml:mi>
+  </mml:math>
+</inline-formula> is an open set, the CVBEM approximation function is of the form:</p>
+          
+            <disp-formula>
+              <label>(1)</label>
+              <mml:math id="mzjpm3gf5p">
+                <mml:mrow>
+                  <mml:mover>
+                    <mml:mi>ω</mml:mi>
+                    <mml:mo>^</mml:mo>
+                  </mml:mover>
+                </mml:mrow>
+                <mml:mo>(</mml:mo>
+                <mml:mo>)</mml:mo>
+                <mml:mo>=</mml:mo>
+                <mml:mo>(</mml:mo>
+                <mml:mo>)</mml:mo>
+                <mml:mi>z</mml:mi>
+                <mml:mi>z</mml:mi>
+                <mml:munderover>
+                  <mml:mo>∑</mml:mo>
+                  <mml:mrow>
+                    <mml:mi>j</mml:mi>
+                    <mml:mo>=</mml:mo>
+                    <mml:mn>1</mml:mn>
+                  </mml:mrow>
+                  <mml:mi>n</mml:mi>
+                </mml:munderover>
+                <mml:msub>
+                  <mml:mi>c</mml:mi>
+                  <mml:mi>j</mml:mi>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>g</mml:mi>
+                  <mml:mi>j</mml:mi>
+                </mml:msub>
+              </mml:math>
+            </disp-formula>
+          
+          <p>where <inline-formula>
+  <mml:math id="m4vv5umx3p">
+    <mml:msub>
+      <mml:mi>c</mml:mi>
+      <mml:mi>j</mml:mi>
+    </mml:msub>
+    <mml:mo>⊂</mml:mo>
+    <mml:mrow>
+      <mml:mi>C</mml:mi>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> is a complex coefficient, <inline-formula>
+  <mml:math id="memphg2mxu">
+    <mml:msub>
+      <mml:mi>g</mml:mi>
+      <mml:mi>j</mml:mi>
+    </mml:msub>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mi>z</mml:mi>
+  </mml:math>
+</inline-formula> is a complex variable function that is analytic within and harmonic, and is the number of basis functions, or nodes, used in the approximation function [<xref ref-type="bibr" rid="ref_4">4</xref>], [<xref ref-type="bibr" rid="ref_5">5</xref>]. In contrast with real variable methods that utilize real coefficients, the complex coefficients consist of a real and imaginary part. Thus, for each basis function there are two degrees of freedom (DOF). In other words, for nodes, there are 2<italic>n</italic><span style="font-family: Times, serif"> DOF that are determined by 2<italic>n<span style="font-family: Times, serif"> </italic>collocation points through collocation. The additional degrees of freedom could account for differences in computational error when comparing CVBEM to real variable methods.</p>
+          
+            <disp-formula>
+              <label>(2)</label>
+              <mml:math id="ms3l66e2aw">
+                <mml:mfrac>
+                  <mml:mrow>
+                    <mml:mi>∂</mml:mi>
+                    <mml:mi>u</mml:mi>
+                  </mml:mrow>
+                  <mml:mrow>
+                    <mml:mi>∂</mml:mi>
+                    <mml:mi>x</mml:mi>
+                  </mml:mrow>
+                </mml:mfrac>
+                <mml:mfrac>
+                  <mml:mrow>
+                    <mml:mi>∂</mml:mi>
+                    <mml:mi>v</mml:mi>
+                  </mml:mrow>
+                  <mml:mrow>
+                    <mml:mi>∂</mml:mi>
+                    <mml:mi>y</mml:mi>
+                  </mml:mrow>
+                </mml:mfrac>
+                <mml:mo>=</mml:mo>
+              </mml:math>
+            </disp-formula>
+          
+          
+            <disp-formula>
+              <label>(3)</label>
+              <mml:math id="m74e7wi4im">
+                <mml:mfrac>
+                  <mml:mrow>
+                    <mml:mi>∂</mml:mi>
+                    <mml:mi>u</mml:mi>
+                  </mml:mrow>
+                  <mml:mrow>
+                    <mml:mi>∂</mml:mi>
+                    <mml:mi>y</mml:mi>
+                  </mml:mrow>
+                </mml:mfrac>
+                <mml:mfrac>
+                  <mml:mrow>
+                    <mml:mi>∂</mml:mi>
+                    <mml:mi>v</mml:mi>
+                  </mml:mrow>
+                  <mml:mrow>
+                    <mml:mi>∂</mml:mi>
+                    <mml:mi>x</mml:mi>
+                  </mml:mrow>
+                </mml:mfrac>
+                <mml:mo>=</mml:mo>
+                <mml:mo>−</mml:mo>
+              </mml:math>
+            </disp-formula>
+          
+          <p>Because the approximation is comprised of harmonic functions, its real and imaginary parts are related through the Cauchy-Riemann Eqs. (2) and (3), and the potential lines and streamlines are orthogonal in the resulting flow net plot. Thus, when only the real or imaginary part can be modelled due to the available data, the other part can be easily determined using the Cauchy-Riemann equations [<xref ref-type="bibr" rid="ref_6">6</xref>], [<xref ref-type="bibr" rid="ref_7">7</xref>].</p><p>In summary, the three key parameters of the CVBEM methodology are the used basis functions, of which there is a diverse selection, the position of nodes, and the methodology to determine the approximation function coefficients. Numerous studies have explored the impact of these three parameters on the resultant models, especially in computational error.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>1.2. Basis functions</title>
+          
+          <p>The basis function to be used is an important consideration of the CVBEM modelling process. To ensure that linear combinations of basis functions are harmonic and satisfy the Laplace equation over the problem domain, the selected basis functions are analytic. The underpinnings of this process can be found in publications prepared by Walsh, which predates the advent of the digital computer, where he proves several theorems regarding the approximation of complex analytic functions bounded by Jordan arcs [<xref ref-type="bibr" rid="ref_8">8</xref>], [<xref ref-type="bibr" rid="ref_9">9</xref>].</p><p>The family of basis functions that can be used for CVBEM modelling is any harmonic function that is analytic in the problem domain of interest. Previous research has explored the application of the following basis functions in CVBEM modelling and has illustrated that the main difference is how fast the approximation function converges [<xref ref-type="bibr" rid="ref_10">10</xref>].</p><p>Depending on the selected basis function, special considerations may need to be taken such as rotating the branch cuts of the complex natural logarithm so that each branch lies in the exterior of the problem domain. Consequently, the resulting approximation function will be analytic within the problem domain [<xref ref-type="bibr" rid="ref_10">10</xref>].</p><p><p>Complex linear polynomials multiplied with the complex natural logarithm (this is also the original CVBEM basis function and will be referred to as CVBEM basis function):</p></p><p>a. <inline-formula>
+  <mml:math id="mx4awnavbd">
+    <mml:mstyle scriptlevel="0">
+      <mml:mspace width="1em"/>
+    </mml:mstyle>
+    <mml:mrow>
+      <mml:mo>(</mml:mo>
+      <mml:mo>−</mml:mo>
+      <mml:mo>)</mml:mo>
+      <mml:mi>z</mml:mi>
+      <mml:msub>
+        <mml:mi>z</mml:mi>
+        <mml:mi>j</mml:mi>
+      </mml:msub>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>(</mml:mo>
+      <mml:mo>−</mml:mo>
+      <mml:mo>)</mml:mo>
+      <mml:mi>z</mml:mi>
+      <mml:msub>
+        <mml:mi>z</mml:mi>
+        <mml:mi>j</mml:mi>
+      </mml:msub>
+    </mml:mrow>
+    <mml:mi>ln</mml:mi>
+    <mml:mo>⁡</mml:mo>
+  </mml:math>
+</inline-formula></p><ol start="2"><p>The complex natural logarithm:</p></p><p>a. <inline-formula>
+  <mml:math id="mljwaefi2s">
+    <mml:mstyle scriptlevel="0">
+      <mml:mspace width="1em"/>
+    </mml:mstyle>
+    <mml:mi>ln</mml:mi>
+    <mml:mo>⁡</mml:mo>
+    <mml:mrow>
+      <mml:mo>(</mml:mo>
+      <mml:mo>−</mml:mo>
+      <mml:mo>)</mml:mo>
+      <mml:mi>z</mml:mi>
+      <mml:msub>
+        <mml:mi>z</mml:mi>
+        <mml:mi>i</mml:mi>
+      </mml:msub>
+    </mml:mrow>
+  </mml:math>
+</inline-formula></p><ol start="3"><p>Complex monomials:</p></p><p>a. <inline-formula>
+  <mml:math id="mzci5k9v4q">
+    <mml:mstyle scriptlevel="0">
+      <mml:mspace width="1em"/>
+    </mml:mstyle>
+    <mml:msup>
+      <mml:mrow>
+        <mml:mo>(</mml:mo>
+        <mml:mo>−</mml:mo>
+        <mml:mo>)</mml:mo>
+        <mml:mi>z</mml:mi>
+        <mml:msub>
+          <mml:mi>z</mml:mi>
+          <mml:mn>0</mml:mn>
+        </mml:msub>
+      </mml:mrow>
+      <mml:mi>j</mml:mi>
+    </mml:msup>
+  </mml:math>
+</inline-formula></p><ol start="4"><p>Laurent series expansion:</p></p><p>a. <inline-formula>
+  <mml:math id="m1ruaszym3">
+    <mml:mstyle scriptlevel="0">
+      <mml:mspace width="1em"/>
+    </mml:mstyle>
+    <mml:mfrac>
+      <mml:mn>1</mml:mn>
+      <mml:msup>
+        <mml:mrow>
+          <mml:mo>(</mml:mo>
+          <mml:mo>−</mml:mo>
+          <mml:mo>)</mml:mo>
+          <mml:mi>z</mml:mi>
+          <mml:msub>
+            <mml:mi>z</mml:mi>
+            <mml:mn>1</mml:mn>
+          </mml:msub>
+        </mml:mrow>
+        <mml:mi>j</mml:mi>
+      </mml:msup>
+    </mml:mfrac>
+  </mml:math>
+</inline-formula></p><ol start="5"><p>The simple complex pole:</p></p><p>a. <inline-formula>
+  <mml:math id="m3v06deklf">
+    <mml:mstyle scriptlevel="0">
+      <mml:mspace width="1em"/>
+    </mml:mstyle>
+    <mml:mfrac>
+      <mml:mn>1</mml:mn>
+      <mml:mrow>
+        <mml:mi>z</mml:mi>
+        <mml:mo>−</mml:mo>
+        <mml:msub>
+          <mml:mi>z</mml:mi>
+          <mml:mi>j</mml:mi>
+        </mml:msub>
+      </mml:mrow>
+    </mml:mfrac>
+  </mml:math>
+</inline-formula></p><ol start="6"><p>The digamma function, <inline-formula>
+  <mml:math id="ml12j4sfa4">
+    <mml:mi>ψ</mml:mi>
+  </mml:math>
+</inline-formula>, and its variants:</p></p><p>a. Digamma Basis Function: <inline-formula>
+  <mml:math id="mwdoie29c3">
+    <mml:msub>
+      <mml:mi>ψ</mml:mi>
+      <mml:mrow>
+        <mml:msub>
+          <mml:mi>α</mml:mi>
+          <mml:mi>j</mml:mi>
+        </mml:msub>
+      </mml:mrow>
+    </mml:msub>
+    <mml:mrow>
+      <mml:mo>(</mml:mo>
+      <mml:mo>−</mml:mo>
+      <mml:mo>)</mml:mo>
+      <mml:mi>z</mml:mi>
+      <mml:msub>
+        <mml:mi>z</mml:mi>
+        <mml:mi>j</mml:mi>
+      </mml:msub>
+    </mml:mrow>
+  </mml:math>
+</inline-formula></p><p>b. Variant  1:  <inline-formula>
+  <mml:math id="mq2sr86h3m">
+    <mml:mrow>
+      <mml:mo>(</mml:mo>
+      <mml:mo>−</mml:mo>
+      <mml:mo>)</mml:mo>
+      <mml:mi>z</mml:mi>
+      <mml:msub>
+        <mml:mi>z</mml:mi>
+        <mml:mi>j</mml:mi>
+      </mml:msub>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>(</mml:mo>
+      <mml:mo>−</mml:mo>
+      <mml:mo>)</mml:mo>
+      <mml:mi>z</mml:mi>
+      <mml:msub>
+        <mml:mi>z</mml:mi>
+        <mml:mi>j</mml:mi>
+      </mml:msub>
+    </mml:mrow>
+    <mml:msub>
+      <mml:mi>ψ</mml:mi>
+      <mml:mrow>
+        <mml:msub>
+          <mml:mi>α</mml:mi>
+          <mml:mi>j</mml:mi>
+        </mml:msub>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula></p><p>c. Variant 2:  <inline-formula>
+  <mml:math id="me02g22wqy">
+    <mml:mrow>
+      <mml:mo>(</mml:mo>
+      <mml:mo>−</mml:mo>
+      <mml:mo>)</mml:mo>
+      <mml:mi>z</mml:mi>
+      <mml:msub>
+        <mml:mi>z</mml:mi>
+        <mml:mi>j</mml:mi>
+      </mml:msub>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>(</mml:mo>
+      <mml:mo>−</mml:mo>
+      <mml:mo>)</mml:mo>
+      <mml:mi>z</mml:mi>
+      <mml:msub>
+        <mml:mi>z</mml:mi>
+        <mml:mi>j</mml:mi>
+      </mml:msub>
+    </mml:mrow>
+    <mml:msub>
+      <mml:mrow>
+        <mml:mo>[</mml:mo>
+        <mml:mo>⁡</mml:mo>
+        <mml:mo>]</mml:mo>
+        <mml:mi>ln</mml:mi>
+        <mml:mrow>
+          <mml:mo>(</mml:mo>
+          <mml:mo>−</mml:mo>
+          <mml:mo>)</mml:mo>
+          <mml:mi>z</mml:mi>
+          <mml:msub>
+            <mml:mi>z</mml:mi>
+            <mml:mi>j</mml:mi>
+          </mml:msub>
+        </mml:mrow>
+      </mml:mrow>
+      <mml:mrow>
+        <mml:msub>
+          <mml:mi>α</mml:mi>
+          <mml:mi>j</mml:mi>
+        </mml:msub>
+      </mml:mrow>
+    </mml:msub>
+    <mml:msub>
+      <mml:mi>ψ</mml:mi>
+      <mml:mrow>
+        <mml:msub>
+          <mml:mi>α</mml:mi>
+          <mml:mi>j</mml:mi>
+        </mml:msub>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula></p>
+          <p>Depending on the selected basis function, special considerations may need to be taken such as rotating the branch cuts of the complex natural logarithm so that each branch lies in the exterior of the problem domain. Consequently, the resulting approximation function will be analytic within the problem domain [<xref ref-type="bibr" rid="ref_10">10</xref>].</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>1.3. Location of nodes</title>
+          
+          <p>It has been illustrated that the computational error of CVBEM and other methods tends to decrease as the number of nodes increase, but a long standing issue has been how to choose the location of the nodes and collocation points [<xref ref-type="bibr" rid="ref_3">3</xref>], [<xref ref-type="bibr" rid="ref_11">11</xref>], [<xref ref-type="bibr" rid="ref_12">12</xref>]. In this regard, there are two main approaches: one is when the node locations are determined. Various node distributions where node locations are determined have been assessed, such as nodes uniformly spaced on a circle, nodes located a constant distance away from the problem boundary, and nodes on an evenly spaced grid around the problem domain [<xref ref-type="bibr" rid="ref_11">11</xref>]. Because the node locations are predetermined, there is high computational efficiency, but the computational accuracy of the models is unreliable. Thus, treating the node locations as another set of degrees of freedom is an alternative method that has been illustrated to reduce computational error [<xref ref-type="bibr" rid="ref_1">1</xref>], [<xref ref-type="bibr" rid="ref_2">2</xref>], [<xref ref-type="bibr" rid="ref_3">3</xref>], [<xref ref-type="bibr" rid="ref_11">11</xref>], [<xref ref-type="bibr" rid="ref_12">12</xref>]. The most recent algorithms developed for CVBEM but is also applicable to other methods like the Method of Fundamental Solutions is called the Node Positioning Algorithm (NPA1) and its refinement procedure (NPA2) [<xref ref-type="bibr" rid="ref_3">3</xref>].</p>
+          
+            <sec>
+              
+                <title>1.3.1 Npa1 vs npa2</title>
+              
+              <p>NPA1 works as described in the following steps:</p><p>1. Generate two sets of points: Candidate nodes and candidate collocation points. Candidate nodes are located on the exterior of the problem domain, and candidate collocation points are located on the domain boundary.</p><p>2. Select two initial collocation points to be used for collocation. Two collocation points are necessary because complex coefficients have two degrees of freedom, a real and imaginary part. From this point the NPA starts.</p><p>3. For each candidate node, create a model and evaluate its error. Select the model that results in the least maximum error on the boundary.</p><p>4. Evaluate the error of the selected model and select the next two collocation points to be the two greatest maxima of the error function.</p><p>5. Repeat steps 3 and 4 until the desired number of nodes is achieved.</p><p>NPA1 provides a methodology to select nodes with the intention of reducing the computational error of the model. Experimental results have illustrated its efficacy, but there it possesses a significant drawback. That is, NPA1, when selecting a new node, operates under the assumption that the selected nodes are correct. In other words, it does not consider the possibility that computational error can be reduced by adjusting the position of the previously selected nodes. Consequently, a refinement procedure was developed that specifically addresses this problem and named it NPA2. The following steps describes NPA2:</p><p>1.<span style="font-family: Times New Roman"> For simplicity, NPA2 will be described using an existing model with 3 nodes and their 6 corresponding collocation points. These nodes and collocation points were selected through NPA2 in the sequence Node 1, Node 2, then Node 3.</p><p>2.<span style="font-family: Times New Roman"> Test alternative positions for Node 1 to determine if there exist a different position that would reduce the maximum computational error of the model. If such a position is found, Node 1 is moved to that position.</p><p>3.<span style="font-family: Times New Roman"> Repeat step 2 for Node 2 and Node 3, then continue the loop by going back through Nodes 1, 2, and 3 until no better position can be found for any of the nodes.</p><p>4.<span style="font-family: Times New Roman"> When no better position can be found for the 3 nodes. The refinement procedure is complete. Node 4 can now be selected through NPA1, then the refinement procedure begins again, but with 4 nodes.</p><p>In contrast with NPA1, NPA2 adjust every node’s position instead of solely the new node being added to the model, which results in lower computational error at the expense of time due to its greater complexity [<xref ref-type="bibr" rid="ref_3">3</xref>]. In summary, both NPA’s provide a better methodology for selecting nodes instead of using predetermined node locations and has been illustrated to reduce computational error in problems CVBEM has been historically used to solve, such as modelling the transportation of ground water contamination [<xref ref-type="bibr" rid="ref_1">1</xref>], [<xref ref-type="bibr" rid="ref_13">13</xref>].</p>
+            </sec>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>1.4. Coefficient determination method</title>
+          
+          <p>Most recently, CVBEM research has looked at the method of determining coefficients of the approximation function as another avenue of customization of the CVBEM modelling process [<xref ref-type="bibr" rid="ref_14">14</xref>]. For nearly 40 years, collocation has been the foremost method for coefficient determination. However, a recent advancement was the development of a least squares methodology. The main difference between the two methods is how the collocation points are used. As described in Section 1.1, collocation prescribes 2 collocation points for each node to determine the coefficients. Thus, if there were N total candidate collocation points and a n node model was being made, N-2n collocation point would have no effect on the model. The advantage of collocation is that the approximation function will satisfy the boundary conditions at the used collocation points with zero error. Conversely, least squares takes advantage of all available boundary data to compute the coefficients of the approximation. However, instead of exactly satisfying a subset of collocation points, it instead minimizes the sum of the squares of the error between the approximation and all the collocation points. Despite not exactly fitting any of the boundary conditions, using least squares has resulted in comparable computational error to collocation.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>1.5. Computational error analysis</title>
+          
+          <p>In this work, we define computational error function as magnitude of the difference between the CVBEM approximation function and the known boundary function, <inline-formula>
+  <mml:math id="m0ig2xm84s">
+    <mml:mi>f</mml:mi>
+    <mml:mi>z</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+  </mml:math>
+</inline-formula>:</p>
+          
+            <disp-formula>
+              <label>(4)</label>
+              <mml:math id="mm07t7ba9a">
+                <mml:mi>E</mml:mi>
+                <mml:mi>f</mml:mi>
+                <mml:mi>z</mml:mi>
+                <mml:mi>z</mml:mi>
+                <mml:mo>=</mml:mo>
+                <mml:mo fence="false">‖</mml:mo>
+                <mml:mo>(</mml:mo>
+                <mml:mo>)</mml:mo>
+                <mml:mo>−</mml:mo>
+                <mml:mo>(</mml:mo>
+                <mml:mo>)</mml:mo>
+                <mml:mo fence="false">‖</mml:mo>
+                <mml:mrow>
+                  <mml:mover>
+                    <mml:mi>ω</mml:mi>
+                    <mml:mo>^</mml:mo>
+                  </mml:mover>
+                </mml:mrow>
+              </mml:math>
+            </disp-formula>
+          
+          <p>Because the CVBEM approximation function is a linear combination of functions analytic in the problem domain, thus it itself is also analytic within the problem domain. It follows that the real and imaginary parts of the problem domain are related through the Cauchy-Riemann equations, so the real and imaginary parts are consequently harmonic. As a result, because the target function and CVBEM approximation functions are both harmonic, their difference, which is the error function, is also harmonic. This property is pivotal in the error analysis of CVBEM approximation functions because the maximum and minimum principle of harmonic functions, which states that the maximum and minimum values of a harmonic function are located on the boundary of its domain. Therefore, because the error function is harmonic, it is known that the point of maximum error is located on the boundary of . When the error of CVBEM models is plotted for comparison, the maximum error is plotted against the number of nodes in the model, which is equivalent to the number of terms in the CVBEM approximation function. While the computational error of CVBEM models has always been assessed in the literature in regard to its magnitude, this paper seeks to reveal more about intricacies of the error’s behavior throughout the modeling process.</p>
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>2. Case study: ideal fluid flow into 90 degree corner and over a cylindrical hump</title>
+      <p>A case study is used to demonstrate the results of the CVBEM modeling procedure. It is ideal fluid flow into a 90 degree bend and over a semicircular hump. This problem was selected because it contains three stagnation points located at the 90 degree bend and at the left and right ends of the hump. Due to the extreme curvature of solutions at stagnation points, they are particularly difficult to model. Similarly, the north pole of the semicircular hump exhibits extreme curvature, which make it a difficult are to model. This complexity requires the use of more nodes to be effective in reducing error, which will make it easier to observe trends in error reductions. The exact definition of this example problem is found in <xref ref-type="table" rid="table_1">Table 1</xref> and the initial problem geometry is depicted in <xref ref-type="fig" rid="fig_1">Figure 1</xref>.</p>
+      
+        <table-wrap id="table_1">
+          <label>Table 1</label>
+          <caption>
+            <title>Problem definition</title>
+          </caption>
+          <table><tbody><tr><td colspan="1" rowspan="1"><p>Problem Domain</p></td><td colspan="1" rowspan="1"><p><mml:math id="m1pl956mmb">
+  <mml:mtable display columnspacing="1em" rowspacing="3pt">
+    <mml:mtr>
+      <mml:mtd>
+        <mml:mi>Ω</mml:mi>
+        <mml:mi>x</mml:mi>
+        <mml:mi>y</mml:mi>
+        <mml:mo>=</mml:mo>
+        <mml:mo fence="false">{</mml:mo>
+        <mml:mo>≤</mml:mo>
+        <mml:mo>≤</mml:mo>
+        <mml:mo>,</mml:mo>
+        <mml:mo>≤</mml:mo>
+        <mml:mo>≤</mml:mo>
+        <mml:mo>,</mml:mo>
+        <mml:mn>0</mml:mn>
+        <mml:mn>8</mml:mn>
+        <mml:mn>0</mml:mn>
+        <mml:mn>5</mml:mn>
+        <mml:mtext> and </mml:mtext>
+        <mml:mrow>
+          <mml:mo fence="true"/>
+          <mml:mo>(</mml:mo>
+          <mml:mo>−</mml:mo>
+          <mml:mo>+</mml:mo>
+          <mml:mo>≥</mml:mo>
+          <mml:mo>}</mml:mo>
+          <mml:mi>x</mml:mi>
+          <mml:mn>5</mml:mn>
+          <mml:mn>1</mml:mn>
+          <mml:msup>
+            <mml:mo>)</mml:mo>
+            <mml:mn>2</mml:mn>
+          </mml:msup>
+          <mml:msup>
+            <mml:mi>y</mml:mi>
+            <mml:mn>2</mml:mn>
+          </mml:msup>
+        </mml:mrow>
+      </mml:mtd>
+    </mml:mtr>
+  </mml:mtable>
+</mml:math></p></td></tr><tr><td colspan="1" rowspan="1"><p>Governing PDE</p></td><td colspan="1" rowspan="1"><p><mml:math id="mq2uckd3h0">
+  <mml:msup>
+    <mml:mi>∇</mml:mi>
+    <mml:mn>2</mml:mn>
+  </mml:msup>
+  <mml:mi>Ψ</mml:mi>
+  <mml:mo>=</mml:mo>
+  <mml:mn>0</mml:mn>
+</mml:math></p></td></tr><tr><td colspan="1" rowspan="1"><p>Boundary Conditions</p></td><td colspan="1" rowspan="1"><p><mml:math id="mifr0v5ta4">
+  <mml:mi>Ψ</mml:mi>
+  <mml:mi>x</mml:mi>
+  <mml:mi>y</mml:mi>
+  <mml:mi>ℜ</mml:mi>
+  <mml:mo>(</mml:mo>
+  <mml:mo>,</mml:mo>
+  <mml:mo>)</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mrow>
+    <mml:mo>[</mml:mo>
+    <mml:mo>+</mml:mo>
+    <mml:mo>+</mml:mo>
+    <mml:mo>]</mml:mo>
+    <mml:msup>
+      <mml:mi>z</mml:mi>
+      <mml:mn>2</mml:mn>
+    </mml:msup>
+    <mml:mi>z</mml:mi>
+    <mml:mfrac>
+      <mml:mn>10</mml:mn>
+      <mml:mrow>
+        <mml:mi>z</mml:mi>
+        <mml:mo>−</mml:mo>
+        <mml:mn>5</mml:mn>
+      </mml:mrow>
+    </mml:mfrac>
+  </mml:mrow>
+</mml:math></p></td></tr><tr><td colspan="1" rowspan="1"><p>Candidate Nodes</p></td><td colspan="1" rowspan="1"><p>500</p></td></tr><tr><td colspan="1" rowspan="1"><p>Candidate Collocation Points</p></td><td colspan="1" rowspan="1"><p>1000</p></td></tr><tr><td colspan="1" rowspan="1"><p>Selected Nodes</p></td><td colspan="1" rowspan="1"><p>40</p></td></tr><tr><td colspan="1" rowspan="1"><p>Selected Collocation Points</p></td><td colspan="1" rowspan="1"><p>80</p></td></tr></tbody></table>
+        </table-wrap>
+      
+      <p>The main results of this case study are presented in <xref ref-type="fig" rid="fig_2">Figure 2</xref>, where the log10 of the maximum error for each of the models is plotted. For collocation and NPA1, the model that resulted in the lowest maximum computational error used digamma variant 1 as the basis function and achieved a maximum error of 1.190995<span style="font-family: Times New Roman, serif">×10<sup>-5</sup>. The digamma variant 2 basis function achieved 2.100197<span style="font-family: Times New Roman, serif">×10<sup>-5</sup> as the lowest maximum computational error for collocation with NPA2. Digamma variant 1 also had the lowest maximum computational error for least squares with NPA1, which was 2.110717<span style="font-family: Times New Roman, serif">×10<sup>-5</sup>. Finally, the model that resulted in overall lowest maximum error used least squares, NPA2, and the CVBEM basis function. Its error was 2.465528<span style="font-family: Times New Roman, serif">×10<sup>-6</sup>.</p>
+      
+        <fig id="fig_1">
+          <label>Figure 1</label>
+          <caption>
+            <title>Initial distribution of candidate nodes and collocation points for every model</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/9/img_CYWOMbqDstTAG7Tx.png"/>
+        </fig>
+      
+      <p>Clearly, different combinations of basis functions, NPAs, and methods to determine coefficients produce different error, and the results replicate previous findings. <xref ref-type="fig" rid="fig_2">Figure 2</xref> illustrates that the different basis functions affected the rate at which the numerical solution converges, with digamma variant 1, digamma variant 2 and the CVBEM basis function converging the fastest in their respective modelling scenario.</p><p>Results regarding the NPAs support NPA2’s greater relative error reduction capability compared to NPA2, with two exceptions: using collocation, the digamma and digamma variant 1 basis functions had more computational error when NPA2 was applied compared to NPA1 (see <xref ref-type="fig" rid="fig_3">Figure 3</xref>). In both cases, NPA2 starts off with less error, but eventually its error overtakes the error of NPA1. This highlights the potential for NPA2 to select a path of nodes that results in greater error in NPA1 despite the refinement procedure that NPA2 implements. A potential explanation is the order of the nodes that the refinement procedure is applied to. In other words, in the same vein that NPA1 was flawed, NPA2 exhibits the same flaw when it starts its refinement procedure from the first selected node, which can lead to different model from NPA1 but not necessarily one with less computational error. This is further supported by <xref ref-type="fig" rid="fig_4">Figure 4</xref>, where there is a large spike at the 27<sup>th</sup> term for the condition number of collocation that coincides with the spike in maximum computational error observed in <xref ref-type="fig" rid="fig_2">Figure 2</xref>. In essences, the node that ends up being selected causes the condition number to increase greatly when compared to the expected increase the come with a growing matrix, which ultimately results in more computational error. One potential mitigation for this issue is to increase the number of candidate nodes, which will give both NPAs more nodes to choose from, which could strengthen the error reduction due to refinement in NPA2. This can be done by increasing the density of candidate nodes in the candidate node space or by expanding the candidate node space and maintaining the density.</p><p>When least squares was considered alongside collocation, in addition to ultimately resulting in the model with the least computational error, the error plots also demonstrated a distinct stability in error reduction.</p><p>That is, for both NPA1 and NPA2, the error plots for least squares demonstrate a monotonic reduction in computational error, whereas the collocation models have occasional increases in computational error as seen in <xref ref-type="fig" rid="fig_3">Figures 3</xref>A and 3B. This can be attributed to differences in how collocation and least squares handle the boundary data. For collocation, because the information the approximation has concerning the boundary of the problem is limited to the collocation points it utilized, what happens is at the start of the algorithm is selected collocation points could be clustered withing a certain region of the problem boundary, so the model approximates that part of the problem well. However, the regions with no collocation points are poorly approximated, which eventually causes the spike in error. The NPAs actually account for this by selecting new collocation points at the two highest maxima of the error function, which is why the error starts to decrease again. In contrast, because least squares utilizes all of the boundary data, as more nodes are added to the approximation, the error across the boundary decreases, not just around a few selected collocation points. This is reflected in the condition number for least squares, where it grows with relative stability and no spikes.</p>
+      
+        <fig id="fig_2">
+          <label>Figure 2</label>
+          <caption>
+            <title>Log10 error for each of the created models plotted against the number of terms in the CVBEM approximation function</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/9/img_IKOFjVeY3rWed1OV.png"/>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/9/img_Ncrp4Q3skC23ag9Y.png"/>
+        </fig>
+      
+      
+        <fig id="fig_3">
+          <label>Figure 3</label>
+          <caption>
+            <title>Error plots for the digamma and digamma variation 1 basis functions using collocation</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/9/img_6kx96ulJLGoVUpQk.png"/>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/9/img_JGibFaaFRD_PqwFq.png"/>
+        </fig>
+      
+      
+        <fig id="fig_4">
+          <label>Figure 4</label>
+          <caption>
+            <title>Log10 of condition number plotted against the number of approximation terms</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/9/img_p580Wzjjgh9JKqQB.png"/>
+        </fig>
+      
+    </sec>
+    <sec sec-type="">
+      <title>3. The future of the cvbem</title>
+      <p>Improving the CVBEM process generally means reducing computational error. Investigations into new basis functions and NPA's are the primary avenue through which improvement has been sought. However, it has been illustrated that the selection method for collocation points and the coefficient determination method also have import effects on computational error. Thus, advancement can be focused in these four areas.</p><p>It has been well established by this paper and previous papers that different basis functions have different rates of convergence. A potential avenue of advancement is using multiple different basis functions within the same approximation. In other words, instead of each term in the approximation function being of the same basis function, the CVBEM algorithm selects the best node and basis function combination for each term. Through this, computational error can be reduced because the approximation could now be a better representation of the actual solution. For instance, the function that was being approximated in this case study was <inline-formula>
+  <mml:math id="mn5tyrdoxe">
+    <mml:msup>
+      <mml:mi>z</mml:mi>
+      <mml:mn>2</mml:mn>
+    </mml:msup>
+    <mml:mo>+</mml:mo>
+    <mml:mo>+</mml:mo>
+    <mml:mi>z</mml:mi>
+    <mml:mfrac>
+      <mml:mn>10</mml:mn>
+      <mml:mrow>
+        <mml:mi>z</mml:mi>
+        <mml:mo>−</mml:mo>
+        <mml:mn>5</mml:mn>
+      </mml:mrow>
+    </mml:mfrac>
+  </mml:math>
+</inline-formula>, which consists of two complex monomials and a complex pole. Using both of those types of basis functions in an approximation would be a better representation of the actual problem and could lead to being able to accurately model the problem with less nodes.</p><p>Regarding the NPA and collocation point selection, this paper explained how spikes in error can occur due to poor node and collocation point selection. Currently, the NPA selects the two highest maxima of the error function as collocation points, which allows those same points to have essentially no error in the subsequent model. However, this can lead to sections of the problem boundary having no collocation points, which can cause a spike in error. A potential alternative collocation point selection method is to have the subsequent collocation points be furthest from the selected collocation points by average distance. This may enable the collocation method to use a more diverse portion of the problem boundary, which may reduce the spikes in error.</p><p>Finally, while least squares was previously illustrated as a viable coefficient determination method, and the distinctive characteristic of using all available boundary data was noted in a previous study, analysis of its effect on the behavior of the error and error reduction potential was not conducted. The observed stability of the error in least squares when compared to collocation is grounds to explore the impact of other coefficient determination methods. For instance, to address the increasing condition number as the number of nodes in the approximation increases, methods that utilize preconditioning could increase the rate of convergence through reduction of the condition number.</p><p>In addition to computational error reduction, another future investigation for CVBEM is shifting from 2D to 3D, which would allow more comprehensive models to be made. The biggest challenge here is the increase in the size of the domain, which would exacerbate the issue with collocation point selection. Consequently, least squares may prove to be better suited to 3D applications.</p>
+    </sec>
+  </body>
+  <back>
+    <ack>
+      <title>Acknowledgments</title>
+      <p>This work was supported by Captain Bryce D. Wilkins, whose knowledge of CVBEM assisted us in understanding the NPAs and the overall CVBEM methodology.</p>
+    </ack>
+    <app-group>
+      <app>
+        <title>Appendix</title>
+        
+      </app>
+    </app-group>
+    <notes>
+      <title>Author Contributions</title>
+      
+    </notes>
+    <notes>
+      <title>Funding</title>
+      
+    </notes>
+    <notes>
+      <title>Informed Consent Statement</title>
+      
+    </notes>
+    <notes>
+      <title>Data Availability Statement</title>
+      
+    </notes>
+    <notes notes-type="COI-statement">
+      <title>Conflicts of Interest</title>
+      
+    </notes>
+    <ref-list>
+      <title>References</title>
+      <ref id="ref_1">
+        <label>1.</label>
+        <element-citation/>
+      </ref>
+      <ref id="ref_2">
+        <label>2.</label>
+        <element-citation/>
+      </ref>
+      <ref id="ref_3">
+        <label>3.</label>
+        <element-citation/>
+      </ref>
+      <ref id="ref_4">
+        <label>4.</label>
+        <element-citation/>
+      </ref>
+      <ref id="ref_5">
+        <label>5.</label>
+        <element-citation/>
+      </ref>
+      <ref id="ref_6">
+        <label>6.</label>
+        <element-citation/>
+      </ref>
+      <ref id="ref_7">
+        <label>7.</label>
+        <element-citation/>
+      </ref>
+      <ref id="ref_8">
+        <label>8.</label>
+        <element-citation/>
+      </ref>
+      <ref id="ref_9">
+        <label>9.</label>
+        <element-citation/>
+      </ref>
+      <ref id="ref_10">
+        <label>10.</label>
+        <element-citation/>
+      </ref>
+      <ref id="ref_11">
+        <label>11.</label>
+        <element-citation/>
+      </ref>
+      <ref id="ref_12">
+        <label>12.</label>
+        <element-citation/>
+      </ref>
+      <ref id="ref_13">
+        <label>13.</label>
+        <element-citation/>
+      </ref>
+      <ref id="ref_14">
+        <label>14.</label>
+        <element-citation/>
+      </ref>
+    </ref-list>
+  </back>
+</article>
