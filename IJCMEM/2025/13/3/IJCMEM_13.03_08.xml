@@ -115,7 +115,7 @@
     <sec sec-type="">
       <title>2. Proposed method for small object detection</title>
       <p>The traditional object segmentation models often suffer from insufficient segmentation accuracy and are prone to be affected by the background region. In this paper, a object segmentation model that integrates multi-scale gated convolution and window attention is proposed. The overall architecture of the network model is shown in <xref ref-type="fig" rid="fig_1">Figure 1</xref>. The proposed model replaces the traditional convolution blocks with MGCM to fully extract the feature information of objects, and changes the number of channels of the input image to 32. Secondly, the maximum pooling [<xref ref-type="bibr" rid="ref_28">28</xref>], [<xref ref-type="bibr" rid="ref_29">29</xref>] is used for downsampling operation to reduce the information loss at the skip connection and to utilize the rich image semantic information contained in the data at the bottom of the model. A MFEM is introduced at the skip connection to mine the feature information of the current layer of the U-shaped network and to enhance the features using the data at the bottom of the model. Finally, the result of the last decoding layer is input into a 1 <inline-formula>
-  <mml:math id="mcii4hgisp">
+  <mml:math id="meai38n2ec">
     <mml:mo>×</mml:mo>
   </mml:math>
 </inline-formula> 1 convolution with a Sigmoid activation function to obtain the final predicted object segmentation image, thereby achieving precise detection of the object.</p>
@@ -134,7 +134,7 @@
             <title>2.1. Multi-scale gated convolution module (mgcm)</title>
           
           <p>The traditional convolutional blocks have difficulty in specifically training the target pixels during the training process, which may lead to challenges when adapting to targets of different sizes, shapes, and with lower contrast. Inspired by reference [<xref ref-type="bibr" rid="ref_30">30</xref>], this paper designs the MGCM to address these issues. It mainly utilizes the multi-scale gated squeeze-excitation module (MGSM) to achieve more accurate recognition and modeling of targets with different sizes and shapes. At the same time, the double residual attention module (DRAM) and the double attention gate module (DAGM) are adopted to enhance the response of the target features, further distinguishing the target from the surrounding background areas. Compared with traditional networks that capture single-scale features using a single branch, MGSM adopts a parallel branch design consisting of four convolutional blocks of different sizes. At the final stage of the four branches, it references the compressed activation blocks and the attention gate mechanism to design a gate squeeze-excitation block (Gate-SE Block). Multiscale processing can not only increase the receptive field but also capture feature information at different scales, thereby better identifying and covering various shapes, sizes and positions of the lesion areas in the feature map. The compressed activation block dynamically adjusts the weights of the feature maps by learning the correlation dependencies between the channels, so that more important features receive larger weights, which helps to enhance the expressive power of the feature representation. The attention gate can automatically learn and focus on the relevant parts, thereby enhancing the attention to important information. Therefore, in this paper, combining the compression incentive block with the attention gate can enable the network to no longer simply integrate all channel information, but to flexibly emphasize the most significant and important features in the current task and suppress the unimportant ones. At the same time, adding the Gate-SE Block in multiple scales can selectively enhance or weaken the features at specific scales. The network is more likely to learn the universal features and adapt to different sizes and shapes, avoiding the occurrence of overfitting.</p><p>In the MGSM module, it is assumed that the input feature map is <inline-formula>
-  <mml:math id="mdimb84549">
+  <mml:math id="mq0gbydg9m">
     <mml:mtext>A</mml:mtext>
     <mml:mo>∈</mml:mo>
     <mml:msup>
@@ -149,7 +149,7 @@
     </mml:msup>
   </mml:math>
 </inline-formula>, where C represents the channel number of the input image. H and W denote the pixel size of the height and width of the input image respectively. First, the input A is sent to the 4 paths for different-sized convolution operations to generate the feature map <inline-formula>
-  <mml:math id="mdbmnrna8b">
+  <mml:math id="mp3i3k8xnh">
     <mml:mrow>
       <mml:mover>
         <mml:mtext>A</mml:mtext>
@@ -158,7 +158,7 @@
     </mml:mrow>
   </mml:math>
 </inline-formula> for each path. Then, A and <inline-formula>
-  <mml:math id="m91m1utqld">
+  <mml:math id="mbu96qrbvz">
     <mml:mrow>
       <mml:mover>
         <mml:mtext>A</mml:mtext>
@@ -167,7 +167,7 @@
     </mml:mrow>
   </mml:math>
 </inline-formula> are input into the Gate-SE block. In the Gate-SE Block module, <inline-formula>
-  <mml:math id="mrp0j4v7iq">
+  <mml:math id="m51ppdcskm">
     <mml:mrow>
       <mml:mover>
         <mml:mtext>A</mml:mtext>
@@ -176,19 +176,19 @@
     </mml:mrow>
   </mml:math>
 </inline-formula> is processed through the SE Block and 1 <inline-formula>
-  <mml:math id="mc71gisp04">
+  <mml:math id="mj0cwc142y">
     <mml:mo>×</mml:mo>
   </mml:math>
 </inline-formula> 1 convolution, and then a matrix addition and non-linear activation (ReLU) operation is performed with the 1 <inline-formula>
-  <mml:math id="mnbqxiz56j">
+  <mml:math id="mgeijc2i35">
     <mml:mo>×</mml:mo>
   </mml:math>
 </inline-formula> 1 convolution processed A to generate the attention coefficient. Then, the attention coefficient is passed through the SE Block and combined with the attention coefficient that undergoes 1 <inline-formula>
-  <mml:math id="m5duvj7p7p">
+  <mml:math id="mrumm7mr4v">
     <mml:mo>×</mml:mo>
   </mml:math>
 </inline-formula> 1 convolution and Sigmoid operation, making the aligned weights in the attention coefficient larger. A is connected with the generated attention coefficient for output. Finally, the feature maps output by the 4 paths through the Gate-SE block are concatenated, and then a 1×1 convolution is used to change the channel dimension to generate a new feature map <inline-formula>
-  <mml:math id="mg6p54urpn">
+  <mml:math id="mxqq79wjc6">
     <mml:mtext>B</mml:mtext>
     <mml:mo>∈</mml:mo>
     <mml:msup>
@@ -224,16 +224,16 @@
           
             <disp-formula>
               <label>(1)</label>
-              <mml:math id="mqafn7tw47">
+              <mml:math id="mqn4ip3exu">
                 <mml:mtext> LCE = DWConv(V) </mml:mtext>
               </mml:math>
             </disp-formula>
           
-          <p>Here, $V$ represents the value vector. DWConv denotes the depthwise convolution operation, which is capable of retaining more fine-grained and shallow details (Yin et al., 2024). The size of the convolution kernel in this operation is set to 5.</p><p>In order to effectively utilize the local and global features of the current layer of the U-shaped network, a better feature extraction is achieved by introducing the Swin Transformer Block (ST Block) and combining it with the channel attention (CAB) and spatial attention (SAB) of the DRAM module. Firstly, the ST Block's conventional window multi-head self-attention (W-MSA) is utilized to divide the input features into local windows, and calculate the self-attention within each small window. Then, the channel attention weights of the input features are calculated through CAB, and the two are added together to enhance the important features of each small window and suppress the non-important ones, thereby capturing the feature information of the local region. However, due to the division of the windows, the information interaction among different windows is impossible. Therefore, the Shifted Window Multi-Head Self-Attention (SW-MSA) is utilized to enable the feature information to be transmitted between adjacent windows. At the same time, SAB is added to retain the feature information in the original space, further enhancing the feature representation of the key areas. Finally, it is connected with the input features of the current layer through a residual connection, thereby better capturing the global structure and local details in the image. The mathematical definition is as follows:</p>
+          <p>Here, V represents the value vector. DWConv denotes the depthwise convolution operation, which is capable of retaining more fine-grained and shallow details. The size of the convolution kernel in this operation is set to 5.</p><p>In order to effectively utilize the local and global features of the current layer of the U-shaped network, a better feature extraction is achieved by introducing the Swin Transformer Block (ST Block) and combining it with the channel attention (CAB) and spatial attention (SAB) of the DRAM module. Firstly, the ST Block's conventional window multi-head self-attention (W-MSA) is utilized to divide the input features into local windows, and calculate the self-attention within each small window. Then, the channel attention weights of the input features are calculated through CAB, and the two are added together to enhance the important features of each small window and suppress the non-important ones, thereby capturing the feature information of the local region. However, due to the division of the windows, the information interaction among different windows is impossible. Therefore, the Shifted Window Multi-Head Self-Attention (SW-MSA) is utilized to enable the feature information to be transmitted between adjacent windows. At the same time, SAB is added to retain the feature information in the original space, further enhancing the feature representation of the key areas. Finally, it is connected with the input features of the current layer through a residual connection, thereby better capturing the global structure and local details in the image. The mathematical definition is as follows:</p>
           
             <disp-formula>
               <label>(2)</label>
-              <mml:math id="m6xay7jd79">
+              <mml:math id="m86kxvosft">
                 <mml:msup>
                   <mml:mrow>
                     <mml:mover>
@@ -313,7 +313,7 @@
           
             <disp-formula>
               <label>(3)</label>
-              <mml:math id="mdxamc7dbo">
+              <mml:math id="mq8rygdsm1">
                 <mml:msup>
                   <mml:mrow>
                     <mml:mi>z</mml:mi>
@@ -362,7 +362,7 @@
           
             <disp-formula>
               <label>(4)</label>
-              <mml:math id="m3qgslyzlq">
+              <mml:math id="mgmr3emzeg">
                 <mml:msup>
                   <mml:mrow>
                     <mml:mover>
@@ -444,7 +444,7 @@
           
             <disp-formula>
               <label>(5)</label>
-              <mml:math id="m0nl1ddrqu">
+              <mml:math id="mzt2h3vrh4">
                 <mml:msup>
                   <mml:mrow>
                     <mml:mi>z</mml:mi>
@@ -513,7 +513,7 @@
           
             <disp-formula>
               <label>(6)</label>
-              <mml:math id="m81o2g3nx8">
+              <mml:math id="mn9poqtwre">
                 <mml:msub>
                   <mml:mrow>
                     <mml:mi>x</mml:mi>
@@ -554,7 +554,7 @@
             </disp-formula>
           
           <p> where, <inline-formula>
-  <mml:math id="mgqn7ym9hf">
+  <mml:math id="mbs4ykwgiw">
     <mml:msup>
       <mml:mrow>
         <mml:mover>
@@ -568,7 +568,7 @@
     </mml:msup>
   </mml:math>
 </inline-formula> and <inline-formula>
-  <mml:math id="mmvwci0upy">
+  <mml:math id="mhu6mszz6b">
     <mml:msup>
       <mml:mrow>
         <mml:mi>z</mml:mi>
@@ -577,7 +577,7 @@
     </mml:msup>
   </mml:math>
 </inline-formula> represent the output features of the SW-MSA module and the MLP module respectively. W-MSA and SW-MSA represent the use of conventional and shifted window multi-head self-attention respectively. LN indicates the layer normalization operation. CAB and SAB represent channel attention and spatial attention respectively. <inline-formula>
-  <mml:math id="mqe933hi4u">
+  <mml:math id="mic7uzw4jx">
     <mml:msup>
       <mml:mtext>z</mml:mtext>
       <mml:mrow>
@@ -588,7 +588,7 @@
     </mml:msup>
   </mml:math>
 </inline-formula> represents the input image at the jump connection. <inline-formula>
-  <mml:math id="mwflg3vgq5">
+  <mml:math id="mxl5k2ia8p">
     <mml:msub>
       <mml:mrow>
         <mml:mi>x</mml:mi>
@@ -601,11 +601,11 @@
     </mml:msub>
   </mml:math>
 </inline-formula> represents the output result after passing through the hybrid-enhanced residual window attention module (HERWM).</p><p>Finally, in order to integrate the rich semantic information of the bottom data with the feature information of the current layer, as shown in <xref ref-type="fig" rid="fig_3">Figure 3</xref>, L is processed through 1 <inline-formula>
-  <mml:math id="mwm0f15nkt">
+  <mml:math id="mrsln50hvi">
     <mml:mo>×</mml:mo>
   </mml:math>
 </inline-formula> 1 convolution, average pooling, and Softmax activation function to generate a spatial weight map. This spatial weight map is then multiplied with the output result of HERWM, and finally added to J to output the feature map <inline-formula>
-  <mml:math id="mpcy20qmwf">
+  <mml:math id="mqyaitiu1x">
     <mml:mtext>M</mml:mtext>
     <mml:mo>∈</mml:mo>
     <mml:msup>
@@ -637,7 +637,7 @@
             <title>2.3. Loss function</title>
           
           <p>The original network uses SmoothL1 as the loss function. When multiple detection boxes have the same SmoothL1 loss value, there may be significant differences in their Intersection-over-Union (IoU) with the real boxes. The actual evaluation of the regression indicators of the detection boxes uses IoU. At this time, calculating the SmoothL1 loss value cannot reflect the degree of overlap between the detection box and the real box.</p><p>This paper uses the DIoU loss, which is an extension of the IoU loss by adding a penalty term. It minimizes and normalizes the distance between the centers of the two bounding boxes, thereby accelerating the convergence process. The <inline-formula>
-  <mml:math id="m6oypirdsn">
+  <mml:math id="m8i4wccb9j">
     <mml:msub>
       <mml:mrow>
         <mml:mi>R</mml:mi>
@@ -651,7 +651,7 @@
           
             <disp-formula>
               <label>(7)</label>
-              <mml:math id="mna09dydag">
+              <mml:math id="mg3nkvxjmv">
                 <mml:msub>
                   <mml:mrow>
                     <mml:mi>R</mml:mi>
@@ -698,7 +698,7 @@
             </disp-formula>
           
           <p>Here, b and <inline-formula>
-  <mml:math id="m6sb626rai">
+  <mml:math id="mn581xhaqq">
     <mml:msup>
       <mml:mtext>b</mml:mtext>
       <mml:mrow>
@@ -709,7 +709,7 @@
     </mml:msup>
   </mml:math>
 </inline-formula> represent the center points of the predicted box and the true box respectively. <inline-formula>
-  <mml:math id="m7xeo4glxx">
+  <mml:math id="mwzftymae4">
     <mml:msup>
       <mml:mi>ρ</mml:mi>
       <mml:mn>2</mml:mn>
@@ -729,7 +729,7 @@
     </mml:mrow>
   </mml:math>
 </inline-formula> represents the Euclidean distance between the two points. l represents the diagonal length of the minimum bounding box that contains the two boxes. Therefore, the loss function of <inline-formula>
-  <mml:math id="mfioh49b72">
+  <mml:math id="mbvedk8x6u">
     <mml:msub>
       <mml:mrow>
         <mml:mi>L</mml:mi>
@@ -743,7 +743,7 @@
           
             <disp-formula>
               <label>(8)</label>
-              <mml:math id="m9xs0l5h7x">
+              <mml:math id="mzeplj9v1j">
                 <mml:msub>
                   <mml:mrow>
                     <mml:mi>L</mml:mi>
@@ -775,7 +775,7 @@
             </disp-formula>
           
           <p>The schematic diagram of <inline-formula>
-  <mml:math id="m7ha18hdos">
+  <mml:math id="mle04za4e6">
     <mml:msub>
       <mml:mrow>
         <mml:mi>L</mml:mi>
@@ -786,7 +786,7 @@
     </mml:msub>
   </mml:math>
 </inline-formula> is shown in <xref ref-type="fig" rid="fig_4">Figure 4</xref>. Here, <inline-formula>
-  <mml:math id="merc9aot0k">
+  <mml:math id="mcla4mb9ea">
     <mml:mtext>d</mml:mtext>
     <mml:mo>=</mml:mo>
     <mml:mi>ρ</mml:mi>
@@ -815,7 +815,7 @@
             </fig>
           
           <p>Compared to SmoothL1, <inline-formula>
-  <mml:math id="m9d4vtpk67">
+  <mml:math id="mwedt60s7s">
     <mml:msub>
       <mml:mrow>
         <mml:mi>L</mml:mi>
@@ -826,7 +826,7 @@
     </mml:msub>
   </mml:math>
 </inline-formula> can better minimize the distance between the predicted box and the real box. When there are cases such as containment, perpendicularity, and parallelism between two bounding boxes, <inline-formula>
-  <mml:math id="m3vbu3ldm4">
+  <mml:math id="m3h6g3wpkf">
     <mml:msub>
       <mml:mrow>
         <mml:mi>L</mml:mi>
@@ -867,7 +867,7 @@
           
             <disp-formula>
               <label>(9)</label>
-              <mml:math id="mdfq3a20rv">
+              <mml:math id="mghjcp77ud">
                 <mml:mrow>
                   <mml:mi data-mjx-auto-op="false">mAP</mml:mi>
                 </mml:mrow>
@@ -910,7 +910,7 @@
           
             <disp-formula>
               <label>(10)</label>
-              <mml:math id="m5gtjdiij2">
+              <mml:math id="m0ruq71hkc">
                 <mml:mtext> Precision </mml:mtext>
                 <mml:mo>=</mml:mo>
                 <mml:mfrac>
@@ -933,7 +933,7 @@
           
             <disp-formula>
               <label>(11)</label>
-              <mml:math id="mcb9w6miol">
+              <mml:math id="msopqhthlb">
                 <mml:mtext> Recall </mml:mtext>
                 <mml:mo>=</mml:mo>
                 <mml:mfrac>
@@ -957,7 +957,7 @@
           
             <disp-formula>
               <label>(12)</label>
-              <mml:math id="mrzauce262">
+              <mml:math id="m8jtfqh6i4">
                 <mml:mrow>
                   <mml:mi data-mjx-auto-op="false">FPS</mml:mi>
                 </mml:mrow>
@@ -986,59 +986,59 @@
               <caption>
                 <title>Ablation experiment results on the VisDrone2019 dataset</title>
               </caption>
-              <table><tbody><tr><th colspan="1" rowspan="1"><p>No.</p></th><th colspan="1" rowspan="1"><p>MGCM</p></th><th colspan="1" rowspan="1"><p>MFEM</p></th><th colspan="1" rowspan="1"><p>LCE</p></th><th colspan="1" rowspan="1"><p>P/%</p></th><th colspan="1" rowspan="1"><p>R/%</p></th><th colspan="1" rowspan="1"><p>mAP@0.5/%</p></th><th colspan="1" rowspan="1"><p>mAP@0.5:0.95/%</p></th><th colspan="1" rowspan="1"><p>GFLOPs</p></th><th colspan="1" rowspan="1"><p>Params</p></th><th colspan="1" rowspan="1"><p>FPS</p></th></tr><tr><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p><mml:math id="maq4brx9mk">
+              <table><tbody><tr><th colspan="1" rowspan="1"><p>No.</p></th><th colspan="1" rowspan="1"><p>MGCM</p></th><th colspan="1" rowspan="1"><p>MFEM</p></th><th colspan="1" rowspan="1"><p>LCE</p></th><th colspan="1" rowspan="1"><p>P/%</p></th><th colspan="1" rowspan="1"><p>R/%</p></th><th colspan="1" rowspan="1"><p>mAP@0.5/%</p></th><th colspan="1" rowspan="1"><p>mAP@0.5:0.95/%</p></th><th colspan="1" rowspan="1"><p>GFLOPs</p></th><th colspan="1" rowspan="1"><p>Params</p></th><th colspan="1" rowspan="1"><p>FPS</p></th></tr><tr><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p><mml:math id="m4c0jfmteb">
   <mml:mo>×</mml:mo>
-</mml:math></p></td><td colspan="1" rowspan="1"><p><mml:math id="mhibbjh174">
+</mml:math></p></td><td colspan="1" rowspan="1"><p><mml:math id="m08nkh8cp5">
   <mml:mo>×</mml:mo>
-</mml:math></p></td><td colspan="1" rowspan="1"><p><mml:math id="mnqveicwfl">
+</mml:math></p></td><td colspan="1" rowspan="1"><p><mml:math id="mfo0u4wpd9">
   <mml:mo>×</mml:mo>
-</mml:math></p></td><td colspan="1" rowspan="1"><p>62.3</p></td><td colspan="1" rowspan="1"><p>46.7</p></td><td colspan="1" rowspan="1"><p>48.0</p></td><td colspan="1" rowspan="1"><p>29.4</p></td><td colspan="1" rowspan="1"><p>57.0</p></td><td colspan="1" rowspan="1"><p>19.9</p></td><td colspan="1" rowspan="1"><p>71.3</p></td></tr><tr><td colspan="1" rowspan="1"><p>2</p></td><td colspan="1" rowspan="1"><p><mml:math id="mmcgpyt5h9">
+</mml:math></p></td><td colspan="1" rowspan="1"><p>62.3</p></td><td colspan="1" rowspan="1"><p>46.7</p></td><td colspan="1" rowspan="1"><p>48.0</p></td><td colspan="1" rowspan="1"><p>29.4</p></td><td colspan="1" rowspan="1"><p>57.0</p></td><td colspan="1" rowspan="1"><p>19.9</p></td><td colspan="1" rowspan="1"><p>71.3</p></td></tr><tr><td colspan="1" rowspan="1"><p>2</p></td><td colspan="1" rowspan="1"><p><mml:math id="mjf790rk41">
   <mml:msqrt/>
-</mml:math></p></td><td colspan="1" rowspan="1"><p><mml:math id="mkz9oiwwon">
+</mml:math></p></td><td colspan="1" rowspan="1"><p><mml:math id="m6ju131vqx">
   <mml:mo>×</mml:mo>
-</mml:math></p></td><td colspan="1" rowspan="1"><p><mml:math id="mco010h3ig">
+</mml:math></p></td><td colspan="1" rowspan="1"><p><mml:math id="mq647xyn89">
   <mml:mo>×</mml:mo>
-</mml:math></p></td><td colspan="1" rowspan="1"><p>61.7</p></td><td colspan="1" rowspan="1"><p>47.9</p></td><td colspan="1" rowspan="1"><p>49.1</p></td><td colspan="1" rowspan="1"><p>29.9</p></td><td colspan="1" rowspan="1"><p>49.5</p></td><td colspan="1" rowspan="1"><p>14.5</p></td><td colspan="1" rowspan="1"><p>51.3</p></td></tr><tr><td colspan="1" rowspan="1"><p>3</p></td><td colspan="1" rowspan="1"><p><mml:math id="m38x12jflt">
+</mml:math></p></td><td colspan="1" rowspan="1"><p>61.7</p></td><td colspan="1" rowspan="1"><p>47.9</p></td><td colspan="1" rowspan="1"><p>49.1</p></td><td colspan="1" rowspan="1"><p>29.9</p></td><td colspan="1" rowspan="1"><p>49.5</p></td><td colspan="1" rowspan="1"><p>14.5</p></td><td colspan="1" rowspan="1"><p>51.3</p></td></tr><tr><td colspan="1" rowspan="1"><p>3</p></td><td colspan="1" rowspan="1"><p><mml:math id="mfo087y9fq">
   <mml:mo>×</mml:mo>
-</mml:math></p></td><td colspan="1" rowspan="1"><p><mml:math id="m3g5qr5n0l">
+</mml:math></p></td><td colspan="1" rowspan="1"><p><mml:math id="mkzrdrly6o">
   <mml:msqrt/>
-</mml:math></p></td><td colspan="1" rowspan="1"><p><mml:math id="mkqp9litpn">
+</mml:math></p></td><td colspan="1" rowspan="1"><p><mml:math id="mv72jnlmz4">
   <mml:mo>×</mml:mo>
-</mml:math></p></td><td colspan="1" rowspan="1"><p>62.2</p></td><td colspan="1" rowspan="1"><p>46.4</p></td><td colspan="1" rowspan="1"><p>48.1</p></td><td colspan="1" rowspan="1"><p>29.7</p></td><td colspan="1" rowspan="1"><p>57.1</p></td><td colspan="1" rowspan="1"><p>20.0</p></td><td colspan="1" rowspan="1"><p>74.5</p></td></tr><tr><td colspan="1" rowspan="1"><p>4</p></td><td colspan="1" rowspan="1"><p><mml:math id="mrs8dxhjbv">
+</mml:math></p></td><td colspan="1" rowspan="1"><p>62.2</p></td><td colspan="1" rowspan="1"><p>46.4</p></td><td colspan="1" rowspan="1"><p>48.1</p></td><td colspan="1" rowspan="1"><p>29.7</p></td><td colspan="1" rowspan="1"><p>57.1</p></td><td colspan="1" rowspan="1"><p>20.0</p></td><td colspan="1" rowspan="1"><p>74.5</p></td></tr><tr><td colspan="1" rowspan="1"><p>4</p></td><td colspan="1" rowspan="1"><p><mml:math id="mcyoxldsil">
   <mml:mo>×</mml:mo>
-</mml:math></p></td><td colspan="1" rowspan="1"><p><mml:math id="m2wprx1uvn">
+</mml:math></p></td><td colspan="1" rowspan="1"><p><mml:math id="mlam2sq8zy">
   <mml:mo>×</mml:mo>
-</mml:math></p></td><td colspan="1" rowspan="1"><p><mml:math id="mwkchamim4">
+</mml:math></p></td><td colspan="1" rowspan="1"><p><mml:math id="mcem6joks9">
   <mml:msqrt/>
-</mml:math></p></td><td colspan="1" rowspan="1"><p>62.2</p></td><td colspan="1" rowspan="1"><p>46.9</p></td><td colspan="1" rowspan="1"><p>48.7</p></td><td colspan="1" rowspan="1"><p>30.2</p></td><td colspan="1" rowspan="1"><p>57.0</p></td><td colspan="1" rowspan="1"><p>19.9</p></td><td colspan="1" rowspan="1"><p>71.7</p></td></tr><tr><td colspan="1" rowspan="1"><p>5</p></td><td colspan="1" rowspan="1"><p><mml:math id="m2ofrqoviy">
+</mml:math></p></td><td colspan="1" rowspan="1"><p>62.2</p></td><td colspan="1" rowspan="1"><p>46.9</p></td><td colspan="1" rowspan="1"><p>48.7</p></td><td colspan="1" rowspan="1"><p>30.2</p></td><td colspan="1" rowspan="1"><p>57.0</p></td><td colspan="1" rowspan="1"><p>19.9</p></td><td colspan="1" rowspan="1"><p>71.7</p></td></tr><tr><td colspan="1" rowspan="1"><p>5</p></td><td colspan="1" rowspan="1"><p><mml:math id="mdcg3eafmj">
   <mml:msqrt/>
-</mml:math></p></td><td colspan="1" rowspan="1"><p><mml:math id="ma9jv4qgkx">
+</mml:math></p></td><td colspan="1" rowspan="1"><p><mml:math id="mmt9j70mcp">
   <mml:msqrt/>
-</mml:math></p></td><td colspan="1" rowspan="1"><p><mml:math id="mr6fpq96tm">
+</mml:math></p></td><td colspan="1" rowspan="1"><p><mml:math id="mn6852wss6">
   <mml:mo>×</mml:mo>
-</mml:math></p></td><td colspan="1" rowspan="1"><p>62.6</p></td><td colspan="1" rowspan="1"><p>48.3</p></td><td colspan="1" rowspan="1"><p>49.6</p></td><td colspan="1" rowspan="1"><p>30.5</p></td><td colspan="1" rowspan="1"><p>49.6</p></td><td colspan="1" rowspan="1"><p>14.6</p></td><td colspan="1" rowspan="1"><p>52.2</p></td></tr><tr><td colspan="1" rowspan="1"><p>6</p></td><td colspan="1" rowspan="1"><p><mml:math id="mdfw1ky5x5">
+</mml:math></p></td><td colspan="1" rowspan="1"><p>62.6</p></td><td colspan="1" rowspan="1"><p>48.3</p></td><td colspan="1" rowspan="1"><p>49.6</p></td><td colspan="1" rowspan="1"><p>30.5</p></td><td colspan="1" rowspan="1"><p>49.6</p></td><td colspan="1" rowspan="1"><p>14.6</p></td><td colspan="1" rowspan="1"><p>52.2</p></td></tr><tr><td colspan="1" rowspan="1"><p>6</p></td><td colspan="1" rowspan="1"><p><mml:math id="m3yn4xbwux">
   <mml:msqrt/>
-</mml:math></p></td><td colspan="1" rowspan="1"><p><mml:math id="msao7xiyqw">
+</mml:math></p></td><td colspan="1" rowspan="1"><p><mml:math id="ml6xd103kr">
   <mml:mo>×</mml:mo>
-</mml:math></p></td><td colspan="1" rowspan="1"><p><mml:math id="mn8w2jprq4">
+</mml:math></p></td><td colspan="1" rowspan="1"><p><mml:math id="mt1vu92sb3">
   <mml:msqrt/>
-</mml:math></p></td><td colspan="1" rowspan="1"><p>62.4</p></td><td colspan="1" rowspan="1"><p>48.5</p></td><td colspan="1" rowspan="1"><p>50.0</p></td><td colspan="1" rowspan="1"><p>30.9</p></td><td colspan="1" rowspan="1"><p>49.5</p></td><td colspan="1" rowspan="1"><p>14.5</p></td><td colspan="1" rowspan="1"><p>53.2</p></td></tr><tr><td colspan="1" rowspan="1"><p>7</p></td><td colspan="1" rowspan="1"><p><mml:math id="mnzg9vyo3s">
+</mml:math></p></td><td colspan="1" rowspan="1"><p>62.4</p></td><td colspan="1" rowspan="1"><p>48.5</p></td><td colspan="1" rowspan="1"><p>50.0</p></td><td colspan="1" rowspan="1"><p>30.9</p></td><td colspan="1" rowspan="1"><p>49.5</p></td><td colspan="1" rowspan="1"><p>14.5</p></td><td colspan="1" rowspan="1"><p>53.2</p></td></tr><tr><td colspan="1" rowspan="1"><p>7</p></td><td colspan="1" rowspan="1"><p><mml:math id="m0g41tmwuu">
   <mml:mo>×</mml:mo>
-</mml:math></p></td><td colspan="1" rowspan="1"><p><mml:math id="mfh3ttbnss">
+</mml:math></p></td><td colspan="1" rowspan="1"><p><mml:math id="mimrb97cvk">
   <mml:msqrt/>
-</mml:math></p></td><td colspan="1" rowspan="1"><p><mml:math id="mjiz984zoh">
+</mml:math></p></td><td colspan="1" rowspan="1"><p><mml:math id="mo6ci0cyiw">
   <mml:msqrt/>
-</mml:math></p></td><td colspan="1" rowspan="1"><p>62.0</p></td><td colspan="1" rowspan="1"><p>47.3</p></td><td colspan="1" rowspan="1"><p>49.0</p></td><td colspan="1" rowspan="1"><p>30.4</p></td><td colspan="1" rowspan="1"><p>57.1</p></td><td colspan="1" rowspan="1"><p>20.0</p></td><td colspan="1" rowspan="1"><p>76.2</p></td></tr><tr><td colspan="1" rowspan="1"><p>8</p></td><td colspan="1" rowspan="1"><p><mml:math id="mmd0km0ayc">
+</mml:math></p></td><td colspan="1" rowspan="1"><p>62.0</p></td><td colspan="1" rowspan="1"><p>47.3</p></td><td colspan="1" rowspan="1"><p>49.0</p></td><td colspan="1" rowspan="1"><p>30.4</p></td><td colspan="1" rowspan="1"><p>57.1</p></td><td colspan="1" rowspan="1"><p>20.0</p></td><td colspan="1" rowspan="1"><p>76.2</p></td></tr><tr><td colspan="1" rowspan="1"><p>8</p></td><td colspan="1" rowspan="1"><p><mml:math id="mnl2h7puew">
   <mml:msqrt/>
-</mml:math></p></td><td colspan="1" rowspan="1"><p><mml:math id="mz3wev3gif">
+</mml:math></p></td><td colspan="1" rowspan="1"><p><mml:math id="mwe6aevwok">
   <mml:msqrt/>
-</mml:math></p></td><td colspan="1" rowspan="1"><p><mml:math id="mi68galnjp">
+</mml:math></p></td><td colspan="1" rowspan="1"><p><mml:math id="mrc2k5b3i2">
   <mml:msqrt/>
 </mml:math></p></td><td colspan="1" rowspan="1"><p>64.3</p></td><td colspan="1" rowspan="1"><p>48.8</p></td><td colspan="1" rowspan="1"><p>50.8</p></td><td colspan="1" rowspan="1"><p>31.7</p></td><td colspan="1" rowspan="1"><p>49.6</p></td><td colspan="1" rowspan="1"><p>14.6</p></td><td colspan="1" rowspan="1"><p>54.6</p></td></tr></tbody></table>
             </table-wrap>
           
           <p>Then we conduct an ablation experiment on the loss functions. To fully verify the effectiveness of the <inline-formula>
-  <mml:math id="mj62ga3bdc">
+  <mml:math id="m7fsb8sj1b">
     <mml:msub>
       <mml:mrow>
         <mml:mi>L</mml:mi>
@@ -1051,7 +1051,7 @@
     </mml:msub>
   </mml:math>
 </inline-formula> loss function, an ablation experiment is conducted by comparing it with GIoU and other commonly used IoU (such as CIoU, DloU, InnerloU, MPDIoU) on the VisDrone2019 dataset. The experimental results shown in <xref ref-type="table" rid="table_2">Table 2</xref> indicate that the mAP@50 and mAP@50:95 of the <inline-formula>
-  <mml:math id="m7u8sevlkb">
+  <mml:math id="mavk1wa8jv">
     <mml:msub>
       <mml:mrow>
         <mml:mi>L</mml:mi>
@@ -1064,7 +1064,7 @@
     </mml:msub>
   </mml:math>
 </inline-formula> loss function have reached 48.7% and 30.2% respectively, which are significantly higher than those of the traditional IoU. This loss function has greatly improved the accuracy of boundary positioning. This refined optimization mechanism is particularly suitable for small object detection. Since the proportion of pixels for small objects is low, the impact of boundary offset on IoU is more sensitive. <inline-formula>
-  <mml:math id="m1mnj9yfyl">
+  <mml:math id="mdf6fb0l7u">
     <mml:msub>
       <mml:mrow>
         <mml:mi>L</mml:mi>
@@ -1083,7 +1083,7 @@
               <caption>
                 <title>IoU ablation experiment results</title>
               </caption>
-              <table><tbody><tr><th colspan="1" rowspan="1"><p>IoU</p></th><th colspan="1" rowspan="1"><p>GIoU</p></th><th colspan="1" rowspan="1"><p>CIoU</p></th><th colspan="1" rowspan="1"><p>DIoU</p></th><th colspan="1" rowspan="1"><p>InnerIoU</p></th><th colspan="1" rowspan="1"><p>MPDIoU</p></th><th colspan="1" rowspan="1"><p>L<mml:math id="m00txnuwkl">
+              <table><tbody><tr><th colspan="1" rowspan="1"><p>IoU</p></th><th colspan="1" rowspan="1"><p>GIoU</p></th><th colspan="1" rowspan="1"><p>CIoU</p></th><th colspan="1" rowspan="1"><p>DIoU</p></th><th colspan="1" rowspan="1"><p>InnerIoU</p></th><th colspan="1" rowspan="1"><p>MPDIoU</p></th><th colspan="1" rowspan="1"><p>L<mml:math id="meigk6p8b8">
   <mml:msub>
     <mml:mi/>
     <mml:mrow>
@@ -1110,15 +1110,15 @@
               <caption>
                 <title>Confidence interval comparison with the mainstream models</title>
               </caption>
-              <table><tbody><tr><th colspan="1" rowspan="1"><p>Model</p></th><th colspan="1" rowspan="1"><p><mml:math id="mfxeugw63k">
+              <table><tbody><tr><th colspan="1" rowspan="1"><p>Model</p></th><th colspan="1" rowspan="1"><p><mml:math id="mcffg3ezzy">
   <mml:mi>Δ</mml:mi>
   <mml:mtext>mAP@0.5/%</mml:mtext>
-</mml:math></p></th><th colspan="1" rowspan="1"><p>95% CI of <mml:math id="m8ujdofj6i">
+</mml:math></p></th><th colspan="1" rowspan="1"><p>95% CI of <mml:math id="mtdjaf0ynt">
   <mml:mi>Δ</mml:mi>
-</mml:math></p></th><th colspan="1" rowspan="1"><p>p value</p></th></tr><tr><td colspan="1" rowspan="1"><p>DEIM</p></td><td colspan="1" rowspan="1"><p>0.3</p></td><td colspan="1" rowspan="1"><p>[$-<mml:math id="mjv4woqtyq">
+</mml:math></p></th><th colspan="1" rowspan="1"><p>p Value</p></th></tr><tr><td colspan="1" rowspan="1"><p>DEIM</p></td><td colspan="1" rowspan="1"><p>0.3</p></td><td colspan="1" rowspan="1"><p>[$-<mml:math id="mr04qnd9a2">
   <mml:mn>0.1</mml:mn>
   <mml:mo>,</mml:mo>
-</mml:math>+<mml:math id="m8p68326tc">
+</mml:math>+<mml:math id="m7jo7xvhv8">
   <mml:mn>0.7</mml:mn>
   <mml:mn>1</mml:mn>
   <mml:mn>1</mml:mn>
@@ -1444,10 +1444,10 @@
   <mml:mi>t</mml:mi>
   <mml:mi>e</mml:mi>
   <mml:mi>r</mml:mi>
-</mml:math>+<mml:math id="mx20fy2esv">
+</mml:math>+<mml:math id="m9iz7olck9">
   <mml:mn>2.4</mml:mn>
   <mml:mo>,</mml:mo>
-</mml:math>+<mml:math id="ma5c1qsi2q">
+</mml:math>+<mml:math id="m5fg15flh0">
   <mml:mn>3.2</mml:mn>
   <mml:mn>1</mml:mn>
   <mml:mn>1</mml:mn>
@@ -1526,7 +1526,7 @@
   <mml:mi>t</mml:mi>
   <mml:mi>e</mml:mi>
   <mml:mi>r</mml:mi>
-</mml:math>&lt;<mml:math id="mlvs560qeq">
+</mml:math>&lt;<mml:math id="mrd2ygbsmd">
   <mml:mn>0.001</mml:mn>
   <mml:mn>1</mml:mn>
   <mml:mn>1</mml:mn>
@@ -1773,10 +1773,10 @@
   <mml:mi>t</mml:mi>
   <mml:mi>e</mml:mi>
   <mml:mi>r</mml:mi>
-</mml:math>+<mml:math id="mzntg11s7n">
+</mml:math>+<mml:math id="mxleef81n3">
   <mml:mn>6.3</mml:mn>
   <mml:mo>,</mml:mo>
-</mml:math>+<mml:math id="my3ofukhy5">
+</mml:math>+<mml:math id="mhqmpywmbv">
   <mml:mn>7.3</mml:mn>
   <mml:mn>1</mml:mn>
   <mml:mn>1</mml:mn>
@@ -1855,7 +1855,7 @@
   <mml:mi>t</mml:mi>
   <mml:mi>e</mml:mi>
   <mml:mi>r</mml:mi>
-</mml:math>&lt;<mml:math id="m0w2dvnplv">
+</mml:math>&lt;<mml:math id="mtipe8jxtk">
   <mml:mn>0.001</mml:mn>
   <mml:mn>1</mml:mn>
   <mml:mn>1</mml:mn>
@@ -2104,10 +2104,10 @@
   <mml:mi>t</mml:mi>
   <mml:mi>e</mml:mi>
   <mml:mi>r</mml:mi>
-</mml:math>+<mml:math id="ma3v0lu9av">
+</mml:math>+<mml:math id="mmen7xmbkd">
   <mml:mn>7.9</mml:mn>
   <mml:mo>,</mml:mo>
-</mml:math>+<mml:math id="mlipes17sg">
+</mml:math>+<mml:math id="mpeyvtxm1o">
   <mml:mn>8.5</mml:mn>
   <mml:mn>1</mml:mn>
   <mml:mn>1</mml:mn>
@@ -2206,7 +2206,7 @@
           
             <title>3.5. Comparison experiments</title>
           
-          <p>To further verify the superiority of the proposed model in the detection of small targets, we select the VisDrone2019 and KITTI datasets, and compare our algorithm with numerous mainstream baseline algorithms as well as other advanced algorithms (EMRT-DETR [<xref ref-type="bibr" rid="ref_34">34</xref>], SCP-DETR [<xref ref-type="bibr" rid="ref_35">35</xref>], DMU-YOLO [<xref ref-type="bibr" rid="ref_36">36</xref>], DEIM [<xref ref-type="bibr" rid="ref_37">37</xref>], RT-DETR [<xref ref-type="bibr" rid="ref_38">38</xref>]). Results are shown in <xref ref-type="table" rid="table_5">Table 5</xref> and <xref ref-type="table" rid="table_6">Table 6</xref> and <xref ref-type="fig" rid="fig_6">Figure 6</xref> and <xref ref-type="fig" rid="fig_7">Figure 7</xref>.</p>
+          <p>To further verify the superiority of the proposed model in the detection of small targets, we select the VisDrone2019 and KITTI datasets, and compare our algorithm with numerous mainstream baseline algorithms as well as other advanced algorithms (EMRT-DETR [<xref ref-type="bibr" rid="ref_34">34</xref>], SCP-DETR [<xref ref-type="bibr" rid="ref_35">35</xref>], DMU-YOLO [<xref ref-type="bibr" rid="ref_36">36</xref>], DEIM [<xref ref-type="bibr" rid="ref_37">37</xref>], RT-DETR [<xref ref-type="bibr" rid="ref_38">38</xref>]). Results are shown in <xref ref-type="table" rid="table_5">Table 5</xref>, <xref ref-type="table" rid="table_6">Table 6</xref>, <xref ref-type="fig" rid="fig_6">Figure 6</xref>, <xref ref-type="fig" rid="fig_7">Figure 7</xref>.</p>
           
             <table-wrap id="table_5">
               <label>Table 5</label>
@@ -2229,7 +2229,7 @@
             <fig id="fig_6">
               <label>Figure 6</label>
               <caption>
-                <title>The visualized results of Table 6</title>
+                <title>The visualized results of Table 5</title>
               </caption>
               <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/10/img_7MfhiKl3BjuW7v8_.jpeg"/>
             </fig>
@@ -2238,7 +2238,7 @@
             <fig id="fig_7">
               <label>Figure 7</label>
               <caption>
-                <title/>
+                <title>The visualized results of Table 6</title>
               </caption>
               <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/10/img_uh6HpSdadzNyxH-_.jpeg"/>
             </fig>
@@ -2259,7 +2259,7 @@
     <sec sec-type="conclusions">
       <title>4. Conclusions</title>
       <p>To address the problems of severe background interference and insufficient feature expression in small targets in complex scenes, this paper proposes a novel adaptive multi-scale Gated convolution and context-aware attention model for small object detection, which significantly reduces background interference and improves feature expression capabilities. The experimental results show that proposed model has improved the mAP@0.5 and mAP@0.5.0.95 performance on the VisDrone2019 dataset by 2.8% and 2.3% respectively. The parameter quantity and computational cost have been reduced by 26.6% and 13% respectively, making it more advantageous compared to other advanced algorithms. Moreover, it has also been verified for generalization on the KITTI dataset. This further verifies the effectiveness and robustness of the model, and it has significant practical significance and application value.</p><p>However, proposed model still has the following limitations. Its performance on small-scale datasets needs improvement, and the model has difficulty converging on small-scale datasets. Real-time detection needs to be enhanced. Although the proposed method achieves a mAP of 50.8% on VisDrone2019, the following limitations still need to be noted. (1) Data scale sensitivity: When the number of training images is less than 1000, the multi-scale gated branch of MGCM suffers from overfitting, and the mAP of the validation set fluctuates by <inline-formula>
-  <mml:math id="mdcztdvem1">
+  <mml:math id="mnr1sjwn82">
     <mml:mo>±</mml:mo>
   </mml:math>
 </inline-formula> 1.6% (n = 5). (2) Failure in extreme scales: When the short side of the target is less than 8 pixel, the window attention of MFEM degenerates to a single point, and the recall rate drops by 9.2%. Future work may focus on the following directions: optimizing the model architecture to reduce the limitations imposed by data size; combining lightweight design with model compression techniques (such as pruning and knowledge distillation) to further improve the processing efficiency of real-time detection, and potentially providing more efficient solutions for small target detection in complex scenarios.</p>
@@ -2282,7 +2282,7 @@
     </notes>
     <notes>
       <title>Funding</title>
-      <p>This researchwas funded by Liaoning Provincial Science and Technology Plan Project (GrantNo.: 2024JH2/102600106).</p>
+      <p>This researchwas funded by Liaoning Provincial Science and Technology Plan Project (Grant No.: 2024JH2/102600106).</p>
     </notes>
     <notes>
       <title>Informed Consent Statement</title>
