@@ -115,7 +115,7 @@
     <sec sec-type="">
       <title>2. Related work</title>
       <p>A range of approaches have been explored for EMG-based hand gesture recognition, spanning classic machine learning, deep learning, and hybrid architectures. This section highlights key works, emphasizing temporal modeling methods and those tailored to the NinaPro dataset. Atzori et al. [<xref ref-type="bibr" rid="ref_8">8</xref>] leveraged a LeNet-based CNN on NinaPro DB2, achieving 78–85% accuracy across multiple gestures with feature-based SVM classifiers, a solid baseline for later DL models. Geng et al. [<xref ref-type="bibr" rid="ref_9">9</xref>] introduced the concept of instantaneous sEMG imaging and applied a CNN plus SVM on 8 gestures captured via high-density sEMG imaging, attaining ~89.3% per-frame accuracy (and 99.0% after majority voting), illustrating the potential of single-frame classification. Du et al. [<xref ref-type="bibr" rid="ref_4">4</xref>] designed a custom LSTM-based model on NinaProDB2/DB3, achieving 85–90% accuracy on sequence recognition tasks, outperforming classical approaches.</p><p>While earlier studies demonstrated strong foundational performance using CNNs and LSTMs, more recent archi- tectures have adopted TCNs and attention mechanisms to improve both accuracy and efficiency. Tsinganos et al. [<xref ref-type="bibr" rid="ref_10">10</xref>] employed TCN for EMG-based hand gesture recognition using the NinaPro DB1 dataset, achieving around 89.76% accuracy and demonstrating the strength of TCNs in capturing temporal dependencies in muscle activity signals. Zanghieri et al. [<xref ref-type="bibr" rid="ref_11">11</xref>] proposed TEMPONetembedded TCN, A real-time embedded TCN model, achieving 93.7% accuracy on NinaPro enabled sessions with an ultra-low memory footprint.</p><p>Recent TCN and multi-stream architectures have further advanced the field. Rahimian et al. [<xref ref-type="bibr" rid="ref_12">12</xref>] proposed a lightweight TCN-attention model evaluated on 17 gesture classes, achieving 81.65% (300 ms windows) and 80.72% (200 ms windows), with ~12 <inline-formula>
-  <mml:math id="m39ddpao6e">
+  <mml:math id="m6159oky0e">
     <mml:mo>×</mml:mo>
   </mml:math>
 </inline-formula> fewer parameters than benchmark models. A multi-stream deep architecture proposed by Shin et al. [<xref ref-type="bibr" rid="ref_13">13</xref>], integrating TCN, CNN, LSTM modules, and channel attention, was tested on NinaPro DB1 and DB9, attaining 94.3% and 98.96% accuracy, respectively, demonstrating the power of hybrid models for high-performance EMG classification.</p><p>Beyond these temporal models, recent research has introduced novel paradigms. Montazerin et al. [<xref ref-type="bibr" rid="ref_14">14</xref>] applied a Vision Transformer (ViT-HGR) to HD-sEMG, reporting ~84.6% accuracy on 65 gestures with a remarkably compact parameter count, illustrating the promise of transformer-based methods. Zhong et al. [<xref ref-type="bibr" rid="ref_15">15</xref>] developed a Spatio-Temporal Graph Convolutional Network (named STGCN-GR) for HD-sEMG-based human-machine interfaces, which explicitly models electrode topology and reached 91.07% accuracy on 65 gestures, outperforming CNN-based baselines. Xiang et al. [<xref ref-type="bibr" rid="ref_16">16</xref>] introduced SE-DenseNet with channel attention, achieving 85.93% and 82.39% accuracy on NinaPro DB2 and DB4, respectively, highlighting the effectiveness of attention in EMG recognition.</p><p>To synthesize these advancements, <xref ref-type="table" rid="table_1">Table 1</xref> provides a comparative overview of representative studies. It summarizes the datasets used (including number of gestures), core architectures, and reported performance metrics, offering a consolidated view of how different methods perform across diverse experimental contexts.</p><p>Although our work employs temporal convolutions similar to those used in related studies, our proposed architecture distinguishes itself by incorporating multiple residual causal convolution blocks and a contextual attention mechanism placed at the top of the network to enhance feature discrimination. Moreover, unlike prior works that focus on reducing the number of layers to achieve lightweight models, our design leverages deeper residual structures to improve representational capacity. Additionally, we apply suitable data augmentation techniques to enhance learning and promote better model generalization.</p>
@@ -147,11 +147,11 @@
             </fig>
           
           <p>Inspired by established methods in time-series literatures [<xref ref-type="bibr" rid="ref_18">18</xref>], [<xref ref-type="bibr" rid="ref_19">19</xref>], we apply the following multiple data augmentation techniques, which attempt to simulate real-world EMG signal variations during training:</p><p>• Jittering: adds adjustable Gaussian noise to match a target SNR, mimicking real-world EMG noise from sensors or ambient electrical interference.</p><p>• Channel Shuffling: circularly rotates the EMG channel order by a random offset (<inline-formula>
-  <mml:math id="mx8wx0ktnz">
+  <mml:math id="mnu20cw45l">
     <mml:mo>±</mml:mo>
   </mml:math>
 </inline-formula> 2 channels). It models slight misplacement of electrodes, especially relevant for wearable EMG systems.</p><p>• Scaling: multiplies each channel by a random factor sampled from a normal distribution around 1 (<inline-formula>
-  <mml:math id="mjkk3k6oo0">
+  <mml:math id="mgogchpvsq">
     <mml:mi>σ</mml:mi>
   </mml:math>
 </inline-formula> = 0.2). It simulates inter-session variability like sensor gain or changes in muscle contraction strength.</p><p>• Permutation: divides the signal into segments and randomly shuffles them. It encourages the model to focus on local temporal features rather than fixed global ordering.</p>
@@ -163,7 +163,7 @@
             <title>3.2. Proposed model architecture</title>
           
           <p>As outlined in <xref ref-type="fig" rid="fig_2">Figure 2</xref>, our proposed model, named Residual Temporal Convolutional Attention Neural Network (RTCAN), attempts to capture both short-term and long-term patterns in EMG signals. To this end, we use i) causal convolutions which do depend only on past data combined with ii) residual connections that let the signal jump over some layers to help train deeper networks, and iii) an attention mechanism to focus on important parts of the signal. The input of the model is a preprocessed EMG sample of size n <inline-formula>
-  <mml:math id="mih8gyz6sw">
+  <mml:math id="mct248vog1">
     <mml:mo>×</mml:mo>
   </mml:math>
 </inline-formula> 10, corresponding to the number of time steps and sensor channels. The output of the model is a discrete value specifying the recognized gesture.</p>
@@ -183,7 +183,7 @@
                 <title>3.2.1 Residual causal convolutional blocks</title>
               
               <p>The role of the Residual Causal Convolutional Blocks is to identify specific patterns over time for robust gesture classification. The basic building blocks are temporal convolution layers. In contrast to the usual convolution where the output at time t depends on past, present, and future inputs (<inline-formula>
-  <mml:math id="mpdvp6xohx">
+  <mml:math id="mnnwprhukw">
     <mml:mi>x</mml:mi>
     <mml:mi>t</mml:mi>
     <mml:mi>k</mml:mi>
@@ -195,7 +195,7 @@
     <mml:mn>2</mml:mn>
   </mml:math>
 </inline-formula>) to <inline-formula>
-  <mml:math id="md78h5c0e4">
+  <mml:math id="m8kdaiil7v">
     <mml:mo>(</mml:mo>
     <mml:mo>+</mml:mo>
     <mml:mi>t</mml:mi>
@@ -209,7 +209,7 @@
               
                 <disp-formula>
                   <label>(1)</label>
-                  <mml:math id="mwf4p1fwnf">
+                  <mml:math id="moc6w7629e">
                     <mml:mi>y</mml:mi>
                     <mml:mi>t</mml:mi>
                     <mml:mi>f</mml:mi>
@@ -245,14 +245,14 @@
                 </disp-formula>
               
               <p> where, <inline-formula>
-  <mml:math id="m62s0wo54l">
+  <mml:math id="mqm9858d8y">
     <mml:mi>y</mml:mi>
     <mml:mi>t</mml:mi>
     <mml:mo>(</mml:mo>
     <mml:mo>)</mml:mo>
   </mml:math>
 </inline-formula> is the output at time step <inline-formula>
-  <mml:math id="m9y48kuz0f">
+  <mml:math id="mrm67kqhog">
     <mml:mi>t</mml:mi>
     <mml:mi>f</mml:mi>
     <mml:mi>i</mml:mi>
@@ -261,7 +261,7 @@
     <mml:mo>)</mml:mo>
   </mml:math>
 </inline-formula> is the filter of size <inline-formula>
-  <mml:math id="m5ltcggblr">
+  <mml:math id="mcm4gmq7sr">
     <mml:mi>k</mml:mi>
     <mml:mi>x</mml:mi>
     <mml:mi>t</mml:mi>
@@ -277,7 +277,7 @@
               
                 <disp-formula>
                   <label>(2)</label>
-                  <mml:math id="m837c4ow8h">
+                  <mml:math id="mf6grryz7x">
                     <mml:mi>H</mml:mi>
                     <mml:mi>x</mml:mi>
                     <mml:mi>F</mml:mi>
@@ -293,14 +293,14 @@
                 </disp-formula>
               
               <p>where, <inline-formula>
-  <mml:math id="milwb4mjr2">
+  <mml:math id="m8fa6ivyj4">
     <mml:mi>H</mml:mi>
     <mml:mi>x</mml:mi>
     <mml:mo>(</mml:mo>
     <mml:mo>)</mml:mo>
   </mml:math>
 </inline-formula> is the output, <inline-formula>
-  <mml:math id="mrnmxugkm9">
+  <mml:math id="m7abfpqukb">
     <mml:mi>F</mml:mi>
     <mml:mi>x</mml:mi>
     <mml:mo>(</mml:mo>
@@ -325,7 +325,7 @@
                 <title>3.2.2 Contextual attention block</title>
               
               <p>The attention mechanism implemented in this work builds upon the hierarchical attention networks proposed by Yang et al. [<xref ref-type="bibr" rid="ref_20">20</xref>], adapting it for temporal EMG signal analysis. Unlike traditional sequence-to-sequence attention that operates between encoder and decoder states, this implementation processes a single temporal sequence to identify the most discriminative time steps for classification. Its mathematical formulation is as follows. Given an input sequence representation <inline-formula>
-  <mml:math id="mpt953ytpc">
+  <mml:math id="mkv7es49od">
     <mml:mrow>
       <mml:mi>X</mml:mi>
     </mml:mrow>
@@ -344,7 +344,7 @@
     </mml:msup>
   </mml:math>
 </inline-formula>, where $B<inline-formula>
-  <mml:math id="m4f1jyngrx">
+  <mml:math id="muc5u4r0fm">
     <mml:mi>i</mml:mi>
     <mml:mi>s</mml:mi>
     <mml:mi>t</mml:mi>
@@ -362,7 +362,7 @@
     <mml:mo>,</mml:mo>
   </mml:math>
 </inline-formula>T<inline-formula>
-  <mml:math id="muqdsbjr1b">
+  <mml:math id="m0atxomw8j">
     <mml:mi>i</mml:mi>
     <mml:mi>s</mml:mi>
     <mml:mi>t</mml:mi>
@@ -391,7 +391,7 @@
               
                 <disp-formula>
                   <label>(3)</label>
-                  <mml:math id="mg3n7trnx0">
+                  <mml:math id="mk85emmbag">
                     <mml:mi>U</mml:mi>
                     <mml:mi>tanh</mml:mi>
                     <mml:mi>X</mml:mi>
@@ -407,7 +407,7 @@
                 </disp-formula>
               
               <p> where, <inline-formula>
-  <mml:math id="m8an31o87z">
+  <mml:math id="m4ogndq6go">
     <mml:mi>W</mml:mi>
     <mml:mo>∈</mml:mo>
     <mml:msup>
@@ -422,7 +422,7 @@
     </mml:msup>
   </mml:math>
 </inline-formula> and <inline-formula>
-  <mml:math id="mx099u47pp">
+  <mml:math id="m3aawveed1">
     <mml:mi>b</mml:mi>
     <mml:mo>∈</mml:mo>
     <mml:msup>
@@ -436,7 +436,7 @@
               
                 <disp-formula>
                   <label>(4)</label>
-                  <mml:math id="mrcwtvzerx">
+                  <mml:math id="mjdr5odove">
                     <mml:msup>
                       <mml:mi>a</mml:mi>
                       <mml:mrow>
@@ -450,7 +450,7 @@
                 </disp-formula>
               
               <p> where, <inline-formula>
-  <mml:math id="mhm7gwm0zb">
+  <mml:math id="mfenx5pqhh">
     <mml:mi>u</mml:mi>
     <mml:mo>∈</mml:mo>
     <mml:msup>
@@ -464,7 +464,7 @@
               
                 <disp-formula>
                   <label>(5)</label>
-                  <mml:math id="mu6973c8q5">
+                  <mml:math id="mr27pv56s8">
                     <mml:msub>
                       <mml:mi>α</mml:mi>
                       <mml:mi>t</mml:mi>
@@ -519,7 +519,7 @@
                 </disp-formula>
               
               <p> where, <inline-formula>
-  <mml:math id="m4ff96b9qx">
+  <mml:math id="mqpmwgol9s">
     <mml:msub>
       <mml:mi>m</mml:mi>
       <mml:mrow>
@@ -539,7 +539,7 @@
               
                 <disp-formula>
                   <label>(6)</label>
-                  <mml:math id="m230bsqz65">
+                  <mml:math id="m1lnfd21vz">
                     <mml:mi>c</mml:mi>
                     <mml:mo>=</mml:mo>
                     <mml:munderover>
