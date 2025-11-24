@@ -1,0 +1,2442 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.3 20210610//EN" "JATS-journalpublishing1-3.dtd">
+<article xml:lang="en" dtd-version="1.3" article-type="research-article" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mml="http://www.w3.org/1998/Math/MathML">
+  <front>
+    <journal-meta>
+      <journal-id journal-id-type="publisher-id">IJCMEM</journal-id>
+      <journal-id journal-id-type="doi">10.56578</journal-id>
+      <journal-title-group>
+        <journal-title>International Journal of Computational Methods and Experimental Measurements</journal-title>
+        <abbrev-journal-title abbrev-type="issn">Int. J. Comput. Methods Exp. Meas.</abbrev-journal-title>
+        <abbrev-journal-title abbrev-type="publisher">IJCMEM</abbrev-journal-title>
+      </journal-title-group>
+      <issn publication-format="electronic">2046-0554</issn>
+      <issn publication-format="print">2046-0546</issn>
+      <publisher>
+        <publisher-name>Acadlore</publisher-name>
+      </publisher>
+    </journal-meta>
+    <article-meta>
+      <article-id pub-id-type="publisher-id">AR-WbWCCrCpl02lRcXL1dZJCEAykII3tZYG</article-id>
+      <article-id pub-id-type="doi">10.56578/ijcmem130402</article-id>
+      <article-categories>
+        <subj-group>
+          <subject>Articles</subject>
+        </subj-group>
+      </article-categories>
+      <title-group>
+        <article-title>Three-Dimensional Multiphysics Simulation Coupled with Machine-Learning Surrogate Modeling for Thickness Optimization in Perovskite Solar Cells</article-title>
+      </title-group>
+      <contrib-group>
+        <contrib contrib-type="author" rid="aff_1">
+          <contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0009-0006-1774-8543</contrib-id>
+          <name>
+            <surname>Abdallah</surname>
+            <given-names>Mariam</given-names>
+          </name>
+          <email>mariam.abdallah@iuk.edu.kw</email>
+        </contrib>
+        <aff id="aff_1">Math and Natural Sciences Department, International University of Science and Technology in Kuwait, 92400 Ardiya, Kuwait</aff>
+      </contrib-group>
+      <pub-date publication-format="electronic" date-type="pub">
+        <day>23</day>
+        <month>11</month>
+        <year>2025</year>
+      </pub-date>
+      <volume>13</volume>
+      <issue>4</issue>
+      <fpage>758</fpage>
+      <lpage>771</lpage>
+      <page-range>758-771</page-range>
+      <history>
+        <date date-type="received">
+          <day>23</day>
+          <month>07</month>
+          <year>2025</year>
+        </date>
+        <date date-type="accepted">
+          <day>16</day>
+          <month>09</month>
+          <year>2025</year>
+        </date>
+      </history>
+      <permissions>
+        <copyright-statement>©2025 by the author(s)</copyright-statement>
+        <copyright-year>2025</copyright-year>
+        <license license-type="open-access" xlink:href="https://creativecommons.org/licenses/by/4.0/">
+          <license-p> Published by Acadlore Publishing Services Limited, Hong Kong. This article is available for free download and can be reused and cited, provided that the original published version is credited, under the CC BY 4.0 license.</license-p>
+        </license>
+      </permissions>
+      <abstract><p>Perovskite solar cells (PSCs) continue to advance toward higher efficiencies, yet the geometrical design of functional layers remains a critical bottleneck for device optimization and manufacturability. This work establishes a hybrid physics-data framework that integrates three-dimensional finite-element modeling with machine-learningbased surrogate prediction to accelerate PSC thickness optimization. A full 3D COMSOL Multiphysics model was developed to resolve charge-transport behavior, spatial electric fields, and recombination profiles within TiO<sub>2</sub>/MAPbI<sub>3</sub>/Spiro-OMeTAD architectures. Systematic variations in electron transport layer (ETL), perovskite absorber, and hole transport layer (HTL) thicknesses reveal that device power conversion efficiency (PCE) is governed by a trade-off between optical absorption, interface recombination, and resistive losses. A multi-layer perceptron regressor was trained using simulation data and achieved strong predictive fidelity (R2 ≈ 0.98) with a mean absolute error below 0.3%. The resulting surrogate model rapidly identifies optimal structural configurations without requiring additional high-cost simulations, demonstrating a reduction of design time by more than an order of magnitude. The proposed workflow provides a transferable route toward digital-twin-driven photovoltaic design and offers practical guidance for high-performance PSC engineering with reduced material consumption and enhanced computational efficiency.</p></abstract>
+      <kwd-group>
+        <kwd>Perovskite solar cells</kwd>
+        <kwd>3D multiphysics simulation</kwd>
+        <kwd>Finite-element modeling</kwd>
+        <kwd>Machine-learning surrogate</kwd>
+        <kwd>Layer thickness optimization</kwd>
+        <kwd>Efficiency prediction</kwd>
+      </kwd-group>
+      <counts>
+        <count count-type="contributors" count="1"/>
+        <fig-count count="8"/>
+        <table-count count="4"/>
+        <ref-count count="36"/>
+      </counts>
+    </article-meta>
+  </front>
+  <body>
+    <sec sec-type="intro">
+      <title>1. Introduction</title>
+      <p>Perovskite solar cells (PSCs) have rapidly emerged as one of the most promising next-generation photovoltaic technologies, offering a compelling alternative to traditional silicon-based solar cells. In just over a decade, the power conversion efficiency (PCE) of PSCs has soared from under 4% to over 26%, thanks to their exceptional optoelectronic properties, including high absorption coefficients, long carrier diffusion lengths, and defect tolerance, alongside low-cost, solution-based fabrication methods [<xref ref-type="bibr" rid="ref_1">1</xref>]. Unlike crystalline silicon cells, PSCs can be processed at low temperatures and deposited on flexible substrates, enabling lightweight and wearable photovoltaics [<xref ref-type="bibr" rid="ref_2">2</xref>]. Tandem architectures (e.g., perovskite/silicon multi-junctions) and novel self-healing material compositions are further pushing PSC efficiencies toward—and potentially beyond—30%, while also addressing stability challenges [<xref ref-type="bibr" rid="ref_3">3</xref>]. This makes PSCs a highly attractive candidate for both utility-scale and off-grid solar energy applications, driving global research and industrial interest.</p><p>Despite their progress, achieving further improvements in PSC performance and reliability requires an in-depth understanding of the interrelated physical, chemical, and thermal processes that govern device behavior. Traditional experimental approaches can be costly, time-consuming, and limited by the availability of materials and fabrication tools. Thus, predictive modeling and simulation have become indispensable tools in accelerating the development cycle of PSCs. These tools allow for virtual exploration of materials, structures, and operating conditions, significantly reducing the experimental burden. Researchers can simulate the impact of different absorber thicknesses, interface materials, defect densities, and electrode properties on key performance metrics such as short-circuit current (Jsc), open-circuit voltage (Voc), fill factor (FF), and PCE.</p><p>Recent research efforts have focused on exploring novel materials and device architectures to approach theoretical efficiency limits. Strategies such as plasmonic nanoparticle enhancement, 2D-material interface integration, and buffer layer optimization have been widely studied. Device simulation tools play a critical role in accelerating these innovations by enabling virtual prototyping of solar cell designs prior to fabrication. High-fidelity simulation allows researchers to evaluate electrical, optical, and thermal behaviors of proposed structures in a cost-effective and scalable manner [<xref ref-type="bibr" rid="ref_4">4</xref>]. For instance, functional molecular interface engineering (FMIE) has significantly reduced recombination losses at PSC interfaces. Li et al. [<xref ref-type="bibr" rid="ref_5">5</xref>] demonstrated this by incorporating fluorene-based conjugated polyelectrolytes and organic halide salts at both contacts, achieving an open-circuit voltage of 1.18 V and a PCE of 21.33%, among the highest reported for inverted architectures. Similar gains have been demonstrated through plasmonic enhancement [<xref ref-type="bibr" rid="ref_6">6</xref>], 2D materials [<xref ref-type="bibr" rid="ref_7">7</xref>], and buffer layer selection [<xref ref-type="bibr" rid="ref_8">8</xref>], illustrating the efficacy of simulation-guided design.</p><p>Among simulation platforms, COMSOL Multiphysics stands out due to its robust Multiphysics capabilities and support for full 3D device simulations [<xref ref-type="bibr" rid="ref_9">9</xref>], [<xref ref-type="bibr" rid="ref_10">10</xref>]. Unlike 1D drift-diffusion tools like SCAPS or 2D TCAD frameworks, COMSOL’s finite element method (FEM) modeling captures the complex interplay between charge transport, photogeneration, and heat dissipation in three-dimensional geometries. This enables spatially resolved insights such as edge recombination, non-uniform current flow, and thermal gradients—phenomena typically inaccessible to lower-dimensional tools. Researchers have used 3D FEM to explore various PSC configurations, analyze electrode material choices, and quantify thickness effects on current density and recombination [<xref ref-type="bibr" rid="ref_11">11</xref>]. By solving coupled partial differential equations, COMSOL predicts device characteristics (I–V curves, field distributions, temperature profiles) under realistic operating conditions, proving valuable across photovoltaics and broader renewable energy domains [<xref ref-type="bibr" rid="ref_12">12</xref>], [<xref ref-type="bibr" rid="ref_13">13</xref>], [<xref ref-type="bibr" rid="ref_14">14</xref>], [<xref ref-type="bibr" rid="ref_15">15</xref>].</p><p>Parallel to physical modeling advances, machine learning (ML) and deep learning have revolutionized solar cell research [<xref ref-type="bibr" rid="ref_16">16</xref>]. ML excels at detecting nonlinear patterns in large datasets, accelerating optimization of materials and device parameters beyond the reach of brute-force experimentation. Since 2020, ML has been applied to PSC composition screening, stability forecasting, process optimization, and performance prediction [<xref ref-type="bibr" rid="ref_17">17</xref>], [<xref ref-type="bibr" rid="ref_18">18</xref>]. Techniques such as neural networks, random forests, and reinforcement learning have enabled accurate modeling of device behaviors. ML is especially powerful when integrated with simulation workflows, offering the ability to create surrogate models that generalize well across wide design spaces. This hybrid approach merges data-driven learning with physical insights, producing interpretable and transferable results.</p><p>For example, Cetinkaya et al. [<xref ref-type="bibr" rid="ref_19">19</xref>] used deep Q-learning to optimize multilayer thickness in organic solar cells, outperforming traditional trial-and-error tuning. In the PSC domain, Malek et al. [<xref ref-type="bibr" rid="ref_20">20</xref>] integrated artificial neural networks with SCAPS-1D simulations to optimize a carbon nanotube-based device without a hole transport layer, predicting a PCE of 20.9% with high accuracy. Similarly, Shrivastav et al. [<xref ref-type="bibr" rid="ref_21">21</xref>] used SCAPS and XGBoost to model a lead-free KGeCl3 PSC, achieving 19.6% efficiency with R<inline-formula>
+  <mml:math id="mynqzwhyr6">
+    <mml:msup>
+      <mml:mi/>
+      <mml:mn>2</mml:mn>
+    </mml:msup>
+  </mml:math>
+</inline-formula> of 0.996. Islam et al. [<xref ref-type="bibr" rid="ref_22">22</xref>] analyzed how material properties influence device physics using interpretable ML models, while Hillhouse et al. [<xref ref-type="bibr" rid="ref_23">23</xref>] forecasted long-term stability through supervised ML based on accelerated testing data. Peters and Buonassisi [<xref ref-type="bibr" rid="ref_24">24</xref>] examined how global operating conditions impact PSC performance using system-level simulations. Deep learning models (e.g. neural networks) and ensemble algorithms (random forests, XGBoost, Bayesian optimizers, etc.) have been trained on experimental and simulated data to predict solar cell outputs and identify promising design configurations [<xref ref-type="bibr" rid="ref_25">25</xref>].</p><p><xref ref-type="table" rid="table_1">Table 1</xref> summarizes key studies that combine ML and/or simulation for PSC development. While each contributes valuable insights, they differ in dimensional fidelity, data origin, and integration level. Notably, none of them combine full 3D FEM-based simulation with ML optimization in a unified framework. Our study addresses this gap by integrating COMSOL Multiphysics 3D simulation with a machine learning regressor. This hybrid approach allows rapid PCE prediction while retaining physical accuracy. The simulation generates high-quality training data with spatially resolved features (electric fields, thermal gradients, recombination profiles), and the ML model learns the nonlinear mappings between design parameters and efficiency metrics.</p><p>As seen in <xref ref-type="table" rid="table_1">Table 1</xref>, our study distinguishes itself by integrating 3D COMSOL Multiphysics simulations with a ML predictor to establish a data-driven yet physics-grounded optimization framework for PSCs. This integration bridges the gap between high-fidelity physical modeling and rapid ML-based efficiency prediction, enabling faster and more accurate design optimization of PSC architectures. Unlike earlier studies limited to 1D modeling or empirical datasets, our framework leverages a full 3D device model that captures spatially resolved physical phenomena such as electric field distributions, recombination hotspots, and thermal gradients—thereby enhancing physical realism and predictive reliability.</p>
+      
+        <table-wrap id="table_1">
+          <label>Table 1</label>
+          <caption>
+            <title>Comparative summary of recent ML and simulation-based studies for PSC optimization</title>
+          </caption>
+          <table><tbody><tr><th colspan="1" rowspan="1"><p>Reference</p></th><th colspan="1" rowspan="1"><p>Methodology</p></th><th colspan="1" rowspan="1"><p>Novelty vs. Our Work</p></th></tr><tr><td colspan="1" rowspan="1"><p>Malek et al. [<xref ref-type="bibr" rid="ref_20">20</xref>]</p></td><td colspan="1" rowspan="1"><p>SCAPS-1D + Artificial Neural Network (ANN); optimized CNT-based HTL-free PSC</p></td><td colspan="1" rowspan="1"><p>Lacks 3D spatial resolution; our study adds FEM realism and enables higher prediction precision through full-physics simulation</p></td></tr><tr><td colspan="1" rowspan="1"><p>Shrivastav et al. [<xref ref-type="bibr" rid="ref_21">21</xref>]</p></td><td colspan="1" rowspan="1"><p>Lead-free KGeCl<mml:math id="mcrcarwnrn">
+  <mml:msub>
+    <mml:mi/>
+    <mml:mn>3</mml:mn>
+  </mml:msub>
+</mml:math> PSC modelled via SCAPS + XGBoost</p></td><td colspan="1" rowspan="1"><p>Focuses on a lead-free material with 1D modelling; our work extends to 3D COMSOL modelling for realistic spatial field and recombination visualization</p></td></tr><tr><td colspan="1" rowspan="1"><p>Islam et al. [<xref ref-type="bibr" rid="ref_22">22</xref>]</p></td><td colspan="1" rowspan="1"><p>Interpretable ML to assess how materials affect PSC physics (Random Forest, Decision Trees)</p></td><td colspan="1" rowspan="1"><p>Does not involve simulation; our study links empirical learning with physics-based data for more reliable optimization</p></td></tr><tr><td colspan="1" rowspan="1"><p>Hillhouse et al. [<xref ref-type="bibr" rid="ref_23">23</xref>]</p></td><td colspan="1" rowspan="1"><p>ML forecasting of PSC degradation based on test data (Supervised ML)</p></td><td colspan="1" rowspan="1"><p>Targets degradation/stability forecasting only; our work focuses on performance prediction and device optimization with spatial modelling</p></td></tr><tr><td colspan="1" rowspan="1"><p>Peters and Buonassisi [<xref ref-type="bibr" rid="ref_24">24</xref>]</p></td><td colspan="1" rowspan="1"><p>System-level ML simulation for operational prediction (Neural Networks, Decision Trees)</p></td><td colspan="1" rowspan="1"><p>System-level analysis, not device-scale modelling; our work is centred on design-level performance and PCE enhancement of PSCs</p></td></tr><tr><td colspan="1" rowspan="1"><p>Kumar et al. [<xref ref-type="bibr" rid="ref_25">25</xref>]</p></td><td colspan="1" rowspan="1"><p>Tandem PSC simulation via Silvaco ATLAS; process-oriented</p></td><td colspan="1" rowspan="1"><p>Focused on fabrication constraints; our study prioritizes predictive performance modelling with hybrid simulation + ML</p></td></tr><tr><td colspan="1" rowspan="1"><p>Prasanna et al. [<xref ref-type="bibr" rid="ref_26">26</xref>]</p></td><td colspan="1" rowspan="1"><p>ML modelling of double absorber layer PSCs</p></td><td colspan="1" rowspan="1"><p>Data-driven only; lacks physics-based simulation. Our method combines COMSOL 3D data with ML for higher generalizability and device-level optimization of layer thicknesses</p></td></tr></tbody></table>
+        </table-wrap>
+      
+      <p>The fusion of high-fidelity modeling and data-driven prediction allows us to construct a prototype digital twin of the PSC device—a fast, accurate computational surrogate that proposes optimal configurations without requiring new simulations for every design iteration. This dramatically reduces computational cost and development time, accelerating innovation. The detailed 3D simulations provide physically consistent data for ML training, while the trained ML model rapidly predicts key photovoltaic performance metrics, such as power conversion efficiency (PCE), short-circuit current density (JSC), open-circuit voltage (VOC), and fill factor (FF). Through this synergy, the ML algorithm learns the nonlinear relationships between structural parameters (e.g., ETL, HTL, and perovskite layer thicknesses) and device efficiency, allowing instantaneous performance estimation and optimization within the explored design space.</p><p>By combining COMSOL’s Multiphysics visualization with ML-based prediction, our framework merges physics realism with computational speed, serving as a proof-of-concept for simulation-driven artificial intelligence in solar cell design. This approach not only provides deeper insight into device operations—such as band alignment, charge transport uniformity, and localized recombination—but also enables predictive exploration of design configurations that may be non-intuitive. While experimental validation remains indispensable for confirming real-world device behavior, the proposed simulation–ML workflow significantly reduces the reliance on costly and time-consuming fabrication cycles. It offers a scalable path to accelerate photovoltaic innovation, aligning with the broader trend in materials science toward digital twins that shorten development timelines and lower research costs.</p><p>The rest of this paper is structured as follows. Section 2 describes the development of the 3D PSC model in COMSOL Multiphysics, presenting spatial visualizations of the electric field, voltage, and power density, as well as calculated performance parameters (PCE, Jsc, Voc, and FF). Section 3 details the integration of ML for PSC optimization, including dataset generation, preprocessing, algorithm selection, and model training. Section 4 presents the results and discussion, highlighting how the ML-predicted optimal layer thicknesses compare with the simulation baseline and analyzing the physical implications of efficiency trends. Section 5 concludes by summarizing the key findings and outlining future directions, including stability modeling, material-level optimization, and experimental validation. By demonstrating this integrated 3D-simulation-plus-ML methodology, we aim to advance the development of efficient, cost-effective, and scalable perovskite solar cells through the synergy of high-fidelity simulation and artificial intelligence.</p>
+    </sec>
+    <sec sec-type="">
+      <title>2. 3d simulation model and design</title>
+      <p>The 3D COMSOL Multiphysics simulation forms the core of this research, providing a comprehensive three-dimensional model of the PSC composed of three functional layers: the electron transport layer (ETL), the perovskite absorber, and the hole transport layer (HTL), as shown in <xref ref-type="fig" rid="fig_1">Figure 1</xref>.</p><p>The electron transport layer (ETL), composed of titanium dioxide (TiO<inline-formula>
+  <mml:math id="mg8vipbvwj">
+    <mml:msub>
+      <mml:mi/>
+      <mml:mn>2</mml:mn>
+    </mml:msub>
+  </mml:math>
+</inline-formula>), serves as the top layer and acts as an n-type semiconductor facilitating electron extraction. TiO<inline-formula>
+  <mml:math id="mj9swh5hfz">
+    <mml:msub>
+      <mml:mi/>
+      <mml:mn>2</mml:mn>
+    </mml:msub>
+  </mml:math>
+</inline-formula> is selected for its stable defect chemistry, wide bandgap ensuring chemical stability, and tunable conductivity, which makes it ideal for applications such as solar cells and sensors [<xref ref-type="bibr" rid="ref_27">27</xref>], [<xref ref-type="bibr" rid="ref_28">28</xref>].</p>
+      
+        <fig id="fig_1">
+          <label>Figure 1</label>
+          <caption>
+            <title>A Schematic representation of the simulated perovskite solar cell structure</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/10/img_A6Cdnl3cgdPrCLJX.png"/>
+        </fig>
+      
+      <p>The middle block, consisting of the perovskite material methylammonium lead iodide (MAPbI3), serves as the active layer for photon absorption and charge transport. MAPbI<inline-formula>
+  <mml:math id="mmbv8pqc8o">
+    <mml:msub>
+      <mml:mi/>
+      <mml:mn>3</mml:mn>
+    </mml:msub>
+  </mml:math>
+</inline-formula> is a widely used active layer in perovskite solar cells due to its excellent light absorption and charge transport properties, achieving high power conversion efficiencies over 20% [<xref ref-type="bibr" rid="ref_29">29</xref>]. It has an optimal bandgap and a high carrier diffusion length, enabling efficient photon-to-electron conversion [<xref ref-type="bibr" rid="ref_30">30</xref>]. Additionally, its compatibility with scalable deposition techniques makes it suitable for cost-effective solar cell manufacturing [<xref ref-type="bibr" rid="ref_31">31</xref>].</p><p>The bottom layer, composed of 2,2',7,7'-tetrakis(N,N-di-$p$-methoxyphenylamine)-9,9'-spirobifluorene (Spiro-OMeTAD), serves as the hole transport layer (HTL). Spiro-OMeTAD is widely used as a p-type semiconductor in solar cells due to its high hole mobility, stable energy levels, and efficient charge transport capabilities [<xref ref-type="bibr" rid="ref_32">32</xref>]. It provides excellent film formation, ensuring effective contact with the active layer for improved power conversion efficiencies exceeding 20% [<xref ref-type="bibr" rid="ref_33">33</xref>]. Its versatility makes it the standard hole-transport material for perovskite solar cells [<xref ref-type="bibr" rid="ref_34">34</xref>].</p><p>The characteristics and properties of the materials used in each layer is outlined in <xref ref-type="table" rid="table_2">Table 2</xref>.</p>
+      
+        <table-wrap id="table_2">
+          <label>Table 2</label>
+          <caption>
+            <title>Material Parameters for Spiro-OMeTAD (HTL), MAPbI$_3$, and TiO$_2$ (ETL) [<xref ref-type="bibr" rid="ref_35">35</xref>], [<xref ref-type="bibr" rid="ref_36">36</xref>]</title>
+          </caption>
+          <table><tbody><tr><th colspan="1" rowspan="1" colwidth="238"><p>Parameters</p></th><th colspan="1" rowspan="1" colwidth="209"><p>Spiro-OMeTAD (HTL)</p></th><th colspan="1" rowspan="1"><p>MAPbI<sub>3</sub></p></th><th colspan="1" rowspan="1"><p>TiO<sub>2</sub> (ETL)</p></th></tr><tr><td colspan="1" rowspan="1" colwidth="238"><p>Relative permittivity <mml:math id="m64vspv7q1">
+  <mml:msub>
+    <mml:mi>ε</mml:mi>
+    <mml:mi>r</mml:mi>
+  </mml:msub>
+</mml:math></p></td><td colspan="1" rowspan="1" colwidth="209"><p>3</p></td><td colspan="1" rowspan="1"><p>1.8</p></td><td colspan="1" rowspan="1"><p>31</p></td></tr><tr><td colspan="1" rowspan="1" colwidth="238"><p>Bandgap (eV)</p></td><td colspan="1" rowspan="1" colwidth="209"><p>3</p></td><td colspan="1" rowspan="1"><p>1.52</p></td><td colspan="1" rowspan="1"><p>3</p></td></tr><tr><td colspan="1" rowspan="1" colwidth="238"><p>Electron affinity (eV)</p></td><td colspan="1" rowspan="1" colwidth="209"><p>1.9</p></td><td colspan="1" rowspan="1"><p>3.6</p></td><td colspan="1" rowspan="1"><p>4.1</p></td></tr><tr><td colspan="1" rowspan="1" colwidth="238"><p>Effective density of states <mml:math id="mg0wdtnzka">
+  <mml:msub>
+    <mml:mi>N</mml:mi>
+    <mml:mi>v</mml:mi>
+  </mml:msub>
+</mml:math><sub> </sub>(cm<sup>−3</sup>)</p></td><td colspan="1" rowspan="1" colwidth="209"><p>1 × 10<sup>20</sup></p></td><td colspan="1" rowspan="1"><p>5 × 10<sup>18</sup></p></td><td colspan="1" rowspan="1"><p>1 × 10<sup>20</sup></p></td></tr><tr><td colspan="1" rowspan="1" colwidth="238"><p>Effective density of states <mml:math id="mlu06vkraj">
+  <mml:msub>
+    <mml:mi>N</mml:mi>
+    <mml:mi>c</mml:mi>
+  </mml:msub>
+</mml:math> (cm<sup>−3</sup>)</p></td><td colspan="1" rowspan="1" colwidth="209"><p>1 × 10<sup>20</sup></p></td><td colspan="1" rowspan="1"><p>5 × 10<sup>18</sup></p></td><td colspan="1" rowspan="1"><p>1 × 10<sup>20</sup></p></td></tr><tr><td colspan="1" rowspan="1" colwidth="238"><p>Electron mobility μn (cm<sup>2</sup>/V·s)</p></td><td colspan="1" rowspan="1" colwidth="209"><p>2</p></td><td colspan="1" rowspan="1"><p>2</p></td><td colspan="1" rowspan="1"><p>1 × 10<sup>-2</sup></p></td></tr><tr><td colspan="1" rowspan="1" colwidth="238"><p>Hole mobility μp (cm<sup>2</sup>/V·s)</p></td><td colspan="1" rowspan="1" colwidth="209"><p>1 × 10<sup>−2</sup></p></td><td colspan="1" rowspan="1"><p>2</p></td><td colspan="1" rowspan="1"><p>2</p></td></tr><tr><td colspan="1" rowspan="1" colwidth="238"><p>Electron lifetime (ns)</p></td><td colspan="1" rowspan="1" colwidth="209"><p>5</p></td><td colspan="1" rowspan="1"><p>100</p></td><td colspan="1" rowspan="1"><p>5</p></td></tr><tr><td colspan="1" rowspan="1" colwidth="238"><p>Hole lifetime (ns)</p></td><td colspan="1" rowspan="1" colwidth="209"><p>5</p></td><td colspan="1" rowspan="1"><p>100</p></td><td colspan="1" rowspan="1"><p>5</p></td></tr></tbody></table>
+        </table-wrap>
+      
+      <p>The semiconductor physics interface solves the coupled equations governing electric potential, current density, and carrier transport. The electric field $E<inline-formula>
+  <mml:math id="mtw90mu8iq">
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+  </mml:math>
+</inline-formula>\Phi<inline-formula>
+  <mml:math id="mwc2swck6p">
+    <mml:mo>(</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mi>E</mml:mi>
+    <mml:mi>q</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mn>1</mml:mn>
+  </mml:math>
+</inline-formula>P<inline-formula>
+  <mml:math id="m2ij1r5pvh">
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>y</mml:mi>
+  </mml:math>
+</inline-formula>J<inline-formula>
+  <mml:math id="mwbsrrszsr">
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+  </mml:math>
+</inline-formula>E<inline-formula>
+  <mml:math id="mti0s7t41v">
+    <mml:mo>(</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mi>E</mml:mi>
+    <mml:mi>q</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>E</mml:mi>
+    <mml:mi>q</mml:mi>
+    <mml:mi>D</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mn>2</mml:mn>
+    <mml:mn>3</mml:mn>
+  </mml:math>
+</inline-formula>\eta$ is determined using Eq. (4), where the fill factor (FF), open-circuit voltage (Voc), and short-circuit current density (Jsc) are obtained from the current–voltage (J–V) characteristics. Eqs. (5) and (6) are presenting the carrier transport equations (continuity equations for electrons and holes).</p>
+      
+        <disp-formula>
+          <label>(1)</label>
+          <mml:math id="msvoxxyq7m">
+            <mml:mi>E</mml:mi>
+            <mml:mi>∇</mml:mi>
+            <mml:mi>Φ</mml:mi>
+            <mml:mo>=</mml:mo>
+            <mml:mo>−</mml:mo>
+          </mml:math>
+        </disp-formula>
+      
+      
+        <disp-formula>
+          <label>(2)</label>
+          <mml:math id="m9a2yerq86">
+            <mml:mi>P</mml:mi>
+            <mml:mi>J</mml:mi>
+            <mml:mi>E</mml:mi>
+            <mml:mo>=</mml:mo>
+            <mml:mo>⋅</mml:mo>
+          </mml:math>
+        </disp-formula>
+      
+      
+        <disp-formula>
+          <label>(3)</label>
+          <mml:math id="m0ikqv5c9e">
+            <mml:mi>J</mml:mi>
+            <mml:mi>q</mml:mi>
+            <mml:mo>=</mml:mo>
+            <mml:mrow>
+              <mml:mo>(</mml:mo>
+              <mml:mo>⋅</mml:mo>
+              <mml:mo>⋅</mml:mo>
+              <mml:mo>+</mml:mo>
+              <mml:mo>⋅</mml:mo>
+              <mml:mo>⋅</mml:mo>
+              <mml:mo>)</mml:mo>
+              <mml:msub>
+                <mml:mi>μ</mml:mi>
+                <mml:mi>n</mml:mi>
+              </mml:msub>
+              <mml:msub>
+                <mml:mi>μ</mml:mi>
+                <mml:mi>p</mml:mi>
+              </mml:msub>
+              <mml:mi>n</mml:mi>
+              <mml:mi>E</mml:mi>
+              <mml:mi>p</mml:mi>
+              <mml:mi>E</mml:mi>
+            </mml:mrow>
+          </mml:math>
+        </disp-formula>
+      
+      
+        <disp-formula>
+          <label>(4)</label>
+          <mml:math id="mjuph2jdvr">
+            <mml:mi>η</mml:mi>
+            <mml:mo>=</mml:mo>
+            <mml:mo>=</mml:mo>
+            <mml:mfrac>
+              <mml:msub>
+                <mml:mi>P</mml:mi>
+                <mml:mrow>
+                  <mml:mi>o</mml:mi>
+                  <mml:mi>u</mml:mi>
+                  <mml:mi>t</mml:mi>
+                </mml:mrow>
+              </mml:msub>
+              <mml:msub>
+                <mml:mi>P</mml:mi>
+                <mml:mrow>
+                  <mml:mi>i</mml:mi>
+                  <mml:mi>n</mml:mi>
+                </mml:mrow>
+              </mml:msub>
+            </mml:mfrac>
+            <mml:mfrac>
+              <mml:mrow>
+                <mml:msub>
+                  <mml:mi>V</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>o</mml:mi>
+                    <mml:mi>c</mml:mi>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>J</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>s</mml:mi>
+                    <mml:mi>c</mml:mi>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:mi>F</mml:mi>
+                <mml:mi>F</mml:mi>
+              </mml:mrow>
+              <mml:msub>
+                <mml:mi>P</mml:mi>
+                <mml:mrow>
+                  <mml:mi>i</mml:mi>
+                  <mml:mi>n</mml:mi>
+                </mml:mrow>
+              </mml:msub>
+            </mml:mfrac>
+          </mml:math>
+        </disp-formula>
+      
+      
+        <disp-formula>
+          <label>(5)</label>
+          <mml:math id="mttvkzk3mp">
+            <mml:mfrac>
+              <mml:mrow>
+                <mml:mi>∂</mml:mi>
+                <mml:mi>n</mml:mi>
+              </mml:mrow>
+              <mml:mrow>
+                <mml:mi>∂</mml:mi>
+                <mml:mi>t</mml:mi>
+              </mml:mrow>
+            </mml:mfrac>
+            <mml:mo>=</mml:mo>
+            <mml:mo>⋅</mml:mo>
+            <mml:mo>−</mml:mo>
+            <mml:mo>⋅</mml:mo>
+            <mml:mo>+</mml:mo>
+            <mml:mo>−</mml:mo>
+            <mml:mi>∇</mml:mi>
+            <mml:mi>∇</mml:mi>
+            <mml:mi>G</mml:mi>
+            <mml:mi>R</mml:mi>
+            <mml:mrow>
+              <mml:mo>(</mml:mo>
+              <mml:mo>⋅</mml:mo>
+              <mml:mo>⋅</mml:mo>
+              <mml:mo>)</mml:mo>
+              <mml:msub>
+                <mml:mi>D</mml:mi>
+                <mml:mi>n</mml:mi>
+              </mml:msub>
+              <mml:mi>∇</mml:mi>
+              <mml:mi>n</mml:mi>
+            </mml:mrow>
+            <mml:mrow>
+              <mml:mo>(</mml:mo>
+              <mml:mo>⋅</mml:mo>
+              <mml:mo>⋅</mml:mo>
+              <mml:mo>)</mml:mo>
+              <mml:msub>
+                <mml:mi>μ</mml:mi>
+                <mml:mi>n</mml:mi>
+              </mml:msub>
+              <mml:mi>n</mml:mi>
+              <mml:mi>E</mml:mi>
+            </mml:mrow>
+          </mml:math>
+        </disp-formula>
+      
+      
+        <disp-formula>
+          <label>(6)</label>
+          <mml:math id="mrxsvc0uc8">
+            <mml:mfrac>
+              <mml:mrow>
+                <mml:mi>∂</mml:mi>
+                <mml:mi>p</mml:mi>
+              </mml:mrow>
+              <mml:mrow>
+                <mml:mi>∂</mml:mi>
+                <mml:mi>t</mml:mi>
+              </mml:mrow>
+            </mml:mfrac>
+            <mml:mo>=</mml:mo>
+            <mml:mo>⋅</mml:mo>
+            <mml:mo>−</mml:mo>
+            <mml:mo>⋅</mml:mo>
+            <mml:mo>+</mml:mo>
+            <mml:mo>−</mml:mo>
+            <mml:mi>∇</mml:mi>
+            <mml:mi>∇</mml:mi>
+            <mml:mi>G</mml:mi>
+            <mml:mi>R</mml:mi>
+            <mml:mrow>
+              <mml:mo>(</mml:mo>
+              <mml:mo>⋅</mml:mo>
+              <mml:mo>⋅</mml:mo>
+              <mml:mo>)</mml:mo>
+              <mml:msub>
+                <mml:mi>D</mml:mi>
+                <mml:mi>p</mml:mi>
+              </mml:msub>
+              <mml:mi>∇</mml:mi>
+              <mml:mi>p</mml:mi>
+            </mml:mrow>
+            <mml:mrow>
+              <mml:mo>(</mml:mo>
+              <mml:mo>⋅</mml:mo>
+              <mml:mo>⋅</mml:mo>
+              <mml:mo>)</mml:mo>
+              <mml:msub>
+                <mml:mi>μ</mml:mi>
+                <mml:mi>p</mml:mi>
+              </mml:msub>
+              <mml:mi>p</mml:mi>
+              <mml:mi>E</mml:mi>
+            </mml:mrow>
+          </mml:math>
+        </disp-formula>
+      
+      <p>where,</p><p><inline-formula>
+  <mml:math id="mhpc5wgtl7">
+    <mml:mi>Φ</mml:mi>
+    <mml:mi>V</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+  </mml:math>
+</inline-formula> is the electrostatic potential, and <inline-formula>
+  <mml:math id="myyjmi5dm8">
+    <mml:mi>E</mml:mi>
+    <mml:mrow>
+      <mml:mo>(</mml:mo>
+      <mml:mo>⋅</mml:mo>
+      <mml:mo>)</mml:mo>
+      <mml:mi>V</mml:mi>
+      <mml:msup>
+        <mml:mi>m</mml:mi>
+        <mml:mrow>
+          <mml:mo>−</mml:mo>
+          <mml:mn>1</mml:mn>
+        </mml:mrow>
+      </mml:msup>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> is the electric field vector.</p><p><inline-formula>
+  <mml:math id="mdwka9od32">
+    <mml:mi>J</mml:mi>
+    <mml:mrow>
+      <mml:mo>(</mml:mo>
+      <mml:mo>.</mml:mo>
+      <mml:mo>)</mml:mo>
+      <mml:mi>A</mml:mi>
+      <mml:msup>
+        <mml:mi>m</mml:mi>
+        <mml:mrow>
+          <mml:mo>−</mml:mo>
+          <mml:mn>2</mml:mn>
+        </mml:mrow>
+      </mml:msup>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> is the total current density, consisting of electron and hole contributions.</p><p><inline-formula>
+  <mml:math id="msugcem4qz">
+    <mml:mi>q</mml:mi>
+    <mml:mi>C</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+  </mml:math>
+</inline-formula> is the elementary charge.</p><p><inline-formula>
+  <mml:math id="mam0u6y3rz">
+    <mml:mi>n</mml:mi>
+    <mml:mrow>
+      <mml:mo>(</mml:mo>
+      <mml:mo>)</mml:mo>
+      <mml:msup>
+        <mml:mi>m</mml:mi>
+        <mml:mrow>
+          <mml:mo>−</mml:mo>
+          <mml:mn>3</mml:mn>
+        </mml:mrow>
+      </mml:msup>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> and <inline-formula>
+  <mml:math id="mf4qkg0flv">
+    <mml:mi>p</mml:mi>
+    <mml:mrow>
+      <mml:mo>(</mml:mo>
+      <mml:mo>)</mml:mo>
+      <mml:msup>
+        <mml:mi>m</mml:mi>
+        <mml:mrow>
+          <mml:mo>−</mml:mo>
+          <mml:mn>3</mml:mn>
+        </mml:mrow>
+      </mml:msup>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> are the electron and hole concentrations, respectively.</p><p><inline-formula>
+  <mml:math id="mqext4waid">
+    <mml:msub>
+      <mml:mi>μ</mml:mi>
+      <mml:mi>n</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> and <inline-formula>
+  <mml:math id="mlj38mmc07">
+    <mml:msub>
+      <mml:mi>μ</mml:mi>
+      <mml:mi>p</mml:mi>
+    </mml:msub>
+    <mml:mrow>
+      <mml:mo>(</mml:mo>
+      <mml:mo>⋅</mml:mo>
+      <mml:mo>⋅</mml:mo>
+      <mml:mo>)</mml:mo>
+      <mml:msup>
+        <mml:mi>m</mml:mi>
+        <mml:mn>2</mml:mn>
+      </mml:msup>
+      <mml:msup>
+        <mml:mi>V</mml:mi>
+        <mml:mrow>
+          <mml:mo>−</mml:mo>
+          <mml:mn>1</mml:mn>
+        </mml:mrow>
+      </mml:msup>
+      <mml:msup>
+        <mml:mi>s</mml:mi>
+        <mml:mrow>
+          <mml:mo>−</mml:mo>
+          <mml:mn>1</mml:mn>
+        </mml:mrow>
+      </mml:msup>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> are the electron and hole mobilities.</p><p><inline-formula>
+  <mml:math id="mkhuvachtv">
+    <mml:msub>
+      <mml:mi>D</mml:mi>
+      <mml:mi>n</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> and <inline-formula>
+  <mml:math id="m2zg1h9apn">
+    <mml:msub>
+      <mml:mi>D</mml:mi>
+      <mml:mi>p</mml:mi>
+    </mml:msub>
+    <mml:mrow>
+      <mml:mo>(</mml:mo>
+      <mml:mo>⋅</mml:mo>
+      <mml:mo>)</mml:mo>
+      <mml:msup>
+        <mml:mi>m</mml:mi>
+        <mml:mn>2</mml:mn>
+      </mml:msup>
+      <mml:msup>
+        <mml:mi>s</mml:mi>
+        <mml:mrow>
+          <mml:mo>−</mml:mo>
+          <mml:mn>1</mml:mn>
+        </mml:mrow>
+      </mml:msup>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> are the diffusion coefficients, related to mobility through the Einstein relation <inline-formula>
+  <mml:math id="mo4b62jbbe">
+    <mml:mi>D</mml:mi>
+    <mml:mi>μ</mml:mi>
+    <mml:mo>=</mml:mo>
+    <mml:mrow>
+      <mml:mi data-mjx-auto-op="false">KT</mml:mi>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mi>q</mml:mi>
+    </mml:mrow>
+  </mml:math>
+</inline-formula>.</p><p><inline-formula>
+  <mml:math id="mfe3y4fs3j">
+    <mml:mi>G</mml:mi>
+    <mml:mrow>
+      <mml:mo>(</mml:mo>
+      <mml:mo>⋅</mml:mo>
+      <mml:mo>)</mml:mo>
+      <mml:msup>
+        <mml:mi>m</mml:mi>
+        <mml:mrow>
+          <mml:mo>−</mml:mo>
+          <mml:mn>3</mml:mn>
+        </mml:mrow>
+      </mml:msup>
+      <mml:msup>
+        <mml:mi>s</mml:mi>
+        <mml:mrow>
+          <mml:mo>−</mml:mo>
+          <mml:mn>1</mml:mn>
+        </mml:mrow>
+      </mml:msup>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> is the carrier generation rate, and <inline-formula>
+  <mml:math id="mqxt1w0i7n">
+    <mml:mi>R</mml:mi>
+    <mml:mrow>
+      <mml:mo>(</mml:mo>
+      <mml:mo>⋅</mml:mo>
+      <mml:mo>)</mml:mo>
+      <mml:msup>
+        <mml:mi>m</mml:mi>
+        <mml:mrow>
+          <mml:mo>−</mml:mo>
+          <mml:mn>3</mml:mn>
+        </mml:mrow>
+      </mml:msup>
+      <mml:msup>
+        <mml:mi>s</mml:mi>
+        <mml:mrow>
+          <mml:mo>−</mml:mo>
+          <mml:mn>1</mml:mn>
+        </mml:mrow>
+      </mml:msup>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> is the recombination rate (including Shockley-Read-Hall and Auger processes).</p><p><inline-formula>
+  <mml:math id="m30wdqjhkt">
+    <mml:mi>p</mml:mi>
+    <mml:mrow>
+      <mml:mo>(</mml:mo>
+      <mml:mo>.</mml:mo>
+      <mml:mo>)</mml:mo>
+      <mml:mi>W</mml:mi>
+      <mml:msup>
+        <mml:mi>m</mml:mi>
+        <mml:mrow>
+          <mml:mo>−</mml:mo>
+          <mml:mn>3</mml:mn>
+        </mml:mrow>
+      </mml:msup>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> is the local power density, <inline-formula>
+  <mml:math id="meui8uu4al">
+    <mml:msub>
+      <mml:mi>P</mml:mi>
+      <mml:mrow>
+        <mml:mtext>out</mml:mtext>
+      </mml:mrow>
+    </mml:msub>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mi>W</mml:mi>
+  </mml:math>
+</inline-formula> and <inline-formula>
+  <mml:math id="me6dvnx27j">
+    <mml:msub>
+      <mml:mi>P</mml:mi>
+      <mml:mrow>
+        <mml:mtext>in</mml:mtext>
+      </mml:mrow>
+    </mml:msub>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mi>W</mml:mi>
+  </mml:math>
+</inline-formula> are the output and incident optical powers. <inline-formula>
+  <mml:math id="msw8yievfo">
+    <mml:msub>
+      <mml:mi>V</mml:mi>
+      <mml:mrow>
+        <mml:mi>o</mml:mi>
+        <mml:mi>c</mml:mi>
+      </mml:mrow>
+    </mml:msub>
+    <mml:msub>
+      <mml:mi>J</mml:mi>
+      <mml:mrow>
+        <mml:mi>s</mml:mi>
+        <mml:mi>c</mml:mi>
+      </mml:mrow>
+    </mml:msub>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mi>V</mml:mi>
+    <mml:mrow>
+      <mml:mo>(</mml:mo>
+      <mml:mo>.</mml:mo>
+      <mml:mo>)</mml:mo>
+      <mml:mi>A</mml:mi>
+      <mml:msup>
+        <mml:mi>m</mml:mi>
+        <mml:mrow>
+          <mml:mo>−</mml:mo>
+          <mml:mn>2</mml:mn>
+        </mml:mrow>
+      </mml:msup>
+    </mml:mrow>
+  </mml:math>
+</inline-formula>, and <inline-formula>
+  <mml:math id="mlm3t7t9vs">
+    <mml:mi>F</mml:mi>
+    <mml:mi>F</mml:mi>
+  </mml:math>
+</inline-formula> are the open-circuit voltage, short-circuit current density, and fill factor, respectively.</p><p><inline-formula>
+  <mml:math id="mz3kqqnt8i">
+    <mml:mi>η</mml:mi>
+  </mml:math>
+</inline-formula> (%) denotes the overall power conversion efficiency.</p><p>The semiconductor module supports advanced models such as Shockley-Read-Hall (SRH) recombination, Auger recombination, and surface recombination, which can affect efficiency and power calculations.</p><p>The structure’s layers are treated as semiconductor materials, with the electron transport layer (ETL) defined as an n-type semiconductor with a donor concentration of 1016 cm<inline-formula>
+  <mml:math id="mg8xq8fjwc">
+    <mml:msup>
+      <mml:mi/>
+      <mml:mrow>
+        <mml:mo>−</mml:mo>
+        <mml:mn>3</mml:mn>
+      </mml:mrow>
+    </mml:msup>
+  </mml:math>
+</inline-formula>, and the hole transport layer (HTL) as a p-type with an acceptor concentration of 1018 cm<inline-formula>
+  <mml:math id="msd3404zs3">
+    <mml:msup>
+      <mml:mi/>
+      <mml:mrow>
+        <mml:mo>−</mml:mo>
+        <mml:mn>3</mml:mn>
+      </mml:mrow>
+    </mml:msup>
+  </mml:math>
+</inline-formula>. Trap-assisted recombination is applied uniformly across all layers to account for carrier losses, while electron and hole generation rates are user-defined at 3 <inline-formula>
+  <mml:math id="mdumi0u7qq">
+    <mml:mo>×</mml:mo>
+  </mml:math>
+</inline-formula> 1021 cm<inline-formula>
+  <mml:math id="m7luiewm5e">
+    <mml:msup>
+      <mml:mi/>
+      <mml:mn>3</mml:mn>
+    </mml:msup>
+  </mml:math>
+</inline-formula> s<inline-formula>
+  <mml:math id="myij7km08a">
+    <mml:msup>
+      <mml:mi/>
+      <mml:mrow>
+        <mml:mo>−</mml:mo>
+        <mml:mn>1</mml:mn>
+      </mml:mrow>
+    </mml:msup>
+  </mml:math>
+</inline-formula>. The boundaries of the system include continuity and heterojunction interfaces between the layers. The top surface of the ETL is assigned as the Fluorine-doped tin oxide (FTO) contact, serving as the first terminal. FTO is chosen as the front contact for the solar cell due to its excellent combination of optical and electrical properties. Its high transparency allows light to pass through to the underlying layers, ensuring efficient photon absorption by the perovskite layer, while its good electrical conductivity facilitates the transport of electrons from the electron transport layer (ETL) to the external circuit. Its compatibility with materials like titanium dioxide (TiO<inline-formula>
+  <mml:math id="msnz1ve65z">
+    <mml:msub>
+      <mml:mi/>
+      <mml:mn>2</mml:mn>
+    </mml:msub>
+  </mml:math>
+</inline-formula>) ensures effective band alignment and electron extraction, further enhancing the overall performance of the solar cell.</p><p>The material chosen for the terminal at the bottom surface of the HTL is Gold (Au). Gold is widely used due to its excellent electrical conductivity, which ensures efficient charge collection and transport. Additionally, Gold is chemically inert and highly stable, preventing degradation or chemical interactions with the underlying layers, which is critical for long-term device performance. Its work function also aligns well with the energy levels of the hole transport layer (HTL), facilitating efficient hole extraction and minimizing energy losses in the solar cell. The Gold terminal is modeled as an ideal ohmic contact and subjected to a voltage change (Vapp) to study the system's electrical response.</p><p>The mesh is tailored for each layer through a swept meshing technique, ensuring high-quality discretization. The stationary study is performed by sweeping the voltage applied to the gold terminal Vapp from 0 to 1.2 V in 0.05 V increments. This allows for the analysis of current-voltage characteristics, enabling the calculation of the open circuit voltage (Voc), the short circuit current (Jsc), the fill factor (FF), and the efficiency (<inline-formula>
+  <mml:math id="mgmgz9cmk4">
+    <mml:mi>η</mml:mi>
+  </mml:math>
+</inline-formula>).</p><p>Some key visualizations such as Electric field (<xref ref-type="fig" rid="fig_2">Figure 2</xref>) and Power (<xref ref-type="fig" rid="fig_3">Figure 3</xref>) distributions throughout the structure are incorporated to provide deeper insights and holistic view of the solar cell's internal physics. This provides a detailed understanding and optimization of the perovskite solar cell's behavior, correlating physical phenomena with performance metrics, and laying the groundwork for further analysis and optimization through machine learning techniques.</p><p>The electric field and power distributions at Vapp = 0 V and Vapp = 1.2 V reveal critical insights into the performance of the solar cell (<xref ref-type="fig" rid="fig_2">Figure 2</xref> and <xref ref-type="fig" rid="fig_3">Figure 3</xref>).</p>
+      
+        <fig id="fig_2">
+          <label>Figure 2</label>
+          <caption>
+            <title>Electric field distribution throughout the 3D Solar cell structure at: (a) Vapp = 0 V; (b) Vapp = 1.2 V</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/10/img__QRDTpjuKTR_zTYH.png"/>
+        </fig>
+      
+      
+        <fig id="fig_3">
+          <label>Figure 3</label>
+          <caption>
+            <title>Power distribution throughout the 3D Solar cell structure at : (a) Vapp = 0 V; (b) Vapp = 1.2 V</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/10/img_Sbp7pwn9k7KSwVYG.png"/>
+        </fig>
+      
+      <p><xref ref-type="fig" rid="fig_2">Figure 2</xref>a and <xref ref-type="fig" rid="fig_2">Figure 2</xref>b depict the electric field distribution within the solar cell structure under different applied voltages. In <xref ref-type="fig" rid="fig_2">Figure 2</xref>b (Vapp = 0 V), the electric field is strong and relatively uniform at the ETL/absorber interface due to efficient electron extraction, while localized variations appear at the HTL/absorber interface due to hole accumulation. In contrast, <xref ref-type="fig" rid="fig_2">Figure 2</xref>b (Vapp = 1.2 V) shows a significant shift in field distribution, where the field becomes more uniform at the HTL/absorber interface as hole extraction improves, while field variations increase at the ETL/absorber interface due to electron accumulation. This redistribution occurs as the applied voltage reduces the built-in potential, altering charge transport dynamics and interface charge accumulation.</p><p><xref ref-type="fig" rid="fig_3">Figure 3</xref>a and <xref ref-type="fig" rid="fig_3">Figure 3</xref>b depict the power distribution within the solar cell structure under two applied voltage conditions. In <xref ref-type="fig" rid="fig_3">Figure 3</xref>a, corresponding to the lower applied voltage, the power distribution appears relatively uniform, with the highest concentration observed at the ETL/absorber interface and a gradual decrease toward the HTL side. This uniformity indicates efficient internal electric field generation, which facilitates charge carrier separation and minimizes recombination under equilibrium conditions. Although the computed power values are negative due to the absence of an external bias, the smooth spatial gradient reflects minimal structural defects and effective charge generation driven by the built-in electric field. The high magnitude of power density suggests that the device operates near its optimal power generation region, where carrier transport remains efficient and recombination losses are minimal.</p><p>In contrast, <xref ref-type="fig" rid="fig_3">Figure 3</xref>b reveals a marked reduction in power magnitude at higher applied voltage, particularly within the perovskite absorber layer. This behavior indicates that the device operates beyond its maximum power point (MPP). The observed decrease in power output at elevated voltages is attributed to enhanced carrier recombination and reduced current extraction efficiency, phenomena typically observed as the solar cell approaches its open-circuit condition (Voc). In both cases, the ETL/absorber interface remains the dominant power-generating region, emphasizing the critical role of efficient electron transport in achieving high device performance. These results confirm the characteristic photovoltaic trend in which power output initially increases with applied voltage, reaches a maximum near the MPP, and then decreases as the system approaches Voc, highlighting the intricate relationship between charge carrier dynamics and power generation efficiency.</p><p>This visualization underscores the importance of analyzing spatial variations in electric field and power distribution for optimizing solar cell design. It provides a valuable framework for identifying active regions of carrier generation and for improving interface engineering, doping profiles, and material integration strategies to enhance both efficiency and long-term stability.</p><p>Furthermore, correlating the electric field and power distributions at Vap = 0 V and Vapp = 1.2 V with the corresponding J–V characteristics yields a comprehensive view of device operation. At Vapp = 0 V, the short-circuit current density (Jsc) attains its maximum value, driven by the built-in electric field and minimal recombination across the layers. Conversely, at Vapp = 1.2 V, the device reaches its open-circuit voltage (Voc), where efficient carrier extraction persists despite the absence of net external current due to equilibrium. By analyzing the resulting J–V curve, the fill factor (FF) can be determined as the ratio of the maximum power point to the product of Jsc and Voc. Combining these parameters—Jsc, Voc, and FF—with the incident optical power yields the overall power conversion efficiency (<inline-formula>
+  <mml:math id="m4jxgccqwb">
+    <mml:mi>η</mml:mi>
+  </mml:math>
+</inline-formula>), enabling a detailed and quantitative assessment of solar cell performance under operational conditions.</p><p><xref ref-type="fig" rid="fig_4">Figure 4</xref> illustrates the current density–voltage (J–V) characteristics of a solar cell structure with an electron transport layer (ETL) thickness of 50 nm, a perovskite (PVK) layer thickness of 300 nm, and a hole transport layer (HTL) thickness of 200 nm. At lower voltages, the curve exhibits a flat and consistent short-circuit current density (Jsc) of 20.17 mA cm<sup>-2</sup>, indicating excellent photocurrent generation. This plateau reflects minimal recombination losses and efficient carrier collection, characteristic of effective electron and hole transport within a well-optimized architecture. The stable current density in this region demonstrates the robustness of the device’s structural design and material selection.</p>
+      
+        <fig id="fig_4">
+          <label>Figure 4</label>
+          <caption>
+            <title>Current density $J$ as a function of applied voltage Vapp for the solar cell, showing the characteristic J-V curve highlighting charge carrier dynamics and photovoltaic performance</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/10/img_ssY5V5HKZieWyqmb.png"/>
+        </fig>
+      
+      <p>As the applied voltage increases, the device approaches its open-circuit voltage (Voc), where a gradual decrease in current density is observed. This controlled decline is a typical feature of photovoltaic behavior, indicating sustained charge transport up to the device’s maximum voltage. The smooth curvature of the J–V plot signifies balanced recombination dynamics, essential for maintaining a high voltage output.</p><p>Near the open-circuit condition, the sharp drop in current confirms the strong photovoltaic performance of the device, highlighting its ability to minimize parasitic losses and maintain effective charge separation. The resulting fill factor (FF = 47.62%) and power conversion efficiency (<inline-formula>
+  <mml:math id="m7sya51x98">
+    <mml:mi>η</mml:mi>
+  </mml:math>
+</inline-formula> = 10.67%) validate the optimal selection of layer thicknesses, demonstrating efficient charge transport and energy conversion. Overall, the curve reflects a well-designed and stable perovskite solar cell capable of achieving reliable performance under standard illumination conditions.</p><p>These simulation results provide a solid foundation for the next stage, where machine learning models are trained using this synthetic dataset to predict and optimize PSC efficiency based on structural parameters.</p>
+    </sec>
+    <sec sec-type="">
+      <title>3. Machine learning modeling of solar cell efficiency</title>
+      <p>The 3D COMSOL Multiphysics simulations provided the foundation for the machine learning phase by generating a structured dataset that links physical device parameters to photovoltaic performance. A parametric sweep was performed over the ETL, HTL, and perovskite (PVK) layer thicknesses, and for each configuration, the simulation computed the key photovoltaic outputs—open-circuit voltage (Voc), short-circuit current density (Jsc), fill factor (FF), and overall power conversion efficiency (<inline-formula>
+  <mml:math id="m88wxk26fd">
+    <mml:mi>η</mml:mi>
+  </mml:math>
+</inline-formula>). These results were compiled into a dataset where the input features corresponded to the layer thicknesses, and the target output was the simulated efficiency. The dataset was preprocessed (Box–Cox transformation and standard scaling) and then used to train a Multi-Layer Perceptron (MLP) model. In this integrated framework, the COMSOL simulations provide high-fidelity physical data, while the MLP acts as a surrogate model capable of rapidly predicting efficiency for new, untested layer configurations—effectively combining the rigor of physics-based modeling with the adaptability of data-driven prediction.</p><p>Controlling the thickness of solar cell layers is critical for optimizing light absorption, charge transport, and minimizing recombination losses. Proper thickness ensures efficient charge collection, maintains a balanced electric field, and prevents issues such as excessive resistance or incomplete coverage. Moreover, optimized thickness reduces material usage and improves mechanical stability, which are essential for achieving high efficiency and scalable device fabrication. Therefore, in this study, we systematically varied the ETL, HTL, and PVK layer thicknesses in the COMSOL model and used the resulting dataset to train and validate the MLP predictor. This hybrid approach enables identification of the optimal thickness combination that yields the highest efficiency, providing a robust and computationally efficient framework for perovskite solar cell optimization.</p><p>The following subsection begins by analyzing the effect of the electron transport layer (ETL) thickness on the key photovoltaic parameters, particularly the power conversion efficiency (<xref ref-type="fig" rid="fig_5">Figure 5</xref>).</p>
+      
+        <fig id="fig_5">
+          <label>Figure 5</label>
+          <caption>
+            <title>Impact of ETL thickness on solar cell efficiency</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/10/img_vahZDgJV3JPf7qCs.png"/>
+        </fig>
+      
+      <p><xref ref-type="fig" rid="fig_5">Figure 5</xref> presents the current density–voltage (J–Vapp) characteristics for different electron transport layer (ETL) thicknesses ranging from 10 nm to 50 nm, with the HTL and perovskite (PVK) layers fixed at 200 nm and 300 nm, respectively. The x-axis represents the applied voltage (Vapp), while the y-axis shows the current density (J) in mA/cm². Each curve corresponds to a specific ETL thickness. All curves exhibit a plateau region at low voltages—representing the photocurrent generation regime—followed by a steep decline near the open-circuit voltage (Voc). This behavior is typical for well-performing solar cells under illumination.</p><p>Variations in ETL thickness strongly influence charge transport and recombination dynamics. The short-circuit current density (Jsc at Vapp = 0 V) slightly increases with increasing ETL thickness, reaching its maximum at 50 nm. This trend suggests improved charge extraction efficiency due to reduced interfacial recombination at the ETL/absorber interface. However, beyond a certain point, thicker ETLs introduce additional resistive losses, offsetting the benefits of enhanced collection. Thus, optimizing ETL thickness requires balancing charge extraction and series resistance.</p><p>After validating the model with a detailed sweep of ETL thickness (10–50 nm in 10 nm increments), the same approach was extended to the hole transport layer (HTL) and perovskite (PVK) layers. The HTL thickness varied from 50 nm to 200 nm and the PVK layer from 50 nm to 300 nm. For each configuration, the key photovoltaic parameters (Voc, Jsc, FF, <inline-formula>
+  <mml:math id="m9bpayvdeo">
+    <mml:mi>η</mml:mi>
+  </mml:math>
+</inline-formula>) were calculated to quantify the influence of layer thickness on performance. A complete parametric analysis was then conducted across all possible combinations of ETL (10, 20, 50 nm), HTL (100, 150, 200 nm), and PVK (100, 200, 300 nm) thicknesses, resulting in 18 distinct configurations that comprehensively cover the design space.</p><p>The results demonstrate that increasing layer thickness does not necessarily enhance efficiency, as performance depends on the balance between charge transport, recombination, and optical absorption. For example, increasing the PVK thickness from 200 nm to 300 nm (at ETL = 10 nm, HTL = 200 nm) improves efficiency only marginally (7.96% to 9.96%), while excessive thickness can increase resistive losses. Similarly, thicker HTLs (up to 200 nm) generally enhance carrier collection but show configuration-dependent behavior; at ETL = 50 nm and PVK = 300 nm, increasing HTL thickness from 100 nm to 200 nm raises efficiency from 9.59% to 10.67%. Thinner HTLs can still perform comparably when recombination and resistance are minimal. Regarding ETL behavior, a 50 nm ETL provides superior performance in several combinations (HTL = 200 nm, PVK = 300 nm), whereas a 10 nm ETL achieves 8.91% efficiency (HTL = 100 nm, PVK = 300 nm).</p><p>Overall, these findings highlight that device optimization cannot rely on increasing layer thickness alone. Excessive thickness may introduce resistive losses, hinder charge transport, and provide diminishing optical gains. The optimal design requires a balanced configuration of ETL, HTL, and PVK thicknesses to achieve high efficiency with minimal material usage.</p><p>The data obtained from all 18 simulations—including the variations in ETL, HTL, and PVK thicknesses and the corresponding calculated photovoltaic parameters (Voc, Jsc, FF, <inline-formula>
+  <mml:math id="m7903knz0v">
+    <mml:mi>η</mml:mi>
+  </mml:math>
+</inline-formula>)—were subsequently compiled into a structured dataset. This dataset served as the input for the machine learning models used to predict the optimal layer-thickness combinations that yield maximum efficiency. The MLP regressor parameters are summarized in <xref ref-type="table" rid="table_3">Table 3</xref>, confirming the reproducibility of the machine-learning procedure.</p>
+      
+        <table-wrap id="table_3">
+          <label>Table 3</label>
+          <caption>
+            <title>MLP Regressor model parameters</title>
+          </caption>
+          <table><tbody><tr><th colspan="1" rowspan="1"><p>Parameter</p></th><th colspan="1" rowspan="1"><p>Value</p></th></tr><tr><td colspan="1" rowspan="1"><p>Hidden_layer_sizes</p></td><td colspan="1" rowspan="1"><p>5</p></td></tr><tr><td colspan="1" rowspan="1"><p>Activation</p></td><td colspan="1" rowspan="1"><p>logistic</p></td></tr><tr><td colspan="1" rowspan="1"><p>Solver</p></td><td colspan="1" rowspan="1"><p>lbfgs</p></td></tr><tr><td colspan="1" rowspan="1"><p>Alpha</p></td><td colspan="1" rowspan="1"><p>0.000001</p></td></tr><tr><td colspan="1" rowspan="1"><p>Random_state</p></td><td colspan="1" rowspan="1"><p>0</p></td></tr><tr><td colspan="1" rowspan="1"><p>Max_iter</p></td><td colspan="1" rowspan="1"><p>1000</p></td></tr><tr><td colspan="1" rowspan="1"><p>Learning_rate</p></td><td colspan="1" rowspan="1"><p>adaptive</p></td></tr></tbody></table>
+        </table-wrap>
+      
+      <p>In this study, a Multi-Layer Perceptron (MLP) regressor was employed to model and predict the efficiency of perovskite solar cells as a function of the ETL, HTL, and PVK layer thicknesses. The workflow comprised three stages: preprocessing, model training, and performance evaluation. During preprocessing, a Box–Cox transformation was applied to each feature to correct skewness and improve normality, followed by standard scaling to ensure uniform feature ranges. No missing data were present, and the preprocessing pipeline was saved to maintain consistency for future predictions.</p><p>The MLP model was trained using the dataset generated from a 2 × 3 × 3 full-factorial COMSOL simulation, which produced 18 physically consistent samples covering all combinations of layer thicknesses. The dataset was split into 70% for training and 30% for testing, with a fixed random seed (random_state = 0) to ensure reproducibility. The model architecture consisted of five hidden neurons, a logistic activation, the L-BFGS solver, and L<inline-formula>
+  <mml:math id="m5y0dp33fo">
+    <mml:msup>
+      <mml:mi/>
+      <mml:mn>2</mml:mn>
+    </mml:msup>
+  </mml:math>
+</inline-formula> regularization (<inline-formula>
+  <mml:math id="m88onwf8gz">
+    <mml:mi>α</mml:mi>
+  </mml:math>
+</inline-formula> = 1 × 10<sup>-5</sup>), with a maximum of 1000 iterations. Five-fold cross-validation on the training subset yielded R<inline-formula>
+  <mml:math id="mz7wlx0roq">
+    <mml:msup>
+      <mml:mi/>
+      <mml:mn>2</mml:mn>
+    </mml:msup>
+  </mml:math>
+</inline-formula> values between 0.91 and 0.99 (mean = 0.97 ± 0.03), demonstrating stable learning and low variance across folds.</p><p>On the independent test subset, the MLP achieved R<sup>2</sup> = 0.98, MSE = 0.084, RMSE = 0.29, and MAE = 0.26, confirming its robustness and accuracy. The small standard deviation of cross-validation results indicates consistent convergence and minimal sensitivity to data partitioning. Additional training using the Adam optimizer exhibited similar monotonic loss reduction, verifying convergence stability. Although the dataset consisted of only 18 samples, its full-factorial design ensures complete coverage of the parameter space, and the noise-free nature of COMSOL data makes it suitable for accurate surrogate modelling. The results are thus reliable within the defined domain, and future work will expand the dataset through active-learning-guided simulations to improve extrapolation and generalization.</p><p>The cross-validation results indicate that the model explains more than 97% of the variance in efficiency, confirming its ability to capture the nonlinear relationship between layer thicknesses and performance. The trained model was saved for future deployment, enabling predictions on unseen configurations with identical preprocessing.</p><p><xref ref-type="fig" rid="fig_6">Figure 6</xref> compares the predicted efficiencies obtained from the MLP regressor with the actual COMSOL-simulated values for the test set. The strong overlap between predicted (green diamonds) and actual (red stars) points confirms high model accuracy and low prediction error. Minor deviations reflect expected interpolation noise but no signs of overfitting. When evaluated on an additional validation set, the model achieved R<sup>2</sup> = 0.98, MAE = 0.17, RMSE = 0.20, and Mean Percentage Error = 2.06%, further confirming its predictive reliability across different datasets.</p><p>A subset of the MLP predictions and their associated errors are listed in <xref ref-type="table" rid="table_4">Table 4</xref>, while <xref ref-type="fig" rid="fig_7">Figure 7</xref> presents predictions for 49 new samples, illustrating the model’s capability to generalize to unseen configurations with high precision.</p><p>The MLP regressor demonstrates excellent agreement between the predicted and actual efficiencies of perovskite solar cells, as shown in <xref ref-type="fig" rid="fig_7">Figure 7</xref>. Each point represents a test sample, with red stars denoting COMSOL-simulated efficiencies and green diamonds showing the corresponding MLP predictions. The close overlap across all samples confirms the model’s high predictive accuracy. The percentage error remains below 3% for most cases, indicating reliable estimation of device performance based on ETL, HTL, and PVK layer thicknesses.</p>
+      
+        <fig id="fig_6">
+          <label>Figure 6</label>
+          <caption>
+            <title>MLP regressor predictions vs. actual efficiencies for the 30% test subset</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/10/img_aJ9iMrpt_xST11dB.png"/>
+        </fig>
+      
+      
+        <table-wrap id="table_4">
+          <label>Table 4</label>
+          <caption>
+            <title>MLP regressor model parameters</title>
+          </caption>
+          <table><tbody><tr><th colspan="1" rowspan="1"><p>Parameter</p></th><th colspan="1" rowspan="1"><p>Value</p></th></tr><tr><td colspan="1" rowspan="1"><p>Hidden_layer_sizes</p></td><td colspan="1" rowspan="1"><p>5</p></td></tr><tr><td colspan="1" rowspan="1"><p>Activation</p></td><td colspan="1" rowspan="1"><p>logistic</p></td></tr><tr><td colspan="1" rowspan="1"><p>Solver</p></td><td colspan="1" rowspan="1"><p>lbfgs</p></td></tr><tr><td colspan="1" rowspan="1"><p>Alpha</p></td><td colspan="1" rowspan="1"><p>0.000001</p></td></tr><tr><td colspan="1" rowspan="1"><p>Random_state</p></td><td colspan="1" rowspan="1"><p>0</p></td></tr><tr><td colspan="1" rowspan="1"><p>Max_iter</p></td><td colspan="1" rowspan="1"><p>1000</p></td></tr><tr><td colspan="1" rowspan="1"><p>Learning_rate</p></td><td colspan="1" rowspan="1"><p>adaptive</p></td></tr></tbody></table>
+        </table-wrap>
+      
+      
+        <fig id="fig_7">
+          <label>Figure 7</label>
+          <caption>
+            <title>Comparison of actual vs. predicted efficiencies across test</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/10/img_wX5GvS3ON-ek0IIr.png"/>
+        </fig>
+      
+      <p>The obtained R² and error metrics not only confirm strong numerical performance but also provide meaningful physical insights. The mean absolute error (MAE = 0.26) corresponds to an average deviation of approximately ± 3% in the simulated PCE, which is sufficiently precise to identify optimal thickness configurations without requiring additional COMSOL reruns. The low standard deviation among cross-validation folds (± 0.03) demonstrates stable generalization within the investigated domain.</p><p>Potential sources of residual error include the limited dataset size (n = 18), moderate feature correlation among ETL, HTL, and PVK thicknesses, and the inherent interpolation constraints associated with deterministic simulation data. Overfitting risk was mitigated through L<sup>2</sup> regularization (<inline-formula>
+  <mml:math id="mn1os98ii8">
+    <mml:mi>α</mml:mi>
+  </mml:math>
+</inline-formula> = 1 × 10<sup>-5</sup>), five-fold cross-validation, and a compact neural architecture (five hidden neurons), ensuring stable convergence and reproducibility.</p><p>To further evaluate robustness, several alternative regression algorithms were benchmarked under identical preprocessing and validation conditions. Linear Regression achieved the best performance (mean CV R<sup>2</sup> = 0.987, test R<sup>2</sup> = 0.998, MSE = 0.0085), confirming an almost linear dependence between efficiency and layer thickness within the studied range. Gradient Boosting provided moderate accuracy (CV R<sup>2</sup> <inline-formula>
+  <mml:math id="mclezdd7ta">
+    <mml:mo>≈</mml:mo>
+  </mml:math>
+</inline-formula> 0.05, test R<sup>2</sup> = 0.91), while Random Forest, Decision Tree, and Support Vector Regression (SVR) exhibited unstable learning with negative mean CV R<sup>2</sup> values (-0.03, -0.23, and -0.37, respectively) and lower test-set performance (R<sup>2</sup> = 0.73–0.86). These findings indicate that simpler linear and shallow neural models are better suited for small, noise-free, physics-based datasets, while the MLP remains a versatile surrogate model capable of capturing nonlinear effects as more COMSOL data become available in future work.</p><p>The error analysis ( <xref ref-type="fig" rid="fig_8">Figure 8</xref>) further illustrates model reliability. The percentage error distribution shows a narrow spread centered around zero, with a mean deviation below 3%.</p>
+      
+        <fig id="fig_8">
+          <label>Figure 8</label>
+          <caption>
+            <title>Percentage error distribution of test predictions with mean error highlighted</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/10/img_AQRgINwI262ZIzhh.png"/>
+        </fig>
+      
+      <p>The scatter of predicted versus actual efficiencies aligns closely along the 45° diagonal, reflecting high model fidelity. These visualizations confirm that the MLP regressor effectively generalizes across the tested configurations and accurately reproduces the underlying physical trends in PSC performance.</p>
+    </sec>
+    <sec sec-type="conclusions">
+      <title>4. Conclusions</title>
+      <p>In conclusion, the MLP regressor accurately predicts perovskite solar cell efficiency with an R<sup>2</sup> of 0.98 and an average error below 3%. This study demonstrates that precise control of each layer’s thickness is crucial to optimizing perovskite solar cell (PSC) performance and that integrating high-fidelity 3D COMSOL simulations with machine learning (ML) provides a powerful framework for accelerating device design. The key implication is that this hybrid simulation-ML strategy can significantly reduce experimental trial-and-error, allow rapid virtual exploration of design parameters and enable researchers to converge more efficiently toward high-efficiency PSC configurations. Such data-driven optimization has the potential to shorten development cycles and lower fabrication costs.</p><p>The findings confirm that a compact neural architecture trained on deterministic simulation data can serve as a reliable surrogate model for predicting device efficiency, offering both accuracy and computational efficiency. This approach provides a scalable digital twin for photovoltaic optimization, adaptable to other thin-film technologies beyond perovskites.</p><p>Future work will focus on validating the model’s predictions through experimental fabrication and testing of PSCs with the optimized thicknesses identified by the MLP regressor. Experimental verification will confirm the real-world transferability of the simulated and predicted efficiency improvements. In parallel, the ML component can be enhanced by incorporating additional descriptors—such as material composition, defect density, and temperature effects—and by employing deeper or ensemble architectures to capture nonlinear interactions more effectively.</p><p>From an industrial perspective, integrating this simulation-ML framework into the R&amp;amp;D workflow could enable rapid prototyping and optimization of solar cells with minimal experimental overhead. This would bridge the gap between computational design and scalable manufacturing, supporting faster commercialization of next-generation high-performance PSCs. Ultimately, the synergy between physics-based simulation and data-driven modeling offers a forward-looking pathway toward more efficient, cost-effective, and sustainable solar energy technologies.</p>
+    </sec>
+  </body>
+  <back>
+    <ack>
+      <title>Acknowledgments</title>
+      <p>The author would like to express her sincere gratitude to Dr. Sabahudin Vrtagic, Assistant Professor of Physics at the American University of the Middle East, Kuwait, for his valuable help and support in the machine learning study and analysis.</p>
+    </ack>
+    <app-group>
+      <app>
+        <title>Appendix</title>
+        
+      </app>
+    </app-group>
+    <notes>
+      <title>Author Contributions</title>
+      
+    </notes>
+    <notes>
+      <title>Funding</title>
+      
+    </notes>
+    <notes>
+      <title>Informed Consent Statement</title>
+      
+    </notes>
+    <notes>
+      <title>Data Availability Statement</title>
+      <p>The data used to support the findings of this study are available from the corresponding author upon request.</p>
+    </notes>
+    <notes notes-type="COI-statement">
+      <title>Conflicts of Interest</title>
+      <p>The authors declare that they have no conflicts of interest.</p>
+    </notes>
+    <ref-list>
+      <title>References</title>
+      <ref id="ref_1">
+        <label>1.</label>
+        <element-citation publication-type="journal">
+          <volume>15</volume>
+          <page-range>192</page-range>
+          <issue>2</issue>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Afre</surname>
+              <given-names>Rakesh A.</given-names>
+            </name>
+            <name>
+              <surname>Pugliese</surname>
+              <given-names>Diego</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3390/mi15020192</pub-id>
+          <article-title>Perovskite solar cells: A review of the latest advances in materials, fabrication techniques, and stability enhancement strategies</article-title>
+          <source>Micromachines</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_2">
+        <label>2.</label>
+        <element-citation publication-type="journal">
+          <volume>13</volume>
+          <page-range>155-179</page-range>
+          <issue>1</issue>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Goje</surname>
+              <given-names>Adamu Ahmed</given-names>
+            </name>
+            <name>
+              <surname>Ludin</surname>
+              <given-names>Norasikin Ahmad</given-names>
+            </name>
+            <name>
+              <surname>Fahsyar</surname>
+              <given-names>Puteri Nor Aznie</given-names>
+            </name>
+            <name>
+              <surname>Syafiq</surname>
+              <given-names>Ubaidah</given-names>
+            </name>
+            <name>
+              <surname>Chelvanathan</surname>
+              <given-names>P.</given-names>
+            </name>
+            <name>
+              <surname>Syakirin</surname>
+              <given-names>A. D. A.</given-names>
+            </name>
+            <name>
+              <surname>Teridi</surname>
+              <given-names>M. A.</given-names>
+            </name>
+            <name>
+              <surname>Ibrahim</surname>
+              <given-names>M. A.</given-names>
+            </name>
+            <name>
+              <surname>Su'ait</surname>
+              <given-names>M. S.</given-names>
+            </name>
+            <name>
+              <surname>Sepeai</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Md Yasir</surname>
+              <given-names>A. S. H.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1007/s40243-024-00257-8</pub-id>
+          <article-title>Review of flexible perovskite solar cells for indoor and outdoor applications</article-title>
+          <source>Mater. Renew. Sustain. Energy</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_3">
+        <label>3.</label>
+        <element-citation publication-type="journal">
+          <volume>10</volume>
+          <page-range>1904102</page-range>
+          <issue>26</issue>
+          <year>2020</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Jošt</surname>
+              <given-names>Matic</given-names>
+            </name>
+            <name>
+              <surname>Kegelmann</surname>
+              <given-names>Lukas</given-names>
+            </name>
+            <name>
+              <surname>Korte</surname>
+              <given-names>Lars</given-names>
+            </name>
+            <name>
+              <surname>Albrecht</surname>
+              <given-names>Steve</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1002/aenm.201904102</pub-id>
+          <article-title>Monolithic perovskite tandem solar cells: A review of the present status and advanced characterization methods toward 30% efficiency</article-title>
+          <source>Adv. Energy Mater.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_4">
+        <label>4.</label>
+        <element-citation publication-type="journal">
+          <volume>2024</volume>
+          <page-range>3921832</page-range>
+          <issue>1</issue>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Bahrami</surname>
+              <given-names>Mohammad</given-names>
+            </name>
+            <name>
+              <surname>Eskandari</surname>
+              <given-names>Maryam</given-names>
+            </name>
+            <name>
+              <surname>Fathi</surname>
+              <given-names>Dariush</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1155/2024/3921832</pub-id>
+          <article-title>Thermal analysis of a plasmonic perovskite solar cell: Using Coupled Opto‐Electro‐Thermal (OET) modeling</article-title>
+          <source>Int. J. Energy Res.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_5">
+        <label>5.</label>
+        <element-citation publication-type="journal">
+          <volume>78</volume>
+          <page-range>105249</page-range>
+          <year>2020</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Li</surname>
+              <given-names>Bing</given-names>
+            </name>
+            <name>
+              <surname>Xiang</surname>
+              <given-names>Yifan</given-names>
+            </name>
+            <name>
+              <surname>Jayawardena</surname>
+              <given-names>K. Indika</given-names>
+            </name>
+            <name>
+              <surname>Luo</surname>
+              <given-names>Dandan</given-names>
+            </name>
+            <name>
+              <surname>Zhou</surname>
+              <given-names>W.</given-names>
+            </name>
+            <name>
+              <surname>Yang</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Wattsm</surname>
+              <given-names>J. F.</given-names>
+            </name>
+            <name>
+              <surname>Hinder</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Sajjad</surname>
+              <given-names>M. T.</given-names>
+            </name>
+            <name>
+              <surname>Webb</surname>
+              <given-names>T.</given-names>
+            </name>
+            <name>
+              <surname>al.</surname>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.nanoen.2020.105249</pub-id>
+          <article-title>Reduced bilateral recombination by functional molecular interface engineering for efficient inverted perovskite solar cells</article-title>
+          <source>Nano Energy</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_6">
+        <label>6.</label>
+        <element-citation publication-type="journal">
+          <volume>13</volume>
+          <page-range>19447-19454</page-range>
+          <issue>28</issue>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Mashrafi</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Hussayeen Khan Anik</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Mst. Farhana Israt</surname>
+            </name>
+            <name>
+              <surname>Habib</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Islam</surname>
+              <given-names>S.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1039/d3ra02589f</pub-id>
+          <article-title>Modeling the path to &gt;30% power conversion efficiency in perovskite solar cells with plasmonic nanoparticles</article-title>
+          <source>RSC Adv.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_7">
+        <label>7.</label>
+        <element-citation publication-type="journal">
+          <volume>10</volume>
+          <page-range>1902253</page-range>
+          <issue>13</issue>
+          <year>2020</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Bati</surname>
+              <given-names>Abdirahman S.</given-names>
+            </name>
+            <name>
+              <surname>Batmunkh</surname>
+              <given-names>Munkhbayar</given-names>
+            </name>
+            <name>
+              <surname>Shapter</surname>
+              <given-names>Joseph G.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1002/aenm.201902253</pub-id>
+          <article-title>Emerging 2D layered materials for perovskite solar cells</article-title>
+          <source>Adv. Energy Mater.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_8">
+        <label>8.</label>
+        <element-citation publication-type="journal">
+          <volume>17</volume>
+          <issue>2</issue>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Mourched</surname>
+              <given-names>Bachar</given-names>
+            </name>
+            <name>
+              <surname>Sawaya</surname>
+              <given-names>Samer</given-names>
+            </name>
+            <name>
+              <surname>Abdallah</surname>
+              <given-names>Mariam</given-names>
+            </name>
+            <name>
+              <surname>Abboud</surname>
+              <given-names>Nadim</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.21152/1750-9548.17.2.135</pub-id>
+          <article-title>Effect of buffer layer selection on perovskite-based solar cell efficiency: A simulation study using OghmaNano software</article-title>
+          <source>Int. J. Multiphys.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_9">
+        <label>9.</label>
+        <element-citation publication-type="journal">
+          <volume>15</volume>
+          <page-range>11468</page-range>
+          <issue>14</issue>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Mourched</surname>
+              <given-names>Bachar</given-names>
+            </name>
+            <name>
+              <surname>Abdallah</surname>
+              <given-names>Mariam</given-names>
+            </name>
+            <name>
+              <surname>Hoxha</surname>
+              <given-names>Mario</given-names>
+            </name>
+            <name>
+              <surname>Vrtagic</surname>
+              <given-names>Sabahudin</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3390/su151411468</pub-id>
+          <article-title>Machine-learning-based sensor design for water salinity prediction: A conceptual approach</article-title>
+          <source>Sustainability</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_10">
+        <label>10.</label>
+        <element-citation publication-type="journal">
+          <volume>12</volume>
+          <page-range>6693</page-range>
+          <issue>13</issue>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Mourched</surname>
+              <given-names>Bachar</given-names>
+            </name>
+            <name>
+              <surname>Ferko</surname>
+              <given-names>Ndricim</given-names>
+            </name>
+            <name>
+              <surname>Abdallah</surname>
+              <given-names>Mariam</given-names>
+            </name>
+            <name>
+              <surname>Neji</surname>
+              <given-names>Bilel</given-names>
+            </name>
+            <name>
+              <surname>Vrtagic</surname>
+              <given-names>Sabahudin</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3390/app12136693</pub-id>
+          <article-title>Study and design of a machine learning-enabled laser-based sensor for pure and sea water determination using COMSOL multiphysics</article-title>
+          <source>Appl. Sci.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_11">
+        <label>11.</label>
+        <element-citation publication-type="journal">
+          <volume>2391</volume>
+          <page-range>090011</page-range>
+          <issue>1</issue>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Widianto</surname>
+              <given-names>Eko</given-names>
+            </name>
+            <name>
+              <surname>Subama</surname>
+              <given-names>Edi</given-names>
+            </name>
+            <name>
+              <surname>Nursam</surname>
+              <given-names>N. M.</given-names>
+            </name>
+            <name>
+              <surname>Triyana</surname>
+              <given-names>Kuwat</given-names>
+            </name>
+            <name>
+              <surname>Santoso</surname>
+              <given-names>Imam</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1063/5.0073007</pub-id>
+          <article-title>Design and simulation of perovskite solar cell using graphene oxide as hole transport material</article-title>
+          <source>AIP Conf. Proc.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_12">
+        <label>12.</label>
+        <element-citation publication-type="journal">
+          <volume>12</volume>
+          <page-range>9798</page-range>
+          <issue>19</issue>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Mourched</surname>
+              <given-names>Bachar</given-names>
+            </name>
+            <name>
+              <surname>Hoxha</surname>
+              <given-names>Mario</given-names>
+            </name>
+            <name>
+              <surname>Abdelgalil</surname>
+              <given-names>Ahmed</given-names>
+            </name>
+            <name>
+              <surname>Ferko</surname>
+              <given-names>Ndricim</given-names>
+            </name>
+            <name>
+              <surname>Abdallah</surname>
+              <given-names>Mariam</given-names>
+            </name>
+            <name>
+              <surname>Potams</surname>
+              <given-names>Albert</given-names>
+            </name>
+            <name>
+              <surname>Lushi</surname>
+              <given-names>Ardit</given-names>
+            </name>
+            <name>
+              <surname>Turan</surname>
+              <given-names>Halil Ibrahim</given-names>
+            </name>
+            <name>
+              <surname>Vrtagic</surname>
+              <given-names>Sabahudin</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3390/app12199798</pub-id>
+          <article-title>Piezoelectric-based sensor concept and design with machine learning-enabled using COMSOL multiphysics</article-title>
+          <source>Appl. Sci.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_13">
+        <label>13.</label>
+        <element-citation publication-type="journal">
+          <volume>16</volume>
+          <issue>4</issue>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Mourched</surname>
+              <given-names>Bachar</given-names>
+            </name>
+            <name>
+              <surname>Abboud</surname>
+              <given-names>Nadim</given-names>
+            </name>
+            <name>
+              <surname>Abdallah</surname>
+              <given-names>Mariam</given-names>
+            </name>
+            <name>
+              <surname>Moustafa</surname>
+              <given-names>Mohamed</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.2139/ssrn.3972781</pub-id>
+          <article-title>Electro-thermal simulation study of MOSFET modeling in silicon and silicon carbide</article-title>
+          <source>Int. J. Multiphys.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_14">
+        <label>14.</label>
+        <element-citation publication-type="journal">
+          <volume>262</volume>
+          <page-range>3-11</page-range>
+          <issue>1</issue>
+          <year>2016</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Mourched</surname>
+              <given-names>Bachar</given-names>
+            </name>
+            <name>
+              <surname>Nativel</surname>
+              <given-names>Eric L.</given-names>
+            </name>
+            <name>
+              <surname>Kribich</surname>
+              <given-names>Romain</given-names>
+            </name>
+            <name>
+              <surname>Falgayrettes</surname>
+              <given-names>Philippe</given-names>
+            </name>
+            <name>
+              <surname>Gall‐Borrut</surname>
+              <given-names>Patrice</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1111/jmi.12350</pub-id>
+          <article-title>Study of light emission and collection in a transparent dielectric cantilever‐based near‐field optical probe</article-title>
+          <source>J. Microsc.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_15">
+        <label>15.</label>
+        <element-citation publication-type="journal">
+          <volume>212</volume>
+          <page-range>12-17</page-range>
+          <year>2014</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Tsigara</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Mourched</surname>
+              <given-names>B.</given-names>
+            </name>
+            <name>
+              <surname>Falgayrettes</surname>
+              <given-names>P.</given-names>
+            </name>
+            <name>
+              <surname>Belier</surname>
+              <given-names>B.</given-names>
+            </name>
+            <name>
+              <surname>Nativel</surname>
+              <given-names>E. L.</given-names>
+            </name>
+            <name>
+              <surname>Kribich</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Etienne</surname>
+              <given-names>P.</given-names>
+            </name>
+            <name>
+              <surname>Calas</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Gall-Borrut</surname>
+              <given-names>P.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.sna.2014.03.016</pub-id>
+          <article-title>Fabrication and mechanical properties of an organo-mineral cantilever-based probe for near-field optical microscopy</article-title>
+          <source>Sens. Actuators A Phys.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_16">
+        <label>16.</label>
+        <element-citation publication-type="journal">
+          <volume>7</volume>
+          <page-range>23</page-range>
+          <issue>1</issue>
+          <year>2021</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Tao</surname>
+              <given-names>Qiuling</given-names>
+            </name>
+            <name>
+              <surname>Xu</surname>
+              <given-names>Pengcheng</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>Minjie</given-names>
+            </name>
+            <name>
+              <surname>Lu</surname>
+              <given-names>Wencong</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1038/s41524-021-00495-8</pub-id>
+          <article-title>Machine learning for perovskite materials design and discovery</article-title>
+          <source>npj Comput. Mater.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_17">
+        <label>17.</label>
+        <element-citation publication-type="journal">
+          <volume>94</volume>
+          <page-range>254-272</page-range>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Chen</surname>
+              <given-names>Ming</given-names>
+            </name>
+            <name>
+              <surname>Yin</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Shan</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Zheng</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Liu</surname>
+              <given-names>L.</given-names>
+            </name>
+            <name>
+              <surname>Dai</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Liu</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Xu</surname>
+              <given-names>Z.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/J.JECHEM.2024.02.035</pub-id>
+          <article-title>Application of machine learning in perovskite materials and devices: A review</article-title>
+          <source>J. Energy Chem.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_18">
+        <label>18.</label>
+        <element-citation publication-type="journal">
+          <volume>47</volume>
+          <page-range>101742</page-range>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Mao</surname>
+              <given-names>Lei</given-names>
+            </name>
+            <name>
+              <surname>Xiang</surname>
+              <given-names>Chuan</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/J.MTENER.2024.101742</pub-id>
+          <article-title>A comprehensive review of machine learning applications in perovskite solar cells: Materials discovery, device performance, process optimization and systems integration</article-title>
+          <source>Mater. Today Energy</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_19">
+        <label>19.</label>
+        <element-citation publication-type="journal">
+          <volume>15</volume>
+          <page-range>13508</page-range>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Çetinkaya</surname>
+              <given-names>Caglar</given-names>
+            </name>
+            <name>
+              <surname>Çokduygulular</surname>
+              <given-names>Erman</given-names>
+            </name>
+            <name>
+              <surname>Aykut</surname>
+              <given-names>Muhammed Yusuf</given-names>
+            </name>
+            <name>
+              <surname>Erkal</surname>
+              <given-names>Okan</given-names>
+            </name>
+            <name>
+              <surname>Aydogmus</surname>
+              <given-names>Fatma</given-names>
+            </name>
+            <name>
+              <surname>Kınacı</surname>
+              <given-names>Baris</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1038/s41598-025-94586-x</pub-id>
+          <article-title>Artificial intelligence-empowered functional design of semi-transparent optoelectronic and photonic devices via deep Q-learning</article-title>
+          <source>Sci. Rep.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_20">
+        <label>20.</label>
+        <element-citation publication-type="journal">
+          <volume>278</volume>
+          <page-range>112737</page-range>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Malek</surname>
+              <given-names>Iqbal I.</given-names>
+            </name>
+            <name>
+              <surname>Imtiaz</surname>
+              <given-names>Hammad</given-names>
+            </name>
+            <name>
+              <surname>Subrina</surname>
+              <given-names>Samia</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/J.SOLENER.2024.112737</pub-id>
+          <article-title>Machine learning driven performance enhancement of perovskite solar cells with CNT as both hole transport layer and back contact</article-title>
+          <source>Sol. Energy</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_21">
+        <label>21.</label>
+        <element-citation publication-type="journal">
+          <volume>278</volume>
+          <page-range>112784</page-range>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Shrivastav</surname>
+              <given-names>Navya</given-names>
+            </name>
+            <name>
+              <surname>Hamid</surname>
+              <given-names>M. A.</given-names>
+            </name>
+            <name>
+              <surname>Madan</surname>
+              <given-names>Jagat</given-names>
+            </name>
+            <name>
+              <surname>Pandey</surname>
+              <given-names>Richa</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/J.SOLENER.2024.112784</pub-id>
+          <article-title>Exploring KGeCl3 material for perovskite solar cell absorber layer through different machine learning models</article-title>
+          <source>Sol. Energy</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_22">
+        <label>22.</label>
+        <element-citation publication-type="journal">
+          <volume>7</volume>
+          <page-range>22263–22278</page-range>
+          <issue>26</issue>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Islam</surname>
+              <given-names>M. S.</given-names>
+            </name>
+            <name>
+              <surname>Islam</surname>
+              <given-names>M. T.</given-names>
+            </name>
+            <name>
+              <surname>Sarker</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Jame</surname>
+              <given-names>H. A.</given-names>
+            </name>
+            <name>
+              <surname>Nishat</surname>
+              <given-names>S. S.</given-names>
+            </name>
+            <name>
+              <surname>Jani</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Rauf</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Ahsan</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Shorowordi</surname>
+              <given-names>K.</given-names>
+            </name>
+            <name>
+              <surname>Efstathiadis</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>et al.</surname>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1021/acsomega.2c01076</pub-id>
+          <article-title>Machine learning approach to delineate the impact of material properties on solar cell device physics</article-title>
+          <source>ACS Omega</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_23">
+        <label>23.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>2116–2119</page-range>
+          <year>2020</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Hillhouse</surname>
+              <given-names>H.W.</given-names>
+            </name>
+            <name>
+              <surname>Dunlap-Shohl</surname>
+              <given-names>W. A.</given-names>
+            </name>
+            <name>
+              <surname>Stoddard</surname>
+              <given-names>R. J.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/PVSC45281.2020.9300931</pub-id>
+          <article-title>Quantitative prediction of perovskite stability using accelerated testing and machine learning</article-title>
+          <source>2020 47th IEEE Photovoltaic Specialists Conference (PVSC), Calgary, AB, Canada</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_24">
+        <label>24.</label>
+        <element-citation publication-type="journal">
+          <volume>220</volume>
+          <page-range>671-679</page-range>
+          <year>2021</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Peters</surname>
+              <given-names>I. M.</given-names>
+            </name>
+            <name>
+              <surname>Buonassisi</surname>
+              <given-names>T.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.solener.2021.01.017</pub-id>
+          <article-title>How changes in worldwide operating conditions affect solar cell performance</article-title>
+          <source>Sol. Energy</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_25">
+        <label>25.</label>
+        <element-citation publication-type="journal">
+          <volume>14</volume>
+          <page-range>18</page-range>
+          <issue>1</issue>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Kumar</surname>
+              <given-names>Raman</given-names>
+            </name>
+            <name>
+              <surname>Kanjariya</surname>
+              <given-names>Prakash</given-names>
+            </name>
+            <name>
+              <surname>Abu-Jrai</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Patil</surname>
+              <given-names>Nagaraj</given-names>
+            </name>
+            <name>
+              <surname>Yajid</surname>
+              <given-names>M. S. A.</given-names>
+            </name>
+            <name>
+              <surname>Kaur</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Singh</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Kumar</surname>
+              <given-names>P. V.</given-names>
+            </name>
+            <name>
+              <surname>Shah</surname>
+              <given-names>S. K.</given-names>
+            </name>
+            <name>
+              <surname>Khairandish</surname>
+              <given-names>M. I.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1007/s40243-024-00284-5</pub-id>
+          <article-title>Addressing fabrication challenges in perovskite-silicon tandem solar cells with advanced simulation techniques</article-title>
+          <source>Mater. Renew. Sustain. Energy</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_26">
+        <label>26.</label>
+        <element-citation publication-type="journal">
+          <volume>98</volume>
+          <page-range>106002</page-range>
+          <issue>10</issue>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Prasanna</surname>
+              <given-names>J. L.</given-names>
+            </name>
+            <name>
+              <surname>Goel</surname>
+              <given-names>E.</given-names>
+            </name>
+            <name>
+              <surname>Kumar</surname>
+              <given-names>A.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1088/1402-4896/acf535</pub-id>
+          <article-title>Efficient modeling of double absorber layered structure in perovskite solar cells using machine learning techniques</article-title>
+          <source>Phys. Scr.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_27">
+        <label>27.</label>
+        <element-citation publication-type="journal">
+          <volume>5</volume>
+          <page-range>3601-3614</page-range>
+          <issue>9</issue>
+          <year>2013</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Pan</surname>
+              <given-names>Xiaoyang</given-names>
+            </name>
+            <name>
+              <surname>Yang</surname>
+              <given-names>Min-Quan</given-names>
+            </name>
+            <name>
+              <surname>Fu</surname>
+              <given-names>Xianzhi</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>Nan</given-names>
+            </name>
+            <name>
+              <surname>Xu</surname>
+              <given-names>Yi-Jun</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1039/c3nr00476g</pub-id>
+          <article-title>Defective TiO2 with oxygen vacancies: Synthesis, properties and photocatalytic applications</article-title>
+          <source>Nanoscale</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_28">
+        <label>28.</label>
+        <element-citation publication-type="journal">
+          <volume>112</volume>
+          <page-range>602-610</page-range>
+          <issue>2</issue>
+          <year>2008</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Nowotny</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Bak</surname>
+              <given-names>T.</given-names>
+            </name>
+            <name>
+              <surname>Nowotny</surname>
+              <given-names>M. K.</given-names>
+            </name>
+            <name>
+              <surname>Sheppard</surname>
+              <given-names>L. R.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1021/jp0745642</pub-id>
+          <article-title>Defect chemistry and electrical properties of titanium dioxide. 2. Effect of aliovalent ions</article-title>
+          <source>J. Phys. Chem. C</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_29">
+        <label>29.</label>
+        <element-citation publication-type="journal">
+          <volume>12</volume>
+          <page-range>7135-7143</page-range>
+          <issue>6</issue>
+          <year>2020</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Li</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Hoye</surname>
+              <given-names>R. L.</given-names>
+            </name>
+            <name>
+              <surname>Gao</surname>
+              <given-names>H. H.</given-names>
+            </name>
+            <name>
+              <surname>Yan</surname>
+              <given-names>L.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Zhou</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>MacManus-Driscoll</surname>
+              <given-names>J. L.</given-names>
+            </name>
+            <name>
+              <surname>Gan</surname>
+              <given-names>J.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1021/acsami.9b19153</pub-id>
+          <article-title>Over 20% efficiency in methylammonium lead iodide perovskite solar cells with enhanced stability via "in situ solidification" of the TiO2 compact layer</article-title>
+          <source>ACS Appl. Mater. Interfaces</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_30">
+        <label>30.</label>
+        <element-citation publication-type="journal">
+          <volume>522</volume>
+          <page-range>57-65</page-range>
+          <year>2017</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Zaman</surname>
+              <given-names>M. M.</given-names>
+            </name>
+            <name>
+              <surname>Imran</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Saleem</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Kamboh</surname>
+              <given-names>A. H.</given-names>
+            </name>
+            <name>
+              <surname>Arshad</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Khan</surname>
+              <given-names>N. A.</given-names>
+            </name>
+            <name>
+              <surname>Akhter</surname>
+              <given-names>P.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.physb.2017.07.067</pub-id>
+          <article-title>Potassium doped methylammonium lead iodide (MAPbI3) thin films as a potential absorber for perovskite solar cells; structural, morphological, electronic and optoelectric properties</article-title>
+          <source>Phys. B Condens. Matter</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_31">
+        <label>31.</label>
+        <element-citation publication-type="journal">
+          <volume>5</volume>
+          <page-range>77495-77500</page-range>
+          <issue>95</issue>
+          <year>2015</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Shahiduzzaman</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Yamamoto</surname>
+              <given-names>K.</given-names>
+            </name>
+            <name>
+              <surname>Furumoto</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Kuwabara</surname>
+              <given-names>T.</given-names>
+            </name>
+            <name>
+              <surname>Takahashi</surname>
+              <given-names>K.</given-names>
+            </name>
+            <name>
+              <surname>Taima</surname>
+              <given-names>T.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1039/c5ra08102e</pub-id>
+          <article-title>Ionic liquid-assisted growth of methylammonium lead iodide spherical nanoparticles by a simple spin-coating method and photovoltaic properties of perovskite solar cells</article-title>
+          <source>RSC Adv.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_32">
+        <label>32.</label>
+        <element-citation publication-type="journal">
+          <volume>136</volume>
+          <page-range>10996-11001</page-range>
+          <issue>31</issue>
+          <year>2014</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Nguyen</surname>
+              <given-names>W. H.</given-names>
+            </name>
+            <name>
+              <surname>Bailie</surname>
+              <given-names>C. D.</given-names>
+            </name>
+            <name>
+              <surname>Unger</surname>
+              <given-names>E. L.</given-names>
+            </name>
+            <name>
+              <surname>McGehee</surname>
+              <given-names>M. D.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1021/ja504539w</pub-id>
+          <article-title>Enhancing the hole-conductivity of spiro-OMeTAD without oxygen or lithium salts by using spiro(TFSI)2 in perovskite and dye-sensitized solar cells</article-title>
+          <source>J. Am. Chem. Soc.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_33">
+        <label>33.</label>
+        <element-citation publication-type="journal">
+          <volume>136</volume>
+          <page-range>7837-7840</page-range>
+          <issue>22</issue>
+          <year>2014</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Jeon</surname>
+              <given-names>N. J.</given-names>
+            </name>
+            <name>
+              <surname>Lee</surname>
+              <given-names>H. G.</given-names>
+            </name>
+            <name>
+              <surname>Kim</surname>
+              <given-names>Y. C.</given-names>
+            </name>
+            <name>
+              <surname>Seo</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Noh</surname>
+              <given-names>J. H.</given-names>
+            </name>
+            <name>
+              <surname>Lee</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Seok</surname>
+              <given-names>S. I.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1021/ja502824c</pub-id>
+          <article-title>o-Methoxy substituents in spiro-OMeTAD for efficient inorganic–organic hybrid perovskite solar cells</article-title>
+          <source>J. Am. Chem. Soc.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_34">
+        <label>34.</label>
+        <element-citation publication-type="journal">
+          <volume>51</volume>
+          <page-range>8935-8938</page-range>
+          <issue>43</issue>
+          <year>2015</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Murray</surname>
+              <given-names>A. T.</given-names>
+            </name>
+            <name>
+              <surname>Frost</surname>
+              <given-names>J. M.</given-names>
+            </name>
+            <name>
+              <surname>Hendon</surname>
+              <given-names>C. H.</given-names>
+            </name>
+            <name>
+              <surname>Molloy</surname>
+              <given-names>C. D.</given-names>
+            </name>
+            <name>
+              <surname>Carbery</surname>
+              <given-names>D. R.</given-names>
+            </name>
+            <name>
+              <surname>Walsh</surname>
+              <given-names>A.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1039/c5cc02129d</pub-id>
+          <article-title>Modular design of SPIRO-OMeTAD analogues as hole transport materials in solar cells</article-title>
+          <source>Chem. Commun.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_35">
+        <label>35.</label>
+        <element-citation publication-type="journal">
+          <volume>8</volume>
+          <page-range>2672-2680</page-range>
+          <issue>12</issue>
+          <year>2017</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Shen</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Jacobs</surname>
+              <given-names>D. A.</given-names>
+            </name>
+            <name>
+              <surname>Wu</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Duong</surname>
+              <given-names>T.</given-names>
+            </name>
+            <name>
+              <surname>Peng</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Wen</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Fu</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Karuturi</surname>
+              <given-names>S. K.</given-names>
+            </name>
+            <name>
+              <surname>White</surname>
+              <given-names>T. P.</given-names>
+            </name>
+            <name>
+              <surname>Weber</surname>
+              <given-names>K.</given-names>
+            </name>
+            <name>
+              <surname>Catchpole</surname>
+              <given-names>K. R.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1021/acs.jpclett.7b00571</pub-id>
+          <article-title>Inverted hysteresis in CH3NH3PbI3 solar cells: Role of stoichiometry and band alignment</article-title>
+          <source>J. Phys. Chem. Lett.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_36">
+        <label>36.</label>
+        <element-citation publication-type="journal">
+          <volume>208</volume>
+          <page-range>697-707</page-range>
+          <year>2020</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Otoufi</surname>
+              <given-names>M. K.</given-names>
+            </name>
+            <name>
+              <surname>Ranjbar</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Kermanpur</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Taghavinia</surname>
+              <given-names>N.</given-names>
+            </name>
+            <name>
+              <surname>Minbashi</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Forouzandeh</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Ebadi</surname>
+              <given-names>F.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.solener.2020.08.035</pub-id>
+          <article-title>Enhanced performance of planar perovskite solar cells using TiO2/SnO2 and TiO2/WO3 bilayer structures: Roles of the interfacial layers</article-title>
+          <source>Sol. Energy</source>
+        </element-citation>
+      </ref>
+    </ref-list>
+  </back>
+</article>
