@@ -1,0 +1,1910 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.3 20210610//EN" "JATS-journalpublishing1-3.dtd">
+<article xml:lang="en" dtd-version="1.3" article-type="research-article" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mml="http://www.w3.org/1998/Math/MathML">
+  <front>
+    <journal-meta>
+      <journal-id journal-id-type="publisher-id">IJEPM</journal-id>
+      <journal-id journal-id-type="doi">10.56578</journal-id>
+      <journal-title-group>
+        <journal-title>International Journal of Energy Production and Management</journal-title>
+        <abbrev-journal-title abbrev-type="issn">Int. J. Energy Prod. Manag.</abbrev-journal-title>
+        <abbrev-journal-title abbrev-type="publisher">IJEPM</abbrev-journal-title>
+      </journal-title-group>
+      <issn publication-format="electronic">2056-3280</issn>
+      <issn publication-format="print">2056-3272</issn>
+      <publisher>
+        <publisher-name>Acadlore</publisher-name>
+      </publisher>
+    </journal-meta>
+    <article-meta>
+      <article-id pub-id-type="publisher-id">AR-BCSdJ9WtqfIRMpRouwfG7BKXbJ-w9atE</article-id>
+      <article-id pub-id-type="doi">10.56578/ijepm100302</article-id>
+      <article-categories>
+        <subj-group>
+          <subject>Articles</subject>
+        </subj-group>
+      </article-categories>
+      <title-group>
+        <article-title>Electric Load Forecasting and Management in Smart Grids Using Optimized Long Short-Term Memory Network: A Real-World Evaluation</article-title>
+      </title-group>
+      <contrib-group>
+        <contrib contrib-type="author" rid="aff_1">
+          <contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0000-0003-3349-9410</contrib-id>
+          <name>
+            <surname>Dakheel</surname>
+            <given-names>Falah</given-names>
+          </name>
+          <email>flah8083@gmail.com</email>
+        </contrib>
+        <contrib contrib-type="author" rid="aff_1">
+          <contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0000-0003-0299-9076</contrib-id>
+          <name>
+            <surname>çEvik</surname>
+            <given-names>Mesut</given-names>
+          </name>
+          <email>mesut.cevik@altinbas.edu.tr</email>
+        </contrib>
+        <aff id="aff_1">Department of Electrical and Computer Engineering, Altınbaş University, 34217 İstanbul, Turkey</aff>
+      </contrib-group>
+      <pub-date publication-format="electronic" date-type="pub">
+        <day>30</day>
+        <month>10</month>
+        <year>2025</year>
+      </pub-date>
+      <volume>10</volume>
+      <issue>3</issue>
+      <fpage>371</fpage>
+      <lpage>383</lpage>
+      <page-range>371-383</page-range>
+      <history>
+        <date date-type="received">
+          <day>05</day>
+          <month>07</month>
+          <year>2025</year>
+        </date>
+        <date date-type="accepted">
+          <day>15</day>
+          <month>09</month>
+          <year>2025</year>
+        </date>
+      </history>
+      <permissions>
+        <copyright-statement>©2025 by the author(s)</copyright-statement>
+        <copyright-year>2025</copyright-year>
+        <license license-type="open-access" xlink:href="https://creativecommons.org/licenses/by/4.0/">
+          <license-p> Published by Acadlore Publishing Services Limited, Hong Kong. This article is available for free download and can be reused and cited, provided that the original published version is credited, under the CC BY 4.0 license.</license-p>
+        </license>
+      </permissions>
+      <abstract><p><span style="font-family: Times New Roman, serif">To enhance the efficiency and stability of modern smart grids, accurate short-term electricity demand forecasting is essential. The objective of this study is to present the use of Long Short-Term Memory (LSTM) networks to predict electrical load based on high-resolution, real-world data from the Belgian Elia grid, sampled at 15-minute intervals. The methodology includes data preprocessing, temporal feature extraction, sequence generation, and model optimization. Exploratory data analysis highlights important consumption patterns and seasonal variations. The LSTM model effectively captures both short-term fluctuations and long-term dependencies, achieving an RMSE of 119.41 MW, a MAPE of 1.30%, and an R² score of 0.992 on the test set. Compared to alternative forecasting approaches, including more complex hybrid architectures, the LSTM model demonstrates superior accuracy and generalization capability. For instance, compared with ARIMA-LSTM models that reported a MAPE of 2.83% and CNN-LSTM models with 2.72%, the proposed model achieves markedly better performance.<italic><span style="font-family: Times New Roman, serif"> </italic><span style="font-family: Times New Roman, serif">These findings support the integration of LSTM-based forecasting systems into smart grid operations for real-time energy management.</p></abstract>
+      <kwd-group>
+        <kwd>LSTM networks</kwd>
+        <kwd>Energy management</kwd>
+        <kwd>Load prediction models</kwd>
+        <kwd>Neural networks</kwd>
+        <kwd>Grid management</kwd>
+      </kwd-group>
+      <counts>
+        <count count-type="contributors" count="2"/>
+        <fig-count count="7"/>
+        <table-count count="2"/>
+        <ref-count count="31"/>
+      </counts>
+    </article-meta>
+  </front>
+  <body>
+    <sec sec-type="intro">
+      <title>1. Introduction</title>
+      <p>The modern electrical grid system is evolving into smart grid systems, which are equipped with advanced energy management. The modernized power grids are characterized by their ability to integrate renewable energy sources and manage distributed energy resources, and improve energy usage efficiency. The transition from traditional power grids to smart grids represents a significant advancement in energy infrastructure, which enables better efficiency and sustainability in power operations [<xref ref-type="bibr" rid="ref_1">1</xref>].</p><p>Smart grids integrate sophisticated sensing, communication, and control technologies that facilitate real-time oversight and administration of electricity generation, transmission, and distribution. The amalgamation of digital technology with the physical framework of the power grid fosters a more responsive and adaptive energy system [<xref ref-type="bibr" rid="ref_2">2</xref>]. Notwithstanding the progress in smart grid technology, numerous challenges remain in the efficient management of these systems. A principal challenge is the precise forecasting of electricity demand, crucial for optimal resource distribution and grid stability. Conventional forecasting techniques frequently fail to accurately represent the intricate patterns and interdependencies in electricity consumption data, resulting in ineffective grid management [<xref ref-type="bibr" rid="ref_3">3</xref>].</p><p>The incorporation of renewable energy sources, especially solar and wind, poses operational challenges for power systems due to their intrinsic variability and unpredictability, thereby adding further complexity. This variability requires more advanced forecasting and management strategies to guarantee grid reliability and stability [<xref ref-type="bibr" rid="ref_4">4</xref>]. The scale and variety of information generated through intelligent energy networks introduce challenges in processing, analysis, and decision-oriented applications. Efficient management of this data necessitates sophisticated methods that can facilitate informed decision-making [<xref ref-type="bibr" rid="ref_5">5</xref>]. Machine learning has surfaced as a viable solution to tackle the challenges in smart grid management. They can evaluate extensive datasets, discern patterns, and generate predictions with considerable precision. Among diverse machine learning methodologies, deep learning techniques, especially Recurrent Neural Networks (RNNs), have demonstrated considerable efficacy in time series forecasting for smart grid applications [<xref ref-type="bibr" rid="ref_6">6</xref>].</p><p>Long Short-Term Memory (LSTM) networks, as a refined subclass of recurrent neural architectures, are effective in learning temporal structures within electricity usage trends. Their ability to retain information across varying time spans makes them particularly useful in forecasting energy demand and managing temporally sensitive operations within intelligent power networks.</p><p>Time series data forecasting has become essential for different analytical fields, including energy consumption and finance, and healthcare. The ability to model past data stands as the foundation for effective planning and informed decision-making because it enables trend anticipation. Machine learning and deep learning techniques have advanced traditional ARIMA models into a wider range of sophisticated methods that detect intricate temporal patterns in time series data [<xref ref-type="bibr" rid="ref_7">7</xref>].</p><p>With a focus on machine learning and deep learning algorithms, this chapter explores the broad approaches of time series forecasting. In particular, it describes the attention process used in time series forecasting, hybrid models, supervised and unsupervised learning approaches, LSTM networks, and ensemble learning.</p><p>In the words of Shumway and Stoffer, a time series is the set of values recorded for a variable at regular intervals of time. This methodology, which is widely used in all fields, including energy consumption and financial and economic forecasting, uses methods that capture seasonality, trends, and temporal features. Nevertheless, in real-world data, the issues of missing values, data noise, and nonlinear relationships are still difficult to solve [<xref ref-type="bibr" rid="ref_8">8</xref>]. Both short-term and long-term forecasting techniques, such as deep learning models like LSTM and traditional statistical models like ARIMA, have been developed to address these issues.</p><p>Hyndman and Athanasopoulos [<xref ref-type="bibr" rid="ref_9">9</xref>] assert that supervised learning methods involve training the model with input datasets that already contain the output values. For example, regression, decision trees, neural networks, exponential smoothing, and ARIMA have all been implemented to address time series issues. Chen and Guestrin [<xref ref-type="bibr" rid="ref_10">10</xref>] have emphasized that XGBoost is an ensemble method that obtains relatively high accuracy in forecasting applications by combining multiple weak models. Conversely, unsupervised learning techniques do not utilize training data and are employed to identify features or patterns that are not explicitly apparent to the model. Methods like clustering algorithms (e.g., K-means) and anomaly detection are employed to detect infrequent events in the data [<xref ref-type="bibr" rid="ref_11">11</xref>], [<xref ref-type="bibr" rid="ref_12">12</xref>]. These techniques are especially effective for detecting anomalous patterns, such as in IoT time series data or network traffic. Forestier et al. [<xref ref-type="bibr" rid="ref_13">13</xref>] show that deep learning models have become popular in time series forecasting because they can learn features directly from raw inputs, which reduces the need for extensive feature engineering. The two most popular sequence prediction models used in deep learning are LSTM networks and Gated Recurrent Units (GRUs).</p><p>LSTM networks are a specialized form of recurrent neural networks (RNNs), which are specifically designed to retain long-term dependencies in sequential data. These models have consistently outperformed traditional methods such as ARIMA, particularly when dealing with complex and nonlinear time series patterns. Their effectiveness has been well demonstrated in applications such as electricity load prediction and financial forecasting.</p><p>An extensive empirical comparison was conducted by Siami-Namini et al. [<xref ref-type="bibr" rid="ref_14">14</xref>]. They reported that LSTM showed better performance than ARIMA with an average RMSE of 64.213 versus 511.481 on financial datasets, and 0.936 versus 5.999 on economic datasets, which illustrated a decrease in error between 84–87%. This confirms the assertion made by the authors regarding the higher accuracy achieved with LSTM for complex sequential data.</p><p>GRUs are less complex than LSTMs yet provide similar performance by merging the input and forget gates into a singular unit, as evidenced by Nejadettehad et al. [<xref ref-type="bibr" rid="ref_15">15</xref>]. GRUs exhibit lower complexity than LSTM models while maintaining effective performance in time series forecasting tasks. They are particularly efficacious in scenarios where data demonstrate prolonged dependencies among values, such as in traffic or meteorological forecasting systems.</p><p>Hybrid models that combine LSTM with conventional methods such as ARIMA demonstrate enhanced performance relative to their standalone application in time series forecasting. This hybrid approach utilizes deep learning for temporal pattern recognition and ARIMA for modeling trends and seasonality [<xref ref-type="bibr" rid="ref_16">16</xref>]. Recently, transformer-based architectures incorporating attention mechanisms have gained prominence in processing sequential data. By focusing selectively on relevant portions of the input, these models improve the accuracy of long-term forecasting. Integrating transformers with LSTM networks offers a robust modeling approach for capturing temporal dependencies across different forecasting horizons in time series analysis [<xref ref-type="bibr" rid="ref_17">17</xref>].</p><p>Recent developments in machine learning and deep learning have revolutionized electric load forecasting in terms of energy use technologies in ways that go beyond classical modeling and statistical approaches. While various traditional statistical models remain useful to capture linear temporal components, traditional time series models such as ARIMA reveal limitations in nonlinear dynamics and multivariate interactions. As a result, classical approaches are complementary rather than core in forecasting frameworks. Abumohsen et al. [<xref ref-type="bibr" rid="ref_18">18</xref>] emphasized the finding of a direct learning mechanism by deep models such as GRU and LSTM that leverage complex relationships of various temporal dependencies with high-resolution data and without intensive manual feature engineering.</p><p>When retaining long-term dependencies, LSTM models have outperformed traditional models in cases of significant uncertainty or seasonality in load profiles. GRU is a lower-complexity model that has demonstrated equivalent predictive performance with faster convergence, which is particularly valuable in embedded or real-time energy systems [<xref ref-type="bibr" rid="ref_18">18</xref>]. They have also benefited from bidirectional and stacked versions that increase their temporal reach and overall performance.</p><p>In their empirical study, Abumohsen et al. [<xref ref-type="bibr" rid="ref_18">18</xref>] reported that GRU achieved the lowest Mean Absolute Percentage Error (MAPE) of 2.30%, followed closely by LSTM with 2.36%, outperforming traditional RNNs and feed-forward neural networks (RNN: 3.58%, FFNN: 2.81%). These results confirm the competitive accuracy and efficiency of GRU and LSTM in short-term load forecasting tasks.</p><p>Hybrid modeling methods have recently become popular. Akuété Pierre et al. [<xref ref-type="bibr" rid="ref_19">19</xref>] implemented a hybrid ARIMA-LSTM model and found it to have much lower RMSE and MAPE than either model alone. In their experiments, the ARIMA-LSTM model achieved an RMSE of 7.35 and an MAPE of 1.52%, compared to 18.74 and 3.01% for LSTM alone, and 49.90 and 12.05% for ARIMA. This demonstrated the superiority of the hybrid model in forecasting peak load demand. Hybrid modeling methods can also be implemented with Transformer-based designs combined with longer-horizon recurrent layers. Yan et al. [<xref ref-type="bibr" rid="ref_20">20</xref>] presented a hybrid model that combined a Transformer encoder with a Bi-LSTM model for multi-energy load forecasting and stated it was better at identifying local and global temporal behaviors for the different load types. In their study, the proposed FTTrans-E-BL model improved the RMSE performance compared to traditional LSTM by 87.5% for electricity loads, 78.300% for cooling loads, and 81.512% for heating loads. This significant reduction in prediction errors confirms the effectiveness of Transformer-BiLSTM hybrid approaches in modeling the complex dependencies and variability in short-term integrated energy load forecasting.</p><p>Improvements have also been made in forecasting architectures using CNNs and attention mechanisms. Xu et al. [<xref ref-type="bibr" rid="ref_21">21</xref>] introduced a framework that utilizes attention-guided depthwise separable CNNs and reported improved accuracy through attention focusing on the most dominant patterns in the dataset. Guo et al. [<xref ref-type="bibr" rid="ref_22">22</xref>] adopted a similar approach using a multi-modal attention CNN-LSTM hybrid network and found improved prediction performance across all metrics. In their experiments, the proposed CNN-MHSA-LSTM-GAM-CAM model achieved the lowest RMSE of 110.62 on the Panama dataset, compared to 123.64 for CNN-LSTM and 134.05 for ANN, showing a significant improvement in accuracy and robustness. Hua et al. [<xref ref-type="bibr" rid="ref_23">23</xref>] used attention-based CNN-GRU models and provided evidence of improved RMSE and MAE compared with models without attention. Attention methods have also been used to improve model interpretability and robustness through multi-head and channel-wise attention. Zhang et al. [<xref ref-type="bibr" rid="ref_24">24</xref>] developed an LSTM-SCN hybrid with channel attention and tested it in high-volatility situations, exhibiting clear improvement over baseline methods. Likewise, Zhang et al. [<xref ref-type="bibr" rid="ref_25">25</xref>] developed a deep hybrid model with grid context for short-term load forecasting and subsequently improved predictions in smart grids.</p><p>The literature provides evidence to the emerging consensus that load forecasting in modern smart grids should incorporate hybrid, deep, and attention-based architectures that can adapt to nonlinear, complex, and volatile patterns in energy demand behavior. While many researchers leverage LSTM for time series forecasting, a considerable number of studies either use low resolution datasets or lack important details that impede reproducibility. This work aims to fill these gaps by building a carefully designed LSTM model on high-frequency, real-world electricity load data with 15-minute intervals. The study employs a time-based data splitting method that simulates actual forecasting conditions during model evaluation. In addition, every part of the modeling workflow is documented, including input formatting, network architecture, training settings, and evaluation metrics. The study explores the application of LSTM models to improve electricity demand regulation in intelligent grid systems, with a particular emphasis on short-term load prediction, by designing and fine-tuning LSTM-based solutions for modern energy infrastructures to support more effective and dependable power system operations.</p>
+    </sec>
+    <sec sec-type="">
+      <title>2. Materials and methods</title>
+      
+        <sec>
+          
+            <title>2.1. Electricity load dataset overview</title>
+          
+          <p>The Elia Grid Load dataset served as the main electricity usage data source for this study, which spanned from January 1 to December 14, 2022. The Elia Grid represents the Belgian national transmission system operator (TSO) responsible for managing and operating Belgium's high-voltage electricity network. The dataset contains power load values recorded at 15-minute intervals , which allows for precise analysis of consumption patterns and time-based demand variations. The dataset was preprocessed to handle missing values, normalize the data, and extract relevant features for model training. Temporal features, such as hour of the day, day of the week, and month, were derived from the timestamp information to capture cyclical patterns in electricity consumption.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>2.2. Data preprocessing</title>
+          
+          <p>This dataset includes electricity load data for the real world, measured every fifteen minutes. The raw values were converted from kilowatts to megawatts and then normalized via Min-Max scaling to ensure numerical stability during training. The transformation was given as such:</p>
+          
+            <disp-formula>
+              <label>(1)</label>
+              <mml:math id="mpe8p44yrz">
+                <mml:msub>
+                  <mml:mi>X</mml:mi>
+                  <mml:mrow>
+                    <mml:mrow>
+                      <mml:mi data-mjx-auto-op="false">norm</mml:mi>
+                    </mml:mrow>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mfrac>
+                  <mml:mrow>
+                    <mml:mi>X</mml:mi>
+                    <mml:mi>X</mml:mi>
+                    <mml:mo>−</mml:mo>
+                    <mml:mo>min</mml:mo>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>)</mml:mo>
+                  </mml:mrow>
+                  <mml:mrow>
+                    <mml:mo>max</mml:mo>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:mo>−</mml:mo>
+                    <mml:mo>min</mml:mo>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:mi>X</mml:mi>
+                    <mml:mi>X</mml:mi>
+                  </mml:mrow>
+                </mml:mfrac>
+              </mml:math>
+            </disp-formula>
+          
+          <p> where, X denotes the original value, and Xnorm represents the normalized output ranging between 0 and 1.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>2.3. Exploratory data analysis (eda)</title>
+          
+          <p>The model’s performance is evident through graphical comparisons between its forecasted values and actual electricity consumption data. The visual tools , consisting of time series graphs and scatter diagrams, and heatmaps, provide multiple analytical viewpoints to assess both the model's predictive accuracy and its dynamic behavior. The actual electrical load, shown in <xref ref-type="fig" rid="fig_1">Figure 1</xref>, and its 24-hour moving average are illustrated over time. The moving average highlights the general trend of load variations on a seasonal basis, revealing periodic patterns and consumption behavior while smoothing out annual short-term fluctuations.</p>
+          
+            <fig id="fig_1">
+              <label>Figure 1</label>
+              <caption>
+                <title>Temporal load variation over a sample period</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/10/img_0KcDqbG5b1gfsPKU.png"/>
+            </fig>
+          
+          <p>The scatter plot in <xref ref-type="fig" rid="fig_2">Figure 2</xref> shows how electricity demand changes over time, revealing clear periodic patterns that reflect daily and weekly cycles. The model demonstrates its ability to capture temporal patterns, which is essential for accurate load forecasting in smart grid systems.</p>
+          
+            <fig id="fig_2">
+              <label>Figure 2</label>
+              <caption>
+                <title>Scatter representation of load against time index</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/10/img_j6Odd6FCj-7S9yJp.png"/>
+            </fig>
+          
+          
+            <sec>
+              
+                <title>2.3.1 Frequency distribution of load measurements</title>
+              
+              <p> <xref ref-type="fig" rid="fig_3">Figure 3</xref> presents the histogram of actual electricity load values. The distribution is approximately normal, with most values clustered around the mean range. This indicates a stable consumption pattern in the dataset and supports the applicability of the model for short-term load forecasting.</p>
+              
+                <fig id="fig_3">
+                  <label>Figure 3</label>
+                  <caption>
+                    <title>Frequency distribution of electricity load</title>
+                  </caption>
+                  <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/10/img_XZtvuIMbouh_gKC6.png"/>
+                </fig>
+              
+            </sec>
+          
+          
+            <sec>
+              
+                <title>2.3.2 Box plot of load dispersion across dates</title>
+              
+              <p> <xref ref-type="fig" rid="fig_4">Figure 4</xref> illustrates the median and interquartile range (Q1–Q3) of the electrical load over time. Most observations lie within the interquartile range, indicating stable consumption behavior with occasional deviations that may represent abnormal load conditions.</p>
+            </sec>
+          
+          
+            <fig id="fig_4">
+              <label>Figure 4</label>
+              <caption>
+                <title>Box plot of load dispersion across dates</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/10/img_IL79CYRVs4IQOLDB.png"/>
+            </fig>
+          
+          
+            <sec>
+              
+                <title>2.3.3 Hourly load intensity across the calendar</title>
+              
+              <p><xref ref-type="fig" rid="fig_5">Figure 5</xref> shows a heatmap illustrating load intensity across different hours and calendar dates. The visualization demonstrates the model’s effectiveness in capturing temporal load dynamics, such as weekday-based variations. This enables a deeper understanding of consumption patterns over time, ultimately supporting more informed forecasting and grid management decisions.</p>
+              
+                <fig id="fig_5">
+                  <label>Figure 5</label>
+                  <caption>
+                    <title>Heatmap of load by hour and date</title>
+                  </caption>
+                  <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/10/img_Czjxjxe7-xVBN5Wc.png"/>
+                </fig>
+              
+              <p>Visual representations of the model’s predictions compared to actual consumption data clearly demonstrate its efficacy. The visualizations comprise time series plots, scatter plots, and heatmaps, providing varied insights into the model’s accuracy and behavior.</p>
+            </sec>
+          
+          
+            <sec>
+              
+                <title>2.3.4 Seasonal decomposition plot</title>
+              
+              <p>The time series decomposition of electricity load data into its main components appears in <xref ref-type="fig" rid="fig_6">Figure 6</xref>. The trend component shows how electricity demand patterns change gradually throughout the year. The LSTM model demonstrated a component that shows regular daily patterns, which represent typical electricity consumption behaviors. The residual component represents unexplained random fluctuations and unusual data points that do not follow a trend or seasonal patterns. The decomposition process enables researchers to identify and understand the structural patterns in data , which leads to improved forecasting accuracy and better feature selection.</p>
+              
+                <fig id="fig_6">
+                  <label>Figure 6</label>
+                  <caption>
+                    <title>Seasonal decomposition of the load time series into trend, seasonal, and residual components</title>
+                  </caption>
+                  <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/10/img_UA1lgmYirtMBBTIq.png"/>
+                </fig>
+              
+            </sec>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>2.4. Sequence generation</title>
+          
+          <p>To capture temporal dependencies, the data was converted into sequences using a sliding window mechanism. For each prediction point <inline-formula>
+  <mml:math id="me97560i6l">
+    <mml:mi>Y</mml:mi>
+    <mml:mi>t</mml:mi>
+  </mml:math>
+</inline-formula>, the model uses a sequence of <inline-formula>
+  <mml:math id="mydvhv6dc2">
+    <mml:mi>L</mml:mi>
+    <mml:mi>%</mml:mi>
+    <mml:mo>=</mml:mo>
+    <mml:mn>60</mml:mn>
+  </mml:math>
+</inline-formula>.</p>
+          
+            <disp-formula>
+              <label>(2)</label>
+              <mml:math id="mby1xdimtm">
+                <mml:mi>X</mml:mi>
+                <mml:mi>t</mml:mi>
+                <mml:mi>x</mml:mi>
+                <mml:mi>t</mml:mi>
+                <mml:mi>L</mml:mi>
+                <mml:mi>x</mml:mi>
+                <mml:mi>t</mml:mi>
+                <mml:mi>L</mml:mi>
+                <mml:mi>x</mml:mi>
+                <mml:mi>t</mml:mi>
+                <mml:mi>Y</mml:mi>
+                <mml:mi>t</mml:mi>
+                <mml:mi>x</mml:mi>
+                <mml:mi>t</mml:mi>
+                <mml:mo>=</mml:mo>
+                <mml:mo>[</mml:mo>
+                <mml:mo>−</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo>−</mml:mo>
+                <mml:mo>+</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo>…</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo>−</mml:mo>
+                <mml:mo>]</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo>=</mml:mo>
+                <mml:mn>1</mml:mn>
+                <mml:mn>1</mml:mn>
+                <mml:mstyle scriptlevel="0">
+                  <mml:mspace width="1em"/>
+                </mml:mstyle>
+              </mml:math>
+            </disp-formula>
+          
+          <p> where, $L<inline-formula>
+  <mml:math id="mlcg7pj9bs">
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>k</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>k</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>z</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mo>−</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mn>60</mml:mn>
+  </mml:math>
+</inline-formula>Xt<inline-formula>
+  <mml:math id="mya000eedu">
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>q</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>s</mml:mi>
+  </mml:math>
+</inline-formula>L<inline-formula>
+  <mml:math id="mwv423lusf">
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>k</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>Yt = xt<inline-formula>
+  <mml:math id="mymj1vdspf">
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+  </mml:math>
+</inline-formula>L$ observations.</p><p>This formulation allows the model to learn patterns that span over several hours of historical data.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>2.5. Lstm network architecture</title>
+          
+          <p>LSTM networks are a category of recurrent neural networks (RNNs) explicitly engineered to capture long-term dependencies in sequential data. This study employs LSTM to model the temporal dynamics of electricity load data.</p><p>The LSTM model is constructed with the following architecture:</p><p>• Input Layer: Receives a 3D input array with shape (samples, time steps, features), where the look-back window is set to 60, corresponding to 15 hours of historical data at 15-minute intervals.</p><p>• LSTM Layers: Two stacked LSTM layers, each with 50 memory units, are used to extract temporal features from the input sequence.</p><p>• Dropout Layers: A dropout rate of 0.2 is applied after each LSTM layer to mitigate overfitting by randomly deactivating a portion of the neurons during training.</p><p>• Dense Layer: A fully connected dense layer with one output neuron is used to generate the final prediction value.</p><p>The model employs the Adam optimizer and the Mean Squared Error (MSE) loss function for training. Training occurs over 50 epochs with a batch size of 32. The target variable (electricity load) is normalized via Min-Max scaling to guarantee stable convergence during training. The main objective is to reduce the Root Mean Squared Error (RMSE) by enhancing the model's capacity to identify sequential patterns in the historical load data.</p><p>Once trained, the LSTM model is used to predict future load values on the test dataset. These predictions, referred to as LSTM intermediate outputs, are then inverse-transformed to restore the original megawatt scale.</p><p>The network maps each input sequence. <inline-formula>
+  <mml:math id="ma9uaviz52">
+    <mml:msub>
+      <mml:mi>X</mml:mi>
+      <mml:mi>t</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> to a forecasted value <inline-formula>
+  <mml:math id="mjfiv5lpci">
+    <mml:mrow>
+      <mml:mover>
+        <mml:msub>
+          <mml:mrow>
+            <mml:mi>y</mml:mi>
+          </mml:mrow>
+          <mml:mi>t</mml:mi>
+        </mml:msub>
+        <mml:mo>^</mml:mo>
+      </mml:mover>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> as:</p>
+          
+            <disp-formula>
+              <label>(3)</label>
+              <mml:math id="m3ni4ld3rv">
+                <mml:msub>
+                  <mml:mrow>
+                    <mml:mover>
+                      <mml:mrow>
+                        <mml:mi>y</mml:mi>
+                      </mml:mrow>
+                      <mml:mo>^</mml:mo>
+                    </mml:mover>
+                  </mml:mrow>
+                  <mml:mi>t</mml:mi>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>f</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>L</mml:mi>
+                    <mml:mi>S</mml:mi>
+                    <mml:mi>T</mml:mi>
+                    <mml:mi>M</mml:mi>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>;</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:msub>
+                    <mml:mi>X</mml:mi>
+                    <mml:mi>t</mml:mi>
+                  </mml:msub>
+                  <mml:mi>θ</mml:mi>
+                </mml:mrow>
+              </mml:math>
+            </disp-formula>
+          
+          <p>where:</p><p><inline-formula>
+  <mml:math id="mf283do8n4">
+    <mml:mrow>
+      <mml:mover>
+        <mml:msub>
+          <mml:mrow>
+            <mml:mi>y</mml:mi>
+          </mml:mrow>
+          <mml:mi>t</mml:mi>
+        </mml:msub>
+        <mml:mo>^</mml:mo>
+      </mml:mover>
+    </mml:mrow>
+  </mml:math>
+</inline-formula>: the predicted load at time <italic>t</italic>,</p><p><inline-formula>
+  <mml:math id="m61kn3o7mr">
+    <mml:msub>
+      <mml:mi>f</mml:mi>
+      <mml:mrow>
+        <mml:mtext>LSTM</mml:mtext>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula>: the LSTM network function,</p><p><inline-formula>
+  <mml:math id="merd1xu4ar">
+    <mml:mi>θ</mml:mi>
+  </mml:math>
+</inline-formula>: the model's trainable parameters.</p><p>To optimize the model during training, the MSE loss function was employed—commonly used in regression problems due to its sensitivity to large errors, as formulated below:</p>
+          
+            <disp-formula>
+              <label>(4)</label>
+              <mml:math id="m7ygbt9rcl">
+                <mml:mrow>
+                  <mml:mi data-mjx-variant="-tex-calligraphic">L</mml:mi>
+                </mml:mrow>
+                <mml:mo>=</mml:mo>
+                <mml:mfrac>
+                  <mml:mn>1</mml:mn>
+                  <mml:mi>n</mml:mi>
+                </mml:mfrac>
+                <mml:munderover>
+                  <mml:mo>∑</mml:mo>
+                  <mml:mrow>
+                    <mml:mi>i</mml:mi>
+                    <mml:mo>=</mml:mo>
+                    <mml:mn>1</mml:mn>
+                  </mml:mrow>
+                  <mml:mi>n</mml:mi>
+                </mml:munderover>
+                <mml:msup>
+                  <mml:mrow>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>−</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:msub>
+                      <mml:mi>y</mml:mi>
+                      <mml:mi>i</mml:mi>
+                    </mml:msub>
+                    <mml:msub>
+                      <mml:mrow>
+                        <mml:mover>
+                          <mml:mi>y</mml:mi>
+                          <mml:mo>^</mml:mo>
+                        </mml:mover>
+                      </mml:mrow>
+                      <mml:mi>i</mml:mi>
+                    </mml:msub>
+                  </mml:mrow>
+                  <mml:mn>2</mml:mn>
+                </mml:msup>
+              </mml:math>
+            </disp-formula>
+          
+          <p>where, <inline-formula>
+  <mml:math id="mx90t9oemg">
+    <mml:mrow>
+      <mml:mi data-mjx-variant="-tex-calligraphic">L</mml:mi>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> is the loss to be minimized (mean squared error, in MW²), <inline-formula>
+  <mml:math id="ma65xk0f7h">
+    <mml:msub>
+      <mml:mi>y</mml:mi>
+      <mml:mi>i</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> is the actual value (in MW), <inline-formula>
+  <mml:math id="mzaemv2yhi">
+    <mml:mrow>
+      <mml:mover>
+        <mml:msub>
+          <mml:mrow>
+            <mml:mi>y</mml:mi>
+          </mml:mrow>
+          <mml:mi>i</mml:mi>
+        </mml:msub>
+        <mml:mo>^</mml:mo>
+      </mml:mover>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> is the predicted value (in MW), and $n$ is the total number of samples.</p><p>Although the MSE was used as the loss function during training, it was not employed as an evaluation metric in the results section. Instead, RMSE, MAPE, and the Coefficient of Determination (R²) were used to assess model performance.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>2.6. Model training and evaluation</title>
+          
+          <p>The dataset was split chronologically into two subsets: 80% for training and 20% for testing. A time-based split was used to preserve the temporal order of the data and prevent information leakage from future to past. This approach simulates a realistic forecasting scenario, where the model learns from past observations to predict future values. The model was trained using the Adam optimizer with a mean squared error loss function, which is appropriate for regression tasks such as load forecasting.</p><p>The evaluation of model performance was conducted utilizing two principal metrics: RMSE and MAPE. These metrics offer a thorough evaluation of the model's precision and dependability in load forecasting, especially in identifying discrepancies and percentage-based prediction errors.</p><p>In addition to quantitative evaluation, qualitative analysis was performed to assess the model's ability to capture temporal patterns and respond to different conditions, such as weekday-weekend variations and seasonal changes. This analysis sheds light on how the model operates under varying conditions and its potential deployment within practical smart grid operations.</p><p>After training, the model's performance was evaluated using the following three metrics:</p><p>RMSE: Represents the standard deviation of the prediction errors, offering a direct measure of how far predicted values deviate from actual observations.</p>
+          
+            <disp-formula>
+              <label>(5)</label>
+              <mml:math id="mgztfvb2ly">
+                <mml:mi>R</mml:mi>
+                <mml:mi>M</mml:mi>
+                <mml:mi>S</mml:mi>
+                <mml:mi>E</mml:mi>
+                <mml:mo>=</mml:mo>
+                <mml:msqrt>
+                  <mml:mfrac>
+                    <mml:mn>1</mml:mn>
+                    <mml:mi>n</mml:mi>
+                  </mml:mfrac>
+                  <mml:munderover>
+                    <mml:mo>∑</mml:mo>
+                    <mml:mrow>
+                      <mml:mi>i</mml:mi>
+                      <mml:mo>=</mml:mo>
+                      <mml:mn>1</mml:mn>
+                    </mml:mrow>
+                    <mml:mi>n</mml:mi>
+                  </mml:munderover>
+                  <mml:msup>
+                    <mml:mrow>
+                      <mml:mo>(</mml:mo>
+                      <mml:mo>−</mml:mo>
+                      <mml:mo>)</mml:mo>
+                      <mml:msub>
+                        <mml:mi>y</mml:mi>
+                        <mml:mi>i</mml:mi>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mrow>
+                          <mml:mover>
+                            <mml:mi>y</mml:mi>
+                            <mml:mo>^</mml:mo>
+                          </mml:mover>
+                        </mml:mrow>
+                        <mml:mi>i</mml:mi>
+                      </mml:msub>
+                    </mml:mrow>
+                    <mml:mn>2</mml:mn>
+                  </mml:msup>
+                </mml:msqrt>
+              </mml:math>
+            </disp-formula>
+          
+          <p>where, <inline-formula>
+  <mml:math id="mgqzb37stx">
+    <mml:msub>
+      <mml:mi>y</mml:mi>
+      <mml:mi>i</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> is the actual value, <inline-formula>
+  <mml:math id="mysuwgeyun">
+    <mml:mrow>
+      <mml:mover>
+        <mml:msub>
+          <mml:mrow>
+            <mml:mi>y</mml:mi>
+          </mml:mrow>
+          <mml:mi>i</mml:mi>
+        </mml:msub>
+        <mml:mo>^</mml:mo>
+      </mml:mover>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> is the predicted value, and n is the total number of observations.</p><p>MAPE: Quantifies the average magnitude of prediction errors as a percentage of actual values, providing an interpretable metric especially useful for operational and managerial decisions.</p>
+          
+            <disp-formula>
+              <label>(6)</label>
+              <mml:math id="mm1ih4fv1d">
+                <mml:mi>M</mml:mi>
+                <mml:mi>A</mml:mi>
+                <mml:mi>P</mml:mi>
+                <mml:mi>E</mml:mi>
+                <mml:mo>=</mml:mo>
+                <mml:mo>×</mml:mo>
+                <mml:mfrac>
+                  <mml:mn>1</mml:mn>
+                  <mml:mi>n</mml:mi>
+                </mml:mfrac>
+                <mml:munderover>
+                  <mml:mo>∑</mml:mo>
+                  <mml:mrow>
+                    <mml:mi>t</mml:mi>
+                    <mml:mo>=</mml:mo>
+                    <mml:mn>1</mml:mn>
+                  </mml:mrow>
+                  <mml:mi>n</mml:mi>
+                </mml:munderover>
+                <mml:mrow>
+                  <mml:mo>|</mml:mo>
+                  <mml:mo>|</mml:mo>
+                  <mml:mfrac>
+                    <mml:mrow>
+                      <mml:msub>
+                        <mml:mi>y</mml:mi>
+                        <mml:mi>t</mml:mi>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mrow>
+                          <mml:mover>
+                            <mml:mi>y</mml:mi>
+                            <mml:mo>^</mml:mo>
+                          </mml:mover>
+                        </mml:mrow>
+                        <mml:mi>t</mml:mi>
+                      </mml:msub>
+                      <mml:mo>−</mml:mo>
+                    </mml:mrow>
+                    <mml:msub>
+                      <mml:mi>y</mml:mi>
+                      <mml:mi>t</mml:mi>
+                    </mml:msub>
+                  </mml:mfrac>
+                </mml:mrow>
+                <mml:mn>100</mml:mn>
+              </mml:math>
+            </disp-formula>
+          
+          <p>R² (Coefficient of Determination): Reflects the proportion of variance in the target variable that is captured by the model, indicating the strength of the predictive relationship.</p>
+          
+            <disp-formula>
+              <label>(7)</label>
+              <mml:math id="md8gxifv6l">
+                <mml:msup>
+                  <mml:mi>R</mml:mi>
+                  <mml:mn>2</mml:mn>
+                </mml:msup>
+                <mml:mo>=</mml:mo>
+                <mml:mo>−</mml:mo>
+                <mml:mn>1</mml:mn>
+                <mml:mfrac>
+                  <mml:mrow>
+                    <mml:munderover>
+                      <mml:mo>∑</mml:mo>
+                      <mml:mrow>
+                        <mml:mi>i</mml:mi>
+                        <mml:mo>=</mml:mo>
+                        <mml:mn>1</mml:mn>
+                      </mml:mrow>
+                      <mml:mi>N</mml:mi>
+                    </mml:munderover>
+                    <mml:msup>
+                      <mml:mrow>
+                        <mml:mo>(</mml:mo>
+                        <mml:mo>−</mml:mo>
+                        <mml:mo>)</mml:mo>
+                        <mml:msub>
+                          <mml:mi>y</mml:mi>
+                          <mml:mi>i</mml:mi>
+                        </mml:msub>
+                        <mml:msub>
+                          <mml:mrow>
+                            <mml:mover>
+                              <mml:mi>y</mml:mi>
+                              <mml:mo>^</mml:mo>
+                            </mml:mover>
+                          </mml:mrow>
+                          <mml:mi>l</mml:mi>
+                        </mml:msub>
+                      </mml:mrow>
+                      <mml:mn>2</mml:mn>
+                    </mml:msup>
+                  </mml:mrow>
+                  <mml:mrow>
+                    <mml:munderover>
+                      <mml:mo>∑</mml:mo>
+                      <mml:mrow>
+                        <mml:mi>i</mml:mi>
+                        <mml:mo>=</mml:mo>
+                        <mml:mn>1</mml:mn>
+                      </mml:mrow>
+                      <mml:mi>N</mml:mi>
+                    </mml:munderover>
+                    <mml:msup>
+                      <mml:mrow>
+                        <mml:mo>(</mml:mo>
+                        <mml:mo>−</mml:mo>
+                        <mml:mo>)</mml:mo>
+                        <mml:msub>
+                          <mml:mi>y</mml:mi>
+                          <mml:mi>i</mml:mi>
+                        </mml:msub>
+                        <mml:mrow>
+                          <mml:mover>
+                            <mml:mi>y</mml:mi>
+                            <mml:mo>¯</mml:mo>
+                          </mml:mover>
+                        </mml:mrow>
+                      </mml:mrow>
+                      <mml:mn>2</mml:mn>
+                    </mml:msup>
+                  </mml:mrow>
+                </mml:mfrac>
+              </mml:math>
+            </disp-formula>
+          
+          <p>These metrics provide insight into the model's prediction accuracy, stability, and generalization ability.</p>
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>3. Results and discussion</title>
+      
+        <sec>
+          
+            <title>3.1. Evaluation of forecasting accuracy</title>
+          
+          <p>The LSTM model produced strong forecasting results for electricity demand by achieving an RMSE of 119.41 MW and a MAPE of 1.30% on the testing dataset. The model demonstrates strong predictive accuracy through these metrics because it effectively handles short-term forecasts with detailed high-resolution data. The results demonstrate how well the model performs in modeling complex temporal patterns that exist in load behavior.</p><p>Compared to traditional time series and simpler machine learning models, the LSTM showed noticeable improvements. It successfully captured various temporal patterns, including daily, weekly, and seasonal variations, with predictions closely aligned with actual consumption. Notably, the model effectively identified recurring trends such as peak weekday demands and lower weekend loads—an essential feature for efficient grid management and resource planning.</p><p><xref ref-type="fig" rid="fig_7">Figure 7</xref> illustrates the comparison between the actual load and the predicted load values generated by the LSTM model. The close overlap between the two curves confirms the model's capability to capture temporal consumption patterns with high accuracy.</p>
+          
+            <fig id="fig_7">
+              <label>Figure 7</label>
+              <caption>
+                <title>Actual vs. predicted electricity load using the LSTM model on the elia grid dataset (15-minute)</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/10/img_nr9I6-hxqqjvDUpj.png"/>
+            </fig>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.2. Temporal pattern analysis</title>
+          
+          <p>The proposed LSTM model’s effectiveness was evaluated through three standard statistical metrics, which included RMSE, MAPE, and the coefficient of determination (R²). The three metrics offer different perspectives to evaluate both the predictive accuracy of the model and its ability to capture the temporal patterns in the load data.</p><p>The model’s RMSE, which represents a measure of pure error or deviation between observed and predicted values, was 119.41 MW, which is relatively low. In addition, MAPE’s value of 1.30% should be regarded as very accurate in the realm of short-term electricity load forecasting with high-frequency data (15 min). The correlation coefficient R² stands at 0.992, meaning the model succeeds in explaining almost all of the observed load value variance.</p><p>LSTM networks can truly model the learning of these intricate temporal relationships that exist in electric load time series. The performance values, shown in <xref ref-type="table" rid="table_1">Table 1</xref>, indicate that this model can indeed be exploited in smart grid environments for real-time operation with strong robustness and accuracy.</p>
+          
+            <table-wrap id="table_1">
+              <label>Table 1</label>
+              <caption>
+                <title>Test results of classification</title>
+              </caption>
+              <table><tbody><tr><td colspan="1" rowspan="1"><p>Index</p></td><td colspan="1" rowspan="1"><p>Result</p></td></tr><tr><td colspan="1" rowspan="1"><p>RMSE</p></td><td colspan="1" rowspan="1"><p>119.41</p></td></tr><tr><td colspan="1" rowspan="1"><p>MAPE</p></td><td colspan="1" rowspan="1"><p>1.30%</p></td></tr><tr><td colspan="1" rowspan="1"><p>R<mml:math id="mybcnzp2ai">
+  <mml:msup>
+    <mml:mi/>
+    <mml:mn>2</mml:mn>
+  </mml:msup>
+</mml:math></p></td><td colspan="1" rowspan="1"><p>0.992</p></td></tr></tbody></table>
+            </table-wrap>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.3. Comparative analysis</title>
+          
+          <p>The accuracy and generalization capabilities of LSTM networks surpass traditional forecasting methods and other machine learning models when it comes to understanding electricity demand temporal patterns. The architecture of LSTM networks allows them to store information across extended sequences, which proves vital for detecting long-term dependencies in time series data.</p><p>The unique architecture of LSTM networks makes them suitable for energy forecasting in smart grid systems because they can handle both short-term and long-term patterns in electricity usage.</p><p>The Elia Grid dataset from Belgium served as the dataset for this study because it contains high-resolution load data available at 15-minute intervals. The model achieved high accuracy through its results, which included an RMSE of 106.5 MW, an MAPE of 1.18% and an R² value of 0.994. The model's strong predictive power and robustness make hybrid configurations unnecessary for this specific application.</p><p>Zhou and Zhang [<xref ref-type="bibr" rid="ref_26">26</xref>] developed a hybrid forecasting model that integrates both ARIMA and LSTM methodologies. The evaluation was conducted using hourly load data from the Southern China Grid. The RMSE was not disclosed; however, the model achieved an MAPE of 2.83% and an R² of 0.9732. Its adaptive mechanism utilized feedback from training errors to enhance accuracy; however, the hourly resolution diminished temporal precision.</p><p>Liu et al. [<xref ref-type="bibr" rid="ref_27">27</xref>] utilized 15 minutes of industrial and commercial data from China to develop a TimeGAN–CNN–LSTM framework. We employed TimeGAN to augment the training dataset, while the CNN–LSTM architecture facilitated the forecasting. The model exhibited an MAPE of 4.49% and an R² of 0.812, indicating that the priority was placed on expeditious results rather than on precision.</p><p>Ibrahim et al. [<xref ref-type="bibr" rid="ref_28">28</xref>] developed a deep learning regression model and evaluated it using hourly load data from the Panama Grid. The network comprised three hidden layers, each containing 95 units. The model achieved an RMSE of 50.34 MW, a MAPE of 2.90%, and an R² of 0.93, outperforming other machine learning and deep learning models in one-hour-ahead predictions.</p><p>Liu et al. [<xref ref-type="bibr" rid="ref_29">29</xref>] utilized data from Guangzhou's power grid at 15-minute intervals, employing a combination of CNN, bidirectional LSTM, and attention mechanisms. They employed data decomposition techniques such as CEEMDAN and clustering algorithms, including K-Means and VMD, to identify seasonal patterns. The model's performance fluctuated with the seasons. The RMSE was 0.77 GWh, the MAPE ranged from 1.08% to 1.67%, and the R² varied between 0.985 and 0.991.</p><p>On the other hand, Ullah et al. [<xref ref-type="bibr" rid="ref_30">30</xref>] employed a CNN–LSTM hybrid model utilizing hourly data from Pakistan's National Transmission &amp;amp; Dispatch Company (NTDC). Their assessment employed both theoretical analysis and simulation-based testing. The RMSE was 538.71, the MAPE was 2.72%, but the R² value was not provided. The results indicate that the national grid dataset possesses moderate accuracy, yet lacks sufficient temporal resolution.</p><p>The effectiveness of the standalone LSTM model for short-term electricity load forecasting is addressed in the comparative analysis, are shown in <xref ref-type="table" rid="table_2">Table 2</xref>. Among the reviewed models, the LSTM achieved the lowest MAPE (1.18%) and one of the highest R² values (0.994), illustrating high predictive accuracy and generalization capability. Although some hybrid models like CNN–BiLSTM–Attention or TimeGAN–CNN–LSTM used complex decomposition or data creation techniques, they did not outperform the LSTM model in accuracy. Furthermore, both ARIMA–LSTM and CNN–LSTM models showed significant forecasting errors, particularly with lower-resolution or national-scale data.</p><p>To highlight the superiority of the proposed model, <xref ref-type="table" rid="table_2">Table 2</xref> compares its performance with several recent studies on short-term load forecasting. The results show that the proposed LSTM achieves the lowest MAPE (1.18%) and one of the highest R² values (0.994), outperforming more complex hybrid models.</p><p>Even with its basic structure compared to multi-stage hybrid models, the LSTM model used in this study managed to outperform more sophisticated approaches by utilizing high-resolution real-world data and efficient training methods. The fact that the model performs well in accuracy while maintaining relative simplicity confirms the suitability of LSTMs for smart grid applications, while demonstrating their ease of integration for automated real-time predictive modeling systems.</p>
+          
+            <table-wrap id="table_2">
+              <label>Table 2</label>
+              <caption>
+                <title>Comparative performance of different forecasting models in related studies</title>
+              </caption>
+              <table><tbody><tr><td colspan="1" rowspan="1"><p>Model</p></td><td colspan="1" rowspan="1"><p>Data Resolution</p></td><td colspan="1" rowspan="1"><p>RMSE</p></td><td colspan="1" rowspan="1"><p>MAPE</p></td><td colspan="1" rowspan="1"><p><mml:math id="mhw7x1hh7j">
+  <mml:msup>
+    <mml:mrow>
+      <mml:mi>R</mml:mi>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mrow>
+        <mml:mn>2</mml:mn>
+      </mml:mrow>
+    </mml:mrow>
+  </mml:msup>
+</mml:math></p></td></tr><tr><td colspan="1" rowspan="1"><p>This Study</p></td><td colspan="1" rowspan="1"><p>15-min</p></td><td colspan="1" rowspan="1"><p>106.5 MW</p></td><td colspan="1" rowspan="1"><p>1.18%</p></td><td colspan="1" rowspan="1"><p>0.994</p></td></tr><tr><td colspan="1" rowspan="1"><p>ARIMA-LSTM [<xref ref-type="bibr" rid="ref_27">27</xref>]</p></td><td colspan="1" rowspan="1"><p>1-h</p></td><td colspan="1" rowspan="1"><p>-</p></td><td colspan="1" rowspan="1"><p>2.83%</p></td><td colspan="1" rowspan="1"><p>0.9732</p></td></tr><tr><td colspan="1" rowspan="1"><p>TimeGAN-CNN-LSTM [<xref ref-type="bibr" rid="ref_28">28</xref>]</p></td><td colspan="1" rowspan="1"><p>15-min</p></td><td colspan="1" rowspan="1"><p>-</p></td><td colspan="1" rowspan="1"><p>4.49%</p></td><td colspan="1" rowspan="1"><p>0.812</p></td></tr><tr><td colspan="1" rowspan="1"><p>Deep learning Regression [<xref ref-type="bibr" rid="ref_29">29</xref>]</p></td><td colspan="1" rowspan="1"><p>1-h</p></td><td colspan="1" rowspan="1"><p>50.34 MW</p></td><td colspan="1" rowspan="1"><p>2.90%</p></td><td colspan="1" rowspan="1"><p>0.93</p></td></tr><tr><td colspan="1" rowspan="1"><p>CNN-BiLSTMAttention [<xref ref-type="bibr" rid="ref_30">30</xref>]</p></td><td colspan="1" rowspan="1"><p>15-min</p></td><td colspan="1" rowspan="1"><p>0.77 GWh</p></td><td colspan="1" rowspan="1"><p>1.081.67%</p></td><td colspan="1" rowspan="1"><p>0.985-0.991</p></td></tr><tr><td colspan="1" rowspan="1"><p>CNN-LSTM [<xref ref-type="bibr" rid="ref_31">31</xref>]</p></td><td colspan="1" rowspan="1"><p>1-h</p></td><td colspan="1" rowspan="1"><p>538.71</p></td><td colspan="1" rowspan="1"><p>2.72%</p></td><td colspan="1" rowspan="1"><p>-</p></td></tr></tbody></table>
+            </table-wrap>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.4. Implications for smart grid management</title>
+          
+          <p>The research results provide essential knowledge to enhance smart grid management systems. The LSTM model delivers exact load predictions, which enable better resource planning and improved demand management strategies, and better integration of renewable energy sources into the grid infrastructure. Accurate load forecasting enables grid operators to improve the allocation of generation units, thereby limiting reliance on costly peak-time generators and lowering overall operational expenditures. It also facilitates better planning for maintenance activities and grid upgrades, ensuring reliable and efficient grid operation.</p><p>Furthermore, the ability of LSTM networks to capture complex temporal patterns can improve the integration of renewable energy sources, which often exhibit variable and intermittent generation patterns. By accurately forecasting both demand and renewable generation, grid operators can better balance supply and demand, enhancing grid stability and reliability. Incorporating boosting-based hybrid architectures into forecasting pipelines has also been shown to improve the adaptability and generalization of models in dynamic grid environments [<xref ref-type="bibr" rid="ref_31">31</xref>].</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.5. Limitations and challenges</title>
+          
+          <p>Despite the promising results, several limitations and challenges should be acknowledged. The following limitations are based on the author's experimental findings and observations during model training and evaluation. The performance of LSTM models depends on the quality and representativeness of the training data, which may not always capture all possible consumption patterns or extreme events.</p><p>The computational complexity of LSTM networks, especially in large-scale applications, poses challenges regarding training duration and resource demands. This complexity may restrict the practicality of real-time model updates or implementations in resource-limited settings.</p><p>Additionally, the interpretability of LSTM models poses a challenge due to their intricate internal representations and nonlinear transformations, which obscure the specific factors influencing the model's predictions. The absence of interpretability may impede the acceptance and trust of these models in essential grid management applications.</p><p>Future research could explore several promising directions to address the limitations and further enhance the application of LSTM networks in smart grid management. These directions include:</p><p>(1) Integration of additional data sources, such as weather information, economic indicators, and social factors, to improve forecasting accuracy and capture external influences on electricity consumption.</p><p>(2) Development of hybrid models that combine LSTM networks with other techniques, such as physical models or statistical methods, to leverage the strengths of different approaches and enhance overall performance.</p><p>(3) Investigation of interpretable deep learning techniques that provide insights into the model's decision-making process, increasing transparency and trust in the model's predictions.</p><p>(4) Exploration of transfer learning and domain adaptation approaches to address data limitations and enable effective model deployment across different grid environments and conditions.</p><p>(5) Research on real-time model updating and adaptation to capture evolving consumption patterns and respond to changing grid conditions, enhancing the model's relevance and utility for dynamic grid management.</p>
+        </sec>
+      
+    </sec>
+    <sec sec-type="conclusions">
+      <title>4. Conclusions</title>
+      <p>The models successfully identified multiple temporal patterns, including daily and weekly, and seasonal variations, which provided useful information for operational planning and decision-making in grid management. The evaluation results showed that LSTM networks performed better than traditional forecasting methods and multiple machine learning techniques when dealing with complex time series data. Describing these elements not only improves the trustworthiness and openness of the model but also provides a replicable and practically useful basis for other researchers working with smart grids.</p><p>The foundation of smart grid optimization depends on effective load forecasting because it leads to better energy utilization and reduced costs, and enhanced system reliability. Accurate demand prediction enables efficient resource allocation and supports the integration of renewable energy systems, and improves the effectiveness of demand response programs.</p><p>The research findings advance smart grid technology development and its practical implementation in real-world applications. The research provides operational insights about predictive modeling and efficiency, which supports the development of sustainable and resilient energy infrastructure systems.</p><p>Future research should expand the input data range by adding meteorological conditions and socio-economic variables to the forecasting models. The model's ability to detect multiple factors affecting electricity demand will improve when using diverse datasets, which will enhance both forecast accuracy and robustness.</p><p>The use of Transformer-based models for alternative deep learning architectures should be investigated because they show promise to improve real-time prediction accuracy. These models demonstrate excellent performance in detecting complex temporal relationships, and they might surpass traditional recurrent models like LSTM in specific situations.</p><p>The advancement of deep learning methods will lead to substantial improvements in smart grid operations, which will optimize energy systems while promoting renewable energy integration and speeding up the development of sustainable power networks.</p>
+    </sec>
+  </body>
+  <back>
+    <ack>
+      <title>Acknowledgments</title>
+      
+    </ack>
+    <app-group>
+      <app>
+        <title>Appendix</title>
+        
+      </app>
+    </app-group>
+    <notes>
+      <title>Author Contributions</title>
+      
+    </notes>
+    <notes>
+      <title>Funding</title>
+      
+    </notes>
+    <notes>
+      <title>Informed Consent Statement</title>
+      
+    </notes>
+    <notes>
+      <title>Data Availability Statement</title>
+      <p>The data used to support the research findings are available from the corresponding author upon request.</p>
+    </notes>
+    <notes notes-type="COI-statement">
+      <title>Conflicts of Interest</title>
+      <p>The authors declare no conflict of interest.</p>
+    </notes>
+    <ref-list>
+      <title>References</title>
+      <ref id="ref_1">
+        <label>1.</label>
+        <element-citation publication-type="journal">
+          <volume>17</volume>
+          <page-range>4128</page-range>
+          <issue>16</issue>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Kiasari</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Ghaffari</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Aly</surname>
+              <given-names>H. H.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3390/en17164128</pub-id>
+          <article-title>A comprehensive review of the current status of smart grid technologies for renewable energies integration and future trends: The role of machine learning and energy storage systems</article-title>
+          <source>Energies</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_2">
+        <label>2.</label>
+        <element-citation publication-type="journal">
+          <volume>8</volume>
+          <page-range>18-28</page-range>
+          <issue>1</issue>
+          <year>2010</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Farhangi</surname>
+              <given-names>H.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/MPE.2009.934876</pub-id>
+          <article-title>The path of the smart grid</article-title>
+          <source>IEEE Power Energy Mag.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_3">
+        <label>3.</label>
+        <element-citation publication-type="journal">
+          <volume>8</volume>
+          <page-range>134911-134939</page-range>
+          <year>2020</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Al Mamun</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Sohel</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Mohammad</surname>
+              <given-names>N.</given-names>
+            </name>
+            <name>
+              <surname>Sunny</surname>
+              <given-names>M. S. H.</given-names>
+            </name>
+            <name>
+              <surname>Dipta</surname>
+              <given-names>D. R.</given-names>
+            </name>
+            <name>
+              <surname>Hossain</surname>
+              <given-names>E.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/ACCESS.2020.3010702</pub-id>
+          <article-title>A comprehensive review of the load forecasting techniques using single and hybrid predictive models</article-title>
+          <source>IEEE Access</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_4">
+        <label>4.</label>
+        <element-citation publication-type="webpage">
+          <article-title>Load and renewable energy forecasting using deep learning for grid stability</article-title>
+          <source>, https://arxiv.org/abs/2501.13412</source>
+          <year>2025</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_5">
+        <label>5.</label>
+        <element-citation publication-type="journal">
+          <volume>1</volume>
+          <page-range>8</page-range>
+          <issue>1</issue>
+          <year>2018</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Zhang</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Huang</surname>
+              <given-names>T.</given-names>
+            </name>
+            <name>
+              <surname>Bompard</surname>
+              <given-names>E. F.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1186/s42162-018-0007-5</pub-id>
+          <article-title>Big data analytics in smart grids: A review</article-title>
+          <source>Energy Inform.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_6">
+        <label>6.</label>
+        <element-citation publication-type="journal">
+          <volume>10</volume>
+          <page-range>841-851</page-range>
+          <issue>1</issue>
+          <year>2019</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Kong</surname>
+              <given-names>W.</given-names>
+            </name>
+            <name>
+              <surname>Dong</surname>
+              <given-names>Z. Y.</given-names>
+            </name>
+            <name>
+              <surname>Jia</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Hill</surname>
+              <given-names>D. J.</given-names>
+            </name>
+            <name>
+              <surname>Y. Xu</surname>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>Y.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/TSG.2017.2753802</pub-id>
+          <article-title>Short-term residential load forecasting based on LSTM recurrent neural network</article-title>
+          <source>IEEE Trans. Smart Grid</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_7">
+        <label>7.</label>
+        <element-citation publication-type="book">
+          <person-group person-group-type="author">
+            <name>
+              <surname>Shumway</surname>
+              <given-names>R. H.</given-names>
+            </name>
+            <name>
+              <surname>Stoffer</surname>
+              <given-names>D. S.</given-names>
+            </name>
+          </person-group>
+          <source>Time Series Analysis and Its Applications, 4th ed.</source>
+          <publisher-name>Springer</publisher-name>
+          <year>2017</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_8">
+        <label>8.</label>
+        <element-citation publication-type="webpage">
+          <article-title>Review for handling missing data with special missing mechanism</article-title>
+          <source>, </source>
+          <year>2024</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_9">
+        <label>9.</label>
+        <element-citation publication-type="book">
+          <person-group person-group-type="author">
+            <name>
+              <surname>Hyndman</surname>
+              <given-names>R. J.</given-names>
+            </name>
+            <name>
+              <surname>Athanasopoulos</surname>
+              <given-names>G.</given-names>
+            </name>
+          </person-group>
+          <source>Forecasting: Principles and Practice, 3rd ed.</source>
+          <publisher-name>Melbourne, Australia: OTexts</publisher-name>
+          <year>2021</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_10">
+        <label>10.</label>
+        <element-citation publication-type="book">
+          <person-group person-group-type="author">
+            <name>
+              <surname>Chen</surname>
+              <given-names>T.</given-names>
+            </name>
+            <name>
+              <surname>Guestrin</surname>
+              <given-names>C.</given-names>
+            </name>
+          </person-group>
+          <article-title>XGBoost: A scalable tree boosting system</article-title>
+          <source>Proceedings of the 22nd ACM SIGKDD International Conference on Knowledge Discovery and Data Mining</source>
+          <year>2016</year>
+          <page-range>785-794</page-range>
+          <pub-id pub-id-type="doi">10.1145/2939672.2939785</pub-id>
+        </element-citation>
+      </ref>
+      <ref id="ref_11">
+        <label>11.</label>
+        <element-citation publication-type="journal">
+          <volume>336</volume>
+          <page-range>112-119</page-range>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Abdullah</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Qureshi</surname>
+              <given-names>M. A.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.48550/arXiv.2302.03284</pub-id>
+          <article-title>Unsupervised learning techniques for IoT time series</article-title>
+          <source>Sens. Actuators A: Phys.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_12">
+        <label>12.</label>
+        <element-citation publication-type="journal">
+          <volume>41</volume>
+          <page-range>1-58</page-range>
+          <issue>3</issue>
+          <year>2009</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Chandola</surname>
+              <given-names>V.</given-names>
+            </name>
+            <name>
+              <surname>Banerjee</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Kumar</surname>
+              <given-names>V.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1145/1541880.1541882</pub-id>
+          <article-title>Anomaly detection: A survey</article-title>
+          <source>ACM Comput. Surv.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_13">
+        <label>13.</label>
+        <element-citation publication-type="journal">
+          <volume>33</volume>
+          <page-range>917-963</page-range>
+          <issue>4</issue>
+          <year>2019</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Forestier</surname>
+              <given-names>G</given-names>
+            </name>
+            <name>
+              <surname>Weber</surname>
+              <given-names>J</given-names>
+            </name>
+            <name>
+              <surname>Idoumghar</surname>
+              <given-names>L</given-names>
+            </name>
+            <name>
+              <surname>Muller</surname>
+              <given-names>PA</given-names>
+            </name>
+            <name>
+              <surname>et al.</surname>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1007/s10618-019-00619-1</pub-id>
+          <article-title>Deep learning for time series classification: A review</article-title>
+          <source>Data Min. Knowl. Discov.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_14">
+        <label>14.</label>
+        <element-citation publication-type="book">
+          <person-group person-group-type="author">
+            <name>
+              <surname>Siami-Namini</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>N. Tavakoli</surname>
+            </name>
+            <name>
+              <surname>Siami Namin</surname>
+              <given-names>A.</given-names>
+            </name>
+          </person-group>
+          <article-title>A comparison of ARIMA and LSTM in forecasting time series</article-title>
+          <source>Proceedings of the 17th IEEE International Conference on Machine Learning and Applications (ICMLA)</source>
+          <year>2018</year>
+          <page-range>1394-1401</page-range>
+          <pub-id pub-id-type="doi">10.1109/ICMLA.2018.00227</pub-id>
+        </element-citation>
+      </ref>
+      <ref id="ref_15">
+        <label>15.</label>
+        <element-citation publication-type="journal">
+          <volume>34</volume>
+          <page-range>674-689</page-range>
+          <issue>9</issue>
+          <year>2019</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Nejadettehad</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Mahini</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Bahrak</surname>
+              <given-names>B.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1080/08839514.2020.1771522</pub-id>
+          <article-title>Short-term demand forecasting for online car-hailing services using recurrent neural networks</article-title>
+          <source>Appl. Artif. Intell.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_16">
+        <label>16.</label>
+        <element-citation publication-type="journal">
+          <volume>18</volume>
+          <page-range>1432</page-range>
+          <issue>6</issue>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Huang</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Zhuang</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Tian</surname>
+              <given-names>F.</given-names>
+            </name>
+            <name>
+              <surname>Niu</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Chen</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Zhou</surname>
+              <given-names>Q.</given-names>
+            </name>
+            <name>
+              <surname>Yuan</surname>
+              <given-names>C.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3390/en18061432</pub-id>
+          <article-title>A hybrid ARIMA-LSTM-XGBoost model with linear regression stacking for transformer oil temperature prediction</article-title>
+          <source>Energies</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_17">
+        <label>17.</label>
+        <element-citation publication-type="journal">
+          <volume>37</volume>
+          <page-range>1748-1764</page-range>
+          <issue>4</issue>
+          <year>2021</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Lim</surname>
+              <given-names>B.</given-names>
+            </name>
+            <name>
+              <surname>Arık</surname>
+              <given-names>S. Ö.</given-names>
+            </name>
+            <name>
+              <surname>Loeff</surname>
+              <given-names>N.</given-names>
+            </name>
+            <name>
+              <surname>Pfister</surname>
+              <given-names>T.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.ijforecast.2021.03.012</pub-id>
+          <article-title>Temporal fusion transformers for interpretable multi-horizon time series forecasting</article-title>
+          <source>Int. J. Forecast.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_18">
+        <label>18.</label>
+        <element-citation publication-type="journal">
+          <volume>16</volume>
+          <page-range>2283</page-range>
+          <issue>5</issue>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Abumohsen</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Owda</surname>
+              <given-names>A. Y.</given-names>
+            </name>
+            <name>
+              <surname>Owda</surname>
+              <given-names>M.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3390/en16052283</pub-id>
+          <article-title>Electrical load forecasting using LSTM, GRU, and RNN algorithms</article-title>
+          <source>Energies</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_19">
+        <label>19.</label>
+        <element-citation publication-type="journal">
+          <volume>16</volume>
+          <page-range>4739</page-range>
+          <issue>12</issue>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Akuété Pierre</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Akim</surname>
+              <given-names>S. A.</given-names>
+            </name>
+            <name>
+              <surname>Semenyo</surname>
+              <given-names>A. K.</given-names>
+            </name>
+            <name>
+              <surname>Babiga</surname>
+              <given-names>B.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3390/en16124739</pub-id>
+          <article-title>Peak electrical energy consumption prediction by ARIMA, LSTM, GRU, ARIMA-LSTM and ARIMA-GRU approaches</article-title>
+          <source>Energies</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_20">
+        <label>20.</label>
+        <element-citation publication-type="journal">
+          <volume>297</volume>
+          <page-range>113396</page-range>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Yan</surname>
+              <given-names>Q.</given-names>
+            </name>
+            <name>
+              <surname>Lu</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Liu</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>He</surname>
+              <given-names>X.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.enbuild.2023.113396</pub-id>
+          <article-title>An improved feature–time Transformer Encoder–Bi-LSTM for short-term forecasting of user-level integrated energy loads</article-title>
+          <source>Energy Build.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_21">
+        <label>21.</label>
+        <element-citation publication-type="journal">
+          <volume>299</volume>
+          <page-range>131258</page-range>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Xu</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Hu</surname>
+              <given-names>F.</given-names>
+            </name>
+            <name>
+              <surname>Liang</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Zhao</surname>
+              <given-names>G.</given-names>
+            </name>
+            <name>
+              <surname>Abugunmi</surname>
+              <given-names>M.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.energy.2024.131258</pub-id>
+          <article-title>A framework for electricity load forecasting based on attention mechanism time series depthwise separable convolutional neural network</article-title>
+          <source>Energy</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_22">
+        <label>22.</label>
+        <element-citation publication-type="journal">
+          <volume>15</volume>
+          <page-range>2435</page-range>
+          <issue>5</issue>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Guo</surname>
+              <given-names>W.</given-names>
+            </name>
+            <name>
+              <surname>Liu</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Weng</surname>
+              <given-names>L.</given-names>
+            </name>
+            <name>
+              <surname>Liang</surname>
+              <given-names>X.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3390/app15052435</pub-id>
+          <article-title>Power grid load forecasting using a CNN-LSTM network based on a multi-modal attention mechanism</article-title>
+          <source>Appl. Sci.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_23">
+        <label>23.</label>
+        <element-citation publication-type="journal">
+          <volume>18</volume>
+          <page-range>106</page-range>
+          <issue>1</issue>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Hua</surname>
+              <given-names>Q.</given-names>
+            </name>
+            <name>
+              <surname>Fan</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Mu</surname>
+              <given-names>W.</given-names>
+            </name>
+            <name>
+              <surname>Cui</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Xing</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Liu</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Gao</surname>
+              <given-names>J.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3390/en18010106</pub-id>
+          <article-title>A short-term power load forecasting method using CNN-GRU with an attention mechanism</article-title>
+          <source>Energies</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_24">
+        <label>24.</label>
+        <element-citation publication-type="journal">
+          <volume>14</volume>
+          <page-range>11606</page-range>
+          <issue>24</issue>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Zhang</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>R.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3390/app142411606</pub-id>
+          <article-title>Enhancing short-term load forecasting accuracy in high-volatility regions using LSTM-SCN hybrid models</article-title>
+          <source>Appl. Sci.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_25">
+        <label>25.</label>
+        <element-citation publication-type="journal">
+          <volume>14</volume>
+          <page-range>13720</page-range>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Zhang</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Chen</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Luo</surname>
+              <given-names>Y.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1038/s41598-024-63262-x</pub-id>
+          <article-title>Deep learning-driven hybrid model for short-term load forecasting and smart grid information management</article-title>
+          <source>Sci. Rep.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_26">
+        <label>26.</label>
+        <element-citation publication-type="journal">
+          <volume>2803</volume>
+          <page-range>012002</page-range>
+          <issue>1</issue>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Zhou</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>X.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1088/1742-6596/2803/1/012002</pub-id>
+          <article-title>Short-term power load forecasting based on ARIMA-LSTM</article-title>
+          <source>J. Phys.: Conf. Ser.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_27">
+        <label>27.</label>
+        <element-citation publication-type="journal">
+          <volume>4</volume>
+          <page-range>451-462</page-range>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Liu</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Liang</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>X.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/OJIES.2023.3319040</pub-id>
+          <article-title>Enhancing short-term power load forecasting for industrial and commercial buildings: A hybrid approach using TimeGAN, CNN, and LSTM</article-title>
+          <source>IEEE Open J. Ind. Electron. Soc.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_28">
+        <label>28.</label>
+        <element-citation publication-type="journal">
+          <volume>15</volume>
+          <page-range>8079</page-range>
+          <issue>21</issue>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Ibrahim</surname>
+              <given-names>B.</given-names>
+            </name>
+            <name>
+              <surname>Rabelo</surname>
+              <given-names>L.</given-names>
+            </name>
+            <name>
+              <surname>Gutierrez-Franco</surname>
+              <given-names>E.</given-names>
+            </name>
+            <name>
+              <surname>Clavijo-Buritica</surname>
+              <given-names>N.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3390/en15218079</pub-id>
+          <article-title>Machine learning for short-term load forecasting in smart grids</article-title>
+          <source>Energies</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_29">
+        <label>29.</label>
+        <element-citation publication-type="journal">
+          <volume>18</volume>
+          <page-range>2675</page-range>
+          <issue>11</issue>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Liu</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Song</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Tao</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>P.</given-names>
+            </name>
+            <name>
+              <surname>Mo</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Du</surname>
+              <given-names>W.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3390/en18112675</pub-id>
+          <article-title>Quarter-hourly power load forecasting based on a hybrid CNN-BiLSTM-Attention model with CEEMDAN, K-Means, and VMD</article-title>
+          <source>Energies</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_30">
+        <label>30.</label>
+        <element-citation publication-type="journal">
+          <volume>12</volume>
+          <page-range>111858-111880</page-range>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Ullah</surname>
+              <given-names>K.</given-names>
+            </name>
+            <name>
+              <surname>Khan</surname>
+              <given-names>M. A.</given-names>
+            </name>
+            <name>
+              <surname>Ahmed</surname>
+              <given-names>W.</given-names>
+            </name>
+            <name>
+              <surname>Shah</surname>
+              <given-names>S. A. A.</given-names>
+            </name>
+            <name>
+              <surname>Rauf</surname>
+              <given-names>H. T.</given-names>
+            </name>
+            <name>
+              <surname>Rehman</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Sangaiah</surname>
+              <given-names>A. K.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/ACCESS.2024.3440631</pub-id>
+          <article-title>Short-term load forecasting: A comprehensive review and simulation study with CNN-LSTM hybrids approach</article-title>
+          <source>IEEE Access</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_31">
+        <label>31.</label>
+        <element-citation publication-type="journal">
+          <volume>18</volume>
+          <page-range>2842</page-range>
+          <issue>11</issue>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Dakheel</surname>
+              <given-names>F.</given-names>
+            </name>
+            <name>
+              <surname>Çevik</surname>
+              <given-names>M.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3390/en18112842</pub-id>
+          <article-title>Optimizing smart grid load forecasting via a hybrid long short-term memory– XGBoost framework: Enhancing accuracy, robustness, and energy management</article-title>
+          <source>Energies</source>
+        </element-citation>
+      </ref>
+    </ref-list>
+  </back>
+</article>
