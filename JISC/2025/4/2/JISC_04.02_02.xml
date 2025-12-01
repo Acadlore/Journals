@@ -25,7 +25,7 @@
         </subj-group>
       </article-categories>
       <title-group>
-        <article-title>Design and Control of a Bluetooth-Enabled two-Wheeled Self-Balancing Vehicle</article-title>
+        <article-title>Design and Control of a Bluetooth-Enabled Two-Wheeled Self-Balancing Vehicle</article-title>
       </title-group>
       <contrib-group>
         <contrib contrib-type="author" rid="aff_1,2">
@@ -119,11 +119,11 @@
   <body>
     <sec sec-type="intro">
       <title>1. Introduction</title>
-      <p>In recent years, two-wheeled self-balancing vehicles have been favored by more and more green travel enthusiasts due to their advantages of energy saving, environmental protection, simple structure, flexible operation, and convenient carrying, and have now become an important branch of mobile robot research [<xref ref-type="bibr" rid="ref_1">1</xref>]. The two-wheeled self-balancing vehicle system, as an important part of the intelligent vehicle system, has also attracted much attention due to its nonlinear, highly unstable, and strong coupling characteristics.</p><p>In the vehicle’s self-balancing control process, the accuracy and real-time performance of the body attitude inclination measurement determine the control performance. Relying on the gyroscope or accelerometer only leads to large measurement error and vibration interference, often failing to meet the self-balancing control requirements of a two-wheeled vehicle [<xref ref-type="bibr" rid="ref_2">2</xref>]. Therefore, the study of data fusion algorithms that effectively remove the interference of sensor data has also become the focus of research. The KF algorithm is widely used as the basis of many attitude data fusion methods [<xref ref-type="bibr" rid="ref_3">3</xref>], [<xref ref-type="bibr" rid="ref_4">4</xref>], [<xref ref-type="bibr" rid="ref_5">5</xref>]. Wei et al. [<xref ref-type="bibr" rid="ref_6">6</xref>] proposed a KF fusion algorithm based on a data iterative method. In this algorithm, the output of the multisensor data fusion is introduced into the system again for iterative fusion filtering. Zhu et al. [<xref ref-type="bibr" rid="ref_7">7</xref>] used extended KF to realize the information fusion of the accelerometer and gyroscope. In the study by Srichandan et al. [<xref ref-type="bibr" rid="ref_8">8</xref>], the angle output of the inertial measurement unit (IMU) is provided to the KF, and its output is used as the input of Q-learning to achieve more precise balance control. The complementary filter (CF) is also widely used in two-wheeled self-balancing vehicles due to its ability to effectively eliminate the gyroscope drift, suppress the high-frequency perturbation of the accelerometer, reduce the dynamic error of the output attitude angle, and improve the angle measurement precision [<xref ref-type="bibr" rid="ref_9">9</xref>], [<xref ref-type="bibr" rid="ref_10">10</xref>]. Huang et al. [<xref ref-type="bibr" rid="ref_11">11</xref>] used CF to fuse and optimize the inclination and acceleration sensor measurement value, thus obtaining the optimal estimation value which is consistent with the actual attitude information. After CF processed the output data of the gyroscope and accelerometer and the weighted average operation was performed, the cross compensation was used for correction according to the measurement error.</p><p>In addition, various control algorithms have been studied to solve the self-balancing and motion control problems of the vehicle. Unluturk and Aydogdu [<xref ref-type="bibr" rid="ref_12">12</xref>] proposed an adaptive fuzzy logic proportional–integral (PI) controller based on artificial neural network (ANN). Kim and Kwon [<xref ref-type="bibr" rid="ref_13">13</xref>] proposed a control scheme based on the state-dependent Riccati equation. Xu and Li [<xref ref-type="bibr" rid="ref_14">14</xref>] proposed a design methodology for the one-dimensional cloud model controller. Guo et al. [<xref ref-type="bibr" rid="ref_15">15</xref>] used a completely online, feedback-based Q-learning to achieve optimal control of a balancing robot, with both state feedback and output feedback considered. At present, the PID control algorithm has been widely used because of its simple principle, easy design, and independent parameters [<xref ref-type="bibr" rid="ref_16">16</xref>], [<xref ref-type="bibr" rid="ref_17">17</xref>], [<xref ref-type="bibr" rid="ref_18">18</xref>]. However, this algorithm also has shortcomings. It is mainly suitable for the basic linear and dynamic characteristics that do not change with the time control system. And the controller parameters mainly rely on manual debugging because it is time-consuming. Therefore, it is difficult for the PID controller to achieve precise control of the vehicle for a long time.</p><p>To improve the control effect of the PID controller in self-balancing vehicle systems, Singh and Bhushan [<xref ref-type="bibr" rid="ref_19">19</xref>] revised the transition probability of the ant colony optimization (ACO) and obtained an improved ACO, which in turn optimized the PID controller and obtained its optimal tuning parameters. Jiang and He [<xref ref-type="bibr" rid="ref_20">20</xref>] proposed an active disturbance rejection control strategy, which is tuned by an adaptive differential evolution algorithm, for the self-balancing control part of the vehicle and designed a PID control strategy incorporating the transient process for the steering control part. Shen et al. [<xref ref-type="bibr" rid="ref_21">21</xref>] designed the controller using the neuronal PID control algorithm. Ren and Zhou [<xref ref-type="bibr" rid="ref_22">22</xref>] proposed a cascade coupling control scheme based on the PID control algorithm. The speed loop and balance loop in the classical parallel coupling control method were decoupled to remove the independent speed PID control, with the former being set as the outer loop and the latter being set as the inner loop to realize the coupling. Pang et al. [<xref ref-type="bibr" rid="ref_23">23</xref>] proposed an adaptive sliding mode attitude control scheme by combining the minimum parameter learning method with the radial basis function neural network. Anisimov et al. [<xref ref-type="bibr" rid="ref_24">24</xref>] designed a fuzzy proportional–derivative (PD) controller based on the relation model and optimized the scaling factors of the controller using the cross-entropy optimization method. Ren et al. [<xref ref-type="bibr" rid="ref_25">25</xref>] proposed a fuzzy controller with learning ability based on the fuzzy rule and the operant conditioning (OC) learning mechanism, enabling the self-balancing vehicle to learn and obtain the fuzzy control rules autonomously and realize the automation of controller design.</p><p>To obtain accurate attitude information of the current vehicle body, an improved KF algorithm was adopted in this current study based on the measurement’s iterative update to fuse the output data of the gyroscope and accelerometer. In addition, the prior covariance matrix modified by the Levenberg-Marquardt (L-M) method was introduced at the beginning of the iteration for updating. For the control problem, an improved PID control algorithm was designed based on the hierarchical control strategy. In the balance control layer, the angular velocity loop was strung into the angle loop. In the speed control layer, a control algorithm based on weighted PI was designed. Accurate control of speed was realized by adjusting the change speed of accumulation and the degree of response to the error. In the steering control layer, a controller output update algorithm based on weighted PD was designed. A certain degree of feedback control was introduced into the steering output, and finally a limiting operation was performed on the steering control output. The rest of this study is organized below. Sections 2 and 3 introduce the hardware and software design of the system. Section 4 presents the principle and design of the improved KF. Section 5 explains the improved PID algorithm in terms of balance, speed and direction control. Section 6 simulates and analyzes the improved KF and PID algorithms and tests the system. Section 7 concludes this study.</p><p>In the process of accurately acquiring the real-time attitude of a self-balancing vehicle in dynamic operation, traditional KF methods are often affected by estimation errors when sensor noise is time-varying or abnormal disturbances occur. To overcome this limitation, a measurement-driven iteratively updated KF algorithm was used in this study to fuse the outputs of the gyroscope and accelerometer. During the iterative initialization phase, a prior covariance matrix corrected by the L-M method was introduced, which enhanced the robustness of the algorithm against initial errors and improved the convergence speed and accuracy of attitude estimation. In terms of the control strategy, the insufficient adjustment capability of the traditional PID control in multi-task coupled scenarios for self-balancing vehicles was addressed through an improved PID control algorithm designed based on hierarchical control principles. At the balance control layer, a composite structure was adopted in which an angular velocity loop was integrated into an angular position loop to suppress attitude oscillation and improve disturbance rejection capability. At the velocity control layer, a weighted PI controller was designed to achieve precise speed control by adjusting the integral term's rate of change and the sensitivity to errors. At the direction control layer, a weighted PD-based controller output update algorithm was developed, incorporating a certain degree of feedback control into the steering output, while output limiting was applied to ensure smooth steering maneuvers.</p>
+      <p>In recent years, two-wheeled self-balancing vehicles have been favored by more and more green travel enthusiasts due to their advantages of energy saving, environmental protection, simple structure, flexible operation, and convenient carrying, and have now become an important branch of mobile robot research [<xref ref-type="bibr" rid="ref_1">1</xref>]. The two-wheeled self-balancing vehicle system, as an important part of the intelligent vehicle system, has also attracted much attention due to its nonlinear, highly unstable, and strong coupling characteristics.</p><p>In the vehicle’s self-balancing control process, the accuracy and real-time performance of the body attitude inclination measurement determine the control performance. Relying on the gyroscope or accelerometer only leads to large measurement error and vibration interference, often failing to meet the self-balancing control requirements of a two-wheeled vehicle [<xref ref-type="bibr" rid="ref_2">2</xref>]. Therefore, the study of data fusion algorithms that effectively remove the interference of sensor data has also become the focus of research. The Kalman filter (KF) algorithm is widely used as the basis of many attitude data fusion methods [<xref ref-type="bibr" rid="ref_3">3</xref>], [<xref ref-type="bibr" rid="ref_4">4</xref>], [<xref ref-type="bibr" rid="ref_5">5</xref>]. Wei et al. [<xref ref-type="bibr" rid="ref_6">6</xref>] proposed a KF fusion algorithm based on a data iterative method. In this algorithm, the output of the multisensor data fusion is introduced into the system again for iterative fusion filtering. Zhu et al. [<xref ref-type="bibr" rid="ref_7">7</xref>] used extended KF to realize the information fusion of the accelerometer and gyroscope. In the study by Srichandan et al. [<xref ref-type="bibr" rid="ref_8">8</xref>], the angle output of the inertial measurement unit (IMU) is provided to the KF, and its output is used as the input of Q-learning to achieve more precise balance control. The complementary filter (CF) is also widely used in two-wheeled self-balancing vehicles due to its ability to effectively eliminate the gyroscope drift, suppress the high-frequency perturbation of the accelerometer, reduce the dynamic error of the output attitude angle, and improve the angle measurement precision [<xref ref-type="bibr" rid="ref_9">9</xref>], [<xref ref-type="bibr" rid="ref_10">10</xref>]. Huang et al. [<xref ref-type="bibr" rid="ref_11">11</xref>] used CF to fuse and optimize the inclination and acceleration sensor measurement value, thus obtaining the optimal estimation value which is consistent with the actual attitude information. After CF processed the output data of the gyroscope and accelerometer and the weighted average operation was performed, the cross compensation was used for correction according to the measurement error.</p><p>In addition, various control algorithms have been studied to solve the self-balancing and motion control problems of the vehicle. Unluturk and Aydogdu [<xref ref-type="bibr" rid="ref_12">12</xref>] proposed an adaptive fuzzy logic proportional–integral (PI) controller based on artificial neural network (ANN). Kim and Kwon [<xref ref-type="bibr" rid="ref_13">13</xref>] proposed a control scheme based on the state-dependent Riccati equation. Xu and Li [<xref ref-type="bibr" rid="ref_14">14</xref>] proposed a design methodology for the one-dimensional cloud model controller. Guo et al. [<xref ref-type="bibr" rid="ref_15">15</xref>] used a completely online, feedback-based Q-learning to achieve optimal control of a balancing robot, with both state feedback and output feedback considered. At present, the proportional–integral–derivative (PID) control algorithm has been widely used because of its simple principle, easy design, and independent parameters [<xref ref-type="bibr" rid="ref_16">16</xref>], [<xref ref-type="bibr" rid="ref_17">17</xref>], [<xref ref-type="bibr" rid="ref_18">18</xref>]. However, this algorithm also has shortcomings. It is mainly suitable for the basic linear and dynamic characteristics that do not change with the time control system. And the controller parameters mainly rely on manual debugging because it is time-consuming. Therefore, it is difficult for the PID controller to achieve precise control of the vehicle for a long time.</p><p>To improve the control effect of the PID controller in self-balancing vehicle systems, Singh and Bhushan [<xref ref-type="bibr" rid="ref_19">19</xref>] revised the transition probability of the ant colony optimization (ACO) and obtained an improved ACO, which in turn optimized the PID controller and obtained its optimal tuning parameters. Jiang and He [<xref ref-type="bibr" rid="ref_20">20</xref>] proposed an active disturbance rejection control strategy, which is tuned by an adaptive differential evolution algorithm, for the self-balancing control part of the vehicle and designed a PID control strategy incorporating the transient process for the steering control part. Shen et al. [<xref ref-type="bibr" rid="ref_21">21</xref>] designed the controller using the neuronal PID control algorithm. Ren and Zhou [<xref ref-type="bibr" rid="ref_22">22</xref>] proposed a cascade coupling control scheme based on the PID control algorithm. The speed loop and balance loop in the classical parallel coupling control method were decoupled to remove the independent speed PID control, with the former being set as the outer loop and the latter being set as the inner loop to realize the coupling. Pang et al. [<xref ref-type="bibr" rid="ref_23">23</xref>] proposed an adaptive sliding mode attitude control scheme by combining the minimum parameter learning method with the radial basis function neural network. Anisimov et al. [<xref ref-type="bibr" rid="ref_24">24</xref>] designed a fuzzy proportional–derivative (PD) controller based on the relation model and optimized the scaling factors of the controller using the cross-entropy optimization method. Ren et al. [<xref ref-type="bibr" rid="ref_25">25</xref>] proposed a fuzzy controller with learning ability based on the fuzzy rule and the operant conditioning (OC) learning mechanism, enabling the self-balancing vehicle to learn and obtain the fuzzy control rules autonomously and realize the automation of controller design.</p><p>To obtain accurate attitude information of the current vehicle body, an improved KF algorithm was adopted in this current study based on the measurement’s iterative update to fuse the output data of the gyroscope and accelerometer. In addition, the prior covariance matrix modified by the Levenberg-Marquardt (L-M) method was introduced at the beginning of the iteration for updating. For the control problem, an improved PID control algorithm was designed based on the hierarchical control strategy. In the balance control layer, the angular velocity loop was strung into the angle loop. In the speed control layer, a control algorithm based on weighted PI was designed. Accurate control of speed was realized by adjusting the change speed of accumulation and the degree of response to the error. In the steering control layer, a controller output update algorithm based on weighted PD was designed. A certain degree of feedback control was introduced into the steering output, and finally a limiting operation was performed on the steering control output. The rest of this study is organized below. Sections 2 and 3 introduce the hardware and software design of the system. Section 4 presents the principle and design of the improved KF. Section 5 explains the improved PID algorithm in terms of balance, speed and direction control. Section 6 simulates and analyzes the improved KF and PID algorithms and tests the system. Section 7 concludes this study.</p><p>In the process of accurately acquiring the real-time attitude of a self-balancing vehicle in dynamic operation, traditional KF methods are often affected by estimation errors when sensor noise is time-varying or abnormal disturbances occur. To overcome this limitation, a measurement-driven iteratively updated KF algorithm was used in this study to fuse the outputs of the gyroscope and accelerometer. During the iterative initialization phase, a prior covariance matrix corrected by the L-M method was introduced, which enhanced the robustness of the algorithm against initial errors and improved the convergence speed and accuracy of attitude estimation. In terms of the control strategy, the insufficient adjustment capability of the traditional PID control in multi-task coupled scenarios for self-balancing vehicles was addressed through an improved PID control algorithm designed based on hierarchical control principles. At the balance control layer, a composite structure was adopted in which an angular velocity loop was integrated into an angular position loop to suppress attitude oscillation and improve disturbance rejection capability. At the velocity control layer, a weighted PI controller was designed to achieve precise speed control by adjusting the integral term's rate of change and the sensitivity to errors. At the direction control layer, a weighted PD-based controller output update algorithm was developed, incorporating a certain degree of feedback control into the steering output, while output limiting was applied to ensure smooth steering maneuvers.</p>
     </sec>
     <sec sec-type="">
       <title>2. System hardware design</title>
-      <p>The system’s hardware block diagram is shown in <xref ref-type="fig" rid="fig_1">Figure 1</xref>. The system hardware mainly consists of a microprocessor, an attitude sensor module, a motor drive module, a Hall encoder module, and a master-slave integrated Bluetooth module. Among them, the attitude sensor is used to collect the inclination and angular velocity data of the self-balancing vehicle. The encoder is responsible for measuring the speed and direction of the direct current (DC) motor. As a high-performance, low-power 8-bit AVR microprocessor, ATmega328P is used to receive and process the data collected by the sensor module and then output the PWM signal to the motor drive module. At the same time, the microprocessor can also receive the control command of the mobile phone through Bluetooth, enabling forward motion, reverse motion, and steering. The main components of the system and their circuit design are explained below.</p>
+      <p>The system’s hardware block diagram is shown in <xref ref-type="fig" rid="fig_1">Figure 1</xref>. The system hardware mainly consists of a microprocessor, an attitude sensor module, a motor drive module, a Hall encoder module, and a master-slave integrated Bluetooth module. Among them, the attitude sensor is used to collect the inclination and angular velocity data of the self-balancing vehicle. The encoder is responsible for measuring the speed and direction of the direct current (DC) motor. As a high-performance, low-power 8-bit AVR microprocessor, ATmega328P is used to receive and process the data collected by the sensor module and then output the pulse-width modulation (PWM) signal to the motor drive module. At the same time, the microprocessor can also receive the control command of the mobile phone through Bluetooth, enabling forward motion, reverse motion, and steering. The main components of the system and their circuit design are explained below.</p>
       
         <fig id="fig_1">
           <label>Figure 1</label>
@@ -222,7 +222,7 @@
     <sec sec-type="">
       <title>3. System software design</title>
       <p>The software architecture of the self-balancing vehicle system is illustrated in <xref ref-type="fig" rid="fig_7">Figure 7</xref>. Upon system startup, the serial port and all peripheral modules are first initialized. Raw acceleration and angular velocity data are obtained by the attitude acquisition module through the MPU6050 sensor, with data being read in real time via the <inline-formula>
-  <mml:math id="moohcycgq9">
+  <mml:math id="mb3aexo01d">
     <mml:msup>
       <mml:mrow>
         <mml:mi>I</mml:mi>
@@ -234,7 +234,7 @@
     </mml:mrow>
   </mml:math>
 </inline-formula> interface within the timer interrupt service routine. To improve the accuracy of the attitude angle estimation, an improved KF algorithm was employed for multi-source sensor fusion. The state vector consists of angle and angular velocity. By adjusting the process noise covariance matrix $Q<inline-formula>
-  <mml:math id="myoqt71kht">
+  <mml:math id="mwmkavk7mi">
     <mml:mi>a</mml:mi>
     <mml:mi>n</mml:mi>
     <mml:mi>d</mml:mi>
@@ -275,7 +275,7 @@
     <mml:mi>x</mml:mi>
   </mml:math>
 </inline-formula>R<inline-formula>
-  <mml:math id="mjigyscyoh">
+  <mml:math id="m0pez2uonj">
     <mml:mo>,</mml:mo>
     <mml:mo>,</mml:mo>
     <mml:mo>.</mml:mo>
@@ -1287,7 +1287,7 @@
     </mml:mrow>
   </mml:math>
 </inline-formula>K_p, K_i<inline-formula>
-  <mml:math id="mcnze5j0w9">
+  <mml:math id="msibb81vvc">
     <mml:mo>,</mml:mo>
     <mml:mi>a</mml:mi>
     <mml:mi>n</mml:mi>
@@ -1300,7 +1300,7 @@
             <title>3.1. System initialization program</title>
           
           <p>The system initialization program mainly includes serial port initialization, MPU6050 and I²C bus initialization, timer interrupt and external interrupt settings. Serial port initialization is mainly to define the serial port input and output mode as well as the type of data to be transmitted and to set the baud rate of serial port data transmission according to the demand. The information collected by the built-in gyroscope and accelerometer is transmitted between the MPU6050 and the single-chip microcomputer (SCM) through <inline-formula>
-  <mml:math id="m8v5sppjdf">
+  <mml:math id="mavirlloyg">
     <mml:msup>
       <mml:mrow>
         <mml:mi>I</mml:mi>
@@ -1347,7 +1347,7 @@
             <title>3.3. Attitude data acquisition</title>
           
           <p>The MPU6050 attitude sensor communicates with the SCM through the <inline-formula>
-  <mml:math id="mpecqi0qsb">
+  <mml:math id="mexkus3vgc">
     <mml:msup>
       <mml:mrow>
         <mml:mi>I</mml:mi>
@@ -1368,7 +1368,7 @@
               <table><tbody><tr><td colspan="1" rowspan="1"><p>Bit</p></td><td colspan="1" rowspan="1"><p>Register (hex)</p></td><td colspan="1" rowspan="1"><p>Bit</p></td><td colspan="1" rowspan="1"><p>Register (hex)</p></td></tr><tr><td colspan="1" rowspan="1"><p>ACEEL_XOUT [15:8]</p></td><td colspan="1" rowspan="1"><p>0x3B</p></td><td colspan="1" rowspan="1"><p>GYRO_XOUT [15:8]</p></td><td colspan="1" rowspan="1"><p>0x43</p></td></tr><tr><td colspan="1" rowspan="1"><p>ACEEL_XOUT [7:0]</p></td><td colspan="1" rowspan="1"><p>0x3C</p></td><td colspan="1" rowspan="1"><p>GYRO_XOUT [7:0]</p></td><td colspan="1" rowspan="1"><p>0x44</p></td></tr></tbody></table>
             </table-wrap>
           
-          <p> <xref ref-type="table" rid="table_2">Table 2</xref> shows the range settings for the accelerometer and gyroscope. The accelerometer used in this system is ±2g in the range, and the register AFS\_SEL option is set to 00; that is, 0.0006 times the original data is the resulting acceleration value. Similarly, when the gyroscope range is set to ±2000°/s, the FS\_SEL register option is configured to 11, and the corresponding angular velocity is obtained by dividing the raw data by 16.4. After data conversion, it also needs to be fused by the KF to get the optimal estimate of the attitude angle.</p>
+          <p><xref ref-type="table" rid="table_2">Table 2</xref> shows the range settings for the accelerometer and gyroscope. The accelerometer used in this system is ±2g in the range, and the register AFS_SEL option is set to 00; that is, 0.0006 times the original data is the resulting acceleration value. Similarly, when the gyroscope range is set to ±2000°/s, the FS_SEL register option is configured to 11, and the corresponding angular velocity is obtained by dividing the raw data by 16.4. After data conversion, it also needs to be fused by the KF to get the optimal estimate of the attitude angle.</p>
           
             <table-wrap id="table_2">
               <label>Table 2</label>
@@ -1393,7 +1393,7 @@
           
             <disp-formula>
               <label>(1)</label>
-              <mml:math id="matejcwl6s">
+              <mml:math id="m7dan06ai1">
                 <mml:mrow>
                   <mml:mo>{</mml:mo>
                   <mml:mo fence="true"/>
@@ -1460,14 +1460,14 @@
             </disp-formula>
           
           <p>where, <inline-formula>
-  <mml:math id="mc0h8wh994">
+  <mml:math id="m9z0qequs2">
     <mml:msub>
       <mml:mi>x</mml:mi>
       <mml:mi>k</mml:mi>
     </mml:msub>
   </mml:math>
 </inline-formula> is the system state vector at moment <inline-formula>
-  <mml:math id="m39cr5ge9r">
+  <mml:math id="mjzo7d2avm">
     <mml:mi>k</mml:mi>
     <mml:mo>,</mml:mo>
     <mml:msub>
@@ -1480,7 +1480,7 @@
     </mml:msub>
   </mml:math>
 </inline-formula> is the input control of the system, $A<inline-formula>
-  <mml:math id="mgy1nkfd9y">
+  <mml:math id="mdnpphgtcb">
     <mml:mi>i</mml:mi>
     <mml:mi>s</mml:mi>
     <mml:mi>t</mml:mi>
@@ -1508,7 +1508,7 @@
     <mml:mo>,</mml:mo>
   </mml:math>
 </inline-formula>B<inline-formula>
-  <mml:math id="mfmqvs760p">
+  <mml:math id="mn6s9vzych">
     <mml:mi>i</mml:mi>
     <mml:mi>s</mml:mi>
     <mml:mi>t</mml:mi>
@@ -1535,7 +1535,7 @@
     <mml:mo>,</mml:mo>
   </mml:math>
 </inline-formula>w_{k-1}<inline-formula>
-  <mml:math id="mqj7ulpgch">
+  <mml:math id="mk51zaijb9">
     <mml:mi>i</mml:mi>
     <mml:mi>s</mml:mi>
     <mml:mi>t</mml:mi>
@@ -1556,7 +1556,7 @@
     <mml:mo>,</mml:mo>
   </mml:math>
 </inline-formula>y_k<inline-formula>
-  <mml:math id="mn99ac4ajo">
+  <mml:math id="m3lvyweztq">
     <mml:mi>i</mml:mi>
     <mml:mi>s</mml:mi>
     <mml:mi>t</mml:mi>
@@ -1589,7 +1589,7 @@
     <mml:mi>t</mml:mi>
   </mml:math>
 </inline-formula>k, H<inline-formula>
-  <mml:math id="mfrwu0klhz">
+  <mml:math id="m37ylejb9e">
     <mml:mi>i</mml:mi>
     <mml:mi>s</mml:mi>
     <mml:mi>t</mml:mi>
@@ -1621,7 +1621,7 @@
           
             <disp-formula>
               <label>(2)</label>
-              <mml:math id="m0fggd0emo">
+              <mml:math id="md46h9gu2l">
                 <mml:msubsup>
                   <mml:mrow>
                     <mml:mover>
@@ -1666,7 +1666,7 @@
           
             <disp-formula>
               <label>(3)</label>
-              <mml:math id="mki23tgkot">
+              <mml:math id="m58vg62fjd">
                 <mml:msubsup>
                   <mml:mi>P</mml:mi>
                   <mml:mi>k</mml:mi>
@@ -1697,7 +1697,7 @@
           
             <disp-formula>
               <label>(4)</label>
-              <mml:math id="mriqrntheo">
+              <mml:math id="mjs4sc3lfh">
                 <mml:msub>
                   <mml:mi>K</mml:mi>
                   <mml:mi>k</mml:mi>
@@ -1741,7 +1741,7 @@
           
             <disp-formula>
               <label>(5)</label>
-              <mml:math id="mh6wxbe4vr">
+              <mml:math id="mh2q14cyht">
                 <mml:msub>
                   <mml:mrow>
                     <mml:mover>
@@ -1798,7 +1798,7 @@
           
             <disp-formula>
               <label>(6)</label>
-              <mml:math id="mnj71zspwf">
+              <mml:math id="mz96k0f1dk">
                 <mml:msub>
                   <mml:mi>P</mml:mi>
                   <mml:mi>k</mml:mi>
@@ -1834,7 +1834,7 @@
             <title>4.2. Improved kf algorithm</title>
           
           <p>As can be seen from the above process, the current system state estimate utilizes only the state prediction <inline-formula>
-  <mml:math id="mgn4k3e20z">
+  <mml:math id="m0vebll9nc">
     <mml:msubsup>
       <mml:mrow>
         <mml:mover>
@@ -1859,14 +1859,14 @@
     </mml:msub>
   </mml:math>
 </inline-formula> is a further calibration achieved by integrating <inline-formula>
-  <mml:math id="m1wc1uxfsu">
+  <mml:math id="mpege53nu4">
     <mml:msub>
       <mml:mi>K</mml:mi>
       <mml:mi>k</mml:mi>
     </mml:msub>
   </mml:math>
 </inline-formula> with the latest measurement data based on <inline-formula>
-  <mml:math id="m9a0d2t468">
+  <mml:math id="m8nxansycy">
     <mml:msubsup>
       <mml:mrow>
         <mml:mover>
@@ -1881,7 +1881,7 @@
     </mml:msubsup>
   </mml:math>
 </inline-formula>. Therefore, the error between <inline-formula>
-  <mml:math id="muf462t9ga">
+  <mml:math id="mxynoorubl">
     <mml:msub>
       <mml:mrow>
         <mml:mover>
@@ -1893,14 +1893,14 @@
     </mml:msub>
   </mml:math>
 </inline-formula> and the true state of the system <inline-formula>
-  <mml:math id="m7mdksvhn4">
+  <mml:math id="maavjtow7p">
     <mml:msub>
       <mml:mi>x</mml:mi>
       <mml:mi>k</mml:mi>
     </mml:msub>
   </mml:math>
 </inline-formula> is smaller than the error between <inline-formula>
-  <mml:math id="mvqn11hh17">
+  <mml:math id="mtq5e5hkrt">
     <mml:msubsup>
       <mml:mrow>
         <mml:mover>
@@ -1915,14 +1915,14 @@
     </mml:msubsup>
   </mml:math>
 </inline-formula>and <inline-formula>
-  <mml:math id="mfdh86iw4r">
+  <mml:math id="mqb3otyzoh">
     <mml:msub>
       <mml:mi>x</mml:mi>
       <mml:mi>k</mml:mi>
     </mml:msub>
   </mml:math>
 </inline-formula> [<xref ref-type="bibr" rid="ref_20">20</xref>]. The filtering accuracy of the KF can be improved by replacing measurement update <inline-formula>
-  <mml:math id="mkvuh0imqv">
+  <mml:math id="m42edvya4y">
     <mml:msubsup>
       <mml:mrow>
         <mml:mover>
@@ -1937,7 +1937,7 @@
     </mml:msubsup>
   </mml:math>
 </inline-formula>with measurement update <inline-formula>
-  <mml:math id="myxffmcatv">
+  <mml:math id="mzz15ur9sl">
     <mml:msub>
       <mml:mrow>
         <mml:mover>
@@ -1949,7 +1949,7 @@
     </mml:msub>
   </mml:math>
 </inline-formula>. The fundamental approach of the algorithm presented in this study is to perform measurement updates using method <inline-formula>
-  <mml:math id="m3anvcl93i">
+  <mml:math id="m9rv7nwtjp">
     <mml:msub>
       <mml:mrow>
         <mml:mover>
@@ -1961,7 +1961,7 @@
     </mml:msub>
   </mml:math>
 </inline-formula> rather than method <inline-formula>
-  <mml:math id="mch7odd54e">
+  <mml:math id="msbbz9zqqi">
     <mml:msubsup>
       <mml:mrow>
         <mml:mover>
@@ -1979,7 +1979,7 @@
           
             <disp-formula>
               <label>(7)</label>
-              <mml:math id="m4f2adcfua">
+              <mml:math id="murhqiqxe8">
                 <mml:msubsup>
                   <mml:mrow>
                     <mml:mover>
@@ -2028,7 +2028,7 @@
           
             <disp-formula>
               <label>(8)</label>
-              <mml:math id="m6b2klm4xt">
+              <mml:math id="m2521ghyvl">
                 <mml:msubsup>
                   <mml:mi>P</mml:mi>
                   <mml:mrow>
@@ -2063,7 +2063,7 @@
           
             <disp-formula>
               <label>(9)</label>
-              <mml:math id="m26p6on3wr">
+              <mml:math id="mf1n12uwjf">
                 <mml:msubsup>
                   <mml:mi>P</mml:mi>
                   <mml:mrow>
@@ -2225,7 +2225,7 @@
             </disp-formula>
           
           <p>where, $l<inline-formula>
-  <mml:math id="mb9h5zj97w">
+  <mml:math id="mb102qrfsa">
     <mml:mi>d</mml:mi>
     <mml:mi>e</mml:mi>
     <mml:mi>n</mml:mi>
@@ -2238,7 +2238,7 @@
     <mml:mi>e</mml:mi>
   </mml:math>
 </inline-formula>l<inline-formula>
-  <mml:math id="mafpjsw0mr">
+  <mml:math id="mvg6yr79vw">
     <mml:mi>i</mml:mi>
     <mml:mi>t</mml:mi>
     <mml:mi>e</mml:mi>
@@ -2287,8 +2287,8 @@
     <mml:mi>h</mml:mi>
     <mml:mo>,</mml:mo>
   </mml:math>
-</inline-formula>l=1,2, \ldots, L ; L<inline-formula>
-  <mml:math id="m4ewxw7m48">
+</inline-formula>l=1,2, \ldots, L; \,L<inline-formula>
+  <mml:math id="mx7g7isg33">
     <mml:mi>d</mml:mi>
     <mml:mi>e</mml:mi>
     <mml:mi>n</mml:mi>
@@ -2330,7 +2330,7 @@
     <mml:mo>;</mml:mo>
   </mml:math>
 </inline-formula>\mu&gt;0<inline-formula>
-  <mml:math id="mnr8eptsx5">
+  <mml:math id="mx65kar345">
     <mml:mi>i</mml:mi>
     <mml:mi>s</mml:mi>
     <mml:mi>t</mml:mi>
@@ -2455,7 +2455,7 @@
           
             <disp-formula>
               <label>(10)</label>
-              <mml:math id="myo07wa7le">
+              <mml:math id="m0uig02s3d">
                 <mml:msub>
                   <mml:mi>K</mml:mi>
                   <mml:mrow>
@@ -2508,7 +2508,7 @@
             </disp-formula>
           
           <p>where, $H<inline-formula>
-  <mml:math id="meawx40x53">
+  <mml:math id="mnr7cxhykv">
     <mml:mi>d</mml:mi>
     <mml:mi>e</mml:mi>
     <mml:mi>n</mml:mi>
@@ -2545,7 +2545,7 @@
           
             <disp-formula>
               <label>(11)</label>
-              <mml:math id="mjsmahay5e">
+              <mml:math id="mdqbhx7qv0">
                 <mml:msub>
                   <mml:mrow>
                     <mml:mover>
@@ -2689,7 +2689,7 @@
           
             <disp-formula>
               <label>(12)</label>
-              <mml:math id="ml6epxncdg">
+              <mml:math id="msep5wsbsw">
                 <mml:msub>
                   <mml:mi>P</mml:mi>
                   <mml:mi>k</mml:mi>
@@ -2732,7 +2732,346 @@
           
             <title>4.3. Mechanism of action and parameter selection for the l-m method</title>
           
-          <p><span style="color: black; font-family: Times New Roman, serif">The adaptive adjustment between the gradient descent and Gauss-Newton methods is achieved by introducing a damping factor  in the L-M method, thereby enhancing the numerical stability of covariance iteration when system models demonstrate strong nonlinearity or insufficient observational information. The effectiveness of this approach depends critically on the appropriate setting of <span style="color: black; font-family: Times New Roman, serif">: when  is assigned a larger value, the algorithm converges toward gradient descent, ensuring convergence stability at the cost of slower speed; when  is given a smaller value, the method approaches the Gauss-Newton algorithm, achieving rapid convergence while demonstrating increased sensitivity to initial conditions. In practical applications, the optimal value of  can be determined through experimental tuning.</p><p><span style="color: black; font-family: Times New Roman, serif">The setting of the iteration count requires a balance between estimation accuracy and computational efficiency. Simulation results demonstrate that estimation accuracy can be significantly improved when  is set to two or more iterations; however, when  exceeds four iterations, further improvement in accuracy is typically limited while the computational load continues to increase. Therefore,  is generally set to two to four.</p>
+          <p><span style="color: black; font-family: Times New Roman, serif">The adaptive adjustment between the gradient descent and Gauss-Newton methods is achieved by introducing a damping factor <inline-formula>
+  <mml:math id="mmklttgqh1">
+    <mml:mi>μ</mml:mi>
+  </mml:math>
+</inline-formula> in the L-M method, thereby enhancing the numerical stability of covariance iteration when system models demonstrate strong nonlinearity or insufficient observational information. The effectiveness of this approach depends critically on the appropriate setting of <inline-formula>
+  <mml:math id="mxa0g2nbcv">
+    <mml:mi>μ</mml:mi>
+  </mml:math>
+</inline-formula>: when <inline-formula>
+  <mml:math id="m3zcs0bh4e">
+    <mml:mi>μ</mml:mi>
+  </mml:math>
+</inline-formula> is assigned a larger value, the algorithm converges toward gradient descent, ensuring convergence stability at the cost of slower speed; when <inline-formula>
+  <mml:math id="mawp6kg45o">
+    <mml:mi>μ</mml:mi>
+  </mml:math>
+</inline-formula> is given a smaller value, the method approaches the Gauss-Newton algorithm, achieving rapid convergence while demonstrating increased sensitivity to initial conditions. In practical applications, the optimal value of <inline-formula>
+  <mml:math id="mnvglw52vq">
+    <mml:mi>μ</mml:mi>
+  </mml:math>
+</inline-formula> can be determined through experimental tuning.</p><p><span style="color: black; font-family: Times New Roman, serif">The setting of the iteration count $L<inline-formula>
+  <mml:math id="mqe1byyiff">
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>q</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>S</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mo>.</mml:mo>
+  </mml:math>
+</inline-formula>L<inline-formula>
+  <mml:math id="mn0qn4qvzc">
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mo>;</mml:mo>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>L<inline-formula>
+  <mml:math id="mqiy0tb1jv">
+    <mml:mi>e</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mo>,</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>L$ is generally set to two to four.</p>
         </sec>
       
       
@@ -2748,7 +3087,7 @@
           
             <title>4.5. Algorithm complexity and real-time analysis</title>
           
-          <p><span style="color: black; font-family: Times New Roman, serif">Compared to the standard KF,  iterative updates are introduced at each time step in this algorithm. Each iteration requires one matrix inversion and three matrix multiplications, resulting in a computational complexity of <span style="color: black; font-family: Times New Roman, serif">, where  represents the state dimension. When implemented on embedded platforms with  and <span style="color: black; font-family: Times New Roman, serif">, a single filtering operation is completed in approximately 0.8 ms. This execution time meets the periodic requirements of most real-time control tasks, demonstrating that the improved algorithm maintains good engineering feasibility even in embedded systems with limited floating-point computational capabilities.</p>
+          <p><span style="color: black; font-family: Times New Roman, serif">Compared to the standard KF, iterative updates are introduced at each time step in this algorithm. Each iteration requires one matrix inversion and three matrix multiplications, resulting in a computational complexity of <span style="color: black; font-family: Times New Roman, serif">, where represents the state dimension. When implemented on embedded platforms with <italic>n</italic> = 4 and <italic>L</italic> = 2<span style="color: black; font-family: Times New Roman, serif">, a single filtering operation is completed in approximately 0.8 ms. This execution time meets the periodic requirements of most real-time control tasks, demonstrating that the improved algorithm maintains good engineering feasibility even in embedded systems with limited floating-point computational capabilities.</p>
         </sec>
       
       
@@ -2760,7 +3099,7 @@
           
             <disp-formula>
               <label>(13)</label>
-              <mml:math id="mzilwk3xlr">
+              <mml:math id="mxjai7nwgf">
                 <mml:msub>
                   <mml:mi>θ</mml:mi>
                   <mml:mi>k</mml:mi>
@@ -2802,14 +3141,14 @@
             </disp-formula>
           
           <p>where, <inline-formula>
-  <mml:math id="myv70h6lnq">
+  <mml:math id="mmwm3ck7lx">
     <mml:msub>
       <mml:mi>θ</mml:mi>
       <mml:mi>k</mml:mi>
     </mml:msub>
   </mml:math>
 </inline-formula> denotes the angle prediction value at moment <inline-formula>
-  <mml:math id="mapk28hhkb">
+  <mml:math id="mtilska9yu">
     <mml:mi>k</mml:mi>
     <mml:mo>,</mml:mo>
     <mml:msub>
@@ -2822,7 +3161,7 @@
     </mml:msub>
   </mml:math>
 </inline-formula> is the optimal angle estimation value at moment <inline-formula>
-  <mml:math id="mlky4baiqw">
+  <mml:math id="maqexol9hk">
     <mml:mi>k</mml:mi>
     <mml:mo>−</mml:mo>
     <mml:mo>,</mml:mo>
@@ -2837,7 +3176,7 @@
     </mml:msub>
   </mml:math>
 </inline-formula> is the gyroscope measurement value at moment <inline-formula>
-  <mml:math id="md4vrbxypl">
+  <mml:math id="m3ggf0wbq5">
     <mml:mi>k</mml:mi>
     <mml:mo>−</mml:mo>
     <mml:mo>,</mml:mo>
@@ -2852,18 +3191,18 @@
     </mml:msub>
   </mml:math>
 </inline-formula> is the gyroscope drift value at moment <inline-formula>
-  <mml:math id="m2zlffsd4l">
+  <mml:math id="mws3n4vwsl">
     <mml:mi>k</mml:mi>
     <mml:mo>−</mml:mo>
     <mml:mn>1</mml:mn>
   </mml:math>
 </inline-formula>, and <inline-formula>
-  <mml:math id="meocuc7voq">
+  <mml:math id="mif1nvt8ou">
     <mml:mi>d</mml:mi>
     <mml:mi>t</mml:mi>
   </mml:math>
 </inline-formula> is the sampling time. This design considers that the drift error changes very little between two adjacent moments, that is, <inline-formula>
-  <mml:math id="md06gks6rt">
+  <mml:math id="mdztvvaqf9">
     <mml:msub>
       <mml:mi>b</mml:mi>
       <mml:mi>k</mml:mi>
@@ -2882,7 +3221,7 @@
           
             <disp-formula>
               <label>(14)</label>
-              <mml:math id="mograjs09z">
+              <mml:math id="mzdrfwyi0s">
                 <mml:msub>
                   <mml:mrow>
                     <mml:mo>[</mml:mo>
@@ -2980,7 +3319,7 @@
             </disp-formula>
           
           <p>where, <inline-formula>
-  <mml:math id="m0pyqqtj7d">
+  <mml:math id="muezk83ohj">
     <mml:mi>A</mml:mi>
     <mml:mo>=</mml:mo>
     <mml:mrow>
@@ -3017,7 +3356,7 @@
     </mml:mrow>
   </mml:math>
 </inline-formula> is the state transition matrix and <inline-formula>
-  <mml:math id="mg9kzxnyfl">
+  <mml:math id="mau1rmrnnm">
     <mml:mi>B</mml:mi>
     <mml:mo>=</mml:mo>
     <mml:mrow>
@@ -3039,7 +3378,7 @@
     </mml:mrow>
   </mml:math>
 </inline-formula> is the control matrix. In addition, the measurement matrix is <inline-formula>
-  <mml:math id="mwsi9b01hd">
+  <mml:math id="mv3rt9cwvm">
     <mml:mi>H</mml:mi>
     <mml:mo>=</mml:mo>
     <mml:mrow>
@@ -3065,7 +3404,7 @@
           
             <disp-formula>
               <label>(15)</label>
-              <mml:math id="mkmt3zo83t">
+              <mml:math id="mhthngyf75">
                 <mml:mi>Q</mml:mi>
                 <mml:mo>=</mml:mo>
                 <mml:mrow>
@@ -3100,14 +3439,14 @@
             </disp-formula>
           
           <p>where, <inline-formula>
-  <mml:math id="mqt1fkvvcy">
+  <mml:math id="m8tu544m5a">
     <mml:msub>
       <mml:mi>Q</mml:mi>
       <mml:mi>θ</mml:mi>
     </mml:msub>
   </mml:math>
 </inline-formula> and <inline-formula>
-  <mml:math id="m6pylon47o">
+  <mml:math id="m417uqpo6o">
     <mml:msub>
       <mml:mi>Q</mml:mi>
       <mml:mi>ω</mml:mi>
@@ -3117,7 +3456,7 @@
           
             <disp-formula>
               <label>(16)</label>
-              <mml:math id="m0foyljie2">
+              <mml:math id="mdmp1bcumf">
                 <mml:mi>R</mml:mi>
                 <mml:mo>=</mml:mo>
                 <mml:mrow>
@@ -3132,7 +3471,7 @@
             </disp-formula>
           
           <p>The larger <inline-formula>
-  <mml:math id="mnk6vkq6co">
+  <mml:math id="mx4qlz98z7">
     <mml:msub>
       <mml:mi>R</mml:mi>
       <mml:mi>θ</mml:mi>
@@ -3163,7 +3502,7 @@
           
             <disp-formula>
               <label>(17)</label>
-              <mml:math id="mhm959zhm4">
+              <mml:math id="mhqv48k7xl">
                 <mml:msub>
                   <mml:mi>u</mml:mi>
                   <mml:mi>a</mml:mi>
@@ -3208,7 +3547,7 @@
             </disp-formula>
           
           <p>where, <inline-formula>
-  <mml:math id="m5k9vy0reb">
+  <mml:math id="mb3dncs9jw">
     <mml:msub>
       <mml:mi>K</mml:mi>
       <mml:mrow>
@@ -3219,7 +3558,7 @@
     </mml:msub>
   </mml:math>
 </inline-formula> and <inline-formula>
-  <mml:math id="mxqkpiqsfz">
+  <mml:math id="msxp6vo9bc">
     <mml:msub>
       <mml:mi>K</mml:mi>
       <mml:mrow>
@@ -3230,18 +3569,18 @@
     </mml:msub>
   </mml:math>
 </inline-formula> are the proportional coefficient and differential coefficient of the balance control layer, respectively, <inline-formula>
-  <mml:math id="mkjqgk8ssx">
+  <mml:math id="mtcrqdk014">
     <mml:msub>
       <mml:mi>θ</mml:mi>
       <mml:mn>0</mml:mn>
     </mml:msub>
   </mml:math>
 </inline-formula> is the angle setting value, <inline-formula>
-  <mml:math id="ma3flaamaz">
+  <mml:math id="mp9dteppx2">
     <mml:mi>θ</mml:mi>
   </mml:math>
 </inline-formula> is the optimized value of the vehicle body angle after the improved <inline-formula>
-  <mml:math id="ms0wnk97g5">
+  <mml:math id="miqrqb6vk6">
     <mml:mrow>
       <mml:mi data-mjx-auto-op="false">KF</mml:mi>
     </mml:mrow>
@@ -3257,7 +3596,7 @@
           
             <disp-formula>
               <label>(18)</label>
-              <mml:math id="m7bn5bcwyb">
+              <mml:math id="mopgcgk8is">
                 <mml:msub>
                   <mml:mi>u</mml:mi>
                   <mml:mi>g</mml:mi>
@@ -3299,7 +3638,7 @@
             </disp-formula>
           
           <p>where, <inline-formula>
-  <mml:math id="me3vgahmxq">
+  <mml:math id="m9slkah34j">
     <mml:msub>
       <mml:mrow>
         <mml:mover>
@@ -3311,7 +3650,7 @@
     </mml:msub>
   </mml:math>
 </inline-formula> is the updated angular velocity value after the PD controller, and <inline-formula>
-  <mml:math id="m9dmrqpf0a">
+  <mml:math id="mjdsx2rkqe">
     <mml:msub>
       <mml:mrow>
         <mml:mover>
@@ -3334,7 +3673,7 @@
           
             <disp-formula>
               <label>(19)</label>
-              <mml:math id="me0bx8zely">
+              <mml:math id="m5ugrmfw5v">
                 <mml:mi>e</mml:mi>
                 <mml:mi>α</mml:mi>
                 <mml:mi>α</mml:mi>
@@ -3362,7 +3701,7 @@
             </disp-formula>
           
           <p>where, <inline-formula>
-  <mml:math id="mvmdi5a6pf">
+  <mml:math id="mpyacakheq">
     <mml:msub>
       <mml:mi>e</mml:mi>
       <mml:mrow>
@@ -3371,18 +3710,18 @@
     </mml:msub>
   </mml:math>
 </inline-formula> is the accumulation of the speed error in the previous moment; <inline-formula>
-  <mml:math id="mookphnuaj">
+  <mml:math id="m3g33vyvrg">
     <mml:msub>
       <mml:mi>e</mml:mi>
       <mml:mi>v</mml:mi>
     </mml:msub>
   </mml:math>
 </inline-formula> is the deviation of the vehicle speed control in the current moment; <inline-formula>
-  <mml:math id="ma4g64ro7j">
+  <mml:math id="mh474vucbo">
     <mml:mi>α</mml:mi>
   </mml:math>
 </inline-formula> is the weight coefficient, which determines the degree of contribution of the previous accumulation to the new accumulation and then affects the degree of sensitivity of the accumulation to the system response; and $e<inline-formula>
-  <mml:math id="mum3umbfvp">
+  <mml:math id="m2o3syy9qf">
     <mml:mi>i</mml:mi>
     <mml:mi>s</mml:mi>
     <mml:mi>t</mml:mi>
@@ -3401,7 +3740,7 @@
           
             <disp-formula>
               <label>(20)</label>
-              <mml:math id="mqc2d1k7vt">
+              <mml:math id="m8uc0l1gvm">
                 <mml:msub>
                   <mml:mi>u</mml:mi>
                   <mml:mi>v</mml:mi>
@@ -3435,7 +3774,7 @@
             </disp-formula>
           
           <p>where, <inline-formula>
-  <mml:math id="msz4xbfxo2">
+  <mml:math id="m1gklvk6ao">
     <mml:msub>
       <mml:mi>K</mml:mi>
       <mml:mrow>
@@ -3446,7 +3785,7 @@
     </mml:msub>
   </mml:math>
 </inline-formula> and <inline-formula>
-  <mml:math id="me243f2gou">
+  <mml:math id="mh5swirork">
     <mml:msub>
       <mml:mi>K</mml:mi>
       <mml:mrow>
@@ -3468,7 +3807,7 @@
           
             <disp-formula>
               <label>(21)</label>
-              <mml:math id="mnoersoldq">
+              <mml:math id="mqro8zn8nr">
                 <mml:msub>
                   <mml:mi>u</mml:mi>
                   <mml:mn>0</mml:mn>
@@ -3508,7 +3847,7 @@
           
             <disp-formula>
               <label>(22)</label>
-              <mml:math id="mipcvbs1rn">
+              <mml:math id="m636kklhsr">
                 <mml:msub>
                   <mml:mi>u</mml:mi>
                   <mml:mi>d</mml:mi>
@@ -3535,7 +3874,7 @@
             </disp-formula>
           
           <p>where, <inline-formula>
-  <mml:math id="mvlomjniaj">
+  <mml:math id="mpgv2tvvai">
     <mml:msub>
       <mml:mi>K</mml:mi>
       <mml:mrow>
@@ -3546,7 +3885,7 @@
     </mml:msub>
   </mml:math>
 </inline-formula> and <inline-formula>
-  <mml:math id="m3w84gxj2w">
+  <mml:math id="m7ud59upeg">
     <mml:msub>
       <mml:mi>K</mml:mi>
       <mml:mrow>
@@ -3557,14 +3896,14 @@
     </mml:msub>
   </mml:math>
 </inline-formula> are the proportional coefficient and derivative coefficient of the direction control layer, respectively, <inline-formula>
-  <mml:math id="mrf8txf2cd">
+  <mml:math id="mrddclez7x">
     <mml:msub>
       <mml:mi>u</mml:mi>
       <mml:mn>0</mml:mn>
     </mml:msub>
   </mml:math>
 </inline-formula> is the controller output, <inline-formula>
-  <mml:math id="m7nyvrzzex">
+  <mml:math id="mnzap6iiym">
     <mml:mi>Δ</mml:mi>
     <mml:msub>
       <mml:mi>e</mml:mi>
@@ -3572,14 +3911,14 @@
     </mml:msub>
   </mml:math>
 </inline-formula> is the angle deviation of the vehicle at adjacent moments, <inline-formula>
-  <mml:math id="m26iyzao4a">
+  <mml:math id="mfm104ygu9">
     <mml:msub>
       <mml:mi>u</mml:mi>
       <mml:mi>d</mml:mi>
     </mml:msub>
   </mml:math>
 </inline-formula> is the value after updating the controller output, and <inline-formula>
-  <mml:math id="msavlb5pf4">
+  <mml:math id="mc7ddk1u1x">
     <mml:mi>β</mml:mi>
   </mml:math>
 </inline-formula> is the weight coefficient.</p>
@@ -3594,7 +3933,7 @@
           
             <disp-formula>
               <label>(23)</label>
-              <mml:math id="mmig7qle0t">
+              <mml:math id="mmqqvwkdj1">
                 <mml:mrow>
                   <mml:mi>x</mml:mi>
                 </mml:mrow>
@@ -3622,11 +3961,11 @@
             </disp-formula>
           
           <p>where, <inline-formula>
-  <mml:math id="mdebcnmhje">
+  <mml:math id="mtx7z16xlw">
     <mml:mi>θ</mml:mi>
   </mml:math>
 </inline-formula> represents the pitch angle, <inline-formula>
-  <mml:math id="mer15jjxl6">
+  <mml:math id="m5epsac5rg">
     <mml:mrow>
       <mml:mover>
         <mml:mi>θ</mml:mi>
@@ -3635,7 +3974,7 @@
     </mml:mrow>
   </mml:math>
 </inline-formula> denotes the pitch angular velocity, $v<inline-formula>
-  <mml:math id="mhx921f4ja">
+  <mml:math id="mv57zcx7rn">
     <mml:mi>i</mml:mi>
     <mml:mi>n</mml:mi>
     <mml:mi>d</mml:mi>
@@ -3680,7 +4019,7 @@
     <mml:mo>,</mml:mo>
   </mml:math>
 </inline-formula>\omega<inline-formula>
-  <mml:math id="mdfednlpfz">
+  <mml:math id="mejv4o4j2q">
     <mml:mi>s</mml:mi>
     <mml:mi>i</mml:mi>
     <mml:mi>g</mml:mi>
@@ -3725,7 +4064,7 @@
           
             <disp-formula>
               <label>(24)</label>
-              <mml:math id="mtqxt0fw6v">
+              <mml:math id="mhut661p9d">
                 <mml:mrow>
                   <mml:mover>
                     <mml:mrow>
@@ -3755,7 +4094,7 @@
             </disp-formula>
           
           <p>where, <inline-formula>
-  <mml:math id="mm9l040w6e">
+  <mml:math id="m2pdd4zr0y">
     <mml:mrow>
       <mml:mi>u</mml:mi>
     </mml:mrow>
@@ -3783,7 +4122,7 @@
     </mml:msup>
   </mml:math>
 </inline-formula> denotes the output vector of each control layer, $d<inline-formula>
-  <mml:math id="mkjrpimhov">
+  <mml:math id="myykd74jwa">
     <mml:mi>r</mml:mi>
     <mml:mi>e</mml:mi>
     <mml:mi>p</mml:mi>
@@ -3820,13 +4159,13 @@
     <mml:mo>,</mml:mo>
   </mml:math>
 </inline-formula>A<inline-formula>
-  <mml:math id="m5p5yxbk9h">
+  <mml:math id="mtpk7ni1fj">
     <mml:mi>a</mml:mi>
     <mml:mi>n</mml:mi>
     <mml:mi>d</mml:mi>
   </mml:math>
 </inline-formula>B<inline-formula>
-  <mml:math id="mbkr7d5u09">
+  <mml:math id="mngpg8q2xe">
     <mml:mi>d</mml:mi>
     <mml:mi>e</mml:mi>
     <mml:mi>n</mml:mi>
@@ -4042,7 +4381,7 @@
           
             <disp-formula>
               <label>(25)</label>
-              <mml:math id="mu5qk6shir">
+              <mml:math id="mgl0bnyb24">
                 <mml:msub>
                   <mml:mi>u</mml:mi>
                   <mml:mi>s</mml:mi>
@@ -4089,14 +4428,14 @@
             </disp-formula>
           
           <p>where, <inline-formula>
-  <mml:math id="mycs0x6zby">
+  <mml:math id="mwa7dvcr82">
     <mml:mi>λ</mml:mi>
   </mml:math>
 </inline-formula> is the equilibrium-speed coupling coefficient, which is used to suppress the interference of equilibrium regulation on vehicle speed.</p><p>b) Speed-to-balance-loop feedback compensation: The speed control output influences the angular velocity reference value of the balance loop through a weighting factor.</p>
           
             <disp-formula>
               <label>(26)</label>
-              <mml:math id="m1ewp8ubjr">
+              <mml:math id="m2qdt41quy">
                 <mml:msub>
                   <mml:mrow>
                     <mml:mover>
@@ -4119,14 +4458,14 @@
             </disp-formula>
           
           <p>where, <inline-formula>
-  <mml:math id="m93e33tqt3">
+  <mml:math id="mrqhrd703p">
     <mml:mi>γ</mml:mi>
   </mml:math>
 </inline-formula> is the velocity-balance feedback coefficient.</p><p>Directional Layer Differential Integration: The direction controller output is distributed to the left and right motors via differential distribution:</p>
           
             <disp-formula>
               <label>(27)</label>
-              <mml:math id="mcvzi8guz7">
+              <mml:math id="mbiya1x6o6">
                 <mml:mtable displaystyle="true" columnalign="right left" columnspacing="0em" rowspacing="3pt">
                   <mml:mtr>
                     <mml:mtd/>
@@ -4181,7 +4520,7 @@
             </disp-formula>
           
           <p>where, <inline-formula>
-  <mml:math id="mtmp0z586p">
+  <mml:math id="myl7a81qz7">
     <mml:msub>
       <mml:mi>u</mml:mi>
       <mml:mi>d</mml:mi>
@@ -4191,7 +4530,7 @@
           
             <disp-formula>
               <label>(28)</label>
-              <mml:math id="miliq2esg5">
+              <mml:math id="mafxlp5hlk">
                 <mml:mrow>
                   <mml:mi>W</mml:mi>
                 </mml:mrow>
@@ -4281,7 +4620,7 @@
           
             <disp-formula>
               <label>(29)</label>
-              <mml:math id="mwxbvkt05b">
+              <mml:math id="mf8pun4fl6">
                 <mml:msub>
                   <mml:mi>w</mml:mi>
                   <mml:mi>b</mml:mi>
@@ -4326,7 +4665,7 @@
           
             <disp-formula>
               <label>(30)</label>
-              <mml:math id="mclt2zjose">
+              <mml:math id="mgrdmu7jig">
                 <mml:msub>
                   <mml:mi>w</mml:mi>
                   <mml:mi>s</mml:mi>
@@ -4366,20 +4705,20 @@
             </disp-formula>
           
           <p>where <inline-formula>
-  <mml:math id="mpkhppprwq">
+  <mml:math id="mbi9ytgtpx">
     <mml:mi>α</mml:mi>
     <mml:mi>β</mml:mi>
     <mml:mo>,</mml:mo>
   </mml:math>
 </inline-formula>, and <inline-formula>
-  <mml:math id="mo3mwaxoje">
+  <mml:math id="mhs2jofp8t">
     <mml:mi>κ</mml:mi>
   </mml:math>
 </inline-formula> are tuning parameters that ensure priority is given to maintaining balance during significant tilt angles and enhance speed tracking during substantial speed deviations.</p><p>The final control quantity is the weighted composite of outputs from each layer.</p>
           
             <disp-formula>
               <label>(31)</label>
-              <mml:math id="mdx35ju87s">
+              <mml:math id="midz6v2nzx">
                 <mml:msub>
                   <mml:mrow>
                     <mml:mi>u</mml:mi>
@@ -4446,13 +4785,13 @@
             <title>6.1. Simulation and analysis of the improved kf</title>
           
           <p>In the simulation process, the values of $Q<inline-formula>
-  <mml:math id="m264lcucut">
+  <mml:math id="mv5yqztiz4">
     <mml:mi>a</mml:mi>
     <mml:mi>n</mml:mi>
     <mml:mi>d</mml:mi>
   </mml:math>
 </inline-formula>R<inline-formula>
-  <mml:math id="msl480qcwi">
+  <mml:math id="m9gekeg28v">
     <mml:mi>m</mml:mi>
     <mml:mi>u</mml:mi>
     <mml:mi>s</mml:mi>
@@ -4554,11 +4893,11 @@
     <mml:mo>.</mml:mo>
   </mml:math>
 </inline-formula>Q_\theta=0.03, Q_\omega=0.01<inline-formula>
-  <mml:math id="mpo923eewc">
+  <mml:math id="mao6kc4l04">
     <mml:mo>,</mml:mo>
   </mml:math>
 </inline-formula>R_\theta=200<inline-formula>
-  <mml:math id="mw0a991lfp">
+  <mml:math id="m6mnhvk4dt">
     <mml:mo>,</mml:mo>
     <mml:mo>.</mml:mo>
     <mml:mo>,</mml:mo>
@@ -5611,7 +5950,7 @@
               <caption>
                 <title>Configuration parameters of the PID controller</title>
               </caption>
-              <table><tr><td >Simulation Parameter</td><td >Value</td></tr><tr><td >Angle-loop proportional parameter <mml:math id="m4ug436huq">
+              <table><tr><td >Simulation Parameter</td><td >Value</td></tr><tr><td >Angle-loop proportional parameter <mml:math id="my70mqcnqm">
   <mml:msub>
     <mml:mi>K</mml:mi>
     <mml:mrow>
@@ -5620,7 +5959,7 @@
       <mml:mo>,</mml:mo>
     </mml:mrow>
   </mml:msub>
-</mml:math></td><td >55</td></tr><tr><td >Angle-loop derivative parameter <mml:math id="mbiu63co5x">
+</mml:math></td><td >55</td></tr><tr><td >Angle-loop derivative parameter <mml:math id="m57rc1ptw8">
   <mml:msub>
     <mml:mi>K</mml:mi>
     <mml:mrow>
@@ -5629,7 +5968,7 @@
       <mml:mo>,</mml:mo>
     </mml:mrow>
   </mml:msub>
-</mml:math></td><td >-2</td></tr><tr><td >Angular-velocity loop proportional parameter <mml:math id="mh93ch5dyq">
+</mml:math></td><td >-2</td></tr><tr><td >Angular-velocity loop proportional parameter <mml:math id="m68p88wb0i">
   <mml:msub>
     <mml:mi>K</mml:mi>
     <mml:mrow>
@@ -5638,9 +5977,9 @@
       <mml:mo>,</mml:mo>
     </mml:mrow>
   </mml:msub>
-</mml:math></td><td >3</td></tr><tr><td >Weight coefficient <mml:math id="my6llkl713">
+</mml:math></td><td >3</td></tr><tr><td >Weight coefficient <mml:math id="mpv2pj0d1f">
   <mml:mi>α</mml:mi>
-</mml:math></td><td >0.68</td></tr><tr><td >Speed-loop proportional parameter <mml:math id="mg7opzjsll">
+</mml:math></td><td >0.68</td></tr><tr><td >Speed-loop proportional parameter <mml:math id="mk7axc3c3n">
   <mml:msub>
     <mml:mi>K</mml:mi>
     <mml:mrow>
@@ -5649,7 +5988,7 @@
       <mml:mo>,</mml:mo>
     </mml:mrow>
   </mml:msub>
-</mml:math></td><td >8</td></tr><tr><td >Speed-loop integral parameter <mml:math id="m9zitvpiwl">
+</mml:math></td><td >8</td></tr><tr><td >Speed-loop integral parameter <mml:math id="meoj7fnubu">
   <mml:msub>
     <mml:mi>K</mml:mi>
     <mml:mrow>
@@ -5658,7 +5997,7 @@
       <mml:mo>,</mml:mo>
     </mml:mrow>
   </mml:msub>
-</mml:math></td><td >17</td></tr><tr><td >Steering-loop proportional parameter <mml:math id="m5lmqjnjlt">
+</mml:math></td><td >17</td></tr><tr><td >Steering-loop proportional parameter <mml:math id="mri0659p5t">
   <mml:msub>
     <mml:mi>K</mml:mi>
     <mml:mrow>
@@ -5670,7 +6009,7 @@
       </mml:mrow>
     </mml:mrow>
   </mml:msub>
-</mml:math></td><td >7</td></tr><tr><td >Steering-loop derivative parameter <mml:math id="m5dcshkvl0">
+</mml:math></td><td >7</td></tr><tr><td >Steering-loop derivative parameter <mml:math id="mpmq1e6ntf">
   <mml:msub>
     <mml:mi>K</mml:mi>
     <mml:mrow>
@@ -5682,13 +6021,13 @@
       </mml:mrow>
     </mml:mrow>
   </mml:msub>
-</mml:math></td><td >5</td></tr><tr><td >Weight coefficient <mml:math id="mmoh7lepxa">
+</mml:math></td><td >5</td></tr><tr><td >Weight coefficient <mml:math id="mozimsxs58">
   <mml:mi>β</mml:mi>
 </mml:math></td><td >0.2</td></tr></table>
             </table-wrap>
           
           <p> <xref ref-type="fig" rid="fig_13">Figure 13</xref> compares the effect of the PD control algorithm with the proposed algorithm on the balance control. The vertical axis represents the vehicle body's tilt angle (<inline-formula>
-  <mml:math id="m5prj3xyfa">
+  <mml:math id="m22fjemd5h">
     <mml:msup>
       <mml:mrow/>
       <mml:mrow>
@@ -5697,7 +6036,7 @@
     </mml:msup>
   </mml:math>
 </inline-formula>), indicating equilibrium state, with a target value of $0^{\circ}<inline-formula>
-  <mml:math id="m78yv0dn96">
+  <mml:math id="mclh5ftkez">
     <mml:mo>;</mml:mo>
     <mml:mo>(</mml:mo>
     <mml:mo>)</mml:mo>
@@ -6953,7 +7292,7 @@
     </mml:msup>
   </mml:math>
 </inline-formula>\left(^{\circ}\right)<inline-formula>
-  <mml:math id="mhw8i8sgh7">
+  <mml:math id="m0t4gu3t62">
     <mml:mo>,</mml:mo>
     <mml:mi>w</mml:mi>
     <mml:mi>i</mml:mi>
@@ -6993,7 +7332,7 @@
     <mml:mi>t</mml:mi>
   </mml:math>
 </inline-formula>45^{\circ}<inline-formula>
-  <mml:math id="mtob5lof3a">
+  <mml:math id="mjpg26hsf8">
     <mml:mo>;</mml:mo>
     <mml:mo>(</mml:mo>
     <mml:mo>)</mml:mo>
@@ -7157,7 +7496,7 @@
             </fig>
           
           <p>All experimental procedures were carried out on smooth ceramic tile surfaces under indoor environmental conditions. The maximum surface tilt angle was verified to be less than $0.5^{\circ}<inline-formula>
-  <mml:math id="mxv7y8pql4">
+  <mml:math id="moq1g0yp8h">
     <mml:mi>u</mml:mi>
     <mml:mi>s</mml:mi>
     <mml:mi>i</mml:mi>
@@ -7225,7 +7564,7 @@
     <mml:mo>.</mml:mo>
   </mml:math>
 </inline-formula>20 \pm 3^{\circ} \mathrm{C}<inline-formula>
-  <mml:math id="mtkbuck605">
+  <mml:math id="mszse4d70u">
     <mml:mi>t</mml:mi>
     <mml:mi>h</mml:mi>
     <mml:mi>r</mml:mi>
@@ -7434,7 +7773,7 @@
     <mml:mn>18650</mml:mn>
   </mml:math>
 </inline-formula>12.2 \pm 0.2 \mathrm{~V}<inline-formula>
-  <mml:math id="msyaq55o2t">
+  <mml:math id="mboahe366b">
     <mml:mo>.</mml:mo>
     <mml:mo>−</mml:mo>
     <mml:mo>,</mml:mo>
@@ -8004,7 +8343,7 @@
     </mml:mrow>
   </mml:math>
 </inline-formula>2^{\circ}<inline-formula>
-  <mml:math id="mhv5klcur8">
+  <mml:math id="mf9lprc9sr">
     <mml:mo>,</mml:mo>
     <mml:mi>w</mml:mi>
     <mml:mi>h</mml:mi>
@@ -8052,7 +8391,7 @@
     <mml:mi>n</mml:mi>
   </mml:math>
 </inline-formula>0.5^{\circ}<inline-formula>
-  <mml:math id="mqs8huzv4t">
+  <mml:math id="mh4ay4gqiu">
     <mml:mi>t</mml:mi>
     <mml:mi>o</mml:mi>
     <mml:mi>p</mml:mi>
@@ -8374,7 +8713,7 @@
     <mml:mn>1.2</mml:mn>
   </mml:math>
 </inline-formula>\pm 1.5^{\circ}<inline-formula>
-  <mml:math id="m8ho47cjzz">
+  <mml:math id="mbouk0rnkx">
     <mml:mo>.</mml:mo>
     <mml:mo>.</mml:mo>
     <mml:mo>,</mml:mo>
@@ -8960,7 +9299,7 @@
     </mml:msup>
   </mml:math>
 </inline-formula>\pm 0.1 \mathrm{~m} / \mathrm{s}<inline-formula>
-  <mml:math id="mmq07j2ymx">
+  <mml:math id="m0bm17eei8">
     <mml:mo>,</mml:mo>
     <mml:mi>a</mml:mi>
     <mml:mi>n</mml:mi>
@@ -9014,7 +9353,7 @@
     <mml:mi>i</mml:mi>
     <mml:mi>n</mml:mi>
   </mml:math>
-</inline-formula>3^{\circ}$. Excellent repeatability and stability were demonstrated by the system throughout all ten repeated tests.</p><p>End-to-end communication latency was measured through timestamp comparison. The test results showed that at a distance of 0.5 m, the average communication latency was approximately 18 ms; at 3 m, the latency increased to about 25 ms; and at the maximum distance of 8 m, the latency reached approximately 45 ms. The latency at all tested distances meets the real-time control requirements of the system. In 500 data transmission tests, the packet loss rate remained within 0.2\% at 0.5 m, increased to 0.8\% at 3 m, and rose to 2.4\% at 8 m. The test results confirmed that within the effective communication range of 8 m, the communication latency of the Bluetooth module was maintained below the system control cycle duration, while packet loss rates were controlled within acceptable limits. These performance characteristics satisfy the real-time control requirements for the self-balancing vehicle system.</p>
+</inline-formula>3^{\circ}$. Excellent repeatability and stability were demonstrated by the system throughout all ten repeated tests.</p><p>End-to-end communication latency was measured through timestamp comparison. The test results showed that at a distance of 0.5 m, the average communication latency was approximately 18 ms; at 3 m, the latency increased to about 25 ms; and at the maximum distance of 8 m, the latency reached approximately 45 ms. The latency at all tested distances meets the real-time control requirements of the system. In 500 data transmission tests, the packet loss rate remained within 0.2% at 0.5 m, increased to 0.8% at 3 m, and rose to 2.4% at 8 m. The test results confirmed that within the effective communication range of 8 m, the communication latency of the Bluetooth module was maintained below the system control cycle duration, while packet loss rates were controlled within acceptable limits. These performance characteristics satisfy the real-time control requirements for the self-balancing vehicle system.</p>
         </sec>
       
     </sec>
@@ -9040,7 +9379,7 @@
     </notes>
     <notes>
       <title>Funding</title>
-      
+      <p>This work was supported by Fujian Provincial Natural Science Foundation of China [grant number 2023I0044], Xiamen Science and Technology Program Project [grant number 2023CXY0412], and Undergraduate Education and Teaching Research Project of Fujian Province [grant number FBJY20240120].</p>
     </notes>
     <notes>
       <title>Informed Consent Statement</title>
@@ -9048,7 +9387,7 @@
     </notes>
     <notes>
       <title>Data Availability Statement</title>
-      
+      <p><span style="color: rgb(0, 0, 0); font-family: Times New Roman, sans-serif">The data used to support the findings of this study are available from the corresponding author upon request.</p>
     </notes>
     <notes notes-type="COI-statement">
       <title>Conflicts of Interest</title>
@@ -9088,7 +9427,6 @@
       <ref id="ref_2">
         <label>2.</label>
         <element-citation publication-type="conf-paper">
-          <volume>2021</volume>
           <page-range>77-82</page-range>
           <year>2021</year>
           <person-group person-group-type="author">
@@ -9316,15 +9654,15 @@
           <person-group person-group-type="author">
             <name>
               <surname>Huang</surname>
-              <given-names>Yi</given-names>
+              <given-names>Y.</given-names>
             </name>
             <name>
               <surname>Chen</surname>
-              <given-names>Haoyu</given-names>
+              <given-names>H.</given-names>
             </name>
             <name>
               <surname>Qin</surname>
-              <given-names>Ling</given-names>
+              <given-names>L.</given-names>
             </name>
           </person-group>
           <pub-id pub-id-type="doi">10.1109/ctisc54888.2022.9849694</pub-id>
@@ -9335,7 +9673,6 @@
       <ref id="ref_10">
         <label>10.</label>
         <element-citation publication-type="conf-paper">
-          <volume>2021</volume>
           <page-range>15-19</page-range>
           <year>2021</year>
           <person-group person-group-type="author">
@@ -9455,7 +9792,6 @@
       <ref id="ref_15">
         <label>15.</label>
         <element-citation publication-type="conf-paper">
-          <volume>2020</volume>
           <page-range>955-960</page-range>
           <year>2020</year>
           <person-group person-group-type="author">
@@ -9480,7 +9816,6 @@
       <ref id="ref_16">
         <label>16.</label>
         <element-citation publication-type="conf-paper">
-          <volume>2021</volume>
           <page-range>1-4</page-range>
           <year>2021</year>
           <person-group person-group-type="author">
@@ -9522,7 +9857,6 @@
       <ref id="ref_18">
         <label>18.</label>
         <element-citation publication-type="conf-paper">
-          <volume>2020</volume>
           <page-range>74-79</page-range>
           <year>2020</year>
           <person-group person-group-type="author">
