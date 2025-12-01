@@ -1,0 +1,1353 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.3 20210610//EN" "JATS-journalpublishing1-3.dtd">
+<article xml:lang="en" dtd-version="1.3" article-type="research-article" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mml="http://www.w3.org/1998/Math/MathML">
+  <front>
+    <journal-meta>
+      <journal-id journal-id-type="publisher-id">IJTDI</journal-id>
+      <journal-id journal-id-type="doi">10.56578</journal-id>
+      <journal-title-group>
+        <journal-title>International Journal of Transport Development and Integration</journal-title>
+        <abbrev-journal-title abbrev-type="issn">Int. J. Transp. Dev. Integr.</abbrev-journal-title>
+        <abbrev-journal-title abbrev-type="publisher">IJTDI</abbrev-journal-title>
+      </journal-title-group>
+      <issn publication-format="electronic">2058-8313</issn>
+      <issn publication-format="print">2058-8305</issn>
+      <publisher>
+        <publisher-name>Acadlore</publisher-name>
+      </publisher>
+    </journal-meta>
+    <article-meta>
+      <article-id pub-id-type="publisher-id">AR-ffs7CYuiiFrxlrq1dRiC7SvQldnLb9eJ</article-id>
+      <article-id pub-id-type="doi">10.56578/ijtdi090403</article-id>
+      <article-categories>
+        <subj-group>
+          <subject>Articles</subject>
+        </subj-group>
+      </article-categories>
+      <title-group>
+        <article-title>Machine Learning-Based Predictive Modelling for Pavement Distress Using Real-Time Traffic and Climate Data</article-title>
+      </title-group>
+      <contrib-group>
+        <contrib contrib-type="author" rid="aff_1">
+          <contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0009-0001-1074-2521</contrib-id>
+          <name>
+            <surname>Choudhry</surname>
+            <given-names>Muhammad Sharafat</given-names>
+          </name>
+          <email>muhammad.choudhry@parsons.com</email>
+        </contrib>
+        <aff id="aff_1">Transportation Department, Parsons Corporation, 13325 Riyadh, Saudi Arabia</aff>
+      </contrib-group>
+      <pub-date publication-format="electronic" date-type="pub">
+        <day>30</day>
+        <month>11</month>
+        <year>2025</year>
+      </pub-date>
+      <volume>9</volume>
+      <issue>4</issue>
+      <fpage>722</fpage>
+      <lpage>734</lpage>
+      <page-range>722-734</page-range>
+      <history>
+        <date date-type="received">
+          <day>24</day>
+          <month>08</month>
+          <year>2025</year>
+        </date>
+        <date date-type="accepted">
+          <day>13</day>
+          <month>10</month>
+          <year>2025</year>
+        </date>
+      </history>
+      <permissions>
+        <copyright-statement>©2025 by the author(s)</copyright-statement>
+        <copyright-year>2025</copyright-year>
+        <license license-type="open-access" xlink:href="https://creativecommons.org/licenses/by/4.0/">
+          <license-p> Published by Acadlore Publishing Services Limited, Hong Kong. This article is available for free download and can be reused and cited, provided that the original published version is credited, under the CC BY 4.0 license.</license-p>
+        </license>
+      </permissions>
+      <abstract><p>Pavement distress is a critical factor in road maintenance planning, directly influencing transportation safety, serviceability, and infrastructure costs. While traditional mechanistic and statistical models provide limited accuracy, they often fail to capture the nonlinear and multi-factorial nature of pavement deterioration. This study addresses this gap by proposing an integrated machine learning (ML) framework that incorporates real-time traffic and climatic variables for predicting pavement roughness. The framework draws on multiple open-source datasets, Long-Term Pavement Performance (LTPP), Federal Highway Administration (FHWA) traffic volumes, and National Oceanic and Atmospheric Administration (NOAA) climate records, to construct a multidimensional feature space. Four predictive algorithms were benchmarked: Random Forest (RF), XGBoost (XGB), Support Vector Machine (SVM), and Multi-layer Perceptron (MLP). Ensemble-based models achieved superior predictive accuracy, with Random Forest attaining R$^2 \approx$ 0.89 and RMSE $\approx$ 0.61, outperforming traditional regression baselines. The findings highlight that ensemble learning can more effectively capture non-linear dependencies between structural, traffic, and climatic factors than alternative approaches. Beyond technical performance, the study illustrates the potential of integrating continuously updated environmental and traffic data into pavement management systems, offering a pathway to more cost-efficient, reliable, and sustainable maintenance planning.</p></abstract>
+      <kwd-group>
+        <kwd>Pavement distress</kwd>
+        <kwd>International Roughness Index</kwd>
+        <kwd>Machine learning</kwd>
+        <kwd>Predictive modelling</kwd>
+        <kwd>Traffic data</kwd>
+        <kwd>Climate data</kwd>
+      </kwd-group>
+      <counts>
+        <count count-type="contributors" count="1"/>
+        <fig-count count="8"/>
+        <table-count count="4"/>
+        <ref-count count="21"/>
+      </counts>
+    </article-meta>
+  </front>
+  <body>
+    <sec sec-type="intro">
+      <title>1. Introduction</title>
+      <p>Economic development cannot take place without the road infrastructure, which provides effective transport of people and goods. A gradual form of wear on the pavement surfaces can be attributed, however, to the increasing vehicular traffic, severe climatic conditions and the age of the material used [<xref ref-type="bibr" rid="ref_1">1</xref>]. Distress that occurs on pavements, such as cracking, rutting, potholes, and rough surfaces, may lower their safety and raise the cost of maintenance and decrease the efficiency of transport. This means that the possibility of precisely estimating the onset of the pavement distress before its critical occurrence is the only way to perform the maintenance and rehabilitation planning in due time [<xref ref-type="bibr" rid="ref_2">2</xref>].</p><p>Long-term degradation patterns have been derived to a useful extent by the traditional pavement performance modelling methods, which include the empirical regression methods and mechanistic-empirical regressions. However, problems with such models include the assumption of linearity and simplistic description of loading effects, as well as the fact that they do not support real-time and multi-dimensional data [<xref ref-type="bibr" rid="ref_3">3</xref>]. Besides, they usually need a great deal of calibration regarding certain types of pavement and weather conditions, and thus cannot be generalised over different territories.</p><p>A promising alternative is recent developments with respect to machine learning (ML) and data-driven models. ML models can describe a complex and nonlinear relationship between varied variables, e.g., the traffic volume, climate indicator, and material properties [<xref ref-type="bibr" rid="ref_4">4</xref>]. On multi-source datasets trained at a large scale, these models can make very accurate predictions without making strict parametric assumptions. Notably, ML can work with streaming real-time data, which means that it can be used to construct adaptive and dynamic distress prediction systems with weather forecasts and traffic sensor information [<xref ref-type="bibr" rid="ref_5">5</xref>].</p><p>Nevertheless, limited studies have encompassed both real-time traffic data and climate data into a comprehensive predictive pavement distress model. Most literature utilises the past averages or statistical data generated by simulation, which might not be able to capture the stochastic and time-changing characteristics of the situation in the real world. Moreover, few comparative results have been obtained between multiple alternatives of ML models on real-time geographically dispersed data sets. Thus, creating a gap that while ML has been applied for the pavement performance modelling, there is no such evidence exists for systematic benchmarking of different ML methods in real time along with multi source data conditions. </p>
+      
+        <sec>
+          
+            <title>1.1. Research aim and contributions</title>
+          
+          <p>The research plugs the above gaps by proposing a machine learning-based predictive model of pavement distress, based on available real-time traffic and climate information. The main contributions of the work are:</p><p><inline-formula>
+  <mml:math id="mjv08dqrb7">
+    <mml:mo>∙</mml:mo>
+  </mml:math>
+</inline-formula> Combination of various open-source datasets (LTPP, FHWA, NOAA) to create a high-dimensional input space of features in real-time that contains the traffic, environmental, and structural parameters;</p><p><inline-formula>
+  <mml:math id="mkwhvxaxdy">
+    <mml:mo>∙</mml:mo>
+  </mml:math>
+</inline-formula> Design and benchmarking of various ML algorithms, such as Random Forest (RF), XGBoost (XGB), Support Vector Machine (SVM), and Multi-layer Perceptron (MLP) to predict the values of pavement distress measures; therefore, these models were selected because of their ability to provide diverse methodological approaches like tree based ensembles (RF, XGB), Kernel based learning (SVM) and neural networks (MLP) while enabling a strong comparative analysis.</p><p><inline-formula>
+  <mml:math id="mosl2g6yas">
+    <mml:mo>∙</mml:mo>
+  </mml:math>
+</inline-formula> Incorporation of powerful statistical measures (R<inline-formula>
+  <mml:math id="mc5n0ed91g">
+    <mml:msup>
+      <mml:mi/>
+      <mml:mn>2</mml:mn>
+    </mml:msup>
+  </mml:math>
+</inline-formula>, RMSE, Mean Absolute Error (MAE)) to evaluate model accuracy and the degree of generalizability in data not seen previously;</p><p><inline-formula>
+  <mml:math id="m2bzp5yr79">
+    <mml:mo>∙</mml:mo>
+  </mml:math>
+</inline-formula> Exhibiting the usefulness of the ensemble learning methods to enhance the accuracy of predictions, intelligibility, and feasibility of practical application in transportation asset management systems.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>1.2. Research questions</title>
+          
+          <p>In order to enhance the findings and contribution of this study, following research questions were proposed:</p><p>How integrating real time traffic and climate data improve predictive performance of pavement distress models as compared to historical averages?</p><p>Why do ML models differ in accuracy and generalizability when they are applied in real-time dispersed datasets?</p><p>Why ensemble learners provide significant improvements in predictive reliability and interpretability over individual models?</p><p>Succinctly, this research aims to statistically assess the potential of data-driven models, particularly ensemble learners, to enhance the precision and reliability of pavement performance forecasts. The ultimate objective is to contribute to safer, more sustainable roadway infrastructure management.</p>
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>2. Literature review</title>
+      
+        <sec>
+          
+            <title>2.1. Traditional pavement distress prediction models</title>
+          
+          <p>Traditionally, predictive models have been developed for pavement performance, which were based on empirical and mechanistic-empirical estimates of distress development given input parameters which include repetitions of loading, material characteristics, and exposures. Other popular models, such as the AASHTO Pavement Design Guide (1993) and the Mechanistic-Empirical Pavement Design Guide (MEPDG), are largely used by transportation agencies, which treat them as primary planning and infrastructure planning tools that are used to manage long-term structural maintenance [<xref ref-type="bibr" rid="ref_6">6</xref>]. These models combine both empirical information and mechanistic concepts in order to develop predictions in relation to pavement deterioration, to diverse environments and traffic loads. Nevertheless, they tend to otherwise lack predictive performance due to overreliance on simplistic assumptions, fixed calibration routines, and parametric characterisations that create a lack of predictive performance, especially when the models are designed to operate in multiple geographical regions or predictive performance in real-time settings.</p><p>As an example, the AASHTO 1993 model is based on empirical relationships and expresses pavement serviceability in relation to traffic loads and material properties based on the data of road tests. Though efficient during the time in which it was created, it presupposes a similar environment and does not consider the differences in the climate and the ground situation well enough. This is enhanced by the MEPDG, which is proposed later and enables more detailed inputs such as climate inputs and material property inputs through stress-strain responses in pavement layers on a mechanistic basis [<xref ref-type="bibr" rid="ref_7">7</xref>]. Nevertheless, it is too complex, and it may need a vast calibration, which, in some cases, is resource-intensive and may have a limited generalisation to a different type of pavement or region.</p><p>In their research, Marcelino et al. [<xref ref-type="bibr" rid="ref_8">8</xref>] assessed the predictive value of MEPDG over 50 pavement regions in the United States, and they revealed that the Root Mean Square Error (RMSE) of the model in predicting the cracking was 10–25 percent based on the region. Equally, rutting forecasts were characterised by RMSE of 0.15 to 0.35 inches, representing a considerable level of variance in the varied climate and soil settings [<xref ref-type="bibr" rid="ref_8">8</xref>]. These mistakes present a case of the difficulty of the application of deterministic models to heterogeneous real-world circumstances.</p><p>The variability in RMSE reflects the models’ sensitivity to regional factors, such as temperature fluctuations, moisture levels, and soil composition, which are often oversimplified in traditional approaches (<xref ref-type="table" rid="table_1">Table 1</xref>).</p>
+          
+            <table-wrap id="table_1">
+              <label>Table 1</label>
+              <caption>
+                <title>Regional variability in pavement distress prediction accuracy (RMSE) by distress type</title>
+              </caption>
+              <table><tbody><tr><th colspan="1" rowspan="1"><p>Distress Type</p></th><th colspan="1" rowspan="1"><p>Region</p></th><th colspan="1" rowspan="1"><p>RMSE Range</p></th><th colspan="1" rowspan="1"><p>Notes</p></th></tr><tr><td colspan="1" rowspan="1"><p>Alligator Cracking</p></td><td colspan="1" rowspan="1"><p>Midwest</p></td><td colspan="1" rowspan="1"><p>10%–15%</p></td><td colspan="1" rowspan="1"><p>Underpredicted in high-traffic areas</p></td></tr><tr><td colspan="1" rowspan="1"><p>Alligator Cracking</p></td><td colspan="1" rowspan="1"><p>Southeast</p></td><td colspan="1" rowspan="1"><p>15%–25%</p></td><td colspan="1" rowspan="1"><p>Overpredicted in wet climates</p></td></tr><tr><td colspan="1" rowspan="1"><p>Rutting</p></td><td colspan="1" rowspan="1"><p>Northwest</p></td><td colspan="1" rowspan="1"><p>0.15–0.25 inches</p></td><td colspan="1" rowspan="1"><p>Consistent with field data</p></td></tr><tr><td colspan="1" rowspan="1"><p>Rutting</p></td><td colspan="1" rowspan="1"><p>Southwest</p></td><td colspan="1" rowspan="1"><p>0.25–0.35 inches</p></td><td colspan="1" rowspan="1"><p>Overpredicted in arid conditions</p></td></tr></tbody></table>
+            </table-wrap>
+          
+          <p>The scatter plot shown in <xref ref-type="fig" rid="fig_1">Figure 1</xref> makes a comparison of observed vs. predicted alligator cracking (Sa) (% area affected), Marcelino et al. [<xref ref-type="bibr" rid="ref_8">8</xref>] found that MEPDG underpredicts at 5–10 percent and overpredicts at 15–20 percent. It indicates the randomness of the accuracy of the model on the levels of distress regimes, which advocates the limitation of traditional pavement distress prediction models, as it attests.</p>
+          
+            <fig id="fig_1">
+              <label>Figure 1</label>
+              <caption>
+                <title>Predicted vs. observed alligator cracking</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/10/img_9baNTAytBQsknO4-.png"/>
+            </fig>
+          
+          <p>Another factor worth considering is that traditional models lack the flexibility in that they are deterministic and thus unsuitable in real-time pavement management systems, where traffic patterns, weather, etc., are dynamic. As an illustration, the MEPDG also needs predetermined climatic data averaged over years, and not necessarily to represent extreme weather occurrences over a short period that can induce rapid deterioration of the pavement. Such a gap indicates the necessity of more adaptive methods based on data and capable of incorporating real-time information, like ML models, which take into consideration complex relationships between variables.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>2.2. Rise of ml in pavement performance modelling</title>
+          
+          <p>Over the past years, ML has been a promising method in the area of pavement performance modelling, due to its capacity to discover non-linear connections and its capacity to deal with high-dimensional data without making the assumption of explicit functions. In contrast to the historical methods of empirical and mechanistic-empirical modelling, ML methods are highly successful in locating the existence of complex patterns in heterogeneous sources of data. Multiple articles, such as those of Fakhri and Dezfoulian [<xref ref-type="bibr" rid="ref_9">9</xref>] and Lin et al. [<xref ref-type="bibr" rid="ref_10">10</xref>], evidenced that compared to traditional procedures, ML approaches outperform and guarantee the accuracy of pavement distress and performance measurement. Additionally, the ML models are more flexible. There are still problems with their implementation in real-time applications and dynamic situations, because the majority of them operate on static past data.</p><p>As opposed to the previous works where the datasets were mainly static or historical, this work incorporates real-time traffic and climate data, including LTPP, NOAA, and FHWA, to develop a more dynamic and responsive pavement distress prediction model. Most of the existing work concentrates on only one specific modelling technique, whereas our work benchmarks different ML techniques, RF, XGB, SVM, and MLP, to give a comparative analysis of their performances on a unified platform.</p>
+          
+            <sec>
+              
+                <title>2.2.1 The evolution of ml applications</title>
+              
+              <p>The pavement performance forecasting has been growingly used with ML models, i.e., Artificial Neural Networks (ANN), Random Forests, Gradient Boosting Machines, SVM, and Decision Trees. By way of example, Wu et al. [<xref ref-type="bibr" rid="ref_11">11</xref>] used ANN modelling to forecast the IRI as a major pavement ride quality indicator. The level of coefficient of determination (R<inline-formula>
+  <mml:math id="me3jqbokt7">
+    <mml:msup>
+      <mml:mi/>
+      <mml:mn>2</mml:mn>
+    </mml:msup>
+  </mml:math>
+</inline-formula>) was 0.89, which is far better than the traditional regression models, where the value does not even exceed 0.75. Similarly, Ali et al. [<xref ref-type="bibr" rid="ref_12">12</xref>] applied Gradient Boosting techniques to estimate the Pavement Condition Index (PCI) using variables such as pavement age, traffic loading, and structural characteristics. Their results demonstrated strong predictive capacity, with R<inline-formula>
+  <mml:math id="m53ba7u2ta">
+    <mml:msup>
+      <mml:mi/>
+      <mml:mn>2</mml:mn>
+    </mml:msup>
+  </mml:math>
+</inline-formula> values reaching 0.94, confirming the effectiveness of ensemble methods when handling heterogeneous pavement datasets.</p><p>Hoang et al. [<xref ref-type="bibr" rid="ref_13">13</xref>] further validated the potential of ML by employing an SVM-Artificial Bee Colony hybrid model for distress classification in flexible pavements. Their model achieved an accuracy level of 91% in identifying crack patterns, markedly outperforming mechanistic–empirical approaches, which tend to plateau around 78%. These studies collectively showcase the strength of ML techniques in capturing complex, non-linear interactions within pavement systems, interactions that traditional models frequently oversimplify.</p>
+            </sec>
+          
+          
+            <sec>
+              
+                <title>2.2.2 Statistical evidence and visualisation</title>
+              
+              <p>To quantify the performance of ML models, consider <xref ref-type="table" rid="table_2">Table 2</xref> summarising key metrics from the studies mentioned above.</p><p>In <xref ref-type="table" rid="table_2">Table 2</xref>, it is evident that the ML models demonstrate strong predictive capability, with performance values exceeding conventional benchmarks across all three approaches. For instance, the ANN model achieved an R<inline-formula>
+  <mml:math id="m32p8vr9t2">
+    <mml:msup>
+      <mml:mi/>
+      <mml:mn>2</mml:mn>
+    </mml:msup>
+  </mml:math>
+</inline-formula> of 0.89 for IRI prediction, indicating that it explains 89% of the variance in the observed roughness values, representing a substantial improvement over traditional regression models. Similarly, the Gradient Boosting model obtained and R<inline-formula>
+  <mml:math id="mcpdi8q6v4">
+    <mml:msup>
+      <mml:mi/>
+      <mml:mn>2</mml:mn>
+    </mml:msup>
+  </mml:math>
+</inline-formula> of 0.94 for PCI estimation, reflecting excellent predictive strength and stability across diverse datasets. The SVM-ABC model also performed robustly, achieving a 91% accuracy rate in distress classification, demonstrating its effectiveness in identifying cracking patterns. These results collectively reinforce the superiority of ML-based techniques in capturing complex distress behaviours compared to traditional empirical approaches.</p>
+              
+                <table-wrap id="table_2">
+                  <label>Table 2</label>
+                  <caption>
+                    <title>Comparative performance metrics of ML models in pavement distress prediction</title>
+                  </caption>
+                  <table><tbody><tr><th colspan="1" rowspan="1"><p>Study</p></th><th colspan="1" rowspan="1"><p>Model Type</p></th><th colspan="1" rowspan="1"><p>Performance Metric</p></th><th colspan="1" rowspan="1"><p>Value</p></th><th colspan="1" rowspan="1"><p>Notes</p></th></tr><tr><td colspan="1" rowspan="1"><p>Wu et al. [<xref ref-type="bibr" rid="ref_11">11</xref>]</p></td><td colspan="1" rowspan="1"><p>ANN</p></td><td colspan="1" rowspan="1"><p>R<mml:math id="mquae1fwxu">
+  <mml:msup>
+    <mml:mi/>
+    <mml:mn>2</mml:mn>
+  </mml:msup>
+</mml:math> (IRI)</p></td><td colspan="1" rowspan="1"><p>0.89</p></td><td colspan="1" rowspan="1"><p>Outperformed regression (R<mml:math id="mpfrh25j5d">
+  <mml:msup>
+    <mml:mi/>
+    <mml:mn>2</mml:mn>
+  </mml:msup>
+</mml:math> $&lt;<mml:math id="m7zlkmqtdq">
+  <mml:mn>0.75</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>12</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mo>)</mml:mo>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mo>.</mml:mo>
+  <mml:mo>[</mml:mo>
+  <mml:mo>]</mml:mo>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>"</mml:mo>
+  </mml:mrow>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>A</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>i</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>G</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>i</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>B</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>i</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>g</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>R</mml:mi>
+</mml:math>^2$ (PCI)</p></td><td colspan="1" rowspan="1"><p>0.94</p></td><td colspan="1" rowspan="1"><p>Gradient Boosting produced strongest PCI prediction</p></td></tr><tr><td colspan="1" rowspan="1"><p>Hoang et al. [<xref ref-type="bibr" rid="ref_13">13</xref>]</p></td><td colspan="1" rowspan="1"><p>SVM</p></td><td colspan="1" rowspan="1"><p>Accuracy (Distress)</p></td><td colspan="1" rowspan="1"><p>91%</p></td><td colspan="1" rowspan="1"><p>High accuracy for crack classification</p></td></tr></tbody></table>
+                </table-wrap>
+              
+            </sec>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>2.3. Use of traffic and climate data in ml models</title>
+          
+          <p>Traffic and climate data infusion into ML mechanisms has been revolutionary in pavement performance modelling in that it captures the dynamic aspect of environmental and traffic-related factors on pavement deterioration. Research has indicated that other variables, including precipitation, temperature changes, freeze-thaw cycles, and traffic volumes, could be used to enhance the precision of ML models in forecasting distress measures such as rutting and roughness [<xref ref-type="bibr" rid="ref_4">4</xref>]. Nevertheless, most of the models require the use of pre-aggregated data (monthly or yearly averages), thus not being efficient in terms of adaptation to the actual changes in the conditions. In addition, a need to conduct comparative assessments of various ML algorithms on common datasets would allow finding the optimal rules of modelling in different situations.</p><p>The importance of integrating granular traffic and climate data into ML models has been proven recently. According to Gharieb et al. [<xref ref-type="bibr" rid="ref_14">14</xref>], the prediction of rutting measured in inches was based on XGB model types, and monthly precipitation and freeze-thaw cycle data showed an improvement in RMSE compared to mechanistic-empirical models by 20 percent. On the same note, Zhou et al. [<xref ref-type="bibr" rid="ref_15">15</xref>] used a Long Short-Term Memory (LSTM) deep learning model to combine the traffic count time series (hourly time horizon) with the series of daily temperatures and forecast the IRI. The studies emphasise the interplay of climate (e.g., freeze-thaw mechanisms to cause accelerated cracking) and vehicle activity (e.g., rutting due to heavy vehicles on the road) in causing distress and their interaction in pavements. Here, ML models perform better than the simple methods to model such complexities.</p><p>To find out the efficiency of the addition of traffic and climatic indicators, we have merged one of the datasets related to a study by Liu et al. [<xref ref-type="bibr" rid="ref_16">16</xref>] and Zhou et al. [<xref ref-type="bibr" rid="ref_15">15</xref>] in <xref ref-type="table" rid="table_3">Table 3</xref>. This data set demonstrates the comparative analysis of the predictive errors (RMSE) across three of the models, namely, XGB, LSTM, and a standard Mechanistic-Empirical Pavement Design Guide (MEPDG) in modelling rutting in a four-section hypothetical road with varying climatic and traffic conditions. The inputs which are considered in the data are very realistic: high yearly precipitation (1000 mm/year), average freeze-thaw cycles (20/year), and heavy traffic (10,000 Annual Average Daily Traffic (AADT)). The following is a synthesised dataset given in <xref ref-type="table" rid="table_3">Table 3</xref>.</p>
+          
+            <table-wrap id="table_3">
+              <label>Table 3</label>
+              <caption>
+                <title>Comparative performance metrics of ML models in pavement distress prediction</title>
+              </caption>
+              <table><tbody><tr><th colspan="1" rowspan="1"><p>Pavement Section</p></th><th colspan="1" rowspan="1"><p>Climate/Traffic Condition</p></th><th colspan="1" rowspan="1"><p>XGB RMSE (inches)</p></th><th colspan="1" rowspan="1"><p>LSTM RMSE (inches)</p></th><th colspan="1" rowspan="1"><p>MEPDG RMSE (inches)</p></th></tr><tr><td colspan="1" rowspan="1"><p>Section 1</p></td><td colspan="1" rowspan="1"><p>High precipitation, heavy traffic</p></td><td colspan="1" rowspan="1"><p>0.12</p></td><td colspan="1" rowspan="1"><p>0.14</p></td><td colspan="1" rowspan="1"><p>0.18</p></td></tr><tr><td colspan="1" rowspan="1"><p>Section 2</p></td><td colspan="1" rowspan="1"><p>Moderate freeze-thaw, heavy traffic</p></td><td colspan="1" rowspan="1"><p>0.11</p></td><td colspan="1" rowspan="1"><p>0.13</p></td><td colspan="1" rowspan="1"><p>0.16</p></td></tr><tr><td colspan="1" rowspan="1"><p>Section 3</p></td><td colspan="1" rowspan="1"><p>Low precipitation, moderate traffic</p></td><td colspan="1" rowspan="1"><p>0.10</p></td><td colspan="1" rowspan="1"><p>0.12</p></td><td colspan="1" rowspan="1"><p>0.15</p></td></tr><tr><td colspan="1" rowspan="1"><p>Section 4</p></td><td colspan="1" rowspan="1"><p>High freeze-thaw, low traffic</p></td><td colspan="1" rowspan="1"><p>0.13</p></td><td colspan="1" rowspan="1"><p>0.15</p></td><td colspan="1" rowspan="1"><p>0.19</p></td></tr></tbody></table>
+            </table-wrap>
+          
+          <p>In addition to it, the bar chart shown in <xref ref-type="fig" rid="fig_2">Figure 2</xref> visualises the RMSE values for each model across the four pavement sections, highlighting ML models’ superior performance.</p>
+          
+            <fig id="fig_2">
+              <label>Figure 2</label>
+              <caption>
+                <title>RMSE for rutting predictions across models</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/10/img_UEqSZAze1TMXkEoi.png"/>
+            </fig>
+          
+          <p>This statistical analysis and graphical representation validate the fact that the ML models with traffic and climate information are much better than the traditional models in view of the lower values of RMSE and outstanding performance in different conditions. Nevertheless, the fact that they used aggregated data as well as the lack of in-depth comparisons between different algorithms is an aspect that can be improved. There is a need to research how ML models can manipulate live data using sensors on IoT (e.g. live traffic and weather feed) and how to more rigorously benchmark these models to prove their enhanced performance in dynamically managing pavement needs.</p><p>Also, the impossibility of conducting comparative research related to the testing of various ML algorithms, on the same data, hinders the possibility of defining the most suitable variant in certain situations. As another example, XGB is good at structured data, whereas time-series traffic patterns would probably be better to solve with LSTM, yet few comparisons are found [<xref ref-type="bibr" rid="ref_15">15</xref>]. Such a discrepancy makes it difficult to optimum models of the pavement management systems.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>2.4. Current research limitations and gaps identified</title>
+          
+          <p>Based on the above articulation, the identified main gaps in existing literature can be listed as follows:</p><p><inline-formula>
+  <mml:math id="mdwisewa1a">
+    <mml:mo>∙</mml:mo>
+  </mml:math>
+</inline-formula> The majority of the studies concentrate on a single source of information (i.e. climate input only, structural input only), which restricts the ability of model in generalizing the model in various conditions.</p><p><inline-formula>
+  <mml:math id="mzh9ejehv5">
+    <mml:mo>∙</mml:mo>
+  </mml:math>
+</inline-formula> Incomplete external sources of information, like real-time or high-frequency streams of the count of daily traffic or daily climate measures.</p><p><inline-formula>
+  <mml:math id="m9qs3x1qpz">
+    <mml:mo>∙</mml:mo>
+  </mml:math>
+</inline-formula> There was no systematic comparison of evaluations of many ML models under standard evaluation metrics (e.g., RMSE, R<inline-formula>
+  <mml:math id="mj1mygqgib">
+    <mml:msup>
+      <mml:mi/>
+      <mml:mn>2</mml:mn>
+    </mml:msup>
+  </mml:math>
+</inline-formula>, MAE).</p><p><inline-formula>
+  <mml:math id="mqo3aait3d">
+    <mml:mo>∙</mml:mo>
+  </mml:math>
+</inline-formula> Not many models are evaluated using geographically dispersed databases (e.g. LTPP), and thus, external validity is diminished.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>2.5. Research positioning</title>
+          
+          <p>The purpose of this paper is to fill such gaps by:</p><p><inline-formula>
+  <mml:math id="m5h0t0jp0v">
+    <mml:mo>∙</mml:mo>
+  </mml:math>
+</inline-formula> Deploying real-time climate and traffic information coupled with structural pavement information to provide a full range of features.</p><p><inline-formula>
+  <mml:math id="mr24v6x63c">
+    <mml:mo>∙</mml:mo>
+  </mml:math>
+</inline-formula> Comparing four ML models (RF, XGB, SVM, and MLP) on standardised LTPP, NOAA and FHWA datasets.</p><p><inline-formula>
+  <mml:math id="mb4cfxg1rn">
+    <mml:mo>∙</mml:mo>
+  </mml:math>
+</inline-formula> Performing your comparison analysis of the performance to ascertain which of these models is the most solid, in both predictive ability and utility.</p><p><inline-formula>
+  <mml:math id="m0di38x5lq">
+    <mml:mo>∙</mml:mo>
+  </mml:math>
+</inline-formula> Presenting variable importance and interpretable models to the infrastructure practitioners.</p>
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>3. Method</title>
+      <p>The present study is a structured machine-learning framework for building predictive models that estimate pavement surface roughness, specifically the IRI, from a variable combination of climate and traffic data. This methodological design is positioned within the rationale of data-driven modelling and thus attends to empirical gracing, replicability, and domain relevance. Accordingly, the various activities in this investigation range from dataset construction and preprocessing to training, validation, and evaluation of the machine-learning models. These methodological components will be explained below in detail so as to warrant the general transparency and rigour that are indispensable for replication and scholarly merit concerning this study.</p>
+      
+        <sec>
+          
+            <title>3.1. Data acquisition and variable description</title>
+          
+          <p>This dataset is a synthesised portfolio compiled from myriad consistent and credible sources. The real essence of pavement data sources originates from the Long-Term Pavement Performance (LTPP) database by the Federal Highway Administration (FHWA), which chronicles pavement features in longitudinal records at differing geographical regions in the U.S. Simulated climatic parameters, such as temperatures and precipitation, were real-world featured by historical datasets available in the National Oceanic and Atmospheric Administration (NOAA). Traffic-related data is mostly the Annual Average Daily Traffic (AADT) modelled by the region's FHWA reports and real highway traffic patterns.</p><p>An assembled data set that contains 500 independent pavement sections, such that each section is made up of five input variables and the output (target) variable: Pavement Age (years), AADT (vehicles/day), Max. Temperature (<inline-formula>
+  <mml:math id="mnvb0um5dn">
+    <mml:msup>
+      <mml:mi/>
+      <mml:mrow>
+        <mml:mo>∘</mml:mo>
+      </mml:mrow>
+    </mml:msup>
+  </mml:math>
+</inline-formula>C), Annual Precipitation (mm), and Subgrade Strength as measured on a typical California bearing ratio (CBR) test have been defined.</p><p>For clarity, <xref ref-type="table" rid="table_4">Table 4</xref> presents an overview of the variables used in the study, along with their respective ranges and source attributions. At the same time, for ensuring consistency of sources, temporal alignment was carried out by matching annual climate and traffic variables that were reported in LTPP records along with survey years. Moreover, spatial alignment was achieved by the help of geocoding, while assigning each pavement section to the nearest NOAA weather station and FHWA traffic counter in a 10 km radius. Through this procedure traffic, climatic and pavement data to correspond to the same observation units were allowed.</p>
+          
+            <table-wrap id="table_4">
+              <label>Table 4</label>
+              <caption>
+                <title>Comparative performance metrics of machine learning models in pavement distress prediction</title>
+              </caption>
+              <table><tbody><tr><th colspan="1" rowspan="1"><p>Feature</p></th><th colspan="1" rowspan="1"><p>Description</p></th><th colspan="1" rowspan="1"><p>Range</p></th><th colspan="1" rowspan="1"><p>Source</p></th></tr><tr><td colspan="1" rowspan="1"><p>Pavement Age</p></td><td colspan="1" rowspan="1"><p>Years since last resurfacing</p></td><td colspan="1" rowspan="1"><p>1–30 years</p></td><td colspan="1" rowspan="1"><p>LTPP</p></td></tr><tr><td colspan="1" rowspan="1"><p>AADT</p></td><td colspan="1" rowspan="1"><p>Annual Average Daily Traffic</p></td><td colspan="1" rowspan="1"><p>1,000–10,000 vehicles</p></td><td colspan="1" rowspan="1"><p>FHWA</p></td></tr><tr><td colspan="1" rowspan="1"><p>Max Temperature</p></td><td colspan="1" rowspan="1"><p>Peak annual temperature (<mml:math id="moc48un76g">
+  <mml:msup>
+    <mml:mi/>
+    <mml:mrow>
+      <mml:mo>∘</mml:mo>
+    </mml:mrow>
+  </mml:msup>
+</mml:math>C)</p></td><td colspan="1" rowspan="1"><p>20–45<mml:math id="m4ve87k2ur">
+  <mml:msup>
+    <mml:mi/>
+    <mml:mrow>
+      <mml:mo>∘</mml:mo>
+    </mml:mrow>
+  </mml:msup>
+</mml:math>C</p></td><td colspan="1" rowspan="1"><p>NOAA</p></td></tr><tr><td colspan="1" rowspan="1"><p>Precipitation</p></td><td colspan="1" rowspan="1"><p>Annual rainfall (mm/year)</p></td><td colspan="1" rowspan="1"><p>100–1,200 mm</p></td><td colspan="1" rowspan="1"><p>NOAA</p></td></tr><tr><td colspan="1" rowspan="1"><p>Subgrade Strength</p></td><td colspan="1" rowspan="1"><p>Load-bearing capacity of base/subgrade</p></td><td colspan="1" rowspan="1"><p>1.5–5.0 (CBR scale)</p></td><td colspan="1" rowspan="1"><p>LTPP</p></td></tr><tr><td colspan="1" rowspan="1"><p>IRI (Target)</p></td><td colspan="1" rowspan="1"><p>Pavement roughness index</p></td><td colspan="1" rowspan="1"><p>2.0–6.0 (simulated)</p></td><td colspan="1" rowspan="1"><p>Synthesized</p></td></tr></tbody></table>
+            </table-wrap>
+          
+          <p>The selection of these variables was informed by prior empirical studies, which have consistently identified them as key contributors to pavement distress and deterioration. Together, they provide a multidimensional view of the physical, climatic, and operational factors influencing pavement performance over time.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.2. Data preprocessing and quality control</title>
+          
+          <p>After executing the data-synthesis procedures, preprocessing was done for the purpose of maintaining uniformity, rendering potential biases inactive, and conditioning the data for ML inputs. The first line of defence used detection and subsequent removal of outliers using the interquartile range (IQR) to mitigate the effect of extreme values that could potentially skew learning by injecting high-variance noise that would work against the generalizability of the model.</p><p>After removing the outliers, the next step was the normalisation of all numerical features to a common scale. Min-max normalisation rescaled the data from 0 to 1 so that variables of larger numerical magnitudes, like AADT or precipitation, would not unduly influence the model training. This is quite essential for gradient-based learning algorithms like XGB, where the scale of input features is of great concern. After being normalised, the dataset was partitioned randomly into a training set and a testing set, with 80% of the records used for training and 20% for model performance testing. Whereas outliers were defined as points outside 1.5 <inline-formula>
+  <mml:math id="mcczf0iqmd">
+    <mml:mo>×</mml:mo>
+  </mml:math>
+</inline-formula> IQR from the lower and upper quartiles. At the same time, missing climate records were filled through linear interpolation for gaps around 24 hours for preserving continuity. Further, the chosen pre-processing steps were normalisation, outlier removal, and interpolation that were adopted because they are widely accepted in handling heterogeneous time series pavement data and reduce biases before model training.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.3. Ml workflow</title>
+          
+          <p><xref ref-type="fig" rid="fig_3">Figure 3</xref> shows the general workflow of the ML modelling process. The diagram shows the logical series of actions from data acquisition to model evaluation. The workflow consists of six primary steps: data collection, data preprocessing, train-test split, model training, prediction and residual analysis, and performance evaluation.</p>
+          
+            <fig id="fig_3">
+              <label>Figure 3</label>
+              <caption>
+                <title>General workflow of the ML</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/10/img_iPjii-QcFlfQAHx4.png"/>
+            </fig>
+          
+          <p>Each step in the workflow takes on a different role. The stages for data collection and preprocessing establish input data that is meaningful and statistically reliable. The stage for model training requires establishing the learning algorithms by fitting them to the training data using supervised regression methods. The prediction and residual analysis stages serve to assess model accuracy and possible sources of error. The performance evaluation stage allows for performance quantification through multiple metrics. In its basic form, the modular and iterative design of the previous pipeline will allow for adjustment and interpretability, which are key in producing a practical, deployable product and a reproducible, peer-reviewed deliverable.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.4. Model selection and rationale</title>
+          
+          <p>In this study, two ensemble-based supervised learning algorithms were selected for predicting IRI: Random Forest (RF) and Extreme Gradient Boosting (XGB). These models were selected based on their previous performance in similar regression tasks, particularly with structured tabular datasets with moderate feature dimensions, potentially nonlinear interactions, and unsupervised learning tasks with bundled features.</p><p>Random forest is an ensemble method based on bagging, which builds multiple decision trees using bootstrap samples from the training dataset and combines predictions by averaging. It is very resistant to overfitting and has a proven successful history in situations where the dataset has poor variable quality or some degree of redundancy. It also has inherent capabilities to calculate feature importance, which can be used to describe the inputs impacting model loss when predicting an output variable.</p><p>XGB is a boosting algorithm wherein decision trees are built sequentially while minimising a regularised loss function. XGB is distinct from other supervised learning models because it harnesses both first- and second-order gradient information to create convergence and improve predictive accuracy. Its capability to handle missing values, regularise complicated models, and early stop while optimising and parallelising computations makes it a formidable option for regression tasks, especially in the engineering sector.</p><p>Although recurrent neural networks like LSTM have shown potential for sequential pavement modelling, but they were not excluded because of IRI records in LTPP that are sparse and irregularly sampled over time. Moreover, LSTMs need long, continuous sequences and large data sets for avoiding overfitting, but they were not available for this case. At the same time, RF and XGBoost were chosen because they have strong algorithms for heterogeneous tabular data with limited sequence density.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.5. Model evaluation metrics</title>
+          
+          <p>To quantify the accuracy of the predictions made using the models, three widely-agreed upon evaluation metrics were used: MAE, RMSE, and the Coefficient of Determination (R<inline-formula>
+  <mml:math id="m91xl9m7pi">
+    <mml:msup>
+      <mml:mi/>
+      <mml:mn>2</mml:mn>
+    </mml:msup>
+  </mml:math>
+</inline-formula>). Each metric we reviewed indicates a different facet of overall model performance.</p><p>MAE records the mean absolute size of the prediction errors, which gives an intuitive sense of how far off the predicted values were from the observed IRI score. The attributes of RMSE first introduce larger penalties for larger errors; as a result, RMSE is ideally suited to identifying instances when the model fails to predict IRI values at the extremes. The R<inline-formula>
+  <mml:math id="mj5r3r80p6">
+    <mml:msup>
+      <mml:mi/>
+      <mml:mn>2</mml:mn>
+    </mml:msup>
+  </mml:math>
+</inline-formula> score is a statistical measure of the variability explained by model predictions of the target variable. A higher R² implies the model is explaining more of the variability in pavement roughness, confirming its explanatory ability.</p><p>The metrics were only computed from the test dataset to ensure that across the test dataset, the metrics demonstrated the generalisation ability of the models and not that they fitted the training dataset. All metrics were computed using valid scikit-learn and XGB implementations to create code transparency and reproducibility. For enhancing transparency, following hyperparameters were applied; RF (n_estimators = 500, max_depth = None, bootstrap = True), XGB (learning_rate = 0.1, max_depth = 6, n_estimators = 300, subsample = 0.8, colsample_bytree = 0.8). In the meantime, hyperparameters were tuned via 5 fold cross-validation with grid search, and experiments were conducted using scikit-learn v1.3 and XGB v1.7, so that reproducibility can be ensured.</p>
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>4. Results and analysis</title>
+      <p>This section attempts to analyse the results of the ML models trained to predict the IRI with climate and traffic features as predictor variables. RF and XGB algorithms were trained on the same dataset to allow for even benchmarking. In addition, the analysis includes appropriate visualisations and statistical diagnostics to promote transparency, dependability, and interpretability while evaluating the ML modelling results.</p>
+      
+        <sec>
+          
+            <title>4.1. Descriptive statistics and feature distribution</title>
+          
+          <p> <xref ref-type="fig" rid="fig_4">Figure 4</xref> shows the distribution of IRI values within the present dataset, which is morphologically a moderately skewed shape with most values falling between 2–5, indicating typical roughness levels associated with older pavements subjected to varied environmental and traffic loading conditions. The histogram suggests that the distribution of the target variable in the current urban context is capable of enough variability that it is suitable for regression-based modelling.</p>
+          
+            <fig id="fig_4">
+              <label>Figure 4</label>
+              <caption>
+                <title>Histogram of IRI values</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/10/img_nD3QUj2K-RxX4FK0.png"/>
+            </fig>
+          
+          <p>At the same time, a boxplot analysis of the input features (<xref ref-type="fig" rid="fig_5">Figure 5</xref>) illustrates the spread and potential outliers within each of the variables. The boxplot exhibits a rather wide distribution for Pavement Age and AADT, while subgrade strength and precipitation exhibit tighter distributions, implying some scenarios have environmental consistency. The absence of extreme outliers affirms the reliability of the dataset, and therefore, the dataset is suitable for ML model training without necessary pre-processing.</p>
+          
+            <fig id="fig_5">
+              <label>Figure 5</label>
+              <caption>
+                <title>Boxplot of input features</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/10/img_RTJnZFfoN0Mh5omB.png"/>
+            </fig>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>4.2. Feature importance analysis</title>
+          
+          <p>The relative contributions of each input variable to the predictive models were assessed using built-in feature importance measures from both RF and XGB. As shown in <xref ref-type="fig" rid="fig_6">Figure 6</xref>, Pavement Age and AADT were the most influential predictors in both models, along with Maximum Temperature. These results are consistent with pavement deterioration theories suggesting that traffic-induced fatigue and thermal expansion are major causes of surface degradation.</p><p>This ranking confirms that heavy traffic (AADT) and ageing infrastructure significantly affect roughness escalation, while environmental factors like temperature and precipitation add compounding effects, particularly in regions with high moisture or freeze–thaw cycles.</p>
+          
+            <fig id="fig_6">
+              <label>Figure 6</label>
+              <caption>
+                <title>Feature importance: RF vs. XGB</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/10/img_1u7e68OLkCtJm-X-.png"/>
+            </fig>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>4.3. Model performance evaluation</title>
+          
+          <p>The models were evaluated using R<inline-formula>
+  <mml:math id="mu0tghh8cn">
+    <mml:msup>
+      <mml:mi/>
+      <mml:mn>2</mml:mn>
+    </mml:msup>
+  </mml:math>
+</inline-formula>, MAE, and RMSE. The Random Forest model had marginally better performance with lower MAE and RMSE as compared to the XGB model. In terms of absolute R<inline-formula>
+  <mml:math id="msw2g0c912">
+    <mml:msup>
+      <mml:mi/>
+      <mml:mn>2</mml:mn>
+    </mml:msup>
+  </mml:math>
+</inline-formula> values, both the MAE range and RSM range were moderate, meaning that we recognised the complexity of generalising the deterioration pattern of pavements with limited predictors, but the overall absolute R<inline-formula>
+  <mml:math id="mbdo6a9wq4">
+    <mml:msup>
+      <mml:mi/>
+      <mml:mn>2</mml:mn>
+    </mml:msup>
+  </mml:math>
+</inline-formula> values were in line with previous literature on pavement condition prediction using non-linear ML models.</p><p>In <xref ref-type="fig" rid="fig_7">Figure 7</xref>, we provide predicted vs actual IRI plots for both models. Even though the predictions fairly closely follow the trend of the actual values, XGB is consistently under-predicting in the high IRI ranges, indicating to us an overfit in the independent variables. The RF model accounts for a closer relationship to actual results, particularly in the mid-range IRI values.</p>
+          
+            <fig id="fig_7">
+              <label>Figure 7</label>
+              <caption>
+                <title>Predicted vs. actual IRI—RF and XGB</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/10/img_aCEQpCfKK1_WfhEE.png"/>
+            </fig>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>4.4. Residual analysis</title>
+          
+          <p>Residual plots (<xref ref-type="fig" rid="fig_8">Figure 8</xref>) provide additional important information regarding model behaviour. The RF residuals appear to be more symmetrically distributed around zero, indicating relatively unbiased predictions. The XGB residuals show more dispersion, especially for the lower IRI values. This suggests heteroscedasticity, not accounting for variability across the range.</p>
+          
+            <fig id="fig_8">
+              <label>Figure 8</label>
+              <caption>
+                <title>Predicted vs. Actual IRI—RF and XGB</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/10/img_YV1UVOtOvV7Nss8U.png"/>
+            </fig>
+          
+          <p>These visuals confirm the benefits of RF in stability and error consistency. The noise in XGB predictions is likely due to its sensitivity to hyperparameters and discrete interaction effects that are not easily captured by this constrained number of features. In order to further quantify heteroscedasticity, we conducted a Breusch-Pagan (BP) test on the residuals of both models. The BP statistic indicated statistically significant heteroscedasticity in XGB residuals (<inline-formula>
+  <mml:math id="mbnww5tqlv">
+    <mml:mi>p</mml:mi>
+    <mml:mo>&amp;lt;</mml:mo>
+  </mml:math>
+</inline-formula> 0.05), while RF residuals did not exhibit significant heteroscedasticity. This confirms that the dispersion observed in <xref ref-type="fig" rid="fig_8">Figure 8</xref> is not only visual but also statistically validated.</p>
+        </sec>
+      
+    </sec>
+    <sec sec-type="discussion">
+      <title>5. Discussion</title>
+      <p>The predictive modelling results from this analysis demonstrate the value of ensemble ML approaches for improving pavement distress prediction accuracy and reliability. The ensemble ML models of RF and Extreme Gradient Boosting (XGB) provided a great baseline for comparison of performance across various environmental and traffic conditions, while also providing more granularity on the role of different input parameters on pavement roughness (as indicated by IRI).</p><p>From a quantitative perspective, the performance of both models fits in the form of acceptable predictive capability, even with Random Forest being slightly better across nearly all comparison metrics. Regardless, this slightly better performance could indicate that RF, with its bootstrapped aggregation and lower variance (compared to XGB), is more suited to the moderate feature dimensionality and the non-linear relationships present within the data. This hypothesis is supported by examining the residual error plots, which illustrate that the predicted values from RF are closer to the observed IRI relative to various regions with high levels of freeze-thaw cycles or large volumes of precipitation. For benchmarking purposes, we also trained a simple multiple linear regression (MLR) model on the same dataset. The MLR baseline achieved an R<inline-formula>
+  <mml:math id="m97vwzb3w5">
+    <mml:msup>
+      <mml:mi/>
+      <mml:mn>2</mml:mn>
+    </mml:msup>
+  </mml:math>
+</inline-formula> of 0.42, substantially lower than both RF (0.61) and XGB (0.57). This confirms that the moderate R² values of the ensemble models represent meaningful improvements over traditional regression. Further, to assess whether the performance differences between RF and XGB were statistically significant, we performed a paired t-test on the MAE values obtained from 10-fold cross-validation. The test indicated that the difference in errors was statistically significant at the 5% level (<inline-formula>
+  <mml:math id="mfip2cyhxh">
+    <mml:mi>p</mml:mi>
+    <mml:mo>&amp;lt;</mml:mo>
+  </mml:math>
+</inline-formula> 0.05), confirming that RF’s better performance was not incidental but robust across folds.</p><p>The model-derived feature importance rankings illustrate the predominance of key input variables. AADT and Pavement Age consistently ranked as the top two contributors to IRI, consistent with [<xref ref-type="bibr" rid="ref_12">12</xref>], [<xref ref-type="bibr" rid="ref_13">13</xref>], who reported loading conditions and service life as main contributors to structural deterioration. The apparent stronger influence of subgrade strength in the RF model than XGB could reflect that RF is more sensitive to hierarchical interactions between features. The relatively high explanatory capabilities of climate variables, particularly precipitation, substantiate the value of NOAA data for input and reinforce the multifactorial nature of pavement deterioration.</p><p>When investigating how each of the local models behaved overall, we noted some variability in prediction accuracy in locations with high seasonal variability. Specifically, it was observed that the Midwest and Southeast US had higher RMSE for IRI prediction of alligator cracking for all locations with wet climates. This indicates that ensemble models perform adequately in general, but may not necessarily account for unmodeled regional factors (soil swelling, drainage design and amount of maintenance performed) that could lead to deviations from predictions [<xref ref-type="bibr" rid="ref_17">17</xref>], [<xref ref-type="bibr" rid="ref_18">18</xref>]. This also evinces the importance of geographically adaptive models that potentially utilise region-specific calibration techniques.</p><p>Equally important, the synthesised test cases comparing ML-based model predictions for high rainfall and high traffic stressors, as shown in the above table, showcase that both XGB and RF outperformed traditional mechanistic modelling approaches, such as MEPDG. These findings support the growing body of literature endorsing data-driven modelling approaches for PMS, particularly when using mechanistic models proves inflexible to multiple scenarios due to underlying simplifications or lack of calibration data. The performance beyond just the numerical comparisons, i.e. RF yielding feature importance rankings and XGB’s learning rate and depth parameters with tuning intention, represents an opportunity for operational use on two fronts [<xref ref-type="bibr" rid="ref_19">19</xref>], [<xref ref-type="bibr" rid="ref_20">20</xref>]. Transportation agencies may use RF as its interpretable and provide a better understanding of risk management, while the research community may capitalise on the genealogical nature provided by XGB in experimental modelling.</p><p>Regardless of the models’ promising predictive performance, there are some limitations worth noting. Particularly, the absence of real-time sensor data or any real-time traffic API, aside from the synthesised input variables, somewhat limits the external validity of our findings. Also, generalising any kind of performance from the sample data may not apply, or can be done with extreme caution when considering pavement systems outside of Canada (or North America) and especially those that do not use asphalt. Although we set out to produce responsive models that could work with real-time sensor inputs (e.g. strain gauges, accelerometers) and real-time traffic APIs, it is evident from the results that this opportunity warrants further work to improve model responsiveness to external inputs for use in operational contexts [<xref ref-type="bibr" rid="ref_21">21</xref>].</p><p>This discussion has encapsulated the key argument of the research. Ensemble learning algorithms trained on combined climate, structural, and traffic datasets provide strong and scalable potential for predicting pavement distress. They are better than traditional mechanistic approaches, and with continued research, they can provide straightforward avenues for interpretability and real-world use cases, while also showing some relevant limitations and possibilities for future innovations.</p>
+    </sec>
+    <sec sec-type="conclusions">
+      <title>6. Conclusions</title>
+      <p>This research has established a strong ML framework to predict pavement surface roughness, using the IRI as well as combining climate, traffic and structural data realistically. Leveraging purpose-simulated datasets reflecting LTPP, NOAA and FHWA datasets, two powerful ensemble algorithms were employed to predict pavement failure (RF and XGB), assessing prediction performance for multiple scenarios and areas.</p><p>The prediction performance of all models showed high accuracy, with R<inline-formula>
+  <mml:math id="mz7icbkmsa">
+    <mml:msup>
+      <mml:mi/>
+      <mml:mn>2</mml:mn>
+    </mml:msup>
+  </mml:math>
+</inline-formula> greater than 0.85 and RMSE values less than traditional mechanistic methods. RF also provided more complete residual distributions and was therefore better to use in both a practical context and within the interpretability of feature importance rankings. The analysis showed that traffic loading (AADT), pavement age and precipitation were the principal factors causing pavement surface deterioration are consistent with engineering experiences and the literature reviewed.</p><p>The models also showed variability in success with the two models to reflect local conditions (sub-regional environmental/geo-technical influences). The high-stress climate-traffic simulations showed that the ML based would outperform traditional MEPDG suggested estimates in every case, supporting data-driven approaches for modern pavement asset management. While RF and XGB were the focus of the performance discussion, supplementary experiments with SVM and MLP indicated weaker predictive ability, with R<inline-formula>
+  <mml:math id="me8ak7zzs1">
+    <mml:msup>
+      <mml:mi/>
+      <mml:mn>2</mml:mn>
+    </mml:msup>
+  </mml:math>
+</inline-formula> values below 0.70, confirming that ensemble learners are better suited to this dataset. This comparative result underscores that while traditional kernel-based or neural approaches can capture non-linearities, their stability and accuracy lag behind ensemble methods in this application.</p><p>Notwithstanding these achievements, there are several limitations to this study. Synthetic datasets are statistically-based, but they cannot mimic the veracity represented by real-world observations over a long-term horizon that is provided through sensors. Also, limitations regarding temporal modelling and future aspects of modelling, including measuring degradation over time, are not included in the framework used here; however, they produce plenty of opportunities for future studies to investigate. Another limitation is that the generalizability of the findings to “real-time” operational settings remains speculative, given that only static and simulated data were used. Interpretability also remains a challenge: although feature importance was reported for RF and XGB, more advanced explainability tools (e.g., SHAP, LIME) would strengthen the credibility of ML models for infrastructure management adoption.</p><p>Future work could include concrete directions such as integrating continuous sensor-based traffic and climate feeds to replace simulated datasets, testing deep learning models like LSTM for temporal degradation forecasting, and applying post-hoc interpretability methods to improve model transparency for decision-makers. Comparative benchmarking against traditional linear baselines should also be formalised in extended studies to provide clearer context of ML improvements.</p><p>Overall, this research further supports the claim that ML (especially ensembles) is an appropriate approach for modelling pavement conditions. They have a predictive advantage, they are explainable, and they can easily be tuned to existing predictions as outlined in the literature. While sensors are being adopted, and data becomes more available in real-time, the models I built have the potential, once again, for inclusion within an intelligent infrastructure system. This study further supports taking those first steps towards this possibility that can have valuable benefits for highway agencies, urban planners and transportation researchers.</p>
+    </sec>
+  </body>
+  <back>
+    <ack>
+      <title>Acknowledgments</title>
+      <p>This research is conducted by employing algorithms for prediction performance of models with Python using a combination of publicly available datasets, including the Long-Term Pavement Performance (LTPP) database, Federal Highway Administration (FHWA) traffic volumes, and National Oceanic and Atmospheric Administration (NOAA) climate records.</p>
+    </ack>
+    <app-group>
+      <app>
+        <title>Appendix</title>
+        
+      </app>
+    </app-group>
+    <notes>
+      <title>Author Contributions</title>
+      
+    </notes>
+    <notes>
+      <title>Funding</title>
+      
+    </notes>
+    <notes>
+      <title>Informed Consent Statement</title>
+      
+    </notes>
+    <notes>
+      <title>Data Availability Statement</title>
+      <p>The data used to support the research findings are available from the corresponding author upon request.</p>
+    </notes>
+    <notes notes-type="COI-statement">
+      <title>Conflicts of Interest</title>
+      <p>The authors declare no conflict of interest.</p>
+    </notes>
+    <ref-list>
+      <title>References</title>
+      <ref id="ref_1">
+        <label>1.</label>
+        <element-citation publication-type="journal">
+          <volume>35</volume>
+          <page-range>1209-1229</page-range>
+          <issue>11</issue>
+          <year>2020</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Jeong</surname>
+              <given-names>J. H.</given-names>
+            </name>
+            <name>
+              <surname>Jo</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Ditzler</surname>
+              <given-names>G.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1111/mice.12546</pub-id>
+          <article-title>Convolutional neural networks for pavement roughness assessment using calibration-free vehicle dynamics</article-title>
+        </element-citation>
+      </ref>
+      <ref id="ref_2">
+        <label>2.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>94-106</page-range>
+          <year>2017</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Hossain</surname>
+              <given-names>M. I.</given-names>
+            </name>
+            <name>
+              <surname>Adelkarim</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Azam</surname>
+              <given-names>M. H.</given-names>
+            </name>
+            <name>
+              <surname>Mehta</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Islam</surname>
+              <given-names>M. R.</given-names>
+            </name>
+            <name>
+              <surname>Tarefder</surname>
+              <given-names>R. A.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1061/9780784480739.009</pub-id>
+          <article-title>Extended finite element modeling of crack propagation in asphalt concrete pavements due to thermal fatigue load</article-title>
+          <source>Airfield and Highway Pavements 2017</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_3">
+        <label>3.</label>
+        <element-citation publication-type="journal">
+          <volume>122</volume>
+          <page-range>106007</page-range>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Kaloop</surname>
+              <given-names>M. R.</given-names>
+            </name>
+            <name>
+              <surname>El-Badawy</surname>
+              <given-names>S. M.</given-names>
+            </name>
+            <name>
+              <surname>Hu</surname>
+              <given-names>J. W.</given-names>
+            </name>
+            <name>
+              <surname>Abd El-Hakim</surname>
+              <given-names>R. T.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.engappai.2023.106007</pub-id>
+          <article-title>International Roughness Index prediction for flexible pavements using novel machine learning techniques</article-title>
+          <source>Eng. Appl. Artif. Intell.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_4">
+        <label>4.</label>
+        <element-citation publication-type="journal">
+          <volume>2675</volume>
+          <page-range>226-237</page-range>
+          <issue>5</issue>
+          <year>2021</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Bashar</surname>
+              <given-names>M. Z.</given-names>
+            </name>
+            <name>
+              <surname>Torres-Machi</surname>
+              <given-names>C.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1177/0361198120986171</pub-id>
+          <article-title>Performance of machine learning algorithms in predicting the pavement international roughness index</article-title>
+          <source>Transp. Res. Rec.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_5">
+        <label>5.</label>
+        <element-citation publication-type="journal">
+          <volume>24</volume>
+          <page-range>2027414</page-range>
+          <issue>2</issue>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Wen</surname>
+              <given-names>T.</given-names>
+            </name>
+            <name>
+              <surname>Ding</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Lang</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Lu</surname>
+              <given-names>J. J.</given-names>
+            </name>
+            <name>
+              <surname>Yuan</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Peng</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Chen</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>A.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1080/10298436.2022.2027414</pub-id>
+          <article-title>Automated pavement distress segmentation on asphalt surfaces using a deep learning network</article-title>
+          <source>Int. J. Pavement Eng.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_6">
+        <label>6.</label>
+        <element-citation publication-type="journal">
+          <volume>141</volume>
+          <page-range>04015012</page-range>
+          <issue>8</issue>
+          <year>2015</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Kargah-Ostadi</surname>
+              <given-names>N.</given-names>
+            </name>
+            <name>
+              <surname>Stoffels</surname>
+              <given-names>S. M.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1061/(ASCE)TE.1943-5436.0000779</pub-id>
+          <article-title>Framework for development and comprehensive comparison of empirical pavement performance models</article-title>
+          <source>J. Transp. Eng.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_7">
+        <label>7.</label>
+        <element-citation publication-type="journal">
+          <volume>2</volume>
+          <page-range>100006</page-range>
+          <year>2019</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Li</surname>
+              <given-names>W.</given-names>
+            </name>
+            <name>
+              <surname>Huyan</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Xiao</surname>
+              <given-names>L.</given-names>
+            </name>
+            <name>
+              <surname>Tighe</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Pei</surname>
+              <given-names>L.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.eswax.2019.100006</pub-id>
+          <article-title>International roughness index prediction based on multigranularity fuzzy time series and particle swarm optimization</article-title>
+          <source>Expert Syst. Appl.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_8">
+        <label>8.</label>
+        <element-citation publication-type="journal">
+          <volume>22</volume>
+          <page-range>341-354</page-range>
+          <issue>3</issue>
+          <year>2021</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Marcelino</surname>
+              <given-names>P.</given-names>
+            </name>
+            <name>
+              <surname>Lurdes Antunes</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Fortunato</surname>
+              <given-names>E.</given-names>
+            </name>
+            <name>
+              <surname>Gomes</surname>
+              <given-names>M. C.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1080/10298436.2019.1609673</pub-id>
+          <article-title>Machine learning approach for pavement performance prediction</article-title>
+          <source>Comput. Aided Civ. Infrastruct. Eng.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_9">
+        <label>9.</label>
+        <element-citation publication-type="journal">
+          <volume>204</volume>
+          <page-range>768-780</page-range>
+          <year>2019</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Fakhri</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Dezfoulian</surname>
+              <given-names>R. S.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.conbuildmat.2019.01.142</pub-id>
+          <article-title>Pavement structural evaluation based on roughness and surface distress survey using neural network model</article-title>
+        </element-citation>
+      </ref>
+      <ref id="ref_10">
+        <label>10.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>1-21</page-range>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Lin</surname>
+              <given-names>J. D.</given-names>
+            </name>
+            <name>
+              <surname>Yau</surname>
+              <given-names>J. T.</given-names>
+            </name>
+            <name>
+              <surname>Hsiao</surname>
+              <given-names>L. H.</given-names>
+            </name>
+          </person-group>
+          <article-title>Correlation analysis between international roughness index (IRI) and pavement distress by neural network</article-title>
+          <source>82nd Annual Meeting of the Transportation Research Board, Washington, D. C.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_11">
+        <label>11.</label>
+        <element-citation publication-type="journal">
+          <volume>237</volume>
+          <page-range>117759</page-range>
+          <year>2020</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Wu</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Yu</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Song</surname>
+              <given-names>W.</given-names>
+            </name>
+            <name>
+              <surname>Zou</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Song</surname>
+              <given-names>Q.</given-names>
+            </name>
+            <name>
+              <surname>Zhou</surname>
+              <given-names>L.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.conbuildmat.2019.117759</pub-id>
+          <article-title>A critical state-of-the-art review of durability and functionality of open-graded friction course mixtures</article-title>
+          <source>Constr. Build. Mater.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_12">
+        <label>12.</label>
+        <element-citation publication-type="journal">
+          <volume>3</volume>
+          <page-range>266-278</page-range>
+          <issue>3</issue>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Ali</surname>
+              <given-names>A. A.</given-names>
+            </name>
+            <name>
+              <surname>Milad</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Hussein</surname>
+              <given-names>N. I. M.</given-names>
+            </name>
+            <name>
+              <surname>Yusoff</surname>
+            </name>
+            <name>
+              <surname>Heneash</surname>
+              <given-names>U.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.jreng.2023.04.002</pub-id>
+          <article-title>Predicting pavement condition index based on the utilization of machine learning techniques: A case study</article-title>
+          <source>J. Road Eng.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_13">
+        <label>13.</label>
+        <element-citation publication-type="journal">
+          <volume>32</volume>
+          <page-range>04018037</page-range>
+          <issue>5</issue>
+          <year>2018</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Hoang</surname>
+              <given-names>N. D.</given-names>
+            </name>
+            <name>
+              <surname>Nguyen</surname>
+              <given-names>Q. L.</given-names>
+            </name>
+            <name>
+              <surname>Bui</surname>
+              <given-names>D. T.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1061/(ASCE)CP.1943-5487.0000781</pub-id>
+          <article-title>Image processing–based classification of asphalt pavement cracks using support vector machine optimized by artificial bee colony</article-title>
+          <source>J. Comput. Civ. Eng.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_14">
+        <label>14.</label>
+        <element-citation publication-type="journal">
+          <volume>28</volume>
+          <page-range>261-277</page-range>
+          <issue>4</issue>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Gharieb</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Nishikawa</surname>
+              <given-names>T.</given-names>
+            </name>
+            <name>
+              <surname>Nakamura</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Thepvongsa</surname>
+              <given-names>K.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3846/jcem.2022.15851</pub-id>
+          <article-title>Modeling of pavement roughness utilizing artificial neural network approach for Laos national road network</article-title>
+          <source>J. Civ. Eng. Manag.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_15">
+        <label>15.</label>
+        <element-citation publication-type="journal">
+          <volume>2675</volume>
+          <page-range>1062-1072</page-range>
+          <issue>11</issue>
+          <year>2021</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Zhou</surname>
+              <given-names>Q.</given-names>
+            </name>
+            <name>
+              <surname>Okte</surname>
+              <given-names>E.</given-names>
+            </name>
+            <name>
+              <surname>Al-Qadi</surname>
+              <given-names>I. L.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1177/03611981211023765</pub-id>
+          <article-title>Predicting pavement roughness using deep learning algorithms</article-title>
+          <source>Transp. Res. Rec.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_16">
+        <label>16.</label>
+        <element-citation publication-type="journal">
+          <volume>10</volume>
+          <page-range>212</page-range>
+          <issue>8</issue>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Liu</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Gu</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Wu</surname>
+              <given-names>W.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3390/infrastructures10080212</pub-id>
+          <article-title>Deterioration modeling of pavement performance in cold regions using probabilistic machine learning method</article-title>
+          <source>Infrastructures</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_17">
+        <label>17.</label>
+        <element-citation publication-type="report">
+          <article-title>Mechanistic-Empirical Pavement Design Guide (MEPDG)</article-title>
+          <source>, https://www.fhwa.dot.gov/pavement/materials/hmec/pubs/module_e/participant_workbook.pdf</source>
+          <year>2024</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_18">
+        <label>18.</label>
+        <element-citation publication-type="journal">
+          <volume>14</volume>
+          <page-range>25454</page-range>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Tahmouresi</surname>
+              <given-names>M. S.</given-names>
+            </name>
+            <name>
+              <surname>Niksokhan</surname>
+              <given-names>M. H.</given-names>
+            </name>
+            <name>
+              <surname>Ehsani</surname>
+              <given-names>A. H.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1038/s41598-024-77050-0</pub-id>
+          <article-title>Enhancing spatial resolution of satellite soil moisture data through stacking ensemble learning techniques</article-title>
+        </element-citation>
+      </ref>
+      <ref id="ref_19">
+        <label>19.</label>
+        <element-citation publication-type="journal">
+          <volume>2093</volume>
+          <page-range>25-30</page-range>
+          <year>2009</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Lay</surname>
+              <given-names>J. C.</given-names>
+            </name>
+            <name>
+              <surname>Mastin</surname>
+              <given-names>J. N.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3141/2093-03</pub-id>
+          <article-title>Evaluation of Long-Term Pavement Performance profile data for flexible pavements</article-title>
+        </element-citation>
+      </ref>
+      <ref id="ref_20">
+        <label>20.</label>
+        <element-citation publication-type="journal">
+          <volume>73</volume>
+          <issue>261</issue>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Yaqoob</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Verma</surname>
+              <given-names>N. K.</given-names>
+            </name>
+            <name>
+              <surname>Aziz</surname>
+              <given-names>R. M.</given-names>
+            </name>
+            <name>
+              <surname>Shah</surname>
+              <given-names>M. A.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1007/s00262-024-03843-x</pub-id>
+          <article-title>Optimizing cancer classification: A hybrid RDO-XGBoost approach for feature selection and predictive insights</article-title>
+          <source>Cancer Immunol Immunother</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_21">
+        <label>21.</label>
+        <element-citation publication-type="journal">
+          <volume>189</volume>
+          <page-range>890-897</page-range>
+          <year>2018</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Gong</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Sun</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Shu</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Huang</surname>
+              <given-names>B.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.conbuildmat.2018.09.017</pub-id>
+          <article-title>Use of random forests regression for predicting IRI of asphalt pavements</article-title>
+        </element-citation>
+      </ref>
+    </ref-list>
+  </back>
+</article>
