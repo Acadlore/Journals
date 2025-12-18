@@ -1,0 +1,1251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.3 20210610//EN" "JATS-journalpublishing1-3.dtd">
+<article xml:lang="en" dtd-version="1.3" article-type="research-article" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mml="http://www.w3.org/1998/Math/MathML">
+  <front>
+    <journal-meta>
+      <journal-id journal-id-type="publisher-id">GSI</journal-id>
+      <journal-id journal-id-type="doi">10.56578</journal-id>
+      <journal-title-group>
+        <journal-title>GeoStruct Innovations</journal-title>
+        <abbrev-journal-title abbrev-type="issn">GeoStruct. Innov.</abbrev-journal-title>
+        <abbrev-journal-title abbrev-type="publisher">GSI</abbrev-journal-title>
+      </journal-title-group>
+      <issn publication-format="electronic">3005-6128</issn>
+      <issn publication-format="print">3005-611X</issn>
+      <publisher>
+        <publisher-name>Acadlore</publisher-name>
+      </publisher>
+    </journal-meta>
+    <article-meta>
+      <article-id pub-id-type="publisher-id">AR-X7iu-dqtU82zv865XB540Vj_8WUql9qg</article-id>
+      <article-id pub-id-type="doi">10.56578/gsi030101</article-id>
+      <article-categories>
+        <subj-group>
+          <subject>Articles</subject>
+        </subj-group>
+      </article-categories>
+      <title-group>
+        <article-title>Microseismic Time-Series Prediction of Rockburst Events Based on an Adaptive Multiscale Noise-Resilient Mechanism</article-title>
+      </title-group>
+      <contrib-group>
+        <contrib contrib-type="author" rid="aff_1">
+          <contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0009-0008-5496-7387</contrib-id>
+          <name>
+            <surname>Xia</surname>
+            <given-names>Qiyuan</given-names>
+          </name>
+          <email>2648117709@qq.com</email>
+        </contrib>
+        <aff id="aff_1">School of Resource, Environment and Safety Engineering, Hunan University of Science and Technology, 411201 Xiangtan, China</aff>
+      </contrib-group>
+      <pub-date publication-format="electronic" date-type="pub">
+        <day>09</day>
+        <month>03</month>
+        <year>2025</year>
+      </pub-date>
+      <volume>3</volume>
+      <issue>1</issue>
+      <fpage>1</fpage>
+      <lpage>12</lpage>
+      <page-range>1-12</page-range>
+      <history>
+        <date date-type="received">
+          <day>25</day>
+          <month>12</month>
+          <year>2024</year>
+        </date>
+        <date date-type="accepted">
+          <day>23</day>
+          <month>02</month>
+          <year>2025</year>
+        </date>
+      </history>
+      <permissions>
+        <copyright-statement>©2025 by the author(s)</copyright-statement>
+        <copyright-year>2025</copyright-year>
+        <license license-type="open-access" xlink:href="https://creativecommons.org/licenses/by/4.0/">
+          <license-p> Published by Acadlore Publishing Services Limited, Hong Kong. This article is available for free download and can be reused and cited, provided that the original published version is credited, under the CC BY 4.0 license.</license-p>
+        </license>
+      </permissions>
+      <abstract><p>Rockburst monitoring data acquired during underground coal mining are characterized by strong noise, nonlinearity, and multiscale coupling, which severely limit the predictive performance of existing models. To address these challenges, an innovative deep learning model was proposed. First, a hybrid denoising strategy combining Complete Ensemble Empirical Mode Decomposition with Adaptive Noise (CEEMDAN) and wavelet transform was applied to enhance the quality of microseismic data. Subsequently, a trend–residual decomposition module was constructed to decouple the complex microseismic data into a trend component, representing long-term stress accumulation, and a residual component, capturing short-term fracture-induced fluctuations. On this basis, an improved adaptive multiscale noise-resilient Long Short-Term Memory (LSTM) unit was designed. A dynamic noise-control mechanism and a multiscale memory strategy were introduced to enable targeted feature extraction from the trend and residual branches, respectively. Furthermore, a multiscale interactive fusion (MSIF) module incorporating a channel attention mechanism was employed to dynamically integrate complementary information from both branches. The proposed framework was validated using field microseismic monitoring data from a northern coal mine. Experimental results demonstrated that the proposed model consistently outperformed five benchmark models across multiple evaluation metrics, achieving a recall of 88.37% with a false alarm rate of only 3.88\%. These results confirm the effectiveness and robustness of the proposed approach for rockburst microseismic time-series prediction under noisy and complex conditions.</p></abstract>
+      <kwd-group>
+        <kwd>Rockburst</kwd>
+        <kwd>Deep learning</kwd>
+        <kwd>Microseismic monitoring</kwd>
+        <kwd>Time-series prediction</kwd>
+        <kwd>Noise-resilient mechanism</kwd>
+      </kwd-group>
+      <counts>
+        <count count-type="contributors" count="1"/>
+        <fig-count count="11"/>
+        <table-count count="2"/>
+        <ref-count count="26"/>
+      </counts>
+    </article-meta>
+  </front>
+  <body>
+    <sec sec-type="intro">
+      <title>1. Introduction</title>
+      <p>With the progressive increase in mining depth, underground coal extraction has gradually shifted from shallow to deep levels. As mining depth increases, in-situ stress acting on roadway surrounding rock intensifies, leading to increasingly complex geomechanical conditions and frequent occurrences of rockburst. Owing to the highly complex physical mechanisms underlying rockburst and the inherent difficulties associated with monitoring, prediction, and early warning, rockburst has become one of the primary factors constraining the safe production of deep underground coal mines.</p><p>At present, rockburst prediction approaches can be broadly classified into physics-driven methods and data-driven methods. In the physics-driven domain, multiple theoretical frameworks have been established. Jiang et al. [<xref ref-type="bibr" rid="ref_1">1</xref>] developed a dynamic assessment method by integrating microseismic, acoustic emission, and stress monitoring systems, thereby overcoming the limitations of conventional static evaluation approaches. Lei [<xref ref-type="bibr" rid="ref_2">2</xref>] constructed a rockburst hazard evaluation model through the comprehensive consideration of geological conditions and mining technological factors.</p><p>In recent years, with the rapid development of artificial intelligence techniques, data-driven approaches have attracted increasing attention. Wojtecki et al. [<xref ref-type="bibr" rid="ref_3">3</xref>] combined the rock mass bursting tendency index (WTG) with machine learning algorithms and achieved satisfactory prediction performance under hard roof conditions. Guo and Yang [<xref ref-type="bibr" rid="ref_4">4</xref>] and Shi et al. [<xref ref-type="bibr" rid="ref_5">5</xref>] employed Random Forest (RF) and Generalized Regression Neural Network (GRNN) models, respectively, for rockburst risk prediction. Jiang et al. [<xref ref-type="bibr" rid="ref_6">6</xref>], taking the excavation of roadways in steeply inclined and ultra-thick coal seams at the Wudong Coal Mine in Xinjiang as a case study, analyzed rockburst precursory characteristics using microseismic data and multiphysical indicators, and subsequently constructed four machine learning prediction models, providing effective tools for rockburst prediction in steeply inclined coal seam roadways. For time-series data, LSTM networks have been widely adopted due to their strong capability in capturing long-range temporal dependencies [<xref ref-type="bibr" rid="ref_7">7</xref>], [<xref ref-type="bibr" rid="ref_8">8</xref>], [<xref ref-type="bibr" rid="ref_9">9</xref>], [<xref ref-type="bibr" rid="ref_10">10</xref>]. Ding et al. [<xref ref-type="bibr" rid="ref_8">8</xref>] proposed a multi-source signal integrated early warning method based on LSTM-Recurrent Neural Networks (RNNs) and Convolutional Neural Networks (CNNs). Cao et al. [<xref ref-type="bibr" rid="ref_11">11</xref>] investigated the fusion of explicit physical indicators and implicit deep learning features, while Liu et al. [<xref ref-type="bibr" rid="ref_12">12</xref>] developed a CNN–LSTM hybrid model for rockburst-related prediction tasks.</p><p>Despite the substantial progress achieved by the aforementioned studies from both physics-driven and data-driven perspectives, rockburst prediction remains a highly challenging task. The primary difficulty arises from the intrinsic characteristics of microseismic signals, which are typically dominated by strong nonlinearity and low signal-to-noise ratios. When confronted with such complex data, existing prediction models often struggle to effectively distinguish long-term evolutionary trends from short-term abrupt disturbances embedded in the effective signal. Moreover, conventional prediction models are generally highly sensitive to noise.</p><p>To address these challenges, an innovative deep learning framework, termed Trend–Residual Synergistic Network with Multiscale Collaborative Attention (TRSNet), was proposed. The core concept of TRSNet is inspired by decomposition–reconstruction paradigms in signal processing, in which the original information is decomposed to facilitate multidimensional and multiscale information mining, followed by reconstruction to achieve synergistic fusion across heterogeneous scales, enabling robust modeling.</p>
+    </sec>
+    <sec sec-type="">
+      <title>2. Data source and data preprocessing</title>
+      <p>The microseismic monitoring data employed in this study were acquired from a longwall mining face in a northern underground coal mine and were primarily associated with microseismic activity generated during face advancement. The mining face is located within a deep mining district, with an average burial depth exceeding 600 m. A segment of continuous microseismic monitoring data collected during the extraction period was selected as the experimental dataset. The dataset spans three months and contains 3,035 recorded effective microseismic events.</p><p> <xref ref-type="fig" rid="fig_1">Figure 1</xref> illustrates the temporal evolution of daily microseismic event frequency and daily cumulative released energy during the monitoring period. The overall pattern exhibits a typical alternation between stress accumulation and stress release. The maximum daily released energy reached 4.46 × 10<inline-formula>
+  <mml:math id="mzy0hlddz1">
+    <mml:msup>
+      <mml:mi/>
+      <mml:mn>4</mml:mn>
+    </mml:msup>
+  </mml:math>
+</inline-formula> J. Although no strong rockburst events were observed during the study period, low-energy microseismic events occurred frequently. Such non-stationary time-series fluctuations further increase the difficulty of reliable rockburst hazard prediction.</p><p> <xref ref-type="fig" rid="fig_2">Figure 2</xref> presents the three-dimensional spatial distribution of microseismic events. The events are shown to be non-uniformly distributed in space, displaying a pronounced clustered aggregation pattern along the roadway direction. In addition, the majority of high-energy microseismic events are concentrated within a depth range of approximately 650 m.</p>
+      
+        <fig id="fig_1">
+          <label>Figure 1</label>
+          <caption>
+            <title>Temporal evolution of microseismic activity</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/11/img_m5-m1YdlbBVTZrnB.png"/>
+        </fig>
+      
+      
+        <fig id="fig_2">
+          <label>Figure 2</label>
+          <caption>
+            <title>Spatial distribution of microseismic events</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/11/img_9jRhdesHYv0tiOWa.png"/>
+        </fig>
+      
+      
+        <fig id="fig_3">
+          <label>Figure 3</label>
+          <caption>
+            <title>Comparative spectral analysis of microseismic energy series before and after denoising</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/11/img_aN_FISuG1keBnQdX.png"/>
+        </fig>
+      
+      
+        <sec>
+          
+            <title>2.1. Data noise analysis and stationarity assessment</title>
+          
+          <p>In the complex operational environment of underground coal mines, data acquisition is inevitably affected by various sources of noise. For prediction models, such noise can obscure latent patterns embedded in the data, thereby impairing model convergence and leading to degraded prediction accuracy. To enhance data quality, a hybrid denoising strategy combining CEEMDAN [<xref ref-type="bibr" rid="ref_13">13</xref>] and the wavelet transform [<xref ref-type="bibr" rid="ref_14">14</xref>] was employed to suppress noise components in the data.</p><p>To evaluate the effectiveness of the denoising procedure, Fast Fourier Transform (FFT)–based spectral analysis was conducted on the data before and after denoising, as illustrated in <xref ref-type="fig" rid="fig_3">Figure 3</xref>. Prior to denoising, the effective dominant frequency components were found to be severely masked by noise. After denoising, noise components in the frequency spectrum were significantly attenuated. To avoid over-denoising–induced signal distortion, a small amount of residual noise was intentionally retained in the processed data. Consequently, no further aggressive denoising was applied; instead, subsequent improvements in prediction performance were pursued through enhanced noise robustness of the proposed prediction model.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>2.2. Selection of prediction indicators</title>
+          
+          <p>Feature selection constitutes a critical step in improving model learning efficiency and predictive performance, as feature quality directly determines whether effective information can be learned from the data. In this study, a set of statistical features was derived from microseismic monitoring data and employed as input variables for the rockburst prediction model. These features were computed within an 8-hour time window, enabling a comprehensive characterization of energy fluctuation and accumulation processes from both local and global perspectives. The selected prediction indicators are defined as follows:</p><p><inline-formula>
+  <mml:math id="m2sbm7vofu">
+    <mml:mtext> • </mml:mtext>
+  </mml:math>
+</inline-formula>Rolling mean: The rolling mean characterizes the average level of microseismic energy within the region and reflects the energy release behavior associated with each coal-cutting cycle during face advancement.</p><p><inline-formula>
+  <mml:math id="ms588akdx0">
+    <mml:mtext> • </mml:mtext>
+  </mml:math>
+</inline-formula>Local energy range: The local energy range captures the amplitude of local energy fluctuations, facilitating the identification of advancement segments exhibiting abnormally intense energy release.</p><p><inline-formula>
+  <mml:math id="mo17tsug2j">
+    <mml:mtext> • </mml:mtext>
+  </mml:math>
+</inline-formula>Local cumulative energy: Local cumulative energy reveals the influence of local energy accumulation on system stability.</p><p><inline-formula>
+  <mml:math id="m01mqgmmbr">
+    <mml:mtext> • </mml:mtext>
+  </mml:math>
+</inline-formula>Local average energy: Local average energy mitigates the influence of extreme values on local feature representation, thereby enhancing the stability of the energy distribution.</p><p><inline-formula>
+  <mml:math id="mnrgsntc3l">
+    <mml:mtext> • </mml:mtext>
+  </mml:math>
+</inline-formula>Rolling standard deviation: The rolling standard deviation identifies high-variability regions, serving as an indicator of potential anomalies in energy release behavior.</p><p><inline-formula>
+  <mml:math id="mc751i2koy">
+    <mml:mtext> • </mml:mtext>
+  </mml:math>
+</inline-formula>Global cumulative energy: Global cumulative energy describes the long-term energy accumulation trend throughout the face advancement process from a global perspective, revealing the overall dynamics of energy release in the system.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>2.3. Rockburst risk classification thresholds</title>
+          
+          <p>To rationally define microseismic energy intervals corresponding to different levels of rockburst risk, the classification strategy was established based on the Gutenberg–Richter (G–R) relationship [<xref ref-type="bibr" rid="ref_15">15</xref>] and the method proposed by Xie et al. [<xref ref-type="bibr" rid="ref_16">16</xref>]. According to the G–R relationship, an energy–frequency curve of microseismic events can be constructed for the mine. This curve is typically divided into three distinct segments: an exponential distribution segment, a linear distribution segment, and a discrete distribution segment. The transition point between the exponential and linear segments was identified as the early warning threshold for low rockburst risk. By further analyzing the two transition points between the linear distribution segment and the discrete distribution segment, the corresponding energy levels were determined as the early warning thresholds for medium and high rockburst risk, respectively. <xref ref-type="fig" rid="fig_4">Figure 4</xref> presents the energy–frequency curve with the three key transition energy levels clearly marked. The resulting classification of rockburst risk levels based on microseismic energy thresholds is summarized in <xref ref-type="table" rid="table_1">Table 1</xref>.</p>
+          
+            <table-wrap id="table_1">
+              <label>Table 1</label>
+              <caption>
+                <title>Classification of rockburst risk levels based on energy thresholds</title>
+              </caption>
+              <table><tbody><tr><td colspan="1" rowspan="1"><p>Energy Level (J)</p></td><td colspan="1" rowspan="1"><p>Risk Level</p></td></tr><tr><td colspan="1" rowspan="1"><p>≤ 5605.29</p></td><td colspan="1" rowspan="1"><p>No risk</p></td></tr><tr><td colspan="1" rowspan="1"><p>5605.29–5956.62</p></td><td colspan="1" rowspan="1"><p>Low risk</p></td></tr><tr><td colspan="1" rowspan="1"><p>5956.62–6776.42</p></td><td colspan="1" rowspan="1"><p>Medium risk</p></td></tr><tr><td colspan="1" rowspan="1"><p>≥ 6776.42</p></td><td colspan="1" rowspan="1"><p>High risk</p></td></tr></tbody></table>
+            </table-wrap>
+          
+          
+            <fig id="fig_4">
+              <label>Figure 4</label>
+              <caption>
+                <title>Energy-frequency curve</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets"/>
+            </fig>
+          
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>3. Trsnet model construction</title>
+      <p>The TRSNet model is formulated as an end-to-end deep learning framework, and its overall architecture is illustrated in <xref ref-type="fig" rid="fig_5">Figure 5</xref>. The model architecture is designed in a clear and modular manner and consists of three principal stages: decomposition, dual-branch modeling with interaction, and reconstruction.</p>
+      
+        <fig id="fig_5">
+          <label>Figure 5</label>
+          <caption>
+            <title>Architecture of the TRSNet model</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets"/>
+        </fig>
+      
+      
+        <fig id="fig_6">
+          <label>Figure 6</label>
+          <caption>
+            <title>Architecture of the trend–residual decomposition module</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets"/>
+        </fig>
+      
+      
+        <sec>
+          
+            <title>3.1. Trend–residual decomposition module</title>
+          
+          <p>Microseismic signals, as highly nonlinear data, typically comprise patterns at multiple scales, including a long-term low-frequency trend associated with gradual stress accumulation and short-term high-frequency fluctuations induced by localized rock fracturing events [<xref ref-type="bibr" rid="ref_17">17</xref>]. In terms of data characteristics, the long-term stress accumulation stage is reflected by slowly varying sequences with pronounced trends, whereas the short-term stress release stage is characterized by intense fluctuations without a clearly defined trend [<xref ref-type="bibr" rid="ref_18">18</xref>]. Owing to the coexistence of these fundamentally different dynamics, direct modeling of the original microseismic sequence often prevents learning models from effectively capturing both patterns simultaneously, thereby resulting in degraded predictive performance.</p><p>To address this challenge, a trend–residual decomposition module was introduced, drawing inspiration from decomposition–reconstruction paradigms in signal processing. The module is designed to decouple the complex input sequence into two complementary components: A trend component, representing long-term and smooth temporal evolution, and a residual component, capturing short-term and highly fluctuating dynamics [<xref ref-type="bibr" rid="ref_19">19</xref>]. Subsequent model components were then equipped with independent parameter sets to model these two components separately, thereby implementing a divide-and-conquer modeling strategy. The overall architecture of the trend–residual decomposition module is illustrated in <xref ref-type="fig" rid="fig_6">Figure 6</xref>.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.2. Improved adaptive multiscale noise-resilient lstm</title>
+          
+          <p>Although LSTM networks [<xref ref-type="bibr" rid="ref_20">20</xref>] have demonstrated strong performance in modeling time-series data, explicit mechanisms for noise suppression are generally absent [<xref ref-type="bibr" rid="ref_21">21</xref>], and a single memory unit is often insufficient to accommodate multiscale dynamic data [<xref ref-type="bibr" rid="ref_22">22</xref>].</p><p>To overcome these limitations, an Adaptive Multiscale Noise-Resilient LSTM cell (AMSNRLSTMCell) was developed. The proposed AMSNRLSTMCell was constructed upon the standard LSTM gating architecture and was further extended through targeted structural enhancements. The core design principle of the AMSNRLSTMCell is twofold. First, dynamic noise suppression is introduced prior to memory-state updates, enabling the noise level of the input signal to be actively assessed and attenuated. Second, multiple memory units with distinct temporal decay scales are maintained in parallel to dynamically fuse multiscale memory representations. The overall architecture of the AMSNRLSTMCell is illustrated in <xref ref-type="fig" rid="fig_7">Figure 7</xref>.</p><p>To mitigate the pronounced noise sensitivity of standard LSTM architectures, the AMSNRLSTMCell maintains a dynamically updated noise coefficient, denoted as <inline-formula>
+  <mml:math id="malgdbot2i">
+    <mml:msub>
+      <mml:mi>σ</mml:mi>
+      <mml:mi>t</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula>, which is adaptively learned in a data-driven manner. This coefficient is computed by the model based on the correlation between the historical hidden state (query) and the current input representation (key). When the current input contains a substantial amount of information that is weakly correlated with the historical state, the value of <inline-formula>
+  <mml:math id="mepokqs01w">
+    <mml:msub>
+      <mml:mi>σ</mml:mi>
+      <mml:mi>t</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> approaches zero, ensuring that ineffective or noisy inputs do not affect the memory units.</p><p>To capture dependencies at multiple scales, the AMSNRLSTMCell maintains <inline-formula>
+  <mml:math id="magjzpcixu">
+    <mml:msub>
+      <mml:mi>N</mml:mi>
+      <mml:mi>s</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> independent memory states in parallel. Each memory state is equipped with an independent forget gate, denoted as <inline-formula>
+  <mml:math id="m6dc8g0cp6">
+    <mml:msubsup>
+      <mml:mi>f</mml:mi>
+      <mml:mi>t</mml:mi>
+      <mml:mi>s</mml:mi>
+    </mml:msubsup>
+  </mml:math>
+</inline-formula>, thereby enabling distinct memory decay rates across different states. After memory updates at all scales are completed, the multiscale memory representations are integrated through fusion to produce a unified final cell state, denoted as <inline-formula>
+  <mml:math id="muif3c98rh">
+    <mml:msubsup>
+      <mml:mi>C</mml:mi>
+      <mml:mi>t</mml:mi>
+      <mml:mrow>
+        <mml:mi>f</mml:mi>
+        <mml:mi>i</mml:mi>
+        <mml:mi>n</mml:mi>
+        <mml:mi>a</mml:mi>
+        <mml:mi>l</mml:mi>
+      </mml:mrow>
+    </mml:msubsup>
+  </mml:math>
+</inline-formula>.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.3. Msif module</title>
+          
+          <p>Following the dual-branch processing, the extracted trend features and residual features require effective integration. Simple operations such as feature concatenation or element-wise summation fail to adequately capture the nonlinear interactions between these two feature spaces [<xref ref-type="bibr" rid="ref_23">23</xref>]. To address this limitation, an MSIF module was designed, as illustrated in <xref ref-type="fig" rid="fig_8">Figure 8</xref>, adopting the strategies below.</p><p>First, a 1 × 1 convolution was applied to project the trend and residual branches into a unified feature dimensionality. Subsequently, multiple groups of parallel convolutions with different sizes were employed to extract deep features, after which the representations from both branches were aggregated to form a joint feature set. To emphasize key features, two fully independent channel attention mechanisms were introduced, enabling the adaptive reweighting of feature channels for the trend and residual branches, respectively.</p><p>Finally, the attention-enhanced trend and residual features were combined via element-wise summation, followed by a 1 × 1 convolution to further compress and reduce the fused feature dimensionality, restoring it to the original feature shape. This operation facilitates residual connections and supports the generation of the final prediction output.</p>
+          
+            <fig id="fig_7">
+              <label>Figure 7</label>
+              <caption>
+                <title>Architecture of the AMSNRLSTMCell</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets"/>
+            </fig>
+          
+          
+            <fig id="fig_8">
+              <label>Figure 8</label>
+              <caption>
+                <title>Architecture of the MSIF module</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets"/>
+            </fig>
+          
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>4. Experimental design and hyperparameter optimization</title>
+      
+        <sec>
+          
+            <title>4.1. Experimental design</title>
+          
+          <p>The experimental investigation is designed to comprehensively evaluate the performance and effectiveness of the proposed TRSNet framework in practical rockburst prediction tasks. Accordingly, three categories of experiments were conducted: comparative experiments, rockburst risk classification experiments, and ablation studies. These experiments are designed to assess the proposed model from complementary perspectives, thereby verifying both its predictive capability and its applicability to real engineering scenarios.</p><p>The primary objective of the comparative experiments is to benchmark the proposed model against five representative deep learning models that are widely adopted in the field of rockburst prediction. These baseline models include CNN–LSTM [<xref ref-type="bibr" rid="ref_12">12</xref>], LSTM [<xref ref-type="bibr" rid="ref_24">24</xref>], Deep Neural Network (DNN) [<xref ref-type="bibr" rid="ref_25">25</xref>], CNN–Bidirectional Long Short-Term Memory (BiLSTM)–Attention [<xref ref-type="bibr" rid="ref_26">26</xref>], and CNN–Bidirectional Gated Recurrent Unit (BiGRU)–Attention [27]. Performance comparisons were conducted under identical datasets and evaluation metrics to assess model effectiveness. To guarantee evaluation objectivity, the dataset was strictly partitioned into training, validation, and testing subsets according to a 7:1:2 ratio. All input data were processed using min–max normalization, facilitating faster model convergence.</p><p>To ensure experimental rigor, a unified training strategy was adopted for all models. During training, the Adam optimizer and the mean squared error (MSE) loss function were employed, while ReLU was used as the activation function. The batch size was fixed at 32 for all experiments. In addition, an early-stopping mechanism was introduced to mitigate overfitting, whereby training was terminated if the validation loss did not improve for 10 consecutive epochs. Hyperparameters for all models were automatically optimized using a Bayesian algorithm, with the maximum number of trials set to 50.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>4.2. Evaluation metrics</title>
+          
+          <p>To evaluate model performance, four quantitative evaluation metrics were selected to assess both regression prediction accuracy and classification performance, namely, the Mean Absolute Error (MAE), MSE, recall, and the False Positive Rate (FPR). In general, lower values of MAE and MSE indicate superior regression prediction accuracy, whereas higher recall coupled with lower FPR reflects better classification performance.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>4.3. Comparative analysis of model performance</title>
+          
+          <p>The quantitative performance of all models is summarized in <xref ref-type="table" rid="table_2">Table 2</xref> and visually illustrated in <xref ref-type="fig" rid="fig_9">Figure 9</xref>.</p><p>Based on the above experimental results, it is evident that the TRSNet model outperforms all other models across all evaluation metrics. TRSNet achieves the lowest MAE and MSE, while also attaining a recall of 88.37\% and an FPR of 3.88\%. This ensures a high recall while significantly reducing the FPR.</p><p>At the same time, the five baseline models exhibit a trend where simpler models outperform more complex models. Both the DNN and LSTM models show significantly better performance compared to the three more complex baseline models. This is likely due to the larger number of parameters in the complex models, which makes them more prone to overfitting when trained on noisy data.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>4.4. Risk level classification performance evaluation</title>
+          
+          <p>To visually assess the ability of each model to identify different risk levels, <xref ref-type="fig" rid="fig_10">Figure 10</xref> presents the confusion matrices for all models.</p><p>The confusion matrix of TRSNet exhibits the most pronounced diagonal dominance. Overall, TRSNet demonstrates a clear and significant advantage over the other baseline models. Misclassifications produced by TRSNet are primarily concentrated between adjacent risk categories. Consequently, if the task is simplified to a binary classification problem distinguishing between risk and no risk, the performance advantage of TRSNet would become even more pronounced.</p><p>By contrast, several baseline models exhibit potentially hazardous prediction behaviors when handling high-risk samples. In particular, the CNN–BiGRU–Attention model fails to accurately identify high-risk events and further displays overly conservative prediction tendencies across other risk levels. As a result, events associated with elevated risk are frequently misclassified as no-risk cases.</p>
+          
+            <table-wrap id="table_2">
+              <label>Table 2</label>
+              <caption>
+                <title>Performance comparison of different models</title>
+              </caption>
+              <table><tr><td >\textbf {Model}</td><td >\textbf {MAE}</td><td >\textbf {MSE}</td><td >\textbf {Recall}</td><td >\textbf {FPR}</td></tr><tr><td >LSTM</td><td >0.083380</td><td >0.009895</td><td >79.07\%</td><td >6.98\%</td></tr><tr><td >DNN</td><td >0.084041</td><td >0.011477</td><td >81.40\%</td><td >6.20\%</td></tr><tr><td >CNN-LSTM</td><td >0.161116</td><td >0.037055</td><td >76.74\%</td><td >7.75\%</td></tr><tr><td >CNN-BiLSTM-Attention</td><td >0.153319</td><td >0.033328</td><td >74.42\%</td><td >8.53\%</td></tr><tr><td >CNN-BiGRU-Attention</td><td >0.172084</td><td >0.044407</td><td >72.09\%</td><td >9.30\%</td></tr><tr><td >TRSNet</td><td >0.049231</td><td >0.003459</td><td >88.37\%</td><td >3.88\%</td></tr></table>
+            </table-wrap>
+          
+          <p> %f9</p>
+          
+            <fig id="fig_9">
+              <label>Figure 9</label>
+              <caption>
+                <title>Quantitative performance evaluation of different prediction models</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets"/>
+            </fig>
+          
+          <p> %f10</p>
+          
+            <fig id="fig_10">
+              <label>Figure 10</label>
+              <caption>
+                <title>Confusion matrix comparison across models: (a) DNN, (b) LSTM, (c) CNN-LSTM, (d) CNN-BiLSTM-Attention, (e) CNN-BiGRU-Attention, and (f) TRSNet (Ours)</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets"/>
+            </fig>
+          
+          
+            <fig id="fig_11">
+              <label>Figure 11</label>
+              <caption>
+                <title>Comparison results of ablation experiments</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets"/>
+            </fig>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>4.5. Ablation study analysis</title>
+          
+          <p>To quantify the contribution of each functional module within the proposed framework, a series of ablation experiments was conducted. The following ablation settings were designed:</p><p><inline-formula>
+  <mml:math id="m2dect4iur">
+    <mml:mtext> • </mml:mtext>
+  </mml:math>
+</inline-formula>M1: The decomposition module is removed, and a single-branch input structure is adopted.</p><p><inline-formula>
+  <mml:math id="m2u3ht5wbz">
+    <mml:mtext> • </mml:mtext>
+  </mml:math>
+</inline-formula>M2: The AMSNRLSTM is replaced with a standard LSTM model.</p><p><inline-formula>
+  <mml:math id="m9o5uda3im">
+    <mml:mtext> • </mml:mtext>
+  </mml:math>
+</inline-formula>M3: The MSIF module is removed and replaced with simple element-wise summation.</p><p>The experimental results of the ablation studies are presented in <xref ref-type="fig" rid="fig_11">Figure 11</xref>.</p><p>Based on the ablation results, when the core AMSNRLSTM unit is replaced with a standard LSTM unit, the MAE increases by 70.86\%, while the MSE rises sharply by 168.03\%, providing strong evidence that the AMSNRLSTM module constitutes the foundational component enabling the superior performance of TRSNet.</p><p>When the MSIF module is removed (M3) and the two branches are fused using simple element-wise summation, noticeable increases in both MAE and MSE are also observed. This outcome indicates that the relationship between the trend branch and the residual branch is not a simple linear superposition. Element-wise addition alone is insufficient to effectively integrate the information from the two branches. For M1, in which the decomposition module is removed, the resulting performance degradation is smaller than that observed in M2 and M3. Nevertheless, the performance decline remains evident, thereby confirming the effectiveness of the divide-and-conquer modeling strategy.</p>
+        </sec>
+      
+    </sec>
+    <sec sec-type="conclusions">
+      <title>5. Conclusions</title>
+      <p>To address the core challenges in rockburst prediction—namely the low signal-to-noise ratio and strong non-stationarity of microseismic data—an integrated TRSNet framework was developed by combining physics-inspired decomposition principles with deep learning techniques. Through comprehensive analysis and experimental validation using field microseismic data from a northern coal mine, the following main conclusions were drawn:</p><p><inline-formula>
+  <mml:math id="mj2q2z0weg">
+    <mml:mtext> • </mml:mtext>
+  </mml:math>
+</inline-formula>Experimental results demonstrate that independent modeling of long-term trends and short-term residuals significantly reduces learning difficulty for predictive models. Ablation studies confirm that removal of the trend–residual decomposition module leads to a clear degradation in prediction performance.</p><p><inline-formula>
+  <mml:math id="m0fq1qf6td">
+    <mml:mtext> • </mml:mtext>
+  </mml:math>
+</inline-formula>The proposed AMSNRLSTM cell, by introducing a dynamic noise coefficient and multiscale memory states, effectively addresses the limitations of standard LSTM architectures, including noise sensitivity and single-scale representation. This component is identified as a key contributor to performance improvement, as its removal results in a sharp 168.03\% increase in MSE.</p><p><inline-formula>
+  <mml:math id="mpvz1wuc09">
+    <mml:mtext> • </mml:mtext>
+  </mml:math>
+</inline-formula>In comparative evaluations against baseline models, TRSNet consistently achieves superior performance in both regression accuracy and classification effectiveness. In particular, for engineering-critical rockburst risk level assessment, a high recall of 88.37\% is achieved alongside a low FPR of 3.88\%.</p><p>Despite the superior performance demonstrated by TRSNet in the conducted experiments, several limitations remain and should be addressed in future research.</p><p><inline-formula>
+  <mml:math id="m27njbp8pz">
+    <mml:mtext> • </mml:mtext>
+  </mml:math>
+</inline-formula>The dataset utilized in this study is derived from a single longwall mining face in a northern coal mine. Given the substantial variability in geological structures and mining depths across different mining regions, the generalization capability of the proposed model requires further validation. Future studies should therefore investigate validation and transfer learning strategies using microseismic data collected under diverse geological conditions.</p><p><inline-formula>
+  <mml:math id="m4wsyr8y2m">
+    <mml:mtext> • </mml:mtext>
+  </mml:math>
+</inline-formula>At present, the proposed framework primarily relies on time-series data derived from microseismic energy and event frequency. However, the occurrence of rockburst is also closely associated with acoustic emission, electromagnetic radiation, in-situ stress monitoring, and coal seam geological structures. The incorporation of multimodal data fusion techniques is therefore recommended in future work to further enhance the robustness of rockburst prediction.</p>
+    </sec>
+  </body>
+  <back>
+    <ack>
+      <title>Acknowledgments</title>
+      
+    </ack>
+    <app-group>
+      <app>
+        <title>Appendix</title>
+        
+      </app>
+    </app-group>
+    <notes>
+      <title>Author Contributions</title>
+      <p>Conceptualization, Q.X. and H.W.; methodology, Q.X.; software, Q.X.; validation, Q.W., B.Z. and J.G.; formal analysis, Q.X. and H.G.; investigation, J.G. and C.X.; resources, Q.W. and B.Z.; data curation, Q.X.; writing—original draft preparation, Q.X.; writing—review and editing, H.W.; visualization, Q.X.; supervision, H.W.; project administration, H.W.; funding acquisition, H.W. All authors have read and agreed to the published version of the manuscript.</p>
+    </notes>
+    <notes>
+      <title>Funding</title>
+      
+    </notes>
+    <notes>
+      <title>Informed Consent Statement</title>
+      
+    </notes>
+    <notes>
+      <title>Data Availability Statement</title>
+      <p>The data presented in this study are available from the corresponding author upon reasonable request and with approval from our industry partner.</p>
+    </notes>
+    <notes notes-type="COI-statement">
+      <title>Conflicts of Interest</title>
+      <p>The authors declare no conflict of interest.</p>
+    </notes>
+    <ref-list>
+      <title>References</title>
+      <ref id="ref_1">
+        <label>1.</label>
+        <element-citation publication-type="journal">
+          <volume>33</volume>
+          <page-range>2101–2106</page-range>
+          <issue>10</issue>
+          <year>2014</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>F. Jiang</surname>
+              <given-names>Y. Feng</given-names>
+            </name>
+            <name>
+              <surname>Liu</surname>
+              <given-names>Y.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.13722/j.cnki.jrme.2014.10.017</pub-id>
+          <article-title>Dynamic evaluation method for rockburst risk before stopping</article-title>
+          <source>Chin. J. Rock Mech. Eng.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_2">
+        <label>2.</label>
+        <element-citation publication-type="thesis">
+          <person-group person-group-type="author">
+            <name>
+              <surname>Lei</surname>
+              <given-names>Y.</given-names>
+            </name>
+          </person-group>
+          <article-title>Study on establishment and application of hazard evaluation model for rock-burst</article-title>
+          <year>2005</year>
+          <publisher-name>China Coal Res. Inst., Beijing, China</publisher-name>
+        </element-citation>
+      </ref>
+      <ref id="ref_3">
+        <label>3.</label>
+        <element-citation publication-type="journal">
+          <volume>14</volume>
+          <page-range>703-713</page-range>
+          <issue>3</issue>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Wojtecki</surname>
+              <given-names>Ł.</given-names>
+            </name>
+            <name>
+              <surname>Iqbal</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Dyduch</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Bukowska</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Makówka</surname>
+              <given-names>J.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.jrmge.2021.10.011</pub-id>
+          <article-title>Use of machine learning algorithms to assess the state of rockburst hazard in underground coal mine openings</article-title>
+          <source>J. Rock Mech. Geotech. Eng.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_4">
+        <label>4.</label>
+        <element-citation publication-type="journal">
+          <volume>39</volume>
+          <page-range>413-418</page-range>
+          <issue>4</issue>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Guo</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Yang</surname>
+              <given-names>C. Y.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.19492/j.cnki.1672-0946.2023.04.016</pub-id>
+          <article-title>Prediction of rock burst based on PCA-RF model</article-title>
+          <source>J. Harbin Univ. Commer. (Nat. Sci. Ed.)</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_5">
+        <label>5.</label>
+        <element-citation publication-type="journal">
+          <volume>26</volume>
+          <page-range>119-124</page-range>
+          <issue>7</issue>
+          <year>2016</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Shi</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Gao</surname>
+              <given-names>F.</given-names>
+            </name>
+            <name>
+              <surname>Chen</surname>
+              <given-names>L.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.16265/j.cnki.issn1003-3033.2016.07.022</pub-id>
+          <article-title>Prediction of pressure bump in coal mine by PCA-GRNN</article-title>
+          <source>China Saf. Sci. J.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_6">
+        <label>6.</label>
+        <element-citation publication-type="journal">
+          <volume>6</volume>
+          <page-range>95-107</page-range>
+          <issue>3</issue>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Jiang</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Liu</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Feng</surname>
+              <given-names>P.</given-names>
+            </name>
+            <name>
+              <surname>Song</surname>
+              <given-names>B.</given-names>
+            </name>
+            <name>
+              <surname>Zhu</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Zong</surname>
+              <given-names>C.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.13532/j.jmsce.cn10-1638/td.20240520.002</pub-id>
+          <article-title>Prediction method of rock burst in drivage roadway in steeply inclined ultra-thick coal seam based on machine learning</article-title>
+          <source>J. Min. Strata Control Eng.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_7">
+        <label>7.</label>
+        <element-citation publication-type="journal">
+          <volume>14</volume>
+          <page-range>9277</page-range>
+          <issue>20</issue>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Fu</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Chen</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>T.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3390/app14209277</pub-id>
+          <article-title>Prediction of rock bursts based on microseismic energy change: Application of Bayesian optimization–long short-term memory combined model</article-title>
+          <source>Appl. Sci.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_8">
+        <label>8.</label>
+        <element-citation publication-type="journal">
+          <volume>170</volume>
+          <page-range>105519</page-range>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Ding</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>E.</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Liu</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Huang</surname>
+              <given-names>T.</given-names>
+            </name>
+            <name>
+              <surname>Yao</surname>
+              <given-names>J.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.ijrmms.2023.105519</pub-id>
+          <article-title>Comprehensive early warning method of microseismic, acoustic emission, and electromagnetic radiation signals of rock burst based on deep learning</article-title>
+          <source>Int. J. Rock Mech. Min. Sci.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_9">
+        <label>9.</label>
+        <element-citation publication-type="journal">
+          <volume>50</volume>
+          <page-range>845-861</page-range>
+          <issue>2</issue>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Cui</surname>
+              <given-names>F.</given-names>
+            </name>
+            <name>
+              <surname>Zong</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Lai</surname>
+              <given-names>X. P.</given-names>
+            </name>
+            <name>
+              <surname>He</surname>
+              <given-names>S. F.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>S. L.</given-names>
+            </name>
+            <name>
+              <surname>Jia</surname>
+              <given-names>C.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.13225/j.cnki.jccs.2023.1762</pub-id>
+          <article-title>Intelligent prediction of time series and grade of rock burst in steeply inclined ultra-thick coal seam excavation roadway</article-title>
+          <source>J. China Coal Soc.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_10">
+        <label>10.</label>
+        <element-citation publication-type="journal">
+          <volume>32</volume>
+          <page-range>88-95</page-range>
+          <issue>5</issue>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Liang</surname>
+              <given-names>Y. H.</given-names>
+            </name>
+            <name>
+              <surname>Shen</surname>
+              <given-names>F. B.</given-names>
+            </name>
+            <name>
+              <surname>Xie</surname>
+              <given-names>Z. D.</given-names>
+            </name>
+            <name>
+              <surname>Wu</surname>
+              <given-names>J. F.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.12075/j.issn.1004-4051.2023.05.017</pub-id>
+          <article-title>Research on prediction method of rock burst based on LSTM model</article-title>
+          <source>China Min. Mag.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_11">
+        <label>11.</label>
+        <element-citation publication-type="journal">
+          <volume>48</volume>
+          <page-range>3659-3673</page-range>
+          <issue>10</issue>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Cao</surname>
+              <given-names>A. Y.</given-names>
+            </name>
+            <name>
+              <surname>Liu</surname>
+              <given-names>Y. Q.</given-names>
+            </name>
+            <name>
+              <surname>Yang</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>S.</surname>
+              <given-names>Li</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>C. B.</given-names>
+            </name>
+            <name>
+              <surname>Bai</surname>
+              <given-names>X. Q.</given-names>
+            </name>
+            <name>
+              <surname>Liu</surname>
+              <given-names>Y. P.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.13225/j.cnki.jccs.2022.0680</pub-id>
+          <article-title>Physical index and data fusion-driven method for coal burst prediction in time sequence</article-title>
+          <source>J. China Coal Soc.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_12">
+        <label>12.</label>
+        <element-citation publication-type="journal">
+          <volume>52</volume>
+          <page-range>1-12</page-range>
+          <issue>3</issue>
+          <year>2021</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Liu</surname>
+              <given-names>H. M.</given-names>
+            </name>
+            <name>
+              <surname>Xu</surname>
+              <given-names>F. Y.</given-names>
+            </name>
+            <name>
+              <surname>Liu</surname>
+              <given-names>B. J.</given-names>
+            </name>
+            <name>
+              <surname>Deng</surname>
+              <given-names>M.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.11817/j.issn.1672-7207.2021.03.001</pub-id>
+          <article-title>Time-series prediction method for risk level of rockburst disaster based on CNN–LSTM</article-title>
+          <source>J. Cent. South Univ. (Sci. Technol.)</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_13">
+        <label>13.</label>
+        <element-citation publication-type="journal">
+          <volume>43</volume>
+          <page-range>1-9</page-range>
+          <issue>11</issue>
+          <year>2018</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Gong</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Jia</surname>
+              <given-names>R. S.</given-names>
+            </name>
+            <name>
+              <surname>Lu</surname>
+              <given-names>X. M.</given-names>
+            </name>
+            <name>
+              <surname>Peng</surname>
+              <given-names>Y. J.</given-names>
+            </name>
+            <name>
+              <surname>Zhao</surname>
+              <given-names>W. D.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>X. L.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.13225/j.cnki.jccs.2017.1667</pub-id>
+          <article-title>To suppress the random noise in microseismic signal by using empirical mode decomposition and wavelet transform</article-title>
+          <source>J. China Coal Soc.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_14">
+        <label>14.</label>
+        <element-citation publication-type="journal">
+          <volume>12</volume>
+          <page-range>22186</page-range>
+          <issue>1</issue>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Zhang</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Ye</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Luo</surname>
+              <given-names>B.</given-names>
+            </name>
+            <name>
+              <surname>Chen</surname>
+              <given-names>G.</given-names>
+            </name>
+            <name>
+              <surname>Wu</surname>
+              <given-names>M.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1038/s41598-022-26576-2</pub-id>
+          <article-title>Investigation of microseismic signal denoising using an improved wavelet adaptive thresholding method</article-title>
+          <source>Sci. Rep.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_15">
+        <label>15.</label>
+        <element-citation publication-type="journal">
+          <volume>34</volume>
+          <page-range>185-188</page-range>
+          <issue>4</issue>
+          <year>1944</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Gutenberg</surname>
+              <given-names>B.</given-names>
+            </name>
+            <name>
+              <surname>Richter</surname>
+              <given-names>C. F.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1038/156371a0</pub-id>
+          <article-title>Frequency of earthquakes in California</article-title>
+          <source>Bull. Seismol. Soc. Am.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_16">
+        <label>16.</label>
+        <element-citation publication-type="journal">
+          <volume>53</volume>
+          <page-range>67-72</page-range>
+          <issue>10</issue>
+          <year>2021</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Xie</surname>
+              <given-names>J. H.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>Y. Z.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>others</surname>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.11799/ce202110014</pub-id>
+          <article-title>Optimization of microseismic energy early-warning index based on energy level and frequency analysis</article-title>
+          <source>Coal Eng.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_17">
+        <label>17.</label>
+        <element-citation publication-type="journal">
+          <volume>10</volume>
+          <page-range>797358</page-range>
+          <issue>10</issue>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Kan</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Dou</surname>
+              <given-names>L.</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Bai</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>M.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3389/feart.2022.797358</pub-id>
+          <article-title>Characteristics of microseismic waveforms induced by underground destress blasting: Comparison with those induced by ground blasting and coal mining</article-title>
+          <source>Front. Earth Sci.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_18">
+        <label>18.</label>
+        <element-citation publication-type="journal">
+          <volume>8</volume>
+          <page-range>134</page-range>
+          <issue>5</issue>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Ma</surname>
+              <given-names>K.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Liao</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Peng</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>K.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1007/s40948-022-00435-w</pub-id>
+          <article-title>Precursor of microseismic energy and stress evolution induced by rockburst in coal mining: A case study from Xiashijie, Shaanxi, China</article-title>
+          <source>Geomech. Geophys. Geo-Energy Geo-Resour.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_19">
+        <label>19.</label>
+        <element-citation publication-type="journal">
+          <volume>12</volume>
+          <page-range>22186</page-range>
+          <issue>1</issue>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Zhang</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Ye</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Luo</surname>
+              <given-names>B.</given-names>
+            </name>
+            <name>
+              <surname>Chen</surname>
+              <given-names>G.</given-names>
+            </name>
+            <name>
+              <surname>Wu</surname>
+              <given-names>M.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1038/s41598-022-26576-2</pub-id>
+          <article-title>Investigation of microseismic signal denoising using an improved wavelet adaptive thresholding method</article-title>
+          <source>Sci. Rep.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_20">
+        <label>20.</label>
+        <element-citation publication-type="journal">
+          <volume>9</volume>
+          <page-range>1735-1780</page-range>
+          <issue>8</issue>
+          <year>1997</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Hochreiter</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Schmidhuber</surname>
+              <given-names>J.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1162/neco.1997.9.8.1735</pub-id>
+          <article-title>Long short-term memory</article-title>
+          <source>Neural Comput.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_21">
+        <label>21.</label>
+        <element-citation publication-type="journal">
+          <volume>2017</volume>
+          <page-range>1-9</page-range>
+          <year>2017</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Yang</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Pan</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Tao</surname>
+              <given-names>Q.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1155/2017/9478952</pub-id>
+          <article-title>Robust and adaptive online time series prediction with long short-term memory</article-title>
+          <source>Comput. Intell. Neurosci.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_22">
+        <label>22.</label>
+        <element-citation publication-type="journal">
+          <volume>49</volume>
+          <page-range>e2021GL096847</page-range>
+          <issue>7</issue>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Liu</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Rahmani</surname>
+              <given-names>F.</given-names>
+            </name>
+            <name>
+              <surname>Lawson</surname>
+              <given-names>K.</given-names>
+            </name>
+            <name>
+              <surname>Shen</surname>
+              <given-names>C.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1029/2021GL096847</pub-id>
+          <article-title>A multiscale deep learning model for soil moisture integrating satellite and in situ data</article-title>
+          <source>Geophys. Res. Lett.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_23">
+        <label>23.</label>
+        <element-citation publication-type="journal">
+          <volume>14</volume>
+          <page-range>9277</page-range>
+          <issue>20</issue>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Fu</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Chen</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>T.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3390/app14209277</pub-id>
+          <article-title>Prediction of rock bursts based on microseismic energy change: Application of Bayesian optimization–long short-term memory combined model</article-title>
+          <source>Appl. Sci.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_24">
+        <label>24.</label>
+        <element-citation publication-type="journal">
+          <volume>47</volume>
+          <page-range>1987-2006</page-range>
+          <issue>2</issue>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Zhang</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Chen</surname>
+              <given-names>G.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.32604/csse.2023.040381</pub-id>
+          <article-title>Rockburst intensity grade prediction model based on batch gradient descent and multi-scale residual deep neural network</article-title>
+          <source>Comput. Syst. Sci. Eng.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_25">
+        <label>25.</label>
+        <element-citation publication-type="journal">
+          <volume>195</volume>
+          <page-range>106305</page-range>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Ren</surname>
+              <given-names>F.</given-names>
+            </name>
+            <name>
+              <surname>Tian</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Ma</surname>
+              <given-names>K.</given-names>
+            </name>
+            <name>
+              <surname>Gu</surname>
+              <given-names>J.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.ijrmms.2025.106305</pub-id>
+          <article-title>Relationship between rock brittleness and rockburst early warning time</article-title>
+          <source>Int. J. Rock Mech. Min. Sci.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_26">
+        <label>26.</label>
+        <element-citation publication-type="journal">
+          <volume>14</volume>
+          <page-range>5719</page-range>
+          <issue>13</issue>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Liu</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Ma</surname>
+              <given-names>T.</given-names>
+            </name>
+            <name>
+              <surname>Lin</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Peng</surname>
+              <given-names>K.</given-names>
+            </name>
+            <name>
+              <surname>Hu</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Xie</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Luo</surname>
+              <given-names>K.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3390/app14135719</pub-id>
+          <article-title>Deep learning in rockburst intensity level prediction: Performance evaluation and comparison of the NGO-CNN-BiGRU-attention model</article-title>
+          <source>Appl. Sci.</source>
+        </element-citation>
+      </ref>
+    </ref-list>
+  </back>
+</article>
