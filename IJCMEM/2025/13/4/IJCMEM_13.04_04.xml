@@ -1,0 +1,2400 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.3 20210610//EN" "JATS-journalpublishing1-3.dtd">
+<article xml:lang="en" dtd-version="1.3" article-type="research-article" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mml="http://www.w3.org/1998/Math/MathML">
+  <front>
+    <journal-meta>
+      <journal-id journal-id-type="publisher-id">IJCMEM</journal-id>
+      <journal-id journal-id-type="doi">10.56578</journal-id>
+      <journal-title-group>
+        <journal-title>International Journal of Computational Methods and Experimental Measurements</journal-title>
+        <abbrev-journal-title abbrev-type="issn">Int. J. Comput. Methods Exp. Meas.</abbrev-journal-title>
+        <abbrev-journal-title abbrev-type="publisher">IJCMEM</abbrev-journal-title>
+      </journal-title-group>
+      <issn publication-format="electronic">2046-0554</issn>
+      <issn publication-format="print">2046-0546</issn>
+      <publisher>
+        <publisher-name>Acadlore</publisher-name>
+      </publisher>
+    </journal-meta>
+    <article-meta>
+      <article-id pub-id-type="publisher-id">AR-7aYbPmKwnRItFRaC3BAzTgualqz42zbu</article-id>
+      <article-id pub-id-type="doi">10.56578/ijcmem130404</article-id>
+      <article-categories>
+        <subj-group>
+          <subject>Articles</subject>
+        </subj-group>
+      </article-categories>
+      <title-group>
+        <article-title>Adaptive Quality-Energy Trade-Offs in Image Processing Through Statistical Priority Classification and Variable-Approximate Computing</article-title>
+      </title-group>
+      <contrib-group>
+        <contrib contrib-type="author" rid="aff_1">
+          <contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0000-0002-7557-4258</contrib-id>
+          <name>
+            <surname>Haddadi</surname>
+            <given-names>Ibrahim</given-names>
+          </name>
+          <email>iHaddadi@taibahu.edu.sa</email>
+        </contrib>
+        <aff id="aff_1">Department of Computer Engineering, Collage of Computer Science and Engineering, Taibah University Janadah, 42353 Madinah, Saudi Arabia</aff>
+      </contrib-group>
+      <pub-date publication-format="electronic" date-type="pub">
+        <day>22</day>
+        <month>12</month>
+        <year>2025</year>
+      </pub-date>
+      <volume>13</volume>
+      <issue>4</issue>
+      <fpage>784</fpage>
+      <lpage>801</lpage>
+      <page-range>784-801</page-range>
+      <history>
+        <date date-type="received">
+          <day>02</day>
+          <month>11</month>
+          <year>2025</year>
+        </date>
+        <date date-type="accepted">
+          <day>16</day>
+          <month>12</month>
+          <year>2025</year>
+        </date>
+      </history>
+      <permissions>
+        <copyright-statement>©2025 by the author(s)</copyright-statement>
+        <copyright-year>2025</copyright-year>
+        <license license-type="open-access" xlink:href="https://creativecommons.org/licenses/by/4.0/">
+          <license-p> Published by Acadlore Publishing Services Limited, Hong Kong. This article is available for free download and can be reused and cited, provided that the original published version is credited, under the CC BY 4.0 license.</license-p>
+        </license>
+      </permissions>
+      <abstract><p>Modern image processing systems deployed on embedded and heterogeneous platforms face increasing pressure to deliver high performance under strict energy and real-time constraints. The rapid growth in image resolution and frame rates has significantly amplified computational demand, making uniform full-precision processing increasingly inefficient. This paper presents a significance-driven adaptive approximate computing framework that reduces energy consumption by tailoring computational precision and resource allocation to the spatial importance of image content. We introduce a statistical importance metric that captures local structural variability using low-complexity deviation-based analysis on luminance information. The metric serves as a lightweight proxy for identifying regions that are more sensitive to approximation errors, enabling differentiated processing without the overhead of semantic or perceptual saliency models. Based on this importance classification, the proposed framework dynamically orchestrates heterogeneous CPU–GPU resources, applies variable kernel sizes, and exploits dynamic voltage and frequency scaling (DVFS) to reclaim timing slack for additional energy savings. The framework is validated through two complementary case studies: (i) a heterogeneous software implementation for adaptive convolution filtering on an Odroid XU-4 embedded platform, and (ii) a hardware-level approximate circuit allocation approach using configurable-precision arithmetic units. Experimental results demonstrate energy reductions of up to 60\% compared to uniform-precision baselines, while maintaining acceptable visual quality. Image quality is evaluated using both PSNR and the perceptually motivated SSIM metric, confirming that the proposed approach preserves structural fidelity despite aggressive approximation.</p></abstract>
+      <kwd-group>
+        <kwd>Frequency scaling</kwd>
+        <kwd>Parallel computing</kwd>
+        <kwd>Hard-ware/software co-optimization</kwd>
+        <kwd>Approximate computing</kwd>
+      </kwd-group>
+      <counts>
+        <count count-type="contributors" count="1"/>
+        <fig-count count="16"/>
+        <table-count count="5"/>
+        <ref-count count="33"/>
+      </counts>
+    </article-meta>
+  </front>
+  <body>
+    <sec sec-type="intro">
+      <title>1. Introduction</title>
+      <p>Digital imagery systems that capture, manipulate, and interpret real-world visual information are now widely deployed across embedded computing platforms and pervasive technological infrastructures, including mobile devices, edge processors, and real-time vision systems. These systems face two fundamental and often conflicting challenges related to computational performance and energy efficiency. The first challenge arises from continuous advances in imaging sensor technology, which impose sustained pressure toward higher pixel densities and increased frame rates that must be processed within strict temporal constraints [<xref ref-type="bibr" rid="ref_1">1</xref>]. Consequently, the volume of visual data requiring processing within fixed time intervals grows rapidly, as illustrated in <xref ref-type="table" rid="table_1">Table 1</xref>. The second challenge stems from the need to provide sufficient computational capacity to handle this growing data volume, rendering energy-efficient operation increasingly difficult—particularly in systems whose hardware and software architectures are already optimized for low-power execution.</p>
+      
+        <table-wrap id="table_1">
+          <label>Table 1</label>
+          <caption>
+            <title>Transmission rates, storage capacity, and daily energy utilization across various image resolutions</title>
+          </caption>
+          <table><tbody><tr><th colspan="1" rowspan="1"><p>Resolution</p></th><th colspan="1" rowspan="1"><p>Pixels (Kpx)</p></th><th colspan="3" rowspan="1"><p>30fps</p></th><th colspan="3" rowspan="1"><p>60fps</p></th></tr><tr><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"><p>Rate (Mbps)</p></td><td colspan="1" rowspan="1"><p>Cap. (TB)</p></td><td colspan="1" rowspan="1"><p>Pwr (MJ)</p></td><td colspan="1" rowspan="1"><p>Rate (Mbps)</p></td><td colspan="1" rowspan="1"><p>Cap. (TB)</p></td><td colspan="1" rowspan="1"><p>Pwr (MJ)</p></td></tr><tr><td colspan="1" rowspan="1"><p>640 × 480</p></td><td colspan="1" rowspan="1"><p>307</p></td><td colspan="1" rowspan="1"><p>74</p></td><td colspan="1" rowspan="1"><p>0.8</p></td><td colspan="1" rowspan="1"><p>0.3</p></td><td colspan="1" rowspan="1"><p>147</p></td><td colspan="1" rowspan="1"><p>1.6</p></td><td colspan="1" rowspan="1"><p>0.6</p></td></tr><tr><td colspan="1" rowspan="1"><p>1024 × 768</p></td><td colspan="1" rowspan="1"><p>786</p></td><td colspan="1" rowspan="1"><p>189</p></td><td colspan="1" rowspan="1"><p>2.0</p></td><td colspan="1" rowspan="1"><p>0.7</p></td><td colspan="1" rowspan="1"><p>377</p></td><td colspan="1" rowspan="1"><p>4.1</p></td><td colspan="1" rowspan="1"><p>1.5</p></td></tr><tr><td colspan="1" rowspan="1"><p>1600 × 900</p></td><td colspan="1" rowspan="1"><p>1440</p></td><td colspan="1" rowspan="1"><p>346</p></td><td colspan="1" rowspan="1"><p>3.7</p></td><td colspan="1" rowspan="1"><p>1.3</p></td><td colspan="1" rowspan="1"><p>691</p></td><td colspan="1" rowspan="1"><p>7.5</p></td><td colspan="1" rowspan="1"><p>2.8</p></td></tr><tr><td colspan="1" rowspan="1"><p>2048 × 1152</p></td><td colspan="1" rowspan="1"><p>2359</p></td><td colspan="1" rowspan="1"><p>566</p></td><td colspan="1" rowspan="1"><p>6.1</p></td><td colspan="1" rowspan="1"><p>2.2</p></td><td colspan="1" rowspan="1"><p>1132</p></td><td colspan="1" rowspan="1"><p>12.2</p></td><td colspan="1" rowspan="1"><p>4.6</p></td></tr><tr><td colspan="1" rowspan="1"><p>4320 × 2432</p></td><td colspan="1" rowspan="1"><p>10506</p></td><td colspan="1" rowspan="1"><p>2521</p></td><td colspan="1" rowspan="1"><p>27.2</p></td><td colspan="1" rowspan="1"><p>9.8</p></td><td colspan="1" rowspan="1"><p>5043</p></td><td colspan="1" rowspan="1"><p>54.5</p></td><td colspan="1" rowspan="1"><p>20.6</p></td></tr><tr><td colspan="1" rowspan="1"><p>8192 × 4608</p></td><td colspan="1" rowspan="1"><p>37749</p></td><td colspan="1" rowspan="1"><p>9060</p></td><td colspan="1" rowspan="1"><p>97.8</p></td><td colspan="1" rowspan="1"><p>35.3</p></td><td colspan="1" rowspan="1"><p>18119</p></td><td colspan="1" rowspan="1"><p>195.7</p></td><td colspan="1" rowspan="1"><p>73.9</p></td></tr></tbody></table>
+        </table-wrap>
+      
+      
+        <sec>
+          
+            <title>1.1. Prior research and related contributions</title>
+          
+          <p> <xref ref-type="table" rid="table_1">Table 1</xref> summarizes representative data throughput rates, storage requirements, and daily energy consumption corresponding to commonly used image resolution formats. These benchmark measurements were obtained on an Odroid-XU4 embedded computing platform operating at 2.0 GHz across multiple resolution configurations. The results demonstrate that both storage demand and energy expenditure increase significantly as image resolution scales, particularly when processing is performed continuously over extended duty cycles.</p>
+          <p>Over recent decades, extensive research efforts have investigated power-efficient strategies for time-constrained image processing through a variety of methodological frameworks. Among these, approximate computing has emerged as a particularly effective paradigm by exploiting the inherent tolerance of many image processing applications to controlled computational inaccuracies [<xref ref-type="bibr" rid="ref_2">2</xref>]. Approximate computing has been explored across multiple abstraction layers, including arithmetic circuit design, compiler support, runtime systems, and architectural optimization. Libraries of approximate arithmetic components have been proposed to facilitate design-space exploration and benchmarking [<xref ref-type="bibr" rid="ref_3">3</xref>], while pattern-based and quality-configurable approximation techniques have demonstrated effectiveness for data-parallel workloads [<xref ref-type="bibr" rid="ref_4">4</xref>], [<xref ref-type="bibr" rid="ref_5">5</xref>]. Compiler- and language-level support for variable-accuracy execution has further enabled automated approximation tuning in performance-critical applications [<xref ref-type="bibr" rid="ref_6">6</xref>]. Comprehensive surveys have summarized approximation strategies spanning logic, architecture, and system levels [<xref ref-type="bibr" rid="ref_7">7</xref>], [<xref ref-type="bibr" rid="ref_8">8</xref>]. Power reduction is achieved by replacing computationally expensive hardware and software implementations with reduced-complexity alternatives, enabling faster execution with lower energy consumption [<xref ref-type="bibr" rid="ref_9">9</xref>]. This relaxation of accuracy, however, introduces degradation in output quality, which must remain within acceptable limits defined by subjective perception or quantitative fidelity metrics.</p><p>At the hardware level, approximation techniques commonly employ deliberate architectural simplifications in image processing components, reducing gate count and circuit complexity. A prominent class of such approaches focuses on simplifying arithmetic units, particularly multipliers. For example, multiplier-less image processing architectures have been proposed using probabilistic domain transformations for convolution operations 4or shift-and-add techniques for Fast Fourier Transform (FFT) implementations [<xref ref-type="bibr" rid="ref_10">10</xref>]. These methods demonstrate that significant energy savings can be achieved while preserving functionally acceptable results.</p><p>Power reduction is accomplished by substituting computationally demanding hardware and software implementations with reduced-complexity alternatives, thereby enabling accelerated execution with diminished energy expenditure [<xref ref-type="bibr" rid="ref_9">9</xref>]. Nevertheless, this approach introduces degradation in output quality to levels considered tolerable according to either subjective perceptual assessments or quantitative fidelity metrics.</p><p>Hardware-level approximation techniques employ deliberate architectural simplification in image processing components, achieving reduced gate counts in their implementation. The defining characteristic of such approaches lies in diminishing the structural complexity of arithmetic computational units. For example, multiplier-less image processing units are proposed by the following studies [<xref ref-type="bibr" rid="ref_10">10</xref>], [<xref ref-type="bibr" rid="ref_11">11</xref>]. Replacing multipliers by probabilistic domain transformation in a discrete convolution [<xref ref-type="bibr" rid="ref_10">10</xref>] or by shift-and-add operations in a 16-point Fast Fourier Transformer (FFT) [<xref ref-type="bibr" rid="ref_11">11</xref>] provides similar functionality at reduced complexity and energy consumption.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>1.2. Rationale and contributions</title>
+          
+          <p>Although approximation has traditionally been applied using application-agnostic strategies, such approaches do not fully exploit domain-specific characteristics that could enable further energy savings while maintaining higher output quality. Image processing represents a class of applications where deeper application-level knowledge can be leveraged to guide approximation decisions more effectively [<xref ref-type="bibr" rid="ref_12">12</xref>]. Visual imagery inherently contains spatial regions that differ in informational relevance. Areas with pronounced inter-pixel intensity variations—such as edges, contours, and textured structures—tend to contribute more strongly to perceptual and structural significance than spatially homogeneous regions [<xref ref-type="bibr" rid="ref_13">13</xref>]. The perceptual salience of such regions has been extensively validated through subjective vision studies [<xref ref-type="bibr" rid="ref_14">14</xref>]. Conversely, smooth or low-variance regions generally exhibit greater tolerance to approximation-induced distortion.</p><p>Motivated by this observation, we characterize local pixel-level variability as statistical importance and posit that this property can be exploited to guide adaptive computation. Rather than attempting to model semantic or perceptual saliency—which typically requires computationally intensive feature extraction or learning-based methods—statistical importance provides a low-complexity, structure-oriented proxy suitable for real-time and energy-constrained systems. While biologically inspired and computational saliency models have been widely studied, they often require complex feature extraction and learning-based inference, making them less suitable for low-power embedded systems [<xref ref-type="bibr" rid="ref_15">15</xref>]. By aligning computational effort with detected importance levels, it becomes possible to reduce energy consumption while preserving visual fidelity in critical regions. We acknowledge that colour-dependent information and high-level semantic saliency are not explicitly captured by the proposed luminance-based statistical importance metric. This limitation is a deliberate design trade-off that prioritizes computational simplicity and real-time applicability over semantic completeness. While smooth but chromatically rich regions may be assigned lower importance, this approach ensures predictable execution cost and energy efficiency on resource-constrained embedded platforms.</p><p>The main contributions of this work are summarized as follows:</p><p>• We formalize a deviation-based statistical importance metric for image processing applications and present computationally efficient methods for estimating this metric at run time.</p><p>• We propose a parallel image processing framework that employs importance-weighted approximate computation, integrating heterogeneous resource allocation with dynamic voltage and frequency scaling (DVFS) to explore the quality–energy–performance trade-off space.</p><p>• We validate the proposed framework through two complementary implementation scenarios: (i) a hardware-accelerated adaptive approximate filtering architecture, and (ii) a heterogeneous CPU–GPU system for variable-kernel parallel convolution on an Odroid-XU4 platform, both demonstrating clear advantages over conventional uniform-precision processing approaches.</p>
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>2. Statistical importance in visual data processing</title>
+      <p>Within the domain of digital imagery, we characterize statistical importance as spatial regions exhibiting elevated deviation magnitudes relative to their neighborhood average values [<xref ref-type="bibr" rid="ref_16">16</xref>]. The fundamental principle involves revealing informational characteristics that emerge from perceptual and visual effect variations. Our investigation commenced by exploring, through software-based experimental tools, whether statistical importance in visual data could be quantified via parallel computation of local mean and deviation statistics across image subdivisions. The methodology for computing mean and deviation metrics was inspired by the integral image framework presented in reference [<xref ref-type="bibr" rid="ref_17">17</xref>]. Such statistical feature extraction techniques are well established in classical image processing literature and form the basis for many spatial-domain analysis methods [<xref ref-type="bibr" rid="ref_18">18</xref>]. </p>
+      <p>Computing standard deviation demands substantial computational resources, necessitating squaring operations and root extractions. In pursuit of computationally-efficient importance quantification techniques, we investigated multiple approaches, implemented using an OpenCV3.1 experimental platform, as detailed below:</p><p>Approach 1: Standard deviation calculation utilizing Integral Image representations with sum and square sum accumulation matrices applied to 32 × 32 pixel regions. This matrix dimension was selected to maintain mean calculations within 16-bit integer arithmetic constraints;</p><p>Approach 2: Absolute Deviation metric replacing standard deviation by employing the magnitude of difference between samples and their local mean. This modification eliminated squaring and root extraction requirements;</p><p>Approach 3: Approximate Absolute Deviation technique through direct computation of individual deviation values sampled from 4 neighboring (4 × 4) pixel blocks, effectively utilizing 4 samples from 64 available pixels.</p><p><xref ref-type="fig" rid="fig_1">Figure 1</xref> illustrates four processed outputs generated by the experimental demonstrator. The source images, in   <xref ref-type="fig" rid="fig_1">Figure 1</xref>(a), underwent subdivision into smaller (4 × 4) pixel regions with threshold-based deviation masking applied to its grayscale representation (pixels below threshold rendered as black indicating low importance, pixels at or above threshold rendered as grey indicating elevated importance). Adaptive cluster density configurations can be implemented with performance-quality-energy tradeoff considerations, as elaborated in Section 4.</p>
+      
+        <fig id="fig_1">
+          <label>Figure 1</label>
+          <caption>
+            <title>Statistical importance across thresholds</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/11/img_pE1OB5tkiRnokOkk.png"/>
+        </fig>
+      
+      
+        <sec>
+          
+            <title>2.1. Approach 1: standard deviation computation technique</title>
+          
+          <p>Integral image–based standard deviation calculation provides an efficient mechanism for image feature detection and is widely employed in facial recognition architectures and image processing frameworks [<xref ref-type="bibr" rid="ref_17">17</xref>]. In our implementation, integral and squared-sum accumulation matrices of size 32 × 32 are constructed to enable efficient computation of local mean and variance statistics. This dimensionality ensures that local mean evaluations remain within 16-bit integer precision bounds during exploratory experimentation. <xref ref-type="fig" rid="fig_2">Figure 2</xref> illustrates the computational steps required for standard deviation estimation using this approach, together with the absolute deviation alternative discussed in Section 2.2.</p>
+          
+            <fig id="fig_2">
+              <label>Figure 2</label>
+              <caption>
+                <title>Flowchart for standard (and absolute) deviation utilizing Integral images</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/11/img_fVZ7RJEoVnyLqYgP.png"/>
+            </fig>
+          
+          <p>The 32 × 32 accumulation matrices are further partitioned into configurable subregions of size 4 × 4, 8 × 8, or 16 × 16. For clarity, the following discussion assumes a 4 × 4 configuration. Integral image representations enable efficient computation of local mean and standard deviation metrics, as illustrated in <xref ref-type="fig" rid="fig_3">Figure 3</xref>. For both the integral and squared-sum representations, the local sum within a rectangular region is obtained using four array lookups combined through simple addition and subtraction operations.</p><p>Specifically, the sum of pixel intensities within the highlighted blue 4 × 4 region is computed using the four corner values of the corresponding accumulation matrix, following the standard formulation introduced by Viola and Jones [<xref ref-type="bibr" rid="ref_17">17</xref>]. The local mean is then obtained by dividing this sum by the number of pixels in the region. An analogous computation using the squared-sum matrix yields the local variance, from which the standard deviation is derived.</p>
+          
+            <fig id="fig_3">
+              <label>Figure 3</label>
+              <caption>
+                <title>A demonstration of deviation computation from an Integral</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/11/img_jBUwyjfZrSiy1P0X.png"/>
+            </fig>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>2.2. Approach 2: absolute deviation computation</title>
+          
+          <p>Standard deviation using established techniques (Approach 1) incorporates squaring to prevent negative values when assessing variability measures. Root extraction must follow to obtain the deviation statistic. Squaring enhances how outlier values impact the resulting standard deviation metric. Ongoing discussion examines the comparative strengths of standard versus absolute deviation approaches [<xref ref-type="bibr" rid="ref_19">19</xref>]. Absolute deviation offers an alternative using dev = <inline-formula>
+  <mml:math id="mv31h6durv">
+    <mml:mo>∣</mml:mo>
+  </mml:math>
+</inline-formula>value - mean<inline-formula>
+  <mml:math id="m3cmkrw2ds">
+    <mml:mo>∣</mml:mo>
+  </mml:math>
+</inline-formula>, employing the C standard library's absolute value function. This method sidesteps both squaring and root extraction operations, substantially lowering algorithmic complexity for computational units.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>2.3. Approach 3: approximate absolute deviation</title>
+          
+          <p>This approximation methodology extracts one pixel sample per (4 × 4) block to calculate neighborhood statistics including mean and absolute deviation spanning 4 (2 × 2) zones (4 pixels selected from 64 total). <xref ref-type="fig" rid="fig_4">Figure 4</xref> illustrates the processing steps. A two-iteration strategy is implemented: iteration one retrieves two image rows into a 2 × (width/4) buffer, evaluates 2 × 2 neighborhood means plus corresponding absolute deviations from these means for each row, and commits results to a staging array subsequently propagated to matching row indices in the comprehensive mask array.</p>
+          
+            <fig id="fig_4">
+              <label>Figure 4</label>
+              <caption>
+                <title>Calculation Flowchart for approximate absolute deviation</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/11/img_Wy3WWg4w9R1mwRWa.png"/>
+            </fig>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>2.4. Performance evaluation</title>
+          
+          <p>All performance measurements were obtained using 4 × 4 subdivision computations across the three deviation-based importance estimation methodologies to ensure fair and consistent timing comparisons. The resulting execution times are summarized in <xref ref-type="table" rid="table_2">Table 2</xref>. For ultra-high-definition imagery exceeding 2k horizontal resolution, larger subdivisions (e.g., 16 × 16) can yield satisfactory importance estimates; however, the approximate absolute deviation method demonstrates acceptable accuracy with substantially reduced execution time when operating at the finer 4 × 4 granularity. Unless otherwise stated, all subsequent timing analyses were performed on 5184 × 3888 pixel (20.1 MPixel) test images.</p>
+          
+            <table-wrap id="table_2">
+              <label>Table 2</label>
+              <caption>
+                <title>Comparative timing analysis of the three significance methods</title>
+              </caption>
+              <table><tbody><tr><th colspan="1" rowspan="1"><p>Task</p></th><th colspan="1" rowspan="1"><p>Time Period</p></th><th colspan="1" rowspan="1"><p>Method 1 - Standard Deviation</p></th><th colspan="1" rowspan="1"><p>Method 2 - Absolute Deviation</p></th><th colspan="1" rowspan="1"><p>Method 3 - Approximate Deviation</p></th></tr><tr><td colspan="1" rowspan="1"><p>Integral Image array creation</p></td><td colspan="1" rowspan="1"><p>ms</p></td><td colspan="1" rowspan="1"><p>46.3</p></td><td colspan="1" rowspan="1"><p>24.3</p></td><td colspan="1" rowspan="1"><p>0</p></td></tr><tr><td colspan="1" rowspan="1"><p>Calculation time</p></td><td colspan="1" rowspan="1"><p>ms</p></td><td colspan="1" rowspan="1"><p>142.9</p></td><td colspan="1" rowspan="1"><p>139.1</p></td><td colspan="1" rowspan="1"><p>6.9</p></td></tr><tr><td colspan="1" rowspan="1"><p>Sub total</p></td><td colspan="1" rowspan="1"><p>ms</p></td><td colspan="1" rowspan="1"><p>189.2</p></td><td colspan="1" rowspan="1"><p>163.4</p></td><td colspan="1" rowspan="1"><p>6.9</p></td></tr><tr><td colspan="1" rowspan="1"><p>Image mask creation</p></td><td colspan="1" rowspan="1"><p>ms</p></td><td colspan="1" rowspan="1"><p>971.9</p></td><td colspan="1" rowspan="1"><p>438.1</p></td><td colspan="1" rowspan="1"><p>411.8</p></td></tr><tr><td colspan="1" rowspan="1"><p>Total time</p></td><td colspan="1" rowspan="1"><p>ms</p></td><td colspan="1" rowspan="1"><p>1161.1</p></td><td colspan="1" rowspan="1"><p>601.5</p></td><td colspan="1" rowspan="1"><p>418.7</p></td></tr></tbody></table>
+            </table-wrap>
+          
+          <p>As shown in <xref ref-type="table" rid="table_2">Table 2</xref>, Method 1 (standard deviation) incurs the highest computational cost due to the use of squaring and square-root operations, resulting in significant overhead during both deviation calculation and image mask generation. Method 2 (absolute deviation) reduces arithmetic complexity by eliminating these operations, leading to moderate performance improvements while retaining sensitivity to local structural variation. Nevertheless, both methods remain dominated by full neighborhood processing costs, limiting their scalability for high-resolution or real-time applications.</p><p>In contrast, Method 3 (approximate absolute deviation) achieves a substantial reduction in execution time by sampling a limited subset of pixels within each subdivision. This approximation introduces a degree of uncertainty in importance estimation, particularly in regions containing fine-grained textures or weak intensity gradients. However, the proposed framework does not rely on exact importance ranking; instead, it employs coarse-grained classification into low, medium, and high importance levels, for which Method 3 provides sufficient discrimination.</p><p>Experimental observations indicate that minor inaccuracies in importance estimation primarily result in conservative processing decisions—assigning slightly higher precision to marginal regions—rather than visually disruptive artefacts. Subsequent case studies confirm that the use of approximate absolute deviation preserves acceptable PSNR and SSIM values in the final output while enabling significant reductions in execution time and energy consumption. It should be noted that Methods 1 and 2 provide more precise estimates of local deviation by exhaustively processing neighborhood statistics, at the cost of significantly higher computational overhead. Method 3 intentionally sacrifices fine-grained importance accuracy in favor of execution efficiency by sampling a limited subset of pixels. Since the proposed framework relies on coarse-grained classification into low, medium, and high importance levels rather than exact importance ranking, this approximation is sufficient for guiding adaptive computation, as confirmed by downstream PSNR and SSIM evaluations.</p><p>Based on this balance between computational efficiency and importance detection fidelity, Method 3 is selected as the default importance estimation technique in this work. This choice aligns with the overarching objective of enabling energy-efficient, real-time adaptive approximation in embedded and heterogeneous image processing systems.</p>
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>3. Proposed significance driven computation approach</title>
+      <p> <xref ref-type="fig" rid="fig_5">Figure 5</xref> Illustrates our original phased approach utilising Method 3 to highlight significance in the image and permit an adaptive computational and energy efficient approach to Image processing.</p><p>The phases involved are as follows:</p><p>Phase 1. Acquire the image which may be a choice of static (stored) image a stored video sequence or a live camera input image. Divide the whole image work-area into suitablesized Work-groups e.g. 16 × 16, 32 × 32, 64 × 64 etc. Further divide the image into a choice of 2 × 2, 4 × 4, 16 × 16 sub-area Work-items. Determine the statistical importance for each computational work-item through single-pixel sampling from work-items within 2 × 2 neighboring clusters, enabling local mean computation and subsequent importance quantification via absolute deviation metrics.</p><p>Phase 2. Classify each work-group in the image work-area by Pooling the values in each work group into either a maximum or Dynamic range (maximum - minimum) selection, reducing a group of values into a single value. Utilise a two threshold system to divide the work-groups into three distinct levels, high, medium and low significance, to allow varying levels of kernel filtering to these three levels for each work-group.</p><p>Phase 3. Allocate individual available heterogeneous elements, e.g. GPU, Neon FPU, to effect the processing required. This allocation strategy could, for instance, assign the highest-importance regions to complex 5 × 5 convolution operations executed on the GPU, intermediate-importance regions to 3 × 3 convolution processing utilizing the Neon FPU, and minimal-importance regions to 1 × 1 operations performed on the CPU.</p><p>Phase 4. Utilising such available resources, as outlined in Phase 3, along with the low complexity significance calculation, renders results much quicker and energy efficiently than the available inter-frame time, which offers slack-time that further allows DVFS to be applied separately to both the GPU and the CPU/Neon combination thereby offering greater energy efficiency in the process.</p><p>Phase 5. Evaluates the output imagery and result quality using metrics such as PSNR, SSIM, or alternative methodologies to establish a feedback mechanism through machine learning processes, enabling Phase 1 threshold parameter adaptation for optimizing the overall importance detection framework.</p>
+      
+        <fig id="fig_5">
+          <label>Figure 5</label>
+          <caption>
+            <title>Proposed adaptive approximate computing approach</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/11/img_AQ0eb_Q-hAoJX3Ng.png"/>
+        </fig>
+      
+    </sec>
+    <sec sec-type="">
+      <title>4. Case study 1: variable kernel sizing for convolution filters</title>
+      <p>To assess the viability of the importance-weighted methodology and furnish preliminary validation of the research advancement, the case study adapts significance based software resources allocation for a real-time convolution filtering application running on the Odroid-XU4. The estimation of significant data and convolution filter are designed for implementation on the Mali-T628 GPU using OpenCL framework. The application execution model is shown in <xref ref-type="fig" rid="fig_6">Figure 6</xref>.</p>
+      
+        <fig id="fig_6">
+          <label>Figure 6</label>
+          <caption>
+            <title>The execution model of the convolution filter application</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/11/img_b5FSadBrf55GuMbe.png"/>
+        </fig>
+      
+      
+        <sec>
+          
+            <title>4.1. The estimation of significance (phase 1)</title>
+          
+          <p>Two proposed statistical analysis techniques were implemented for the modulation of significant data. The timing results for absolute and approximate absolute deviation method in <xref ref-type="fig" rid="fig_7">Figure 7</xref> demonstrates the comparative execution time for the two methods. This shows that the execution time decreased by roughly a factor of two upon increasing work-group granularity from 2 × 2 to 16 × block configurations, maintaining this trend across all tested image dimensions.</p>
+          
+            <fig id="fig_7">
+              <label>Figure 7</label>
+              <caption>
+                <title>Odroid-XU4 Approximate and absolute deviation estimation time at 600 MHz GPU frequency</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/11/img_rM8vK-990uUAOq4P.png"/>
+            </fig>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>4.2. Software resources allocation (phase 2)</title>
+          
+          <p>After the significance levels are generated, the higher significance levels are assigned to a larger convolution kernel size (e.g., 5 × 5), while the lower importance image regions are processed using 3 × 3 kernel or remain unprocessed, shown in <xref ref-type="fig" rid="fig_8">Figure 8</xref>. Here the significance classification is displayed as different colour regions: grey-low or no significance, white and black, indicate high and moderate significance, respectively.</p>
+          
+            <fig id="fig_8">
+              <label>Figure 8</label>
+              <caption>
+                <title>(a) Single level significance and (b) Multi level significance</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/11/img_V3cRgoe7aat7SBkl.png"/>
+            </fig>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>4.3. Parallel convolution run-time prediction using generated significance (phase 3)</title>
+          
+          <p>By using a pre-computed significance data of the acquired frame from a video stream, the information of allocated significance levels is used to predict the run-time of convolution. Assuming two convolution kernel sizes are used, 5 × 5 and 3 × 3, and indexes <inline-formula>
+  <mml:math id="mlufc069ge">
+    <mml:mi>α</mml:mi>
+  </mml:math>
+</inline-formula>, <inline-formula>
+  <mml:math id="m1tme7zq90">
+    <mml:mi>β</mml:mi>
+  </mml:math>
+</inline-formula>, <inline-formula>
+  <mml:math id="mesc9jb43f">
+    <mml:mi>γ</mml:mi>
+  </mml:math>
+</inline-formula>, ranging from 0–2, respectively, represent an element of workload array: <inline-formula>
+  <mml:math id="mhvfs5ieia">
+    <mml:mi>α</mml:mi>
+  </mml:math>
+</inline-formula>-1 × 1, i.e. not processed, <inline-formula>
+  <mml:math id="mvpzc266id">
+    <mml:mi>β</mml:mi>
+  </mml:math>
+</inline-formula>-3 × 3, <inline-formula>
+  <mml:math id="m03lbkolyx">
+    <mml:mi>γ</mml:mi>
+  </mml:math>
+</inline-formula>-5 × 5.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>4.4. Dvfs control to meet specified performance requirement (phase 4)</title>
+          
+          <p>In the case of significance-unware applications, the variation of run-time is minimal and both GPU and CPU resources can be iteratively adjusted for minimum available voltage-frequency configurations until the performance requirement is satisfied. However, by using the significance-driven approach, the convolution filter run-time executed on the GPU is a function of detected significant data. Therefore, the prediction explained in step 3, is implemented to deal with run-time changes and more accurate V-F allocation. <xref ref-type="fig" rid="fig_9">Figure 9</xref> displays the effect of prediction correction based on collected actual run-time and energy consumption per frame by applying DFVS control to meet performance requirement of 14 fps. Similar coordinated energy-management strategies for heterogeneous systems have been explored in prior work using model-based and learning-assisted optimization techniques [<xref ref-type="bibr" rid="ref_20">20</xref>]. Approximation-aware coordinated power and performance management strategies have been proposed for heterogeneous multi-core systems [<xref ref-type="bibr" rid="ref_21">21</xref>]. The current DVFS control strategy relies on deterministic runtime prediction derived from observed workload distributions and measured execution profiles. While effective in practice, the present implementation does not explicitly model prediction uncertainty or provide confidence intervals for runtime estimates. Incorporating probabilistic prediction techniques, such as Bayesian regression or Monte Carlo-based uncertainty estimation, together with guard-band policies, represents an important direction for future work. Such extensions would enable explicit trade-offs between energy savings and deadline-miss risk under highly dynamic workload conditions.</p>
+          
+            <fig id="fig_9">
+              <label>Figure 9</label>
+              <caption>
+                <title>Predicted and Actual convolution run-time with energy consumption at 14 fps</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/11/img_AbgLOjCpKyHWbsdt.png"/>
+            </fig>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>4.5. Peak signal-to-noise ratio-based image quality characterization (phase 5)</title>
+          
+          <p>Following adaptive approximate processing, the output image quality is evaluated to ensure that approximation-induced distortions remain within acceptable limits. Given the known limitations of relying on a single fidelity metric, image quality assessment in this work employs a combination of Peak Signal-to-Noise Ratio (PSNR) and the Structural Similarity Index Measure (SSIM). This dual-metric strategy enables both analytical optimization and perceptual validation of the proposed framework.</p><p>PSNR is adopted as a lightweight metric suitable for closed-loop optimization and real-time feedback control due to its low computational overhead. The mean squared error (MSE) between a reference image processed using full-precision computation and the approximated output image is defined as:</p><p style="text-align: center"><inline-formula>
+  <mml:math id="mwtxwon6j8">
+    <mml:mi>MSE</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>j</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>j</mml:mi>
+    <mml:mo>=</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mfrac>
+      <mml:mn>1</mml:mn>
+      <mml:mrow>
+        <mml:mi>M</mml:mi>
+        <mml:mi>N</mml:mi>
+      </mml:mrow>
+    </mml:mfrac>
+    <mml:munderover>
+      <mml:mo>∑</mml:mo>
+      <mml:mrow>
+        <mml:mi>i</mml:mi>
+        <mml:mo>=</mml:mo>
+        <mml:mn>1</mml:mn>
+      </mml:mrow>
+      <mml:mi>M</mml:mi>
+    </mml:munderover>
+    <mml:munderover>
+      <mml:mo>∑</mml:mo>
+      <mml:mrow>
+        <mml:mi>j</mml:mi>
+        <mml:mo>=</mml:mo>
+        <mml:mn>1</mml:mn>
+      </mml:mrow>
+      <mml:mi>N</mml:mi>
+    </mml:munderover>
+    <mml:msup>
+      <mml:mo>)</mml:mo>
+      <mml:mn>2</mml:mn>
+    </mml:msup>
+  </mml:math>
+</inline-formula></p><p>where, $f<inline-formula>
+  <mml:math id="mvctp2tt6o">
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+  </mml:math>
+</inline-formula>g<inline-formula>
+  <mml:math id="mzzblys8ca">
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+  </mml:math>
+</inline-formula>M \times N<inline-formula>
+  <mml:math id="ms9bofnb94">
+    <mml:mo>,</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>:&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>=</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>:</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>P</mml:mi>
+    <mml:mi>S</mml:mi>
+    <mml:mi>N</mml:mi>
+    <mml:mi>R</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>"</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>"</mml:mo>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> \mathrm{PSNR}=10 \log _{10}\left(\frac{255^2}{\mathrm{MSE}}\right) <inline-formula>
+  <mml:math id="m310rdwprf">
+    <mml:mo>&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>[</mml:mo>
+    <mml:mo>]</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>[</mml:mo>
+    <mml:mo>]</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>[</mml:mo>
+    <mml:mo>]</mml:mo>
+    <mml:mo>:&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>=</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>:</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>"</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>"</mml:mo>
+    </mml:mrow>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>W</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>P</mml:mi>
+    <mml:mi>S</mml:mi>
+    <mml:mi>N</mml:mi>
+    <mml:mi>R</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>q</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>q</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>A</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>q</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>S</mml:mi>
+    <mml:mi>S</mml:mi>
+    <mml:mi>I</mml:mi>
+    <mml:mi>M</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>S</mml:mi>
+    <mml:mi>S</mml:mi>
+    <mml:mi>I</mml:mi>
+    <mml:mi>M</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mn>22</mml:mn>
+    <mml:mn>23</mml:mn>
+    <mml:mn>24</mml:mn>
+  </mml:math>
+</inline-formula> \operatorname{sSIM}(f, g)=\frac{\left(2 \mu_f \mu_g+C_1\right)\left(2 \sigma_{f g}+C_2\right)}{\left(\mu_f^2+\mu_g^2+C_1\right)\left(\sigma_f^2+\sigma_g^2+C_2\right)} <inline-formula>
+  <mml:math id="mlnferkbqk">
+    <mml:mo>&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+  </mml:math>
+</inline-formula>\mu_f<inline-formula>
+  <mml:math id="mvu8okurlw">
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>\mu_g<inline-formula>
+  <mml:math id="m7pcovhbkm">
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>\sigma_f^2<inline-formula>
+  <mml:math id="m614b62na1">
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>\sigma_g^2<inline-formula>
+  <mml:math id="me5zqyrai5">
+    <mml:mo>,</mml:mo>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+  </mml:math>
+</inline-formula>\sigma_{f g}<inline-formula>
+  <mml:math id="mh2odj87nq">
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>C_1<inline-formula>
+  <mml:math id="mh1bulkz6m">
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>C_2$ are small constants introduced to ensure numerical stability.</p><p>Dynamic voltage and frequency scaling has been widely investigated as a mechanism for exploiting execution-time slack to reduce energy consumption in both single-core and parallel computing systems. Prior studies have demonstrated the effectiveness of DVFS-based scheduling under deadline constraints in clustered and chip-multiprocessor environments [<xref ref-type="bibr" rid="ref_25">25</xref>], [<xref ref-type="bibr" rid="ref_26">26</xref>], as well as logic- and architecture-level optimizations aimed at minimizing static and dynamic power dissipation [<xref ref-type="bibr" rid="ref_27">27</xref>].</p><p>Within the proposed framework, PSNR is primarily used as a feedback signal to adapt importance thresholds and approximation levels during run-time operation, while SSIM is used to validate that structural fidelity is preserved. If the evaluated quality metrics fall below predefined limits, the significance thresholds are dynamically adjusted to increase the proportion of high-precision processing in subsequent frames. This feedback mechanism enables the system to balance energy efficiency and image quality in a principled and adaptive manner. <xref ref-type="fig" rid="fig_10">Figure 10</xref> summarizes the proposed significance-driven adaptive computing framework, illustrating the interaction between importance estimation, adaptive approximation, and energy-aware control mechanisms.</p>
+          
+            <fig id="fig_10">
+              <label>Figure 10</label>
+              <caption>
+                <title>Significance-driven approach</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/11/img_tRBTn-byacS_Rrn-.png"/>
+            </fig>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>4.6. Convolution and variable kernel sizes</title>
+          
+          <p>The implemented convolution filter kernel coefficients are selected for sharpening operation. By having only one significance level, which is mapped to a single kernel size, leaves image blocks either processed or not processed. Using multiple kernel sizes, allows an increase in the number of processed image blocks, such that work-groups of lower significance are computed at moderate precision, thereby increasing the overall PSNR. <xref ref-type="table" rid="table_3">Table 3</xref> summarizes the execution time and PSNR results obtained for different combinations of convolution kernel sizes, illustrating the quality–performance trade-offs enabled by the proposed significance-driven processing approach. The results reported in <xref ref-type="table" rid="table_3">Table 3</xref> correspond to a sharpening filter applied to a 640 × 480 grayscale image using variable convolution kernel sizes and workload combinations. Image quality is quantified using PSNR as a signal-fidelity metric, while perceptual quality is additionally evaluated using the Structural Similarity Index Measure (SSIM), which remains consistently high (greater than 0.90) for all configurations that preserve high-significance regions.</p>
+          
+            <table-wrap id="table_3">
+              <label>Table 3</label>
+              <caption>
+                <title>Performance and quality results for variable convolution kernel sizes</title>
+              </caption>
+              <table><tbody><tr><th colspan="3" rowspan="1"><p>Kernel Size</p></th><th colspan="1" rowspan="1"><p>Time</p></th><th colspan="1" rowspan="1"><p>PSNR</p></th></tr><tr><td colspan="1" rowspan="1"><p>5 × 5</p></td><td colspan="1" rowspan="1"><p>3 × 3</p></td><td colspan="1" rowspan="1"><p>1 × 1</p></td><td colspan="1" rowspan="1"><p>ms</p></td><td colspan="1" rowspan="1"><p>dB</p></td></tr><tr><td colspan="1" rowspan="1"><p>100</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>3.44</p></td><td colspan="1" rowspan="1"><p>NA</p></td></tr><tr><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>100</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>2.18</p></td><td colspan="1" rowspan="1"><p>NA</p></td></tr><tr><td colspan="1" rowspan="1"><p>95</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>5</p></td><td colspan="1" rowspan="1"><p>3.27</p></td><td colspan="1" rowspan="1"><p>35.3</p></td></tr><tr><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>95</p></td><td colspan="1" rowspan="1"><p>5</p></td><td colspan="1" rowspan="1"><p>2.08</p></td><td colspan="1" rowspan="1"><p>36.2</p></td></tr><tr><td colspan="1" rowspan="1"><p>60</p></td><td colspan="1" rowspan="1"><p>30</p></td><td colspan="1" rowspan="1"><p>10</p></td><td colspan="1" rowspan="1"><p>2.05</p></td><td colspan="1" rowspan="1"><p>30.78</p></td></tr><tr><td colspan="1" rowspan="1"><p>30</p></td><td colspan="1" rowspan="1"><p>60</p></td><td colspan="1" rowspan="1"><p>10</p></td><td colspan="1" rowspan="1"><p>1.30</p></td><td colspan="1" rowspan="1"><p>31.23</p></td></tr></tbody></table>
+            </table-wrap>
+          
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>5. Case study 2: adaptive approximate hardware allocation</title>
+      <p>Minimizing power consumption for computational workloads comprising parallel multi-threaded applications represents a critical objective across diverse real-time information processing domains. Such processing is extremely vital in many emerging image, video and audio applications. However, the great conflict between meeting the real-time performance and improving the energy-efficiency is considered as a serious challenge in such real-time applications.</p><p>In this section, we present a run-time coordinated power-performance management approach for allocating “just-sufficient” hardware circuits required to execute a multi-task of image/frame workload, while meeting a given quality requirement. Our proposed approach optimizes the energy-efficiency by applying two major techniques. The first is by utilizing a significance-driven hardware allocating technique to assign the most relevant approximate circuits to compute a particular task of image processing workload depending on significance-driven classification. The second is performing an effective slack reclamation technique to allow for utilizing dynamic voltage frequency scaling (DVFS).</p>
+      
+        <sec>
+          
+            <title>5.1. Significance-driven hardware technique</title>
+          
+          <p>For a given application, we define the workload as the volume of computations required to process an input image or an acquired frame. <xref ref-type="fig" rid="fig_11">Figure 11</xref> shows the relevant stages in the proposed design. The approach optimizes the total energy consumption required to process each workload together with satisfying the performance requirement. Approximate hardware design techniques have been extensively studied to reduce arithmetic complexity and power consumption. Comparative evaluations of approximate multipliers highlight substantial energy savings with bounded computational error [<xref ref-type="bibr" rid="ref_28">28</xref>], while reliability-aware approximation techniques introduce lightweight error analysis to improve robustness [<xref ref-type="bibr" rid="ref_29">29</xref>]. Emerging memory-centric and accelerator-oriented approximate architectures further demonstrate the potential of approximation in energy-efficient heterogeneous systems [<xref ref-type="bibr" rid="ref_30">30</xref>]. </p><p>The proposed approach can wisely allocate a particular hardware from a variety of standard and approximate circuits to process each task of image/frame block based on its level of significance. Instead of allocating traditional complex and energy-wasteful circuits to process the lower-significance data blocks, our approach treats such blocks by executing them with low-complexity approximate circuits.</p>
+          
+            <fig id="fig_11">
+              <label>Figure 11</label>
+              <caption>
+                <title>Flow chart showing the main steps of adaptive approximate hardware allocation</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/11/img_lUi-ALm3iP0ZERZh.png"/>
+            </fig>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>5.2. Slack reclamation by applying dvfs technique</title>
+          
+          <p>In fact, designing circuits using different approximate building blocks results in disparate critical paths. Therefore, executing a number of equal tasks on different approximate and exact implementations can lead to various task execution times. The proposed approach exploits the variations in execution time by using dynamic voltage and frequency scaling (DVFS), whenever a circuit is able to accomplish executing a task before a given deadline.</p><p><xref ref-type="fig" rid="fig_12">Figure 12</xref> compares the power characteristics associated with processing a single image block across four distinct hardware implementation types. <xref ref-type="fig" rid="fig_12">Figure 12</xref> illustrates the baseline power consumption prior to the application of dynamic voltage and frequency scaling (DVFS), and shows the effect of applying DVFS to approximate hardware implementations. The results demonstrate that DVFS-enabled approximate designs significantly reduce aggregate power consumption while tolerating increased execution time, yet still satisfying overall performance constraints.</p>
+          
+            <fig id="fig_12">
+              <label>Figure 12</label>
+              <caption>
+                <title>Power characteristics of task execution across different hardware implementations</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/11/img_kwCCoLnKMdyoJb2a.png"/>
+            </fig>
+          
+          <p>In CMOS-based systems, dynamic power dissipation <italic>P_dynamic</italic> serves as the primary contributor, given by:</p><p style="text-align: center"><inline-formula>
+  <mml:math id="midetb0we5">
+    <mml:mi>P</mml:mi>
+    <mml:mi>_</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>C</mml:mi>
+    <mml:mi>_</mml:mi>
+    <mml:mi>_</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mo>=</mml:mo>
+    <mml:mo>⋅</mml:mo>
+    <mml:mo>⋅</mml:mo>
+    <mml:mtext>eff </mml:mtext>
+    <mml:msup>
+      <mml:mi>V</mml:mi>
+      <mml:mn>2</mml:mn>
+    </mml:msup>
+  </mml:math>
+</inline-formula></p><p>representing the product of effective capacitance, voltage squared, and frequency. <xref ref-type="fig" rid="fig_13">Figure 13</xref> illustrates the proposed Configurable Precision Multiplier (CPM) architecture, highlighting the mode selection between exact and approximate multipliers. The design emphasizes three key attributes: energy efficiency and configurability, integration with dynamic voltage and frequency scaling (DVFS) for timing slack reclamation, and algorithmic scalability to arbitrary bit widths. Similar energy-efficiency strategies have been explored in broader computing contexts, including heterogeneous object detection pipelines [<xref ref-type="bibr" rid="ref_31">31</xref>] and predictive optimization frameworks for cloud and distributed systems [<xref ref-type="bibr" rid="ref_32">32</xref>], reinforcing the general applicability of coordinated power–performance management approaches.</p>
+          
+            <fig id="fig_13">
+              <label>Figure 13</label>
+              <caption>
+                <title>Configurable Precision Multiplier (CPM) architecture</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/11/img_EVqdB-Oe6NbVna_7.png"/>
+            </fig>
+          
+          <p>We introduce a Configurable Precision Multiplier (CPM) methodology to reduce hardware complexity in multiplier designs. This approach demonstrates substantial effectiveness for approximating arithmetic and signal processing circuits.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>5.3. Quality of outcome</title>
+          
+          <p>The quality of the output images produced by the significance-driven adaptive hardware allocation framework is evaluated using both PSNR and SSIM metrics to ensure that energy savings do not come at the cost of unacceptable visual degradation. These metrics are computed by comparing the output images obtained using approximate hardware configurations against reference images generated using exact arithmetic circuits.</p><p>PSNR serves as an analytical indicator of signal fidelity and is used to quantify the distortion introduced by approximate computation. However, given its limited sensitivity to perceptual artefacts, SSIM is additionally employed to assess the preservation of structural information, which is particularly important in image processing applications involving edge enhancement and feature extraction.</p><p>Experimental results demonstrate that allocating approximate circuits to low-significance image regions results in minimal degradation of SSIM values, indicating that structural content is largely preserved despite reduced arithmetic precision. High-significance regions, which contribute more strongly to perceptual quality, are consistently processed using higher-precision hardware, thereby maintaining visual fidelity.</p><p>The combined use of PSNR and SSIM confirms that the proposed significance-driven hardware allocation strategy effectively balances energy efficiency and output quality. Even under aggressive approximation configurations, the framework maintains acceptable perceptual quality while achieving substantial reductions in power consumption and execution time. These results highlight the robustness of the proposed approach and its suitability for energy-constrained image and video processing systems.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>5.4. Further experimental evaluation</title>
+          
+          <p>Following on from the experiments in case study 1, it was decided to perform similar experiments to emulate the concept of SDLC by generating a program in OpenCL on an Odroid XU4 board utilising the hardware of the T628 Mali GPU. The target was to demonstrate the effects of various combinations of 100, 75, 50 and 25% allocation of calculation accuracy levels for up to four different levels of significance, 3 down to 0, in the processed image. <xref ref-type="table" rid="table_4">Table 4</xref> shows the results of these experiments.</p>
+          
+            <table-wrap id="table_4">
+              <label>Table 4</label>
+              <caption>
+                <title>Performance at various accuracy levels</title>
+              </caption>
+              <table><tbody><tr><th colspan="4" rowspan="1" colwidth="83,0,0,0"><p>Hardware Allocation Ratio (%)</p></th><th colspan="1" rowspan="1"><p>PSNR (dB)</p></th><th colspan="3" rowspan="1"><p>% age Reduction cf Exact</p></th></tr><tr><td colspan="1" rowspan="1" colwidth="83"><p>Sig 3 (Exact)</p></td><td colspan="1" rowspan="1"><p>Sig 2 (2-bit)</p></td><td colspan="1" rowspan="1"><p>Sig 1 (3-bit)</p></td><td colspan="1" rowspan="1"><p>Sig 0 (4-bit)</p></td><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"><p>Power</p></td><td colspan="1" rowspan="1"><p>Delay</p></td><td colspan="1" rowspan="1"><p>Energy</p></td></tr><tr><td colspan="1" rowspan="1" colwidth="83"><p>100</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>60.0</p></td><td colspan="1" rowspan="1"><p>0.0</p></td><td colspan="1" rowspan="1"><p>0.0</p></td><td colspan="1" rowspan="1"><p>0.0</p></td></tr><tr><td colspan="1" rowspan="1" colwidth="83"><p>0</p></td><td colspan="1" rowspan="1"><p>100</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>42.9</p></td><td colspan="1" rowspan="1"><p>42.0</p></td><td colspan="1" rowspan="1"><p>38.0</p></td><td colspan="1" rowspan="1"><p>67.0</p></td></tr><tr><td colspan="1" rowspan="1" colwidth="83"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>100</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>38.3</p></td><td colspan="1" rowspan="1"><p>63.0</p></td><td colspan="1" rowspan="1"><p>40.0</p></td><td colspan="1" rowspan="1"><p>78.0</p></td></tr><tr><td colspan="1" rowspan="1" colwidth="83"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>100</p></td><td colspan="1" rowspan="1"><p>30.3</p></td><td colspan="1" rowspan="1"><p>74.0</p></td><td colspan="1" rowspan="1"><p>55.0</p></td><td colspan="1" rowspan="1"><p>88.0</p></td></tr><tr><td colspan="1" rowspan="1" colwidth="83"><p>72</p></td><td colspan="1" rowspan="1"><p>28</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>48.7</p></td><td colspan="1" rowspan="1"><p>11.8</p></td><td colspan="1" rowspan="1"><p>10.6</p></td><td colspan="1" rowspan="1"><p>18.7</p></td></tr><tr><td colspan="1" rowspan="1" colwidth="83"><p>72</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>28</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>43.9</p></td><td colspan="1" rowspan="1"><p>17.6</p></td><td colspan="1" rowspan="1"><p>11.2</p></td><td colspan="1" rowspan="1"><p>21.8</p></td></tr><tr><td colspan="1" rowspan="1" colwidth="83"><p>72</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>28</p></td><td colspan="1" rowspan="1"><p>35.2</p></td><td colspan="1" rowspan="1"><p>20.7</p></td><td colspan="1" rowspan="1"><p>15.4</p></td><td colspan="1" rowspan="1"><p>24.6</p></td></tr><tr><td colspan="1" rowspan="1" colwidth="83"><p>49</p></td><td colspan="1" rowspan="1"><p>51</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>46.3</p></td><td colspan="1" rowspan="1"><p>21.2</p></td><td colspan="1" rowspan="1"><p>19.2</p></td><td colspan="1" rowspan="1"><p>33.8</p></td></tr><tr><td colspan="1" rowspan="1" colwidth="83"><p>49</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>51</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>41.4</p></td><td colspan="1" rowspan="1"><p>31.8</p></td><td colspan="1" rowspan="1"><p>20.2</p></td><td colspan="1" rowspan="1"><p>39.4</p></td></tr><tr><td colspan="1" rowspan="1" colwidth="83"><p>49</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>51</p></td><td colspan="1" rowspan="1"><p>32.9</p></td><td colspan="1" rowspan="1"><p>37.4</p></td><td colspan="1" rowspan="1"><p>27.8</p></td><td colspan="1" rowspan="1"><p>44.5</p></td></tr><tr><td colspan="1" rowspan="1" colwidth="83"><p>24</p></td><td colspan="1" rowspan="1"><p>24</p></td><td colspan="1" rowspan="1"><p>23</p></td><td colspan="1" rowspan="1"><p>25</p></td><td colspan="1" rowspan="1"><p>34.5</p></td><td colspan="1" rowspan="1"><p>45.7</p></td><td colspan="1" rowspan="1"><p>34.0</p></td><td colspan="1" rowspan="1"><p>59.2</p></td></tr><tr><td colspan="1" rowspan="1" colwidth="83"><p>25</p></td><td colspan="1" rowspan="1"><p>46</p></td><td colspan="1" rowspan="1"><p>27</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>41.7</p></td><td colspan="1" rowspan="1"><p>37.1</p></td><td colspan="1" rowspan="1"><p>28.8</p></td><td colspan="1" rowspan="1"><p>52.8</p></td></tr><tr><td colspan="1" rowspan="1" colwidth="83"><p>25</p></td><td colspan="1" rowspan="1"><p>46</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>27</p></td><td colspan="1" rowspan="1"><p>34.8</p></td><td colspan="1" rowspan="1"><p>40.1</p></td><td colspan="1" rowspan="1"><p>33.0</p></td><td colspan="1" rowspan="1"><p>55.6</p></td></tr><tr><td colspan="1" rowspan="1" colwidth="83"><p>25</p></td><td colspan="1" rowspan="1"><p>27</p></td><td colspan="1" rowspan="1"><p>46</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>40.8</p></td><td colspan="1" rowspan="1"><p>40.9</p></td><td colspan="1" rowspan="1"><p>29.1</p></td><td colspan="1" rowspan="1"><p>54.8</p></td></tr><tr><td colspan="1" rowspan="1" colwidth="83"><p>25</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>46</p></td><td colspan="1" rowspan="1"><p>27</p></td><td colspan="1" rowspan="1"><p>34.3</p></td><td colspan="1" rowspan="1"><p>49.9</p></td><td colspan="1" rowspan="1"><p>33.9</p></td><td colspan="1" rowspan="1"><p>60.7</p></td></tr><tr><td colspan="1" rowspan="1" colwidth="83"><p>25</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>27</p></td><td colspan="1" rowspan="1"><p>46</p></td><td colspan="1" rowspan="1"><p>33.0</p></td><td colspan="1" rowspan="1"><p>51.8</p></td><td colspan="1" rowspan="1"><p>36.6</p></td><td colspan="1" rowspan="1"><p>62.5</p></td></tr><tr><td colspan="1" rowspan="1" colwidth="83"><p>25</p></td><td colspan="1" rowspan="1"><p>27</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>46</p></td><td colspan="1" rowspan="1"><p>33.2</p></td><td colspan="1" rowspan="1"><p>45.9</p></td><td colspan="1" rowspan="1"><p>36.0</p></td><td colspan="1" rowspan="1"><p>59.4</p></td></tr><tr><td colspan="1" rowspan="1" colwidth="83"><p>0</p></td><td colspan="1" rowspan="1"><p>72</p></td><td colspan="1" rowspan="1"><p>27</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>40.0</p></td><td colspan="1" rowspan="1"><p>47.9</p></td><td colspan="1" rowspan="1"><p>38.6</p></td><td colspan="1" rowspan="1"><p>70.1</p></td></tr><tr><td colspan="1" rowspan="1" colwidth="83"><p>0</p></td><td colspan="1" rowspan="1"><p>72</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>27</p></td><td colspan="1" rowspan="1"><p>34.7</p></td><td colspan="1" rowspan="1"><p>51.0</p></td><td colspan="1" rowspan="1"><p>42.8</p></td><td colspan="1" rowspan="1"><p>72.9</p></td></tr><tr><td colspan="1" rowspan="1" colwidth="83"><p>0</p></td><td colspan="1" rowspan="1"><p>27</p></td><td colspan="1" rowspan="1"><p>72</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>39.2</p></td><td colspan="1" rowspan="1"><p>57.1</p></td><td colspan="1" rowspan="1"><p>39.4</p></td><td colspan="1" rowspan="1"><p>74.9</p></td></tr><tr><td colspan="1" rowspan="1" colwidth="83"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>72</p></td><td colspan="1" rowspan="1"><p>27</p></td><td colspan="1" rowspan="1"><p>33.9</p></td><td colspan="1" rowspan="1"><p>66.1</p></td><td colspan="1" rowspan="1"><p>44.2</p></td><td colspan="1" rowspan="1"><p>80.8</p></td></tr><tr><td colspan="1" rowspan="1" colwidth="83"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>27</p></td><td colspan="1" rowspan="1"><p>72</p></td><td colspan="1" rowspan="1"><p>31.2</p></td><td colspan="1" rowspan="1"><p>70.9</p></td><td colspan="1" rowspan="1"><p>50.8</p></td><td colspan="1" rowspan="1"><p>85.2</p></td></tr><tr><td colspan="1" rowspan="1" colwidth="83"><p>0</p></td><td colspan="1" rowspan="1"><p>27</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>72</p></td><td colspan="1" rowspan="1"><p>31.4</p></td><td colspan="1" rowspan="1"><p>65.1</p></td><td colspan="1" rowspan="1"><p>50.2</p></td><td colspan="1" rowspan="1"><p>82.1</p></td></tr><tr><td colspan="1" rowspan="1" colwidth="83"><p>0</p></td><td colspan="1" rowspan="1"><p>47</p></td><td colspan="1" rowspan="1"><p>24</p></td><td colspan="1" rowspan="1"><p>27</p></td><td colspan="1" rowspan="1"><p>34.4</p></td><td colspan="1" rowspan="1"><p>56.0</p></td><td colspan="1" rowspan="1"><p>43.2</p></td><td colspan="1" rowspan="1"><p>75.5</p></td></tr><tr><td colspan="1" rowspan="1" colwidth="83"><p>0</p></td><td colspan="1" rowspan="1"><p>24</p></td><td colspan="1" rowspan="1"><p>47</p></td><td colspan="1" rowspan="1"><p>27</p></td><td colspan="1" rowspan="1"><p>34.1</p></td><td colspan="1" rowspan="1"><p>61.0</p></td><td colspan="1" rowspan="1"><p>43.7</p></td><td colspan="1" rowspan="1"><p>78.2</p></td></tr><tr><td colspan="1" rowspan="1" colwidth="83"><p>0</p></td><td colspan="1" rowspan="1"><p>25</p></td><td colspan="1" rowspan="1"><p>25</p></td><td colspan="1" rowspan="1"><p>50</p></td><td colspan="1" rowspan="1"><p>32.5</p></td><td colspan="1" rowspan="1"><p>63.4</p></td><td colspan="1" rowspan="1"><p>47.1</p></td><td colspan="1" rowspan="1"><p>80.3</p></td></tr></tbody></table>
+            </table-wrap>
+          
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>6. Significance driven adaptive computing model</title>
+      <p>A software model has been developed to demonstrate application of approximate significance on still and video images, utilising a dual threshold system to identify areas of significance for variable level processing, these values being held in a smaller matrix than the original image. Further processing applies pooling of the significance levels within a workgroup to render a yet smaller matrix.</p><p>Case study 1 in Section 4 explained the application of a single threshold algorithm that performed a dual kernel processing operation, either a 3 × 3 or 5 × 5 kernel for workgroups above the threshold and 1 × 1 or 3 × 3 kernel for those below the threshold. This section describes the software demonstrator implementation, utilizing a dual-threshold architecture based on configurable percentage allocations of workgroup quantities for processing across three generated hierarchy levels. Significance-aware computing has also been explored at the programming model and runtime level to guide energy-efficient execution in heterogeneous systems [<xref ref-type="bibr" rid="ref_33">33</xref>]. </p>
+      
+        <sec>
+          
+            <title>6.1. Matrix reduction</title>
+          
+          <p>The main performance and energy efficiency benefits of the software demonstrator are achieved by a reduction in the dimensions of the significance matrix relating to the image and a further reduction by pooling the significance values into a single value per work-group related matrix (<xref ref-type="fig" rid="fig_14">Figure 14</xref>). This facilitates referencing and processing higher definition images by selecting regions of interest (RoI) for specific processing.</p>
+          
+            <fig id="fig_14">
+              <label>Figure 14</label>
+              <caption>
+                <title>Relationship of image matrix dimensions for a 32 × 32 image with 4 × 4 sub groups and a 16 × 16 work-group</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/11/img_hejAuJcoSU2DtwOY.png"/>
+            </fig>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>6.2. Application to images (phase 1)</title>
+          
+          <p>A preset spatial offset of [$1, 1$] is employed to select two non-adjacent image rows, specifically the second and sixth rows, for processing. From each selected row, every fourth pixel value is sampled and stored in the array Pixel [2:8}. The sampled pixel values are subsequently used to compute a local mean intensity, which serves as a coarse statistical representation of the corresponding neighborhood. Specifically, four pixel samples, denoted as <italic>A</italic>, <italic>B</italic>, <italic>C</italic>, and <italic>D</italic>, are accumulated and divided by four to obtain the local mean <italic>μ<sub>L</sub></italic>. To minimize computational overhead, this division is implemented using two right-shift operations, thereby avoiding explicit division hardware and reducing arithmetic complexity (<xref ref-type="fig" rid="fig_15">Figure 15</xref>).</p>
+          
+            <fig id="fig_15">
+              <label>Figure 15</label>
+              <caption>
+                <title>Interconnection of image matrix structures, sub-array partitions, and work-group elements in the demonstrator software implementation</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/11/img_A7KLmIS1WpK6wzNf.png"/>
+            </fig>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>6.3. Dynamic percentage thresh-holding (phase 2)</title>
+          
+          <p>If PPQ0 is selected, <xref ref-type="table" rid="table_5">Table 5</xref> entry shows a percentage processing ratio of 90%:5%:5% for each of the three levels, so this selection will need to render 90% = 900 workgroups at level0 and 5% = 50 workgroups for each of level 1 and level 2. The pooled significance matrix is now processed by the histogram() function to create a vector of binned significance values. The PPQ threshold configurations and percentage allocations employed in this study are empirically selected to demonstrate the feasibility of the proposed framework. These parameters should be regarded as heuristic design choices rather than universally optimal settings. Automated threshold selection or learning-based adaptation strategies constitute promising directions for future work.</p>
+          
+            <table-wrap id="table_5">
+              <label>Table 5</label>
+              <caption>
+                <title>Performance at various accuracy levels</title>
+              </caption>
+              <table><tbody><tr><td colspan="4" rowspan="1"><p>PPQ Configuration Levels for Demonstrator Application</p></td></tr><tr><td colspan="1" rowspan="2"><p>PPQ Setting</p></td><td colspan="1" rowspan="2"><p>Tier 0 Allocation %</p></td><td colspan="1" rowspan="2"><p>Tier 1 Allocation %</p></td><td colspan="1" rowspan="2"><p>Tier 2 Allocation %</p></td></tr><tr></tr><tr><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>90</p></td><td colspan="1" rowspan="1"><p>5</p></td><td colspan="1" rowspan="1"><p>5</p></td></tr><tr><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>80</p></td><td colspan="1" rowspan="1"><p>10</p></td><td colspan="1" rowspan="1"><p>10</p></td></tr><tr><td colspan="1" rowspan="1"><p>2</p></td><td colspan="1" rowspan="1"><p>70</p></td><td colspan="1" rowspan="1"><p>15</p></td><td colspan="1" rowspan="1"><p>15</p></td></tr><tr><td colspan="1" rowspan="1"><p>3</p></td><td colspan="1" rowspan="1"><p>60</p></td><td colspan="1" rowspan="1"><p>20</p></td><td colspan="1" rowspan="1"><p>20</p></td></tr><tr><td colspan="1" rowspan="1"><p>4</p></td><td colspan="1" rowspan="1"><p>50</p></td><td colspan="1" rowspan="1"><p>30</p></td><td colspan="1" rowspan="1"><p>20</p></td></tr><tr><td colspan="1" rowspan="1"><p>5</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>100</p></td><td colspan="1" rowspan="1"><p>0</p></td></tr><tr><td colspan="1" rowspan="1"><p>6</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>100</p></td></tr></tbody></table>
+            </table-wrap>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>6.4. Image filtering (phase 3)</title>
+          
+          <p>For demonstration purposes, the software applies a 3 × 3 sharpening filter to image regions classified as having intermediate significance, while regions identified as highly significant are processed using a 5 × 5 Sobel filter. The kernel coefficients of both filters were intentionally adjusted to enhance visual contrast, allowing the effects of adaptive filtering to be more clearly observed. In the resulting output, regions processed with the 3 × 3filter appear with lighter intensity, whereas regions processed with the 5 × 5 filter appear darker. <xref ref-type="fig" rid="fig_16">Figure 16</xref> illustrates the outcome of this adaptive filtering strategy for an image processed under a simulated video workload at 10 fps, using a PPQ2 configuration with a target processing distribution of 70:15:15 across the three significance levels.</p>
+          
+            <fig id="fig_16">
+              <label>Figure 16</label>
+              <caption>
+                <title>Resultant image processing with adaptive approximate significance selected filtering. PPQ level 2 applied, 70:15:15%</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2025/11/img_4fYqsG87Mi-33o8S.png"/>
+            </fig>
+          
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>7. Discussions and conclusions</title>
+      <p>The two case studies presented in thiswork validate the same underlying significance-driven adaptive computation model at different abstraction layers. Case Study 1 demonstrates the effectiveness of importance-aware approximation combined with dynamic voltage and frequency scaling (DVFS) in a heterogeneous software environment, whereas Case Study 2 applies the same principles to hardware-level circuit allocation and power management. Together, these studies confirm the generality of the proposed framework and highlight its applicability across softwareonly, hardware-only, and hardware–software co-designed systems. Specifically, this work makes the following contributions: first, it introduces a low-cost statistical significance inference algorithm for image processing applications, which is employed within a novel adaptive approximation framework capable of tailoring filtering levels proportionally to regional significance in order to reduce energy consumption while maintaining acceptable visual quality; second, it provides extensive experimental validation of the proposed adaptive approximation approach using both hardware-based implementations and hardware–software co-design strategies applied within an image processing context. The Approximate Absolute Deviation method is shown to be an effective mechanism for highlighting significant features in image frames, offering configurable spatial granularity through the use of 2 × 2, 4 × 4, 8 × 8, or 16 × 16 regions to extract a representative approximate value. While 4 × 4 regions are employed for images with approximately 2K horizontal resolution, experimental results indicate that 8 × 8 regions remain viable for 4K imagery, as demonstrated using a 20-megapixel 5K still image. As image resolutions continue to increase toward 8K, further opportunities emerge for additional significance approximation using larger spatial regions, such as 16 × 16 blocks, which will be explored in future work pending access to suitablehigh-resolution video capture hardware.there is possible potential for further significance approximation based on 16 × 16 areas.</p><p>A significance driven adaptive computation software model has demonstrated a novel concept of using image significance in a frame, to localise computation around significant features and adapt the level of filtering based on the level of that significance. While the demonstrator utilised two thresholds to provide three levels of single convolutions to be executed in the relevant areas, it can easily be seen that this could be expanded to multiple thresholds and combinations of more accurate single or more complex multiple convolutions in selected areas.</p><p>This technique, processing only significant areas, offers a relatively faster frame processing time thereby providing greater energy efficiency than traditional whole frame image processing. Additionally shorter execution time yields extra frame slack time which can be further exploited utilising DVFS to exploit further energy efficiencies. The experimental evaluation primarily compares the proposed framework against uniform-precision and uniform-kernel baselines. While these baselines clearly demonstrate the benefits of significance-driven adaptive computation, further isolation of the individual contributions of approximate computation and DVFS would provide additional insight. Such an analysis is left for future work.</p><p>Case study 1 indicated the extra performance and energy reductions that could be achieved when integration of OpenCV, OpenCL and ACL co-functionality becomes achievable. Currently ACL utilises C++11 compilation whilst OpenCV 3.3 utilises C++98 which does not support chrono and thread library facilities thereby hindering attempts to integrate the two libraries. The recent release of OpenCV 4.0 supports C++11 compilation and may well facilitate integration of the two libraries.</p>
+    </sec>
+  </body>
+  <back>
+    <ack>
+      <title>Acknowledgments</title>
+      
+    </ack>
+    <app-group>
+      <app>
+        <title>Appendix</title>
+        
+      </app>
+    </app-group>
+    <notes>
+      <title>Author Contributions</title>
+      
+    </notes>
+    <notes>
+      <title>Funding</title>
+      
+    </notes>
+    <notes>
+      <title>Informed Consent Statement</title>
+      
+    </notes>
+    <notes>
+      <title>Data Availability Statement</title>
+      <p>The data used to support the findings of this study are available from the corresponding author upon request.</p>
+    </notes>
+    <notes notes-type="COI-statement">
+      <title>Conflicts of Interest</title>
+      <p>The authors declare that they have no conflicts of interest.</p>
+    </notes>
+    <ref-list>
+      <title>References</title>
+      <ref id="ref_1">
+        <label>1.</label>
+        <element-citation publication-type="journal">
+          <volume>15</volume>
+          <page-range>19215</page-range>
+          <issue>1</issue>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Joshi</surname>
+              <given-names>V.</given-names>
+            </name>
+            <name>
+              <surname>Mane</surname>
+              <given-names>P.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1038/s41598-025-03865-0</pub-id>
+          <article-title>Novel approximate adaptive carry lookahead adder for error resilient applications with generic method for error analysis</article-title>
+          <source>Sci. Rep.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_2">
+        <label>2.</label>
+        <element-citation publication-type="journal">
+          <volume>13</volume>
+          <page-range>17030-17042</page-range>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Vendhan</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Ahmed</surname>
+              <given-names>S. E.</given-names>
+            </name>
+            <name>
+              <surname>Gurunarayanan</surname>
+              <given-names>S.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/access.2025.3531943</pub-id>
+          <article-title>Design of approximate adder with reconfigurable accuracy</article-title>
+          <source>IEEE Access</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_3">
+        <label>3.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>258–261</page-range>
+          <year>2017</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Mrazek</surname>
+              <given-names>V.</given-names>
+            </name>
+            <name>
+              <surname>Hrbacek</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Vasicek</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Sekanina</surname>
+              <given-names>L.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.23919/DATE.2017.7926993</pub-id>
+          <article-title>EvoApprox8b: Library of approximate adders and multipliers for circuit design and benchmarking of approximation methods</article-title>
+          <source>Proceedings of the Design, Automation and Test in Europe Conference (DATE), Lausanne, Switzerland</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_4">
+        <label>4.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>35-50</page-range>
+          <year>2014</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Samadi</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Jamshidi</surname>
+              <given-names>D. A.</given-names>
+            </name>
+            <name>
+              <surname>Lee</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Mahlke</surname>
+              <given-names>S.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1145/2541940.2541948</pub-id>
+          <article-title>Paraprox: Pattern-based approximation for data-parallel applications</article-title>
+          <source>Proceedings of the International Conference on Architectural Support for Programming Languages and Operating Systems (ASPLOS), Salt Lake City, USA</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_5">
+        <label>5.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>665–670</page-range>
+          <year>2015</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Raha</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Venkataramani</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Raghunathan</surname>
+              <given-names>V.</given-names>
+            </name>
+            <name>
+              <surname>Raghunathan</surname>
+              <given-names>A.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.7873/DATE.2015.0569</pub-id>
+          <article-title>Quality-configurable reduce-and-rank for energy-efficient approximate computing</article-title>
+          <source>Proceedings of the Design, Automation and Test in Europe Conference (DATE), Grenoble, France</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_6">
+        <label>6.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>85-96</page-range>
+          <year>2011</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Ansel</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Wong</surname>
+              <given-names>Y. L.</given-names>
+            </name>
+            <name>
+              <surname>Chan</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Olszewski</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Edelman</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Amarasinghe</surname>
+              <given-names>S.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/cgo.2011.5764677</pub-id>
+          <article-title>Language and compiler support for auto-tuning variable-accuracy algorithms</article-title>
+          <source>Proceedings of the International Symposium on Code Generation and Optimization (CGO), Chamonix, France</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_7">
+        <label>7.</label>
+        <element-citation publication-type="journal">
+          <volume>48</volume>
+          <page-range>1-33</page-range>
+          <issue>4</issue>
+          <year>2016</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Mittal</surname>
+              <given-names>S.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1145/2893356</pub-id>
+          <article-title>A survey of techniques for approximate computing</article-title>
+          <source>ACM Comput. Surv.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_8">
+        <label>8.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>99</page-range>
+          <year>2016</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Shafique</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Hafiz</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Rehman</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>El-Harouni</surname>
+              <given-names>W.</given-names>
+            </name>
+            <name>
+              <surname>Henkel</surname>
+              <given-names>J.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1145/2897937.2906199</pub-id>
+          <article-title>Cross-layer approximate computing: From logic to architectures</article-title>
+          <source>Proceedings of the Design Automation Conference (DAC), Austin, USA</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_9">
+        <label>9.</label>
+        <element-citation publication-type="journal">
+          <volume>72</volume>
+          <page-range>2128-2138</page-range>
+          <issue>5</issue>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Lakshmi</surname>
+              <given-names>V.</given-names>
+            </name>
+            <name>
+              <surname>Pudi</surname>
+              <given-names>V.</given-names>
+            </name>
+            <name>
+              <surname>Reuben</surname>
+              <given-names>J.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/tcsi.2024.3511955</pub-id>
+          <article-title>In-memory implementation of an approximate adder with reduced latency and error</article-title>
+          <source>IEEE Trans. Circuits Syst. I Regul. Pap.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_10">
+        <label>10.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>326-330</page-range>
+          <year>2005</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Prasanthi</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Anuradha</surname>
+              <given-names>V.</given-names>
+            </name>
+            <name>
+              <surname>Sahoo</surname>
+              <given-names>S.K.</given-names>
+            </name>
+            <name>
+              <surname>Shekhar</surname>
+              <given-names>C.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/icisip.2005.1529470</pub-id>
+          <article-title>Multiplier less FFT processor architecture for signal and image processing</article-title>
+          <source>Proceedings of the International Conference on Intelligent Sensing and Information Processing, Chennai, India</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_11">
+        <label>11.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>185-188</page-range>
+          <year>2014</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Alawad</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Bai</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>DeMara</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Lin</surname>
+              <given-names>M.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1145/2554688.2554769</pub-id>
+          <article-title>Energy-efficient multiplier-less discrete convolution through probabilistic domain transformation</article-title>
+          <source>Proceedings of the ACM/SIGDA International Symposium on Field- Programmable Gate Arrays (FPGA), New York, USA</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_12">
+        <label>12.</label>
+        <element-citation publication-type="conf-paper">
+          <year>2017</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Alioto</surname>
+              <given-names>M.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.23919/DATE.2017.7926970</pub-id>
+          <article-title>Energy–quality scalable adaptive VLSI circuits and systems beyond approximate computing</article-title>
+          <source>Proceedings of the Design, Automation and Test in Europe Conference (DATE), Lausanne, Switzerland</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_13">
+        <label>13.</label>
+        <element-citation publication-type="journal">
+          <volume>31</volume>
+          <page-range>9464-9483</page-range>
+          <issue>10</issue>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Hartwig</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Engel</surname>
+              <given-names>D.</given-names>
+            </name>
+            <name>
+              <surname>Sick</surname>
+              <given-names>L.</given-names>
+            </name>
+            <name>
+              <surname>Kniesel</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Payer</surname>
+              <given-names>T.</given-names>
+            </name>
+            <name>
+              <surname>Poonam</surname>
+              <given-names>P.</given-names>
+            </name>
+            <name>
+              <surname>Glöckler</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Bäuerle</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Ropinski</surname>
+              <given-names>T.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/tvcg.2025.3585077</pub-id>
+          <article-title>A survey on quality metrics for text-to-image generation</article-title>
+          <source>IEEE Trans. Visual. Comput. Graphics</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_14">
+        <label>14.</label>
+        <element-citation publication-type="journal">
+          <volume>20</volume>
+          <page-range>189-199</page-range>
+          <issue>2</issue>
+          <year>2016</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Quast</surname>
+              <given-names>K. B.</given-names>
+            </name>
+            <name>
+              <surname>Ung</surname>
+              <given-names>K.</given-names>
+            </name>
+            <name>
+              <surname>Froudarakis</surname>
+              <given-names>E.</given-names>
+            </name>
+            <name>
+              <surname>Huang</surname>
+              <given-names>L.</given-names>
+            </name>
+            <name>
+              <surname>Herman</surname>
+              <given-names>I.</given-names>
+            </name>
+            <name>
+              <surname>Addison</surname>
+              <given-names>A. P.</given-names>
+            </name>
+            <name>
+              <surname>Ortiz-Guzman</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Cordiner</surname>
+              <given-names>K.</given-names>
+            </name>
+            <name>
+              <surname>Saggau</surname>
+              <given-names>P.</given-names>
+            </name>
+            <name>
+              <surname>Tolias</surname>
+              <given-names>A. S.</given-names>
+            </name>
+            <name>
+              <surname>Arenkiel</surname>
+              <given-names>B. R.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1038/nn.4467</pub-id>
+          <article-title>Developmental broadening of inhibitory sensory maps</article-title>
+          <source>Nat. Neurosci.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_15">
+        <label>15.</label>
+        <element-citation publication-type="journal">
+          <volume>35</volume>
+          <page-range>185-207</page-range>
+          <issue>1</issue>
+          <year>2013</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Borji</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Itti</surname>
+              <given-names>L.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/tpami.2012.89</pub-id>
+          <article-title>State-of-the-art in visual saliency modeling</article-title>
+          <source>IEEE Trans. Pattern Anal. Mach. Intell.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_16">
+        <label>16.</label>
+        <element-citation publication-type="journal">
+          <volume>22</volume>
+          <page-range>1093-1104</page-range>
+          <issue>13</issue>
+          <year>2004</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Godtliebsen</surname>
+              <given-names>F.</given-names>
+            </name>
+            <name>
+              <surname>Marron</surname>
+              <given-names>J.S.</given-names>
+            </name>
+            <name>
+              <surname>Chaudhuri</surname>
+              <given-names>P.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.imavis.2004.05.002</pub-id>
+          <article-title>Statistical significance of features in digital images</article-title>
+          <source>Image Vis. Comput.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_17">
+        <label>17.</label>
+        <element-citation publication-type="journal">
+          <volume>57</volume>
+          <page-range>137-154</page-range>
+          <issue>2</issue>
+          <year>2004</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Viola</surname>
+              <given-names>P.</given-names>
+            </name>
+            <name>
+              <surname>Jones</surname>
+              <given-names>M.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1023/b:visi.0000013087.49260.fb</pub-id>
+          <article-title>Robust real-time face detection</article-title>
+          <source>Int. J. Comput. Vis.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_18">
+        <label>18.</label>
+        <element-citation publication-type="book">
+          <person-group person-group-type="author">
+            <name>
+              <surname>Russ</surname>
+              <given-names>J. C.</given-names>
+            </name>
+          </person-group>
+          <source>Introduction to Image Processing and Analysis</source>
+          <publisher-name>CRC Press</publisher-name>
+          <year>2008</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_19">
+        <label>19.</label>
+        <element-citation publication-type="journal">
+          <volume>49</volume>
+          <page-range>764-766</page-range>
+          <issue>4</issue>
+          <year>2013</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Leys</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Ley</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Klein</surname>
+              <given-names>O.</given-names>
+            </name>
+            <name>
+              <surname>Bernard</surname>
+              <given-names>P.</given-names>
+            </name>
+            <name>
+              <surname>Licata</surname>
+              <given-names>L.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.jesp.2013.03.013</pub-id>
+          <article-title>Detecting outliers: Do not use standard deviation around the mean, use absolute deviation around the median</article-title>
+          <source>J. Exp. Soc. Psychol.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_20">
+        <label>20.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>103-110</page-range>
+          <year>2015</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Yang</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Shafik</surname>
+              <given-names>R. A.</given-names>
+            </name>
+            <name>
+              <surname>Merrett</surname>
+              <given-names>G. V.</given-names>
+            </name>
+            <name>
+              <surname>Stott</surname>
+              <given-names>E.</given-names>
+            </name>
+            <name>
+              <surname>Levine</surname>
+              <given-names>J. M.</given-names>
+            </name>
+            <name>
+              <surname>Davis</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Al-Hashimi</surname>
+              <given-names>B. M.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/patmos.2015.7347594</pub-id>
+          <article-title>Adaptive energy minimization of embedded heterogeneous systems using regression-based learning</article-title>
+          <source>Proceedings of the IEEE International Workshop on Power and Timing Modeling, Optimization and Simulation (PATMOS), Salvador, Brazil</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_21">
+        <label>21.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>1-6</page-range>
+          <year>2018</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Kanduri</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Miele</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Rahmani</surname>
+              <given-names>M. A.</given-names>
+            </name>
+            <name>
+              <surname>Liljeberg</surname>
+              <given-names>P.</given-names>
+            </name>
+            <name>
+              <surname>Bolchini</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Dutt</surname>
+              <given-names>N.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1145/3195970.3195994</pub-id>
+          <article-title>Approximation-aware coordinated power/performance management for heterogeneous multi-cores</article-title>
+          <source>Proceedings of the Design Automation Conference (DAC), New York, USA</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_22">
+        <label>22.</label>
+        <element-citation publication-type="journal">
+          <volume>80</volume>
+          <page-range>102583</page-range>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Wang</surname>
+              <given-names>Jian</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>Jiaji</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>Shuihua</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>Yudong</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.displa.2023.102583</pub-id>
+          <article-title>Deep learning in pediatric neuroimaging</article-title>
+          <source>Displays</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_23">
+        <label>23.</label>
+        <element-citation publication-type="journal">
+          <volume>7</volume>
+          <page-range>1-80</page-range>
+          <issue>1</issue>
+          <year>2012</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Pedersen</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Hardeberg</surname>
+              <given-names>J. Y.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1561/0600000037</pub-id>
+          <article-title>Full-reference image quality metrics: Classification and evaluation</article-title>
+          <source>Found. Trends Comput. Graph. Vis.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_24">
+        <label>24.</label>
+        <element-citation publication-type="journal">
+          <volume>13</volume>
+          <page-range>600-612</page-range>
+          <issue>4</issue>
+          <year>2004</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Wang</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Bovik</surname>
+              <given-names>A. C.</given-names>
+            </name>
+            <name>
+              <surname>Sheikh</surname>
+              <given-names>H. R.</given-names>
+            </name>
+            <name>
+              <surname>Simoncelli</surname>
+              <given-names>E. P.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/tip.2003.819861</pub-id>
+          <article-title>Image quality assessment: From error visibility to structural similarity</article-title>
+          <source>IEEE Trans. Image Process.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_25">
+        <label>25.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>541–548</page-range>
+          <year>2007</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Kim</surname>
+              <given-names>K. H.</given-names>
+            </name>
+            <name>
+              <surname>Buyya</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Kim</surname>
+              <given-names>J.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/ccgrid.2007.85</pub-id>
+          <article-title>Power-aware scheduling of bag-of-tasks applications with deadline constraints on DVS-enabled clusters</article-title>
+          <source>Proceedings of the IEEE International Symposium on Cluster Computing and the Grid (CCGrid), Rio de Janeiro, Brazil</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_26">
+        <label>26.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>77-87</page-range>
+          <year>2006</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Li</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Martinez</surname>
+              <given-names>J. F.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/hpca.2006.1598114</pub-id>
+          <article-title>Dynamic power-performance adaptation of parallel computation on chip multiprocessors</article-title>
+          <source>Proceedings of the IEEE International Symposium on High-Performance Computer Architecture (HPCA), Austin, USA</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_27">
+        <label>27.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>41-44</page-range>
+          <year>2002</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Piguet</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Schuster</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Nagel</surname>
+              <given-names>J.L.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/newcas.2004.1359011</pub-id>
+          <article-title>Optimizing architecture activity and logic depth for static and dynamic power reduction</article-title>
+          <source>Proceedings of the IEEE Northeast Workshop on Circuits and Systems (NEWCAS), Montreal, Canada</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_28">
+        <label>28.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>191-196</page-range>
+          <year>2016</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Jiang</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Liu</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Maheshwari</surname>
+              <given-names>N.</given-names>
+            </name>
+            <name>
+              <surname>Lombardi</surname>
+              <given-names>F.</given-names>
+            </name>
+            <name>
+              <surname>Han</surname>
+              <given-names>J.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">doi.org/10.1145/2950067.2950068</pub-id>
+          <article-title>A comparative evaluation of approximate multipliers</article-title>
+          <source>Proceedings of the IEEE Conference on Nanoscale Architectures, Beijing, China</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_29">
+        <label>29.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>248–255</page-range>
+          <year>2014</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Grigorian</surname>
+              <given-names>B.</given-names>
+            </name>
+            <name>
+              <surname>Reinman</surname>
+              <given-names>G.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/AHS.2014.6880184</pub-id>
+          <article-title>Dynamically adaptive and reliable approximate computing using light-weight error analysis</article-title>
+          <source>Proceedings of the NASA/ESA Conference on Adaptive Hardware and Systems (AHS), Leicester, UK</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_30">
+        <label>30.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>1497-1502</page-range>
+          <year>2015</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Rahimi</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Ghofrani</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Cheng</surname>
+              <given-names>K. T.</given-names>
+            </name>
+            <name>
+              <surname>Benini</surname>
+              <given-names>L.</given-names>
+            </name>
+            <name>
+              <surname>Gupta</surname>
+              <given-names>R. K.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.7873/date.2015.0579</pub-id>
+          <article-title>Approximate associative memristive memory for energy-efficient GPUs</article-title>
+          <source>Proceedings of the Design, Automation and Test in Europe Conference (DATE), Grenoble, France</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_31">
+        <label>31.</label>
+        <element-citation publication-type="journal">
+          <volume>10</volume>
+          <page-range>1-25</page-range>
+          <issue>4</issue>
+          <year>2013</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Totoni</surname>
+              <given-names>E.</given-names>
+            </name>
+            <name>
+              <surname>Dikmen</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Garzarán</surname>
+              <given-names>M. J.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1145/2541228.2555302</pub-id>
+          <article-title>Easy, fast, and energy-efficient object detection on heterogeneous on-chip architectures</article-title>
+          <source>ACM Trans. Archit. Code Optim.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_32">
+        <label>32.</label>
+        <element-citation publication-type="journal">
+          <volume>102</volume>
+          <page-range>103-114</page-range>
+          <year>2017</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Bui</surname>
+              <given-names>D. M.</given-names>
+            </name>
+            <name>
+              <surname>Yoon</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Huh</surname>
+              <given-names>E. N.</given-names>
+            </name>
+            <name>
+              <surname>Jun</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Lee</surname>
+              <given-names>S.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.jpdc.2016.11.011</pub-id>
+          <article-title>Energy efficiency for cloud computing system based on predictive optimization</article-title>
+          <source>J. Parallel Distrib. Comput.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_33">
+        <label>33.</label>
+        <element-citation publication-type="journal">
+          <volume>50</volume>
+          <page-range>275–276</page-range>
+          <issue>8</issue>
+          <year>2014</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Vassiliadis</surname>
+              <given-names>V.</given-names>
+            </name>
+            <name>
+              <surname>Parasyris</surname>
+              <given-names>K.</given-names>
+            </name>
+            <name>
+              <surname>Chalios</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Antonopoulos</surname>
+              <given-names>C. D.</given-names>
+            </name>
+            <name>
+              <surname>Lalis</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Bellas</surname>
+              <given-names>N.</given-names>
+            </name>
+            <name>
+              <surname>Vandierendonck</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Nikolopoulos</surname>
+              <given-names>D. S.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1145/2858788.2688546</pub-id>
+          <article-title>A programming model and runtime system for significance-aware energy-efficient computing</article-title>
+          <source>ACM SIGPLAN Not.</source>
+        </element-citation>
+      </ref>
+    </ref-list>
+  </back>
+</article>
