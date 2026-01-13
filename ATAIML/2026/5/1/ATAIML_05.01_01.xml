@@ -1,0 +1,4102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.3 20210610//EN" "JATS-journalpublishing1-3.dtd">
+<article xml:lang="en" dtd-version="1.3" article-type="research-article" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mml="http://www.w3.org/1998/Math/MathML">
+  <front>
+    <journal-meta>
+      <journal-id journal-id-type="publisher-id">ATAIML</journal-id>
+      <journal-id journal-id-type="doi">10.56578</journal-id>
+      <journal-title-group>
+        <journal-title>Acadlore Transactions on AI and Machine Learning</journal-title>
+        <abbrev-journal-title abbrev-type="issn">Acadlore Trans. Mach. Learn.</abbrev-journal-title>
+        <abbrev-journal-title abbrev-type="publisher">ATAIML</abbrev-journal-title>
+      </journal-title-group>
+      <issn publication-format="electronic">2957-9570</issn>
+      <issn publication-format="print">2957-9562</issn>
+      <publisher>
+        <publisher-name>Acadlore</publisher-name>
+      </publisher>
+    </journal-meta>
+    <article-meta>
+      <article-id pub-id-type="publisher-id">AR-w8emGGRy5Y_4fDmBQwpAIVQ1vYJ8w-wJ</article-id>
+      <article-id pub-id-type="doi">10.56578/ataiml050101</article-id>
+      <article-categories>
+        <subj-group>
+          <subject>Articles</subject>
+        </subj-group>
+      </article-categories>
+      <title-group>
+        <article-title>A Lightweight Conditional Diffusion Model for Restoring Turbulence-degraded Facial Images</article-title>
+      </title-group>
+      <contrib-group>
+        <contrib contrib-type="author" rid="aff_1">
+          <contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0009-0004-8117-4471</contrib-id>
+          <name>
+            <surname>Sun</surname>
+            <given-names>Shaoyu</given-names>
+          </name>
+          <email>2023102121@mails.cust.edu.cn</email>
+        </contrib>
+        <contrib contrib-type="author" rid="aff_1">
+          <contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0000-0002-3780-0197</contrib-id>
+          <name>
+            <surname>Meng</surname>
+            <given-names>Pinchao</given-names>
+          </name>
+          <email>mengpc@cust.edu.cn</email>
+        </contrib>
+        <aff id="aff_1">School of Mathematics and Statistics, Changchun University of Science and Technology, 130022 Changchun, China</aff>
+      </contrib-group>
+      <pub-date publication-format="electronic" date-type="pub">
+        <day>11</day>
+        <month>01</month>
+        <year>2026</year>
+      </pub-date>
+      <volume>5</volume>
+      <issue>1</issue>
+      <fpage>1</fpage>
+      <lpage>10</lpage>
+      <page-range>1-10</page-range>
+      <history>
+        <date date-type="received">
+          <day>26</day>
+          <month>11</month>
+          <year>2025</year>
+        </date>
+        <date date-type="accepted">
+          <day>04</day>
+          <month>01</month>
+          <year>2026</year>
+        </date>
+      </history>
+      <permissions>
+        <copyright-statement>©2026 by the author(s)</copyright-statement>
+        <copyright-year>2026</copyright-year>
+        <license license-type="open-access" xlink:href="https://creativecommons.org/licenses/by/4.0/">
+          <license-p> Published by Acadlore Publishing Services Limited, Hong Kong. This article is available for free download and can be reused and cited, provided that the original published version is credited, under the CC BY 4.0 license.</license-p>
+        </license>
+      </permissions>
+      <abstract><p>Atmospheric turbulence induces severe blurring and geometric distortions in facial imagery, critically compromising the performance of downstream tasks. To overcome this challenge, a lightweight conditional diffusion model was proposed for the restoration of single-frame turbulence-degraded facial images. Super-resolution techniques were integrated with the diffusion model, and high-frequency information was incorporated as a conditional constraint to enhance structural recovery and achieve high-fidelity generation. A simplified U-Net architecture was employed within the diffusion model to reduce computational complexity while maintaining high restoration quality. Comprehensive comparative evaluations and restoration experiments across multiple scenarios demonstrate that the proposed method produces results with reduced perceptual and distributional discrepancies from ground-truth images, while also exhibiting superior inference efficiency compared to existing approaches. The presented approach not only offers a practical solution for enhancing facial imagery in turbulent environments but also establishes a promising paradigm for applying efficient diffusion models to ill-posed image restoration problems, with potential applicability to other domains such as medical and astronomical imaging.</p></abstract>
+      <kwd-group>
+        <kwd>Diffusion model</kwd>
+        <kwd>High-frequency information</kwd>
+        <kwd>Atmospheric turbulence</kwd>
+        <kwd>Facial image</kwd>
+      </kwd-group>
+      <counts>
+        <count count-type="contributors" count="2"/>
+        <fig-count count="7"/>
+        <table-count count="2"/>
+        <ref-count count="26"/>
+      </counts>
+    </article-meta>
+  </front>
+  <body>
+    <sec sec-type="intro">
+      <title>1. Introduction</title>
+      <p>Atmospheric turbulence is a common form of atmospheric motion that exerts long-term and severe impacts on optical imaging. Its irregular temporal and spatial fluctuations cause random phase distortions of the optical wavefront, leading to phenomena such as beam drift and spreading. These effects result in non-uniform distortion and blurring in images, significantly degrading imaging quality. Such impacts are prevalent in practical tasks, including facial recognition and long-range surveillance. Furthermore, compared with other types of image degradation, the irregularity of turbulent degradation makes it more difficult to model and mitigate [<xref ref-type="bibr" rid="ref_1">1</xref>]. Consequently, image restoration methods specifically designed to alleviate turbulent degradation have emerged. In the early stages of research, lucky frame imaging [<xref ref-type="bibr" rid="ref_2">2</xref>], [<xref ref-type="bibr" rid="ref_3">3</xref>], [<xref ref-type="bibr" rid="ref_4">4</xref>], [<xref ref-type="bibr" rid="ref_5">5</xref>], [<xref ref-type="bibr" rid="ref_6">6</xref>], [<xref ref-type="bibr" rid="ref_7">7</xref>], was one of the common approaches to mitigate turbulent degradation. This method captures a large number of short-exposure images, selects those least affected by atmospheric turbulence for stacking and synthesis, and typically yields high-resolution results close to the diffraction limit. However, lucky frame imaging is mainly suitable for weak turbulence distortion scenarios and struggles to achieve satisfactory outcomes under strong turbulence. Additionally, since this method takes sequential images as input, the reconstruction process usually incurs high time costs, which limits its application in many scenarios requiring real-time performance. With the vigorous development of deep learning methods, various neural network-based approaches for single-frame image restoration have emerged. Many researchers have focused on deterministic networks such as Convolutional Neural Networks (CNNs) and Transformers. For example, Mao et al. [<xref ref-type="bibr" rid="ref_8">8</xref>] proposed TurbNet, which utilizes self-attention mechanisms to extract dynamic turbulent distortion maps from degraded images, assisting the network in learning the spatial variation characteristics of turbulence and effectively alleviating turbulence effects in degraded images. Li et al. [<xref ref-type="bibr" rid="ref_9">9</xref>] designed Fourier Modulated Attention (FMA) and Dynamic Mixing Layers (DML) and proposed SRConvNet. By combining the capabilities of CNNs and Transformers, this network achieves excellent performance in tasks such as super-resolution imaging and motion deblurring. Further innovative architectures and methodologies in this domain are detailed [<xref ref-type="bibr" rid="ref_10">10</xref>], [<xref ref-type="bibr" rid="ref_11">11</xref>], [<xref ref-type="bibr" rid="ref_12">12</xref>], [<xref ref-type="bibr" rid="ref_13">13</xref>], [<xref ref-type="bibr" rid="ref_14">14</xref>], [<xref ref-type="bibr" rid="ref_15">15</xref>]. Leveraging the strong inductive bias and global dependency capture capabilities of CNNs and Transformers, researchers have developed numerous network architectures with outstanding restoration results. However, due to the lack of randomness, deterministic networks tend to suffer from the mean regression effect when addressing the ill-posed problem of image restoration, resulting in reconstructed images lacking fine details [<xref ref-type="bibr" rid="ref_12">12</xref>]. Generative models aim to learn the distribution of target images and then obtain restoration results through distribution sampling. The randomness introduced during sampling can avoid the mean regression effect. As one of the generative models, Generative Adversarial Networks (GANs) benefit from the adversarial game between the generator and the discriminator, which guides the generator to produce results close to the distribution of clear images, achieving excellent performance in single-frame image restoration tasks. For example, Awasthi and Sharma [<xref ref-type="bibr" rid="ref_16">16</xref>] proposed a comprehensive loss function combining perceptual consistency and pixel-level fidelity in GANs, improving the overall restoration quality. Further developments in this area have been documented [<xref ref-type="bibr" rid="ref_17">17</xref>], [<xref ref-type="bibr" rid="ref_18">18</xref>]. However, during the training of GANs, they may suffer from mode collapse, making it impossible to learn the complexity and diversity of real data. Recently, diffusion models have achieved exciting results in the field of image generation due to their powerful distribution learning capabilities. Researchers have extended the application of diffusion models to image restoration tasks and obtained promising restoration outcomes. Özdenizci and Legenstein [<xref ref-type="bibr" rid="ref_19">19</xref>] utilized diffusion models to achieve model restoration independent of image size, achieving favorable results in weather-degraded images. Nair et al. [<xref ref-type="bibr" rid="ref_20">20</xref>] started denoising from degraded images rather than Gaussian noise, reducing the inference time of diffusion models and improving the fidelity of restoration results. Considering that diffusion models usually require high computational costs, Zhu et al. [<xref ref-type="bibr" rid="ref_21">21</xref>] integrated traditional plug-and-play methods into the diffusion sampling framework, maintaining high reconstruction perceptual quality while achieving high computational efficiency. Several other single-frame image restoration methods based on diffusion models have been explored [<xref ref-type="bibr" rid="ref_22">22</xref>], [<xref ref-type="bibr" rid="ref_23">23</xref>], [<xref ref-type="bibr" rid="ref_24">24</xref>], [<xref ref-type="bibr" rid="ref_25">25</xref>]. Starting from the Gaussian distribution, diffusion models predict the true distribution of clear images and can output reasonable restoration results with rich details. Despite the great potential demonstrated by diffusion models, the limited information contained in single-frame degraded facial images (such as contours and facial feature positions) may lead the models to generate results that are seriously inconsistent with real images. Based on the above considerations, a conditional diffusion model integrated with high-frequency information, named HFDM, was proposed in this study. Super-resolution technology was utilized to capture high-frequency information from degraded images, which serves as a conditional constraint for the diffusion model, and the improved diffusion model was leveraged to restore single-frame turbulence-degraded facial images. Additionally, considering the complex inference steps of diffusion models, lightweight processing on the U-Net within the diffusion model was performed. Experiments demonstrate that HFDM achieves higher-quality restoration results while maintaining faster model inference efficiency. The main research contributions of this study are as follows:</p><p><p>Proposal of a conditional diffusion model with high-frequency information constraints to achieve high-fidelity restoration results.</p><p>Simplification of the U-Net, significantly reducing the model’s computational cost.</p><p>Full demonstration of the model’s restoration performance by conducting extensive experiments under scenarios with different turbulence degradation intensities.</p></p><p>The rest of this study is organized below. Section 2 details the proposed turbulence-degraded image restoration method, including the reconstruction of high-frequency information and the lightweight processing of the U-Net. Section 3 introduces the experimental data, implementation details, and various experimental results to demonstrate the restoration performance of the proposed method. Section 4 presents the conclusions of this study, summarizing its contributions.</p>
+    </sec>
+    <sec sec-type="">
+      <title>2. Method</title>
+      <p>In this paper, a diffusion model is adopted as the restoration network, and super-resolution imaging technology is utilized to extract high-frequency information from degraded images, which serves as the conditional input to the diffusion model. Since high-frequency information contains details such as edges and textures of the image, it can constrain the diffusion model to generate restoration results closer to the original image, thereby improving the fidelity of the restored outcomes. The overall restoration workflow of our method is illustrated in <xref ref-type="fig" rid="fig_1">Figure 1</xref>. In this section, we first elaborate on the acquisition of high-frequency information, and then further describe the implementation details of HFDM.</p>
+      
+        <fig id="fig_1">
+          <label>Figure 1</label>
+          <caption>
+            <title>Overall restoration workflow. High-frequency information is used as the conditional input to the diffusion model to generate high-fidelity restoration results, AT denotes a turbulent degraded image, HFI represents high-frequency information, and RI stands for a restored image</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/0/img_lcYd_PEhGl0i8Ws5.png"/>
+        </fig>
+      
+      
+        <sec>
+          
+            <title>2.1. High-frequency information</title>
+          
+          <p>Local regions of facial images typically exhibit significant structural characteristics and correlations. Transformers capture the dependencies between arbitrary positions in sequences directly through self-attention mechanisms, enabling global dependency modeling. This makes them highly suitable for the task of extracting high-frequency information from facial images, yet they also incur high computational costs. In the super-resolution network proposed by Li et al. [<xref ref-type="bibr" rid="ref_9">9</xref>], self-attention mechanisms are simulated via convolutions and Fourier transforms, which not only accurately represent facial image features but also achieve a more lightweight effect compared to the original Transformer. Therefore, we retain the main feature extraction structure of this network while removing the final residual structure to serve as our high-frequency information extraction network. The process of extracting high-frequency information is illustrated in <xref ref-type="fig" rid="fig_2">Figure 2</xref>.</p>
+          
+            <fig id="fig_2">
+              <label>Figure 2</label>
+              <caption>
+                <title>The process of extracting high-frequency information. Using lightweight convolutions and Fourier transforms to simulate the computational process of self-attention mechanisms, and achieving efficient capture of high-frequency features</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/0/img_28P_GgDPy-zI7ZUf.png"/>
+            </fig>
+          
+          <p>Let <inline-formula>
+  <mml:math id="m6c2fi6zot">
+    <mml:mrow>
+      <mml:msub>
+        <mml:mi>x</mml:mi>
+        <mml:mrow>
+          <mml:mi>t</mml:mi>
+          <mml:mi>u</mml:mi>
+          <mml:mi>r</mml:mi>
+          <mml:mi>b</mml:mi>
+        </mml:mrow>
+      </mml:msub>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> denote a turbulence-degraded facial image. First, a 3 <inline-formula>
+  <mml:math id="mlpmgaajvl">
+    <mml:mo>×</mml:mo>
+  </mml:math>
+</inline-formula> 3 convolution is used to extract preliminary facial features, and the result is denoted as <inline-formula>
+  <mml:math id="mvnzntnyip">
+    <mml:mrow>
+      <mml:msub>
+        <mml:mi>f</mml:mi>
+        <mml:mi>S</mml:mi>
+      </mml:msub>
+    </mml:mrow>
+  </mml:math>
+</inline-formula>.</p>
+          
+            <disp-formula>
+              <label>(1)</label>
+              <mml:math id="m7i3enz5ef">
+                <mml:mrow>
+                  <mml:msub>
+                    <mml:mi>f</mml:mi>
+                    <mml:mi>S</mml:mi>
+                  </mml:msub>
+                </mml:mrow>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:mrow>
+                    <mml:mrow>
+                      <mml:msub>
+                        <mml:mi>x</mml:mi>
+                        <mml:mrow>
+                          <mml:mi>t</mml:mi>
+                          <mml:mi>u</mml:mi>
+                          <mml:mi>r</mml:mi>
+                          <mml:mi>b</mml:mi>
+                        </mml:mrow>
+                      </mml:msub>
+                    </mml:mrow>
+                  </mml:mrow>
+                </mml:mrow>
+                <mml:mo>=</mml:mo>
+                <mml:mi>c</mml:mi>
+                <mml:mi>o</mml:mi>
+                <mml:mi>n</mml:mi>
+                <mml:mi>v</mml:mi>
+              </mml:math>
+            </disp-formula>
+          
+          <p>where, <inline-formula>
+  <mml:math id="m5pkjhhtqz">
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mrow>
+      <mml:mo>(</mml:mo>
+      <mml:mo>⋅</mml:mo>
+      <mml:mo>)</mml:mo>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> denotes a convolutional operation. Subsequently, <inline-formula>
+  <mml:math id="mka75go3v1">
+    <mml:mrow>
+      <mml:msub>
+        <mml:mi>f</mml:mi>
+        <mml:mi>S</mml:mi>
+      </mml:msub>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> undergoes $M<inline-formula>
+  <mml:math id="m65a2d5sew">
+    <mml:mi>A</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>C</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>B</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>k</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>{f_M}<inline-formula>
+  <mml:math id="my8pvyg068">
+    <mml:mo>.</mml:mo>
+    <mml:mi>A</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+  </mml:math>
+</inline-formula>{f_M}<inline-formula>
+  <mml:math id="m7qmzhazpx">
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+  </mml:math>
+</inline-formula>{f_S}$ to obtain deep facial features:</p>
+          
+            <disp-formula>
+              <label>(2)</label>
+              <mml:math id="mm6r51465m">
+                <mml:msub>
+                  <mml:mi>f</mml:mi>
+                  <mml:mi>m</mml:mi>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo>=</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo>⋯</mml:mo>
+                <mml:mi>A</mml:mi>
+                <mml:mi>C</mml:mi>
+                <mml:mi>B</mml:mi>
+                <mml:mi>m</mml:mi>
+                <mml:mi>M</mml:mi>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:msub>
+                    <mml:mi>f</mml:mi>
+                    <mml:mrow>
+                      <mml:mi>m</mml:mi>
+                      <mml:mo>−</mml:mo>
+                      <mml:mn>1</mml:mn>
+                    </mml:mrow>
+                  </mml:msub>
+                </mml:mrow>
+                <mml:mn>1</mml:mn>
+                <mml:mn>2</mml:mn>
+              </mml:math>
+            </disp-formula>
+          
+          
+            <disp-formula>
+              <label>(3)</label>
+              <mml:math id="m1odmdry1b">
+                <mml:mrow>
+                  <mml:msub>
+                    <mml:mi>f</mml:mi>
+                    <mml:mi>D</mml:mi>
+                  </mml:msub>
+                </mml:mrow>
+                <mml:mrow>
+                  <mml:msub>
+                    <mml:mi>f</mml:mi>
+                    <mml:mi>S</mml:mi>
+                  </mml:msub>
+                </mml:mrow>
+                <mml:mrow>
+                  <mml:msub>
+                    <mml:mi>f</mml:mi>
+                    <mml:mi>M</mml:mi>
+                  </mml:msub>
+                </mml:mrow>
+                <mml:mo>=</mml:mo>
+                <mml:mo>+</mml:mo>
+              </mml:math>
+            </disp-formula>
+          
+          <p>in the above formula, <inline-formula>
+  <mml:math id="m8b89izv1k">
+    <mml:mrow>
+      <mml:msub>
+        <mml:mi>f</mml:mi>
+        <mml:mi>m</mml:mi>
+      </mml:msub>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> denotes the result of $m<inline-formula>
+  <mml:math id="m9cds6u1kc">
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mo>,</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>{f_0} = {f_S}<inline-formula>
+  <mml:math id="msa3bpn8sy">
+    <mml:mo>.</mml:mo>
+  </mml:math>
+</inline-formula>ACB\left( \cdot \right)<inline-formula>
+  <mml:math id="m86hqlujqp">
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>A</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>C</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>B</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>k</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>k</mml:mi>
+    <mml:mi>W</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>k</mml:mi>
+    <mml:mo>,</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>{f_{m - 1}}<inline-formula>
+  <mml:math id="m5wuupip7f">
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mn>1</mml:mn>
+  </mml:math>
+</inline-formula>\times<inline-formula>
+  <mml:math id="m5fb14lhby">
+    <mml:mn>1</mml:mn>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>A</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>F</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>F</mml:mi>
+    <mml:mi>F</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>z</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mo>−</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+  </mml:math>
+</inline-formula>{f_{m - 1}}<inline-formula>
+  <mml:math id="metrdoxmnf">
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>A</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>k</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>P</mml:mi>
+    <mml:mi>S</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mo>,</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mn>3</mml:mn>
+  </mml:math>
+</inline-formula>\times<inline-formula>
+  <mml:math id="mbcc4whjvv">
+    <mml:mn>3</mml:mn>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+  </mml:math>
+</inline-formula>{f_D}<inline-formula>
+  <mml:math id="mhzm9wb7af">
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>z</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mo>−</mml:mo>
+  </mml:math>
+</inline-formula>{x_{turb}}<inline-formula>
+  <mml:math id="m8vy2hjv3q">
+    <mml:mo>,</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mi>y</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>q</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+  </mml:math>
+</inline-formula>{x_{HFI}}$. The results of high-frequency information extraction are presented in <xref ref-type="fig" rid="fig_3">Figure 3</xref>.</p>
+          
+            <disp-formula>
+              <label>(4)</label>
+              <mml:math id="m4yxv1ga0k">
+                <mml:mrow>
+                  <mml:msub>
+                    <mml:mi>x</mml:mi>
+                    <mml:mrow>
+                      <mml:mi>H</mml:mi>
+                      <mml:mi>F</mml:mi>
+                      <mml:mi>I</mml:mi>
+                    </mml:mrow>
+                  </mml:msub>
+                </mml:mrow>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:mrow>
+                    <mml:mi>P</mml:mi>
+                    <mml:mi>S</mml:mi>
+                    <mml:mrow>
+                      <mml:mo>(</mml:mo>
+                      <mml:mo>)</mml:mo>
+                      <mml:mrow>
+                        <mml:mrow>
+                          <mml:msub>
+                            <mml:mi>f</mml:mi>
+                            <mml:mi>D</mml:mi>
+                          </mml:msub>
+                        </mml:mrow>
+                      </mml:mrow>
+                    </mml:mrow>
+                  </mml:mrow>
+                </mml:mrow>
+                <mml:mo>=</mml:mo>
+                <mml:mi>c</mml:mi>
+                <mml:mi>o</mml:mi>
+                <mml:mi>n</mml:mi>
+                <mml:mi>v</mml:mi>
+              </mml:math>
+            </disp-formula>
+          
+          
+            <fig id="fig_3">
+              <label>Figure 3</label>
+              <caption>
+                <title>Presentation of high-frequency information results. The super-resolution network [<xref ref-type="bibr" rid="ref_9">9</xref>] is retained during model inference, with the residual connections removed and the backbone network utilized for feature extraction to obtain high-frequency information</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/0/img_Swd3TGidaHmy-a0B.png"/>
+            </fig>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>2.2. Conditional diffusion model</title>
+          
+          <p>Compared with other generative models such as GANs and VAEs, diffusion models exhibit a more stable training process and higher fidelity. From a distribution perspective, our diffusion model maps the unknown distribution of clear facial images in the training set to a standard normal distribution through a noise addition process during training. Subsequently, it leverages a U-Net to perform a gradual denoising process starting from randomly generated Gaussian noise, predicts the distribution of clear facial images from the standard normal distribution, and obtains restored facial images by sampling from this distribution. In this process, the turbulence-degraded facial image to be restored and the corresponding high-frequency information serve as conditional inputs to guide the distribution in generating more realistic facial results.</p><p>The clear facial images in the training set are denoted as <inline-formula>
+  <mml:math id="mtpj8xinii">
+    <mml:mrow>
+      <mml:msub>
+        <mml:mi>x</mml:mi>
+        <mml:mn>0</mml:mn>
+      </mml:msub>
+    </mml:mrow>
+  </mml:math>
+</inline-formula>, and the noise addition process for <inline-formula>
+  <mml:math id="me076x28ab">
+    <mml:mrow>
+      <mml:msub>
+        <mml:mi>x</mml:mi>
+        <mml:mn>0</mml:mn>
+      </mml:msub>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> is expressed by the following formula:</p>
+          
+            <disp-formula>
+              <label>(5)</label>
+              <mml:math id="mkjotnhgp1">
+                <mml:mrow>
+                  <mml:msub>
+                    <mml:mi>x</mml:mi>
+                    <mml:mi>t</mml:mi>
+                  </mml:msub>
+                </mml:mrow>
+                <mml:mrow>
+                  <mml:msub>
+                    <mml:mrow>
+                      <mml:mover>
+                        <mml:mi>α</mml:mi>
+                        <mml:mo>¯</mml:mo>
+                      </mml:mover>
+                    </mml:mrow>
+                    <mml:mi>t</mml:mi>
+                  </mml:msub>
+                </mml:mrow>
+                <mml:mrow>
+                  <mml:msub>
+                    <mml:mi>x</mml:mi>
+                    <mml:mn>0</mml:mn>
+                  </mml:msub>
+                </mml:mrow>
+                <mml:mrow>
+                  <mml:msub>
+                    <mml:mrow>
+                      <mml:mover>
+                        <mml:mi>β</mml:mi>
+                        <mml:mo>¯</mml:mo>
+                      </mml:mover>
+                    </mml:mrow>
+                    <mml:mi>t</mml:mi>
+                  </mml:msub>
+                </mml:mrow>
+                <mml:mrow>
+                  <mml:msub>
+                    <mml:mi>ε</mml:mi>
+                    <mml:mi>t</mml:mi>
+                  </mml:msub>
+                </mml:mrow>
+                <mml:mrow>
+                  <mml:mrow/>
+                </mml:mrow>
+                <mml:mo>=</mml:mo>
+                <mml:mo>+</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo>=</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo>⋯</mml:mo>
+                <mml:mi>t</mml:mi>
+                <mml:mi>T</mml:mi>
+                <mml:mn>1</mml:mn>
+                <mml:mn>2</mml:mn>
+              </mml:math>
+            </disp-formula>
+          
+          <p>where, <inline-formula>
+  <mml:math id="m3sse4pwzb">
+    <mml:mrow>
+      <mml:msub>
+        <mml:mi>x</mml:mi>
+        <mml:mi>t</mml:mi>
+      </mml:msub>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> denotes the result after $t<inline-formula>
+  <mml:math id="mvq752csm5">
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>t<inline-formula>
+  <mml:math id="m2amdr547u">
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mo>.</mml:mo>
+  </mml:math>
+</inline-formula>{\varepsilon _t}<inline-formula>
+  <mml:math id="myu55tldah">
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>G</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>{\bar \alpha _t}<inline-formula>
+  <mml:math id="mo2gvlobdx">
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+  </mml:math>
+</inline-formula>{\bar \beta _t}<inline-formula>
+  <mml:math id="mj49w8q2vb">
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>S</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mo>−</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>{\bar \alpha _t}<inline-formula>
+  <mml:math id="m9tt1g92i5">
+    <mml:mi>g</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mn>0</mml:mn>
+  </mml:math>
+</inline-formula>{\bar \beta _t}$ behaves conversely—it starts near 0 and gradually approaches 1. The purpose of this setting is to control the proportion of the clear image and Gaussian noise in the final noised result, enabling the distribution of the noised result to gradually skew toward the Gaussian distribution. The noise addition process is illustrated in <xref ref-type="fig" rid="fig_4">Figure 4</xref>.</p>
+          
+            <fig id="fig_4">
+              <label>Figure 4</label>
+              <caption>
+                <title>Noise addition process of diffusion models. Adding Gaussian noise to clean facial images to realize the transformation of the true facial distribution toward the Gaussian distribution</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/0/img_W6plhAsJuhcflLN9.png"/>
+            </fig>
+          
+          <p> The denoising process proceeds in the reverse direction, starting from the final noised result <inline-formula>
+  <mml:math id="mf6e2eoc02">
+    <mml:mrow>
+      <mml:msub>
+        <mml:mi>x</mml:mi>
+        <mml:mi>T</mml:mi>
+      </mml:msub>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> and progressing step-by-step toward <inline-formula>
+  <mml:math id="mzinn7ooq6">
+    <mml:mi>T</mml:mi>
+    <mml:mo accent="false">→</mml:mo>
+    <mml:mn>0</mml:mn>
+  </mml:math>
+</inline-formula>. Assuming that <inline-formula>
+  <mml:math id="m7sbj9zjto">
+    <mml:mrow>
+      <mml:msub>
+        <mml:mi>x</mml:mi>
+        <mml:mi>t</mml:mi>
+      </mml:msub>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> is obtained after <inline-formula>
+  <mml:math id="mft8wfj9jl">
+    <mml:mi>T</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mo>−</mml:mo>
+  </mml:math>
+</inline-formula> denoising steps from <inline-formula>
+  <mml:math id="m0ul4cyztt">
+    <mml:mrow>
+      <mml:msub>
+        <mml:mi>x</mml:mi>
+        <mml:mi>T</mml:mi>
+      </mml:msub>
+    </mml:mrow>
+  </mml:math>
+</inline-formula>, the process of denoising <inline-formula>
+  <mml:math id="mv6uuugti3">
+    <mml:mrow>
+      <mml:msub>
+        <mml:mi>x</mml:mi>
+        <mml:mi>t</mml:mi>
+      </mml:msub>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> to get <inline-formula>
+  <mml:math id="mtfwqphou8">
+    <mml:mrow>
+      <mml:msub>
+        <mml:mi>x</mml:mi>
+        <mml:mrow>
+          <mml:mi>t</mml:mi>
+          <mml:mo>−</mml:mo>
+          <mml:mn>1</mml:mn>
+        </mml:mrow>
+      </mml:msub>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> can be described by the following formula:</p>
+          
+            <disp-formula>
+              <label>(6)</label>
+              <mml:math id="mwmk79nas1">
+                <mml:mrow>
+                  <mml:msub>
+                    <mml:mi>x</mml:mi>
+                    <mml:mrow>
+                      <mml:mi>t</mml:mi>
+                      <mml:mo>−</mml:mo>
+                      <mml:mn>1</mml:mn>
+                    </mml:mrow>
+                  </mml:msub>
+                </mml:mrow>
+                <mml:mrow>
+                  <mml:msub>
+                    <mml:mi>μ</mml:mi>
+                    <mml:mi>t</mml:mi>
+                  </mml:msub>
+                </mml:mrow>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:mrow>
+                    <mml:mrow>
+                      <mml:msub>
+                        <mml:mi>x</mml:mi>
+                        <mml:mi>t</mml:mi>
+                      </mml:msub>
+                    </mml:mrow>
+                  </mml:mrow>
+                </mml:mrow>
+                <mml:mo>=</mml:mo>
+                <mml:mo>+</mml:mo>
+                <mml:mo>∗</mml:mo>
+                <mml:msubsup>
+                  <mml:mi>σ</mml:mi>
+                  <mml:mi>t</mml:mi>
+                  <mml:mn>2</mml:mn>
+                </mml:msubsup>
+                <mml:mi>ε</mml:mi>
+              </mml:math>
+            </disp-formula>
+          
+          <p> where, <inline-formula>
+  <mml:math id="mpc34xmp8u">
+    <mml:mi>ε</mml:mi>
+  </mml:math>
+</inline-formula> is a randomly sampled Gaussian noise, <inline-formula>
+  <mml:math id="me5brcam95">
+    <mml:mrow>
+      <mml:msub>
+        <mml:mi>μ</mml:mi>
+        <mml:mi>t</mml:mi>
+      </mml:msub>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> and <inline-formula>
+  <mml:math id="m5rrrwf8i1">
+    <mml:msubsup>
+      <mml:mi>σ</mml:mi>
+      <mml:mi>t</mml:mi>
+      <mml:mn>2</mml:mn>
+    </mml:msubsup>
+  </mml:math>
+</inline-formula> denote the mean and variance of <inline-formula>
+  <mml:math id="msnym5hi04">
+    <mml:mrow>
+      <mml:msub>
+        <mml:mi>x</mml:mi>
+        <mml:mrow>
+          <mml:mi>t</mml:mi>
+          <mml:mo>−</mml:mo>
+          <mml:mn>1</mml:mn>
+        </mml:mrow>
+      </mml:msub>
+    </mml:mrow>
+  </mml:math>
+</inline-formula>, respectively. Their calculation formulas are as follows:</p>
+          
+            <disp-formula>
+              <label>(7)</label>
+              <mml:math id="mw6ksj3gdy">
+                <mml:mrow>
+                  <mml:msub>
+                    <mml:mi>μ</mml:mi>
+                    <mml:mi>t</mml:mi>
+                  </mml:msub>
+                </mml:mrow>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:mrow>
+                    <mml:mrow>
+                      <mml:msub>
+                        <mml:mi>x</mml:mi>
+                        <mml:mi>t</mml:mi>
+                      </mml:msub>
+                    </mml:mrow>
+                  </mml:mrow>
+                </mml:mrow>
+                <mml:mrow>
+                  <mml:msub>
+                    <mml:mi>x</mml:mi>
+                    <mml:mi>t</mml:mi>
+                  </mml:msub>
+                </mml:mrow>
+                <mml:mo>=</mml:mo>
+                <mml:mo>(</mml:mo>
+                <mml:mo>−</mml:mo>
+                <mml:mo>×</mml:mo>
+                <mml:mo>)</mml:mo>
+                <mml:mfrac>
+                  <mml:mn>1</mml:mn>
+                  <mml:mrow>
+                    <mml:mrow>
+                      <mml:msub>
+                        <mml:mi>α</mml:mi>
+                        <mml:mi>t</mml:mi>
+                      </mml:msub>
+                    </mml:mrow>
+                  </mml:mrow>
+                </mml:mfrac>
+                <mml:mfrac>
+                  <mml:mrow>
+                    <mml:msubsup>
+                      <mml:mi>β</mml:mi>
+                      <mml:mi>t</mml:mi>
+                      <mml:mn>2</mml:mn>
+                    </mml:msubsup>
+                  </mml:mrow>
+                  <mml:mrow>
+                    <mml:mrow>
+                      <mml:msub>
+                        <mml:mrow>
+                          <mml:mrow>
+                            <mml:mover>
+                              <mml:mi>β</mml:mi>
+                              <mml:mo>¯</mml:mo>
+                            </mml:mover>
+                          </mml:mrow>
+                        </mml:mrow>
+                        <mml:mi>t</mml:mi>
+                      </mml:msub>
+                    </mml:mrow>
+                  </mml:mrow>
+                </mml:mfrac>
+                <mml:msup>
+                  <mml:mi>ε</mml:mi>
+                  <mml:mo>′</mml:mo>
+                </mml:msup>
+              </mml:math>
+            </disp-formula>
+          
+          
+            <disp-formula>
+              <label>(8)</label>
+              <mml:math id="mz18a55f1w">
+                <mml:mfrac>
+                  <mml:mn>1</mml:mn>
+                  <mml:mrow>
+                    <mml:msubsup>
+                      <mml:mi>σ</mml:mi>
+                      <mml:mi>t</mml:mi>
+                      <mml:mn>2</mml:mn>
+                    </mml:msubsup>
+                  </mml:mrow>
+                </mml:mfrac>
+                <mml:mfrac>
+                  <mml:mrow>
+                    <mml:msubsup>
+                      <mml:mi>α</mml:mi>
+                      <mml:mi>t</mml:mi>
+                      <mml:mn>2</mml:mn>
+                    </mml:msubsup>
+                  </mml:mrow>
+                  <mml:mrow>
+                    <mml:msubsup>
+                      <mml:mi>β</mml:mi>
+                      <mml:mi>t</mml:mi>
+                      <mml:mn>2</mml:mn>
+                    </mml:msubsup>
+                  </mml:mrow>
+                </mml:mfrac>
+                <mml:mfrac>
+                  <mml:mn>1</mml:mn>
+                  <mml:mrow>
+                    <mml:mn>1</mml:mn>
+                    <mml:mo>−</mml:mo>
+                    <mml:msubsup>
+                      <mml:mrow>
+                        <mml:mover>
+                          <mml:mi>α</mml:mi>
+                          <mml:mo>¯</mml:mo>
+                        </mml:mover>
+                      </mml:mrow>
+                      <mml:mrow>
+                        <mml:mi>t</mml:mi>
+                        <mml:mo>−</mml:mo>
+                        <mml:mn>1</mml:mn>
+                      </mml:mrow>
+                      <mml:mn>2</mml:mn>
+                    </mml:msubsup>
+                  </mml:mrow>
+                </mml:mfrac>
+                <mml:mo>=</mml:mo>
+                <mml:mo>+</mml:mo>
+              </mml:math>
+            </disp-formula>
+          
+          <p> where, <inline-formula>
+  <mml:math id="mlrt40r64c">
+    <mml:mrow>
+      <mml:msub>
+        <mml:mi>α</mml:mi>
+        <mml:mi>t</mml:mi>
+      </mml:msub>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> and <inline-formula>
+  <mml:math id="m4x6i1grrj">
+    <mml:mrow>
+      <mml:msub>
+        <mml:mi>β</mml:mi>
+        <mml:mi>t</mml:mi>
+      </mml:msub>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> are one-dimensional constants, and their relationships with <inline-formula>
+  <mml:math id="mjdcvl3u0d">
+    <mml:mrow>
+      <mml:msub>
+        <mml:mrow>
+          <mml:mover>
+            <mml:mi>α</mml:mi>
+            <mml:mo>¯</mml:mo>
+          </mml:mover>
+        </mml:mrow>
+        <mml:mi>t</mml:mi>
+      </mml:msub>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> and <inline-formula>
+  <mml:math id="mma0p5htco">
+    <mml:mrow>
+      <mml:msub>
+        <mml:mrow>
+          <mml:mover>
+            <mml:mi>β</mml:mi>
+            <mml:mo>¯</mml:mo>
+          </mml:mover>
+        </mml:mrow>
+        <mml:mi>t</mml:mi>
+      </mml:msub>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> are given by <inline-formula>
+  <mml:math id="mt0yi5jip6">
+    <mml:mrow>
+      <mml:msub>
+        <mml:mrow>
+          <mml:mover>
+            <mml:mi>α</mml:mi>
+            <mml:mo>¯</mml:mo>
+          </mml:mover>
+        </mml:mrow>
+        <mml:mi>t</mml:mi>
+      </mml:msub>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:msub>
+        <mml:mi>α</mml:mi>
+        <mml:mi>t</mml:mi>
+      </mml:msub>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:msub>
+        <mml:mi>α</mml:mi>
+        <mml:mrow>
+          <mml:mi>t</mml:mi>
+          <mml:mo>−</mml:mo>
+          <mml:mn>1</mml:mn>
+        </mml:mrow>
+      </mml:msub>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:msub>
+        <mml:mi>α</mml:mi>
+        <mml:mn>1</mml:mn>
+      </mml:msub>
+    </mml:mrow>
+    <mml:mo>=</mml:mo>
+    <mml:mo>⋅</mml:mo>
+    <mml:mo>⋅</mml:mo>
+    <mml:mo>⋅</mml:mo>
+  </mml:math>
+</inline-formula> and <inline-formula>
+  <mml:math id="m2gxb1a9p1">
+    <mml:mrow>
+      <mml:msub>
+        <mml:mrow>
+          <mml:mover>
+            <mml:mi>β</mml:mi>
+            <mml:mo>¯</mml:mo>
+          </mml:mover>
+        </mml:mrow>
+        <mml:mi>t</mml:mi>
+      </mml:msub>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:msub>
+        <mml:mi>β</mml:mi>
+        <mml:mi>t</mml:mi>
+      </mml:msub>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:msub>
+        <mml:mi>β</mml:mi>
+        <mml:mrow>
+          <mml:mi>t</mml:mi>
+          <mml:mo>−</mml:mo>
+          <mml:mn>1</mml:mn>
+        </mml:mrow>
+      </mml:msub>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:msub>
+        <mml:mi>β</mml:mi>
+        <mml:mn>1</mml:mn>
+      </mml:msub>
+    </mml:mrow>
+    <mml:mo>=</mml:mo>
+    <mml:mo>⋅</mml:mo>
+    <mml:mo>⋅</mml:mo>
+    <mml:mo>⋅</mml:mo>
+  </mml:math>
+</inline-formula>, respectively. <inline-formula>
+  <mml:math id="mf820ndrw8">
+    <mml:msup>
+      <mml:mi>ε</mml:mi>
+      <mml:mo>′</mml:mo>
+    </mml:msup>
+  </mml:math>
+</inline-formula> denotes the unknown Gaussian noise to be removed in this denoising step, which is predicted by feeding <inline-formula>
+  <mml:math id="mruefl1nzq">
+    <mml:mrow>
+      <mml:msub>
+        <mml:mi>x</mml:mi>
+        <mml:mi>t</mml:mi>
+      </mml:msub>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> and the degraded facial image <inline-formula>
+  <mml:math id="mg1iqchj5h">
+    <mml:mrow>
+      <mml:msub>
+        <mml:mi>x</mml:mi>
+        <mml:mrow>
+          <mml:mi>t</mml:mi>
+          <mml:mi>u</mml:mi>
+          <mml:mi>r</mml:mi>
+          <mml:mi>b</mml:mi>
+        </mml:mrow>
+      </mml:msub>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> into the U-Net as inputs. Additionally, to guide the denoising process in generating restored results that are more consistent with human visual perception and closer to the true facial distribution, we extract the corresponding high-frequency information <inline-formula>
+  <mml:math id="m6sln1kntr">
+    <mml:mrow>
+      <mml:msub>
+        <mml:mi>x</mml:mi>
+        <mml:mrow>
+          <mml:mi>H</mml:mi>
+          <mml:mi>F</mml:mi>
+          <mml:mi>I</mml:mi>
+        </mml:mrow>
+      </mml:msub>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> from the degraded image <inline-formula>
+  <mml:math id="mz3p6qd7kf">
+    <mml:mrow>
+      <mml:msub>
+        <mml:mi>x</mml:mi>
+        <mml:mrow>
+          <mml:mi>t</mml:mi>
+          <mml:mi>u</mml:mi>
+          <mml:mi>r</mml:mi>
+          <mml:mi>b</mml:mi>
+        </mml:mrow>
+      </mml:msub>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> as an additional conditional input, assisting the diffusion model in generating more realistic facial textures and details.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>2.3. U-net structure</title>
+          
+          <p>In our U-Net, the U-Net structure proposed by Nair et al. [<xref ref-type="bibr" rid="ref_20">20</xref>] is lightweighted to reduce inference costs. We retain the main residual block-based feature extraction structure while removing the self-attention mechanism. The core of self-attention lies in calculating global similarity, and its time complexity is proportional to the square of the spatial dimension (<inline-formula>
+  <mml:math id="mz48k7ke6f">
+    <mml:mi>O</mml:mi>
+    <mml:mrow>
+      <mml:mo>(</mml:mo>
+      <mml:mo>)</mml:mo>
+      <mml:mrow>
+        <mml:mrow>
+          <mml:msup>
+            <mml:mi>N</mml:mi>
+            <mml:mrow>
+              <mml:mrow>
+                <mml:mn>2</mml:mn>
+              </mml:mrow>
+            </mml:mrow>
+          </mml:msup>
+        </mml:mrow>
+      </mml:mrow>
+    </mml:mrow>
+  </mml:math>
+</inline-formula>), where $N<inline-formula>
+  <mml:math id="mh5geg40c9">
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>O</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>H</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>U</mml:mi>
+    <mml:mi>N</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>A</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>U</mml:mi>
+    <mml:mi>N</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>F</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>W</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mo>)</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mn>5.</mml:mn>
+  </mml:math>
+</inline-formula>X<inline-formula>
+  <mml:math id="myeb7kdskf">
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>U</mml:mi>
+    <mml:mi>N</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mo>−</mml:mo>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>\left\{ {{x_{turb}},{{\bar x}_t},{x_{HFI}}} \right\}<inline-formula>
+  <mml:math id="mu2eeuek09">
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>I</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>U</mml:mi>
+    <mml:mi>N</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mo>.</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mn>3</mml:mn>
+  </mml:math>
+</inline-formula>\times<inline-formula>
+  <mml:math id="mxc0ngkex3">
+    <mml:mn>3</mml:mn>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+  </mml:math>
+</inline-formula>f$.</p>
+          
+            <disp-formula>
+              <label>(9)</label>
+              <mml:math id="mhl7unb1fz">
+                <mml:mi>f</mml:mi>
+                <mml:mi>c</mml:mi>
+                <mml:mi>o</mml:mi>
+                <mml:mi>n</mml:mi>
+                <mml:mi>v</mml:mi>
+                <mml:mo>=</mml:mo>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:mi>X</mml:mi>
+                </mml:mrow>
+              </mml:math>
+            </disp-formula>
+          
+          
+            <fig id="fig_5">
+              <label>Figure 5</label>
+              <caption>
+                <title>U-net network structure: (a) The overall architecture is mainly composed of residual modules, where the yellow part represents the encoder and the purple part represents the decoder; (b) Structure of the residual module; (c) Structure of the output module</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/0/img_DycgRHX6ux_xh26i.png"/>
+            </fig>
+          
+          <p> In the encoder path, a 6-layer feature extraction structure is designed, where each layer consists of two consecutive residual blocks. A downsampling operation is added between layers to reduce the spatial size of the feature maps and increase the depth. Eventually, the shallow features <inline-formula>
+  <mml:math id="m1isj7nu6d">
+    <mml:mrow>
+      <mml:msub>
+        <mml:mi>f</mml:mi>
+        <mml:mrow>
+          <mml:mi>E</mml:mi>
+          <mml:mn>0</mml:mn>
+        </mml:mrow>
+      </mml:msub>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:msub>
+        <mml:mi>f</mml:mi>
+        <mml:mrow>
+          <mml:mi>E</mml:mi>
+          <mml:mn>5</mml:mn>
+        </mml:mrow>
+      </mml:msub>
+    </mml:mrow>
+    <mml:mo>∼</mml:mo>
+  </mml:math>
+</inline-formula> of the encoder are obtained.</p>
+          
+            <disp-formula>
+              <label>(10)</label>
+              <mml:math id="mqh905gpxq">
+                <mml:mrow>
+                  <mml:msub>
+                    <mml:mi>f</mml:mi>
+                    <mml:mrow>
+                      <mml:mi>E</mml:mi>
+                      <mml:mn>0</mml:mn>
+                    </mml:mrow>
+                  </mml:msub>
+                </mml:mrow>
+                <mml:mrow>
+                  <mml:msub>
+                    <mml:mi>k</mml:mi>
+                    <mml:mn>2</mml:mn>
+                  </mml:msub>
+                </mml:mrow>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:mi>f</mml:mi>
+                </mml:mrow>
+                <mml:mrow>
+                  <mml:mrow/>
+                </mml:mrow>
+                <mml:mrow>
+                  <mml:msub>
+                    <mml:mi>f</mml:mi>
+                    <mml:mrow>
+                      <mml:mi>E</mml:mi>
+                      <mml:mi>i</mml:mi>
+                    </mml:mrow>
+                  </mml:msub>
+                </mml:mrow>
+                <mml:mrow>
+                  <mml:msub>
+                    <mml:mi>k</mml:mi>
+                    <mml:mn>2</mml:mn>
+                  </mml:msub>
+                </mml:mrow>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:mrow>
+                    <mml:mi>d</mml:mi>
+                    <mml:mi>o</mml:mi>
+                    <mml:mi>w</mml:mi>
+                    <mml:mi>n</mml:mi>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:mrow>
+                      <mml:msub>
+                        <mml:mi>f</mml:mi>
+                        <mml:mrow>
+                          <mml:mi>E</mml:mi>
+                          <mml:mi>i</mml:mi>
+                          <mml:mo>−</mml:mo>
+                          <mml:mn>1</mml:mn>
+                        </mml:mrow>
+                      </mml:msub>
+                    </mml:mrow>
+                  </mml:mrow>
+                </mml:mrow>
+                <mml:mrow>
+                  <mml:mrow/>
+                </mml:mrow>
+                <mml:mo>=</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo>=</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo>=</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mi>R</mml:mi>
+                <mml:mi>e</mml:mi>
+                <mml:mi>s</mml:mi>
+                <mml:mi>b</mml:mi>
+                <mml:mi>l</mml:mi>
+                <mml:mi>o</mml:mi>
+                <mml:mi>c</mml:mi>
+                <mml:mi>R</mml:mi>
+                <mml:mi>e</mml:mi>
+                <mml:mi>s</mml:mi>
+                <mml:mi>b</mml:mi>
+                <mml:mi>l</mml:mi>
+                <mml:mi>o</mml:mi>
+                <mml:mi>c</mml:mi>
+                <mml:mi>i</mml:mi>
+                <mml:mn>1</mml:mn>
+                <mml:mn>2</mml:mn>
+                <mml:mn>3</mml:mn>
+                <mml:mn>4</mml:mn>
+                <mml:mn>5</mml:mn>
+              </mml:math>
+            </disp-formula>
+          
+          <p> where, <inline-formula>
+  <mml:math id="m6zudtzq3d">
+    <mml:mi>d</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mrow>
+      <mml:mo>(</mml:mo>
+      <mml:mo>⋅</mml:mo>
+      <mml:mo>)</mml:mo>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> denotes the downsampling operation, and the subscript of <inline-formula>
+  <mml:math id="m9keckp5zs">
+    <mml:mi>R</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mrow>
+      <mml:msub>
+        <mml:mi>k</mml:mi>
+        <mml:mn>2</mml:mn>
+      </mml:msub>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>(</mml:mo>
+      <mml:mo>⋅</mml:mo>
+      <mml:mo>)</mml:mo>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> indicates the number of residual blocks. Two consecutive residual blocks are also used in the bottleneck layer:</p>
+          
+            <disp-formula>
+              <label>(11)</label>
+              <mml:math id="mvjzx1c7hc">
+                <mml:mrow>
+                  <mml:msub>
+                    <mml:mi>f</mml:mi>
+                    <mml:mi>B</mml:mi>
+                  </mml:msub>
+                </mml:mrow>
+                <mml:mrow>
+                  <mml:msub>
+                    <mml:mi>k</mml:mi>
+                    <mml:mn>2</mml:mn>
+                  </mml:msub>
+                </mml:mrow>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:mrow>
+                    <mml:mrow>
+                      <mml:msub>
+                        <mml:mi>f</mml:mi>
+                        <mml:mrow>
+                          <mml:mi>E</mml:mi>
+                          <mml:mn>5</mml:mn>
+                        </mml:mrow>
+                      </mml:msub>
+                    </mml:mrow>
+                  </mml:mrow>
+                </mml:mrow>
+                <mml:mo>=</mml:mo>
+                <mml:mi>R</mml:mi>
+                <mml:mi>e</mml:mi>
+                <mml:mi>s</mml:mi>
+                <mml:mi>b</mml:mi>
+                <mml:mi>l</mml:mi>
+                <mml:mi>o</mml:mi>
+                <mml:mi>c</mml:mi>
+              </mml:math>
+            </disp-formula>
+          
+          <p> In the decoder path, a 6-layer feature extraction structure is used symmetrically with the encoder, and 3 residual modules are arranged in each layer. An upsampling operation is employed between layers, and before feature extraction in each layer, a skip connection is performed with the corresponding encoder features. The formula is expressed as follows:</p>
+          
+            <disp-formula>
+              <label>(12)</label>
+              <mml:math id="ms6mozy0m8">
+                <mml:mrow>
+                  <mml:msub>
+                    <mml:mi>f</mml:mi>
+                    <mml:mrow>
+                      <mml:mi>D</mml:mi>
+                      <mml:mn>0</mml:mn>
+                    </mml:mrow>
+                  </mml:msub>
+                </mml:mrow>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:mrow>
+                    <mml:mi>R</mml:mi>
+                    <mml:mi>e</mml:mi>
+                    <mml:mi>s</mml:mi>
+                    <mml:mi>b</mml:mi>
+                    <mml:mi>l</mml:mi>
+                    <mml:mi>o</mml:mi>
+                    <mml:mi>c</mml:mi>
+                    <mml:mrow>
+                      <mml:msub>
+                        <mml:mi>k</mml:mi>
+                        <mml:mn>3</mml:mn>
+                      </mml:msub>
+                    </mml:mrow>
+                    <mml:mrow>
+                      <mml:mo>(</mml:mo>
+                      <mml:mo>)</mml:mo>
+                      <mml:mrow>
+                        <mml:mi>S</mml:mi>
+                        <mml:mi>C</mml:mi>
+                        <mml:mrow>
+                          <mml:mo>(</mml:mo>
+                          <mml:mo>)</mml:mo>
+                          <mml:mrow>
+                            <mml:mrow>
+                              <mml:msub>
+                                <mml:mi>f</mml:mi>
+                                <mml:mi>B</mml:mi>
+                              </mml:msub>
+                            </mml:mrow>
+                            <mml:mrow>
+                              <mml:msub>
+                                <mml:mi>f</mml:mi>
+                                <mml:mrow>
+                                  <mml:mi>E</mml:mi>
+                                  <mml:mn>5</mml:mn>
+                                </mml:mrow>
+                              </mml:msub>
+                            </mml:mrow>
+                            <mml:mo>,</mml:mo>
+                          </mml:mrow>
+                        </mml:mrow>
+                      </mml:mrow>
+                    </mml:mrow>
+                  </mml:mrow>
+                </mml:mrow>
+                <mml:mo>=</mml:mo>
+                <mml:mi>u</mml:mi>
+                <mml:mi>p</mml:mi>
+              </mml:math>
+            </disp-formula>
+          
+          
+            <disp-formula>
+              <label>(13)</label>
+              <mml:math id="m76j84lkaf">
+                <mml:mrow>
+                  <mml:msub>
+                    <mml:mi>f</mml:mi>
+                    <mml:mrow>
+                      <mml:mi>D</mml:mi>
+                      <mml:mi>i</mml:mi>
+                    </mml:mrow>
+                  </mml:msub>
+                </mml:mrow>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:mrow>
+                    <mml:mi>R</mml:mi>
+                    <mml:mi>e</mml:mi>
+                    <mml:mi>s</mml:mi>
+                    <mml:mi>b</mml:mi>
+                    <mml:mi>l</mml:mi>
+                    <mml:mi>o</mml:mi>
+                    <mml:mi>c</mml:mi>
+                    <mml:mrow>
+                      <mml:msub>
+                        <mml:mi>k</mml:mi>
+                        <mml:mn>3</mml:mn>
+                      </mml:msub>
+                    </mml:mrow>
+                    <mml:mrow>
+                      <mml:mo>(</mml:mo>
+                      <mml:mo>)</mml:mo>
+                      <mml:mrow>
+                        <mml:mi>S</mml:mi>
+                        <mml:mi>C</mml:mi>
+                        <mml:mrow>
+                          <mml:mo>(</mml:mo>
+                          <mml:mo>)</mml:mo>
+                          <mml:mrow>
+                            <mml:mrow>
+                              <mml:msub>
+                                <mml:mi>f</mml:mi>
+                                <mml:mrow>
+                                  <mml:mi>D</mml:mi>
+                                  <mml:mi>i</mml:mi>
+                                  <mml:mo>−</mml:mo>
+                                  <mml:mn>1</mml:mn>
+                                </mml:mrow>
+                              </mml:msub>
+                            </mml:mrow>
+                            <mml:mrow>
+                              <mml:msub>
+                                <mml:mi>f</mml:mi>
+                                <mml:mrow>
+                                  <mml:mi>E</mml:mi>
+                                  <mml:mi>i</mml:mi>
+                                  <mml:mn>5</mml:mn>
+                                  <mml:mo>−</mml:mo>
+                                </mml:mrow>
+                              </mml:msub>
+                            </mml:mrow>
+                            <mml:mo>,</mml:mo>
+                          </mml:mrow>
+                        </mml:mrow>
+                      </mml:mrow>
+                    </mml:mrow>
+                  </mml:mrow>
+                </mml:mrow>
+                <mml:mrow>
+                  <mml:mrow/>
+                </mml:mrow>
+                <mml:mo>=</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo>=</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mi>u</mml:mi>
+                <mml:mi>p</mml:mi>
+                <mml:mi>i</mml:mi>
+                <mml:mn>1</mml:mn>
+                <mml:mn>2</mml:mn>
+                <mml:mn>3</mml:mn>
+                <mml:mn>4</mml:mn>
+              </mml:math>
+            </disp-formula>
+          
+          
+            <disp-formula>
+              <label>(14)</label>
+              <mml:math id="m0a98dxnz9">
+                <mml:mrow>
+                  <mml:msub>
+                    <mml:mi>f</mml:mi>
+                    <mml:mrow>
+                      <mml:mi>D</mml:mi>
+                      <mml:mn>5</mml:mn>
+                    </mml:mrow>
+                  </mml:msub>
+                </mml:mrow>
+                <mml:mrow>
+                  <mml:msub>
+                    <mml:mi>k</mml:mi>
+                    <mml:mn>3</mml:mn>
+                  </mml:msub>
+                </mml:mrow>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:mrow>
+                    <mml:mi>S</mml:mi>
+                    <mml:mi>C</mml:mi>
+                    <mml:mrow>
+                      <mml:mo>(</mml:mo>
+                      <mml:mo>)</mml:mo>
+                      <mml:mrow>
+                        <mml:mrow>
+                          <mml:msub>
+                            <mml:mi>f</mml:mi>
+                            <mml:mrow>
+                              <mml:mi>D</mml:mi>
+                              <mml:mn>4</mml:mn>
+                            </mml:mrow>
+                          </mml:msub>
+                        </mml:mrow>
+                        <mml:mrow>
+                          <mml:msub>
+                            <mml:mi>f</mml:mi>
+                            <mml:mrow>
+                              <mml:mi>E</mml:mi>
+                              <mml:mn>0</mml:mn>
+                            </mml:mrow>
+                          </mml:msub>
+                        </mml:mrow>
+                        <mml:mo>,</mml:mo>
+                      </mml:mrow>
+                    </mml:mrow>
+                  </mml:mrow>
+                </mml:mrow>
+                <mml:mo>=</mml:mo>
+                <mml:mi>R</mml:mi>
+                <mml:mi>e</mml:mi>
+                <mml:mi>s</mml:mi>
+                <mml:mi>b</mml:mi>
+                <mml:mi>l</mml:mi>
+                <mml:mi>o</mml:mi>
+                <mml:mi>c</mml:mi>
+              </mml:math>
+            </disp-formula>
+          
+          <p> where, <inline-formula>
+  <mml:math id="mlzdpbhc20">
+    <mml:mi>u</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mrow>
+      <mml:mo>(</mml:mo>
+      <mml:mo>⋅</mml:mo>
+      <mml:mo>)</mml:mo>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> denotes the upsampling operation and <inline-formula>
+  <mml:math id="mvjsu4pwh9">
+    <mml:mi>S</mml:mi>
+    <mml:mi>C</mml:mi>
+    <mml:mrow>
+      <mml:mo>(</mml:mo>
+      <mml:mo>⋅</mml:mo>
+      <mml:mo>)</mml:mo>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> stands for skip connection. At the end of the U-Net, in the output module, normalization and an activation function are performed sequentially, and a 3 <inline-formula>
+  <mml:math id="mhlec21tvf">
+    <mml:mo>×</mml:mo>
+  </mml:math>
+</inline-formula> 3 convolution is used to restore the result to 3 channels:</p>
+          
+            <disp-formula>
+              <label>(15)</label>
+              <mml:math id="mhulla8a43">
+                <mml:msup>
+                  <mml:mi>ε</mml:mi>
+                  <mml:mo>′</mml:mo>
+                </mml:msup>
+                <mml:mo>=</mml:mo>
+                <mml:mi>c</mml:mi>
+                <mml:mi>o</mml:mi>
+                <mml:mi>n</mml:mi>
+                <mml:mi>v</mml:mi>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:mrow>
+                    <mml:mi>S</mml:mi>
+                    <mml:mi>i</mml:mi>
+                    <mml:mi>L</mml:mi>
+                    <mml:mi>U</mml:mi>
+                    <mml:mrow>
+                      <mml:mo>(</mml:mo>
+                      <mml:mo>)</mml:mo>
+                      <mml:mrow>
+                        <mml:mi>G</mml:mi>
+                        <mml:mi>N</mml:mi>
+                        <mml:mrow>
+                          <mml:mo>(</mml:mo>
+                          <mml:mo>)</mml:mo>
+                          <mml:mrow>
+                            <mml:mrow>
+                              <mml:msub>
+                                <mml:mi>f</mml:mi>
+                                <mml:mrow>
+                                  <mml:mi>D</mml:mi>
+                                  <mml:mn>5</mml:mn>
+                                </mml:mrow>
+                              </mml:msub>
+                            </mml:mrow>
+                          </mml:mrow>
+                        </mml:mrow>
+                      </mml:mrow>
+                    </mml:mrow>
+                  </mml:mrow>
+                </mml:mrow>
+              </mml:math>
+            </disp-formula>
+          
+          <p> where, <inline-formula>
+  <mml:math id="mt6xtqxd5a">
+    <mml:mi>G</mml:mi>
+    <mml:mi>N</mml:mi>
+    <mml:mrow>
+      <mml:mo>(</mml:mo>
+      <mml:mo>⋅</mml:mo>
+      <mml:mo>)</mml:mo>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> denotes the group normalization operation, and <inline-formula>
+  <mml:math id="m5l5bxweue">
+    <mml:mi>S</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>L</mml:mi>
+    <mml:mi>U</mml:mi>
+    <mml:mrow>
+      <mml:mo>(</mml:mo>
+      <mml:mo>⋅</mml:mo>
+      <mml:mo>)</mml:mo>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> stands for the Sigmoid Linear Unit activation function.</p>
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>3. Experiments</title>
+      <p>In this section, we will demonstrate the lightweight achievements of the HFDM, enabling the model to complete inference in a shorter time. Subsequently, we will conduct qualitative and quantitative comparisons between our model and other diffusion models as well as super-resolution models to verify the effectiveness in alleviating turbulence degradation. Finally, we will validate the restoration performance of our model under turbulence degradation scenarios of various intensities.</p>
+      
+        <sec>
+          
+            <title>3.1. Data preparation</title>
+          
+        </sec>
+      
+      <p>In this paper, the Flickr-Faces-High-Quality (FFHQ) dataset is used for all model training and experiments, with an image size of 256 × 256 × 3. The P2S method [<xref ref-type="bibr" rid="ref_26">26</xref>] is employed to generate turbulence-degraded facial images. In this simulation method, the ratio of the camera aperture $D<inline-formula>
+  <mml:math id="mz10jh3igm">
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+  </mml:math>
+</inline-formula>{r_0}$ is used to control the turbulence intensity of the degraded images.</p>
+      
+        <sec>
+          
+            <title>3.2. Implementation details</title>
+          
+          <p>All model training and experiments are implemented using the PyTorch framework on an NVIDIA GeForce RTX 3090. In the high-frequency information extraction network, 3,000 facial images are used as the training set, with the batch size set to 16 and the number of model training iterations set to 10,000. When training the diffusion model, 5,000 facial images are used as the training set and 1,000 as the test set. The batch size is set to 8, the number of model training iterations is set to 50,000, and the time step during training is set to 1,000. Similar to the approach proposed by Nair et al. [<xref ref-type="bibr" rid="ref_20">20</xref>], during model inference, the total number of time steps is 100, with 40 of them skipped.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.3. Model complexity comparison experiment</title>
+          
+          <p>We trained ATDDPM [<xref ref-type="bibr" rid="ref_20">20</xref>] using the same training configurations as the proposed method and conducted comparative experiments. The quantitative analysis results of model complexity and restoration performance are presented in <xref ref-type="table" rid="table_1">Table 1</xref> (where HFI denotes our high-frequency information extraction network). The experiments evaluate model complexity from three core dimensions: computational complexity (FLOPs), number of parameters (Parameters), and inference time per image (Seconds per image).</p><p>Meanwhile, the LPIPS and FID metrics are adopted to quantitatively assess restoration performance. The results show that, on the premise of achieving better restoration performance, the proposed method reduces the computational complexity by approximately 1.1%, decreases the number of parameters by 9.3%, and shortens the inference time per image by 20.6%, successfully achieving a better balance between complexity and performance. Notably, although our network additionally incorporates high-frequency information extraction, the overall restoration time per image is still significantly shorter, fully verifying the overall efficiency of the model.</p>
+          
+            <table-wrap id="table_1">
+              <label>Table 1</label>
+              <caption>
+                <title>Model complexity comparison results</title>
+              </caption>
+              <table><tbody><tr><td colspan="1" rowspan="1"><p>Method</p></td><td colspan="1" rowspan="1"><p>FLOPs</p></td><td colspan="1" rowspan="1"><p>Parameters</p></td><td colspan="1" rowspan="1"><p>Seconds per Image</p></td><td colspan="1" rowspan="1"><p>LPIPS↓</p></td><td colspan="1" rowspan="1"><p>FID↓</p></td></tr><tr><td colspan="1" rowspan="1"><p>ATDDPM [<xref ref-type="bibr" rid="ref_20">20</xref>]</p></td><td colspan="1" rowspan="1"><p>627.39 G</p></td><td colspan="1" rowspan="1"><p>311.03 M</p></td><td colspan="1" rowspan="1"><p>6.1800 s</p></td><td colspan="1" rowspan="1"><p>0.1626</p></td><td colspan="1" rowspan="1"><p>55.2916</p></td></tr><tr><td colspan="1" rowspan="1"><p>HFI</p></td><td colspan="1" rowspan="1"><p>22.48 G</p></td><td colspan="1" rowspan="1"><p>0.98 M</p></td><td colspan="1" rowspan="1"><p>0.8107 s</p></td><td colspan="1" rowspan="1"><p>-</p></td><td colspan="1" rowspan="1"><p>-</p></td></tr><tr><td colspan="1" rowspan="1"><p>Ours</p></td><td colspan="1" rowspan="1"><p>620.54 G</p></td><td colspan="1" rowspan="1"><p>282.07 M</p></td><td colspan="1" rowspan="1"><p>4.9078 s</p></td><td colspan="1" rowspan="1"><p>0.1324</p></td><td colspan="1" rowspan="1"><p>35.3613</p></td></tr></tbody></table>
+            </table-wrap>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.4. Restoration results comparison experiment</title>
+          
+          <p>We conducted comparative experiments on the FFHQ dataset with the turbulence intensity set to <inline-formula>
+  <mml:math id="mkguujo8dt">
+    <mml:mi>D</mml:mi>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:msub>
+        <mml:mi>r</mml:mi>
+        <mml:mn>0</mml:mn>
+      </mml:msub>
+    </mml:mrow>
+    <mml:mo>=</mml:mo>
+    <mml:mn>4</mml:mn>
+  </mml:math>
+</inline-formula>. In the experiments, various image restoration methods (ATDDPM [<xref ref-type="bibr" rid="ref_20">20</xref>], DSRNet [<xref ref-type="bibr" rid="ref_10">10</xref>], and SRConvNet [<xref ref-type="bibr" rid="ref_9">9</xref>]) were trained with the same configurations as our model (5,000 images for the training set and 1,000 for the test set) to ensure the fairness of the comparison. The qualitative and quantitative comparison results are shown in <xref ref-type="fig" rid="fig_6">Figure 6</xref> and <xref ref-type="table" rid="table_2">Table 2</xref>, respectively. In <xref ref-type="table" rid="table_2">Table 2</xref>, we used two commonly used evaluation metrics, PSNR and SSIM, to measure the differences between the restoration results and the ground-truth images. The results indicate that our restoration results have the smallest deviations from the ground-truth images in terms of brightness, contrast, structure, and other aspects, making them closer to the real images.</p><p>Secondly, we employed the LPIPS metric, which is more consistent with human visual perception, to verify the restoration performance. It can be seen that our method achieved the optimal LPIPS result, demonstrating that there is a smaller perceptual difference between our restoration results and the ground-truth images. Finally, FID was used to compare image distributions, which is one of the important metrics for evaluating the generation quality of generative models. As shown in <xref ref-type="table" rid="table_2">Table 2</xref>, compared with other methods, our diffusion model can generate results that are most similar to the distribution of real images. On the other hand, in the qualitative result <xref ref-type="fig" rid="fig_6">Figure 6</xref>, compared with DSRNet [<xref ref-type="bibr" rid="ref_10">10</xref>] and SRConvNet [<xref ref-type="bibr" rid="ref_9">9</xref>], our restoration results have clearer facial details and image backgrounds. In the restoration result of ATDDPM [<xref ref-type="bibr" rid="ref_20">20</xref>] (<xref ref-type="fig" rid="fig_6">Figure 6</xref>b), obvious distortion effects appear at the image contours. However, in our restoration result (<xref ref-type="fig" rid="fig_6">Figure 6</xref>e), this issue is well improved by using high-frequency information as a conditional constraint.</p>
+          
+            <fig id="fig_6">
+              <label>Figure 6</label>
+              <caption>
+                <title>Qualitative restoration results comparison: (a) Turbulence-degraded images; (b) Restoration results of ATDDPM [<xref ref-type="bibr" rid="ref_20">20</xref>]; (c) Restoration results of SRConvNet [<xref ref-type="bibr" rid="ref_9">9</xref>]; (d) Restoration results of DSRNet [<xref ref-type="bibr" rid="ref_10">10</xref>]; (e) Restoration results of our model; (f) Ground-truth sharp images</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/0/img_Uc8wCty8vLZ3e45b.png"/>
+            </fig>
+          
+          
+            <table-wrap id="table_2">
+              <label>Table 2</label>
+              <caption>
+                <title>Quantitative comparison of the proposed method with other methods </title>
+              </caption>
+              <table><tbody><tr><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"><p>ATDDPM [<a target="_blank" rel="noopener noreferrer nofollow" href="#_bookmark21">20</a>]</p></td><td colspan="1" rowspan="1"><p>DSRNet [<a target="_blank" rel="noopener noreferrer nofollow" href="#_bookmark14">10</a>]</p></td><td colspan="1" rowspan="1"><p>SRConvNet [<a target="_blank" rel="noopener noreferrer nofollow" href="#_bookmark13">9</a>]</p></td><td colspan="1" rowspan="1"><p>Ours</p></td></tr><tr><td colspan="1" rowspan="1"><p>PSNRPSNR ↑</p></td><td colspan="1" rowspan="1"><p>21.7669</p></td><td colspan="1" rowspan="1"><p>21.2985</p></td><td colspan="1" rowspan="1"><p>21.3787</p></td><td colspan="1" rowspan="1"><p>22.7135</p></td></tr><tr><td colspan="1" rowspan="1"><p>SSIM ↑</p></td><td colspan="1" rowspan="1"><p>0.6211</p></td><td colspan="1" rowspan="1"><p>0.6048</p></td><td colspan="1" rowspan="1"><p>0.6245</p></td><td colspan="1" rowspan="1"><p>0.6950</p></td></tr><tr><td colspan="1" rowspan="1"><p>LPIPS ↓</p></td><td colspan="1" rowspan="1"><p>0.1626</p></td><td colspan="1" rowspan="1"><p>0.5041</p></td><td colspan="1" rowspan="1"><p>0.3800</p></td><td colspan="1" rowspan="1"><p>0.1324</p></td></tr><tr><td colspan="1" rowspan="1"><p>FID↓</p></td><td colspan="1" rowspan="1"><p>55.2916</p></td><td colspan="1" rowspan="1"><p>100.2637</p></td><td colspan="1" rowspan="1"><p>76.4782</p></td><td colspan="1" rowspan="1"><p>35.3613</p></td></tr></tbody></table>
+            </table-wrap>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.5. Mixed turbulence intensity restoration experiment</title>
+          
+          <p>We retrained the diffusion model on facial image data with mixed turbulence intensities. The training set consists of 1,600 facial images with weak turbulence degradation (<inline-formula>
+  <mml:math id="mdiy2sgg3x">
+    <mml:mi>D</mml:mi>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:msub>
+        <mml:mi>r</mml:mi>
+        <mml:mn>0</mml:mn>
+      </mml:msub>
+    </mml:mrow>
+    <mml:mo>=</mml:mo>
+    <mml:mn>2</mml:mn>
+  </mml:math>
+</inline-formula>), 1,600 facial images with moderate turbulence degradation (<inline-formula>
+  <mml:math id="mwkp4zeqlx">
+    <mml:mi>D</mml:mi>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:msub>
+        <mml:mi>r</mml:mi>
+        <mml:mn>0</mml:mn>
+      </mml:msub>
+    </mml:mrow>
+    <mml:mo>=</mml:mo>
+    <mml:mn>3.5</mml:mn>
+  </mml:math>
+</inline-formula>), and 1,600 facial images with strong turbulence degradation (<inline-formula>
+  <mml:math id="mbwoyljaid">
+    <mml:mi>D</mml:mi>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:msub>
+        <mml:mi>r</mml:mi>
+        <mml:mn>0</mml:mn>
+      </mml:msub>
+    </mml:mrow>
+    <mml:mo>=</mml:mo>
+    <mml:mn>5</mml:mn>
+  </mml:math>
+</inline-formula>). The restoration results are shown in <xref ref-type="fig" rid="fig_7">Figure 7</xref>. In scenarios with weak turbulence (<xref ref-type="fig" rid="fig_7">Figure 7</xref>a) and moderate turbulence (<xref ref-type="fig" rid="fig_7">Figure 7</xref>b), we can restore relatively clear facial results that are close to the ground-truth images. In the scenario with strong turbulence degradation, although the restoration results (the first row of <xref ref-type="fig" rid="fig_7">Figure 7</xref>c) can achieve a level of clarity consistent with human visual perception, compared with the ground-truth images, inconsistent results with the original images may be generated in the local details of facial features.</p><p>Moreover, due to the excessive turbulence distortion, a small amount of distortion and blurriness may still exist in some restoration results (as shown in the second row of <xref ref-type="fig" rid="fig_7">Figure 7</xref>c). However, overall, the proposed method can still effectively eliminate most turbulence effects and generate results close to real faces, providing reliable technical support for alleviating turbulence in different scenarios.</p>
+          
+            <fig id="fig_7">
+              <label>Figure 7</label>
+              <caption>
+                <title>Restoration results under various turbulence intensities: (a) Restoration results under weak turbulence intensity; (b) Restoration results under moderate turbulence intensity; (c) Restoration results under strong turbulence intensity; (d) Ground-truth sharp images</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/0/img_mDt1csvAYXHiTiCP.png"/>
+            </fig>
+          
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>4. Conclusion</title>
+      <p>Super-resolution technology was combined with diffusion models in this study. Reconstruction of the high-frequency information of facial images through super-resolution technology provided effective assistance for diffusion models, enabling them to generate smoother facial contours and clearer facial feature details. Comparative experiment results show that the proposed method achieved optimal performance among all four quantitative evaluation metrics and possessed efficient computational performance. In qualitative comparisons, this method effectively eliminated most random distortions and blurriness in images, significantly alleviating the negative impacts caused by turbulence degradation. Additionally, in the restoration experiment with mixed turbulence intensities, the proposed method maintained stable and excellent restoration performance under scenarios with moderate or lower turbulence intensities. Even when facing extremely severe turbulence degradation, although the restoration performance was subject to certain limitations, it still effectively eliminated most degradation features. This also reflects the applicability limitation of the current method in severely degraded scenarios. To address the aforementioned shortcomings, future work will focus on optimizations in the following two aspects:</p><p><p>Performance enhancement of the high-frequency information extraction network: For scenarios with stronger turbulence degradation, the network’s ability could be improved to mine effective high-frequency information, providing strong support for diffusion models to generate more stable and realistic detailed features.</p><p>Improvement of high-frequency information fusion: In the current method, high-frequency information is only used as a simple conditional input for diffusion models, and its role has not been fully exerted. Subsequent work will optimize this fusion strategy, enabling high-frequency information to be integrated into the overall inference process of the network more deeply and efficiently.</p></p>
+    </sec>
+  </body>
+  <back>
+    <ack>
+      <title>Acknowledgments</title>
+      
+    </ack>
+    <app-group>
+      <app>
+        <title>Appendix</title>
+        
+      </app>
+    </app-group>
+    <notes>
+      <title>Author Contributions</title>
+      <p>Conceptualization, S.Y.S.; methodology, S.Y.S.; validation, S.Y.S.; resources, P.C.M.; data curation, S.Y.S.; writing—original draft preparation, S.Y.S.; writing—review and editing, P.C.M.; visualization, S.Y.S.; supervision, P.C.M.; project administration, P.C.M.; funding acquisition, P.C.M. All authors have read and agreed to the published version of the manuscript.</p>
+    </notes>
+    <notes>
+      <title>Funding</title>
+      
+    </notes>
+    <notes>
+      <title>Informed Consent Statement</title>
+      
+    </notes>
+    <notes>
+      <title>Data Availability Statement</title>
+      <p>The data used to support the research findings are available from the corresponding author upon request.</p>
+    </notes>
+    <notes notes-type="COI-statement">
+      <title>Conflicts of Interest</title>
+      <p>The authors declare that they have no conflicts of interest.</p>
+    </notes>
+    <ref-list>
+      <title>References</title>
+      <ref id="ref_1">
+        <label>1.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>430-446</page-range>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Mao</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Jaiswal</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Stanley  Chan</surname>
+              <given-names>H.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1007/978-3-031-19800-7_25</pub-id>
+          <article-title>Single-frame atmospheric turbulence mitigation: A benchmark study and a new physics-inspired transformer model</article-title>
+          <source>European Conference on Computer Vision, (ECCV 2022), Tel Aviv, Israel</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_2">
+        <label>2.</label>
+        <element-citation publication-type="conf-paper">
+          <volume>7463</volume>
+          <page-range>104-113</page-range>
+          <year>2009</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Aubailly</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Mikhail  Vorontsov</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Gary  Carhart</surname>
+              <given-names>W.</given-names>
+            </name>
+            <name>
+              <surname>Michael  Valley</surname>
+              <given-names>T.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1117/12.828332</pub-id>
+          <article-title>Automated video enhancement from a stream of atmospherically-distorted images: The lucky-region fusion approach</article-title>
+          <source>Atmospheric Optics: Models, Measurements, and Target-in-the-Loop Propagation III, San Diego, California, USA</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_3">
+        <label>3.</label>
+        <element-citation publication-type="journal">
+          <volume>35</volume>
+          <page-range>157-170</page-range>
+          <issue>1</issue>
+          <year>2012</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Zhu</surname>
+              <given-names>Xue</given-names>
+            </name>
+            <name>
+              <surname>Milanfar</surname>
+              <given-names>Peyman</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/TPAMI.2012.82</pub-id>
+          <article-title>Removing atmospheric turbulence via space-invariant deconvolution</article-title>
+          <source>IEEE Trans. Pattern Anal. Mach. Intell.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_4">
+        <label>4.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>607-614</page-range>
+          <year>2010</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Hirsch</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Sra</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Schölkopf</surname>
+              <given-names>B.</given-names>
+            </name>
+            <name>
+              <surname>Harmeling</surname>
+              <given-names>S.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/CVPR.2010.5540158</pub-id>
+          <article-title>Efficient filter flow for space-variant multiframe blind deconvolution</article-title>
+          <source>2010 IEEE Computer Society Conference on Computer Vision and Pattern Recognition, (CVPR 2010), San Francisco, CA, USA</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_5">
+        <label>5.</label>
+        <element-citation publication-type="journal">
+          <volume>35</volume>
+          <issue>7</issue>
+          <year>2019</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Lau</surname>
+              <given-names>C. P.</given-names>
+            </name>
+            <name>
+              <surname>Lai</surname>
+              <given-names>Y. H.</given-names>
+            </name>
+            <name>
+              <surname>Lui</surname>
+              <given-names>L. M.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1088/1361-6420/ab0e4b</pub-id>
+          <article-title>Restoration of atmospheric turbulence-distorted images via RPCA and quasiconformal maps</article-title>
+          <source>Inverse Probl.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_6">
+        <label>6.</label>
+        <element-citation publication-type="journal">
+          <volume>7</volume>
+          <page-range>839-861</page-range>
+          <issue>3</issue>
+          <year>2013</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Lou</surname>
+              <given-names>Yifei</given-names>
+            </name>
+            <name>
+              <surname>Kang</surname>
+              <given-names>Sung Ha</given-names>
+            </name>
+            <name>
+              <surname>Soatto</surname>
+              <given-names>Stefano</given-names>
+            </name>
+            <name>
+              <surname>Bertozzi</surname>
+              <given-names>Andrea L.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3934/IPI.2013.7.839</pub-id>
+          <article-title>Video stabilization of atmospheric turbulence distortion</article-title>
+          <source>Inverse Probl. Imaging</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_7">
+        <label>7.</label>
+        <element-citation publication-type="journal">
+          <volume>25</volume>
+          <page-range>4943-4958</page-range>
+          <issue>10</issue>
+          <year>2016</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Xie</surname>
+              <given-names>Yifei</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>Wensheng</given-names>
+            </name>
+            <name>
+              <surname>Tao</surname>
+              <given-names>Dacheng</given-names>
+            </name>
+            <name>
+              <surname>Hu</surname>
+              <given-names>Wenrui</given-names>
+            </name>
+            <name>
+              <surname>Qu</surname>
+              <given-names>Yanyun</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>Hanzi</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/TIP.2016.2598638</pub-id>
+          <article-title>Removing turbulence effect via hybrid total variation and deformation-guided kernel regression</article-title>
+          <source>IEEE Trans. Image Process.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_8">
+        <label>8.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>430-446</page-range>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Mao</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Jaiswal</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Stanley  Chan</surname>
+              <given-names>H.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.48550/arXiv.2207.10040</pub-id>
+          <article-title>Single-frame atmospheric turbulence mitigation: A benchmark study and a new physics-inspired transformer model</article-title>
+          <source>European Conference on Computer Vision, (ECCV 2022), Tel Aviv, Israel</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_9">
+        <label>9.</label>
+        <element-citation publication-type="journal">
+          <volume>133</volume>
+          <page-range>173-189</page-range>
+          <issue>1</issue>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Li</surname>
+              <given-names>Feng</given-names>
+            </name>
+            <name>
+              <surname>Cong</surname>
+              <given-names>Runmin</given-names>
+            </name>
+            <name>
+              <surname>Wu</surname>
+              <given-names>Jingjing</given-names>
+            </name>
+            <name>
+              <surname>Bai</surname>
+              <given-names>Huihui</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>Meng</given-names>
+            </name>
+            <name>
+              <surname>Zhao</surname>
+              <given-names>Yao</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1007/s11263-024-02147-y</pub-id>
+          <article-title>SRConvNet: A transformer-style ConvNet for lightweight image super-resolution</article-title>
+          <source>Int. J. Comput. Vis.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_10">
+        <label>10.</label>
+        <element-citation publication-type="journal">
+          <volume>9</volume>
+          <page-range>837-849</page-range>
+          <issue>4</issue>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Tian</surname>
+              <given-names>Chunwei</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>Xuanyu</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>Qi</given-names>
+            </name>
+            <name>
+              <surname>Yang</surname>
+              <given-names>Mingming</given-names>
+            </name>
+            <name>
+              <surname>Ju</surname>
+              <given-names>Zhaojie</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1049/cit2.12297</pub-id>
+          <article-title>Image super-resolution via dynamic network</article-title>
+          <source>CAAI Trans. Intell. Technol.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_11">
+        <label>11.</label>
+        <element-citation publication-type="journal">
+          <volume>16</volume>
+          <issue>16</issue>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Qiu</surname>
+              <given-names>Jianxiao</given-names>
+            </name>
+            <name>
+              <surname>Jiang</surname>
+              <given-names>Runbo</given-names>
+            </name>
+            <name>
+              <surname>Meng</surname>
+              <given-names>Wenwen</given-names>
+            </name>
+            <name>
+              <surname>Shi</surname>
+              <given-names>Dongfeng</given-names>
+            </name>
+            <name>
+              <surname>Hu</surname>
+              <given-names>Bingzhang</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>Yingjian</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3390/rs16162972</pub-id>
+          <article-title>Dual-domain cooperative recovery of atmospheric turbulence degradation images</article-title>
+          <source>Remote Sens.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_12">
+        <label>12.</label>
+        <element-citation publication-type="journal">
+          <volume>54</volume>
+          <page-range>6610-6620</page-range>
+          <issue>11</issue>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Wang</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Sun</surname>
+              <given-names>G.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>Cailing</given-names>
+            </name>
+            <name>
+              <surname>Gao</surname>
+              <given-names>Zixuan</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>Hongwei</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/TSMC.2024.3399464</pub-id>
+          <article-title>Monte Carlo-based restoration of images degraded by atmospheric turbulence</article-title>
+          <source>IEEE Trans. Syst., Man, Cybern.: Syst.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_13">
+        <label>13.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>1694-1698</page-range>
+          <year>2021</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Yasarla</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Patel</surname>
+              <given-names>V. M.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/ICIP42928.2021.9506614</pub-id>
+          <article-title>Learning to restore images degraded by atmospheric turbulence using uncertainty</article-title>
+          <source>2021 IEEE International Conference on Image Processing, (ICIP 2021), Anchorage, AK, USA</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_14">
+        <label>14.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>13095-13105</page-range>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Xia</surname>
+              <given-names>B.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Wu</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Tian</surname>
+              <given-names>Y.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/ICCV51070.2023.01204</pub-id>
+          <article-title>DiffIR: Efficient diffusion model for image restoration</article-title>
+          <source>Proceedings of the IEEE/CVF International Conference on Computer Vision, (ICCV 2023), Paris, France</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_15">
+        <label>15.</label>
+        <element-citation publication-type="journal">
+          <volume>5</volume>
+          <page-range>435-448</page-range>
+          <issue>4</issue>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Wang</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Jiang</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Zhong</surname>
+              <given-names>Zhiwei</given-names>
+            </name>
+            <name>
+              <surname>Zhai</surname>
+              <given-names>Deming</given-names>
+            </name>
+            <name>
+              <surname>Liu</surname>
+              <given-names>Xianming</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/TBIOM.2023.3264223</pub-id>
+          <article-title>Super-resolving face image by facial parsing information</article-title>
+          <source>IEEE Trans. Biom., Behav., Identity Sci.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_16">
+        <label>16.</label>
+        <element-citation publication-type="journal">
+          <volume>15</volume>
+          <issue>3</issue>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Awasthi</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Sharma</surname>
+              <given-names>B. K.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.21917/ijivp.2025.0501</pub-id>
+          <article-title>Image restoration using optimized generative adversarial networks for superior visual quality</article-title>
+          <source>ICTACT J. Image Video Process.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_17">
+        <label>17.</label>
+        <element-citation publication-type="journal">
+          <page-range>1-12</page-range>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Ngo-Huu</surname>
+              <given-names>M. K.</given-names>
+            </name>
+            <name>
+              <surname>Ngo</surname>
+              <given-names>Vinh</given-names>
+            </name>
+            <name>
+              <surname>Luu</surname>
+              <given-names>D. T.</given-names>
+            </name>
+            <name>
+              <surname>Pham</surname>
+              <given-names>B. N.</given-names>
+            </name>
+            <name>
+              <surname>Nguyen</surname>
+              <given-names>V. T.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/MMUL.2025.3611072</pub-id>
+          <article-title>STERR-GAN: Spatio-temporal re-rendering for facial video restoration</article-title>
+          <source>IEEE MultiMedia</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_18">
+        <label>18.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>800-809</page-range>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Khan</surname>
+              <given-names>F. S.</given-names>
+            </name>
+            <name>
+              <surname>Ebenezer</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Sheikh</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Lee</surname>
+              <given-names>S. J.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/CVPRW67362.2025.00084</pub-id>
+          <article-title>MFSR-GAN: Multi-frame super-resolution with handheld motion modeling</article-title>
+          <source>Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition Workshops, (CVPRW 2025), Nashville, TN, USA</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_19">
+        <label>19.</label>
+        <element-citation publication-type="journal">
+          <volume>45</volume>
+          <page-range>10346-10357</page-range>
+          <issue>8</issue>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Özdenizci</surname>
+              <given-names>O.</given-names>
+            </name>
+            <name>
+              <surname>Legenstein</surname>
+              <given-names>R.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/TPAMI.2023.3238179</pub-id>
+          <article-title>Restoring vision in adverse weather conditions with patch-based denoising diffusion models</article-title>
+          <source>IEEE Trans. Pattern Anal. Mach. Intell.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_20">
+        <label>20.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>3434-3443</page-range>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Nair</surname>
+              <given-names>N. G.</given-names>
+            </name>
+            <name>
+              <surname>Mei</surname>
+              <given-names>K.</given-names>
+            </name>
+            <name>
+              <surname>Patel</surname>
+              <given-names>V. M.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/WACV56688.2023.00343</pub-id>
+          <article-title>AT-DDPM: Restoring faces degraded by atmospheric turbulence using denoising diffusion probabilistic models</article-title>
+          <source>Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision, (WACV 2023), Waikoloa, HI, USA</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_21">
+        <label>21.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>1219-1229</page-range>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Zhu</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>K.</given-names>
+            </name>
+            <name>
+              <surname>Liang</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Cao</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Wen</surname>
+              <given-names>B.</given-names>
+            </name>
+            <name>
+              <surname>Timofte</surname>
+              <given-names>R.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/CVPRW59228.2023.00129</pub-id>
+          <article-title>Denoising diffusion models for plug-and-play image restoration</article-title>
+          <source>Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition Workshops, (CVPRW 2023), Vancouver, BC, Canada</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_22">
+        <label>22.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>10721-10733</page-range>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Ren</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Delbracio</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Talebi</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Gerig</surname>
+              <given-names>G.</given-names>
+            </name>
+            <name>
+              <surname>Milanfar</surname>
+              <given-names>P.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/ICCV51070.2023.00984</pub-id>
+          <article-title>Multiscale structure guided diffusion for image deblurring</article-title>
+          <source>Proceedings of the IEEE/CVF International Conference on Computer Vision, (ICCV 2023), Paris, France</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_23">
+        <label>23.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>1-10</page-range>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Saharia</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Chan</surname>
+              <given-names>W.</given-names>
+            </name>
+            <name>
+              <surname>Chang</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Lee</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Ho</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Salimans</surname>
+              <given-names>T.</given-names>
+            </name>
+            <name>
+              <surname>Fleet</surname>
+              <given-names>D.</given-names>
+            </name>
+            <name>
+              <surname>Norouzi</surname>
+              <given-names>M.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1145/3528233.3530757</pub-id>
+          <article-title>Palette: Image-to-image diffusion models</article-title>
+          <source>ACM SIGGRAPH 2022 Conference Proceedings, Vancouver, BC, Canada</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_24">
+        <label>24.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>10684-10695</page-range>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Rombach</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Blattmann</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Lorenz</surname>
+              <given-names>D.</given-names>
+            </name>
+            <name>
+              <surname>Esser</surname>
+              <given-names>P.</given-names>
+            </name>
+            <name>
+              <surname>Ommer</surname>
+              <given-names>B.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/CVPR52688.2022.01042</pub-id>
+          <article-title>High-resolution image synthesis with latent diffusion models</article-title>
+          <source>Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, (CVPR 2022), New Orleans, LA, USA</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_25">
+        <label>25.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>16293-16303</page-range>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Whang</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Delbracio</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Talebi</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Saharia</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Alexandros  Dimakis</surname>
+              <given-names>G.</given-names>
+            </name>
+            <name>
+              <surname>Milanfar</surname>
+              <given-names>P.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/CVPR52688.2022.01581</pub-id>
+          <article-title>Deblurring via stochastic refinement</article-title>
+          <source>Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, (CVPR 2022), New Orleans, LA, USA</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_26">
+        <label>26.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>14759-14768</page-range>
+          <year>2021</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Mao</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Chimitt</surname>
+              <given-names>N.</given-names>
+            </name>
+            <name>
+              <surname>Stanley  Chan</surname>
+              <given-names>H.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/ICCV48922.2021.01449</pub-id>
+          <article-title>Accelerating atmospheric turbulence simulation via learned phase-to-space transform</article-title>
+          <source>Proceedings of the IEEE/CVF International Conference on Computer Vision, (ICCV 2021), Montreal, QC, Canada</source>
+        </element-citation>
+      </ref>
+    </ref-list>
+  </back>
+</article>
