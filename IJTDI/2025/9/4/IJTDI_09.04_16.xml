@@ -1,0 +1,3859 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.3 20210610//EN" "JATS-journalpublishing1-3.dtd">
+<article xml:lang="en" dtd-version="1.3" article-type="research-article" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mml="http://www.w3.org/1998/Math/MathML">
+  <front>
+    <journal-meta>
+      <journal-id journal-id-type="publisher-id">IJTDI</journal-id>
+      <journal-id journal-id-type="doi">10.56578</journal-id>
+      <journal-title-group>
+        <journal-title>International Journal of Transport Development and Integration</journal-title>
+        <abbrev-journal-title abbrev-type="issn">Int. J. Transp. Dev. Integr.</abbrev-journal-title>
+        <abbrev-journal-title abbrev-type="publisher">IJTDI</abbrev-journal-title>
+      </journal-title-group>
+      <issn publication-format="electronic">2058-8313</issn>
+      <issn publication-format="print">2058-8305</issn>
+      <publisher>
+        <publisher-name>Acadlore</publisher-name>
+      </publisher>
+    </journal-meta>
+    <article-meta>
+      <article-id pub-id-type="publisher-id">AR-slPMkCLNDdMZ6_xy3vJYHiBoCy-aCb0m</article-id>
+      <article-id pub-id-type="doi">10.56578/ijtdi090416</article-id>
+      <article-categories>
+        <subj-group>
+          <subject>Articles</subject>
+        </subj-group>
+      </article-categories>
+      <title-group>
+        <article-title>Automated Topological Analysis of Crack Networks for Data-Driven Road Maintenance Decision-Making</article-title>
+      </title-group>
+      <contrib-group>
+        <contrib contrib-type="author" rid="aff_1,2">
+          <contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0000-0002-8005-4011</contrib-id>
+          <name>
+            <surname>Pereira</surname>
+            <given-names>Vosco</given-names>
+          </name>
+          <email>pereira.vosco.y9@s.gifu-u.ac.jp</email>
+        </contrib>
+        <contrib contrib-type="author" rid="aff_1">
+          <name>
+            <surname>Fukai</surname>
+            <given-names>Hidekazu</given-names>
+          </name>
+          <email>fukai.hidekazu.r3@f.gifu-u.ac.jp</email>
+        </contrib>
+        <aff id="aff_1">Department of Engineering Science, Gifu University, 501-1193 Gifu, Japan</aff>
+        <aff id="aff_2">Department of Informatics Engineering, National University of Timor Leste, TL10001 Dili, Timor Leste</aff>
+      </contrib-group>
+      <pub-date publication-format="electronic" date-type="pub">
+        <day>30</day>
+        <month>12</month>
+        <year>2025</year>
+      </pub-date>
+      <volume>9</volume>
+      <issue>4</issue>
+      <fpage>919</fpage>
+      <lpage>935</lpage>
+      <page-range>919-935</page-range>
+      <history>
+        <date date-type="received">
+          <day>26</day>
+          <month>10</month>
+          <year>2025</year>
+        </date>
+        <date date-type="accepted">
+          <day>14</day>
+          <month>12</month>
+          <year>2025</year>
+        </date>
+      </history>
+      <permissions>
+        <copyright-statement>©2025 by the author(s)</copyright-statement>
+        <copyright-year>2025</copyright-year>
+        <license license-type="open-access" xlink:href="https://creativecommons.org/licenses/by/4.0/">
+          <license-p> Published by Acadlore Publishing Services Limited, Hong Kong. This article is available for free download and can be reused and cited, provided that the original published version is credited, under the CC BY 4.0 license.</license-p>
+        </license>
+      </permissions>
+      <abstract><p>Traditional road maintenance strategies often focus solely on detecting cracks, neglecting the structural complexity crucial for prioritizing repairs. This study introduces a computational framework that combines deep learning-based segmentation with graph-theoretic analysis to automatically quantify critical topological features of crack networks, such as branching points and closed loops. Three segmentation models—DeepLabV3, Attention U-Net, and SegFormer—are evaluated on the newly developed Timor-Leste Crack (TLCrack) dataset and the publicly available CrackForest benchmark, leveraging topology-aware loss functions and evaluation metrics. The resulting segmentation outputs are skeletonized and converted into graph structures, enabling automated measurements of branch points and cyclic regions. Experimental findings reveal that Attention U-Net achieves the highest topological accuracy, with a Betti-0 error of 1.70 $\pm$ 0.62 on the TLCrack dataset. Additionally, the graph-based quantification module demonstrates robust performance, achieving a branch point counting mean absolute percentage error (MAPE) of 5.33% and flawless closed-loop detection on the same dataset. By providing interpretable topological metrics that directly correlate with pavement deterioration severity, this approach bridges the gap between advanced computer vision techniques and practical road maintenance decision-making. The proposed framework highlights the potential of automated topological analysis to enhance strategic infrastructure management by delivering actionable insights into crack patterns and their implications for structural health.</p></abstract>
+      <kwd-group>
+        <kwd>Crack segmentation</kwd>
+        <kwd>Crack connectivity</kwd>
+        <kwd>Deep learning</kwd>
+        <kwd>Graph-based analysis</kwd>
+        <kwd>Road maintenance</kwd>
+        <kwd>Topological skeleton</kwd>
+      </kwd-group>
+      <counts>
+        <count count-type="contributors" count="2"/>
+        <fig-count count="9"/>
+        <table-count count="4"/>
+        <ref-count count="31"/>
+      </counts>
+    </article-meta>
+  </front>
+  <body>
+    <sec sec-type="intro">
+      <title>1. Introduction</title>
+      <p>Road transportation infrastructure is the backbone of socio-economic development. It directly enables the efficient movement of people, goods, and services [<xref ref-type="bibr" rid="ref_1">1</xref>]. Despite this essential role, pavement structures are constantly exposed to harsh weather, environmental changes, heavy traffic, and stress from vehicles. This combination inevitably leads to surface deterioration, most notably in the form of cracking. If cracks are not identified and repaired in the earliest stages, they will spread rapidly through the lower layers [<xref ref-type="bibr" rid="ref_2">2</xref>]. Therefore, the early and precise detection of pavement cracks is crucial for implementing effective, timely maintenance strategies that enhance road safety and optimize overall lifetime maintenance costs [<xref ref-type="bibr" rid="ref_3">3</xref>].</p><p>For road maintenance, the initial detection of a crack is only the first step [<xref ref-type="bibr" rid="ref_4">4</xref>]. The critical subsequent task is to assess its severity to prioritize repairs effectively. This is because different crack types signify different underlying structural issues. For instance, a long but isolated crack may be less critical than a highly branched crack network that indicates progressive structural deterioration. Similarly, cracks forming interconnected or closed-loop patterns often signify advanced fatigue or delamination processes. In particular, a high count of closed loops is a direct quantitative indicator of high-severity damage like alligator or block cracking, which demands high priority. Therefore, a robust maintenance strategy cannot rely on binary detection alone. To accurately evaluate the urgency of each defect and allocate resources accordingly, it must incorporate quantitative analysis by measuring characteristics such as length, width, branching complexity, and the formation of closed loops [<xref ref-type="bibr" rid="ref_5">5</xref>].</p><p>There is substantial research on automated pavement crack detection. This research encompasses deep learning segmentation, morphological measurements (e.g., length, width, and area), and even some graph-based frameworks. However, few studies explicitly quantify crack network topology. The critical task of counting branches and identifying closed loops, the definitive features of severe alligator or block cracking, remains largely unaddressed. For example, one study proposed an ensemble convolutional neural network (CNN) to measure crack length and width, yet did not analyze network topology [<xref ref-type="bibr" rid="ref_6">6</xref>]. Another study developed a branch-growing algorithm to estimate crack length, stopping at length and width quantification [<xref ref-type="bibr" rid="ref_7">7</xref>]. A graph-based change detection framework was offered, but it did not extract branch and loop counts for severity assessment [<xref ref-type="bibr" rid="ref_8">8</xref>]. Additionally, a graph reasoning module (GGMNet) was introduced for crack segmentation, but the topological metrics were not considered [<xref ref-type="bibr" rid="ref_9">9</xref>]. Thus, a research gap remains regarding the automated extraction of crack network topology and its linkage to damage severity and maintenance decision-making.</p><p>In this work, we address that gap by proposing a two-stage framework that integrates deep segmentation and topological analysis for crack quantification. In the first stage, deep learning models such as DeepLabV3 [<xref ref-type="bibr" rid="ref_10">10</xref>], Attention U-Net [<xref ref-type="bibr" rid="ref_11">11</xref>], and SegFormer [<xref ref-type="bibr" rid="ref_12">12</xref>]. These models perform pixel-level crack segmentation to delineate crack regions from pavement images. In the second stage, the segmentation outputs undergo graph-based topological analysis to automatically quantify crack branches and closed loops. These geometric metrics serve as quantitative indicators of crack complexity and structural deterioration. Closed loops, in particular, indicate advanced fatigue failure progression. This information can be incorporated directly into pavement condition assessment frameworks or used to prioritize maintenance by highlighting regions with intricate and severe cracking patterns.</p><p>The segmentation models are trained using a connectivity-preserving Skeleton Recall Loss [<xref ref-type="bibr" rid="ref_13">13</xref>] to maintain topological integrity in elongated crack structures. For performance assessment, we employ three specialized metrics tailored for crack analysis. The Dice Coefficient [<xref ref-type="bibr" rid="ref_14">14</xref>] evaluates the pixel-wise overlap between predicted and ground-truth masks. To evaluate connectivity preservation, we use Center Line Dice (clDice) [<xref ref-type="bibr" rid="ref_15">15</xref>], which focuses on topological correctness by comparing skeleton-based predictions. Additionally, Betti-error [<xref ref-type="bibr" rid="ref_16">16</xref>] provides a topological similarity measure by comparing the number of connected components and holes between predictions and ground truth. To evaluate the correctness of the detected crack topology, we validated the counts of branches and closed loops from the model against manual annotations. The Accuracy [<xref ref-type="bibr" rid="ref_17">17</xref>] metric was used to measure the overall correctness of the detection, while the mean absolute percentage error (MAPE) [<xref ref-type="bibr" rid="ref_18">18</xref>] was employed to quantify the magnitude of counting deviations. This dual-metric approach provides a rigorous assessment of topological fidelity. When combined with segmentation quality metrics, it ensures a comprehensive evaluation. The accurate count of these topological features directly indicates crack complexity, providing a practical, and quantitative basis for estimating damage severity and informing maintenance schedules.</p><p>The main contributions of this paper are summarized as follows:</p><p>1. We propose a two-stage framework that integrates deep segmentation and topological analysis to perform automatic crack branch detection and closed-loop counting from pavement images.</p><p>2. We conducted a comprehensive comparative study of three deep segmentation models: DeepLabV3, Attention U-Net, and SegFormer.</p><p>3. We evaluated these models using Dice, clDice, and Betti-error metrics to identify the optimal architecture for precise crack segmentation.</p><p>4. We develop an automated topological analysis algorithm based on graph theory, enabling quantitative representation of crack complexity through branch and closed-loop counts, with quantification accuracy measured by MAPE.</p><p>5. We introduce and evaluate the proposed framework on the newly collected Timor Leste Crack (TLCrack) dataset, which contains numerous branching and closed-loop crack patterns, and validate the counting results against expert evaluations, demonstrating consistent correlation with human assessments.</p><p>This paper is organized as follows: Section I introduces the background of the study. Section II reviews related work. Section III explains the dataset used in this study. Section IV explains the overall methodology. Section V explains the experimental setup. Section VII will present our experimental results. Finally, sections VIII and IV will present the discussion and conclusion.</p>
+    </sec>
+    <sec sec-type="">
+      <title>2. Related works</title>
+      <p>The reliable assessment of road infrastructure heavily relies on accurately detecting and quantifying crack damage. Research in this field has evolved significantly, transitioning from traditional image processing techniques to advanced deep learning models. This section reviews key contributions to crack detection, segmentation, and structural quantification. The review provides context for the proposed deep segmentation and graph-based analysis framework.</p>
+      
+        <sec>
+          
+            <title>2.1. Conventional methods for crack detection and characterization</title>
+          
+          <p>Early approaches to automated crack analysis often relied on signal processing and classical computer vision techniques. These methods focused on enhancing crack contrast and filtering noise. One example is the use of matched filters combined with photographic reconstruction for detection and quantification [<xref ref-type="bibr" rid="ref_19">19</xref>]. While these techniques were foundational, they often struggled with complex backgrounds, shadows, and inconsistent lighting. Statistical quantification methods were also explored to provide concrete structure metrics based on computer vision. These methods focused on characterizing crack properties rather than structural topology [<xref ref-type="bibr" rid="ref_20">20</xref>]. Another approach integrated image processing with traditional machine learning to detect, characterize, and diagnose concrete crack patterns, emphasizing the geometric features of the damage [<xref ref-type="bibr" rid="ref_21">21</xref>]. While these conventional systems successfully demonstrated the feasibility of automation, their reliance on hand-engineered features limited their ability to generalize across diverse pavement conditions.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>2.2. Deep learning for semantic segmentation</title>
+          
+          <p>The advent of deep CNNs marked a paradigm shift by enabling the pixel-level accuracy that is essential for detailed crack quantification. Recent studies have demonstrated the efficacy of deep learning models for semantic segmentation. These models can achieve robust crack segmentation even under complex backgrounds. This has led to integrated methods for surface feature quantification. Deep learning has been successfully applied in specialized environments, such as for pixel-level detection and quantification of nuclear containment structures [<xref ref-type="bibr" rid="ref_22">22</xref>]. Furthermore, deep learning facilitates pattern-based recognition, enabling the automated classification and condition assessment of complex crack patterns in structures. Specialized data acquisition methods, such as using point clouds with deep learning models, have also been used for automatically detecting and quantifying complex concrete cracks, demonstrating the versatility of these modern techniques [<xref ref-type="bibr" rid="ref_23">23</xref>].</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>2.3. Quantification and structural analysis</title>
+          
+          <p>Although deep learning provides highly accurate segmentation masks, translating these masks into meaningful and reliable engineering metrics remains a critical research area. Many studies rely on basic geometric properties (e.g., area, average width, and length) derived directly from segmented pixels [<xref ref-type="bibr" rid="ref_20">20</xref>], [<xref ref-type="bibr" rid="ref_24">24</xref>]. However, a complete structural assessment requires an understanding of the topology and connectivity of the crack network. While research has touched upon characterizing crack patterns through image processing and machine learning, it often stops short of utilizing graph-based methodologies to model the entire crack system [<xref ref-type="bibr" rid="ref_21">21</xref>], [<xref ref-type="bibr" rid="ref_22">22</xref>]. Although pattern analysis has been applied in some areas, such as analyzing the development characteristics of cracks in root-soil complexes, there is a gap in the literature regarding a systematic, integrated approach for road pavements that leverages deep segmentation output to create a detailed, graph-based network for precise topological quantification. The need for robust structural analysis that goes beyond simple geometric measurement motivates the framework proposed in this paper.</p>
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>3. Dataset</title>
+      
+        <sec>
+          
+            <title>3.1. Timor leste crack</title>
+          
+          <p>For this study, we collected and curated a new dataset of road surface cracks in Timor-Leste to overcome the challenges of thin and fragmented crack segmentation in real infrastructure environments.</p>
+          
+            <sec>
+              
+                <title>3.1.1 Location and period</title>
+              
+              <p>The road surface data were collected along Timor-Leste’s primary national road, spanning approximately 110 km from Batugade city near the Indonesian border to the capital city, Dili Timor-Leste. The complete route is displayed in <xref ref-type="fig" rid="fig_1">Figure 1</xref>. This route was selected because it is a key transportation corridor, carrying high traffic volumes of vehicles traveling between Indonesia and Timor-Leste. </p>
+              
+                <fig id="fig_1">
+                  <label>Figure 1</label>
+                  <caption>
+                    <title>Map of the data collection route in Timor-Leste</title>
+                  </caption>
+                  <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/0/img_ZmFm1lgIAuKil5Y2.png"/>
+                </fig>
+              
+              <p>As a result, the road surface exhibits numerous cracks, making it an ideal site for crack data acquisition. The recordings were carried out from November 30, 2024, to January 14, 2025, covering multiple days and different times of day to capture varying illumination and traffic conditions. </p>
+            </sec>
+          
+          
+            <sec>
+              
+                <title>3.1.2 Data recording process</title>
+              
+              <p>Recordings were conducted using a DJI OSMO Pocket 3 camera mounted on the rear side of a vehicle, angled at 45 degrees toward the road surface, as shown in <xref ref-type="fig" rid="fig_2">Figure 2</xref>. The vehicle traveled at typical traffic speeds (40–60 kph), while the camera was configured to capture video at 4K resolution and 120 frames per second, with a shutter speed of 1/240 s to balance motion clarity and lighting conditions.</p>
+              
+                <fig id="fig_2">
+                  <label>Figure 2</label>
+                  <caption>
+                    <title>Schematic of the vehicle-mounted camera setup for road image acquisition</title>
+                  </caption>
+                  <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/0/img_sypeTZV__qKrLuTw.png"/>
+                </fig>
+              
+              <p>To construct the dataset, frames were extracted every 6 frames (equivalent to 20 frames per second), and images without visible cracks were filtered out to retain only crack-relevant samples. To prevent data leakage from correlated sequential frames during cross-validation, images were grouped by their original video sequence. During 5-fold cross-validation, all frames from the same continuous video segment were kept within the same fold, ensuring no temporal correlation between training and validation sets.</p>
+            </sec>
+          
+          
+            <sec>
+              
+                <title>3.1.3 Data annotation and dataset construction</title>
+              
+              <p>From the selected and filtered images, we constructed the TLCrack dataset, which consists of 605 images with complete pixel-level annotations. The annotation was carried out manually using specialized tools [<xref ref-type="bibr" rid="ref_25">25</xref>]. Crucially, besides the standard pixel-level annotation for segmentation, we also performed labeling for each image to count the number of crack branches and closed loops present, thereby creating a ground-truth dataset for the topological quantification tasks proposed in this study.</p>
+            </sec>
+          
+          
+            <sec>
+              
+                <title>3.1.4 Dataset characteristic</title>
+              
+              <p>The cracks in the TLCrack dataset are characteristically thin, averaging 1–2 pixels in width, with some reaching up to 3 pixels. These thin cracks appear in high-resolution (1920 <inline-formula>
+  <mml:math id="m5fbnf07pu">
+    <mml:mo>×</mml:mo>
+  </mml:math>
+</inline-formula> 1080) images that also contain common noise sources, including road textures, shadows, and wear or construction markings that visually resemble cracks, making the segmentation task particularly challenging.</p>
+            </sec>
+          
+          
+            <sec>
+              
+                <title>3.1.5 Data availability</title>
+              
+              <p>The TLCrack dataset is publicly available on Zenodo: https://doi.org/10.5281/zenodo.17033872. Sample crack images along with their corresponding annotations of TLCrack are shown in <xref ref-type="fig" rid="fig_3">Figure 3</xref>.</p>
+              
+                <fig id="fig_3">
+                  <label>Figure 3</label>
+                  <caption>
+                    <title>Example images and their corresponding manual annotations from the proposed TLCrack dataset</title>
+                  </caption>
+                  <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/0/img_x0kjOe361UfXHbMY.png"/>
+                </fig>
+              
+            </sec>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.2. Crackforest</title>
+          
+          <p>CrackForest Dataset [<xref ref-type="bibr" rid="ref_26">26</xref>] is an annotated road crack image database which can reflect urban road surface condition in general. It is a widely used benchmark in crack detection research, consisting of 118 images captured from urban roads. These images were taken under relatively uniform lighting conditions and contain diverse types of cracks, including thin and discontinuous patterns. Each image has a resolution of 480 <inline-formula>
+  <mml:math id="m74620b1p8">
+    <mml:mo>×</mml:mo>
+  </mml:math>
+</inline-formula> 320 pixels and is accompanied by manually annotated ground truth masks. Due to its moderate dataset size and well-annotated labels, the CrackForest dataset serves as a valuable test set for assessing the generalization ability of crack segmentation models. The cracks in the CrackForest dataset are characteristically thin and elongated. Some examples of the dataset are shown in <xref ref-type="fig" rid="fig_4">Figure 4</xref>.</p>
+          
+            <fig id="fig_4">
+              <label>Figure 4</label>
+              <caption>
+                <title>Sample images and ground truth masks from the public CrackForest dataset</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/0/img_h_9KEKXLVehFcsuE.png"/>
+            </fig>
+          
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>4. General methodology</title>
+      <p>Our overall methodology is illustrated in <xref ref-type="fig" rid="fig_5">Figure 5</xref>, which presents a two-stage framework for crack quantification. The process begins with crack images as input to Stage 1: Segmentation, where deep learning models process the images through hidden layers to produce predicted masks. </p>
+      
+        <fig id="fig_5">
+          <label>Figure 5</label>
+          <caption>
+            <title>An overview of the proposed two-stage framework for crack segmentation and topological quantification</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/0/img_UdjYE1SeLYglhSYQ.png"/>
+        </fig>
+      
+      <p>These segmentation outputs then feed into Stage 2: Quantification, where topological analysis performs two key tasks: (1) detection and counting of crack branches, and (2) detection and counting of crack closed loops. The final output provides a comprehensive crack evaluation score that quantifies the structural condition based on these geometric characteristics.</p>
+    </sec>
+    <sec sec-type="">
+      <title>5. Experiments on crack segmentation</title>
+      
+        <sec>
+          
+            <title>5.1. Deeplabv3</title>
+          
+          <p>This study employed the DeepLabV3 architecture due to its proven ability to capture multi-scale contextual information. This capability is crucial for segmenting cracks of varying widths against complex, textured pavement backgrounds [<xref ref-type="bibr" rid="ref_27">27</xref>]. The key innovation of DeepLabV3 is its Atrous Spatial Pyramid Pooling (ASPP) module. This module captures context at multiple scales by applying parallel convolutional layers with different dilation rates. The rates control the receptive field, enabling the network to aggregate features from fine details and broader contexts without increasing parameters or losing resolution through pooling.</p><p>The ASPP module used in this work consists of:</p><p>1. One 1 <inline-formula>
+  <mml:math id="m9812sylht">
+    <mml:mo>×</mml:mo>
+  </mml:math>
+</inline-formula> 1 convolution.</p><p>2. Three 3 <inline-formula>
+  <mml:math id="ml8n62uvbt">
+    <mml:mo>×</mml:mo>
+  </mml:math>
+</inline-formula> 3 convolutions with dilation rates of $r<inline-formula>
+  <mml:math id="mtogjlo8wt">
+    <mml:mo>=</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mn>6</mml:mn>
+    <mml:mn>12</mml:mn>
+    <mml:mn>18.</mml:mn>
+    <mml:mn>3.</mml:mn>
+    <mml:mn>1</mml:mn>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>A</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>I</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>L</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>P</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>a</mml:mi>
+  </mml:math>
+</inline-formula>\times<inline-formula>
+  <mml:math id="mog3717cf1">
+    <mml:mn>1</mml:mn>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mo>−</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+  </mml:math>
+</inline-formula>F_{out}$ from the ASPP module can be represented as:</p>
+          
+            <disp-formula>
+              <label>(1)</label>
+              <mml:math id="muy91uyr48">
+                <mml:msub>
+                  <mml:mi>F</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>o</mml:mi>
+                    <mml:mi>u</mml:mi>
+                    <mml:mi>t</mml:mi>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>f</mml:mi>
+                  <mml:mrow>
+                    <mml:mn>1</mml:mn>
+                    <mml:mn>1</mml:mn>
+                    <mml:mo>×</mml:mo>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>f</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>r</mml:mi>
+                    <mml:mo>−</mml:mo>
+                    <mml:mn>6</mml:mn>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>f</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>r</mml:mi>
+                    <mml:mo>−</mml:mo>
+                    <mml:mn>12</mml:mn>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>f</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>r</mml:mi>
+                    <mml:mo>−</mml:mo>
+                    <mml:mn>18</mml:mn>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>f</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>p</mml:mi>
+                    <mml:mi>o</mml:mi>
+                    <mml:mi>o</mml:mi>
+                    <mml:mi>l</mml:mi>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mo>+</mml:mo>
+                <mml:mo>+</mml:mo>
+                <mml:mo>+</mml:mo>
+                <mml:mo>+</mml:mo>
+              </mml:math>
+            </disp-formula>
+          
+          <p> where <inline-formula>
+  <mml:math id="m5sqmsgdsp">
+    <mml:mo>⊕</mml:mo>
+  </mml:math>
+</inline-formula> denotes the channel-wise concatenation operation, and $f$ represents the feature maps from each of the five branches. A final classifier then processes this multi-scale feature representation to produce the segmentation map.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>5.2. Attention u-net</title>
+          
+          <p>The Attention U-Net model [<xref ref-type="bibr" rid="ref_11">11</xref>] was selected for its ability to refine segmentation boundaries by selectively focusing on salient crack structures while suppressing irrelevant background noise. This architecture enhances the classic U-Net [<xref ref-type="bibr" rid="ref_28">28</xref>] by integrating attention gates into the skip connections. In a standard U-Net, feature maps from the encoder are directly concatenated with the corresponding decoder layers. In Attention U-Net, these features first pass through an attention gate. The gate uses the higher-level, coarser feature map from the decoder to weigh the importance of each spatial location in the encoder's feature map. This process allows the model to prioritize features from crack regions. The computation within an attention gate can be summarized as follows. </p><p>The encoder feature map <inline-formula>
+  <mml:math id="mowxfpwebx">
+    <mml:msup>
+      <mml:mi>x</mml:mi>
+      <mml:mi>l</mml:mi>
+    </mml:msup>
+  </mml:math>
+</inline-formula> and the gating signal $g$ from the decoder are first transformed. An additive attention mechanism is then applied:</p>
+          
+            <disp-formula>
+              <label>(2)</label>
+              <mml:math id="m94b19il9m">
+                <mml:msub>
+                  <mml:mi>q</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>a</mml:mi>
+                    <mml:mi>t</mml:mi>
+                    <mml:mi>t</mml:mi>
+                    <mml:mi>e</mml:mi>
+                    <mml:mi>n</mml:mi>
+                    <mml:mi>t</mml:mi>
+                    <mml:mi>i</mml:mi>
+                    <mml:mi>o</mml:mi>
+                    <mml:mi>n</mml:mi>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>b</mml:mi>
+                  <mml:mi>ψ</mml:mi>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mo>+</mml:mo>
+                <mml:msup>
+                  <mml:mi>ψ</mml:mi>
+                  <mml:mi>T</mml:mi>
+                </mml:msup>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:msub>
+                    <mml:mi>σ</mml:mi>
+                    <mml:mn>1</mml:mn>
+                  </mml:msub>
+                  <mml:mrow>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>+</mml:mo>
+                    <mml:mo>+</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:msubsup>
+                      <mml:mi>W</mml:mi>
+                      <mml:mi>x</mml:mi>
+                      <mml:mi>T</mml:mi>
+                    </mml:msubsup>
+                    <mml:msubsup>
+                      <mml:mi>x</mml:mi>
+                      <mml:mi>i</mml:mi>
+                      <mml:mi>l</mml:mi>
+                    </mml:msubsup>
+                    <mml:msubsup>
+                      <mml:mi>W</mml:mi>
+                      <mml:mi>g</mml:mi>
+                      <mml:mi>T</mml:mi>
+                    </mml:msubsup>
+                    <mml:mi>g</mml:mi>
+                    <mml:msub>
+                      <mml:mi>b</mml:mi>
+                      <mml:mi>g</mml:mi>
+                    </mml:msub>
+                  </mml:mrow>
+                </mml:mrow>
+              </mml:math>
+            </disp-formula>
+          
+          
+            <disp-formula>
+              <label>(3)</label>
+              <mml:math id="mgpp482kuy">
+                <mml:msubsup>
+                  <mml:mi>α</mml:mi>
+                  <mml:mi>i</mml:mi>
+                  <mml:mi>l</mml:mi>
+                </mml:msubsup>
+                <mml:mo>=</mml:mo>
+                <mml:msub>
+                  <mml:mi>σ</mml:mi>
+                  <mml:mn>2</mml:mn>
+                </mml:msub>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:msub>
+                    <mml:mi>q</mml:mi>
+                    <mml:mrow>
+                      <mml:mi>a</mml:mi>
+                      <mml:mi>t</mml:mi>
+                      <mml:mi>t</mml:mi>
+                      <mml:mi>e</mml:mi>
+                      <mml:mi>n</mml:mi>
+                      <mml:mi>t</mml:mi>
+                      <mml:mi>i</mml:mi>
+                      <mml:mi>o</mml:mi>
+                      <mml:mi>n</mml:mi>
+                    </mml:mrow>
+                  </mml:msub>
+                  <mml:mrow>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>;</mml:mo>
+                    <mml:mo>;</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:msubsup>
+                      <mml:mi>x</mml:mi>
+                      <mml:mi>i</mml:mi>
+                      <mml:mi>l</mml:mi>
+                    </mml:msubsup>
+                    <mml:mi>g</mml:mi>
+                    <mml:msub>
+                      <mml:mi>Θ</mml:mi>
+                      <mml:mrow>
+                        <mml:mi>a</mml:mi>
+                        <mml:mi>t</mml:mi>
+                        <mml:mi>t</mml:mi>
+                        <mml:mi>e</mml:mi>
+                        <mml:mi>n</mml:mi>
+                        <mml:mi>t</mml:mi>
+                        <mml:mi>i</mml:mi>
+                        <mml:mi>o</mml:mi>
+                        <mml:mi>n</mml:mi>
+                      </mml:mrow>
+                    </mml:msub>
+                  </mml:mrow>
+                </mml:mrow>
+              </mml:math>
+            </disp-formula>
+          
+          <p> where, <inline-formula>
+  <mml:math id="mbvmhy58jp">
+    <mml:msub>
+      <mml:mi>W</mml:mi>
+      <mml:mi>x</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula>, <inline-formula>
+  <mml:math id="m5cuhxc36q">
+    <mml:msub>
+      <mml:mi>W</mml:mi>
+      <mml:mi>g</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula>, <inline-formula>
+  <mml:math id="mmekds0jrb">
+    <mml:msub>
+      <mml:mi>b</mml:mi>
+      <mml:mi>g</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula>, <inline-formula>
+  <mml:math id="mhot97840e">
+    <mml:mi>ψ</mml:mi>
+  </mml:math>
+</inline-formula>, <inline-formula>
+  <mml:math id="ms2uu864c9">
+    <mml:msub>
+      <mml:mi>b</mml:mi>
+      <mml:mi>ψ</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> are learnable parameters. <inline-formula>
+  <mml:math id="mdpv5gvjtv">
+    <mml:msub>
+      <mml:mi>σ</mml:mi>
+      <mml:mn>1</mml:mn>
+    </mml:msub>
+  </mml:math>
+</inline-formula> is a ReLU activation function. <inline-formula>
+  <mml:math id="mrgqaxnnvl">
+    <mml:msub>
+      <mml:mi>σ</mml:mi>
+      <mml:mn>2</mml:mn>
+    </mml:msub>
+  </mml:math>
+</inline-formula> is a Sigmoid activation function that outputs the attention coefficients <inline-formula>
+  <mml:math id="m3n12vjwd2">
+    <mml:msubsup>
+      <mml:mi>α</mml:mi>
+      <mml:mi>i</mml:mi>
+      <mml:mi>l</mml:mi>
+    </mml:msubsup>
+    <mml:mo>∈</mml:mo>
+    <mml:mo>[</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>]</mml:mo>
+    <mml:mn>0</mml:mn>
+    <mml:mn>1</mml:mn>
+  </mml:math>
+</inline-formula> for each spatial location $i<inline-formula>
+  <mml:math id="m6cqjy1j54">
+    <mml:mo>.</mml:mo>
+    <mml:mo>&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>p</mml:mi>
+  </mml:math>
+</inline-formula>x^l<inline-formula>
+  <mml:math id="moi0hdv428">
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+  </mml:math>
+</inline-formula>\alpha^l<inline-formula>
+  <mml:math id="m2foooqbeq">
+    <mml:mo>,</mml:mo>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>p</mml:mi>
+  </mml:math>
+</inline-formula>\hat{x}^l$ that is focused on spatially relevant regions:</p>
+          
+            <disp-formula>
+              <label>(4)</label>
+              <mml:math id="mwu4v10n5z">
+                <mml:msup>
+                  <mml:mrow>
+                    <mml:mover>
+                      <mml:mi>x</mml:mi>
+                      <mml:mo>^</mml:mo>
+                    </mml:mover>
+                  </mml:mrow>
+                  <mml:mi>l</mml:mi>
+                </mml:msup>
+                <mml:msup>
+                  <mml:mi>x</mml:mi>
+                  <mml:mi>l</mml:mi>
+                </mml:msup>
+                <mml:msup>
+                  <mml:mi>α</mml:mi>
+                  <mml:mi>l</mml:mi>
+                </mml:msup>
+                <mml:mo>=</mml:mo>
+                <mml:mo>⋅</mml:mo>
+              </mml:math>
+            </disp-formula>
+          
+          <p>This refined feature map is then concatenated with the upsampled decoder feature map to enable precise localization in the final segmentation output.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>5.3. Segformer</title>
+          
+          <p>SegFormer [<xref ref-type="bibr" rid="ref_12">12</xref>] is a transformer-based semantic segmentation framework that combines the strengths of both convolutional and transformer architectures. Unlike traditional CNN-based models, SegFormer employs a hierarchical vision transformer encoder known as MiT (Mix Transformer), which captures long-range dependencies and global contextual features through multi-head self-attention mechanisms. The MiT-B5 variant, used in this study, is pre-trained on ImageNet-21k and provides rich multi-scale feature representations while maintaining computational efficiency. SegFormer dispenses with positional encodings and complex decoder designs, instead using a lightweight, multi-layer perceptron (MLP) decoder that aggregates features from different encoder stages. This design enables the model to achieve high accuracy with fewer parameters and faster inference time. Its ability to maintain spatial resolution across scales makes it especially effective for tasks requiring fine structural detail, such as road crack segmentation. Furthermore, the attention-driven feature learning in SegFormer enhances its robustness to varying crack shapes, orientations, and lighting conditions.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>5.4. Training methodology</title>
+          
+          <p>This study evaluates three advanced semantic segmentation architectures for the task of road crack segmentation: DeepLabV3, Attention U-Net, and SegFormer-B5.</p><p>These models were selected for their distinct and complementary approaches to segmentation. Our training approach includes a Skeleton Recall Loss [<xref ref-type="bibr" rid="ref_13">13</xref>] designed to preserve crack connectivity, which prioritizes the maintenance of topological integrity and continuous crack structures during optimization. This specialized loss function is particularly suited for elongated crack patterns where preserving connectivity is crucial for accurate topological analysis. To ensure robust performance evaluation, we employ 5-fold cross-validation. The dataset is randomly partitioned into five equal subsets (each 20% of the data). In each fold, four subsets (80% of the data) are used for training, and the remaining one subset (20% of the data) serves as the validation set. To prevent data leakage from correlated sequential frames, a Group K-Fold strategy was employed where all frames from the same original video sequence were kept within the same fold. Statistical significance testing was conducted using paired t-tests on image-level metrics from all test folds combined ($n<inline-formula>
+  <mml:math id="mppx93yn1r">
+    <mml:mo>=</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mn>61</mml:mn>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>L</mml:mi>
+    <mml:mi>C</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>k</mml:mi>
+  </mml:math>
+</inline-formula>n<inline-formula>
+  <mml:math id="m5khnk1x1g">
+    <mml:mo>=</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mn>12</mml:mn>
+    <mml:mn>50</mml:mn>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>C</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>k</mml:mi>
+    <mml:mi>F</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>z</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>q</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>z</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>q</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>z</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+  </mml:math>
+</inline-formula>\pm$15<inline-formula>
+  <mml:math id="mp69jxva18">
+    <mml:msup>
+      <mml:mi/>
+      <mml:mo>∘</mml:mo>
+    </mml:msup>
+  </mml:math>
+</inline-formula>, and gamma correction to emulate different lighting conditions, consistent with the approach in study [<xref ref-type="bibr" rid="ref_29">29</xref>]. All input images are resized to 256 <inline-formula>
+  <mml:math id="mqvujkd4pi">
+    <mml:mo>×</mml:mo>
+  </mml:math>
+</inline-formula> 256 pixels to standardize input dimensions. We optimize model performance using the AdamW optimizer [<xref ref-type="bibr" rid="ref_30">30</xref>], and perform a grid search over key hyperparameters: learning rates 1 <inline-formula>
+  <mml:math id="ma1t5q5wqj">
+    <mml:mo>×</mml:mo>
+  </mml:math>
+</inline-formula> 10<inline-formula>
+  <mml:math id="mjelsgk4zu">
+    <mml:msup>
+      <mml:mi/>
+      <mml:mrow>
+        <mml:mo>−</mml:mo>
+        <mml:mn>4</mml:mn>
+      </mml:mrow>
+    </mml:msup>
+  </mml:math>
+</inline-formula>, 5 <inline-formula>
+  <mml:math id="mdqtambrkv">
+    <mml:mo>×</mml:mo>
+  </mml:math>
+</inline-formula> 10<inline-formula>
+  <mml:math id="mkt5qd3px2">
+    <mml:msup>
+      <mml:mi/>
+      <mml:mrow>
+        <mml:mo>−</mml:mo>
+        <mml:mn>4</mml:mn>
+      </mml:mrow>
+    </mml:msup>
+  </mml:math>
+</inline-formula>, 1 <inline-formula>
+  <mml:math id="me1qrrumg8">
+    <mml:mo>×</mml:mo>
+  </mml:math>
+</inline-formula> 10<inline-formula>
+  <mml:math id="mg3en1c1mv">
+    <mml:msup>
+      <mml:mi/>
+      <mml:mrow>
+        <mml:mo>−</mml:mo>
+        <mml:mn>3</mml:mn>
+      </mml:mrow>
+    </mml:msup>
+  </mml:math>
+</inline-formula>, weight decay values 1 <inline-formula>
+  <mml:math id="mx8gspgurs">
+    <mml:mo>×</mml:mo>
+  </mml:math>
+</inline-formula> 10<inline-formula>
+  <mml:math id="mlusn32xzc">
+    <mml:msup>
+      <mml:mi/>
+      <mml:mrow>
+        <mml:mo>−</mml:mo>
+        <mml:mn>4</mml:mn>
+      </mml:mrow>
+    </mml:msup>
+  </mml:math>
+</inline-formula>, 1 <inline-formula>
+  <mml:math id="mng7hrm54b">
+    <mml:mo>×</mml:mo>
+  </mml:math>
+</inline-formula> 10<inline-formula>
+  <mml:math id="mh3je04l0b">
+    <mml:msup>
+      <mml:mi/>
+      <mml:mrow>
+        <mml:mo>−</mml:mo>
+        <mml:mn>3</mml:mn>
+      </mml:mrow>
+    </mml:msup>
+  </mml:math>
+</inline-formula>, 1 <inline-formula>
+  <mml:math id="mmzvwuc4pn">
+    <mml:mo>×</mml:mo>
+  </mml:math>
+</inline-formula> 10<inline-formula>
+  <mml:math id="mr89hwfv0p">
+    <mml:msup>
+      <mml:mi/>
+      <mml:mrow>
+        <mml:mo>−</mml:mo>
+        <mml:mn>2</mml:mn>
+      </mml:mrow>
+    </mml:msup>
+  </mml:math>
+</inline-formula>, and batch sizes {8, 16, 32}. The best-performing configuration, learning rate of 1 <inline-formula>
+  <mml:math id="mgyh1d7nrl">
+    <mml:mo>×</mml:mo>
+  </mml:math>
+</inline-formula> 10<inline-formula>
+  <mml:math id="mzhic0xhag">
+    <mml:msup>
+      <mml:mi/>
+      <mml:mrow>
+        <mml:mo>−</mml:mo>
+        <mml:mn>4</mml:mn>
+      </mml:mrow>
+    </mml:msup>
+  </mml:math>
+</inline-formula>, weight decay of 1 <inline-formula>
+  <mml:math id="mk1vn762rk">
+    <mml:mo>×</mml:mo>
+  </mml:math>
+</inline-formula> 10<inline-formula>
+  <mml:math id="m60svdhali">
+    <mml:msup>
+      <mml:mi/>
+      <mml:mrow>
+        <mml:mo>−</mml:mo>
+        <mml:mn>3</mml:mn>
+      </mml:mrow>
+    </mml:msup>
+  </mml:math>
+</inline-formula>, and batch size of 8, is used to train each model for 100 epochs.</p><p>All implementations are conducted using Python 3.12.7 and PyTorch 2.2.0. The experiments are executed on a workstation equipped with an Intel i5-12600K CPU, 64 GB RAM, and an NVIDIA RTX A6000 GPU.</p>
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>6. Graph-based analysis of crack quantification</title>
+      <p>To quantitatively characterize the complexity and topology of the crack network, the skeletonized crack image is analyzed using principles from mathematical morphology and graph theory. This analysis focuses on two critical topological features: branch points, which indicate crack intersection and coalescence, and closed loops, which signify regions of fully detached material.</p>
+      
+        <sec>
+          
+            <title>6.1. Branch point counting</title>
+          
+          <p>The identification of branch points is treated as a problem of finding vertices with a degree of three or more in the pixel-adjacency graph of the skeleton. The procedure is defined as follows.</p><p>Let $S$ <inline-formula>
+  <mml:math id="m5ws3qlbtu">
+    <mml:mo>⊂</mml:mo>
+  </mml:math>
+</inline-formula> <inline-formula>
+  <mml:math id="mw1qftnqmb">
+    <mml:msup>
+      <mml:mrow>
+        <mml:mi>Z</mml:mi>
+      </mml:mrow>
+      <mml:mn>2</mml:mn>
+    </mml:msup>
+  </mml:math>
+</inline-formula> represent the set of all skeleton pixels that were skeletonized using the Fast Parallel Thinning Algorithm [<xref ref-type="bibr" rid="ref_31">31</xref>], where a pixel at coordinate <inline-formula>
+  <mml:math id="mptwo65itf">
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mi>i</mml:mi>
+    <mml:mi>j</mml:mi>
+  </mml:math>
+</inline-formula> is an element of $S<inline-formula>
+  <mml:math id="mh53yvspn3">
+    <mml:mi>i</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>k</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>k</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>k</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mo>.</mml:mo>
+    <mml:mn>3</mml:mn>
+  </mml:math>
+</inline-formula>\times<inline-formula>
+  <mml:math id="mvd5tjhd4j">
+    <mml:mn>3</mml:mn>
+    <mml:mi>k</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+  </mml:math>
+</inline-formula>K$ to quantify the local pixel density:</p>
+          
+            <disp-formula>
+              <label>(5)</label>
+              <mml:math id="m4hms7hg4d">
+                <mml:mi>K</mml:mi>
+                <mml:mo>=</mml:mo>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:mtable columnalign="left left left" columnspacing="1em" rowspacing="4pt">
+                    <mml:mtr>
+                      <mml:mtd>
+                        <mml:mn>1</mml:mn>
+                      </mml:mtd>
+                      <mml:mtd>
+                        <mml:mn>1</mml:mn>
+                      </mml:mtd>
+                      <mml:mtd>
+                        <mml:mn>1</mml:mn>
+                      </mml:mtd>
+                    </mml:mtr>
+                    <mml:mtr>
+                      <mml:mtd>
+                        <mml:mn>1</mml:mn>
+                      </mml:mtd>
+                      <mml:mtd>
+                        <mml:mn>0</mml:mn>
+                      </mml:mtd>
+                      <mml:mtd>
+                        <mml:mn>1</mml:mn>
+                      </mml:mtd>
+                    </mml:mtr>
+                    <mml:mtr>
+                      <mml:mtd>
+                        <mml:mn>1</mml:mn>
+                      </mml:mtd>
+                      <mml:mtd>
+                        <mml:mn>1</mml:mn>
+                      </mml:mtd>
+                      <mml:mtd>
+                        <mml:mn>1</mml:mn>
+                      </mml:mtd>
+                    </mml:mtr>
+                  </mml:mtable>
+                </mml:mrow>
+              </mml:math>
+            </disp-formula>
+          
+          <p>The convolution operation, <inline-formula>
+  <mml:math id="mtyjp5rlnk">
+    <mml:mi>C</mml:mi>
+    <mml:mi>S</mml:mi>
+    <mml:mi>K</mml:mi>
+    <mml:mo>=</mml:mo>
+    <mml:mo>∗</mml:mo>
+  </mml:math>
+</inline-formula>, performed in “constant” mode with zero-padding, yields a matrix $C<inline-formula>
+  <mml:math id="mhc77cldww">
+    <mml:mi>w</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+  </mml:math>
+</inline-formula>C(i, j)<inline-formula>
+  <mml:math id="mt89bsk2nt">
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mn>8</mml:mn>
+    <mml:mo>−</mml:mo>
+  </mml:math>
+</inline-formula>(i,j)<inline-formula>
+  <mml:math id="m5mim5ax28">
+    <mml:mo>.</mml:mo>
+    <mml:mi>T</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>q</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+  </mml:math>
+</inline-formula>N_8(i,j)$ :</p>
+          
+            <disp-formula>
+              <label>(6)</label>
+              <mml:math id="mp076pq37n">
+                <mml:mi>C</mml:mi>
+                <mml:mi>i</mml:mi>
+                <mml:mi>j</mml:mi>
+                <mml:mi>x</mml:mi>
+                <mml:mi>y</mml:mi>
+                <mml:mo>(</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo>)</mml:mo>
+                <mml:mo>=</mml:mo>
+                <mml:mo>(</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo>)</mml:mo>
+                <mml:munder>
+                  <mml:mo>∑</mml:mo>
+                  <mml:mrow>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>,</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:mo>∈</mml:mo>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>,</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:mi>x</mml:mi>
+                    <mml:mi>y</mml:mi>
+                    <mml:mi>i</mml:mi>
+                    <mml:mi>j</mml:mi>
+                    <mml:msub>
+                      <mml:mi>N</mml:mi>
+                      <mml:mn>8</mml:mn>
+                    </mml:msub>
+                  </mml:mrow>
+                </mml:munder>
+                <mml:msub>
+                  <mml:mn>1</mml:mn>
+                  <mml:mi>S</mml:mi>
+                </mml:msub>
+              </mml:math>
+            </disp-formula>
+          
+          <p> where, <inline-formula>
+  <mml:math id="mdiow7f31t">
+    <mml:msub>
+      <mml:mi>N</mml:mi>
+      <mml:mn>8</mml:mn>
+    </mml:msub>
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>=</mml:mo>
+    <mml:mo fence="false">{</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>+</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>+</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>∣</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>∈</mml:mo>
+    <mml:mo fence="false">{</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo fence="false">}</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>≠</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo fence="false">}</mml:mo>
+    <mml:mi>i</mml:mi>
+    <mml:mi>j</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>j</mml:mi>
+    <mml:mi>q</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>q</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>q</mml:mi>
+    <mml:mn>1</mml:mn>
+    <mml:mn>0</mml:mn>
+    <mml:mn>1</mml:mn>
+    <mml:mn>0</mml:mn>
+    <mml:mn>0</mml:mn>
+  </mml:math>
+</inline-formula> and $1_S<inline-formula>
+  <mml:math id="mqozw78q2x">
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+  </mml:math>
+</inline-formula>S$.</p><p>Candidate branch points are identified as skeleton pixels with a local connectivity of three or more:</p>
+          
+            <disp-formula>
+              <label>(7)</label>
+              <mml:math id="mwd9axrswh">
+                <mml:msub>
+                  <mml:mi>P</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>c</mml:mi>
+                    <mml:mi>a</mml:mi>
+                    <mml:mi>n</mml:mi>
+                    <mml:mi>d</mml:mi>
+                    <mml:mi>i</mml:mi>
+                    <mml:mi>d</mml:mi>
+                    <mml:mi>a</mml:mi>
+                    <mml:mi>t</mml:mi>
+                    <mml:mi>e</mml:mi>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mo fence="false">{</mml:mo>
+                <mml:mo>(</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo>)</mml:mo>
+                <mml:mo>∈</mml:mo>
+                <mml:mo>∣</mml:mo>
+                <mml:mo>(</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo>)</mml:mo>
+                <mml:mo>≥</mml:mo>
+                <mml:mo fence="false">}</mml:mo>
+                <mml:mi>i</mml:mi>
+                <mml:mi>j</mml:mi>
+                <mml:mi>S</mml:mi>
+                <mml:mi>C</mml:mi>
+                <mml:mi>i</mml:mi>
+                <mml:mi>j</mml:mi>
+                <mml:mn>3</mml:mn>
+              </mml:math>
+            </disp-formula>
+          
+          <p>To prevent the over-counting of clustered pixels from a single topological branch point, the candidate set is partitioned into connected components using an 8 connectivity relation $R<inline-formula>
+  <mml:math id="mdnb6epi0g">
+    <mml:mo>.</mml:mo>
+    <mml:mi>T</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+  </mml:math>
+</inline-formula>(i,j)<inline-formula>
+  <mml:math id="mx2dfaazsn">
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+  </mml:math>
+</inline-formula>(k,l)<inline-formula>
+  <mml:math id="mvzr5u1xpa">
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>(i,j)R(k,l)$, if their Chebyshev distance is less than or equal to 1 :</p>
+          
+            <disp-formula>
+              <label>(8)</label>
+              <mml:math id="ml001sijze">
+                <mml:msub>
+                  <mml:mi>d</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>∞</mml:mi>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:mo>(</mml:mo>
+                <mml:mo>(</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo>)</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo>(</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo>)</mml:mo>
+                <mml:mo>)</mml:mo>
+                <mml:mo>=</mml:mo>
+                <mml:mo>max</mml:mo>
+                <mml:mo>(</mml:mo>
+                <mml:mo>−</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo>−</mml:mo>
+                <mml:mo>)</mml:mo>
+                <mml:mo>≤</mml:mo>
+                <mml:mi>i</mml:mi>
+                <mml:mi>j</mml:mi>
+                <mml:mi>k</mml:mi>
+                <mml:mi>l</mml:mi>
+                <mml:mi>i</mml:mi>
+                <mml:mi>k</mml:mi>
+                <mml:mi>j</mml:mi>
+                <mml:mi>l</mml:mi>
+                <mml:mrow>
+                  <mml:mo>|</mml:mo>
+                </mml:mrow>
+                <mml:mrow>
+                  <mml:mo>|</mml:mo>
+                </mml:mrow>
+                <mml:mrow>
+                  <mml:mo>|</mml:mo>
+                </mml:mrow>
+                <mml:mrow>
+                  <mml:mo>|</mml:mo>
+                </mml:mrow>
+                <mml:mn>1</mml:mn>
+              </mml:math>
+            </disp-formula>
+          
+          <p>The final set of branch points is the set of equivalence classes under the transitive closure of $R$:</p>
+          
+            <disp-formula>
+              <label>(9)</label>
+              <mml:math id="mncindeefn">
+                <mml:mi>B</mml:mi>
+                <mml:msub>
+                  <mml:mi>P</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>f</mml:mi>
+                    <mml:mi>i</mml:mi>
+                    <mml:mi>n</mml:mi>
+                    <mml:mi>a</mml:mi>
+                    <mml:mi>l</mml:mi>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mfrac>
+                  <mml:mrow>
+                    <mml:mi>B</mml:mi>
+                    <mml:msub>
+                      <mml:mi>P</mml:mi>
+                      <mml:mrow>
+                        <mml:mi>c</mml:mi>
+                        <mml:mi>a</mml:mi>
+                        <mml:mi>n</mml:mi>
+                        <mml:mi>d</mml:mi>
+                        <mml:mi>i</mml:mi>
+                        <mml:mi>d</mml:mi>
+                        <mml:mi>a</mml:mi>
+                        <mml:mi>t</mml:mi>
+                        <mml:mi>e</mml:mi>
+                      </mml:mrow>
+                    </mml:msub>
+                  </mml:mrow>
+                  <mml:mi>R</mml:mi>
+                </mml:mfrac>
+              </mml:math>
+            </disp-formula>
+          
+          <p>The total branch count, <inline-formula>
+  <mml:math id="mgpc9g8k0y">
+    <mml:msub>
+      <mml:mi>N</mml:mi>
+      <mml:mrow>
+        <mml:mi>b</mml:mi>
+        <mml:mi>r</mml:mi>
+        <mml:mi>a</mml:mi>
+        <mml:mi>n</mml:mi>
+        <mml:mi>c</mml:mi>
+        <mml:mi>h</mml:mi>
+        <mml:mi>e</mml:mi>
+        <mml:mi>s</mml:mi>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula>, is then given by the cardinality of this quotient set:</p>
+          
+            <disp-formula>
+              <label>(10)</label>
+              <mml:math id="mmtvo1yh1r">
+                <mml:msub>
+                  <mml:mi>N</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>b</mml:mi>
+                    <mml:mi>r</mml:mi>
+                    <mml:mi>a</mml:mi>
+                    <mml:mi>n</mml:mi>
+                    <mml:mi>c</mml:mi>
+                    <mml:mi>h</mml:mi>
+                    <mml:mi>e</mml:mi>
+                    <mml:mi>s</mml:mi>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mrow>
+                  <mml:mo>|</mml:mo>
+                  <mml:mo>|</mml:mo>
+                  <mml:mi>B</mml:mi>
+                  <mml:msub>
+                    <mml:mi>P</mml:mi>
+                    <mml:mrow>
+                      <mml:mi>f</mml:mi>
+                      <mml:mi>i</mml:mi>
+                      <mml:mi>n</mml:mi>
+                      <mml:mi>a</mml:mi>
+                      <mml:mi>l</mml:mi>
+                    </mml:mrow>
+                  </mml:msub>
+                </mml:mrow>
+              </mml:math>
+            </disp-formula>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>6.2. Closed loop detection</title>
+          
+          <p>The detection of closed loops is formulated as the problem of identifying bounded connected components in the complement of the skeleton, which correspond to holes enclosed by the crack network. This method relies on labeling the background using 4-connectivity to ensure that diagonally adjacent skeleton pixels do not artificially connect separate background regions.</p><p>The skeleton image S is first padded with a border of background pixels to define an external boundary, resulting in a padded set <inline-formula>
+  <mml:math id="mqdwvsvsdx">
+    <mml:msub>
+      <mml:mi>S</mml:mi>
+      <mml:mrow>
+        <mml:mi>p</mml:mi>
+        <mml:mi>a</mml:mi>
+        <mml:mi>d</mml:mi>
+        <mml:mi>d</mml:mi>
+        <mml:mi>e</mml:mi>
+        <mml:mi>d</mml:mi>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula>. The background set $B$ is defined as the complement:</p>
+          
+            <disp-formula>
+              <label>(11)</label>
+              <mml:math id="mvgyun9tgj">
+                <mml:mi>B</mml:mi>
+                <mml:mi>complement</mml:mi>
+                <mml:mo>=</mml:mo>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:msub>
+                    <mml:mi>S</mml:mi>
+                    <mml:mrow>
+                      <mml:mi>p</mml:mi>
+                      <mml:mi>a</mml:mi>
+                      <mml:mi>d</mml:mi>
+                      <mml:mi>d</mml:mi>
+                      <mml:mi>e</mml:mi>
+                      <mml:mi>d</mml:mi>
+                    </mml:mrow>
+                  </mml:msub>
+                </mml:mrow>
+              </mml:math>
+            </disp-formula>
+          
+          <p>The background is then modeled as a graph <inline-formula>
+  <mml:math id="m8j1eodlcu">
+    <mml:msub>
+      <mml:mi>G</mml:mi>
+      <mml:mi>B</mml:mi>
+    </mml:msub>
+    <mml:mo>=</mml:mo>
+    <mml:mrow>
+      <mml:mo>(</mml:mo>
+      <mml:mo>,</mml:mo>
+      <mml:mo>)</mml:mo>
+      <mml:msub>
+        <mml:mi>V</mml:mi>
+        <mml:mi>B</mml:mi>
+      </mml:msub>
+      <mml:msub>
+        <mml:mi>E</mml:mi>
+        <mml:mi>B</mml:mi>
+      </mml:msub>
+    </mml:mrow>
+  </mml:math>
+</inline-formula>, where: <inline-formula>
+  <mml:math id="maxup8pz8e">
+    <mml:msub>
+      <mml:mi>V</mml:mi>
+      <mml:mi>B</mml:mi>
+    </mml:msub>
+    <mml:mo>=</mml:mo>
+    <mml:mo fence="false">{</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>∣</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>∈</mml:mo>
+    <mml:mo fence="false">}</mml:mo>
+    <mml:mi>i</mml:mi>
+    <mml:mi>j</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>j</mml:mi>
+    <mml:mi>B</mml:mi>
+  </mml:math>
+</inline-formula> is the set of background pixels (vertices). <inline-formula>
+  <mml:math id="mf034vrir0">
+    <mml:msub>
+      <mml:mi>E</mml:mi>
+      <mml:mi>B</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> is the set of edges connecting 4-adjacent pixels, defined by the relation <inline-formula>
+  <mml:math id="m20tv37enh">
+    <mml:mo>|</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>+</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>=</mml:mo>
+    <mml:mi>i</mml:mi>
+    <mml:mi>k</mml:mi>
+    <mml:mi>j</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mrow>
+      <mml:mo>|</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>|</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>|</mml:mo>
+    </mml:mrow>
+    <mml:mn>1</mml:mn>
+  </mml:math>
+</inline-formula>.</p><p>The connected components <inline-formula>
+  <mml:math id="mx5eryceqq">
+    <mml:mi>C</mml:mi>
+    <mml:msub>
+      <mml:mi>C</mml:mi>
+      <mml:mi>B</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> of the graph <inline-formula>
+  <mml:math id="my105ft5kq">
+    <mml:msub>
+      <mml:mi>G</mml:mi>
+      <mml:mi>B</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> are found. These components are partitioned into two disjoint sets based on their connectivity to the image border $P<inline-formula>
+  <mml:math id="m3vulf9gi2">
+    <mml:mo>.</mml:mo>
+    <mml:mi>L</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+  </mml:math>
+</inline-formula>\partial \Omega$ represent the padded border of the image. The set of background components is divided as follows:</p>
+          
+            <disp-formula>
+              <label>(12)</label>
+              <mml:math id="msp4j6gnw8">
+                <mml:mi>C</mml:mi>
+                <mml:mi>C</mml:mi>
+                <mml:mi>C</mml:mi>
+                <mml:msub>
+                  <mml:mi>C</mml:mi>
+                  <mml:mi>B</mml:mi>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>C</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>b</mml:mi>
+                    <mml:mi>o</mml:mi>
+                    <mml:mi>r</mml:mi>
+                    <mml:mi>d</mml:mi>
+                    <mml:mi>e</mml:mi>
+                    <mml:mi>r</mml:mi>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>C</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>h</mml:mi>
+                    <mml:mi>o</mml:mi>
+                    <mml:mi>l</mml:mi>
+                    <mml:mi>e</mml:mi>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mo>∪</mml:mo>
+              </mml:math>
+            </disp-formula>
+          
+          <p> where,</p>
+          
+            <disp-formula>
+              <label>(13)</label>
+              <mml:math id="mth6vksu9c">
+                <mml:mi>C</mml:mi>
+                <mml:mi>C</mml:mi>
+                <mml:mi>_</mml:mi>
+                <mml:mi>C</mml:mi>
+                <mml:mi>C</mml:mi>
+                <mml:mi>C</mml:mi>
+                <mml:mi>_</mml:mi>
+                <mml:mi>B</mml:mi>
+                <mml:mi>C</mml:mi>
+                <mml:mi>∂</mml:mi>
+                <mml:mi>Ω</mml:mi>
+                <mml:mi>∅</mml:mi>
+                <mml:mrow>
+                  <mml:mi>b</mml:mi>
+                  <mml:mi>o</mml:mi>
+                  <mml:mi>r</mml:mi>
+                  <mml:mi>d</mml:mi>
+                  <mml:mi>e</mml:mi>
+                  <mml:mi>r</mml:mi>
+                </mml:mrow>
+                <mml:mo>=</mml:mo>
+                <mml:mo fence="false">{</mml:mo>
+                <mml:mo>∈</mml:mo>
+                <mml:mo>∣</mml:mo>
+                <mml:mo>∩</mml:mo>
+                <mml:mo>≠</mml:mo>
+                <mml:mo fence="false">}</mml:mo>
+              </mml:math>
+            </disp-formula>
+          
+          
+            <disp-formula>
+              <label>(14)</label>
+              <mml:math id="m6uafn6tnp">
+                <mml:mi>C</mml:mi>
+                <mml:mi>C</mml:mi>
+                <mml:mi>C</mml:mi>
+                <mml:mi>C</mml:mi>
+                <mml:mi>∂</mml:mi>
+                <mml:mi>Ω</mml:mi>
+                <mml:mi>∅</mml:mi>
+                <mml:msub>
+                  <mml:mi>C</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>h</mml:mi>
+                    <mml:mi>o</mml:mi>
+                    <mml:mi>l</mml:mi>
+                    <mml:mi>e</mml:mi>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>C</mml:mi>
+                  <mml:mi>B</mml:mi>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mo fence="false">{</mml:mo>
+                <mml:mo>∈</mml:mo>
+                <mml:mo>∣</mml:mo>
+                <mml:mo>∩</mml:mo>
+                <mml:mo>=</mml:mo>
+                <mml:mo fence="false">}</mml:mo>
+              </mml:math>
+            </disp-formula>
+          
+          <p>The components in <inline-formula>
+  <mml:math id="mey8t9ji1x">
+    <mml:mi>C</mml:mi>
+    <mml:msub>
+      <mml:mi>C</mml:mi>
+      <mml:mrow>
+        <mml:mi>h</mml:mi>
+        <mml:mi>o</mml:mi>
+        <mml:mi>l</mml:mi>
+        <mml:mi>e</mml:mi>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula> represent potential closed loops or holes. To discount small, noisy gaps erroneously identified as loops, a minimum area threshold <inline-formula>
+  <mml:math id="m26xnf4k55">
+    <mml:msub>
+      <mml:mi>A</mml:mi>
+      <mml:mrow>
+        <mml:mo>min</mml:mo>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula> is applied. The area of a component $C<inline-formula>
+  <mml:math id="mp1r7hnwbi">
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>A(C) = |C|<inline-formula>
+  <mml:math id="m5gre4rj95">
+    <mml:mo>.</mml:mo>
+    <mml:mo>&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>s</mml:mi>
+  </mml:math>
+</inline-formula>N_{loops}$, is given by:</p>
+          
+            <disp-formula>
+              <label>(15)</label>
+              <mml:math id="momjlc0f0d">
+                <mml:msub>
+                  <mml:mi>N</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>l</mml:mi>
+                    <mml:mi>o</mml:mi>
+                    <mml:mi>o</mml:mi>
+                    <mml:mi>p</mml:mi>
+                    <mml:mi>s</mml:mi>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mrow>
+                  <mml:mo>|</mml:mo>
+                  <mml:mo>|</mml:mo>
+                  <mml:mrow>
+                    <mml:mo>{</mml:mo>
+                    <mml:mo>∈</mml:mo>
+                    <mml:mo>∣</mml:mo>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:mo>≥</mml:mo>
+                    <mml:mo>}</mml:mo>
+                    <mml:mi>C</mml:mi>
+                    <mml:mi>C</mml:mi>
+                    <mml:mi>A</mml:mi>
+                    <mml:mi>C</mml:mi>
+                    <mml:msub>
+                      <mml:mi>C</mml:mi>
+                      <mml:mrow>
+                        <mml:mi>h</mml:mi>
+                        <mml:mi>o</mml:mi>
+                        <mml:mi>l</mml:mi>
+                        <mml:mi>e</mml:mi>
+                      </mml:mrow>
+                    </mml:msub>
+                    <mml:msub>
+                      <mml:mi>A</mml:mi>
+                      <mml:mrow>
+                        <mml:mo>min</mml:mo>
+                      </mml:mrow>
+                    </mml:msub>
+                  </mml:mrow>
+                </mml:mrow>
+              </mml:math>
+            </disp-formula>
+          
+          <p>In this work, <inline-formula>
+  <mml:math id="mjdbbvv48z">
+    <mml:msub>
+      <mml:mi>A</mml:mi>
+      <mml:mrow>
+        <mml:mo>min</mml:mo>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula> was empirically set to 10 pixels to filter out insignificant features.</p>
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>7. Experimental result</title>
+      
+        <sec>
+          
+            <title>7.1. Crack segmentation result</title>
+          
+          
+            <sec>
+              
+                <title>7.1.1 Tlcrack dataset</title>
+              
+              <p>The quantitative results for the crack segmentation models on the TLCrack dataset, based on our 5-fold cross-validation strategy, are summarized in <xref ref-type="table" rid="table_1">Table 1</xref>.</p>
+              
+                <table-wrap id="table_1">
+                  <label>Table 1</label>
+                  <caption>
+                    <title>Performance comparison on TLCrack dataset. Metrics are presented as mean $\pm$ standard deviation across $n$ = 61 test images from 5-fold cross-validation. P-values indicate significance of paired comparisons against Attention U-Net using paired t-tests</title>
+                  </caption>
+                  <table><tbody><tr><td colspan="1" rowspan="1"><p>Model</p></td><td colspan="1" rowspan="1"><p>Dice Coefficient</p></td><td colspan="1" rowspan="1"><p>95% CI (Dice)</p></td><td colspan="1" rowspan="1"><p>clDice</p></td><td colspan="1" rowspan="1"><p>95% CI (clDice)</p></td><td colspan="1" rowspan="1"><p>Betti-0 Error</p></td><td colspan="1" rowspan="1"><p>95% CI (Betti-0)</p></td></tr><tr><td colspan="1" rowspan="1"><p>DeepLabV3</p></td><td colspan="1" rowspan="1"><p>0.820 ± 0.028</p></td><td colspan="1" rowspan="1"><p>[0.806, 0.834]</p></td><td colspan="1" rowspan="1"><p>0.854 ± 0.019</p></td><td colspan="1" rowspan="1"><p>[0.845, 0.863]</p></td><td colspan="1" rowspan="1"><p>3.93 ± 0.85</p></td><td colspan="1" rowspan="1"><p>[3.52, 4.34]</p></td></tr><tr><td colspan="1" rowspan="1"><p>Attention U-Net</p></td><td colspan="1" rowspan="1"><p>0.852 ± 0.021</p></td><td colspan="1" rowspan="1"><p>[0.843, 0.861]</p></td><td colspan="1" rowspan="1"><p>0.869 ± 0.015</p></td><td colspan="1" rowspan="1"><p>[0.862, 0.876]</p></td><td colspan="1" rowspan="1"><p>1.70 ± 0.62</p></td><td colspan="1" rowspan="1"><p>[1.39, 2.01]</p></td></tr><tr><td colspan="1" rowspan="1"><p>SegFormer (B5)</p></td><td colspan="1" rowspan="1"><p>0.805 ± 0.032</p></td><td colspan="1" rowspan="1"><p>[0.789, 0.821]</p></td><td colspan="1" rowspan="1"><p>0.837 ± 0.022</p></td><td colspan="1" rowspan="1"><p>[0.826, 0.848]</p></td><td colspan="1" rowspan="1"><p>3.88 ± 0.79</p></td><td colspan="1" rowspan="1"><p>[3.49, 4.27]</p></td></tr><tr><td colspan="7" rowspan="1"><p>p-value (vs. Attention U-Net)</p></td></tr><tr><td colspan="1" rowspan="1"><p>  - vs. DeepLabV3</p></td><td colspan="1" rowspan="1"><p>&lt;0.001</p></td><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"><p>0.02</p></td><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"><p>&lt;0.001</p></td><td colspan="1" rowspan="1"><p> </p></td></tr><tr><td colspan="1" rowspan="1"><p>  - vs. SegFormer (B5)</p></td><td colspan="1" rowspan="1"><p>&lt;0.001</p></td><td colspan="1" rowspan="1"><p> </p></td><td colspan="1" rowspan="1"><p>&lt;0.001</p></td><td colspan="1" rowspan="1"><p> </p></td><td colspan="1" rowspan="1"><p>&lt;0.001</p></td><td colspan="1" rowspan="1"><p> </p></td></tr></tbody></table>
+                </table-wrap>
+              
+              <p>To ensure a robust and generalizable comparison, performance is reported as the mean <inline-formula>
+  <mml:math id="mcay95w8et">
+    <mml:mo>±</mml:mo>
+  </mml:math>
+</inline-formula> standard deviation across all five test folds. Furthermore, to statistically validate the observed performance differences, we report 95% confidence intervals for each metric and conducted paired t-tests comparing the best-performing model against all other baselines.</p><p>The results indicate a clear and statistically significant performance hierarchy for this specific task. Attention U-Net demonstrated superior and the most robust performance overall. It achieved the highest scores in overlap-based metrics, with a Dice coefficient of 0.852 <inline-formula>
+  <mml:math id="mtef3qflt9">
+    <mml:mo>±</mml:mo>
+  </mml:math>
+</inline-formula> 0.021 and a clDice of 0.869 <inline-formula>
+  <mml:math id="mg24o9cktd">
+    <mml:mo>±</mml:mo>
+  </mml:math>
+</inline-formula> 0.015. Most critically, it also achieved the lowest Betti-0 error of 1.70 <inline-formula>
+  <mml:math id="mtth1f3poy">
+    <mml:mo>±</mml:mo>
+  </mml:math>
+</inline-formula> 0.62. This low error, which is less than half that of other models, signifies its superior ability to maintain the correct global topology of the crack network. This means it most accurately captures the number of connected crack components, a key requirement for effective loop detection and quantification. The statistical significance of these improvements is confirmed by p-values $&lt;<inline-formula>
+  <mml:math id="mqsubk1crs">
+    <mml:mn>0.05</mml:mn>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>k</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>&lt;$0.01.</p><p>DeepLabV3 presented a mixed profile. It recorded a competitive clDice score of 0.854 <inline-formula>
+  <mml:math id="my0i5m41ih">
+    <mml:mo>±</mml:mo>
+  </mml:math>
+</inline-formula> 0.019, suggesting a reasonable inherent understanding of crack connectivity. However, its significantly lower Dice coefficient (0.820 <inline-formula>
+  <mml:math id="mj3y0y1mma">
+    <mml:mo>±</mml:mo>
+  </mml:math>
+</inline-formula> 0.028, <inline-formula>
+  <mml:math id="mka6ziwsbj">
+    <mml:mi>p</mml:mi>
+    <mml:mo>&amp;lt;</mml:mo>
+  </mml:math>
+</inline-formula> 0.001 vs. Attention U-Net) points to less precise pixel-level boundary detection.</p><p>Its high Betti-0 error of 3.93 <inline-formula>
+  <mml:math id="mqyoo0cilx">
+    <mml:mo>±</mml:mo>
+  </mml:math>
+</inline-formula> 0.85, more than double that of Attention U-Net, underscores a critical weakness in topological preservation for precise quantification tasks.</p><p>The SegFormer architecture was found to be less suited for this specific task in its current form. It yielded the lowest Dice coefficient (0.805 <inline-formula>
+  <mml:math id="mkbhoe30ju">
+    <mml:mo>±</mml:mo>
+  </mml:math>
+</inline-formula> 0.032) and a high Betti-0 error (3.88 <inline-formula>
+  <mml:math id="mo14t3e7xf">
+    <mml:mo>±</mml:mo>
+  </mml:math>
+</inline-formula> 0.79). The performance gap with Attention U-Net is statistically significant (<inline-formula>
+  <mml:math id="m2zcrcyx7g">
+    <mml:mi>p</mml:mi>
+    <mml:mo>&amp;lt;</mml:mo>
+  </mml:math>
+</inline-formula> 0.001 for all metrics). This suggests that while powerful in broader semantic segmentation contexts, its design may not be optimally biased for capturing the thin, elongated, and topologically sensitive structures characteristic of crack networks without further task-specific modification.</p><p><xref ref-type="fig" rid="fig_6">Figure 6</xref> provides a qualitative comparison of model predictions on the TLCrack dataset. Images were captured using a vehicle-mounted camera at approximately 45<inline-formula>
+  <mml:math id="maexeu2c3k">
+    <mml:msup>
+      <mml:mi/>
+      <mml:mrow>
+        <mml:mo>∘</mml:mo>
+      </mml:mrow>
+    </mml:msup>
+  </mml:math>
+</inline-formula>, with original dimensions of 1920 <inline-formula>
+  <mml:math id="m0jlwj92r3">
+    <mml:mo>×</mml:mo>
+  </mml:math>
+</inline-formula> 1080 pixels resized to 256 <inline-formula>
+  <mml:math id="ms5vrbktt0">
+    <mml:mo>×</mml:mo>
+  </mml:math>
+</inline-formula> 256 pixels for model input. Due to camera perspective and lack of geometric correction, precise physical scale cannot be determined. Therefore, each image includes a 100-pixel scale bar indicating relative dimensions. All analyses are based on pixel-based metrics rather than physical measurements. The ground truth masks and model predictions (Attention U-Net, DeepLabV3, and SegFormer) are shown in aligned horizontal columns for direct visual comparison.</p>
+              
+                <fig id="fig_6">
+                  <label>Figure 6</label>
+                  <caption>
+                    <title>Visual comparison of segmentation models on sample images from the TLCrack dataset</title>
+                  </caption>
+                  <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/0/img_99u-0jY1drQKc2Qk.png"/>
+                </fig>
+              
+              <p>Across the examples, the models successfully identify the main crack trajectories. However, differences emerge in the preservation of continuity and fine topology. Attention U-Net produces the most continuous crack structures, maintaining consistent connectivity even in highly fractured or branching regions. DeepLabV3 captures the primary geometry but occasionally introduces disconnections or thicker regions. SegFormer performs comparably in some cases but tends to generate fragmented or partially broken crack paths in more complex shapes.</p><p>The visual patterns reflect the quantitative trends reported earlier, particularly the relationship between continuity errors and the Betti-0 metric. The relative scale bars illustrate how even minor pixel-level discontinuities in predictions can translate to significant topological differences in engineering assessments. Overall, the qualitative evidence confirms that Attention U-Net achieves the strongest balance between geometric accuracy and structural consistency in this dataset.</p>
+            </sec>
+          
+          
+            <sec>
+              
+                <title>7.1.2 Crackforest dataset</title>
+              
+              <p>We further validate our approach on a public benchmark to demonstrate generalizability. For this purpose, we employ the CrackForest dataset, a widely recognized benchmark for pavement crack segmentation.</p><p>The comparative results of all models on this dataset are detailed in <xref ref-type="table" rid="table_2">Table 2</xref>. Our evaluation follows the same rigorous 5-fold cross-validation protocol, with all results reported as the mean <inline-formula>
+  <mml:math id="m3nrh5yxav">
+    <mml:mo>±</mml:mo>
+  </mml:math>
+</inline-formula> standard deviation. To provide robust statistical evidence, we include 95% confidence intervals and significance testing via paired t-tests comparing the best-performing model against the baselines.</p>
+              
+                <table-wrap id="table_2">
+                  <label>Table 2</label>
+                  <caption>
+                    <title>Performance comparison on CrackForest dataset. Metrics are presented as mean $\pm$ standard deviation across $n$ = 12 test images from 5-fold cross-validation. P-values indicate significance of paired comparisons against Attention U-Net using paired t-tests</title>
+                  </caption>
+                  <table><tbody><tr><td colspan="1" rowspan="1"><p>Model</p></td><td colspan="1" rowspan="1"><p>Dice Coefficient</p></td><td colspan="1" rowspan="1"><p>95% CI (Dice)</p></td><td colspan="1" rowspan="1"><p>clDice</p></td><td colspan="1" rowspan="1"><p>95% CI (clDice)</p></td><td colspan="1" rowspan="1"><p>Betti-0 Error</p></td><td colspan="1" rowspan="1"><p>95% CI (Betti-0)</p></td></tr><tr><td colspan="1" rowspan="1"><p>DeepLabV3</p></td><td colspan="1" rowspan="1"><p>0.859 ± 0.022</p></td><td colspan="1" rowspan="1"><p>[0.851, 0.867]</p></td><td colspan="1" rowspan="1"><p>0.897 ± 0.016</p></td><td colspan="1" rowspan="1"><p>[0.891, 0.903]</p></td><td colspan="1" rowspan="1"><p>2.10 ± 0.70</p></td><td colspan="1" rowspan="1"><p>[1.80, 2.40]</p></td></tr><tr><td colspan="1" rowspan="1"><p>Attention U-Net</p></td><td colspan="1" rowspan="1"><p>0.871 ± 0.018</p></td><td colspan="1" rowspan="1"><p>[0.865, 0.877]</p></td><td colspan="1" rowspan="1"><p>0.911 ± 0.012</p></td><td colspan="1" rowspan="1"><p>[0.906, 0.916]</p></td><td colspan="1" rowspan="1"><p>1.25 ± 0.48</p></td><td colspan="1" rowspan="1"><p>[1.04, 1.46]</p></td></tr><tr><td colspan="1" rowspan="1"><p>SegFormer (B5)</p></td><td colspan="1" rowspan="1"><p>0.864 ± 0.020</p></td><td colspan="1" rowspan="1"><p>[0.857, 0.871]</p></td><td colspan="1" rowspan="1"><p>0.903 ± 0.014</p></td><td colspan="1" rowspan="1"><p>[0.897, 0.909]</p></td><td colspan="1" rowspan="1"><p>1.95 ± 0.65</p></td><td colspan="1" rowspan="1"><p>[1.67, 2.23]</p></td></tr><tr><td colspan="7" rowspan="1"><p>p-value (vs. Attention U-Net)</p></td></tr><tr><td colspan="1" rowspan="1"><p>- vs. SegFormer (B5)</p></td><td colspan="1" rowspan="1"><p>&lt;0.05</p></td><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"><p>&lt;0.05</p></td><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"><p>&lt;0.01</p></td><td colspan="1" rowspan="1"></td></tr><tr><td colspan="1" rowspan="1"><p>- vs. DeepLabV3</p></td><td colspan="1" rowspan="1"><p>&lt;0.01</p></td><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"><p>&lt;0.01</p></td><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"><p>&lt;0.001</p></td><td colspan="1" rowspan="1"></td></tr></tbody></table>
+                </table-wrap>
+              
+              <p>The results on this public benchmark reinforce the performance hierarchy observed in our previous experiments. Attention U-Net again emerges as the most proficient model, achieving the highest Dice coefficient (0.871 <inline-formula>
+  <mml:math id="mi68vlgh65">
+    <mml:mo>±</mml:mo>
+  </mml:math>
+</inline-formula> 0.018) and clDice score (0.911 <inline-formula>
+  <mml:math id="msh750wvcp">
+    <mml:mo>±</mml:mo>
+  </mml:math>
+</inline-formula> 0.012). Most notably, it maintains a strong lead in topological accuracy with the lowest Betti-0 error (1.25 <inline-formula>
+  <mml:math id="mbok2yky70">
+    <mml:mo>±</mml:mo>
+  </mml:math>
+</inline-formula> 0.48). The statistical significance of these improvements is confirmed (<inline-formula>
+  <mml:math id="m68d0hwueo">
+    <mml:mi>p</mml:mi>
+    <mml:mo>&amp;lt;</mml:mo>
+  </mml:math>
+</inline-formula> 0.05 for segmentation metrics, <inline-formula>
+  <mml:math id="mnumongutj">
+    <mml:mi>p</mml:mi>
+    <mml:mo>&amp;lt;</mml:mo>
+  </mml:math>
+</inline-formula> 0.01 for topological metrics).</p><p>A notable observation is the reversed performance between SegFormer and DeepLabV3 on this public dataset. SegFormer demonstrates more competitive results, outperforming DeepLabV3 across all metrics with a higher Dice score (0.864 vs. 0.859) and a superior Betti-0 error (1.95 vs. 2.10). This suggests that SegFormer's transformer-based architecture may generalize better on standard benchmarks, though it still does not surpass Attention U-Net's balanced performance. DeepLabV3 ranks third on this dataset, showing its limitations in topological preservation across different data sources.</p><p><xref ref-type="fig" rid="fig_7">Figure 7</xref> shows qualitative results on representative samples from the CrackForest dataset. Original images are (480 <inline-formula>
+  <mml:math id="mfoe2dambf">
+    <mml:mo>×</mml:mo>
+  </mml:math>
+</inline-formula> 320 pixels) were resized to 256 <inline-formula>
+  <mml:math id="mrmqc89hkx">
+    <mml:mo>×</mml:mo>
+  </mml:math>
+</inline-formula> 256 pixels for model processing. Due to the absence of camera calibration data for this dataset, precise physical scale cannot be determined. Therefore, each image includes a 100-pixel scale bar indicating relative dimensions. All crack analyses are conducted using pixel-based metrics, with the understanding that these provide relative rather than absolute physical measurements for crack assessment.</p>
+              
+                <fig id="fig_7">
+                  <label>Figure 7</label>
+                  <caption>
+                    <title>Visual comparison of segmentation models on sample images from the TLCrack dataset</title>
+                  </caption>
+                  <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/0/img_BKDN8QD7lcg_d3uo.png"/>
+                </fig>
+              
+              <p>The figure demonstrates that all three models detect the dominant crack paths; however, notable differences appear in continuity and fine-structure preservation. Attention U-Net consistently produces the most coherent and topologically faithful predictions, closely following the ground truth even in portions of the crack that have small, winding curves.</p><p>SegFormer also preserves continuity well and performs better than DeepLabV3 in capturing thin, elongated structures. DeepLabV3 occasionally introduces small breaks or irregularities that become more apparent when judged against the physical scale indicated in the images. These qualitative trends align with the quantitative results, where Attention U-Net achieves the lowest Betti-0 error and highest clDice scores, followed by SegFormer.</p><p>The inclusion of the scale bar reinforces the importance of maintaining structural continuity at millimeter-level resolution, which is critical for engineering applications such as crack severity assessment and maintenance planning.</p>
+            </sec>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>7.2. Crack quantification result</title>
+          
+          
+            <sec>
+              
+                <title>7.2.1 Tlcrack dataset</title>
+              
+              <p>The geometric analysis algorithm demonstrated high accuracy in crack branch and closed loop quantification. The results presented in <xref ref-type="table" rid="table_3">Table 3</xref> demonstrate the algorithm’s performance on a representative validation subset of 61 images from our cross-validation framework.</p>
+              
+                <table-wrap id="table_3">
+                  <label>Table 3</label>
+                  <caption>
+                    <title>Performance of the crack topology quantification on the TLCrack dataset</title>
+                  </caption>
+                  <table><tbody><tr><td colspan="1" rowspan="1"><p>Metric</p></td><td colspan="1" rowspan="1"><p>Crack Branches</p></td><td colspan="1" rowspan="1"><p>Closed Loops</p></td><td colspan="1" rowspan="1"><p>Overall</p></td></tr><tr><td colspan="1" rowspan="1"><p>MAPE</p></td><td colspan="1" rowspan="1"><p>5.33%</p></td><td colspan="1" rowspan="1"><p>0.00%</p></td><td colspan="1" rowspan="1"><p>2.67%</p></td></tr><tr><td colspan="1" rowspan="1"><p>Accuracy</p></td><td colspan="1" rowspan="1"><p>94.67%</p></td><td colspan="1" rowspan="1"><p>100.00%</p></td><td colspan="1" rowspan="1"><p>97.34%</p></td></tr></tbody></table>
+                </table-wrap>
+              
+              <p>The performance was evaluated using MAPE, which provides a normalized measure of prediction accuracy. The results show exceptional performance across both quantification tasks. The crack branch detection achieved a MAPE of 5.33%. These errors primarily involved slight over-counting of 1–2 branches, which represents an acceptable margin of error for practical structural health monitoring applications.</p><p>Notably, the closed-loop detection achieved 0.00% MAPE and 100% accuracy on the validation subset ($n<inline-formula>
+  <mml:math id="m5c0tsp2qd">
+    <mml:mo>=</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mn>61</mml:mn>
+    <mml:mn>3</mml:mn>
+    <mml:mi>A</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>M</mml:mi>
+    <mml:mi>A</mml:mi>
+    <mml:mi>P</mml:mi>
+    <mml:mi>E</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>d</mml:mi>
+  </mml:math>
+</inline-formula>A_{\min}<inline-formula>
+  <mml:math id="m1bhwlywm0">
+    <mml:mo>)</mml:mo>
+    <mml:mi>w</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+  </mml:math>
+</inline-formula>A_{\min}$ <inline-formula>
+  <mml:math id="mm2lnmnw3p">
+    <mml:mo>∈</mml:mo>
+  </mml:math>
+</inline-formula> [$5,15$] pixels. The combined overall performance shows MAPE of 2.67% and accuracy of 97.34%, considering both branch and loop quantification tasks. These results validate the integration of deep segmentation with graph-theoretic geometric analysis for automated crack characterization.</p><p>The high accuracy rates provide reliable quantitative metrics that correlate with structural deterioration severity, enabling informed maintenance decision-making for civil infrastructure systems. The minor over-counting observed in branch detection (5.33% MAPE) is considerably lower than typical thresholds for high-performance models in crack quantification tasks, which are generally set below 10% MAPE. The qualitative results shown in <xref ref-type="fig" rid="fig_8">Figure 8</xref> visually support the reliability of the geometric analysis algorithm. The figure demonstrates the ability of the system to transform the segmented crack image (top row) into a quantified graph-theoretic representation (bottom row). On the right, the visualization shows that the algorithm slightly overestimates the topology, detecting 8 branches instead of the actual 6, while correctly identifying 1 loop. On the left, the detected structure (16 branches and 2 loops) perfectly matches the actual topology, illustrating accurate quantification for this crack pattern.</p>
+              
+                <fig id="fig_8">
+                  <label>Figure 8</label>
+                  <caption>
+                    <title>Visual comparison of segmentation models on sample images from the TLCrack dataset</title>
+                  </caption>
+                  <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/0/img_oIKGMeKVQyCESN2r.png"/>
+                </fig>
+              
+              <p>On the right, a more complex network is presented, which illustrates the robustness of the system. While the Actual counts are 16 Branches and 2 Loops, the algorithm successfully Detects 16 Branches and 2 Loops. The blue shaded regions in the lower-right panel clearly highlight the two closed loops identified by the algorithm, and the small red dots correctly mark the branching points (junctions). This visual success in accurately identifying and counting these complex topological features branches and loops, validates the extremely low MAPE achieved in the quantitative evaluation, confirming the method's reliability for characterizing topological complexity. This performance level establishes the proposed methodology as a robust tool for automated structural health assessment.</p>
+            </sec>
+          
+          
+            <sec>
+              
+                <title>7.2.2 Crackforest dataset</title>
+              
+              <p>To validate the performance of our proposed graph-based crack quantification algorithm, we evaluated it on the CrackForest dataset, a public benchmark containing 118 crack images. The results presented here demonstrate the algorithm’s performance on a representative validation subset of 12 images from our cross-validation framework. <xref ref-type="table" rid="table_4">Table 4</xref> presents that the crack branch quantification module achieved an MAPE of 15.83% with 50.00% accuracy, validating the effectiveness of the graph junction analysis methodology. The algorithm successfully handled diverse crack patterns while maintaining consistent branch counting capabilities across various crack densities and complexities present in the benchmark dataset.</p>
+              
+                <table-wrap id="table_4">
+                  <label>Table 4</label>
+                  <caption>
+                    <title>Performance of the crack topology quantification on the CrackForest dataset</title>
+                  </caption>
+                  <table><tbody><tr><td colspan="1" rowspan="1"><p>Metric</p></td><td colspan="1" rowspan="1"><p>Crack Branches</p></td><td colspan="1" rowspan="1"><p>Closed Loops</p></td><td colspan="1" rowspan="1"><p>Overall</p></td></tr><tr><td colspan="1" rowspan="1"><p>MAPE</p></td><td colspan="1" rowspan="1"><p>15.83%</p></td><td colspan="1" rowspan="1"><p>25.00%</p></td><td colspan="1" rowspan="1"><p>20.42%</p></td></tr><tr><td colspan="1" rowspan="1"><p>Accuracy</p></td><td colspan="1" rowspan="1"><p>50.00%</p></td><td colspan="1" rowspan="1"><p>75.00%</p></td><td colspan="1" rowspan="1"><p>62.50%</p></td></tr></tbody></table>
+                </table-wrap>
+              
+              <p>The closed-loop detection component exhibited strong performance with a MAPE of 25.00% and 75.00% accuracy, confirming the robustness of the cycle detection algorithms in identifying complete loop structures within crack networks. A sensitivity analysis confirmed that this perfect result, and thus the MAPE and accuracy values reported in <xref ref-type="table" rid="table_4">Table 4</xref>, are stable for the minimum loop area threshold (<inline-formula>
+  <mml:math id="mkx337hi6s">
+    <mml:msub>
+      <mml:mi>A</mml:mi>
+      <mml:mrow>
+        <mml:mi>m</mml:mi>
+        <mml:mi>i</mml:mi>
+        <mml:mi>n</mml:mi>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula>) within a range of <inline-formula>
+  <mml:math id="mcoruqr7z6">
+    <mml:msub>
+      <mml:mi>A</mml:mi>
+      <mml:mrow>
+        <mml:mi>m</mml:mi>
+        <mml:mi>i</mml:mi>
+        <mml:mi>n</mml:mi>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula> <inline-formula>
+  <mml:math id="m6h2lgp6ei">
+    <mml:mo>∈</mml:mo>
+  </mml:math>
+</inline-formula> [$5,15$] pixels. This high success rate underscores the advantage of representing crack topologies as planar graphs for rigorous geometric analysis. The combined overall performance metrics of 20.42% MAPE and 62.50% accuracy establish our graph-based methodology as a reliable approach for automated crack characterization.</p><p>These results on the CrackForest benchmark demonstrate that graph theory provides a solid mathematical foundation for extracting meaningful geometric features, enabling quantitative assessment of crack patterns that correlate with structural deterioration severity for informed maintenance decision-making in civil infrastructure systems.</p><p>The qualitative results shown in <xref ref-type="fig" rid="fig_9">Figure 9</xref> demonstrate the robust performance of our geometric analysis algorithm in crack quantification. The figure illustrates the capability of the system to accurately transform segmented crack images (top row) into quantified graph-theoretic representations (bottom row).</p>
+              
+                <fig id="fig_9">
+                  <label>Figure 9</label>
+                  <caption>
+                    <title>Results of the graph-based analysis on the CrackForest dataset, showing original cracks and their topological graphs with branch (red dots) and loop (blue regions) counts</title>
+                  </caption>
+                  <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/0/img_EH5ak9SH1gIYRQcE.png"/>
+                </fig>
+              
+              <p>On the left side, the visualization confirms precise quantification for a moderately complex crack pattern, where the actual counts of 3 branches and 1 loop perfectly match the detection results of 3 Branches and 1 loop. This exact correspondence showcases the reliability of the algorithm in handling standard crack configurations. On the right side, a more complex crack network demonstrates the scalability of the system and robustness. While the Actual counts are 10 branches and 2 loops, the algorithm detects 13 branches and 2 loops. The visualization clearly shows that the two closed loops are perfectly identified and highlighted, confirming the strong performance of the algorithm in loop detection. The minor discrepancy in branch counting (13 detected vs. 10 actual) occurs in areas with dense, interconnected crack patterns where junction identification becomes challenging. This visual analysis validates the quantitative metrics obtained in our evaluation, demonstrating that while branch counting may experience slight over-counting in complex networks, the closed-loop detection maintains high accuracy. The consistent performance in loop identification across both simple and complex patterns underscores the method's reliability for characterizing topological complexity in crack structures.</p>
+            </sec>
+          
+        </sec>
+      
+    </sec>
+    <sec sec-type="discussion">
+      <title>8. Discussion</title>
+      <p>The integration of deep segmentation and graph-based analysis establishes a robust two-stage framework for automated crack quantification, validated across both TLCrack and CrackForest datasets. The core advancement of this work lies in the direct, automated extraction of topological features, specifically branch points and closed loops. This feature provides a quantitative and objective link to pavement maintenance decision-making. The transition from a simple linear crack to a complex network is a definitive indicator of structural deterioration.</p><p>Our analysis, based on the correlation between topological metrics and established severity levels, allows us to propose practical, quantitative guidance for engineers.</p><p>We find that a rising branch count serves as a key indicator of active crack propagation, where the development of more than three to five branches is consistently associated with moderate-severity damage, suggesting a need for preventative sealing to arrest further growth. More critically, the presence of closed loops serves as a definitive metric for advanced failure.</p><p>The emergence of even a single closed loop signals interconnected cracking, while the presence of two or more strongly indicates severe alligator or block cracking. This necessitates immediate intervention such as patching or resurfacing to restore structural integrity. By translating these topological features into actionable thresholds, our method provides maintenance crews with a direct, quantifiable basis for prioritizing repair schedules and optimizing resource allocation, moving beyond simple pixel-level segmentation.</p><p>Our statistical comparisons used paired t-tests on image-level metrics across all test folds. While this approach provides meaningful comparison between models, we acknowledge that observations within the same cross-validation fold are not fully independent. Future work could employ more sophisticated statistical methods specifically designed for cross-validation results, such as nested cross-validation or corrected repeated k-fold testing, to account for this non-independence while maintaining rigorous statistical validity.</p><p>The observed performance variation across datasets also highlights the challenges posed by domain shift and differences in image quality and resolution, which affect the precision of skeleton extraction and subsequent topological quantification. Addressing these factors through domain adaptation and enhanced preprocessing is essential to make the framework more reliable when applied to new datasets and real-world conditions.</p><p>The qualitative results across both the TLCrack and CrackForest datasets consistently demonstrate the practical potential of the proposed graph-based quantification framework. In all examples, the system accurately identifies loop structures, even in complex crack networks, confirming the robustness of cycle detection in the graph representation. For branch detection, the method performs accurately on simpler crack patterns. As shown on the left, the detected topology matches the actual number of branches and loops. In more intricate crack networks, as illustrated on the right, the algorithm tends to slightly overestimate branch counts. This over-counting arises from small spurs and irregularities in the predicted crack skeleton, which are interpreted as branch junctions during graph extraction. Despite these minor deviations, the overall topological structure including major branches and all loop regions remains faithfully captured, demonstrating strong generalization across different datasets and crack complexities.</p><p>To address these limitations and enhance the framework’s utility for maintenance planning, future work will focus on implementing morphological smoothing and pruning filters before graph skeletonization to eliminate noise-induced branches while preserving genuine topological features. We will also conduct comprehensive robustness tests under varying noise conditions to establish performance boundaries. Furthermore, we will explore advanced segmentation architectures and training strategies to produce cleaner crack outlines, thereby enhancing the input quality for the graph-based quantification stage and further solidifying the reliability of the automated branch and loop counts for infrastructure management systems. Finally, an ablation study on the specific contribution of the skeleton recall loss component will be conducted to further understand and optimize the training objective for topological accuracy.</p>
+    </sec>
+    <sec sec-type="conclusions">
+      <title>9. Conclusions</title>
+      <p>Effective road maintenance planning requires moving beyond simple crack detection to robust quantification of structural complexity, particularly topological features like branches and loops. This work successfully developed a two-stage framework integrating deep segmentation and graph-based analysis for automated crack characterization, validated across both proprietary and public benchmark datasets.</p><p>Experimental results demonstrated the strong performance of the framework across different data environments, with particularly notable accuracy in closed-loop detection, highlighting the robustness of the graph-theoretic approach. The consistent performance across datasets confirms the generalizability of our methodology for topological crack analysis.</p><p>This study validates that combining deep learning with graph-based topological analysis provides direct, objective, and interpretable measures of pavement deterioration severity. The quantitative metrics generated enable reliable structural health assessment and informed maintenance decision-making for civil infrastructure systems.</p><p>Looking forward, future work will focus on enhancing the robustness of the framework and real-world applicability. Key directions include implementing morphological filtering to reduce branch over-counting caused by segmentation artifacts, improving generalizability through domain adaptation techniques, employing advanced statistical validation methods, and conducting an ablation study on the skeleton recall loss to optimize topological fidelity. These refinements will further solidify the reliability of the framework for diverse, real-world pavement management applications.</p>
+    </sec>
+  </body>
+  <back>
+    <ack>
+      <title>Acknowledgments</title>
+      <p>The author gratefully acknowledges the support provided by the Japan International Cooperation Center (JICE) through its JDS scholarship program for doctoral studies in Japan.</p>
+    </ack>
+    <app-group>
+      <app>
+        <title>Appendix</title>
+        
+      </app>
+    </app-group>
+    <notes>
+      <title>Author Contributions</title>
+      <p>Conceptualization, V.P. and H.F.; methodology, V.P. and H.F.; software, V.P.; validation, V.P. and H.F.; formal analysis, V.P.; investigation, V.P.; resources, H.F.; data curation, V.P.; writing—original draft preparation, V.P.; writing—review and editing, V.P. and H.F.; visualization, V.P.; supervision, H.F.; project administration, H.F.; funding acquisition, H.F. All authors have read and agreed to the published version of the manuscript.</p>
+    </notes>
+    <notes>
+      <title>Funding</title>
+      
+    </notes>
+    <notes>
+      <title>Informed Consent Statement</title>
+      
+    </notes>
+    <notes>
+      <title>Data Availability Statement</title>
+      <p>The data used to support the research findings are available from the corresponding author upon request.</p>
+    </notes>
+    <notes notes-type="COI-statement">
+      <title>Conflicts of Interest</title>
+      <p>The authors declare no conflict of interest.</p>
+    </notes>
+    <ref-list>
+      <title>References</title>
+      <ref id="ref_1">
+        <label>1.</label>
+        <element-citation publication-type="journal">
+          <volume>512</volume>
+          <page-range>012045</page-range>
+          <year>2018</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Ng</surname>
+              <given-names>C. P.</given-names>
+            </name>
+            <name>
+              <surname>Law</surname>
+              <given-names>T. H.</given-names>
+            </name>
+            <name>
+              <surname>Jakarni</surname>
+              <given-names>F. M.</given-names>
+            </name>
+            <name>
+              <surname>Kulanthayan</surname>
+              <given-names>S.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1088/1757-899X/512/1/012045</pub-id>
+          <article-title>Road infrastructure development and economic growth</article-title>
+        </element-citation>
+      </ref>
+      <ref id="ref_2">
+        <label>2.</label>
+        <element-citation publication-type="journal">
+          <volume>57</volume>
+          <page-range>787-798</page-range>
+          <issue>2</issue>
+          <year>2018</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Mohan</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Poobal</surname>
+              <given-names>S.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.aej.2017.01.020</pub-id>
+          <article-title>Crack detection using image processing: A critical review and analysis</article-title>
+        </element-citation>
+      </ref>
+      <ref id="ref_3">
+        <label>3.</label>
+        <element-citation publication-type="journal">
+          <volume>2020</volume>
+          <page-range>8515213</page-range>
+          <issue>1</issue>
+          <year>2020</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Feng</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Xiao</surname>
+              <given-names>L.</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>W.</given-names>
+            </name>
+            <name>
+              <surname>Pei</surname>
+              <given-names>L.</given-names>
+            </name>
+            <name>
+              <surname>Sun</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Ma</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Shen</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Ju</surname>
+              <given-names>H.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1155/2020/8515213</pub-id>
+          <article-title>Pavement crack detection and segmentation method based on improved deep learning fusion model</article-title>
+        </element-citation>
+      </ref>
+      <ref id="ref_4">
+        <label>4.</label>
+        <element-citation publication-type="journal">
+          <volume>117</volume>
+          <page-range>105478</page-range>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Ai</surname>
+              <given-names>D.</given-names>
+            </name>
+            <name>
+              <surname>Jiang</surname>
+              <given-names>G.</given-names>
+            </name>
+            <name>
+              <surname>Lam</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>He</surname>
+              <given-names>P.</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>C.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.engappai.2022.105478</pub-id>
+          <article-title>Computer vision framework for crack detection of civil infrastructure—A review</article-title>
+        </element-citation>
+      </ref>
+      <ref id="ref_5">
+        <label>5.</label>
+        <element-citation publication-type="journal">
+          <volume>3</volume>
+          <page-range>100121</page-range>
+          <issue>1</issue>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Mao</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Ma</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Geng</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Gao</surname>
+              <given-names>G.</given-names>
+            </name>
+            <name>
+              <surname>Tian</surname>
+              <given-names>Y.</given-names>
+            </name>
+          </person-group>
+          <article-title>Development characteristics and quantitative analysis of cracks in root-soil complex during different growth periods under dry-wet cycles</article-title>
+          <source>Biogeotechnics</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_6">
+        <label>6.</label>
+        <element-citation publication-type="journal">
+          <volume>10</volume>
+          <page-range>152</page-range>
+          <issue>2</issue>
+          <year>2020</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Fan</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Chen</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Di Mascio</surname>
+              <given-names>P.</given-names>
+            </name>
+            <name>
+              <surname>Chen</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Zhu</surname>
+              <given-names>G.</given-names>
+            </name>
+            <name>
+              <surname>Loprencipe</surname>
+              <given-names>G.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3390/coatings10020152</pub-id>
+          <article-title>Ensemble of deep convolutional neural networks for automatic pavement crack detection and measurement</article-title>
+          <source>Coatings</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_7">
+        <label>7.</label>
+        <element-citation publication-type="journal">
+          <volume>39</volume>
+          <page-range>3317-3336</page-range>
+          <issue>21</issue>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Li</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>T.</given-names>
+            </name>
+            <name>
+              <surname>Miao</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Eskandari Torbaghan</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>He</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Dai</surname>
+              <given-names>J.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1111/mice.13344</pub-id>
+          <article-title>Automated quantification of crack length and width in asphalt pavements</article-title>
+        </element-citation>
+      </ref>
+      <ref id="ref_8">
+        <label>8.</label>
+        <element-citation publication-type="journal">
+          <volume>174</volume>
+          <page-range>106110</page-range>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Zhou</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Huang</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Chen</surname>
+              <given-names>Q.</given-names>
+            </name>
+            <name>
+              <surname>Yang</surname>
+              <given-names>D.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.autcon.2025.106110</pub-id>
+          <article-title>Graph-based change detection of pavement cracks</article-title>
+        </element-citation>
+      </ref>
+      <ref id="ref_9">
+        <label>9.</label>
+        <element-citation publication-type="journal">
+          <volume>16</volume>
+          <page-range>1797</page-range>
+          <issue>10</issue>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Wang</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>He</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Zeng</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Zeng</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Cen</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Qiu</surname>
+              <given-names>L.</given-names>
+            </name>
+            <name>
+              <surname>Xu</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Zhuo</surname>
+              <given-names>Q.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3390/rs16101797</pub-id>
+          <article-title>GGMNet: Pavement-crack detection based on global context awareness and multi-scale fusion</article-title>
+        </element-citation>
+      </ref>
+      <ref id="ref_10">
+        <label>10.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>801-818</page-range>
+          <year>2018</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Chen</surname>
+              <given-names>L. C.</given-names>
+            </name>
+            <name>
+              <surname>Zhu</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Papandreou</surname>
+              <given-names>G.</given-names>
+            </name>
+            <name>
+              <surname>Schroff</surname>
+              <given-names>F.</given-names>
+            </name>
+            <name>
+              <surname>Adam</surname>
+              <given-names>H.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1007/978-3-030-01234-2_49</pub-id>
+          <article-title>Encoder-decoder with atrous separable convolution for semantic image segmentation</article-title>
+          <source>Proceedings of the European conference on computer vision (ECCV)</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_11">
+        <label>11.</label>
+        <element-citation publication-type="conf-paper">
+          <publisher-place>Amsterdam, Holland</publisher-place>
+          <year>2018</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Oktay</surname>
+              <given-names>O.</given-names>
+            </name>
+            <name>
+              <surname>Schlemper</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Le Folgoc</surname>
+              <given-names>L.</given-names>
+            </name>
+            <name>
+              <surname>Lee</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Heinrich</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Misawa</surname>
+              <given-names>K.</given-names>
+            </name>
+            <name>
+              <surname>Mori</surname>
+              <given-names>K.</given-names>
+            </name>
+            <name>
+              <surname>McDonagh</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Hammerla</surname>
+              <given-names>N. Y.</given-names>
+            </name>
+            <name>
+              <surname>Kainz</surname>
+              <given-names>B. et al.</given-names>
+            </name>
+          </person-group>
+          <article-title>Attention U-Net: Learning where to look for the pancreas</article-title>
+          <source>the 1st Conference on Medical Imaging with Deep Learning (MIDL)</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_12">
+        <label>12.</label>
+        <element-citation publication-type="journal">
+          <volume>34</volume>
+          <page-range>12077-12090</page-range>
+          <year>2021</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Xie</surname>
+              <given-names>E.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>W.</given-names>
+            </name>
+            <name>
+              <surname>Yu</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Anandkumar</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Alvarez</surname>
+              <given-names>J. M.</given-names>
+            </name>
+            <name>
+              <surname>Luo</surname>
+              <given-names>P.</given-names>
+            </name>
+          </person-group>
+          <article-title>SegFormer: Simple and efficient design for semantic segmentation with transformers</article-title>
+        </element-citation>
+      </ref>
+      <ref id="ref_13">
+        <label>13.</label>
+        <element-citation publication-type="book">
+          <person-group person-group-type="author">
+            <name>
+              <surname>Kirchhoff</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Rokuss</surname>
+              <given-names>M. R.</given-names>
+            </name>
+            <name>
+              <surname>Roy</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Kovacs</surname>
+              <given-names>B.</given-names>
+            </name>
+            <name>
+              <surname>Ulrich</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Wald</surname>
+              <given-names>T.</given-names>
+            </name>
+            <name>
+              <surname>Zenk</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Vollmuth</surname>
+              <given-names>P.</given-names>
+            </name>
+            <name>
+              <surname>Kleesiek</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Isensee</surname>
+              <given-names>F.</given-names>
+            </name>
+            <name>
+              <surname>Maier-Hein</surname>
+              <given-names>K.</given-names>
+            </name>
+          </person-group>
+          <article-title>Skeleton Recall Loss for connectivity conserving and resource efficient segmentation of thin tubular structures</article-title>
+          <source>Computer Vision—ECCV 2024, Lecture Notes in Computer Science</source>
+          <publisher-name>Cham: Springer</publisher-name>
+          <year>2024</year>
+          <volume>15135</volume>
+          <page-range>218-234</page-range>
+          <pub-id pub-id-type="doi">10.1007/978-3-031-72980-5_13</pub-id>
+        </element-citation>
+      </ref>
+      <ref id="ref_14">
+        <label>14.</label>
+        <element-citation publication-type="conf-paper">
+          <publisher-place>Stanford, CA, USA</publisher-place>
+          <year>2016</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Milletari</surname>
+              <given-names>F.</given-names>
+            </name>
+            <name>
+              <surname>Navab</surname>
+              <given-names>N.</given-names>
+            </name>
+            <name>
+              <surname>Ahmadi</surname>
+              <given-names>S. A.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/3DV.2016.79</pub-id>
+          <article-title>V-Net: Fully convolutional neural networks for volumetric medical image segmentation</article-title>
+          <source>Proceedings of the 2016 Fourth International Conference on 3D Vision (3DV)</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_15">
+        <label>15.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>16560-16569</page-range>
+          <publisher-place>Nashville, TN, USA</publisher-place>
+          <year>2021</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Shit</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Paetzold</surname>
+              <given-names>J. C.</given-names>
+            </name>
+            <name>
+              <surname>Sekuboyina</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Ezhov</surname>
+              <given-names>I.</given-names>
+            </name>
+            <name>
+              <surname>Unger</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Zhylka</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Pluim</surname>
+              <given-names>J. P. W.</given-names>
+            </name>
+            <name>
+              <surname>Bauer</surname>
+              <given-names>U.</given-names>
+            </name>
+            <name>
+              <surname>Menze</surname>
+              <given-names>B. H.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/CVPR46437.2021.01629</pub-id>
+          <article-title>clDce—A novel topology-preserving loss function for tubular structure segmentation</article-title>
+          <source>Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_16">
+        <label>16.</label>
+        <element-citation publication-type="journal">
+          <volume>32</volume>
+          <page-range>1-12</page-range>
+          <year>2019</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Hu</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>F.</given-names>
+            </name>
+            <name>
+              <surname>Samaras</surname>
+              <given-names>D.</given-names>
+            </name>
+            <name>
+              <surname>Chen</surname>
+              <given-names>C.</given-names>
+            </name>
+          </person-group>
+          <article-title>Topology-preserving deep image segmentation</article-title>
+        </element-citation>
+      </ref>
+      <ref id="ref_17">
+        <label>17.</label>
+        <element-citation publication-type="book">
+          <person-group person-group-type="author">
+            <name>
+              <surname>Goodfellow</surname>
+              <given-names>I.</given-names>
+            </name>
+            <name>
+              <surname>Bengio</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Courville</surname>
+              <given-names>A.</given-names>
+            </name>
+          </person-group>
+          <source>Deep Learning</source>
+          <publisher-name>MIT Press</publisher-name>
+          <year>2016</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_18">
+        <label>18.</label>
+        <element-citation publication-type="journal">
+          <volume>22</volume>
+          <page-range>679-688</page-range>
+          <issue>4</issue>
+          <year>2006</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Hyndman</surname>
+              <given-names>R. J.</given-names>
+            </name>
+            <name>
+              <surname>Koehler</surname>
+              <given-names>A. B.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.ijforecast.2006.03.001</pub-id>
+          <article-title>Another look at measures of forecast accuracy</article-title>
+        </element-citation>
+      </ref>
+      <ref id="ref_19">
+        <label>19.</label>
+        <element-citation publication-type="journal">
+          <volume>15</volume>
+          <page-range>25266</page-range>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Liu</surname>
+              <given-names>L. Z.</given-names>
+            </name>
+            <name>
+              <surname>Zhou</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Ran</surname>
+              <given-names>X. R.</given-names>
+            </name>
+            <name>
+              <surname>Wu</surname>
+              <given-names>Y. P.</given-names>
+            </name>
+            <name>
+              <surname>Zhao</surname>
+              <given-names>W. G.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>H.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1038/s41598-025-08280-z</pub-id>
+          <article-title>A crack detection and quantification method using matched filter and photograph reconstruction</article-title>
+        </element-citation>
+      </ref>
+      <ref id="ref_20">
+        <label>20.</label>
+        <element-citation publication-type="journal">
+          <volume>211</volume>
+          <page-range>112632</page-range>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Bae</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>An</surname>
+              <given-names>Y. K.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.measurement.2023.112632</pub-id>
+          <article-title>Computer vision-based statistical crack quantification for concrete structures</article-title>
+          <source>Measurement</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_21">
+        <label>21.</label>
+        <element-citation publication-type="thesis">
+          <person-group person-group-type="author">
+            <name>
+              <surname>Calderón</surname>
+              <given-names>L. A. S.</given-names>
+            </name>
+          </person-group>
+          <article-title>A system for crack pattern detection, characterization and diagnosis in concrete structures by means of image processing and machine learning techniques</article-title>
+          <source>, undefined</source>
+          <year>2017</year>
+          <publisher-name>Universitat Politècnica de Catalunya</publisher-name>
+        </element-citation>
+      </ref>
+      <ref id="ref_22">
+        <label>22.</label>
+        <element-citation publication-type="journal">
+          <volume>128</volume>
+          <page-range>103765</page-range>
+          <year>2021</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Liu</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Yeoh</surname>
+              <given-names>J. K. W.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.autcon.2021.103765</pub-id>
+          <article-title>Automated crack pattern recognition from images for condition assessment of concrete structures</article-title>
+        </element-citation>
+      </ref>
+      <ref id="ref_23">
+        <label>23.</label>
+        <element-citation publication-type="journal">
+          <volume>2023</volume>
+          <page-range>9982080</page-range>
+          <issue>1</issue>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Yu</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Xu</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Xing</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Zhou</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Pan</surname>
+              <given-names>P.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1155/2023/9982080</pub-id>
+          <article-title>Pixel-level crack detection and quantification of nuclear containment with deep learning</article-title>
+        </element-citation>
+      </ref>
+      <ref id="ref_24">
+        <label>24.</label>
+        <element-citation publication-type="journal">
+          <volume>15</volume>
+          <page-range>1530</page-range>
+          <issue>6</issue>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Deng</surname>
+              <given-names>L.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Guo</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Liu</surname>
+              <given-names>Y.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3390/rs15061530</pub-id>
+          <article-title>An integrated method for road crack segmentation and surface feature quantification under complex backgrounds</article-title>
+        </element-citation>
+      </ref>
+      <ref id="ref_25">
+        <label>25.</label>
+        <element-citation publication-type="webpage">
+          <article-title>Pixel Annotation Tool</article-title>
+          <source>, https://github.com/abreheret/PixelAnnotationTool</source>
+          <year>2017</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_26">
+        <label>26.</label>
+        <element-citation publication-type="journal">
+          <volume>17</volume>
+          <page-range>3434-3445</page-range>
+          <issue>12</issue>
+          <year>2016</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Shi</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Cui</surname>
+              <given-names>L.</given-names>
+            </name>
+            <name>
+              <surname>Qi</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Meng</surname>
+              <given-names>F.</given-names>
+            </name>
+            <name>
+              <surname>Chen</surname>
+              <given-names>Z.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/TITS.2016.2552248</pub-id>
+          <article-title>Automatic road crack detection using random structured forests</article-title>
+        </element-citation>
+      </ref>
+      <ref id="ref_27">
+        <label>27.</label>
+        <element-citation publication-type="journal">
+          <volume>327</volume>
+          <page-range>119635</page-range>
+          <issue>15</issue>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Chen</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Fan</surname>
+              <given-names>G.</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Hao</surname>
+              <given-names>H.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.engstruct.2025.119635</pub-id>
+          <article-title>Automatic complex concrete crack detection and quantification based on point clouds and deep learning</article-title>
+        </element-citation>
+      </ref>
+      <ref id="ref_28">
+        <label>28.</label>
+        <element-citation publication-type="conference-proceedings">
+          <volume>9351</volume>
+          <year>2015</year>
+          <publisher-name>Cham: Springer</publisher-name>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Ronneberger</surname>
+              <given-names>O.</given-names>
+            </name>
+            <name>
+              <surname>Fischer</surname>
+              <given-names>P.</given-names>
+            </name>
+            <name>
+              <surname>Brox</surname>
+              <given-names>T.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1007/978-3-319-24574-4_28</pub-id>
+          <article-title>U-Net: Convolutional networks for biomedical image segmentation</article-title>
+          <source>, undefined</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_29">
+        <label>29.</label>
+        <element-citation publication-type="journal">
+          <volume>6</volume>
+          <issue>60</issue>
+          <year>2019</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Shorten</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Khoshgoftaar</surname>
+              <given-names>T. M.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1186/s40537-019-0197-0</pub-id>
+          <article-title>A survey on image data augmentation for deep learning</article-title>
+        </element-citation>
+      </ref>
+      <ref id="ref_30">
+        <label>30.</label>
+        <element-citation publication-type="conf-paper">
+          <publisher-place>New Orleans, LA, USA</publisher-place>
+          <year>2019</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Loshchilov</surname>
+              <given-names>I.</given-names>
+            </name>
+            <name>
+              <surname>Hutter</surname>
+              <given-names>F.</given-names>
+            </name>
+          </person-group>
+          <article-title>Decoupled weight decay regularization</article-title>
+          <source>Proceedings of the International Conference on Learning Representations (ICLR 2019)</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_31">
+        <label>31.</label>
+        <element-citation publication-type="journal">
+          <volume>27</volume>
+          <page-range>236-239</page-range>
+          <issue>3</issue>
+          <year>1984</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Zhang</surname>
+              <given-names>T. Y.</given-names>
+            </name>
+            <name>
+              <surname>Suen</surname>
+              <given-names>C. Y.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1145/357994.358023</pub-id>
+          <article-title>A fast parallel algorithm for thinning digital patterns</article-title>
+        </element-citation>
+      </ref>
+    </ref-list>
+  </back>
+</article>
