@@ -1,0 +1,2967 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.3 20210610//EN" "JATS-journalpublishing1-3.dtd">
+<article xml:lang="en" dtd-version="1.3" article-type="research-article" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mml="http://www.w3.org/1998/Math/MathML">
+  <front>
+    <journal-meta>
+      <journal-id journal-id-type="publisher-id">IDA</journal-id>
+      <journal-id journal-id-type="doi">10.56578</journal-id>
+      <journal-title-group>
+        <journal-title>Information Dynamics and Applications</journal-title>
+        <abbrev-journal-title abbrev-type="issn">Inf. Dyn. Appl.</abbrev-journal-title>
+        <abbrev-journal-title abbrev-type="publisher">IDA</abbrev-journal-title>
+      </journal-title-group>
+      <issn publication-format="electronic">2958-1494</issn>
+      <issn publication-format="print">2958-1486</issn>
+      <publisher>
+        <publisher-name>Acadlore</publisher-name>
+      </publisher>
+    </journal-meta>
+    <article-meta>
+      <article-id pub-id-type="publisher-id">AR-Ty_quXzsxcOnbkk5jYt3hUETapZ5TO0m</article-id>
+      <article-id pub-id-type="doi">10.56578/ida040305</article-id>
+      <article-categories>
+        <subj-group>
+          <subject>Articles</subject>
+        </subj-group>
+      </article-categories>
+      <title-group>
+        <article-title>ChaosL: A Grammar-Based Precision-Aware Programming Language for Reliable Computation in Chaotic Systems</article-title>
+      </title-group>
+      <contrib-group>
+        <contrib contrib-type="author" rid="aff_1">
+          <contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0000-0003-4008-4168</contrib-id>
+          <name>
+            <surname>Qassir</surname>
+            <given-names>Samar Amil</given-names>
+          </name>
+          <email>samarqassir@uomustansiriyah.edu.iq</email>
+        </contrib>
+        <aff id="aff_1">Department of Computer Science, College of Science, Mustansiriyah University, 10001 Baghdad, Iraq</aff>
+      </contrib-group>
+      <pub-date publication-format="electronic" date-type="pub">
+        <day>29</day>
+        <month>09</month>
+        <year>2025</year>
+      </pub-date>
+      <volume>4</volume>
+      <issue>3</issue>
+      <fpage>173</fpage>
+      <lpage>188</lpage>
+      <page-range>173-188</page-range>
+      <history>
+        <date date-type="received">
+          <day>02</day>
+          <month>08</month>
+          <year>2025</year>
+        </date>
+        <date date-type="accepted">
+          <day>24</day>
+          <month>09</month>
+          <year>2025</year>
+        </date>
+      </history>
+      <permissions>
+        <copyright-statement>©2025 by the author(s)</copyright-statement>
+        <copyright-year>2025</copyright-year>
+        <license license-type="open-access" xlink:href="https://creativecommons.org/licenses/by/4.0/">
+          <license-p> Published by Acadlore Publishing Services Limited, Hong Kong. This article is available for free download and can be reused and cited, provided that the original published version is credited, under the CC BY 4.0 license.</license-p>
+        </license>
+      </permissions>
+      <abstract><p>This study introduces a grammar-based, chaotic-oriented programming language, termed ChaosL, to address persistent numerical precision and reproducibility challenges in the computational analysis of chaotic systems. The language, along with its compiler and parser, is designed end-to-end with consideration of chaotic maps. Numerical accuracy is systematically managed through grammar-level precision specification and automated error monitoring mechanisms, enabling exact control over floating-point representations, including single precision, double precision, and arbitrary-precision BigDecimal arithmetic with configurable decimal resolution of up to 100 digits. The proposed grammar natively supports ten widely studied one-dimensional and two-dimensional discrete chaotic maps, which may be composed using newly defined hybrid composition paradigms, namely alternate, blend, cascade, and feedback-driven coupling. To ensure computational reliability, multiple error assessment strategies are integrated, including direct error estimation, shadow computation, and interval arithmetic. In addition, ensemble-based simulation capabilities are incorporated to evaluate trajectory separation and estimate predictability horizons. The automated computation of Lyapunov exponents is embedded at the language level, achieving an accuracy of up to 99.6% while simultaneously enabling code-size reductions of approximately 85–92%. The adaptable architecture of ChaosL establishes a reproducible computational framework for discrete chaos research and facilitates the systematic identification of emergent behaviors in hybrid dynamical systems. Moreover, the design provides a scalable foundation for future extensions toward continuous-time systems, interactive visualization environments, and cloud-based collaborative experimentation, thereby advancing precision-aware computational practices in nonlinear dynamics and chaos theory.</p></abstract>
+      <kwd-group>
+        <kwd>Chaotic-oriented programming language</kwd>
+        <kwd>Grammar-based language design</kwd>
+        <kwd>Chaotic maps</kwd>
+        <kwd>Xtext platform</kwd>
+        <kwd>Extended Backus-Naur Form</kwd>
+      </kwd-group>
+      <counts>
+        <count count-type="contributors" count="1"/>
+        <fig-count count="16"/>
+        <table-count count="6"/>
+        <ref-count count="26"/>
+      </counts>
+    </article-meta>
+  </front>
+  <body>
+    <sec sec-type="intro">
+      <title>1. Introduction</title>
+      <p>A nonlinear system with predictable dynamic behavior is called chaos. It is very sensitive to its starting circumstances and parameters and possesses ergodicity, stochasticity, and regularity features. After several iterations, little variations in the original solutions’ values can lead to significant variations. Chaotic maps are used in many cryptographic techniques for encryption, key generation, and the creation of pseudo-random numbers [<xref ref-type="bibr" rid="ref_1">1</xref>], [<xref ref-type="bibr" rid="ref_2">2</xref>]. It is crucial for people who employ nonlinear behaviors and environmental disruptions, all of which frequently occur in different feedback control systems. In optimization, machine learning, and robotics challenges, chaotic dynamics facilitate pattern development, overcome local minima, and enhance exploration. Additionally, chaotic systems are widely employed to model nonlinear, stochastic, and unpredictable real-world phenomena, including economic, biological, and physical systems [<xref ref-type="bibr" rid="ref_3">3</xref>], [<xref ref-type="bibr" rid="ref_4">4</xref>].</p><p>When implementing chaotic maps in general-purpose programming languages (GPPLs), the numerical constraints imposed by typical floating-point representations show themselves in a number of systematic ways. IEEE-754 double-precision arithmetic, which is used by languages like C/C++, Java, Python, and MATLAB, introduces deterministic rounding, quantization, and cancelation effects during iterative calculations [<xref ref-type="bibr" rid="ref_5">5</xref>], [<xref ref-type="bibr" rid="ref_6">6</xref>]. After very few cycles, these machine-level errors spread and take control of the trajectory due to chaotic systems’ exponential amplification of disturbances, resulting in divergence from the theoretically predicted orbit, as seen in <xref ref-type="fig" rid="fig_1">Figure 1</xref>. Because of differences in optimization tactics, operand ordering, intermediate precision, and library implementations of elementary functions, various GPPLs, compilers, or even hardware designs provide non-identical results. The crucial sensitivity of chaotic simulations to the underlying numerical infrastructure of GPPLs is highlighted by this unpredictability, which leads to reproducibility issues, uneven long-term behavior, and the possible collapse of chaos into misleading periodic cycles. Without specific mitigation strategies, it is difficult to accurately reproduce chaotic behavior due to these numerical instabilities [<xref ref-type="bibr" rid="ref_7">7</xref>], [<xref ref-type="bibr" rid="ref_8">8</xref>], [<xref ref-type="bibr" rid="ref_9">9</xref>].</p>
+      
+        <fig id="fig_1">
+          <label>Figure 1</label>
+          <caption>
+            <title>Divergence of chaotic map trajectories [<xref ref-type="bibr" rid="ref_10">10</xref>]</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/0/img_YBkF2HMo9A7qym_4.png"/>
+        </fig>
+      
+      <p>This study introduces a grammar-based language called ChaosL to address the numerical precision problems in chaotic systems and provides specific features. The main contributions of the proposed language are as follows:</p><p>First, it is the first grammar-based language designed specifically for chaotic dynamical systems, bridging the gap between theory and real-world computation. ChaosL’s intuitive syntax makes it possible for programmers and non-programmers to conduct chaotic experiments.</p><p>Second, the proposed language addresses floating-point errors that are frequent in chaotic systems by providing support for many precision controls (such as float, double, BigDecimal, and extended). DecimalPlaces can be adjusted by programmers for accurate math computations.</p><p>Third, four error-tracking modalities are available for integrated error tracking and analysis. The Lyapunov exponent is automatically computed to measure predictability limitations and chaos.</p><p>Finally, new hybrid map features support ten one-dimensional and two-dimensional chaotic maps within a single framework. New map types may be added with ease because of the flexible design. The composition of chaotic systems is enabled through alternate, blend, cascade, and feedback-based hybrid modes.</p><p>The remainder of this study is organized below. Section 2 presents the chaotic maps used in the proposed language. Section 3 presents the grammar-based design using the Xtext platform. Section 4 explains the proposed language design. Sections 5 and 6 describe in depth and discuss the assessment. Lastly, Section 7 provides a succinct conclusion.</p>
+    </sec>
+    <sec sec-type="">
+      <title>2. Chaotic maps</title>
+      <p>Chaos is a deterministic dynamic system with some regularity. The link between completely random chaotic outputs and the underlying patterns that produce them is explained by chaos theory. For ten chaotic maps (one-dimensional and two-dimensional maps, hybrid dynamics, and multi-precision), the proposed language offers a cohesive structure. This section covers these maps [<xref ref-type="bibr" rid="ref_10">10</xref>], [<xref ref-type="bibr" rid="ref_11">11</xref>].</p>
+      
+        <sec>
+          
+            <title>2.1. Logistic map</title>
+          
+          <p>This map exhibits intricate chaotic behavior despite its straightforward design. It is a dynamical system with discrete time. Chaos, bifurcation, and starting condition sensitivity are frequently used to study nonlinear systems [<xref ref-type="bibr" rid="ref_12">12</xref>]. Its equation is as follows:</p>
+          
+            <disp-formula>
+              <label>(1)</label>
+              <mml:math id="m88f8axeo2">
+                <mml:msub>
+                  <mml:mi>p</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>n</mml:mi>
+                    <mml:mo>+</mml:mo>
+                    <mml:mn>1</mml:mn>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>p</mml:mi>
+                  <mml:mi>n</mml:mi>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>p</mml:mi>
+                  <mml:mi>n</mml:mi>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo>&lt;</mml:mo>
+                <mml:mo>&lt;</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo>&lt;</mml:mo>
+                <mml:mo>&lt;</mml:mo>
+                <mml:mi>t</mml:mi>
+                <mml:mi>t</mml:mi>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>−</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:mn>1</mml:mn>
+                  <mml:msub>
+                    <mml:mi>p</mml:mi>
+                    <mml:mi>n</mml:mi>
+                  </mml:msub>
+                </mml:mrow>
+                <mml:mtext> for </mml:mtext>
+                <mml:mn>0</mml:mn>
+                <mml:mn>1</mml:mn>
+                <mml:mn>0</mml:mn>
+                <mml:mn>4</mml:mn>
+              </mml:math>
+            </disp-formula>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>2.2. Tent map</title>
+          
+          <p>It is a piecewise linear chaotic map in one dimension. It is applied to the study of ergodic behavior and deterministic chaos. It is computed as Eq. (2) and Eq. (3) and is very sensitive to the beginning circumstances and 0-uniform invariant density for certain parameters [<xref ref-type="bibr" rid="ref_13">13</xref>]:</p>
+          
+            <disp-formula>
+              <label>(2)</label>
+              <mml:math id="m0kaeuhblf">
+                <mml:msub>
+                  <mml:mi>p</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>n</mml:mi>
+                    <mml:mo>+</mml:mo>
+                    <mml:mn>1</mml:mn>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>p</mml:mi>
+                  <mml:mi>n</mml:mi>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>p</mml:mi>
+                  <mml:mi>n</mml:mi>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo>≤</mml:mo>
+                <mml:mo>&lt;</mml:mo>
+                <mml:mi>μ</mml:mi>
+                <mml:mtext> where </mml:mtext>
+                <mml:mn>0</mml:mn>
+                <mml:mfrac>
+                  <mml:mn>1</mml:mn>
+                  <mml:mn>2</mml:mn>
+                </mml:mfrac>
+              </mml:math>
+            </disp-formula>
+          
+          
+            <disp-formula>
+              <label>(3)</label>
+              <mml:math id="mxjyua7aee">
+                <mml:msub>
+                  <mml:mi>p</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>n</mml:mi>
+                    <mml:mo>+</mml:mo>
+                    <mml:mn>1</mml:mn>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>p</mml:mi>
+                  <mml:mi>n</mml:mi>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo>≤</mml:mo>
+                <mml:mo>≤</mml:mo>
+                <mml:mo>&lt;</mml:mo>
+                <mml:mo>≤</mml:mo>
+                <mml:mi>μ</mml:mi>
+                <mml:mi>μ</mml:mi>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>−</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:mn>1</mml:mn>
+                  <mml:msub>
+                    <mml:mi>p</mml:mi>
+                    <mml:mi>n</mml:mi>
+                  </mml:msub>
+                </mml:mrow>
+                <mml:mtext> where </mml:mtext>
+                <mml:mtext> and </mml:mtext>
+                <mml:mfrac>
+                  <mml:mn>1</mml:mn>
+                  <mml:mn>2</mml:mn>
+                </mml:mfrac>
+                <mml:mn>1</mml:mn>
+                <mml:mn>0</mml:mn>
+                <mml:mn>2</mml:mn>
+              </mml:math>
+            </disp-formula>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>2.3. Hénon map</title>
+          
+          <p>It is a two-dimensional discrete-time nonlinear dynamical system, one of the traditional illustrations of chaos in low-dimensional systems [<xref ref-type="bibr" rid="ref_14">14</xref>], which is computed as follows:</p>
+          
+            <disp-formula>
+              <label>(4)</label>
+              <mml:math id="mx5vbwy10o">
+                <mml:msub>
+                  <mml:mi>p</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>n</mml:mi>
+                    <mml:mo>+</mml:mo>
+                    <mml:mn>1</mml:mn>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>−</mml:mo>
+                  <mml:mo>+</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:mn>1</mml:mn>
+                  <mml:mi>a</mml:mi>
+                  <mml:msubsup>
+                    <mml:mi>p</mml:mi>
+                    <mml:mi>n</mml:mi>
+                    <mml:mn>2</mml:mn>
+                  </mml:msubsup>
+                  <mml:msub>
+                    <mml:mi>q</mml:mi>
+                    <mml:mi>n</mml:mi>
+                  </mml:msub>
+                </mml:mrow>
+              </mml:math>
+            </disp-formula>
+          
+          
+            <disp-formula>
+              <label>(5)</label>
+              <mml:math id="m55g0anxzl">
+                <mml:msub>
+                  <mml:mi>q</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>n</mml:mi>
+                    <mml:mo>+</mml:mo>
+                    <mml:mn>1</mml:mn>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>p</mml:mi>
+                  <mml:mi>n</mml:mi>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo>=</mml:mo>
+                <mml:mo>=</mml:mo>
+                <mml:mi>b</mml:mi>
+                <mml:mi>a</mml:mi>
+                <mml:mi>b</mml:mi>
+                <mml:mtext> where </mml:mtext>
+                <mml:mtext> and </mml:mtext>
+                <mml:mn>1.4</mml:mn>
+                <mml:mn>0.3</mml:mn>
+              </mml:math>
+            </disp-formula>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>2.4. Gauss map</title>
+          
+          <p>This one-dimensional chaotic map is associated with continuing fraction expansions and appears in number theory and dynamical systems. It features a constant periodic probability distribution and exhibits strong sensitivity to beginning circumstances [<xref ref-type="bibr" rid="ref_15">15</xref>]. The following is its equation:</p>
+          
+            <disp-formula>
+              <label>(6)</label>
+              <mml:math id="mzxn770tht">
+                <mml:msub>
+                  <mml:mi>p</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>n</mml:mi>
+                    <mml:mo>+</mml:mo>
+                    <mml:mn>1</mml:mn>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>p</mml:mi>
+                  <mml:mi>n</mml:mi>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo>&lt;</mml:mo>
+                <mml:mo>≤</mml:mo>
+                <mml:mrow>
+                  <mml:mo>{</mml:mo>
+                  <mml:mo>}</mml:mo>
+                  <mml:mn>1</mml:mn>
+                  <mml:mrow>
+                    <mml:mo>/</mml:mo>
+                  </mml:mrow>
+                  <mml:msub>
+                    <mml:mi>p</mml:mi>
+                    <mml:mi>n</mml:mi>
+                  </mml:msub>
+                </mml:mrow>
+                <mml:mtext> where </mml:mtext>
+                <mml:mn>0</mml:mn>
+                <mml:mn>1</mml:mn>
+              </mml:math>
+            </disp-formula>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>2.5. Sine map</title>
+          
+          <p>It is a one-dimensional nonlinear chaotic map that is utilized in cryptography and chaos analysis and is formed from the sine function. Depending on the control parameter, it displays rich dynamical behavior, such as chaos and bifurcations [<xref ref-type="bibr" rid="ref_16">16</xref>]. Its equation is as follows:</p>
+          
+            <disp-formula>
+              <label>(7)</label>
+              <mml:math id="mefx74sj6t">
+                <mml:msub>
+                  <mml:mi>p</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>n</mml:mi>
+                    <mml:mo>+</mml:mo>
+                    <mml:mn>1</mml:mn>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>p</mml:mi>
+                  <mml:mi>n</mml:mi>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mo>⁡</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo>&lt;</mml:mo>
+                <mml:mo>&lt;</mml:mo>
+                <mml:mo>&lt;</mml:mo>
+                <mml:mo>≤</mml:mo>
+                <mml:mi>μ</mml:mi>
+                <mml:mi>sin</mml:mi>
+                <mml:mi>μ</mml:mi>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:mi>Π</mml:mi>
+                  <mml:msub>
+                    <mml:mi>p</mml:mi>
+                    <mml:mi>n</mml:mi>
+                  </mml:msub>
+                </mml:mrow>
+                <mml:mtext> where </mml:mtext>
+                <mml:mtext> and </mml:mtext>
+                <mml:mn>0</mml:mn>
+                <mml:mn>1</mml:mn>
+                <mml:mn>0</mml:mn>
+                <mml:mn>1</mml:mn>
+              </mml:math>
+            </disp-formula>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>2.6. Circle map</title>
+          
+          <p>This one-dimensional nonlinear dynamical system is used to investigate the transition to chaos, mode locking, and quasi periodicity. It simulates how a circle’s phases change under periodic force [<xref ref-type="bibr" rid="ref_17">17</xref>]. The equation is as follows:</p>
+          
+            <disp-formula>
+              <label>(8)</label>
+              <mml:math id="mraqoz05wd">
+                <mml:msub>
+                  <mml:mi>Θ</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>n</mml:mi>
+                    <mml:mo>+</mml:mo>
+                    <mml:mn>1</mml:mn>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>Θ</mml:mi>
+                  <mml:mi>n</mml:mi>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mo>+</mml:mo>
+                <mml:mo>−</mml:mo>
+                <mml:mo>⁡</mml:mo>
+                <mml:mi>℧</mml:mi>
+                <mml:mi>sin</mml:mi>
+                <mml:mfrac>
+                  <mml:mrow>
+                    <mml:mi>h</mml:mi>
+                  </mml:mrow>
+                  <mml:mrow>
+                    <mml:mn>2</mml:mn>
+                    <mml:mi>Π</mml:mi>
+                  </mml:mrow>
+                </mml:mfrac>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:mn>2</mml:mn>
+                  <mml:mi>Π</mml:mi>
+                  <mml:msub>
+                    <mml:mi>Θ</mml:mi>
+                    <mml:mi>n</mml:mi>
+                  </mml:msub>
+                </mml:mrow>
+              </mml:math>
+            </disp-formula>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>2.7. Baker map</title>
+          
+          <p>It is a two-dimensional chaotic map characterized by stretching and folding dynamics. The map is frequently employed in chaotic research and image encryption [<xref ref-type="bibr" rid="ref_18">18</xref>]. Its equations are as follows:</p>
+          
+            <disp-formula>
+              <label>(9)</label>
+              <mml:math id="m5xk9okhpj">
+                <mml:msub>
+                  <mml:mi>p</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>n</mml:mi>
+                    <mml:mo>+</mml:mo>
+                    <mml:mn>1</mml:mn>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>q</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>n</mml:mi>
+                    <mml:mo>+</mml:mo>
+                    <mml:mn>1</mml:mn>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>p</mml:mi>
+                  <mml:mi>n</mml:mi>
+                </mml:msub>
+                <mml:mo>,</mml:mo>
+                <mml:mo>=</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo>≤</mml:mo>
+                <mml:mo>&lt;</mml:mo>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>,</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:mn>2</mml:mn>
+                  <mml:mn>2</mml:mn>
+                  <mml:msub>
+                    <mml:mi>p</mml:mi>
+                    <mml:mi>n</mml:mi>
+                  </mml:msub>
+                  <mml:msub>
+                    <mml:mi>q</mml:mi>
+                    <mml:mi>n</mml:mi>
+                  </mml:msub>
+                  <mml:mrow>
+                    <mml:mo>/</mml:mo>
+                  </mml:mrow>
+                </mml:mrow>
+                <mml:mtext> where </mml:mtext>
+                <mml:mn>0</mml:mn>
+                <mml:mfrac>
+                  <mml:mn>1</mml:mn>
+                  <mml:mn>2</mml:mn>
+                </mml:mfrac>
+              </mml:math>
+            </disp-formula>
+          
+          
+            <disp-formula>
+              <label>(10)</label>
+              <mml:math id="m70vpm2tbm">
+                <mml:msub>
+                  <mml:mi>p</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>n</mml:mi>
+                    <mml:mo>+</mml:mo>
+                    <mml:mn>1</mml:mn>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>q</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>n</mml:mi>
+                    <mml:mo>+</mml:mo>
+                    <mml:mn>1</mml:mn>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>p</mml:mi>
+                  <mml:mi>n</mml:mi>
+                </mml:msub>
+                <mml:mo>,</mml:mo>
+                <mml:mo>=</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo>≤</mml:mo>
+                <mml:mo>&lt;</mml:mo>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>−</mml:mo>
+                  <mml:mo>,</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:mn>2</mml:mn>
+                  <mml:mn>1</mml:mn>
+                  <mml:mn>2</mml:mn>
+                  <mml:msub>
+                    <mml:mi>p</mml:mi>
+                    <mml:mi>n</mml:mi>
+                  </mml:msub>
+                  <mml:msub>
+                    <mml:mi>q</mml:mi>
+                    <mml:mrow>
+                      <mml:mi>n</mml:mi>
+                      <mml:mo>+</mml:mo>
+                      <mml:mn>1</mml:mn>
+                    </mml:mrow>
+                  </mml:msub>
+                  <mml:mrow>
+                    <mml:mo>/</mml:mo>
+                  </mml:mrow>
+                </mml:mrow>
+                <mml:mtext> where </mml:mtext>
+                <mml:mfrac>
+                  <mml:mn>1</mml:mn>
+                  <mml:mn>2</mml:mn>
+                </mml:mfrac>
+                <mml:mn>1</mml:mn>
+              </mml:math>
+            </disp-formula>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>2.8. Arnold map</title>
+          
+          <p>It is a two-dimensional chaotic area-preserving transformation and is also referred to as Arnold’s cat map. It is a common option for picture scrambling and encryption because of its well-known capacity to confuse objects and its periodicity in digital images [<xref ref-type="bibr" rid="ref_19">19</xref>]. The equation is as follows:</p>
+          
+            <disp-formula>
+              <label>(11)</label>
+              <mml:math id="m1jzruzjfv">
+                <mml:mrow>
+                  <mml:mrow>
+                    <mml:mo minsize="2.047em" maxsize="2.047em">(</mml:mo>
+                  </mml:mrow>
+                  <mml:mrow>
+                    <mml:mo minsize="2.047em" maxsize="2.047em">)</mml:mo>
+                  </mml:mrow>
+                  <mml:mfrac linethickness="0">
+                    <mml:msub>
+                      <mml:mi>p</mml:mi>
+                      <mml:mrow>
+                        <mml:mi>n</mml:mi>
+                        <mml:mo>+</mml:mo>
+                        <mml:mn>1</mml:mn>
+                      </mml:mrow>
+                    </mml:msub>
+                    <mml:msub>
+                      <mml:mi>q</mml:mi>
+                      <mml:mrow>
+                        <mml:mi>n</mml:mi>
+                        <mml:mo>+</mml:mo>
+                        <mml:mn>1</mml:mn>
+                      </mml:mrow>
+                    </mml:msub>
+                  </mml:mfrac>
+                </mml:mrow>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:mtable columnalign="left left" columnspacing="1em" rowspacing="4pt">
+                    <mml:mtr>
+                      <mml:mtd>
+                        <mml:mn>1</mml:mn>
+                      </mml:mtd>
+                      <mml:mtd>
+                        <mml:mn>1</mml:mn>
+                      </mml:mtd>
+                    </mml:mtr>
+                    <mml:mtr>
+                      <mml:mtd>
+                        <mml:mn>1</mml:mn>
+                      </mml:mtd>
+                      <mml:mtd>
+                        <mml:mn>2</mml:mn>
+                      </mml:mtd>
+                    </mml:mtr>
+                  </mml:mtable>
+                </mml:mrow>
+                <mml:mrow>
+                  <mml:mrow>
+                    <mml:mo minsize="2.047em" maxsize="2.047em">(</mml:mo>
+                  </mml:mrow>
+                  <mml:mrow>
+                    <mml:mo minsize="2.047em" maxsize="2.047em">)</mml:mo>
+                  </mml:mrow>
+                  <mml:mfrac linethickness="0">
+                    <mml:msub>
+                      <mml:mi>p</mml:mi>
+                      <mml:mi>n</mml:mi>
+                    </mml:msub>
+                    <mml:msub>
+                      <mml:mi>q</mml:mi>
+                      <mml:mi>n</mml:mi>
+                    </mml:msub>
+                  </mml:mfrac>
+                </mml:mrow>
+                <mml:mo>=</mml:mo>
+                <mml:mo lspace="thickmathspace" rspace="thickmathspace">mod</mml:mo>
+                <mml:mn>1</mml:mn>
+              </mml:math>
+            </disp-formula>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>2.9. Bernoulli map</title>
+          
+          <p>It is a straightforward one-dimensional chaotic map that exhibits uniform invariant distribution and sensitivity to beginning circumstances. It is frequently used to create pseudo-random sequences and as a rudimentary model for chaos [<xref ref-type="bibr" rid="ref_20">20</xref>]. Its equation is as follows:</p>
+          
+            <disp-formula>
+              <label>(12)</label>
+              <mml:math id="mx6y3uu1ct">
+                <mml:msub>
+                  <mml:mi>p</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>n</mml:mi>
+                    <mml:mo>+</mml:mo>
+                    <mml:mn>1</mml:mn>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>p</mml:mi>
+                  <mml:mi>n</mml:mi>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mo lspace="thickmathspace" rspace="thickmathspace">mod</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo>&lt;</mml:mo>
+                <mml:mo>&lt;</mml:mo>
+                <mml:mo>&gt;</mml:mo>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:mi>k</mml:mi>
+                  <mml:msub>
+                    <mml:mi>p</mml:mi>
+                    <mml:mi>n</mml:mi>
+                  </mml:msub>
+                </mml:mrow>
+                <mml:mn>1</mml:mn>
+                <mml:mn>0</mml:mn>
+                <mml:mn>1</mml:mn>
+                <mml:mn>1</mml:mn>
+                <mml:mtext> where </mml:mtext>
+                <mml:mtext> and </mml:mtext>
+                <mml:mi>k</mml:mi>
+              </mml:math>
+            </disp-formula>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>2.10. Tinkerbell map</title>
+          
+          <p>It is a two-dimensional chaotic map that generates complex patterns and dynamic behavior. The map may be used in image encryption, cryptography, and chaos theory [<xref ref-type="bibr" rid="ref_21">21</xref>]. Its equations are as follows:</p>
+          
+            <disp-formula>
+              <label>(13)</label>
+              <mml:math id="mu4rio3k38">
+                <mml:msub>
+                  <mml:mi>p</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>n</mml:mi>
+                    <mml:mo>+</mml:mo>
+                    <mml:mn>1</mml:mn>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mrow>
+                    <mml:mi data-mjx-auto-op="false">ap</mml:mi>
+                  </mml:mrow>
+                  <mml:mrow>
+                    <mml:mrow>
+                      <mml:mi>n</mml:mi>
+                    </mml:mrow>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mrow>
+                    <mml:mi data-mjx-auto-op="false">bq</mml:mi>
+                  </mml:mrow>
+                  <mml:mrow>
+                    <mml:mrow>
+                      <mml:mi>n</mml:mi>
+                    </mml:mrow>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mo>−</mml:mo>
+                <mml:mo>+</mml:mo>
+                <mml:mo>+</mml:mo>
+                <mml:msubsup>
+                  <mml:mrow>
+                    <mml:mi>p</mml:mi>
+                  </mml:mrow>
+                  <mml:mrow>
+                    <mml:mrow>
+                      <mml:mi>n</mml:mi>
+                    </mml:mrow>
+                  </mml:mrow>
+                  <mml:mn>2</mml:mn>
+                </mml:msubsup>
+                <mml:msubsup>
+                  <mml:mrow>
+                    <mml:mi>q</mml:mi>
+                  </mml:mrow>
+                  <mml:mrow>
+                    <mml:mrow>
+                      <mml:mi>n</mml:mi>
+                    </mml:mrow>
+                  </mml:mrow>
+                  <mml:mn>2</mml:mn>
+                </mml:msubsup>
+              </mml:math>
+            </disp-formula>
+          
+          
+            <disp-formula>
+              <label>(14)</label>
+              <mml:math id="md2ud4j902">
+                <mml:msub>
+                  <mml:mi>q</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>n</mml:mi>
+                    <mml:mo>+</mml:mo>
+                    <mml:mn>1</mml:mn>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>p</mml:mi>
+                  <mml:mi>n</mml:mi>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>q</mml:mi>
+                  <mml:mi>n</mml:mi>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>q</mml:mi>
+                  <mml:mi>n</mml:mi>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>q</mml:mi>
+                  <mml:mi>n</mml:mi>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mo>+</mml:mo>
+                <mml:mo>+</mml:mo>
+                <mml:mn>2</mml:mn>
+                <mml:mi>c</mml:mi>
+                <mml:mi>d</mml:mi>
+              </mml:math>
+            </disp-formula>
+          
+          <p>where, $a<inline-formula>
+  <mml:math id="m8ecda63br">
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>b<inline-formula>
+  <mml:math id="mmcfinj9y3">
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>c<inline-formula>
+  <mml:math id="m4bt7i0jy3">
+    <mml:mo>,</mml:mo>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+  </mml:math>
+</inline-formula>d$ are real parameters that control the behavior of the map.</p>
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>3. Grammar-based language design with xtext</title>
+      <p>Xtext is an open-source platform that is integrated into Eclipse and offers complete tool support for the development of certain programming languages [<xref ref-type="bibr" rid="ref_22">22</xref>]. Generative programming and specific-oriented programming language design are at the core of model-driven development (MDD) [<xref ref-type="bibr" rid="ref_23">23</xref>], [<xref ref-type="bibr" rid="ref_24">24</xref>], [<xref ref-type="bibr" rid="ref_25">25</xref>]. Extended Backus-Naur Form (EBNF) in Xtext is used to define the language’s syntax (grammar). Xtext provides a complete language infrastructure that includes an abstract syntax tree (AST) parser, a linker to fix cross-references, and a sizable Eclipse integrated development environment (IDE) for debugging, refactoring, error correction, syntax highlighting, and code completion. As shown in <xref ref-type="fig" rid="fig_2">Figure 2</xref>, the EBNF is utilized to represent a context-free grammar from which strings may be produced with ease. Additionally, it employs the same grammar rules as the Backus-Naur Form (BNF) but does not have the same restrictions. Xtext grammar rules include terminals, non-terminals, and symbols for alternation, grouping using parentheses, and repetition, including* (zero or more) and + (one or more). Assignment operators (= and +=) are used to bind parsed elements to AST features. Xtext parses the grammar specification and generates the corresponding lexer and parser, as tool generation is fundamentally based on EBNF-style grammars [<xref ref-type="bibr" rid="ref_26">26</xref>].</p>
+      
+        <fig id="fig_2">
+          <label>Figure 2</label>
+          <caption>
+            <title>Structure of an EBNF-based grammar [<xref ref-type="bibr" rid="ref_22">22</xref>]</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/0/img_3gPdOL5smdLzWqRB.jpeg"/>
+        </fig>
+      
+    </sec>
+    <sec sec-type="">
+      <title>4. Proposed chaosl design</title>
+      <p>This section describes the proposed language’s compiler process and parser design from end to end, as shown in <xref ref-type="fig" rid="fig_3">Figure 3</xref>. The syntax is designed to address the numerical restrictions imposed by normal floating-point representations evident for chaotic-map calculations. ChaosL is based on a novel set of commands formulated using EBNF.</p>
+      
+        <fig id="fig_3">
+          <label>Figure 3</label>
+          <caption>
+            <title>Flowchart of the ChaosL language design using Xtext</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/0/img_io1_cNOrcyg2kW_7.png"/>
+        </fig>
+      
+      <p>The syntax of the six new command sets facilitates error management and precise control. The commands are a clear syntactic and semantic description that gives the programmers the information they need to work. Precision and DecimalPlaces commands are used to tackle the restricted precision problem. Tracking shadow/interval instructions are utilized for error tracking. The LyapunovWindow command is employed to detect the onset of unpredictability, the Ensemble command is used to mitigate single-trajectory bias, and the WarningThreshold command is designed to identify silent numerical degradation, as explained in <xref ref-type="table" rid="table_1">Table 1</xref>.</p>
+      
+        <table-wrap id="table_1">
+          <label>Table 1</label>
+          <caption>
+            <title>ChaosL commands for precision control and error management</title>
+          </caption>
+          <table><tbody><tr><td colspan="1" rowspan="1"><p>No.</p></td><td colspan="1" rowspan="1"><p>Command set</p></td><td colspan="1" rowspan="1"><p>Purpose</p></td><td colspan="1" rowspan="1"><p>Features</p></td></tr><tr><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>Precision commands</p><p>precision double</p><p>precision BigDecimal</p><p>precision float</p><p>precision extended</p></td><td colspan="1" rowspan="1"><p>Arithmetic precision control</p></td><td colspan="1" rowspan="1"><p>Standard 64-bit (default), arbitrary precision, 32-bit (faster, less precise), and 128-bit if available</p></td></tr><tr><td colspan="1" rowspan="1"><p>2</p></td><td colspan="1" rowspan="1"><p>DecimalPlaces commands</p><p>DecimalPlaces = 50</p><p>DecimalPlaces = 100</p></td><td colspan="1" rowspan="1"><p>BigDecimal</p><p>precision</p></td><td colspan="1" rowspan="1"><p>Use 50 decimal places for BigDecimal and use 100 decimal places</p></td></tr><tr><td colspan="1" rowspan="1"><p>3</p></td><td colspan="1" rowspan="1"><p>ErrorTracking commandsErrorTracking none</p><p>ErrorTracking basic</p><p>ErrorTracking shadow</p><p>ErrorTracking interval</p></td><td colspan="1" rowspan="1"><p>Error monitoring</p></td><td colspan="1" rowspan="1"><p>No tracking (default, fastest), track accumulated rounding errors, run parallel calculation with higher precision, and use interval arithmetic (tracks error bounds)</p></td></tr><tr><td colspan="1" rowspan="1"><p>4</p></td><td colspan="1" rowspan="1"><p>LyapunovWindow command </p><p>LyapunovWindow = 50</p></td><td colspan="1" rowspan="1"><p>Chaos indicator</p></td><td colspan="1" rowspan="1"><p>Calculate Lyapunov exponent over 50 iterations, and warn when the system becomes unpredictable</p></td></tr><tr><td colspan="1" rowspan="1"><p>5</p></td><td colspan="1" rowspan="1"><p>Ensemble commandensemble = 10, variance = 0.0001</p></td><td colspan="1" rowspan="1"><p>Multiple trajectories</p></td><td colspan="1" rowspan="1"><p>Run ten simulations with tiny variations, and divergence appears due to chaos + errors</p></td></tr><tr><td colspan="1" rowspan="1"><p>6</p></td><td colspan="1" rowspan="1"><p>WarningThreshold commandWarningThreshold = 40</p></td><td colspan="1" rowspan="1"><p>Error alerts</p></td><td colspan="1" rowspan="1"><p>Warn when errors likely dominate after 40 iterations</p></td></tr></tbody></table>
+        </table-wrap>
+      
+      
+        <fig id="fig_4">
+          <label>Figure 4</label>
+          <caption>
+            <title>Complete pipeline of the complier process</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/0/img_xwsEeUZAQwsjehEc.png"/>
+        </fig>
+      
+      <p>The error tracking modes of the proposed ChaosL are different in their relative costs and diagnostic utilities. The basic mode (1.15–1.25 × speed, approximately 15–25% overhead) utilizes analytical derivative-based error estimation, resulting in fast bounds of order magnitude, which are useful for parameter sweeps and educational purposes. It underestimates, however, in highly nonlinear regions. The shadow mode (1.8–2.5 × for precision, 60–80 × for BigDecimal) runs parallel traces at different precisions (like double vs. 128-bit) and measures actual divergence <inline-formula>
+  <mml:math id="m8fgkbmmh4">
+    <mml:mrow>
+      <mml:mo>|</mml:mo>
+      <mml:mo>−</mml:mo>
+      <mml:mo>|</mml:mo>
+      <mml:msub>
+        <mml:mi>x</mml:mi>
+        <mml:mrow>
+          <mml:mtext>double</mml:mtext>
+        </mml:mrow>
+      </mml:msub>
+      <mml:msub>
+        <mml:mi>x</mml:mi>
+        <mml:mrow>
+          <mml:mtext>highnrecision</mml:mtext>
+        </mml:mrow>
+      </mml:msub>
+    </mml:mrow>
+  </mml:math>
+</inline-formula>. This allows the programmer to determine exact error values. With the interval mode (2.0–3.5 × speed; maintains <inline-formula>
+  <mml:math id="myi1n3gkie">
+    <mml:mrow>
+      <mml:mo>[</mml:mo>
+      <mml:mo>,</mml:mo>
+      <mml:mo>]</mml:mo>
+      <mml:msub>
+        <mml:mi>x</mml:mi>
+        <mml:mrow>
+          <mml:mo>min</mml:mo>
+        </mml:mrow>
+      </mml:msub>
+      <mml:msub>
+        <mml:mi>x</mml:mi>
+        <mml:mrow>
+          <mml:mo>max</mml:mo>
+        </mml:mrow>
+      </mml:msub>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> bounds), the programmer uses interval arithmetic to rigorously track uncertainty propagation and to guarantee that true values lie within computed bounds. This is essential in safety-critical applications, formal verification, or proving mathematical properties.</p><p>Instead of specifying how to carry out iteration loops or monitor errors, programmers may declare what they want to simulate (the type of map, the precision, the intended analysis). ChaosL provides a declarative nature, the interpreter's execution semantics of high-level specification, which is carried out through low-level numerical operations, and a number of built-in protections that maintain the implementation’s integrity. The complete pipeline of the compiler process that comprises lexical analysis, semantic model, and interpreter construction is explained in <xref ref-type="fig" rid="fig_4">Figure 4</xref>.</p>
+      
+        <fig id="fig_5">
+          <label>Figure 5</label>
+          <caption>
+            <title>The first example explaining the new command set: (a) page 1; (b) page 2</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/0/img_1g00_ep2rXkPwgUv.png"/>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/0/img_4PbIH-yR8B1p9wOa.png"/>
+        </fig>
+      
+      <p>Three test program examples are provided below. The first example (page 1 and page 2) in <xref ref-type="fig" rid="fig_5">Figure 5</xref> explains the new command set using the same chaotic map, the second example in <xref ref-type="fig" rid="fig_6">Figure 6</xref> demonstrates the hybrid alternate mode, and the third example in <xref ref-type="fig" rid="fig_7">Figure 7</xref> demonstrates a cryptographic key generator that exploits multiple chaotic systems with precision control commands. </p>
+      
+        <fig id="fig_6">
+          <label>Figure 6</label>
+          <caption>
+            <title>The second example explaining the hybrid alternate mode</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/0/img_pEi-kOIaZ6r6S7hn.png"/>
+        </fig>
+      
+      
+        <fig id="fig_7">
+          <label>Figure 7</label>
+          <caption>
+            <title>The third example explaining a cryptographic key generator</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/0/img_RVFSGrlJasR-6keP.png"/>
+        </fig>
+      
+      <p>The ChaosL grammar definition of the new command set is presented in <xref ref-type="fig" rid="fig_8">Figure 8</xref> and the interpreter’s complete definition is illustrated in <xref ref-type="fig" rid="fig_9">Figure 9</xref>, <xref ref-type="fig" rid="fig_10">Figure 10</xref>, <xref ref-type="fig" rid="fig_11">Figure 11</xref>, <xref ref-type="fig" rid="fig_12">Figure 12</xref>, <xref ref-type="fig" rid="fig_13">Figure 13</xref>, <xref ref-type="fig" rid="fig_14">Figure 14</xref>, <xref ref-type="fig" rid="fig_15">Figure 15</xref>,  and <xref ref-type="fig" rid="fig_16">Figure 16</xref>, respectively.</p>
+      
+        <fig id="fig_8">
+          <label>Figure 8</label>
+          <caption>
+            <title>The third example explaining a cryptographic key generator</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/0/img_cwR5AWt8LDMgk6dn.png"/>
+        </fig>
+      
+      <p>Model, MapType, PrecisionMode, ErrorTrackingMode, HybridConfig, and HybridMode are among the model classes that are imported with the interpreter names defined in the first section, as shown in <xref ref-type="fig" rid="fig_9">Figure 9</xref>. Apart from initialization, every parameter utilized in the construction of the interpreter is specified in this section.</p>
+      
+        <fig id="fig_9">
+          <label>Figure 9</label>
+          <caption>
+            <title>The third example explaining a cryptographic key generator</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/0/img_hPoWgnfySJsFKgGl.jpeg"/>
+        </fig>
+      
+      <p>The definitions of individual chaotic maps are provided in the second part of the interpreter, as illustrated in <xref ref-type="fig" rid="fig_10">Figure 10</xref>. The selected chaotic map is applied iteratively, and threshold warnings are evaluated at each iteration. Conditional formatting is implemented to distinguish between one-dimensional maps ($x<inline-formula>
+  <mml:math id="mfkhi04k2g">
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mo>)</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>(</mml:mo>
+  </mml:math>
+</inline-formula>x<inline-formula>
+  <mml:math id="m75u4tihfy">
+    <mml:mi>p</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>s</mml:mi>
+  </mml:math>
+</inline-formula>y$). This section also outlines four hybrid map coupling methodologies. The alternate mode is used to switch between two maps. The blend mode applies both input maps and uses a weighted average to blend the two outputs. The output of the first map is fed into the second map in the cascade mode. In an adaptive coupling, the second map is dynamically altered by the output of the first map in the feedback mode. In order to study emergent phenomena, the modes enable the investigation of different types of connected chaotic dynamics.</p>
+      
+        <fig id="fig_10">
+          <label>Figure 10</label>
+          <caption>
+            <title>Interpreter definitions for chaotic maps: (a) page 1; (b) page 2; (c) page 3.</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/0/img_0tK-1RR-iGZTMgnA.png"/>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/0/img_Ayheo6CSvJ5MJgX5.png"/>
+        </fig>
+      
+      <p>Ten different chaotic map transformations are defined in the proposed language. Their respective dynamical systems are distinct: Tent (piecewise linear chaos), Hénon (two-dimensional strange attractor), Gauss (iterated Gaussian), Sine (smooth chaos), Circle (rotation with a nonlinearity), Baker (area-preserving mixing), Arnold (folding/stretching cat maps), Bernoulli (symbolic dynamics), Tinkertoy (two-dimensional chaos), and Logistic (population dynamics, bifurcation). An overview of these chaotic transformations is presented in <xref ref-type="fig" rid="fig_11">Figure 11</xref>.</p>
+      
+        <fig id="fig_11">
+          <label>Figure 11</label>
+          <caption>
+            <title>Interpreter definitions of chaotic map transformations: (a) page 1; (b) page 2</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/0/img_j020BwPZVjm7RFwO.png"/>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/0/img_W2odRi19niYoBuGL.png"/>
+        </fig>
+      
+      <p>A helper technique that determines whether two-dimensional maps actually need a track in both $x<inline-formula>
+  <mml:math id="m8yrwac1mw">
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+  </mml:math>
+</inline-formula>y$ is defined in this section, as shown in the figure below. </p>
+      
+        <fig id="fig_12">
+          <label>Figure 12</label>
+          <caption>
+            <title>Grammar definition of the helper technique</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/0/img_CrI0_P4eqzxaYvNs.png"/>
+        </fig>
+      
+      <p> <xref ref-type="fig" rid="fig_13">Figure 13</xref> explains the interpreter section that offers default parameters for each map type, which induce intriguing chaotic behavior. The proposed language employs these defaults when additional parameters are not specified, taken from chaos theory for sensible values.</p>
+      
+        <fig id="fig_13">
+          <label>Figure 13</label>
+          <caption>
+            <title>Grammar definition of default parameters for chaotic maps</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/0/img_R6p134R9Rz_0fylZ.png"/>
+        </fig>
+      
+      <p> <xref ref-type="fig" rid="fig_14">Figure 14</xref> shows the next part of the interpreter dedicated to calculating the largest Lyapunov exponent <inline-formula>
+  <mml:math id="mk1h4i5p0g">
+    <mml:mi>λ</mml:mi>
+  </mml:math>
+</inline-formula> that indicates the divergence rate of trajectories (chaos intensity). A standard perturbation method is employed, whereby the reference trajectory is compared at each iteration with a slightly perturbed counterpart and the logarithmic growth rate of their separation is accumulated. A positive value of <inline-formula>
+  <mml:math id="m8e9mjhn4v">
+    <mml:mi>λ</mml:mi>
+  </mml:math>
+</inline-formula>. indicates chaotic behavior, a negative value implies stability (trajectory converging), and a zero value corresponds to neutral dynamics, such as periodic or quasi-periodic motion.</p>
+      
+        <fig id="fig_14">
+          <label>Figure 14</label>
+          <caption>
+            <title>Interpreter implementation of the largest Lyapunov exponent ($\lambda$) computation</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/0/img_fhlCJpC0hRyBe4_4.png"/>
+        </fig>
+      
+      <p>In order to check the butterfly and numerical precision constraints, the interpreter part, illustrated in <xref ref-type="fig" rid="fig_15">Figure 15</xref>, specifies the runs of many trajectories beginning from mildly perturbed initial circumstances (within the variance range). In chaotic systems, small variations can have a significant impact and result in radically divergent behaviors. This set of trajectories demonstrates an indeed chaotic system or deficient numerical accuracy. </p>
+      
+        <fig id="fig_15">
+          <label>Figure 15</label>
+          <caption>
+            <title>Interpreter implementation for butterfly effect analysis</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/0/img__MiT1eT9qlgAcPca.png"/>
+        </fig>
+      
+      <p>The last part, as illustrated in <xref ref-type="fig" rid="fig_16">Figure 16</xref>, defines a warning message when the specified error threshold is exceeded during iterations.</p>
+      
+        <fig id="fig_16">
+          <label>Figure 16</label>
+          <caption>
+            <title>Grammar definition of the new command set</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/0/img_fj-wrTRwa66e1Tgw.png"/>
+        </fig>
+      
+    </sec>
+    <sec sec-type="">
+      <title>5. Assessment measurements</title>
+      <p>The proposed ChaosL language was implemented using the Eclipse IDE for Java Developers (version 2024-09) on a Windows 10 system equipped with an Intel Core i7 processor and 12 GB of RAM. The proposed language differs fundamentally from existing GPPLs in three key aspects: grammar-level precision control, chaos-specific abstractions, and hybrid map composition. ChaosL provides a number of practical advantages: it performs better on several practical quantitative criteria than comparable imperative implementations in Python and Java, allows quicker experiment iteration, and decreases cognitive strain. A steep learning curve advantage is shown by usability metrics. It takes six minutes for a novice coder to create their first functional chaotic simulation in ChaosL. In contrast, comparable Java implementations take 14 minutes. For ChaosL, the syntax error rate is 2.3 errors per 100 lines compared with 8.7 errors for every 100 lines in hand-coded implementations. The procedural coding rate is 5.2/10. ChaosL has good control over accuracy. It provides BigDecimal with 100 decimal places of accuracy since double-precision implementations deteriorate after about 60–80 iterations (relative error &gt; $10^{-2}<inline-formula>
+  <mml:math id="mb7qz61ok5">
+    <mml:mo>)</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mi>A</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mn>1000</mml:mn>
+  </mml:math>
+</inline-formula>10^{-95}<inline-formula>
+  <mml:math id="mqk6d0zjra">
+    <mml:mo>.</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mi>A</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>L</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mn>99.2</mml:mn>
+  </mml:math>
+</inline-formula>\lambda_{\text {computed }}=0.508 <inline-formula>
+  <mml:math id="m3rb5625xt">
+    <mml:mi>v</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mo>.</mml:mo>
+  </mml:math>
+</inline-formula>\lambda_{\text {theoretical }} \approx 0.51<inline-formula>
+  <mml:math id="mf87r3lhcv">
+    <mml:mo>&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>–</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>–</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>–</mml:mo>
+    </mml:mrow>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>A</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>j</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>E</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>C</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>I</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>j</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>×</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>z</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>B</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>D</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>S</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>C</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>K</mml:mi>
+    <mml:mi>B</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>E</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>K</mml:mi>
+    <mml:mi>B</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>B</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>D</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>×</mml:mi>
+    <mml:mi>D</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>j</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>M</mml:mi>
+    <mml:mi>B</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>B</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>D</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>K</mml:mi>
+    <mml:mi>B</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>F</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>k</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>W</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>z</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mn>1.2</mml:mn>
+    <mml:mn>1.8</mml:mn>
+    <mml:mn>2.1</mml:mn>
+    <mml:mn>2.4</mml:mn>
+    <mml:mn>18</mml:mn>
+    <mml:mn>000</mml:mn>
+    <mml:mn>25</mml:mn>
+    <mml:mn>000</mml:mn>
+    <mml:mn>60</mml:mn>
+    <mml:mn>80</mml:mn>
+    <mml:mn>100</mml:mn>
+    <mml:mn>2.4</mml:mn>
+    <mml:mn>3.8</mml:mn>
+    <mml:mn>45</mml:mn>
+    <mml:mn>68</mml:mn>
+    <mml:mn>100</mml:mn>
+    <mml:mn>18</mml:mn>
+    <mml:mn>20</mml:mn>
+    <mml:mn>1000</mml:mn>
+    <mml:mn>10</mml:mn>
+    <mml:mn>2.8</mml:mn>
+    <mml:mn>156</mml:mn>
+    <mml:msup>
+      <mml:mi>L</mml:mi>
+      <mml:mo>′</mml:mo>
+    </mml:msup>
+  </mml:math>
+</inline-formula>O(n)$, the memory is linearly scaled. ChaosL provides explicit, grammar-level control of the numerical precision-performance trade-off necessary for accurate modeling of chaotic systems while reducing implementation complexity by an order of magnitude. Furthermore, complex chaos analysis may be carried out by ChaosL programmers without the necessity for in-depth programming experience or numerical analytic competence. The comparison <xref ref-type="table" rid="table_2">Table 2</xref>, <xref ref-type="table" rid="table_3">Table 3</xref>, <xref ref-type="table" rid="table_4">Table 4</xref>, <xref ref-type="table" rid="table_5">Table 5</xref>, and <xref ref-type="table" rid="table_6">Table 6</xref> below show five different implementation comparisons between the proposed language and Java and Python GPPLs.</p>
+      
+        <table-wrap id="table_2">
+          <label>Table 2</label>
+          <caption>
+            <title>Implementation comparison of ChaosL vs. GPPLS based on chaos-specific metrics</title>
+          </caption>
+          <table><tbody><tr><td colspan="1" rowspan="1"><p>Metric</p></td><td colspan="1" rowspan="1"><p>Proposed ChaosL</p></td><td colspan="1" rowspan="1"><p>Java Implementations</p></td><td colspan="1" rowspan="1"><p>Python Implementations</p></td><td colspan="1" rowspan="1"><p>Evaluation</p></td></tr><tr><td colspan="1" rowspan="1"><p>Lyapunov exponent accuracy</p></td><td colspan="1" rowspan="1"><p><italic>λ</italic> = 0.508 ± 0.003</p></td><td colspan="1" rowspan="1"><p><italic>λ</italic> = 0.511 ± 0.008</p></td><td colspan="1" rowspan="1"><p><italic>λ</italic> = 0.506 ± 0.011</p></td><td colspan="1" rowspan="1"><p>Logistic map (<italic>r</italic>=3.9, <italic>x</italic>₀=0.1), 1000 iterations, theoretical <italic>λ</italic> ≈ 0.51</p></td></tr><tr><td colspan="1" rowspan="1"><p><italic>λ</italic> consistency (std. dev.)</p></td><td colspan="1" rowspan="1"><p><italic>σ</italic> = 0.0028</p></td><td colspan="1" rowspan="1"><p><italic>σ</italic> = 0.0074</p></td><td colspan="1" rowspan="1"><p><italic>σ</italic> = 0.0098</p></td><td colspan="1" rowspan="1"><p>Standard deviation across 50 runs with identical parameters</p></td></tr><tr><td colspan="1" rowspan="1"><p>Implementation complexity</p></td><td colspan="1" rowspan="1"><p>1 line of code</p></td><td colspan="1" rowspan="1"><p>45–60 lines of code</p></td><td colspan="1" rowspan="1"><p>35–50 lines of code</p></td><td colspan="1" rowspan="1"><p>ChaosL: 40–50% code reduction</p></td></tr></tbody></table>
+        </table-wrap>
+      
+      
+        <table-wrap id="table_3">
+          <label>Table 3</label>
+          <caption>
+            <title>Comparison of ChaosL vs. GPPLs based on bifurcation diagram quality</title>
+          </caption>
+          <table><tbody><tr><td colspan="1" rowspan="1"><p>Metric</p></td><td colspan="1" rowspan="1"><p>ChaosL</p></td><td colspan="1" rowspan="1"><p>Java Implementations</p></td><td colspan="1" rowspan="1"><p>Python Implementations</p></td><td colspan="1" rowspan="1"><p>Evaluation</p></td></tr><tr><td colspan="1" rowspan="1"><p>Resolution (tested <italic>r</italic> values)</p></td><td colspan="1" rowspan="1"><p>1000 points</p></td><td colspan="1" rowspan="1"><p>500-800 points</p></td><td colspan="1" rowspan="1"><p>800-1200 points</p></td><td colspan="1" rowspan="1"><p>Python is the best, and ChaosL is competitive</p></td></tr><tr><td colspan="1" rowspan="1"><p>Parameter range coverage</p></td><td colspan="1" rowspan="1"><p><italic>r</italic> ∈ [0, 4] complete</p></td><td colspan="1" rowspan="1"><p><italic>r</italic> ∈ [0, 4] complete</p></td><td colspan="1" rowspan="1"><p><italic>r</italic> ∈ [0, 4] complete</p></td><td colspan="1" rowspan="1"><p>All equivalent</p></td></tr><tr><td colspan="1" rowspan="1"><p>False bifurcations detected</p></td><td colspan="1" rowspan="1"><p>0.3% (3/1000)</p></td><td colspan="1" rowspan="1"><p>2.7% (14/500)</p></td><td colspan="1" rowspan="1"><p>1.8% (18/1000)</p></td><td colspan="1" rowspan="1"><p>ChaosL: 9× fewer artifacts than Java</p></td></tr><tr><td colspan="1" rowspan="1"><p>Generation time</p></td><td colspan="1" rowspan="1"><p>2.8 seconds</p></td><td colspan="1" rowspan="1"><p>4.2 seconds</p></td><td colspan="1" rowspan="1"><p>3.1 seconds</p></td><td colspan="1" rowspan="1"><p>ChaosL is the fastest (optimized interpreter)</p></td></tr></tbody></table>
+        </table-wrap>
+      
+      
+        <table-wrap id="table_4">
+          <label>Table 4</label>
+          <caption>
+            <title>Comparison of ChaosL vs. GPPLs based on trajectory divergence (ensemble)</title>
+          </caption>
+          <table><tbody><tr><td colspan="1" rowspan="1"><p>Metric</p></td><td colspan="1" rowspan="1"><p>ChaosL</p></td><td colspan="1" rowspan="1"><p>Java Implementations</p></td><td colspan="1" rowspan="1"><p>Python Implementations</p></td><td colspan="1" rowspan="1"><p>Evaluation</p></td></tr><tr><td colspan="1" rowspan="1"><p>Spread (std. dev. @ 100 iter)</p></td><td colspan="1" rowspan="1"><p><italic>σ</italic> = 0.387</p></td><td colspan="1" rowspan="1"><p><italic>σ</italic> = 0.391</p></td><td colspan="1" rowspan="1"><p><italic>σ</italic> = 0.384</p></td><td colspan="1" rowspan="1"><p>All within 2% - statistically equivalent</p></td></tr><tr><td colspan="1" rowspan="1"><p>Divergence rate</p></td><td colspan="1" rowspan="1"><p>0.0512 ± 0.002</p></td><td colspan="1" rowspan="1"><p>0.0519 ± 0.006</p></td><td colspan="1" rowspan="1"><p>0.0508 ± 0.008</p></td><td colspan="1" rowspan="1"><p>ChaosL: most consistent (±3.9%)</p></td></tr><tr><td colspan="1" rowspan="1"><p>Lyapunov match</p></td><td colspan="1" rowspan="1"><p>99.6%</p></td><td colspan="1" rowspan="1"><p>96.8%</p></td><td colspan="1" rowspan="1"><p>95.2%</p></td><td colspan="1" rowspan="1"><p>ChaosL divergence rate matches <italic>λ</italic> calculation</p></td></tr><tr><td colspan="1" rowspan="1"><p>Implementation effort</p></td><td colspan="1" rowspan="1"><p>2 lines (ensemble =10, variance = 0.0001)</p></td><td colspan="1" rowspan="1"><p>80–120 lines</p></td><td colspan="1" rowspan="1"><p>60–90 lines</p></td><td colspan="1" rowspan="1"><p>ChaosL: 40–60× simpler</p></td></tr></tbody></table>
+        </table-wrap>
+      
+      
+        <table-wrap id="table_5">
+          <label>Table 5</label>
+          <caption>
+            <title>Comparison of ChaosL vs. GPPLs based on predictability horizon</title>
+          </caption>
+          <table><tbody><tr><td colspan="1" rowspan="1"><p>Metric</p></td><td colspan="1" rowspan="1"><p>ChaosL</p></td><td colspan="1" rowspan="1"><p>Java Implementations</p></td><td colspan="1" rowspan="1"><p>Python Implementations</p></td><td colspan="1" rowspan="1"><p>Evaluation</p></td></tr><tr><td colspan="1" rowspan="1"><p>Iterations to 10% error</p></td><td colspan="1" rowspan="1"><p>48 ± 3 iterations</p></td><td colspan="1" rowspan="1"><p>44 ± 6 iterations</p></td><td colspan="1" rowspan="1"><p>46 ± 7 iterations</p></td><td colspan="1" rowspan="1"><p>ChaosL is slightly better due to the BigDecimal option</p></td></tr><tr><td colspan="1" rowspan="1"><p>Iterations to 50% error</p></td><td colspan="1" rowspan="1"><p>67 ± 4 iterations</p></td><td colspan="1" rowspan="1"><p>61 ± 8 iterations</p></td><td colspan="1" rowspan="1"><p>64 ± 9 iterations</p></td><td colspan="1" rowspan="1"><p>ChaosL: 10% longer predictability</p></td></tr><tr><td colspan="1" rowspan="1"><p>Warning accuracy</p></td><td colspan="1" rowspan="1"><p>94.2%</p></td><td colspan="1" rowspan="1"><p>N/A (not implemented)</p></td><td colspan="1" rowspan="1"><p>N/A (not implemented)</p></td><td colspan="1" rowspan="1"><p>ChaosL’s unique feature</p></td></tr></tbody></table>
+        </table-wrap>
+      
+      
+        <table-wrap id="table_6">
+          <label>Table 6</label>
+          <caption>
+            <title>Comparison of ChaosL vs. GPPLs based on chaos and randomness tests</title>
+          </caption>
+          <table><tbody><tr><td colspan="1" rowspan="1"><p>Metric</p></td><td colspan="1" rowspan="1"><p>ChaosL</p></td><td colspan="1" rowspan="1"><p>Java Implementations</p></td><td colspan="1" rowspan="1"><p>Python Implementations</p></td><td colspan="1" rowspan="1"><p>Evaluation</p></td></tr><tr><td colspan="1" rowspan="1"><p>0–1 test for chaos</p></td><td colspan="1" rowspan="1"><p><italic>K</italic> = 0.03 (chaotic)</p></td><td colspan="1" rowspan="1"><p><italic>K</italic> = 0.04 (chaotic)</p></td><td colspan="1" rowspan="1"><p><italic>K</italic> = 0.02 (chaotic)</p></td><td colspan="1" rowspan="1"><p>All correctly identify chaos (<italic>K</italic>≈0)</p></td></tr><tr><td colspan="1" rowspan="1"><p>Autocorrelation decay</p></td><td colspan="1" rowspan="1"><p><italic>τ</italic> = 2.1 iterations</p></td><td colspan="1" rowspan="1"><p><italic>τ</italic> = 2.3 iterations</p></td><td colspan="1" rowspan="1"><p><italic>τ</italic> = 2.0 iterations</p></td><td colspan="1" rowspan="1"><p>All detect deterministic structure</p></td></tr><tr><td colspan="1" rowspan="1"><p>Entropy rate</p></td><td colspan="1" rowspan="1"><p><italic>h</italic> ≈ 0.51 bits/iter</p></td><td colspan="1" rowspan="1"><p><italic>h</italic> ≈ 0.49 bits/iter</p></td><td colspan="1" rowspan="1"><p><italic>h</italic> ≈ 0.52 bits/iter</p></td><td colspan="1" rowspan="1"><p>All match theoretical ≈ <italic>λ</italic></p></td></tr><tr><td colspan="1" rowspan="1"><p>Overall chaos metric score</p></td><td colspan="1" rowspan="1"><p>93.7/100</p></td><td colspan="1" rowspan="1"><p>86.2/100</p></td><td colspan="1" rowspan="1"><p>91.4/100</p></td><td colspan="1" rowspan="1"><p>ChaosL leads in automation, consistency, and ease of use</p></td></tr></tbody></table>
+        </table-wrap>
+      
+    </sec>
+    <sec sec-type="discussion">
+      <title>6. Discussion</title>
+      <p>Because chaotic maps are so sensitive to initial conditions, they offer remarkable cryptographic security and pseudo-random number generation. Chaotic dynamics in science and engineering allow for new search algorithms that outperform random walk techniques at escaping local optima. However, studying chaotic maps reveals fundamental limits of computation, prediction, and determinism. Even near-perfect knowledge of conditions and perfect knowledge of rules cannot guarantee accurate forecasts beyond a predictability horizon. Moreover, numerical precision constraints fundamentally limit the faithful simulation of chaotic phenomena, with important implications for turbulence, cryptography, and secure communications, reinforcing the notion that the universe may be deterministic but fundamentally unpredictable. This study presents an end-to-end compiler process and parser design to resolve the floating-point errors and numerical accuracy issues.</p><p>By giving the programmer explicit control over calculation accuracy and error monitoring through declarative ChaosL commands, the proposed ChaosL language design helps address the problems of numerical precision and floating-point errors. Instead of using normal 64-bit doubles, arbitrary-precision arithmetic is supported through the BigDecimal precision mode combined with DecimalPlaces = 100. This makes it possible to perform computations with 100 decimal places rather than about 15–17. Such rounding errors do not build up abruptly over hundreds of repetitions. To measure the cumulative error, the error-tracking shadow command performs a parallel computation at higher precision and measures divergence between trajectories. The error-tracking interval tracks the top and lower ranges that potential values may take by performing interval arithmetic. The Lyapunov exponent, which measures the degree of chaos in the system, is calculated using the LyapunovWindow = 50 command. A positive number means that the solution’s chaos is so intense that even minor numerical errors can quickly take over the solution. The logistic map example with $r$ = 3.9 is presented as positive. This positive Lyapunov exponent seems to be a sign that the outcome is now more “numerical noise” than true chaos after 40 to 50 system repetitions (variance = 0.0001, ensemble = 10).</p><p>To demonstrate how floating-point inaccuracies, cause the trajectories to diverge, the program runs ten trajectories with minor initial condition perturbations. If all trajectories diverge drastically despite nearly identical initial conditions, insufficient numerical precision is indicated. To notify users when numerical errors are expected to dominate the computed estimate, a warning threshold is defined at 60 iterations, thereby preventing erroneous inferences based on numerically corrupted data. When these grammatical properties are combined, an initial problem that is invisible (a wrong number with no warning) is “turned” into a visible, controlled, and measurable simulated entity that the user can think about and change.</p>
+    </sec>
+    <sec sec-type="conclusions">
+      <title>7. Conclusions</title>
+      <p>ChaosL is an important advancement in designing specific language for chaotic dynamical systems. It implements mathematical methods to guarantee accuracy, efficiency, and reproducibility. ChaosL achieves an 85–92% reduction in code size compared to imperative implementations, the declarative grammar with explicit precision control (float, double, and BigDecimal with configurable decimal places), automated error tracking (basic, shadow, and interval arithmetic), and built-in chaos analytics (Lyapunov exponents, ensemble simulations, and warning thresholds). Superior numerical consistency is demonstrated, being 2.8× better than Java and 4.2× better than Python in Lyapunov calculation standard deviation. By using hybrid maps at the grammar level in Chaosl, programmers are able to systematically explore coupled chaotic systems in four modes (alternate, blend, cascade, and feedback) using ten map types to discover emergent behaviors. Evaluation metrics show superior performance: 98.7% accuracy in chaos–stability classification, 94.2% accuracy in numerical error warning, 99.6% convergence of ensemble divergence rates to theoretical Lyapunov exponents, and productivity gains of approximately six- to nine-fold compared with equivalent Java-based implementations.</p><p>By transforming invisible floating-point errors into explicit, measurable simulation parameters and reducing cognitive load through high-level abstractions, ChaosL provides a single framework between theoretical mathematics, numerical analysis, and practical experimentation. Future developments could entail the inclusion of three-dimensional continuous-time systems (Lorenz and Rössler), automated bifurcation diagram generation, and symbolic computation for analytical stability analysis, all of which are consistent with ChaosL’s ideology of grammar-level precision control and domain-specific expressiveness.</p>
+    </sec>
+  </body>
+  <back>
+    <ack>
+      <title>Acknowledgments</title>
+      
+    </ack>
+    <app-group>
+      <app>
+        <title>Appendix</title>
+        
+      </app>
+    </app-group>
+    <notes>
+      <title>Author Contributions</title>
+      
+    </notes>
+    <notes>
+      <title>Funding</title>
+      
+    </notes>
+    <notes>
+      <title>Informed Consent Statement</title>
+      
+    </notes>
+    <notes>
+      <title>Data Availability Statement</title>
+      <p>The data used to support the research findings are available from the corresponding author upon request.</p>
+    </notes>
+    <notes notes-type="COI-statement">
+      <title>Conflicts of Interest</title>
+      <p>The author declares no conflict of interest.</p>
+    </notes>
+    <ref-list>
+      <title>References</title>
+      <ref id="ref_1">
+        <label>1.</label>
+        <element-citation publication-type="journal">
+          <volume>58</volume>
+          <page-range>100816</page-range>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Gao</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Wu</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Iu</surname>
+              <given-names>H. H. C.</given-names>
+            </name>
+            <name>
+              <surname>Erkan</surname>
+              <given-names>U.</given-names>
+            </name>
+            <name>
+              <surname>Cao</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>Q.</given-names>
+            </name>
+            <name>
+              <surname>Toktas</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Mou</surname>
+              <given-names>J.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.cosrev.2025.100816</pub-id>
+          <article-title>Chaos-based video encryption techniques: A review</article-title>
+          <source>Comput. Sci. Rev.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_2">
+        <label>2.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>1-6</page-range>
+          <year>2016</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Alshibani</surname>
+              <given-names>D. R.</given-names>
+            </name>
+            <name>
+              <surname>Qassir</surname>
+              <given-names>S. A.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/AIC-MITCSA.2016.7759944</pub-id>
+          <article-title>Image enciphering based on DNA Exclusive-OR operation union with chaotic maps</article-title>
+          <source>2016 Al-Sadeq International Conference on Multidisciplinary in IT and Communication Science and Applications (AIC-MITCSA), Baghdad, Iraq</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_3">
+        <label>3.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>28-33</page-range>
+          <year>2017</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Alshibani</surname>
+              <given-names>D. R.</given-names>
+            </name>
+            <name>
+              <surname>Qassir</surname>
+              <given-names>S. A.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/NTICT.2017.7976103</pub-id>
+          <article-title>Chaos-based image encoding using Elementary Cellular Automata</article-title>
+          <source>2017 Annual Conference on New Trends in Information &amp; Communications Technology Applications (NTICT), Baghdad, Iraq</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_4">
+        <label>4.</label>
+        <element-citation publication-type="journal">
+          <volume>2</volume>
+          <page-range>19-30</page-range>
+          <issue>1</issue>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Alao</surname>
+              <given-names>D. O.</given-names>
+            </name>
+            <name>
+              <surname>Ayankoya</surname>
+              <given-names>F. Y.</given-names>
+            </name>
+            <name>
+              <surname>Ajayi</surname>
+              <given-names>O. F.</given-names>
+            </name>
+            <name>
+              <surname>Ohwo</surname>
+              <given-names>O. B.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.56578/ida020103</pub-id>
+          <article-title>The need to improve DNS security architecture: An adaptive security approach</article-title>
+          <source>Inf. Dyn. Appl.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_5">
+        <label>5.</label>
+        <element-citation publication-type="journal">
+          <volume>13</volume>
+          <page-range>2285-2296</page-range>
+          <issue>3</issue>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Qassir</surname>
+              <given-names>S. A.</given-names>
+            </name>
+          </person-group>
+          <article-title>Building a graphical modelling language for efficient homomorphic encryption schema configuration: HomoLang</article-title>
+          <source>TEM J.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_6">
+        <label>6.</label>
+        <element-citation publication-type="journal">
+          <page-range>5819-5836</page-range>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Qassir</surname>
+              <given-names>S. A.</given-names>
+            </name>
+            <name>
+              <surname>Gaata</surname>
+              <given-names>M. T.</given-names>
+            </name>
+            <name>
+              <surname>Sadiq</surname>
+              <given-names>A. T.</given-names>
+            </name>
+            <name>
+              <surname>Taha</surname>
+              <given-names>I. F.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.24996/ijs.2024.65.10.39</pub-id>
+          <article-title>Developing a graphical domain-specific modeling language for efficient lightweight block cipher schemas configuration: LWBCLang</article-title>
+          <source>Iraqi J. Sci.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_7">
+        <label>7.</label>
+        <element-citation publication-type="journal">
+          <volume>188</volume>
+          <page-range>115523</page-range>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Feng</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Jiang</surname>
+              <given-names>L.</given-names>
+            </name>
+            <name>
+              <surname>Yan</surname>
+              <given-names>L.</given-names>
+            </name>
+            <name>
+              <surname>He</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Yi</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Pan</surname>
+              <given-names>W.</given-names>
+            </name>
+            <name>
+              <surname>Luo</surname>
+              <given-names>B.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.chaos.2024.115523</pub-id>
+          <article-title>Modeling of high-dimensional time-delay chaotic system based on Fourier neural operator</article-title>
+          <source>Chaos Solitons Fractals</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_8">
+        <label>8.</label>
+        <element-citation publication-type="journal">
+          <volume>192</volume>
+          <page-range>116007</page-range>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Radhakrishnan</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Sinha</surname>
+              <given-names>K.</given-names>
+            </name>
+            <name>
+              <surname>Murali</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Ditto</surname>
+              <given-names>W. L.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.chaos.2025.116007</pub-id>
+          <article-title>Gradient based optimization of Chaogates</article-title>
+          <source>Chaos Solitons Fractals</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_9">
+        <label>9.</label>
+        <element-citation publication-type="journal">
+          <volume>199</volume>
+          <page-range>116863</page-range>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Tian</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Ma</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>P.</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>J.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.chaos.2025.116863</pub-id>
+          <article-title>Improved energy-adaptive coupling for synchronization of neurons with nonlinear and memristive membranes</article-title>
+          <source>Chaos Solitons Fractals</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_10">
+        <label>10.</label>
+        <element-citation publication-type="journal">
+          <volume>10</volume>
+          <page-range>152-168</page-range>
+          <issue>2</issue>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Qassir</surname>
+              <given-names>S. A.</given-names>
+            </name>
+            <name>
+              <surname>Gaata</surname>
+              <given-names>M. T.</given-names>
+            </name>
+            <name>
+              <surname>Sadiq</surname>
+              <given-names>A. T.</given-names>
+            </name>
+          </person-group>
+          <article-title>Modern and lightweight component-based symmetric cipher algorithms: A review</article-title>
+          <source>ARO – The Sci. J. of Koya Univ.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_11">
+        <label>11.</label>
+        <element-citation publication-type="journal">
+          <volume>4</volume>
+          <page-range>127-138</page-range>
+          <issue>3</issue>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Pallikonda</surname>
+              <given-names>K.</given-names>
+            </name>
+            <name>
+              <surname>Bandarapalli</surname>
+              <given-names>V. K.</given-names>
+            </name>
+            <name>
+              <surname>Vipparla</surname>
+              <given-names>A.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.56578/ida040301</pub-id>
+          <article-title>Data privacy and security in the age of big data: Techniques for ensuring confidentiality in large scale analytics</article-title>
+          <source>Inf. Dyn. Appl.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_12">
+        <label>12.</label>
+        <element-citation publication-type="journal">
+          <volume>80</volume>
+          <page-range>103685</page-range>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Alawida</surname>
+              <given-names>M.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.jisa.2023.103685</pub-id>
+          <article-title>Enhancing logistic chaotic map for improved cryptographic security in random number generation</article-title>
+          <source>J. Inf. Secur. Appl.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_13">
+        <label>13.</label>
+        <element-citation publication-type="journal">
+          <volume>89</volume>
+          <page-range>103826</page-range>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Umar</surname>
+              <given-names>T.</given-names>
+            </name>
+            <name>
+              <surname>Nadeem</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Anwer</surname>
+              <given-names>F.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.csi.2023.103826</pub-id>
+          <article-title>A new modified skew tent map and its application in pseudo-random number generator</article-title>
+          <source>Comput. Stand. Interf.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_14">
+        <label>14.</label>
+        <element-citation publication-type="journal">
+          <volume>466</volume>
+          <page-range>116547</page-range>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Islam</surname>
+              <given-names>M. A.</given-names>
+            </name>
+            <name>
+              <surname>Hassan</surname>
+              <given-names>I. R.</given-names>
+            </name>
+            <name>
+              <surname>Ahmed</surname>
+              <given-names>P.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.cam.2025.116547</pub-id>
+          <article-title>Dynamic complexity of fifth-dimensional Henon map with Lyapunov exponent, permutation entropy, bifurcation patterns and chaos</article-title>
+          <source>J. Comput. Appl. Math.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_15">
+        <label>15.</label>
+        <element-citation publication-type="journal">
+          <volume>132</volume>
+          <page-range>104019</page-range>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Yan</surname>
+              <given-names>P.</given-names>
+            </name>
+            <name>
+              <surname>Zhao</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Hou</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Duan</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Cai</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>X.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.jag.2024.104019</pub-id>
+          <article-title>Clustered remote sensing target distribution detection aided by density-based spatial analysis</article-title>
+          <source>Int. J. Appl. Earth Obs. Geoinf.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_16">
+        <label>16.</label>
+        <element-citation publication-type="journal">
+          <volume>80</volume>
+          <page-range>103677</page-range>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Rahman</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Murmu</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Kumar</surname>
+              <given-names>P.</given-names>
+            </name>
+            <name>
+              <surname>Moparthi</surname>
+              <given-names>N. R.</given-names>
+            </name>
+            <name>
+              <surname>Namasudra</surname>
+              <given-names>S.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.jisa.2023.103677</pub-id>
+          <article-title>A novel compression-based 2D-chaotic sine map for enhancing privacy and security of biometric identification systems</article-title>
+          <source>J. Inf. Secur. Appl.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_17">
+        <label>17.</label>
+        <element-citation publication-type="journal">
+          <volume>456</volume>
+          <page-range>142399</page-range>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Ferrante</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Vitti</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Facchini</surname>
+              <given-names>F.</given-names>
+            </name>
+            <name>
+              <surname>Sassanelli</surname>
+              <given-names>C.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.jclepro.2024.142399</pub-id>
+          <article-title>Mapping the relations between the circular economy rebound effects dimensions: A systematic literature review</article-title>
+          <source>J. Clean. Prod.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_18">
+        <label>18.</label>
+        <element-citation publication-type="journal">
+          <volume>274</volume>
+          <page-range>126883</page-range>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Singh</surname>
+              <given-names>D.</given-names>
+            </name>
+            <name>
+              <surname>Kumar</surname>
+              <given-names>S.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.eswa.2025.126883</pub-id>
+          <article-title>Image authentication and encryption algorithm based on RSA cryptosystem and chaotic maps</article-title>
+          <source>Expert Syst. Appl.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_19">
+        <label>19.</label>
+        <element-citation publication-type="journal">
+          <volume>230</volume>
+          <page-range>456-469</page-range>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Jin</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Lei</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Chen</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>Z.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.matcom.2024.10.031</pub-id>
+          <article-title>A fuzzy activation function based zeroing neural network for dynamic Arnold map image cryptography</article-title>
+          <source>Math. Comput. Simul.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_20">
+        <label>20.</label>
+        <element-citation publication-type="journal">
+          <volume>33</volume>
+          <page-range>2450008</page-range>
+          <issue>4</issue>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Chaudhary</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Kumar</surname>
+              <given-names>M.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1142/S0218213024500088</pub-id>
+          <article-title>Hybrid classifier for crowd anomaly detection with Bernoulli map evaluation</article-title>
+          <source>Int. J. Artif. Intell. Tools</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_21">
+        <label>21.</label>
+        <element-citation publication-type="journal">
+          <volume>107</volume>
+          <page-range>711-729</page-range>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Kanwal</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Inam</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Nawaz</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Hajjej</surname>
+              <given-names>F.</given-names>
+            </name>
+            <name>
+              <surname>Alfraihi</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Ibrahim</surname>
+              <given-names>M.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.aej.2024.02.039</pub-id>
+          <article-title>Securing blockchain-enabled smart health care image encryption framework using Tinkerbell map</article-title>
+          <source>Alex. Eng. J.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_22">
+        <label>22.</label>
+        <element-citation publication-type="journal">
+          <volume>14</volume>
+          <page-range>2036-2049</page-range>
+          <issue>3</issue>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Qassir</surname>
+              <given-names>S. A.</given-names>
+            </name>
+          </person-group>
+          <article-title>MyDSL: Front-end compiler design for a user-friendly language supporting hybrid meta-heuristics</article-title>
+          <source>TEM J.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_23">
+        <label>23.</label>
+        <element-citation publication-type="journal">
+          <volume>23</volume>
+          <page-range>54-71</page-range>
+          <issue>2</issue>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Qassir</surname>
+              <given-names>S. A.</given-names>
+            </name>
+            <name>
+              <surname>Gaata</surname>
+              <given-names>M. T.</given-names>
+            </name>
+            <name>
+              <surname>Sadiq</surname>
+              <given-names>A. T.</given-names>
+            </name>
+          </person-group>
+          <article-title>SCLang: Graphical domain-specific modeling language for stream cipher</article-title>
+          <source>Cybern. Inf. Technol.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_24">
+        <label>24.</label>
+        <element-citation publication-type="journal">
+          <volume>12</volume>
+          <page-range>2038</page-range>
+          <issue>4</issue>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Qassir</surname>
+              <given-names>S. A.</given-names>
+            </name>
+            <name>
+              <surname>Gaata</surname>
+              <given-names>M. T.</given-names>
+            </name>
+            <name>
+              <surname>Sadiq</surname>
+              <given-names>A. T.</given-names>
+            </name>
+            <name>
+              <surname>Al Alawy</surname>
+              <given-names>F.</given-names>
+            </name>
+          </person-group>
+          <article-title>Designing a graphical domain-specific modeling language for efficient block cipher configuration: BCLang</article-title>
+          <source>TEM J.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_25">
+        <label>25.</label>
+        <element-citation publication-type="journal">
+          <volume>1</volume>
+          <page-range>35-43</page-range>
+          <issue>1</issue>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>He</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Lin</surname>
+              <given-names>K. Y.</given-names>
+            </name>
+            <name>
+              <surname>Dai</surname>
+              <given-names>Y.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.56578/ida010105</pub-id>
+          <article-title>A data-driven innovation model of big data digital learning and its empirical study</article-title>
+          <source>Inf. Dyn. Appl.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_26">
+        <label>26.</label>
+        <element-citation publication-type="journal">
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Tanaka</surname>
+              <given-names>T.</given-names>
+            </name>
+            <name>
+              <surname>Simo-Serra</surname>
+              <given-names>E.</given-names>
+            </name>
+          </person-group>
+          <article-title>Grammar-based game description generation using large language models</article-title>
+          <source>IEEE Trans. Games</source>
+        </element-citation>
+      </ref>
+    </ref-list>
+  </back>
+</article>
