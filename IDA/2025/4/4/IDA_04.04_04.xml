@@ -1,0 +1,1658 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.3 20210610//EN" "JATS-journalpublishing1-3.dtd">
+<article xml:lang="en" dtd-version="1.3" article-type="research-article" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mml="http://www.w3.org/1998/Math/MathML">
+  <front>
+    <journal-meta>
+      <journal-id journal-id-type="publisher-id">IDA</journal-id>
+      <journal-id journal-id-type="doi">10.56578</journal-id>
+      <journal-title-group>
+        <journal-title>Information Dynamics and Applications</journal-title>
+        <abbrev-journal-title abbrev-type="issn">Inf. Dyn. Appl.</abbrev-journal-title>
+        <abbrev-journal-title abbrev-type="publisher">IDA</abbrev-journal-title>
+      </journal-title-group>
+      <issn publication-format="electronic">2958-1494</issn>
+      <issn publication-format="print">2958-1486</issn>
+      <publisher>
+        <publisher-name>Acadlore</publisher-name>
+      </publisher>
+    </journal-meta>
+    <article-meta>
+      <article-id pub-id-type="publisher-id">AR-TFbVOuWEfYqZ7jb6QJO0JRU5buAhh9n4</article-id>
+      <article-id pub-id-type="doi">10.56578/ida040404</article-id>
+      <article-categories>
+        <subj-group>
+          <subject>Articles</subject>
+        </subj-group>
+      </article-categories>
+      <title-group>
+        <article-title>From Data to Knowledge: A Denoising Autoencoder and Stacking-Based Framework for Customer Retention</article-title>
+      </title-group>
+      <contrib-group>
+        <contrib contrib-type="author" rid="aff_1">
+          <contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0009-0003-7760-2763</contrib-id>
+          <name>
+            <surname>Liu</surname>
+            <given-names>Zhaohe</given-names>
+          </name>
+          <email>19337857550@163.com</email>
+        </contrib>
+        <aff id="aff_1">School of Management and Engineering, Capital University of Economics and Business, 100070 Beijing, China</aff>
+      </contrib-group>
+      <pub-date publication-format="electronic" date-type="pub">
+        <day>25</day>
+        <month>12</month>
+        <year>2025</year>
+      </pub-date>
+      <volume>4</volume>
+      <issue>4</issue>
+      <fpage>224</fpage>
+      <lpage>237</lpage>
+      <page-range>224-237</page-range>
+      <history>
+        <date date-type="received">
+          <day>24</day>
+          <month>11</month>
+          <year>2025</year>
+        </date>
+        <date date-type="accepted">
+          <day>21</day>
+          <month>12</month>
+          <year>2025</year>
+        </date>
+      </history>
+      <permissions>
+        <copyright-statement>©2025 by the author(s)</copyright-statement>
+        <copyright-year>2025</copyright-year>
+        <license license-type="open-access" xlink:href="https://creativecommons.org/licenses/by/4.0/">
+          <license-p> Published by Acadlore Publishing Services Limited, Hong Kong. This article is available for free download and can be reused and cited, provided that the original published version is credited, under the CC BY 4.0 license.</license-p>
+        </license>
+      </permissions>
+      <abstract><p>In a highly competitive telecommunications environment, customer behavior data has become an important source of organizational knowledge for service innovation and strategic decision-making. The ability to transform large-scale user data into actionable knowledge is essential for effective customer retention and sustainable business development. This study develops a knowledge discovery framework that integrates a denoising autoencoder with an enhanced stacking learning strategy to support customer retention innovation. The denoising autoencoder is employed to extract latent behavioral representations from complex and noisy user data, enabling the identification of underlying patterns that are difficult to capture through conventional statistical features. These latent representations are further combined with structured indicators and integrated through a stacking ensemble composed of decision trees, random forests, and XGBoost to achieve robust knowledge fusion. Empirical results show that the proposed framework provides more reliable identification of high-risk customers and improves decision support quality in terms of accuracy and area under curve (AUC). The study demonstrates how artificial intelligence can serve as a mechanism for organizational knowledge creation and offers practical implications for data-driven service innovation and resource allocation in the telecommunications sector.</p></abstract>
+      <kwd-group>
+        <kwd>Knowledge discovery</kwd>
+        <kwd>Customer retention innovation</kwd>
+        <kwd>Denoising autoencoder</kwd>
+        <kwd>Stacking learning</kwd>
+        <kwd>Organizational decision support</kwd>
+      </kwd-group>
+      <counts>
+        <count count-type="contributors" count="1"/>
+        <fig-count count="6"/>
+        <table-count count="5"/>
+        <ref-count count="26"/>
+      </counts>
+    </article-meta>
+  </front>
+  <body>
+    <sec sec-type="intro">
+      <title>1. Introduction</title>
+      <p>In recent years, with the rapid advancement of global communication technologies and the widespread adoption of mobile internet, the telecommunications industry has transitioned from a phase of incremental market expansion to one of intense competition within an established market. On one hand, the homogenization of basic communication services has intensified, with price wars among operators continuously squeezing profit margins. On the other hand, the implementation of number portability policies has further lowered barriers to switching providers, subjecting operators to unprecedented pressure from customer churn. Within this competitive landscape, research indicates that acquiring new customers typically costs 5 to 8 times more than retaining existing ones. Customer churn not only directly undermines a company’s profitability but also leads to shrinking market share and diminished brand value. Industry reports reveal that reducing customer churn by just 5% can potentially increase a company’s profits by over 25%. Consequently, accurately identifying high-risk churn users and developing proactive intervention strategies have become critical for telecom operators to achieve sustainable growth.</p><p>The massive scale and digitization of telecom user behavior data present new opportunities for churn prediction. Beyond their operational function, these data resources gradually constitute a form of organizational knowledge that reflects user preferences, consumption habits, and interaction patterns. The transformation of such raw data into meaningful knowledge has become a central task for service innovation and strategic decision making. Traditional prediction methods primarily rely on structured statistical indicators such as call duration, data consumption, and bill amounts, often employing models like Logistic Regression [<xref ref-type="bibr" rid="ref_1">1</xref>], [<xref ref-type="bibr" rid="ref_2">2</xref>], Support Vector Machines (SVM) [<xref ref-type="bibr" rid="ref_3">3</xref>], [<xref ref-type="bibr" rid="ref_4">4</xref>], or single decision trees. However, these traditional approaches face two major limitations when applied to modern telecom data. First, telecom data is often characterized by high-dimensional sparsity and noise interference. Traditional methods heavily depend on manual feature engineering, making it difficult to capture deep nonlinear behavioral patterns from damaged or noisy data, resulting in insufficient model robustness. Second, single models often struggle with the trade-off between bias and variance, making it challenging to simultaneously achieve strong generalization capabilities across different user segments. From a knowledge perspective, these limitations restrict the conversion of behavioral traces into reliable organizational insights.</p><p>To overcome the aforementioned challenges, this paper proposes a customer churn prediction framework based on Denoising Autoencoders (DAE) and an improved stacking ensemble learning approach. The framework is not only a technical tool for prediction but also a mechanism for knowledge discovery and integration. First, to address the inadequacy of manual feature extraction, this study incorporates the DAE from deep learning. By injecting random noise into the input layer and forcing the network to reconstruct the original data, the DAE automatically learns robust, latent low-dimensional feature representations within the data. These representations can be understood as distilled knowledge about customer behavior, which significantly enhances the model’s tolerance to noisy data and its feature expression capabilities. Second, to overcome the performance limitations of single models, this paper constructs a heterogeneous Stacking ensemble model incorporating decision trees, random forests, and XGBoost. This model employs a meta-learner to adaptively fuse predictions from base models, achieving complementary strengths and forming an integrated decision knowledge structure.</p><p>The proposed study aims to connect algorithmic modeling with organizational innovation. By translating large-scale behavioral records into structured and interpretable knowledge, telecom operators are able to redesign customer management strategies, allocate service resources with greater precision, and develop proactive engagement measures. Such a process reflects a broader movement from data processing to knowledge-driven innovation in the digital economy, where artificial intelligence functions as an enabler of learning and organizational renewal rather than a mere computational instrument.</p><p>Our contributions include:</p><p>(1) An end-to-end solution combining unsupervised deep feature extraction with supervised strong ensemble learning has been proposed, which supports the transformation from raw behavioral data to operational knowledge.</p><p>(2) DAE effectively resolves noise interference issues in telecommunications data, uncovering non-linear leakage signals imperceptible to traditional statistical methods and enriching the knowledge base for customer understanding.</p><p>(3) Experimental results demonstrate that this model significantly outperforms both traditional single models and conventional ensemble methods in terms of accuracy and area under curve (AUC) metrics, providing operators with a scientifically sound and actionable basis for precisely identifying churn-prone users and guiding service innovation.</p>
+    </sec>
+    <sec sec-type="">
+      <title>2. Literature review</title>
+      <p>With the rapid iteration of artificial intelligence technologies, the research focus in telecommunications customer churn prediction has shifted from traditional single machine learning models towards deep representation learning and complex ensemble strategies. This transformation reflects not only a technical evolution but also a gradual change in how customer behavior data is understood as a source of organizational knowledge. Existing research primarily concentrates on three areas: enhancements to machine learning-based churn prediction models, the application of deep learning in feature engineering, and strategies for handling imbalanced data. These strands of research collectively shape the foundation for converting fragmented behavioral records into structured insights that can support service innovation.</p><p>Traditional statistical learning methods dominated early research. In recent years, variants of gradient-boosted decision trees (GBDT) have garnered significant attention due to their outstanding performance. Asadi Ejgerdi and Kazerooni [<xref ref-type="bibr" rid="ref_5">5</xref>] employed a stacked ensemble learning approach to forecast customer lifetime value (CLV), utilising random forest, XGBoost, and LightGBM as base learners alongside linear regression as the meta-learner. They observed this methodology outperformed deep neural networks and other standalone machine learning models in predictive accuracy. Sikri et al. [<xref ref-type="bibr" rid="ref_6">6</xref>] further demonstrated that combining refined feature engineering with machine learning models can effectively enhance telecom customer retention rates, indicating the potential of analytical techniques to inform managerial decisions. Duru et al. [<xref ref-type="bibr" rid="ref_7">7</xref>] enhanced prediction accuracy by integrating traditional machine learning models (random forests, XGBoost, CatBoost) with one-dimensional convolutional neural networks, illustrating how hybrid approaches can expand the knowledge space extracted from data. A comparative study by Rivaldo et al. [<xref ref-type="bibr" rid="ref_8">8</xref>] also demonstrated that when processing large-scale telecom data, LightGBM significantly outperforms traditional GBDT in training speed due to its histogram optimization algorithm. Meanwhile, CatBoost effectively avoids the curse of dimensionality by handling categorical features without requiring one-hot encoding, which facilitates the utilization of complex user information. Shaikhsurab and Magadum [<xref ref-type="bibr" rid="ref_9">9</xref>] proposed an adaptive ensemble learning framework integrating XGBoost, LightGBM, and SVM, demonstrating the effectiveness of multi-model fusion in enhancing prediction robustness and broadening the interpretative horizon of customer analysis.</p><p>Although tree models excel at handling structured data, their capabilities are limited when processing high-dimensional sparse data and noisy interference. From the perspective of knowledge construction, these limitations restrict the extraction of deeper behavioral meanings. To address this, researchers have begun incorporating deep learning for higher-order feature extraction. Saha et al. [<xref ref-type="bibr" rid="ref_10">10</xref>] proposed the ChurnNet architecture, which integrates a one-dimensional convolutional layer with residual blocks, squeeze blocks, activation blocks, and a spatial attention module, significantly improving prediction accuracy and enabling a more nuanced representation of user activities. Mirza et al. [<xref ref-type="bibr" rid="ref_11">11</xref>] designed an Optimal Depth-Based Convolutional Autoencoder Prediction (ODCCAEP) model tailored for highly competitive customer-dependent application domains to determine the nature of customer churn, highlighting the role of representation learning in revealing hidden consumption logic. Hasumoto and Goto [<xref ref-type="bibr" rid="ref_12">12</xref>] proposed a method of extracting latent features from purchase histories as explanatory variables for churn prediction using a variational autoencoder with the actual customer distribution as a prior, which further illustrates how generative models can transform historical traces into conceptualized knowledge. Li et al. [<xref ref-type="bibr" rid="ref_13">13</xref>] proposed a multimodal autoencoder-decoder framework for customer churn prediction model to better deal with the heterogeneity and consistency problems in the acquired multimodal data. These studies provide a solid theoretical foundation for introducing DAE into this paper for robust feature extraction and for treating model outputs as forms of organizational insight rather than mere numerical results.</p><p>Single models often face the dilemma of balancing bias and variance. Stacking ensemble learning, through the combination of multiple layers of models, has become a key technique for resolving this issue and for integrating diverse analytical perspectives. Oladimeji et al. [<xref ref-type="bibr" rid="ref_14">14</xref>] used K-Nearest Neighbor (KNN), Classification and Regression Trees (CART), and Naive Bayes as base classifiers, with logistic regression as the meta-classifier. After multiple evaluations of model accuracy, the final output results demonstrated a model accuracy rate as high as 83%, suggesting that layered integration can enhance decision reliability. Adnan and Awang [<xref ref-type="bibr" rid="ref_15">15</xref>] proposes an enhanced ensemble stacking method designed to improve the predictive performance of ensemble approaches. Compared to other ensemble methods and single classifiers, the stacking ensemble method demonstrates superior generalization capabilities and accuracy, which is essential for translating algorithmic outcomes into dependable managerial knowledge. De and Prabu [<xref ref-type="bibr" rid="ref_16">16</xref>] proposes a novel sampling stacking framework named “Unbalanced Learning Sampler Stacking.” This framework integrates the predictive capabilities of sampling schemes to stimulate information gain from meta-features within ensemble models, emphasizing the role of model architecture in knowledge enrichment. Adnan and Awang [<xref ref-type="bibr" rid="ref_17">17</xref>] proposes a multi-level stacking ensemble model enhanced by Soft Set Theory to improve the accuracy and efficiency of customer churn prediction. The proposed model leverages Soft Set Theory to eliminate redundant classifiers via the analysis of the indiscernibility matrix, increasing classifier diversity and ensemble generalization, which contributes to more comprehensive understanding of customer states.</p><p>Telecom attrition data typically exhibits severe class imbalance. From an innovation viewpoint, imbalance not only affects accuracy but also distorts the representation of minority user experiences. Imani et al. [<xref ref-type="bibr" rid="ref_18">18</xref>] emphasized the decisive impact of data balance on model performance and validated the effectiveness of synthetic minority over-sampling technique (SMOTE) in addressing the complexity of imbalanced datasets and intricate interactions among features. Suguna et al. [<xref ref-type="bibr" rid="ref_19">19</xref>] noted in their case study on customer churn that incorporating undersampling techniques can effectively mitigate the impact of imbalanced datasets on model prediction accuracy, ensuring that analytical knowledge reflects real operational risks. Gore et al. [<xref ref-type="bibr" rid="ref_20">20</xref>] further found that models employing the SMOTE sampling method demonstrated higher prediction accuracy compared to models without the SMOTE approach, reinforcing the necessity of balanced learning for credible decision support.</p><p>In summary, although existing research has made significant strides in algorithmic optimisation, limitations remain: firstly, traditional feature engineering struggles to handle noisy data, which constrains the depth of knowledge that can be obtained; secondly, current stacking models seldom account for data imbalance, reducing their value for practical innovation. This paper aims to address these issues by proposing an improved stacking model for predicting telecom customer churn based on deep feature extraction via DAE, and by positioning the model as a mechanism for transforming data resources into actionable organizational knowledge.</p>
+    </sec>
+    <sec sec-type="">
+      <title>3. Overview of relevant theories</title>
+      <p>The core objective of this study is to construct a telecom customer churn prediction framework that combines high efficiency with high accuracy, empowering operators to identify high-risk churn users early and retain them with precision. Beyond the technical goal of prediction, the framework is intended to function as a channel through which dispersed behavioral data can be transformed into structured knowledge for organizational action. Given that customer churn directly threatens operators’ revenue base and market share, traditional prediction methods often face bottlenecks of insufficient feature extraction and limited generalization performance when dealing with massive, high-dimensional, and sparse telecom data. These bottlenecks not only reduce computational performance but also restrict the depth of understanding that organizations can obtain from customer information.</p><p>To address these challenges, this paper establishes the following key research directions. First, leveraging the powerful representation capabilities of deep learning to extract robust deep features from complex data, so that implicit behavioral meanings hidden in noisy records can be expressed in a stable form. Second, employing heterogeneous ensemble learning strategies to effectively integrate the decision advantages of different strong classifiers, thereby enhancing both prediction accuracy and model stability and forming a comprehensive view of customer states. Through this dual pathway, the study attempts to bridge the gap between algorithmic modeling and practical knowledge use, enabling analytical outcomes to support managerial judgment rather than remaining isolated technical results. This approach provides operators with scientifically grounded data-driven decision support for optimizing resource allocation and minimizing churn-related losses, and at the same time contributes to the cultivation of a knowledge-oriented service culture.</p><p>To achieve the aforementioned research objectives, this study employs three core methodological modules: data balancing and preprocessing, deep feature extraction based on denoising autoencoders, and the construction of a stacking ensemble model. These modules correspond respectively to the stages of knowledge preparation, knowledge generation, and knowledge integration. Data balancing and preprocessing ensure that the information environment reflects real user diversity; the denoising autoencoder serves as a mechanism for discovering latent representations of customer behavior; and the stacking ensemble organizes multiple analytical perspectives into a coherent decision structure. Together, they form a systematic process through which raw telecom data evolves into operational knowledge that can guide retention innovation.</p>
+      
+        <sec>
+          
+            <title>3.1. Data imbalance handling and the smote algorithm</title>
+          
+          <p>In telecom customer churn prediction tasks, the number of churned users is typically far smaller than that of retained users. This severe class imbalance causes models to overemphasize the majority class during training, thereby neglecting the identification of minority churn users. To address this issue, this study employs the SMOTE. Unlike simple random oversampling, SMOTE generates new synthetic samples by interpolating minority class samples in the feature space. Its fundamental principle is as follows: for each minority class sample <inline-formula>
+  <mml:math id="mn7hjbwtk2">
+    <mml:msub>
+      <mml:mi>x</mml:mi>
+      <mml:mi>i</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula>, compute its <inline-formula>
+  <mml:math id="m89y9ff4ox">
+    <mml:msub>
+      <mml:mi>x</mml:mi>
+      <mml:mi>i</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> nearest neighbors; randomly select one sample <inline-formula>
+  <mml:math id="mo5w3sax7e">
+    <mml:msub>
+      <mml:mrow>
+        <mml:mover>
+          <mml:mi>x</mml:mi>
+          <mml:mo>^</mml:mo>
+        </mml:mover>
+      </mml:mrow>
+      <mml:mi>i</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> from these neighbors; and then generate a new sample <inline-formula>
+  <mml:math id="masjcpjny4">
+    <mml:msub>
+      <mml:mi>x</mml:mi>
+      <mml:mrow>
+        <mml:mtext>new </mml:mtext>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula> by randomly interpolating along the line connecting <inline-formula>
+  <mml:math id="m03f1rzepp">
+    <mml:msub>
+      <mml:mi>x</mml:mi>
+      <mml:mi>i</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> and <inline-formula>
+  <mml:math id="ma0se6mfqy">
+    <mml:msub>
+      <mml:mrow>
+        <mml:mover>
+          <mml:mi>x</mml:mi>
+          <mml:mo>^</mml:mo>
+        </mml:mover>
+      </mml:mrow>
+      <mml:mi>i</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula>. The formula is calculated as Eq. (1):</p>
+          
+            <disp-formula>
+              <label>(1)</label>
+              <mml:math id="me29cn4fru">
+                <mml:msub>
+                  <mml:mi>x</mml:mi>
+                  <mml:mrow>
+                    <mml:mtext>new </mml:mtext>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>x</mml:mi>
+                  <mml:mi>i</mml:mi>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mo>+</mml:mo>
+                <mml:mo>(</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo>)</mml:mo>
+                <mml:mo>×</mml:mo>
+                <mml:mi>rand</mml:mi>
+                <mml:mn>0</mml:mn>
+                <mml:mn>1</mml:mn>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>−</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:msub>
+                    <mml:mrow>
+                      <mml:mover>
+                        <mml:mi>x</mml:mi>
+                        <mml:mo>^</mml:mo>
+                      </mml:mover>
+                    </mml:mrow>
+                    <mml:mi>i</mml:mi>
+                  </mml:msub>
+                  <mml:msub>
+                    <mml:mi>x</mml:mi>
+                    <mml:mi>i</mml:mi>
+                  </mml:msub>
+                </mml:mrow>
+              </mml:math>
+            </disp-formula>
+          
+          <p>Through SMOTE processing, the class distribution of the dataset is balanced, enabling the model to learn the characteristics of both user categories more equitably. This enhances the recall rate for identifying potential churn users.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.2. Deep feature extraction based on denoising autoencoder</title>
+          
+          <p>After data preprocessing and balancing, this study introduced the DAE [<xref ref-type="bibr" rid="ref_21">21</xref>], [<xref ref-type="bibr" rid="ref_22">22</xref>], [<xref ref-type="bibr" rid="ref_23">23</xref>] to delve deeper into the latent value within the data. Traditional feature engineering primarily relies on manual expertise to construct statistical features, making it difficult to capture higher-order nonlinear relationships between variables and rendering it sensitive to noise. DAE is an unsupervised learning algorithm based on neural networks, whose core idea is to learn robust feature representations by distorting the input data.</p><p>In the feature extraction mechanism based on denoising autoencoders, random noise is first injected into the original input vector $x<inline-formula>
+  <mml:math id="mglx7v82nd">
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+  </mml:math>
+</inline-formula>\tilde{x}<inline-formula>
+  <mml:math id="mz972sw1n5">
+    <mml:mo>.</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mi>S</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>q</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+  </mml:math>
+</inline-formula>h<inline-formula>
+  <mml:math id="mbikccrdao">
+    <mml:mo>,</mml:mo>
+    <mml:mi>w</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+  </mml:math>
+</inline-formula>x<inline-formula>
+  <mml:math id="mh0ocbwb5n">
+    <mml:mi>f</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+  </mml:math>
+</inline-formula>h<inline-formula>
+  <mml:math id="mwpk4me3dj">
+    <mml:mo>.</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mi>D</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>z</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+  </mml:math>
+</inline-formula>h$ to learn intrinsic, interference-resistant nonlinear features inherent in the data distribution. This mechanism not only achieves data denoising but also effectively generates deep latent features rich in semantic information. These features are subsequently fused with original statistical features to serve as enhanced inputs for subsequent prediction models, significantly boosting their discriminative capabilities.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.3. Improved stacking ensemble learning framework</title>
+          
+          <p>Model construction constitutes the core component of machine learning. Individual models often face the trade-off dilemma between bias and variance, struggling to simultaneously accommodate generalisation capabilities across diverse sample types. Stacking represents a hierarchical model fusion strategy that constructs more robust predictive systems by combining multiple heterogeneous base learners. The improved stacking framework developed in this study is illustrated in <xref ref-type="fig" rid="fig_1">Figure 1</xref>.</p><p>At the first layer of the stacking framework, to ensure diversity in integration while balancing bias and variance, this study selected three tree model algorithms with distinct mechanisms:</p><p>Decision Tree A decision tree is a supervised learning algorithm based on a tree structure, serving as the building block for numerous ensemble models. This algorithm employs a top-down recursive approach, selecting optimal splitting features by calculating metrics such as information gain or Gini impurity. It maps the dataset into a series of mutually exclusive rule sets. While a single decision tree offers high interpretability and can visually reveal key customer churn pathways, it is prone to overfitting when handling high-dimensional complex data. Within the stacking framework of this study, the decision tree primarily serves as a high-variance baseline model. Its purpose is to capture strong local features within the data and provide foundational decision boundary information for subsequent meta-learners.</p>
+          
+            <fig id="fig_1">
+              <label>Figure 1</label>
+              <caption>
+                <title>Architecture of the improved stacking ensemble model</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/1/img_-oLGOx2AH8N5ENWc.png"/>
+            </fig>
+          
+          <p>Random Forest To overcome the overfitting tendency of individual decision trees, this study introduces the Random Forest algorithm based on the Bagging strategy. This algorithm concurrently constructs multiple decision trees, generating independent training subsets for each tree via Bootstrap Sampling. Additionally, a random feature selection mechanism is incorporated during node splitting, further reducing correlation among trees. Final predictions are obtained through voting or averaging across all base decision trees. By reducing overall model variance, Random Forest significantly enhances robustness to noisy data. It is particularly well-suited for handling high-dimensional sparse features common in telecom data, effectively improving model generalization on unseen samples.</p><p>XGBoost is an efficient gradient boosting decision tree algorithm based on the Boosting strategy [<xref ref-type="bibr" rid="ref_24">24</xref>], [<xref ref-type="bibr" rid="ref_25">25</xref>], [<xref ref-type="bibr" rid="ref_26">26</xref>]. Unlike the parallel mechanism of Random Forests, XGBoost employs sequential training, where each new tree is constructed to fit the prediction residuals of the previous model, thereby progressively reducing model bias. Compared to traditional Gradient Boosted Decision Trees (GBDT), XGBoost performs a second-order Taylor expansion of the loss function, accelerating convergence by utilizing first- and second-order derivative information. Simultaneously, it explicitly incorporates a regularization term into the objective function, effectively controlling model complexity to prevent overfitting. In telecom customer churn prediction, XGBoost leverages its exceptional feature capture capabilities and computational efficiency to accurately identify nonlinear churn signals hidden within long-tail data.</p>
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>4. Customer churn prediction model based on denoising autoencoder and improved stacking integration</title>
+      <p>This paper proposes a telecommunications customer churn prediction model that integrates the DAE with an improved stacking ensemble learning approach. The overall framework of the model is illustrated in <xref ref-type="fig" rid="fig_2">Figure 2</xref>. The model primarily consists of four core components: data preprocessing, deep feature engineering based on DAE, stacking model construction and training, and model performance evaluation.</p><p>Step 1: Data Preprocessing. Input the raw telecom dataset <inline-formula>
+  <mml:math id="m3wncp4xwi">
+    <mml:msub>
+      <mml:mi>D</mml:mi>
+      <mml:mn>0</mml:mn>
+    </mml:msub>
+  </mml:math>
+</inline-formula>, perform data cleaning and missing value handling, remove irrelevant features (e.g., user ID), address class imbalance using SMOTE technology, and encode class features.</p><p>Step 2: Deep Feature Engineering. This constitutes the core innovation of this study. Unlike traditional statistical feature construction, we build a deep neural network based on the DAE. By injecting noise into the original data and forcing reconstruction, robust low-dimensional deep latent features are extracted. These new features are then fused with the original structured features to form an enhanced multimodal dataset.</p><p>Step 3: Model Training. An improved stacking ensemble framework is constructed. The first layer employs decision trees, random forests, and XGBoost as heterogeneous base learners; The second layer employs logistic regression as a meta-learner to adaptively weight and fuse predictions from the base models.</p><p>Step 4: Model Evaluation. Accuracy, Recall, and AUC values serve as core evaluation metrics to validate the model's effectiveness in identifying potential churn users. Experimental results demonstrate that this model architecture exhibits outstanding feature capture capabilities and predictive accuracy.</p>
+      
+        <fig id="fig_2">
+          <label>Figure 2</label>
+          <caption>
+            <title>Framework of customer churn prediction modelling integrating DAE and stacking</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/1/img_NWfnUM6ap1t6ck4F.png"/>
+        </fig>
+      
+      
+        <sec>
+          
+            <title>4.1. Data pre-processing</title>
+          
+          <p>Data preprocessing includes data cleaning, feature selection, categorical encoding, and SMOTE-based data balancing. First, check for missing values and outliers in the dataset. For missing values, numerical features are imputed using mean imputation, while categorical features use mode imputation. In the dataset used for this study, no significant missing values were detected. To enhance computational efficiency, identifying features irrelevant to churn prediction (e.g., CustomerID, PhoneService_ID) are removed. Second, addressing the common category imbalance in telecom data (where churned users typically constitute a low proportion), direct training would cause the model to skew toward the majority class. This study employs SMOTE. By generating synthetic samples through linear interpolation of minority class samples in the feature space, the ratio of positive to negative samples is balanced. Finally, categorical features like “Plan Type” and “Payment Method” are converted into numerical formats using Label Encoding or One-Hot Encoding for subsequent processing by neural networks and tree models. The complete data preprocessing workflow is illustrated in <xref ref-type="fig" rid="fig_3">Figure 3</xref>.</p>
+          
+            <fig id="fig_3">
+              <label>Figure 3</label>
+              <caption>
+                <title>Data preprocessing flowchart</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/1/img_xgu0rde5c9YzzPz_.png"/>
+            </fig>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>4.2. Feature engineering based on dae</title>
+          
+          <p>In studies predicting telecom customer churn, traditional feature engineering is often constrained to raw statistical attributes, making it difficult to capture deep nonlinear interactions between variables. To address this, this paper designs a deep feature extraction module based on the DAE, with the workflow illustrated in <xref ref-type="fig" rid="fig_4">Figure 4</xref>.</p>
+          
+            <fig id="fig_4">
+              <label>Figure 4</label>
+              <caption>
+                <title>Flowchart of deep feature extraction based on DAE</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/1/img_fOr5syWbYkrE9231.png"/>
+            </fig>
+          
+          <p>The core concept of this module is to move beyond reliance on manual rules and instead automatically extract robust representations within the data through unsupervised deep learning. The specific steps are as follows: First, the preprocessed and standardized data $x$ is input. Next, a noise injection mechanism is introduced to simulate real-world data interference. Subsequently, an encoder-decoder network is trained, with the output from the bottleneck layer extracted as new features. Finally, these “deep latent features” are concatenated with the original features to construct an enhanced feature set containing both deep and shallow information.</p><p>This process not only enhances the richness of the data but also endows the model with resilience against noise and outliers, laying the groundwork for subsequent high-precision predictions.</p>
+          
+            <sec>
+              
+                <title>4.2.1 Noise injection and data reconstruction</title>
+              
+              <p>To force the model to learn robust features inherent to the data rather than merely replicating the input, the DAE first applies Gaussian noise with a distribution <inline-formula>
+  <mml:math id="myx15ujmv3">
+    <mml:mi>N</mml:mi>
+    <mml:mrow>
+      <mml:mo>(</mml:mo>
+      <mml:mo>,</mml:mo>
+      <mml:mo>)</mml:mo>
+      <mml:mn>0</mml:mn>
+      <mml:msup>
+        <mml:mi>σ</mml:mi>
+        <mml:mn>2</mml:mn>
+      </mml:msup>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> to the original input vector $x<inline-formula>
+  <mml:math id="mxg3na38ox">
+    <mml:mi>d</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>\tilde{x}$. The formula is calculated as Eq. (2):</p>
+              
+                <disp-formula>
+                  <label>(2)</label>
+                  <mml:math id="mwteeom4dm">
+                    <mml:mrow>
+                      <mml:mover>
+                        <mml:mi>x</mml:mi>
+                        <mml:mo>~</mml:mo>
+                      </mml:mover>
+                    </mml:mrow>
+                    <mml:mo>=</mml:mo>
+                    <mml:mo>+</mml:mo>
+                    <mml:mo>,</mml:mo>
+                    <mml:mo>∼</mml:mo>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>,</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:mi>x</mml:mi>
+                    <mml:mi>ϵ</mml:mi>
+                    <mml:mi>ϵ</mml:mi>
+                    <mml:mi>N</mml:mi>
+                    <mml:mn>0</mml:mn>
+                    <mml:mn>0.1</mml:mn>
+                  </mml:math>
+                </disp-formula>
+              
+              <p>Subsequently, the corrupted data <inline-formula>
+  <mml:math id="mahhhucikq">
+    <mml:mrow>
+      <mml:mover>
+        <mml:mi>x</mml:mi>
+        <mml:mo>~</mml:mo>
+      </mml:mover>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> is fed into a multi-layer neural network. The network aims to reconstruct the original, uncorrupted data $x<inline-formula>
+  <mml:math id="m07nbazz0t">
+    <mml:mi>f</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+  </mml:math>
+</inline-formula>\tilde{x}$ by minimizing the reconstruction error. This process forces the network to ignore noise interference while capturing the underlying patterns and nonlinear correlations within the data.</p>
+            </sec>
+          
+          
+            <sec>
+              
+                <title>4.2.2 Deep hidden feature generation and fusion</title>
+              
+              <p>The DAE network consists of an Encoder and a Decoder. As shown in <xref ref-type="fig" rid="fig_4">Figure 4</xref>, the Encoder maps high-dimensional inputs to a low-dimensional latent space, generating latent vectors; the Decoder is responsible for mapping these latent vectors back to the original dimensions. In this study, after the DAE network converges during training, we extract the latent layer vectors output by the Encoder and define them as deep latent features. These deep features represent a highly abstracted representation of user behavior. Finally, these deep features are horizontally concatenated with the original structured features to form the final training dataset. This original features and deep features fusion strategy enables the model to retain statistically meaningful business insights while gaining the deep neural network’s ability to perceive complex patterns, significantly enhancing the model’s upper limit of feature representation.</p>
+            </sec>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>4.3. Improving stacking model construction and training</title>
+          
+          <p>During the model training phase, to overcome the limitations of weak generalization and susceptibility to overfitting in single models, this paper constructs an improved stacking ensemble learning framework. First, the base learners are defined: decision trees, random forests, and XGBoost.</p><p>Second, the meta-learner is defined. The prediction probabilities output by the base models are treated as meta-features and fed into a Logistic Regression model. The meta-learner learns the weights of different base models, performs linear correction and integration on the prediction results, and ultimately outputs the customer churn probability. During training, 5-fold cross-validation is employed to generate meta-features, preventing data leakage and evaluating model robustness. The construction process of the improved stacking model is illustrated in <xref ref-type="fig" rid="fig_1">Figure 1</xref>.</p><p>Through this hierarchical ensemble strategy, the model fully leverages the strengths of different algorithms. It achieves high accuracy while significantly enhancing adaptability to various churn scenarios.</p>
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>5. Experiments and analysis of results</title>
+      <p>This chapter will detail the sources, feature distributions, and preprocessing procedures of experimental data based on real operational data provided by China Mobile Fujian Company. Building upon this foundation, core evaluation metrics for the model will be defined. Through multiple comparative experiments, the analysis will focus on the feature enhancement effects achieved using the DAE and the performance advantages of the improved stacking ensemble model over single models. This will validate the effectiveness of the proposed framework in the task of predicting telecom customer churn.</p>
+      
+        <sec>
+          
+            <title>5.1. Data sources and description</title>
+          
+          
+            <sec>
+              
+                <title>5.1.1 Dataset overview</title>
+              
+              <p>The data for this study was sourced from sample data provided by China Mobile Fujian Company for a specific month in 2018. The dataset encompasses monthly consumption and behavioral records of 50,000 users, comprising a total of 29 original variables. The target variable is “blacklisted customer status” (in telecommunications, blacklisted customers typically refer to high-risk churn groups with long-term unpaid bills or abnormal service suspensions). A label of ‘1’ indicates churn/high risk, while “0” indicates retention/normal status. Variables are presented as shown in <xref ref-type="table" rid="table_1">Table 1</xref>.</p><p>To comprehensively characterize user profiles, data features span five major dimensions:</p><p>(1) Identity Characteristics: Includes real-name verification status, college student status, age group, and network tenure.</p><p>(2) Spending Capacity: Includes average spending over the past 6 months, current month’s bill amount, account balance, overdue status, and sensitivity to call charges.</p><p>(3) Interpersonal Connections: Core metric is “number of contacts in the current month’s calling network,” reflecting social activity.</p><p>(4) Location Trajectory: Records offline activity scenarios such as “frequent mall visits,” “monthly visits to Wanda Plaza/Sam’s Club in Cangshan District, Fuzhou,” and “visits to sports venues,” providing valuable insights into users’ lifestyle tiers.</p><p>(5) App Usage: Detailed records of app usage frequency across categories including e-commerce, logistics/delivery, finance/investment, video streaming, and transportation (air/rail).</p>
+              
+                <table-wrap id="table_1">
+                  <label>Table 1</label>
+                  <caption>
+                    <title>Summary of dataset information</title>
+                  </caption>
+                  <table><tbody><tr><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"><p>Variable</p></td><td colspan="1" rowspan="1"><p>Type</p></td></tr><tr><td colspan="1" rowspan="7"><p>Identity Characteristics</p></td><td colspan="1" rowspan="1"><p>User ID</p></td><td colspan="1" rowspan="1"><p>Character type</p></td></tr><tr><td colspan="1" rowspan="1"><p>Whether user passed real name verification</p></td><td colspan="1" rowspan="1"><p>Boolean type: 1 for true, 0 for false</p></td></tr><tr><td colspan="1" rowspan="1"><p>Whether university student customer</p></td><td colspan="1" rowspan="1"><p>Boolean type: 1 for true, 0 for false</p></td></tr><tr><td colspan="1" rowspan="1"><p>Whether blacklist customer</p></td><td colspan="1" rowspan="1"><p>Boolean type: 1 for true, 0 for false</p></td></tr><tr><td colspan="1" rowspan="1"><p>Whether 4G unhealthy customer</p></td><td colspan="1" rowspan="1"><p>Boolean type: 1 for true, 0 for false</p></td></tr><tr><td colspan="1" rowspan="1"><p>Age Group</p></td><td colspan="1" rowspan="1"><p>Numeric type</p></td></tr><tr><td colspan="1" rowspan="1"><p>User’s length of service (months)</p></td><td colspan="1" rowspan="1"><p>Numeric type</p></td></tr><tr><td colspan="1" rowspan="7"><p>Purchasing Power</p></td><td colspan="1" rowspan="1"><p>Time elapsed since user’s last payment (months)</p></td><td colspan="1" rowspan="1"><p>Numeric type</p></td></tr><tr><td colspan="1" rowspan="1"><p>The amount of the most recent payment made by the paying customer（yuan）</p></td><td colspan="1" rowspan="1"><p>Numeric type</p></td></tr><tr><td colspan="1" rowspan="1"><p>Average expenditure per user over the past six months（yuan）</p></td><td colspan="1" rowspan="1"><p>Numeric type</p></td></tr><tr><td colspan="1" rowspan="1"><p>Total charges for the current month on the customer’s bill（yuan）</p></td><td colspan="1" rowspan="1"><p>Numeric type</p></td></tr><tr><td colspan="1" rowspan="1"><p>Current month’s account balance（yuan）</p></td><td colspan="1" rowspan="1"><p>Numeric type</p></td></tr><tr><td colspan="1" rowspan="1"><p>Is the paying subscriber currently in arrears with their payments?</p></td><td colspan="1" rowspan="1"><p>Numeric type</p></td></tr><tr><td colspan="1" rowspan="1"><p>User sensitivity to mobile phone charges</p></td><td colspan="1" rowspan="1"><p>Numeric type</p></td></tr><tr><td colspan="1" rowspan="1"><p>Interpersonal Relations</p></td><td colspan="1" rowspan="1"><p>Number of contacts in the calling network for the current month</p></td><td colspan="1" rowspan="1"><p>Numeric type</p></td></tr><tr><td colspan="1" rowspan="7"><p>Position Trajectory</p></td><td colspan="1" rowspan="1"><p>Whether frequent mall visitor</p></td><td colspan="1" rowspan="1"><p>Boolean type: 1 for true, 0 for false</p></td></tr><tr><td colspan="1" rowspan="1"><p>Average monthly mall visits in last 3 months</p></td><td colspan="1" rowspan="1"><p>Numeric type</p></td></tr><tr><td colspan="1" rowspan="1"><p>Whether visited Fuzhou Cangshan Wanda this month</p></td><td colspan="1" rowspan="1"><p>Boolean type: 1 for true, 0 for false</p></td></tr><tr><td colspan="1" rowspan="1"><p>Whether visited Fuzhou Sams Club this month</p></td><td colspan="1" rowspan="1"><p>Boolean type: 1 for true, 0 for false</p></td></tr><tr><td colspan="1" rowspan="1"><p>Whether watched movie this month</p></td><td colspan="1" rowspan="1"><p>Boolean type: 1 for true, 0 for false</p></td></tr><tr><td colspan="1" rowspan="1"><p>Whether visited tourist attractions this month</p></td><td colspan="1" rowspan="1"><p>Boolean type: 1 for true, 0 for false</p></td></tr><tr><td colspan="1" rowspan="1"><p>Whether spent at sports venues this month</p></td><td colspan="1" rowspan="1"><p>Boolean type: 1 for true, 0 for false</p></td></tr><tr><td colspan="1" rowspan="7"><p>Applied Behaviour</p></td><td colspan="1" rowspan="1"><p>Online shopping app usage count this month</p></td><td colspan="1" rowspan="1"><p>Numeric type</p></td></tr><tr><td colspan="1" rowspan="1"><p>Logistics and express app usage count this month</p></td><td colspan="1" rowspan="1"><p>Numeric type</p></td></tr><tr><td colspan="1" rowspan="1"><p>Financial management app total usage count this month</p></td><td colspan="1" rowspan="1"><p>Numeric type</p></td></tr><tr><td colspan="1" rowspan="1"><p>Video streaming app usage count this month</p></td><td colspan="1" rowspan="1"><p>Numeric type</p></td></tr><tr><td colspan="1" rowspan="1"><p>Airline app usage count this month</p></td><td colspan="1" rowspan="1"><p>Numeric type</p></td></tr><tr><td colspan="1" rowspan="1"><p>Train app usage count this month</p></td><td colspan="1" rowspan="1"><p>Numeric type</p></td></tr><tr><td colspan="1" rowspan="1"><p>Travel information app usage count this month</p></td><td colspan="1" rowspan="1"><p>Numeric type</p></td></tr></tbody></table>
+                </table-wrap>
+              
+            </sec>
+          
+          
+            <sec>
+              
+                <title>5.1.2 Data cleaning and preprocessing</title>
+              
+              <p>Following the EDA, we performed the following cleaning and preprocessing on the raw data:</p><p>Outlier handling: Removed outlier samples with ages of 0 and 118; excluded extreme samples where monthly call interaction circles exceeded 600 individuals, as these outliers likely stemmed from machine behavior or data entry errors.</p><p>Feature selection and discretization: Removed the “User ID” column, which had no predictive value. Discretized continuous variables ‘Age’ and “Network tenure” using equal-frequency binning. For example, age was divided into five intervals: (0,18], (18,30], (30,35], (35,45], (45,100). Analysis indicates that the 35–45 age group has the highest number of blacklisted users (815 individuals), exhibiting significant risk characteristics.</p><p>Data Standardization: The Min-Max normalization method was applied to map all numerical features to the [0, 1] range, eliminating the impact of differing feature scales (e.g., spending amount vs. app usage frequency) on model convergence speed.</p><p>Sample Imbalance Handling: The original dataset exhibited severe imbalance between blacklisted (churned) users and whitelisted users. To prevent model overfitting to the majority class, this study employed SMOTE (Synthetic Minority Over-sampling Technique). By calculating k-nearest neighbors for minority samples and generating interpolated samples, the positive-to-negative sample ratio was adjusted to 1:1. The processed training dataset expanded to 66,136 samples, with 33,068 blacklist and 33,068 whitelist users.</p>
+            </sec>
+          
+          
+            <sec>
+              
+                <title>5.1.3 Feature mining</title>
+              
+              <p>To enhance the model’s ability to capture complex behaviors, we performed feature derivation based on preprocessing. We introduced new metrics reflecting user stability (e.g., “telecom bill stability,” “payment stability”) and consumption potential indicators. Correlation analysis, as shown in <xref ref-type="fig" rid="fig_5">Figure 5</xref>, revealed that all feature correlation coefficients were below 0.8, indicating no significant multicollinearity issues. A total of 21 feature variables were ultimately incorporated into the model, encompassing multidimensional data such as identity, consumption, trajectory, and application behavior, as detailed in <xref ref-type="table" rid="table_2">Table 2</xref>.</p>
+              
+                <fig id="fig_5">
+                  <label>Figure 5</label>
+                  <caption>
+                    <title>Feature correlation coefficient heatmap</title>
+                  </caption>
+                  <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/1/img_Emntr6OiyttUqDpa.png"/>
+                </fig>
+              
+              
+                <table-wrap id="table_2">
+                  <label>Table 2</label>
+                  <caption>
+                    <title>Variable status following feature extraction</title>
+                  </caption>
+                  <table><tbody><tr><th colspan="1" rowspan="1"><p>Variable</p></th><th colspan="1" rowspan="1"><p>Type</p></th></tr><tr><td colspan="1" rowspan="1"><p>Whether user passed real name verification</p></td><td colspan="1" rowspan="1"><p>Boolean type: 1 for true, 0 for false</p></td></tr><tr><td colspan="1" rowspan="1"><p>Whether university student customer</p></td><td colspan="1" rowspan="1"><p>Boolean type: 1 for true, 0 for false</p></td></tr><tr><td colspan="1" rowspan="1"><p>Whether blacklist customer</p></td><td colspan="1" rowspan="1"><p>Boolean type: 1 for true, 0 for false</p></td></tr><tr><td colspan="1" rowspan="1"><p>Whether 4G unhealthy customer</p></td><td colspan="1" rowspan="1"><p>Boolean type: 1 for true, 0 for false</p></td></tr><tr><td colspan="1" rowspan="1"><p>Age Group</p></td><td colspan="1" rowspan="1"><p>Numeric type</p></td></tr><tr><td colspan="1" rowspan="1"><p>User’s length of service (months)</p></td><td colspan="1" rowspan="1"><p>Numeric type</p></td></tr><tr><td colspan="1" rowspan="1"><p>Time elapsed since user’s last payment (months)</p></td><td colspan="1" rowspan="1"><p>Numeric type</p></td></tr><tr><td colspan="1" rowspan="1"><p>Total charges for the current month on the customer’s bill (yuan)</p></td><td colspan="1" rowspan="1"><p>Numeric type</p></td></tr><tr><td colspan="1" rowspan="1"><p>Is the paying subscriber currently in arrears with their payments?</p></td><td colspan="1" rowspan="1"><p>Numeric type</p></td></tr><tr><td colspan="1" rowspan="1"><p>User sensitivity to mobile phone charges</p></td><td colspan="1" rowspan="1"><p>Numeric type</p></td></tr><tr><td colspan="1" rowspan="1"><p>Number of contacts in the calling network for the current month</p></td><td colspan="1" rowspan="1"><p>Numeric type</p></td></tr><tr><td colspan="1" rowspan="1"><p>Whether frequent mall visitor</p></td><td colspan="1" rowspan="1"><p>Boolean type: 1 for true, 0 for false</p></td></tr><tr><td colspan="1" rowspan="1"><p>Average monthly mall visits in last 3 months</p></td><td colspan="1" rowspan="1"><p>Numeric type</p></td></tr><tr><td colspan="1" rowspan="1"><p>Whether watched movie this month</p></td><td colspan="1" rowspan="1"><p>Boolean type: 1 for true, 0 for false</p></td></tr><tr><td colspan="1" rowspan="1"><p>Whether visited tourist attractions this month</p></td><td colspan="1" rowspan="1"><p>Boolean type: 1 for true, 0 for false</p></td></tr><tr><td colspan="1" rowspan="1"><p>Whether spent at sports venues this month</p></td><td colspan="1" rowspan="1"><p>Boolean type: 1 for true, 0 for false</p></td></tr><tr><td colspan="1" rowspan="1"><p>Telephone charges remain stable</p></td><td colspan="1" rowspan="1"><p>Numeric type</p></td></tr><tr><td colspan="1" rowspan="1"><p>Stable payment</p></td><td colspan="1" rowspan="1"><p>Numeric type</p></td></tr><tr><td colspan="1" rowspan="1"><p>Consumption potential</p></td><td colspan="1" rowspan="1"><p>Numeric type</p></td></tr></tbody></table>
+                </table-wrap>
+              
+            </sec>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>5.2. Evaluation indicators</title>
+          
+          <p>To objectively evaluate model performance, this paper selected the confusion matrix, accuracy, recall, and ROC-AUC values as evaluation metrics.</p><p>Confusion Matrix: Used to display the detailed distribution of classification results, as shown in <xref ref-type="table" rid="table_3">Table 3</xref>.</p>
+          
+            <table-wrap id="table_3">
+              <label>Table 3</label>
+              <caption>
+                <title>Confusion matrix</title>
+              </caption>
+              <table><tbody><tr><th colspan="1" rowspan="1"></th><th colspan="1" rowspan="1"><p>Predicted to be in the Positive Category</p></th><th colspan="1" rowspan="1"><p>Forecasts are in the Negative Category</p></th></tr><tr><td colspan="1" rowspan="1"><p>Actual Positive Class</p></td><td colspan="1" rowspan="1"><p>TP (True Positive)</p></td><td colspan="1" rowspan="1"><p>FN (False Negative)</p></td></tr><tr><td colspan="1" rowspan="1"><p>Actual Negative Category</p></td><td colspan="1" rowspan="1"><p>FP (False Positive)</p></td><td colspan="1" rowspan="1"><p>TN (True Negative)</p></td></tr></tbody></table>
+            </table-wrap>
+          
+          <p>Among these, due to discrepancies between predicted results and actual values, the following four scenarios may occur:</p><p>TP (True Positive): The true category of the sample is 1, and the model also predicts it as 1.</p><p>FN (False Negative): The true category of the sample is 1, but the model predicts it as 0.</p><p>FP (False Positive): The true category of the sample is 0, but the model predicts it as 1.</p><p>TN (True Negative): The true category of the sample is 0, and the model predicts it as 0.</p><p>Core Metric Formula:</p><p>Accuracy: The proportion of correctly predicted samples to the total number of samples. The accuracy is calculated as Eq. (3):</p>
+          
+            <disp-formula>
+              <label>(3)</label>
+              <mml:math id="mn3ki4613x">
+                <mml:mtext> Accuracy </mml:mtext>
+                <mml:mo>=</mml:mo>
+                <mml:mfrac>
+                  <mml:mrow>
+                    <mml:mrow>
+                      <mml:mi data-mjx-auto-op="false">TP</mml:mi>
+                    </mml:mrow>
+                    <mml:mrow>
+                      <mml:mi data-mjx-auto-op="false">TN</mml:mi>
+                    </mml:mrow>
+                    <mml:mo>+</mml:mo>
+                  </mml:mrow>
+                  <mml:mrow>
+                    <mml:mrow>
+                      <mml:mi data-mjx-auto-op="false">TP</mml:mi>
+                    </mml:mrow>
+                    <mml:mrow>
+                      <mml:mi data-mjx-auto-op="false">TN</mml:mi>
+                    </mml:mrow>
+                    <mml:mrow>
+                      <mml:mi data-mjx-auto-op="false">FP</mml:mi>
+                    </mml:mrow>
+                    <mml:mrow>
+                      <mml:mi data-mjx-auto-op="false">FN</mml:mi>
+                    </mml:mrow>
+                    <mml:mo>+</mml:mo>
+                    <mml:mo>+</mml:mo>
+                    <mml:mo>+</mml:mo>
+                  </mml:mrow>
+                </mml:mfrac>
+              </mml:math>
+            </disp-formula>
+          
+          <p>Recall: The proportion of all actual churn (blacklisted) users that the model successfully predicts. This metric is critical for risk control. The recall is calculated as Eq. (4):</p>
+          
+            <disp-formula>
+              <label>(4)</label>
+              <mml:math id="mczq5hfcqe">
+                <mml:mtext> Recall </mml:mtext>
+                <mml:mo>=</mml:mo>
+                <mml:mfrac>
+                  <mml:mrow>
+                    <mml:mi data-mjx-auto-op="false">TP</mml:mi>
+                  </mml:mrow>
+                  <mml:mrow>
+                    <mml:mrow>
+                      <mml:mi data-mjx-auto-op="false">TP</mml:mi>
+                    </mml:mrow>
+                    <mml:mrow>
+                      <mml:mi data-mjx-auto-op="false">FN</mml:mi>
+                    </mml:mrow>
+                    <mml:mo>+</mml:mo>
+                  </mml:mrow>
+                </mml:mfrac>
+              </mml:math>
+            </disp-formula>
+          
+          <p>AUC: The area under the ROC curve, with a value range of [0.5, 1.0]. The closer the AUC value is to 1, the stronger the model’s ability to distinguish between whitelisted and blacklisted users.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>5.3. Experimental results</title>
+          
+          <p>The experiment divided the dataset into training and test sets at a 3:1 ratio. To validate the superiority of the proposed “DAE and Improved Stacking Fusion Model,” we compared it against Decision Tree, Random Forest, and XGBoost as standalone models. All models were evaluated on the same test set comprising 14,907 samples.</p>
+          
+            <sec>
+              
+                <title>5.3.1 Analysis of dae feature enhancement effect</title>
+              
+              <p>First, we validated the effectiveness of the DAE. By injecting Gaussian noise into the input layer and reconstructing the original 21-dimensional statistical features, the DAE extracted latent deep features. The comparison results of feature enhancement experiments are shown in <xref ref-type="table" rid="table_4">Table 4</xref>. Experiments revealed that when relying solely on statistical features, the benchmark model’s representational power was constrained by data sparsity (e.g., some users had zero app usage instances). However, integrating DAE-derived deep features enabled the model to better capture nonlinear patterns in user behavior, demonstrating the robustness of deep feature extraction in noisy telecom data.</p>
+              
+                <table-wrap id="table_4">
+                  <label>Table 4</label>
+                  <caption>
+                    <title>Comparison results of feature enhancement experiments</title>
+                  </caption>
+                  <table><tbody><tr><th colspan="1" rowspan="1"><p>Feature Type</p></th><th colspan="1" rowspan="1"><p>Accuracy</p></th><th colspan="1" rowspan="1"><p>AUC</p></th></tr><tr><td colspan="1" rowspan="1"><p>Original Features</p></td><td colspan="1" rowspan="1"><p>0.86</p></td><td colspan="1" rowspan="1"><p>0.70</p></td></tr><tr><td colspan="1" rowspan="1"><p>DAE Feature Enhancement</p></td><td colspan="1" rowspan="1"><p>0.98</p></td><td colspan="1" rowspan="1"><p>0.75</p></td></tr></tbody></table>
+                </table-wrap>
+              
+            </sec>
+          
+          
+            <sec>
+              
+                <title>5.3.2 Comparative analysis of model performance</title>
+              
+              <p>The specific performance metrics of each model on the test set are shown in <xref ref-type="table" rid="table_5">Table 5</xref>.</p>
+              
+                <table-wrap id="table_5">
+                  <label>Table 5</label>
+                  <caption>
+                    <title>Comparison of results of different modeling tests</title>
+                  </caption>
+                  <table><tbody><tr><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"><p>Accuracy</p></td><td colspan="1" rowspan="1"><p>White List Prediction Accuracy Rate</p></td><td colspan="1" rowspan="1"><p>Blacklist Prediction Accuracy Rate</p></td><td colspan="1" rowspan="1"><p>AUC</p></td></tr><tr><td colspan="1" rowspan="1"><p>Decision tree</p></td><td colspan="1" rowspan="1"><p>65.55%</p></td><td colspan="1" rowspan="1"><p>65.56%</p></td><td colspan="1" rowspan="1"><p>43.34%</p></td><td colspan="1" rowspan="1"><p>0.53</p></td></tr><tr><td colspan="1" rowspan="1"><p>Random Forest</p></td><td colspan="1" rowspan="1"><p>87.71%</p></td><td colspan="1" rowspan="1"><p>89.92%</p></td><td colspan="1" rowspan="1"><p>50.42%</p></td><td colspan="1" rowspan="1"><p>0.67</p></td></tr><tr><td colspan="1" rowspan="1"><p>XGBoost</p></td><td colspan="1" rowspan="1"><p>96.63%</p></td><td colspan="1" rowspan="1"><p>98.93%</p></td><td colspan="1" rowspan="1"><p>63.17%</p></td><td colspan="1" rowspan="1"><p>0.69</p></td></tr><tr><td colspan="1" rowspan="1"><p>Stacking Model (Ours)</p></td><td colspan="1" rowspan="1"><p>98.45%</p></td><td colspan="1" rowspan="1"><p>99.12%</p></td><td colspan="1" rowspan="1"><p>70.12%</p></td><td colspan="1" rowspan="1"><p>0.75</p></td></tr></tbody></table>
+                </table-wrap>
+              
+              <p><xref ref-type="table" rid="table_5">Table 5</xref> clearly demonstrates that the proposed improved stacking model achieves the highest overall accuracy of 98.45%. Compared to decision trees (65.55%) and random forests (87.71%), the performance improvement is significant. Even when compared to the high-performing standalone XGBoost model (96.63%), the stacking model still achieves an additional 1.82 percentage points. This demonstrates that by integrating the heterogeneous strengths of CatBoost, LightGBM, and XGBoost, the model effectively reduces the variance inherent in single algorithms and enhances the overall stability of predictions.</p><p>For blacklisted users (high-risk churn customers)—a critical concern for telecom operators—traditional models generally deliver suboptimal predictions. Decision trees and random forests achieved recall rates of only 43.34% and 50.42%, respectively, meaning nearly half of high-risk users were missed. While the standalone XGBoost model improved recall to 63.17%, room for further enhancement remained. The stacking model proposed in this paper, bolstered by SMOTE sample balancing and DAE deep feature extraction, further elevates the prediction accuracy (Recall) for blacklisted users to 70.12%. This demonstrates the model’s heightened sensitivity to minority-class risk samples, enabling more precise identification of potential churn customers.</p><p>As shown in <xref ref-type="fig" rid="fig_6">Figure 6</xref>, the stacking model achieves an AUC value of 0.75, outperforming both XGBoost (0.69) and Random Forest (0.67). A ROC curve that curves more sharply toward the upper-left corner indicates superior classification performance. The stacking model’s curve encompasses the largest area, demonstrating consistent classification efficacy across different threshold settings.</p><p>In summary, the prediction model based on DAE deep feature extraction and enhanced stacking ensemble not only demonstrates outstanding overall accuracy but also achieves a substantial breakthrough in identifying critical blacklisted users. This validates the effectiveness of the “Deep Representation Learning and Heterogeneous Ensemble” strategy for processing large-scale, multidimensional telecom data.</p>
+              
+                <fig id="fig_6">
+                  <label>Figure 6</label>
+                  <caption>
+                    <title>Model ROC curve</title>
+                  </caption>
+                  <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/1/img_iD1z4ogvTUhdS_i1.png"/>
+                  <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/1/img_iD1z4ogvTUhdS_i1.png"/>
+                </fig>
+              
+            </sec>
+          
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>6. Conclusion</title>
+      <p>To address data imbalance and noise interference in telecom customer churn prediction while enhancing forecasting accuracy, this paper proposes a customer churn prediction model integrating DAE with an improved stacking ensemble technique. The study first performs data preprocessing, SMOTE sample balancing, and deep feature engineering based on DAE, followed by model training and evaluation. Experimental results demonstrate that compared to untreated traditional single algorithms, this model achieves significant improvements in both accuracy (98.45%) and AUC (0.75) metrics. Consequently, the model effectively enhances the accuracy of telecom customer churn prediction, enabling operators to precisely identify potential churn customers. This facilitates optimized resource allocation and fosters long-term stable customer relationships.</p><p>Beyond the improvement of technical indicators, the study shows how large volumes of customer behavior data can be transformed into structured knowledge that supports organizational learning. The latent representations generated by the denoising autoencoder reveal patterns that are not directly observable in conventional statistical features, while the stacking mechanism integrates different analytical viewpoints into a coherent decision basis. Through this process, the predictive model functions not only as a computational tool but also as a means of producing actionable understanding for service management.</p><p>From a practical perspective, the framework provides telecom operators with a clearer foundation for designing retention strategies, prioritizing high-risk customers, and allocating marketing resources with greater precision. The approach contributes to the development of data-informed service innovation, in which managerial actions are guided by systematically extracted knowledge rather than isolated experience. Such a transition is essential for enterprises operating in an environment where competition depends increasingly on the ability to learn from digital traces of user behavior.</p><p>The study also indicates several directions for future work. Further research may explore the integration of additional behavioral sources to enrich the knowledge base, examine the interpretability of latent features to support transparent decision processes, and consider privacy-preserving mechanisms to ensure responsible use of customer information. Strengthening these aspects will help connect predictive analytics more closely with ethical governance and sustainable innovation in the telecommunications sector.</p>
+    </sec>
+  </body>
+  <back>
+    <ack>
+      <title>Acknowledgments</title>
+      
+    </ack>
+    <app-group>
+      <app>
+        <title>Appendix</title>
+        
+      </app>
+    </app-group>
+    <notes>
+      <title>Author Contributions</title>
+      
+    </notes>
+    <notes>
+      <title>Funding</title>
+      <p>This work is supported by the China University Industry-University-Research Innovation Fund (Grant No.:2024AX023).</p>
+    </notes>
+    <notes>
+      <title>Informed Consent Statement</title>
+      
+    </notes>
+    <notes>
+      <title>Data Availability Statement</title>
+      <p>The data used to support the findings of this study are available from the corresponding author upon request.</p>
+    </notes>
+    <notes notes-type="COI-statement">
+      <title>Conflicts of Interest</title>
+      <p>The author declares that they have no conflicts of interest.</p>
+    </notes>
+    <ref-list>
+      <title>References</title>
+      <ref id="ref_1">
+        <label>1.</label>
+        <element-citation publication-type="journal">
+          <volume>5</volume>
+          <page-range>100-113</page-range>
+          <issue>1</issue>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Sunarya</surname>
+              <given-names>Po Abas</given-names>
+            </name>
+            <name>
+              <surname>Rahardja</surname>
+              <given-names>Untung</given-names>
+            </name>
+            <name>
+              <surname>Chen</surname>
+              <given-names>Shih Chih</given-names>
+            </name>
+            <name>
+              <surname>Lic</surname>
+              <given-names>Yung Ming</given-names>
+            </name>
+            <name>
+              <surname>Hardini</surname>
+              <given-names>Marviola</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.47738/jads.v5i1.155</pub-id>
+          <article-title>Deciphering digital social dynamics: A comparative study of logistic regression and random forest in predicting e-commerce customer behavior</article-title>
+          <source>J. Appl. Data Sci.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_2">
+        <label>2.</label>
+        <element-citation publication-type="journal">
+          <volume>2</volume>
+          <page-range>100044</page-range>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Vajrobol</surname>
+              <given-names>Vajratiya</given-names>
+            </name>
+            <name>
+              <surname>Gupta</surname>
+              <given-names>Brij B.</given-names>
+            </name>
+            <name>
+              <surname>Gaurav</surname>
+              <given-names>Akshat</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.csa.2024.100044</pub-id>
+          <article-title>Mutual information based logistic regression for phishing URL detection</article-title>
+          <source>Cyber Secur. Appl.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_3">
+        <label>3.</label>
+        <element-citation publication-type="journal">
+          <volume>10</volume>
+          <page-range>183-208</page-range>
+          <issue>1</issue>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Kurani</surname>
+              <given-names>Akshit</given-names>
+            </name>
+            <name>
+              <surname>Doshi</surname>
+              <given-names>Pavan</given-names>
+            </name>
+            <name>
+              <surname>Vakharia</surname>
+              <given-names>Aarya</given-names>
+            </name>
+            <name>
+              <surname>Shah</surname>
+              <given-names>Manan</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1007/s40745-021-00344-x</pub-id>
+          <article-title>A comprehensive comparative study of artificial neural network (ANN) and support vector machines (SVM) on stock forecasting</article-title>
+          <source>Ann. Data Sci.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_4">
+        <label>4.</label>
+        <element-citation publication-type="journal">
+          <volume>351</volume>
+          <page-range>121836</page-range>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Wang</surname>
+              <given-names>Qiaochu</given-names>
+            </name>
+            <name>
+              <surname>Chen</surname>
+              <given-names>Dongxia</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>Meijun</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>Sha</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>Fuwei</given-names>
+            </name>
+            <name>
+              <surname>Yang</surname>
+              <given-names>Zijie</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>Wanrong</given-names>
+            </name>
+            <name>
+              <surname>Chen</surname>
+              <given-names>Shumin</given-names>
+            </name>
+            <name>
+              <surname>Yao</surname>
+              <given-names>Dongsheng</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.apenergy.2023.121836</pub-id>
+          <article-title>A novel method for petroleum and natural gas resource potential evaluation and prediction by support vector machines (SVM)</article-title>
+          <source>Appl. Energy</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_5">
+        <label>5.</label>
+        <element-citation publication-type="journal">
+          <volume>53</volume>
+          <page-range>2342-2360</page-range>
+          <issue>7</issue>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Asadi Ejgerdi</surname>
+              <given-names>Nader</given-names>
+            </name>
+            <name>
+              <surname>Kazerooni</surname>
+              <given-names>Mehrdad</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1108/K-12-2022-1676</pub-id>
+          <article-title>A stacked ensemble learning method for customer lifetime value prediction</article-title>
+          <source>Kybernetes</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_6">
+        <label>6.</label>
+        <element-citation publication-type="journal">
+          <volume>14</volume>
+          <page-range>13097</page-range>
+          <issue>1</issue>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Sikri</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Jameel</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Idrees</surname>
+              <given-names>S. M.</given-names>
+            </name>
+            <name>
+              <surname>Kaur</surname>
+              <given-names>H.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1038/s41598-024-63750-0</pub-id>
+          <article-title>Enhancing customer retention in telecom industry with machine learning driven churn prediction</article-title>
+          <source>Sci. Rep.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_7">
+        <label>7.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>1-12</page-range>
+          <publisher-place>Antalya, Turkiye</publisher-place>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Duru</surname>
+              <given-names>I.</given-names>
+            </name>
+            <name>
+              <surname>Ak</surname>
+              <given-names>N.</given-names>
+            </name>
+            <name>
+              <surname>Dede</surname>
+              <given-names>R.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/ACDSA65407.2025.11166474</pub-id>
+          <article-title>A comparative study of feature selection and resampling techniques for customer churn prediction with explainable AI in the telecommunications sector</article-title>
+          <source>2025 International Conference on Artificial Intelligence, Computer, Data Sciences and Applications (ACDSA)</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_8">
+        <label>8.</label>
+        <element-citation publication-type="journal">
+          <volume>6</volume>
+          <page-range>178-187</page-range>
+          <issue>2</issue>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Rivaldo</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Taufik</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Ilman</surname>
+              <given-names>I. S.</given-names>
+            </name>
+            <name>
+              <surname>Wulansari</surname>
+              <given-names>O. D. E.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.23960/pepadun.v6i2.277</pub-id>
+          <article-title>A comparative study of XGBoost, LightGBM, and CatBoost models for customer churn prediction in the banking industry</article-title>
+          <source>J. Pepadun</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_9">
+        <label>9.</label>
+        <element-citation publication-type="journal">
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Shaikhsurab</surname>
+              <given-names>M. A.</given-names>
+            </name>
+            <name>
+              <surname>Magadum</surname>
+              <given-names>P.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.48550/arXiv.2408.16284</pub-id>
+          <article-title>Enhancing customer churn prediction in telecommunications: An adaptive ensemble learning approach</article-title>
+          <source>arXiv preprint arXiv:2408.16284</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_10">
+        <label>10.</label>
+        <element-citation publication-type="journal">
+          <volume>12</volume>
+          <page-range>4471-4484</page-range>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Saha</surname>
+              <given-names>Somak</given-names>
+            </name>
+            <name>
+              <surname>Saha</surname>
+              <given-names>Chamak</given-names>
+            </name>
+            <name>
+              <surname>Haque</surname>
+              <given-names>Md. Mahidul</given-names>
+            </name>
+            <name>
+              <surname>Alam</surname>
+              <given-names>Md. Golam Rabiul</given-names>
+            </name>
+            <name>
+              <surname>Talukder</surname>
+              <given-names>Ashis</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/ACCESS.2024.3349950</pub-id>
+          <article-title>ChurnNet: Deep learning enhanced customer churn prediction in telecommunication industry</article-title>
+          <source>IEEE Access</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_11">
+        <label>11.</label>
+        <element-citation publication-type="journal">
+          <volume>73</volume>
+          <issue>2</issue>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Mirza</surname>
+              <given-names>O. M.</given-names>
+            </name>
+            <name>
+              <surname>Moses</surname>
+              <given-names>G. J.</given-names>
+            </name>
+            <name>
+              <surname>Rajender</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Lydia</surname>
+              <given-names>E. L.</given-names>
+            </name>
+            <name>
+              <surname>Kadry</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Me-Ead</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Thinnukool</surname>
+              <given-names>O.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.32604/cmc.2022.030428</pub-id>
+          <article-title>Optimal deep canonically correlated autoencoder-enabled prediction model for customer churn prediction</article-title>
+          <source>Comput. Mater. Continua</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_12">
+        <label>12.</label>
+        <element-citation publication-type="journal">
+          <volume>34</volume>
+          <page-range>18525-18541</page-range>
+          <issue>21</issue>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Hasumoto</surname>
+              <given-names>K.</given-names>
+            </name>
+            <name>
+              <surname>Goto</surname>
+              <given-names>M.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1007/s00521-022-07418-8</pub-id>
+          <article-title>Predicting customer churn for platform businesses: Using latent variables of variational autoencoder as consumers' purchasing behavior</article-title>
+          <source>Neural Comput. Appl.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_13">
+        <label>13.</label>
+        <element-citation publication-type="journal">
+          <volume>83</volume>
+          <page-range>89563-89589</page-range>
+          <issue>41</issue>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Li</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Xia</surname>
+              <given-names>G.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>Y.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1007/s11042-023-17715-6</pub-id>
+          <article-title>A deep multimodal autoencoder-decoder framework for customer churn prediction incorporating ChatGPT</article-title>
+          <source>Multimed. Tools Appl.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_14">
+        <label>14.</label>
+        <element-citation publication-type="journal">
+          <volume>2</volume>
+          <page-range>22-29</page-range>
+          <issue>1</issue>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Oladimeji</surname>
+              <given-names>Oladayo Muhideen</given-names>
+            </name>
+            <name>
+              <surname>Ajiboye</surname>
+              <given-names>Adeleke Raheem</given-names>
+            </name>
+            <name>
+              <surname>Usman-Hamza</surname>
+              <given-names>Fatimah Enehezei</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.54117/gjpas.v2i1.29</pub-id>
+          <article-title>An optimized stacking ensemble technique for creating prediction model of customer retention pattern in the banking sector</article-title>
+          <source>Gadau J. Pure Allied Sci.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_15">
+        <label>15.</label>
+        <element-citation publication-type="journal">
+          <volume>16</volume>
+          <issue>1</issue>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Adnan</surname>
+              <given-names>Nurul Nadzirah</given-names>
+            </name>
+            <name>
+              <surname>Awang</surname>
+              <given-names>Mohd Khalid</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.14569/ijacsa.2025.0160120</pub-id>
+          <article-title>Enhancing customer churn prediction across industries: A comparative study of ensemble stacking and traditional classifiers</article-title>
+          <source>Int. J. Adv. Comput. Sci. Appl.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_16">
+        <label>16.</label>
+        <element-citation publication-type="journal">
+          <volume>10</volume>
+          <page-range>68017-68028</page-range>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>De</surname>
+              <given-names>Soumi</given-names>
+            </name>
+            <name>
+              <surname>Prabu</surname>
+              <given-names>P.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/ACCESS.2022.3185227</pub-id>
+          <article-title>A sampling-based stack framework for imbalanced learning in churn prediction</article-title>
+          <source>IEEE Access</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_17">
+        <label>17.</label>
+        <element-citation publication-type="journal">
+          <volume>16</volume>
+          <issue>7</issue>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Adnan</surname>
+              <given-names>Nurul Nadzirah</given-names>
+            </name>
+            <name>
+              <surname>Awang</surname>
+              <given-names>Mohd Khalid</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.14569/ijacsa.2025.0160775</pub-id>
+          <article-title>A multi-level stacking ensemble model optimized by soft set theory for customer churn prediction</article-title>
+          <source>Int. J. Adv. Comput. Sci. Appl.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_18">
+        <label>18.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>202-209</page-range>
+          <publisher-place>Tehran, Islamic Republic of Iran</publisher-place>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Imani</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Ghaderpour</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Joudaki</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Beikmohammadi</surname>
+              <given-names>A.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/ICWR61162.2024.10533320</pub-id>
+          <article-title>The impact of SMOTE and ADASYN on random forest and advanced gradient boosting techniques in telecom customer churn prediction</article-title>
+          <source>2024 10th International Conference on Web Research (ICWR)</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_19">
+        <label>19.</label>
+        <element-citation publication-type="journal">
+          <volume>15</volume>
+          <page-range>16256</page-range>
+          <issue>1</issue>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Suguna</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Suriya Prakash</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Aditya Pai</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Mahesh</surname>
+              <given-names>T. R.</given-names>
+            </name>
+            <name>
+              <surname>Vinoth Kumar</surname>
+              <given-names>V.</given-names>
+            </name>
+            <name>
+              <surname>Yimer</surname>
+              <given-names>T. E.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1038/s41598-025-01031-0</pub-id>
+          <article-title>Mitigating class imbalance in churn prediction with ensemble methods and SMOTE</article-title>
+          <source>Sci. Rep.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_20">
+        <label>20.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>1-5</page-range>
+          <publisher-place>Vijayawada, India</publisher-place>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Gore</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Chibber</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Bhasin</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Mehta</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Suchitra</surname>
+              <given-names>S.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/AISP57993.2023.10134827</pub-id>
+          <article-title>Customer churn prediction using neural networks and SMOTE-ENN for data sampling</article-title>
+          <source>2023 3rd International Conference on Artificial Intelligence and Signal Processing (AISP)</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_21">
+        <label>21.</label>
+        <element-citation publication-type="journal">
+          <volume>25</volume>
+          <page-range>2983-2987</page-range>
+          <issue>9</issue>
+          <year>2021</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Lee</surname>
+              <given-names>W. H.</given-names>
+            </name>
+            <name>
+              <surname>Ozger</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Challita</surname>
+              <given-names>U.</given-names>
+            </name>
+            <name>
+              <surname>Sung</surname>
+              <given-names>K. W.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/LCOMM.2021.3091800</pub-id>
+          <article-title>Noise learning-based denoising autoencoder</article-title>
+          <source>IEEE Commun. Lett.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_22">
+        <label>22.</label>
+        <element-citation publication-type="journal">
+          <volume>71</volume>
+          <page-range>1-10</page-range>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Singh</surname>
+              <given-names>Prateek</given-names>
+            </name>
+            <name>
+              <surname>Sharma</surname>
+              <given-names>Ambalika</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/TIM.2022.3197757</pub-id>
+          <article-title>Attention-based convolutional denoising autoencoder for two-lead ECG denoising and arrhythmia classification</article-title>
+          <source>IEEE Trans. Instrum. Meas.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_23">
+        <label>23.</label>
+        <element-citation publication-type="journal">
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Alrayes</surname>
+              <given-names>F. S.</given-names>
+            </name>
+            <name>
+              <surname>Zakariah</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Amin</surname>
+              <given-names>S. U.</given-names>
+            </name>
+            <name>
+              <surname>Khan</surname>
+              <given-names>Z. I.</given-names>
+            </name>
+            <name>
+              <surname>Helal</surname>
+              <given-names>M.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/ACCESS.2024.3451726</pub-id>
+          <article-title>Intrusion detection in IoT systems using denoising autoencoder</article-title>
+          <source>IEEE Access</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_24">
+        <label>24.</label>
+        <element-citation publication-type="journal">
+          <volume>125</volume>
+          <page-range>109067</page-range>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Dong</surname>
+              <given-names>Jianwei</given-names>
+            </name>
+            <name>
+              <surname>Chen</surname>
+              <given-names>Yumin</given-names>
+            </name>
+            <name>
+              <surname>Yao</surname>
+              <given-names>Bingyu</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>Xiao</given-names>
+            </name>
+            <name>
+              <surname>Zeng</surname>
+              <given-names>Nianfeng</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.asoc.2022.109067</pub-id>
+          <article-title>A neural network boosting regression model based on XGBoost</article-title>
+          <source>Appl. Soft Comput.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_25">
+        <label>25.</label>
+        <element-citation publication-type="journal">
+          <volume>12</volume>
+          <page-range>2126</page-range>
+          <issue>4</issue>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Amjad</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Ahmad</surname>
+              <given-names>I.</given-names>
+            </name>
+            <name>
+              <surname>Ahmad</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Wróblewski</surname>
+              <given-names>P.</given-names>
+            </name>
+            <name>
+              <surname>Kamiński</surname>
+              <given-names>P.</given-names>
+            </name>
+            <name>
+              <surname>Amjad</surname>
+              <given-names>U.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3390/app12042126</pub-id>
+          <article-title>Prediction of pile bearing capacity using XGBoost algorithm: Modeling and performance evaluation</article-title>
+          <source>Appl. Sci.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_26">
+        <label>26.</label>
+        <element-citation publication-type="journal">
+          <volume>197</volume>
+          <page-range>104655</page-range>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Liu</surname>
+              <given-names>Wei</given-names>
+            </name>
+            <name>
+              <surname>Chen</surname>
+              <given-names>Zhangxin</given-names>
+            </name>
+            <name>
+              <surname>Hu</surname>
+              <given-names>Yuan</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.ijpvp.2022.104655</pub-id>
+          <article-title>XGBoost algorithm-based prediction of safety assessment for pipelines</article-title>
+          <source>Int. J. Press. Vessel. Pip.</source>
+        </element-citation>
+      </ref>
+    </ref-list>
+  </back>
+</article>
