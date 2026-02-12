@@ -1,0 +1,1155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.3 20210610//EN" "JATS-journalpublishing1-3.dtd">
+<article xml:lang="en" dtd-version="1.3" article-type="research-article" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mml="http://www.w3.org/1998/Math/MathML">
+  <front>
+    <journal-meta>
+      <journal-id journal-id-type="publisher-id">JORIT</journal-id>
+      <journal-id journal-id-type="doi">10.56578</journal-id>
+      <journal-title-group>
+        <journal-title>Journal of Research, Innovation and Technologies</journal-title>
+        <abbrev-journal-title abbrev-type="issn">J. Res. Innov. Technol.</abbrev-journal-title>
+        <abbrev-journal-title abbrev-type="publisher">JORIT</abbrev-journal-title>
+      </journal-title-group>
+      <issn publication-format="electronic">2971-8317</issn>
+      <issn publication-format="print"/>
+      <publisher>
+        <publisher-name>Acadlore</publisher-name>
+      </publisher>
+    </journal-meta>
+    <article-meta>
+      <article-id pub-id-type="publisher-id">AR-Sifk7JiFCeExo9jdJod2_kZRypxhLHJF</article-id>
+      <article-id pub-id-type="doi">10.56578/jorit050108</article-id>
+      <article-categories>
+        <subj-group>
+          <subject>Articles</subject>
+        </subj-group>
+      </article-categories>
+      <title-group>
+        <article-title>Development of an Offline RAG Chatbot for Answering Food Hygiene and Safety Questions Based on Vietnamese Legal Frameworks</article-title>
+      </title-group>
+      <contrib-group>
+        <contrib contrib-type="author" rid="aff_1">
+          <contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0009-0000-6213-0925</contrib-id>
+          <name>
+            <surname>Hoang</surname>
+            <given-names>Duc Viet</given-names>
+          </name>
+          <email>viethd.b24chht050@stu.ptit.edu.vn</email>
+        </contrib>
+        <contrib contrib-type="author" rid="aff_2">
+          <contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0000-0002-3205-1385</contrib-id>
+          <name>
+            <surname>Nguyen</surname>
+            <given-names>Tat Thang</given-names>
+          </name>
+          <email>thangnt@ptit.edu.vn</email>
+        </contrib>
+        <aff id="aff_1">Master Course of Information System, Graduate Faculty, Posts and Telecommunications Institute of Technology, 10000 Hanoi, Vietnam</aff>
+        <aff id="aff_2">Department of Computer Science, Faculty of Information Technology, Posts and Telecommunications Institute of Technology, 10000 Hanoi, Vietnam</aff>
+      </contrib-group>
+      <pub-date publication-format="electronic" date-type="pub">
+        <day>11</day>
+        <month>02</month>
+        <year>2026</year>
+      </pub-date>
+      <volume>5</volume>
+      <issue>1</issue>
+      <fpage>121</fpage>
+      <lpage>135</lpage>
+      <page-range>121-135</page-range>
+      <history>
+        <date date-type="received">
+          <day>12</day>
+          <month>11</month>
+          <year>2025</year>
+        </date>
+        <date date-type="accepted">
+          <day>21</day>
+          <month>01</month>
+          <year>2026</year>
+        </date>
+      </history>
+      <permissions>
+        <copyright-statement>©2026 by the author(s)</copyright-statement>
+        <copyright-year>2026</copyright-year>
+        <license license-type="open-access" xlink:href="https://creativecommons.org/licenses/by/4.0/">
+          <license-p> Published by Acadlore Publishing Services Limited, Hong Kong. This article is available for free download and can be reused and cited, provided that the original published version is credited, under the CC BY 4.0 license.</license-p>
+        </license>
+      </permissions>
+      <abstract><p>This paper presents the design, development, and implementation of an offline chatbot system specialized in answering food safety-related questions, relying entirely on Vietnamese legal documents. The system employs Retrieval-Augmented Generation (RAG) to ensure accurate and contextually relevant responses without internet dependency, a critical feature for low-connectivity environments. Key highlights include robust Vietnamese language support, a flexible vector database using Chroma for seamless legal content updates, and the integration of Qwen2.5:7B-Instruct-Q4_0 as the local language model, selected after comparative testing against DeepSeek-R1, Gemma3:1B, and Mistral. Embeddings are generated using BAAI/bge-small-en-v1.5. By processing Vietnamese queries and retrieving from a localized knowledge base, the chatbot delivers reliable guidance to stakeholders such as food producers, traders, and consumers. Evaluations demonstrate high accuracy in Vietnamese Q&amp;amp;A, stable offline operation, and adaptability to evolving regulations, with discussions on limitations and future enhancements.</p></abstract>
+      <kwd-group>
+        <kwd>Retrieval-Augmented Generation</kwd>
+        <kwd>Offline legal chatbot</kwd>
+        <kwd>Vietnamese food safety law</kwd>
+        <kwd>Local LLM</kwd>
+        <kwd>Chroma vector store</kwd>
+        <kwd>Delta synchronization</kwd>
+        <kwd>LangChain</kwd>
+        <kwd>Ollama</kwd>
+      </kwd-group>
+      <counts>
+        <count count-type="contributors" count="2"/>
+        <fig-count count="4"/>
+        <table-count count="7"/>
+        <ref-count count="26"/>
+      </counts>
+    </article-meta>
+  </front>
+  <body>
+    <sec sec-type="intro">
+      <title>1. Introduction</title>
+      <p>Food safety is a critical public health issue in Vietnam where the agricultural and food processing sectors play a pivotal role in the economy, contributing significantly to the GDP and employing a large portion of the workforce as of 2025. The regulatory framework governing food safety is anchored by the Food Safety Law No. 55/2010/QH12 (<xref ref-type="bibr" rid="ref_17">National Assembly of the Socialist Republic of Vietnam, 2010</xref>), enacted by the National Assembly on June 17, 2010, and effective from July 1, 2011, with significant amendments incorporated through drafts finalized in October 2025 to address emerging challenges such as climate change impacts on food production and the rise of e-commerce in food trade. This law, alongside supporting decrees like Decree No. 15/2018/ND-CP (<xref ref-type="bibr" rid="ref_7">Government of the Socialist Republic of Vietnam, 2018</xref>), which was issued on February 2, 2018, and provides detailed regulations on production, trading, and incident management, establishes a comprehensive legal structure. These regulations cover a wide array of topics, including the definition of food safety standards, prohibited acts (e.g., adulteration), rights and obligations of stakeholders, specific assurance conditions for production, trading, and import/export activities, certification processes, testing protocols, risk analysis methodologies, incident management strategies, and state management oversight mechanisms.</p><p>Despite this robust legal foundation, accessing and interpreting these regulations poses substantial challenges, particularly for small and medium enterprises (SMEs), rural consumers, and local authorities with limited resources. The complexity of legal language, often laden with technical jargon and context-specific references, combined with language barriers for non-Vietnamese-speaking stakeholders, hinders effective compliance and education. Furthermore, the dynamic nature of food safety regulations which is driven by globalization, technological advancements, and periodic legislative updates necessitates real-time access to accurate information, which is difficult to achieve in regions with unreliable internet connectivity, like rural Vietnam. This digital divide exacerbates the risk of non-compliance, potentially leading to public health crises, economic losses, and legal penalties for food producers and traders.</p><p>Existing legal Q&amp;amp;A chatbots, such as those based on GPT or BERT variants, often rely on online APIs, which can raise concerns about data confidentiality and regulatory compliance in highly regulated domains such as food safety. An AI-Driven SMS Platform for Equitable Agricultural Extension in Rural Africa: NDEMRI shows how LLM-based question answering (QA) can be delivered in low-connectivity settings by using an SMS interface and localized responses, which is conceptually aligned with offline/edge-friendly legal chatbots intended for wide public access. It also highlights the importance of guardrails to reduce hallucinations and reports field evaluation gains (e.g., adoption and outcome improvements), supporting the value of grounding and reliability controls in high-impact advisory systems (<xref ref-type="bibr" rid="ref_24">Touza et al., 2025</xref>). <xref ref-type="bibr" rid="ref_4">Chakravartula &amp;amp; Raghu (2026)</xref> presented a pragmatic blueprint for deploying AI (predictive analytics and LLM agents) inside a regulated industry, emphasizing governance, validation, and compliance processes alongside measurable operational impact. Their implementation framing is relevant to legal Retrieval-Augmented Generation (RAG) chatbots because it operationalizes how risk controls and auditability can be embedded when AI outputs may influence real decisions. <xref ref-type="bibr" rid="ref_10">Jonnala et al. (2025)</xref> showed that LLM outputs can vary systematically with model provenance and governance context, producing statistically significant differences in framing and sentiment on contentious topics, which underscores risks of relying on a single model’s narrative in sensitive domains. For legal and regulatory QA, these findings motivate mitigation strategies—such as grounding answers in authoritative Vietnamese legal texts via retrieval and requiring source citations—to reduce ungrounded or perspective-skewed responses. <xref ref-type="bibr" rid="ref_11">Lai et al. (2024)</xref> surveyed emerging applications of legal LLMs (e.g., legal advice and judicial assistance) while emphasizing persistent limitations in data, algorithms, and real-world legal practice that can undermine reliability. Their synthesis supports the design choice of a retrieval-grounded chatbot that prioritizes verifiable citations to legal documents, especially for food hygiene and safety questions where precision is critical. <xref ref-type="bibr" rid="ref_19">Nguyen et al. (2025)</xref> proposed a unified legal reasoning framework that combines rule-based, abductive, and case-based approaches and argue that LLMs should be integrated with structured reasoning and calibration to achieve dependable legal decision analysis. This perspective aligns with RAG-based legal question answering (LQA): retrieved statutes/regulations can supply rule constraints and evidence, while the model’s generation is guided toward transparent, justifiable answers for food safety compliance. Offline solutions using the Hugging Face Transformers library have been explored for domain-specific tasks, but few address Vietnamese legal texts. RAG, introduced by <xref ref-type="bibr" rid="ref_12">Lewis et al. (2020)</xref>, integrated retrieval and generation to improve response accuracy, with offline implementations using Chroma gaining traction in medical Q&amp;amp;A but rarely in legal contexts for non-English languages. Chroma, a lightweight vector database, supports efficient storage and retrieval of embeddings, making it suitable for resource-constrained environments (<xref ref-type="bibr" rid="ref_5">Chroma Team, 2023</xref>).</p><p>Beyond general-purpose legal LLMs, recent work increasingly couples retrieval grounding, task-specific workflows, and evaluation to make legal/chatbot-style systems more trustworthy in high-stakes settings. For contract-facing applications, ContractNerd exploits LLMs to analyze agreements and flag problematic content across missing, unenforceable, legally sound, and risky clauses, combining clause comparison with jurisdiction-specific enforceability checks and risk-trait assessment; importantly, it is evaluated against real-world rental clauses associated with litigation and provides an interface that supports both drafters and signers in navigating legal risk (<xref ref-type="bibr" rid="ref_23">Sinkala et al., 2025</xref>). For LQA, <xref ref-type="bibr" rid="ref_9">Italiani et al. (2025)</xref> argued that the main bottleneck is the cost of annotation and propose AceAttorney, which uses a frozen LLM to generate synthetic LQA training data and then applies knowledge distillation to train a smaller student model, achieving LLM-comparable performance with far lower computational cost and emissions; they additionally frame LQA as a retrieval-based scenario and introduce a Selective Generative Paradigm to improve retrieval efficacy, aligning closely with RAG-style pipelines where document selection is a primary failure point (<xref ref-type="bibr" rid="ref_9">Italiani et al., 2025</xref>). At the system-design level, <xref ref-type="bibr" rid="ref_8">Hindi et al. (2025)</xref> synthesized legal RAG research by detailing how design choices across retrieval, generation, and evaluation affect faithfulness and interpretability, and they highlight practical considerations (e.g., retrieval models, metrics, datasets/benchmarks, and ethical/privacy constraints) as well as a challenge scale based on RAG failure modes, the guidance that is directly relevant for building grounded legal chatbots that must justify answers with traceable evidence (<xref ref-type="bibr" rid="ref_8">Hindi et al., 2025</xref>). Complementing these methodological perspectives, <xref ref-type="bibr" rid="ref_26">Yun et al. (2024)</xref> demonstrated RAG+LLM systems in a policy-question context using over 200 government documents across jurisdictions, reporting strong performance in accuracy and comprehensibility and emphasizing user-facing outcomes such as engagement and accessibility, which mirrors the needs of citizen-oriented legal guidance tools. Critically, reliability studies caution against overclaiming “hallucination-free” behavior: <xref ref-type="bibr" rid="ref_14">Magesh et al. (2025)</xref> provided a preregistered evaluation of proprietary AI legal research tools and show that, although RAG can reduce hallucinations relative to general chatbots, error rates remain substantial and vary by system which reinforces the need for verification, citation grounding, and professional oversight in any deployed LQA workflow. Finally, work targeting legal-text generation tasks further supports hybrid retrieval approaches: <xref ref-type="bibr" rid="ref_16">Mukund &amp;amp; Easwarakumar (2025)</xref> proposed dynamic legal RAG for summarization with constrained compression and BM25 top-k chunking, while <xref ref-type="bibr" rid="ref_13">Ma et al. (2025)</xref> used synthetic data-driven fine-tuning and RAG with explicit reasoning prompts to improve both accuracy and explainability, together underscoring that retrieval quality, domain adaptation, and transparent reasoning strategies are central to trustworthy legal outputs. Taken together, these studies motivate designing an evidence-grounded, resource-efficient RAG chatbot which is particularly relevant for an offline Vietnamese food hygiene and safety assistant, where controlling retrieval scope (Vietnamese legal sources), minimizing hallucinations, and providing verifiable legal citations are essential for practical use.</p><p>Vietnamese-specific models like PhoBERT (<xref ref-type="bibr" rid="ref_18">Nguyen &amp;amp; Nguyen, 2020</xref>) outperform multilingual models on local text tasks, providing a foundation for localized systems. Qwen2.5:7B-Instruct-Q4_0, a quantized and instruction-tuned model from Alibaba Cloud (<xref ref-type="bibr" rid="ref_20">Qwen Team, 2024</xref>), offers multilingual capabilities and efficiency, ideal for offline deployment. Other models, such as DeepSeek-R1:latest (a research-oriented model with strong reasoning), Gemma3:1B (a lightweight model from Google), and Mistral:latest (a high-performing open-source LLM), were considered but found less effective for this use case.</p><p>Recent advancements in legal LLMs further contextualize the work of this study. <xref ref-type="bibr" rid="ref_22">Shu et al. (2024)</xref> introduced LawLLM, a multi-task model for the US legal system, excelling in Similar Case Retrieval (SCR), Precedent Case Recommendation (PCR), and Legal Judgment Prediction (LJP). It employs customized data preprocessing and in-context learning (ICL) to distinguish precedent from similar cases, addressing nuances in legal reasoning. Similarly, <xref ref-type="bibr" rid="ref_25">Yue et al. (2024)</xref> proposed LawLLM, an intelligent legal system with legal reasoning via supervised instruction data curated with legal syllogism prompting and verifiable retrieval using labels to enhance output quality and actuality. They developed the Law-Eval benchmark for objective and subjective evaluation of multi-task capabilities. <xref ref-type="bibr" rid="ref_6">Colombo et al. (2024)</xref> presented SaulLM-7B, the first public legal LLM pre- trained on over 30 billion English legal tokens from US, UK, and EU sources, with instruction fine-tuning for legal tasks, demonstrating superior comprehension of legal syntax and vocabulary.</p><p>Practical RAG implementations for legal research are also relevant. <xref ref-type="bibr" rid="ref_3">Barron et al. (2025)</xref> present Smart-SLIC, a legal-domain RAG framework that indexes New Mexico constitutions, statutes, and case law in a Milvus vector store (with document-type-specific chunking and metadata) and augments retrieval with a Neo4j knowledge graph plus hierarchical NMFk topic modeling to improve traceability and reduce hallucinations. Publications on Generative AI Apps with LangChain and Python provide project-based RAG implementations for Q&amp;amp;A, including offline deployment. Some offers RAG recipes from data preprocessing to LLM agents, applicable to domain-specific tasks like law. <xref ref-type="bibr" rid="ref_21">Rothman (2024)</xref> detailed RAG pipelines with LlamaIndex, Deep Lake, and Pinecone for custom legal applications. <xref ref-type="bibr" rid="ref_1">Alto (2024)</xref> covered building LLM-powered apps with RAG for agents and tools in legal domains. <xref ref-type="bibr" rid="ref_15">Minaee et al. (2024)</xref> demystified LLM math and hardware-independent RAG deployment for law, while <xref ref-type="bibr" rid="ref_8">Hindi et al. (2025)</xref> explored LLM transformers and RAG for legal AI, including evaluation metrics.</p><p>Previous AI applications in food safety, such as rule-based compliance checkers, lack the flexibility of RAG with editable vector stores tailored to Vietnamese laws. This study bridges this gap by emphasizing localization, adaptability, and a carefully selected local LLM, building on these works for multi-task legal reasoning and verifiable retrieval.</p><p>To address these multifaceted challenges, this study proposed the development of an offline chatbot system that exploits RAG, a hybrid approach combining dense retrieval techniques with generative capabilities of LLMs to mitigate hallucinations and enhance response accuracy (<xref ref-type="bibr" rid="ref_12">Lewis et al., 2020</xref>). Unlike traditional online legal chatbots that depend on cloud-based APIs, this system is designed to operate entirely offline, ensuring data privacy and accessibility in low-connectivity environments. The chatbot prioritizes native Vietnamese language processing, enabling natural interaction through colloquial queries and delivering responses in a culturally and legally relevant manner. At its core, the system integrates a Chroma-based vector database, which allows for flexible updates to the legal knowledge base, accommodating new amendments or decrees without requiring internet access (<xref ref-type="bibr" rid="ref_5">Chroma Team, 2023</xref>).</p><p>The selection of the LLM is a critical component of this system. After comparative testing of several models including Qwen2.5:7B-Instruct-Q4_0, DeepSeek-R1:latest, Gemma3:1B, and Mistral:latest, we identified Qwen2.5:7B-Instruct-Q4_0 as the optimal choice. This 7-billion-parameter, 4-bit quantized model, developed by Alibaba Cloud (<xref ref-type="bibr" rid="ref_20">Qwen Team, 2024</xref>), offers a balance of accuracy, fluency, and resource efficiency. Its instruction-tuned design and multilingual capabilities make it well-suited for this application, outperforming other models in preliminary evaluations. In the same way, the system employs BAAI/bge-small-en-v1.5 for generating embeddings (<xref ref-type="bibr" rid="ref_2">BAAI, 2023</xref>).</p><p>The findings of this study indicate strong potential for improving food safety compliance and education throughout Vietnam. By providing an accessible tool for stakeholders ranging from food producers needing to meet hygiene standards to consumers seeking information on safe purchasing practices, the chatbot can reduce the incidence of foodborne illnesses. Moreover, its offline capability aligns with national goals to bridge the digital divide, supporting rural development and regulatory enforcement. The paper outlines the system’s architecture, implementation details, and evaluation results, while also exploring practical applications and future directions, such as integrating international standards or scaling for large-scale deployment. This work contributes to the growing field of localized AI solutions, offering a model that can be adapted to other regulatory domains or languages.</p><p>The main contribution of this work lies in system-level integration and architectural design. By orchestrating existing RAG components into a fully offline, citation-grounded legal consultation system tailored to Vietnamese food safety law, the study demonstrates how reliability, maintainability, and deploy ability can be achieved in low-resource and low-connectivity environments. The contribution is therefore positioned at the applied systems level, emphasizing practical legal trustworthiness.</p><p>In summary, this study pursues three primary research objectives. First, it aims to design and implement a fully offline RAG–based chatbot tailored to Vietnamese food safety legislation, enabling accurate legal consultation without reliance on internet connectivity. Second, the study seeks to systematically evaluate the proposed system in terms of retrieval accuracy, answer faithfulness, and operational efficiency under realistic legal consultation scenarios involving food safety in particular. Third, it investigates the feasibility of maintaining an updatable legal knowledge base through a delta synchronization mechanism, allowing legal documents to be added, modified, or removed without requiring full re-indexing of the vector database<italic>.</italic></p>
+    </sec>
+    <sec sec-type="">
+      <title>2. Methodology</title>
+      
+        <sec>
+          
+            <title>2.1. Data ingestion and preparation</title>
+          
+          <p>The knowledge base is constructed from Vietnamese legal documents on food safety, sourced from official government websites using a custom web crawling script. The data collection process utilizes the vbpl.vn portal which is the official database of Vietnamese legal documents managed by the Ministry of Justice. The script targets various document types (e.g., laws, decrees, circulars) with specific legal statuses (e.g., still in effect, partially expired) and filters for the Vietnamese keyword “an toàn thực phẩm” (which is “food safety” in English). The crawling process consists of the following steps.</p><p>Crawling process: The script accesses the vbpl.vn search interface with parameters defining document types, legal statuses, and the target keyword.</p><p>Metadata extraction: For each document, it extracts the title, type, status, issuance date, effective date, detailed status, and a description, storing this in a JSON structure (van_ban_results.json).</p><p>Text extraction: The full text is retrieved from document pages, filtered to remove invalid characters, and saved as UTF-8 encoded .txt files in a directory.</p><p>Error handling and Rate limiting: The script includes logging with logging.basicConfig to track successes and errors, uses a 1-second time.sleep between requests to avoid server overload, and implements a 20-second timeout per request to manage connectivity issues.</p><p>Output: The process yields a dataset of text files and a JSON file containing metadata, forming the raw input for subsequent preprocessing.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>2.2. Study approach</title>
+          
+          <p>The approach to developing the offline RAG chatbot involves a structured methodology to ensure accuracy, scalability, and adaptability to Vietnamese legal contexts. We adopt a hybrid strategy combining retrieval-based and generative AI techniques, exploiting the strengths of both to address the limitations of standalone LLMs. The methodology also includes manual validation of outputs against source documents to ensure legal fidelity, with plans to refine the pipeline based on evaluation feedback.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>2.3. Llm model qwen2.5</title>
+          
+          <p>The selection of Qwen2.5:7B-Instruct-Q4_0 was informed by an initial pilot evaluation conducted during system development. Several alternative open-source LLMs (DeepSeek-R1, Gemma3-1B, Mistral-based models) were tested on a small set of representative Vietnamese legal queries. These preliminary tests revealed some issues such as incorrect legal interpretations, incomplete answers etc. On the other hand, Qwen2.5:7B-Instruct-Q4_0 consistently demonstrated superior stability in Vietnamese language generation, higher adherence to retrieved legal context, and fewer off-topic or hallucinated responses, motivating its selection for the full experimental evaluation.</p><p>We conducted a test among the models by answering 10 questions based on a food safety knowledge assessment questionnaire taken from https://files.thuvienphapluat.vn/uploads/doc2htm/00291625_files/attachfile001.doc (Issued with Decision No. 216/QD-ATTP dated May 23, 2014, of the Director of the Food Safety Department). We evaluated based on two criteria: the correctness of the answer, the context of the answer and response time. After conducting the test, we compiled the following results in <xref ref-type="table" rid="table_1">Table 1</xref>:</p>
+          
+            <table-wrap id="table_1">
+              <label>Table 1</label>
+              <caption>
+                <title>LLM models evaluation summary</title>
+              </caption>
+              <table><tbody><tr><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"><p>Qwen2.5:7B-Instruct-Q4_0</p></td><td colspan="1" rowspan="1"><p>DeepSeek-R1:8B</p></td><td colspan="1" rowspan="1"><p>Gemma3:1B</p></td><td colspan="1" rowspan="1"><p>Mistral:8B</p></td></tr><tr><td colspan="1" rowspan="1"><p>Contextual points</p></td><td colspan="1" rowspan="1"><p>10</p></td><td colspan="1" rowspan="1"><p>9</p></td><td colspan="1" rowspan="1"><p>10</p></td><td colspan="1" rowspan="1"><p>10</p></td></tr><tr><td colspan="1" rowspan="1"><p>Correctness points</p></td><td colspan="1" rowspan="1"><p>9</p></td><td colspan="1" rowspan="1"><p>8</p></td><td colspan="1" rowspan="1"><p>6</p></td><td colspan="1" rowspan="1"><p>8</p></td></tr><tr><td colspan="1" rowspan="1"><p>Response time (s)</p></td><td colspan="1" rowspan="1"><p>3.8</p></td><td colspan="1" rowspan="1"><p>4.0</p></td><td colspan="1" rowspan="1"><p>3.6</p></td><td colspan="1" rowspan="1"><p>3.9</p></td></tr></tbody></table>
+            </table-wrap>
+          
+          <p>Based on the experimental results, Qwen2.5:7B-Instruct-Q4_0 demonstrates the best overall performance by achieving the highest correctness score while maintaining strong contextual understanding and competitive response time. This balance makes it the most suitable model for food safety knowledge assessment tasks.</p><p>Qwen2.5:7B-Instruct-Q4_0, developed by Alibaba Cloud (<xref ref-type="bibr" rid="ref_20">Qwen Team, 2024</xref>), is a 4-bit quantized variant of the Qwen2.5 series, optimized for instruction-following tasks. With 7.61 billion-7B parameters (6.53B non-embedding), it delivers high performance on resource-constrained devices while maintaining strong natural language understanding and generation capabilities. The “Instruct” version is fine-tuned on diverse instruction datasets, making it suitable for conversational Q&amp;amp;A. The 4-bit quantization reduces memory usage to approximately 7–8 GB for inference and light fine-tuning, enabling deployment on consumer hardware.</p><p>The model is based on a 28-layer transformer architecture employing modern design choices such as Rotary Position Embeddings, SwiGLU activation, RMSNorm, and Grouped Query Attention, enabling efficient long-context processing and deep contextual reasoning. These characteristics are particularly important for interpreting complex Vietnamese legal texts involving hierarchical structures and cross-references.</p><p>Qwen2.5:7B-Instruct-Q4_0 supports long context lengths with YaRN scaling and provides multilingual capabilities, including Vietnamese. Comparative testing also demonstrated superior performance in Vietnamese LQA, achieving higher accuracy and fluency while remaining computationally efficient.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>2.4. Rag pipeline</title>
+          
+          <p>The RAG pipeline integrates retrieval and generation to deliver accurate, contextually grounded responses to user queries. The pipeline consists of four main stages executed entirely offline.</p><p>Query processing: Users input Vietnamese queries, such as “Các điều kiện vệ sinh an toàn thực phẩm đối với việc bán thức ăn đường phố là gì?” which means “What are the food safety conditions for street food vending?” in English or “Các mức xử phạt đối với việc vi phạm đảm bảo chất lượng thực phẩm là gì?” which means “What are the penalties for food adulteration?” in English.</p><p>Retrieval: The query is embedded using BAAI/bge-small-en-v1.5 and matched against pre-embedded legal document chunks stored in a Chroma vector database. Cosine similarity is used to retrieve the top-k most relevant chunks.</p><p>Augmentation: Retrieved chunks are concatenated with the original query to form a structured prompt that instructs the model to answer based on Vietnamese legal documents and cite relevant sources. The prompt length is constrained to fit the model’s context window.</p><p>Generation: Qwen2.5:7B-Instruct-Q4_0 processes the augmented prompt to generate a Vietnamese response. The output is post-processed to ensure clarity and legal accuracy.</p><p>This pipeline’s offline nature eliminates dependency on internet connectivity, and its modular design allows for updates to the knowledge base or model without architectural changes.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>2.5. Vector database with flexible editing</title>
+          
+          <p>The system employs Chroma (<xref ref-type="bibr" rid="ref_5">Chroma Team, 2023</xref>), a local vector database for storing and retrieving embedded legal document chunks. Text chunks are truncated and normalized to ensure stable vector representations. Flexible editing and delta synchronization: Chroma’s design allows administrators to add, update, or remove document chunks via a Python API without rebuilding the entire index. Stable chunk identifiers are derived from cryptographic hashes of normalized text, file paths, and chunk indices, enabling precise change detection and idempotent updates.</p><p>As mentioned above, BAAI/bge-small-en-v1.5 is selected based on some benchmark study. It gives stable offline performance, and compatibility with local deployment constraints described in this study. Given the absence of publicly available Vietnamese legal embedding models, this choice reflects a practical design decision consistent with the system’s offline and resource-constrained objectives. The potential impact on retrieval precision is addressed through conservative chunking, top-k retrieval, and subsequent grounding by the generative model, which is further examined in the evaluation.</p>
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>3. Research design</title>
+      <p>This section outlines the research design, system architecture, research procedure, experimental design, and system specifications of the proposed offline RAG chatbot for Vietnamese food safety legal consultation. The methodology follows a systems development research approach, combining design science and prototyping to build a practical, deployable artifact in a constrained offline environment.</p>
+      
+        <sec>
+          
+            <title>3.1. Research settings</title>
+          
+          <p>The study follows a practical, iterative prototyping approach focused on building a deployable software system to address a concrete problem: limited access to accurate, up-to-date food safety legal information in various areas, especially rural areas, in Vietnam.</p><p>Instead of abstract frameworks, the design is driven by three core objectives:</p><p>- Offline Functionality: No internet required after initial setup.</p><p>- Dynamic Knowledge Base: Admins can add, edit, or remove legal documents without technical expertise.</p><p>- Verifiable Answers: Every factual response includes source citations from original legal texts.</p><p>- The development process is iterative and user-centered, with continuous refinement based on:</p><p>- Simulated user queries (e.g., “Thời hạn giấy chứng nhận an toàn thực phẩm là bao lâu?” which means “What is the validity period of the food safety certificate?” in English);</p><p>- Document update workflows (upload → sync → query);</p><p>- Performance monitoring (latency, memory, synchronization time).</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.2. Research procedure</title>
+          
+          <p>The development followed a six-phase iterative procedure:</p><p>1. Requirement analysis: Conducted interviews with food safety officers and analyzed relevant food safety legislation.</p><p>2. Document collection: Built a repository of legal texts (PDF/TXT) sourced from government portals.</p><p>3. System prototyping: Developed a minimum viable product (MVP) using Ollama and Chroma.</p><p>4. Synchronization logic: Implemented delta synchronization with stable IDs using SHA-256.</p><p>5. Interface development: Created a CLI chatbot and a Flask-based admin panel.</p><p>6. Evaluation and refinement: Performed rounds of testing, added offline LLM support, and integrated source citation functionality.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.3. Experimental design</title>
+          
+          
+            <sec>
+              
+                <title>3.3.1 Datasets</title>
+              
+              <p>The experimental dataset comprises 170 official Vietnamese legal documents on food safety, sourced directly from <a target="_blank" rel="noopener noreferrer nofollow" href="http://vbpl.vn">vbpl.vn</a>. These documents span the full regulatory hierarchy and reflect the complexity of Vietnam’s food safety governance framework. The corpus is structured as shown in <xref ref-type="table" rid="table_2">Table 2</xref> and depicted in <xref ref-type="fig" rid="fig_1">Figure 1</xref>.</p>
+              
+                <table-wrap id="table_2">
+                  <label>Table 2</label>
+                  <caption>
+                    <title>Dataset summary</title>
+                  </caption>
+                  <table><tbody><tr><td colspan="1" rowspan="1"><p>Document Type</p></td><td colspan="1" rowspan="1"><p>Quantity</p></td><td colspan="1" rowspan="1"><p>Percentage (%)</p></td></tr><tr><td colspan="1" rowspan="1"><p>Directive</p></td><td colspan="1" rowspan="1"><p>5</p></td><td colspan="1" rowspan="1"><p>2.94</p></td></tr><tr><td colspan="1" rowspan="1"><p>Law</p></td><td colspan="1" rowspan="1"><p>3</p></td><td colspan="1" rowspan="1"><p>1.76</p></td></tr><tr><td colspan="1" rowspan="1"><p>Decree</p></td><td colspan="1" rowspan="1"><p>18</p></td><td colspan="1" rowspan="1"><p>10.59</p></td></tr><tr><td colspan="1" rowspan="1"><p>Resolution</p></td><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>0.59</p></td></tr><tr><td colspan="1" rowspan="1"><p>Decision</p></td><td colspan="1" rowspan="1"><p>36</p></td><td colspan="1" rowspan="1"><p>21.18</p></td></tr><tr><td colspan="1" rowspan="1"><p>Circular</p></td><td colspan="1" rowspan="1"><p>94</p></td><td colspan="1" rowspan="1"><p>55.29</p></td></tr><tr><td colspan="1" rowspan="1"><p>Joint Circular</p></td><td colspan="1" rowspan="1"><p>13</p></td><td colspan="1" rowspan="1"><p>7.65</p></td></tr></tbody></table>
+                </table-wrap>
+              
+              
+                <fig id="fig_1">
+                  <label>Figure 1</label>
+                  <caption>
+                    <title>Allocation of data text types</title>
+                  </caption>
+                  <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/1/img_nIPBa_eWYaZfKNSm.png"/>
+                </fig>
+              
+            </sec>
+          
+          
+            <sec>
+              
+                <title>3.3.2 Preprocessing and annotation</title>
+              
+              <p>The preprocessing pipeline ensures stable, reproducible chunking and high-quality embeddings for the Vietnamese legal corpus on food safety law in this study. Raw documents from the documents folder (including .txt, .pdf, .docx files) are first normalized by collapsing all whitespace sequences into single spaces using the Python function re.sub(r“\s+”, “ ”, text.strip()), eliminating spurious boundary shifts caused by formatting variations. Derived files are then chunked into segments with an overlap via a sliding window approach, preserving semantic continuity across long legal articles. Each chunk is assigned a stable SHA-256 ID derived from its normalized content, source file path, and chunk index, enabling precise delta synchronization.</p><p>Annotation is minimal and metadata-driven, consisting of:</p><p>- source: full file path;</p><p>- chunk_idx: sequential position;</p><p>- chunk_hash: SHA-256 of normalized text;</p><p>- file_mtime: Last modification timestamp.</p><p>This metadata is stored alongside embeddings in Chroma, supporting traceability and verifiable retrieval. No manual labeling of chunks is required. The system relies on automatic source citation during response generation.</p>
+            </sec>
+          
+          
+            <sec>
+              
+                <title>3.3.3 Experimental scenarios</title>
+              
+              <p>Three real-world scenarios were designed to evaluate system performance across user roles in <xref ref-type="table" rid="table_3">Table 3</xref>:</p>
+              
+                <table-wrap id="table_3">
+                  <label>Table 3</label>
+                  <caption>
+                    <title>List of test scenarios</title>
+                  </caption>
+                  <table><tbody><tr><td colspan="1" rowspan="1"><p>Scenario</p></td><td colspan="1" rowspan="1"><p>Query Type</p></td><td colspan="1" rowspan="1"><p>Example</p></td></tr><tr><td colspan="1" rowspan="1"><p>S1: Compliance check</p></td><td colspan="1" rowspan="1"><p>Factual, single-turn</p></td><td colspan="1" rowspan="1"><p>“Thời hạn giấy chứng nhận an toàn thực phẩm là bao lâu?” which is “What is the validity period of the food safety certificate” in English.</p></td></tr><tr><td colspan="1" rowspan="1"><p>S2: Regulatory research</p></td><td colspan="1" rowspan="1"><p>Multi-turn, contextual</p></td><td colspan="1" rowspan="1"><p>“Nghị định 15/2018 quy định gì về nhập khẩu? → Nếu vi phạm thì phạt bao nhiêu?” which is “What does Decree 15/2018 stipulate about imports? → If violated, what is the penalty?” in English.</p></td></tr><tr><td colspan="1" rowspan="1"><p>S3: Public inquiry</p></td><td colspan="1" rowspan="1"><p>Open-ended, non-factual</p></td><td colspan="1" rowspan="1"><p>“Làm sao để biết thực phẩm có an toàn?” which is “How can one know if food is safe?” in English.</p></td></tr></tbody></table>
+                </table-wrap>
+              
+              <p>Each scenario includes 50 queries, covering factual recall, cross-document reasoning, and conversational fluency.</p>
+            </sec>
+          
+          
+            <sec>
+              
+                <title>3.3.4 Evaluation metrics</title>
+              
+              <p>The evaluation metrics used to assess the system’s performance are summarized in <xref ref-type="table" rid="table_4">Table 4</xref>. These metrics capture four key aspects of the chatbot’s functionality: retrieval accuracy, answer reliability, response efficiency, and synchronization performance. Each metric is defined to reflect a specific operational goal relevant to large LLM–based legal assistants.</p>
+              
+                <table-wrap id="table_4">
+                  <label>Table 4</label>
+                  <caption>
+                    <title>Evaluation metrics</title>
+                  </caption>
+                  <table><tbody><tr><td colspan="1" rowspan="1"><p>Metric</p></td><td colspan="1" rowspan="1"><p>Definition</p></td><td colspan="1" rowspan="1"><p>Target</p></td></tr><tr><td colspan="1" rowspan="1"><p>Retrieval recall</p><p>(e.g., Recall@5)</p></td><td colspan="1" rowspan="1"><p>Fraction of ground-truth chunks retrieved within the top-5 results</p></td><td colspan="1" rowspan="1"><p>≥0.8</p></td></tr><tr><td colspan="1" rowspan="1"><p>Answer faithfulness</p><p>(e.g., human-rated faithfulness)</p></td><td colspan="1" rowspan="1"><p>Human-rated score (1–5) evaluating factual accuracy and alignment with cited sources</p></td><td colspan="1" rowspan="1"><p>≥4.0</p></td></tr><tr><td colspan="1" rowspan="1"><p>Response latency</p></td><td colspan="1" rowspan="1"><p>End-to-end time from user query to final answer</p></td><td colspan="1" rowspan="1"><p>≤10 s</p></td></tr><tr><td colspan="1" rowspan="1"><p>Synchronization efficiency</p></td><td colspan="1" rowspan="1"><p>Time required to synchronize 10 updated files with the vector store</p></td><td colspan="1" rowspan="1"><p>≤25 s</p></td></tr></tbody></table>
+                </table-wrap>
+              
+              <p>The evaluation metrics provide direct insights into the system’s real-world utility for end users such as food safety officers, producers, and regulatory administrators. Retrieval-oriented metrics reflect the probability that relevant statutory clauses are surfaced within the top results, ensuring that inspectors can quickly identify the correct legal basis during on-site checks or enforcement decisions. Answer-level metrics indicate the degree to which generated responses remain faithful to authoritative texts, minimizing the risk of misinterpretation or unsupported legal advice that could lead to non-compliance or administrative errors. In addition, response latency directly affects practical usability in field settings with limited connectivity, where excessive delays could disrupt time-sensitive consultations.</p>
+            </sec>
+          
+          
+            <sec>
+              
+                <title>3.3.5 Ground truth and annotation protocol</title>
+              
+              <p>To ensure the reliability and reproducibility of the reported evaluation metrics, an annotation and validation protocol was implemented to construct the ground truth dataset and assess human-rated metrics such as faithfulness and citation accuracy.</p><p>For the Recall@5 metric which is the number of relevant chunks that appear in the top-5 retrieved chunks; and averaged over queries, ground truth chunks were manually defined. Each query from the evaluation set was matched to the clause(s) or paragraph(s) in the legal corpus that provide the most direct and complete answer according to the Food Safety Law No. 55/2010/QH12 and related decrees. Annotators followed a three-step protocol:</p><p>- Document review: Read the full text of the retrieved legal document and identify all relevant clauses that directly address the query.</p><p>- Chunk mapping: Align each relevant clause with its corresponding text chunk in the Chroma vector database based on unique SHA-256 chunk IDs.</p><p>- Relevance verification: Validate whether each retrieved chunk (top-5) corresponds to a ground-truth clause. A binary relevance label (1 = relevant, 0 = irrelevant) was assigned for computing Recall@5.</p><p>Human evaluation of faithfulness and citation accuracy was performed on 50 query–answer pairs covering the three scenario categories (S1–S3). The same two annotators independently rated each system-generated answer on a 5-point Likert scale in <xref ref-type="table" rid="table_5">Table 5</xref>.</p>
+              
+                <table-wrap id="table_5">
+                  <label>Table 5</label>
+                  <caption>
+                    <title>Human annotation rubric for faithfulness and citation accuracy</title>
+                  </caption>
+                  <table><tbody><tr><td colspan="1" rowspan="1"><p>Score</p></td><td colspan="1" rowspan="1"><p>Definition</p></td></tr><tr><td colspan="1" rowspan="1"><p>5</p></td><td colspan="1" rowspan="1"><p>Fully correct, matches legal text verbatim, cites correct sources</p></td></tr><tr><td colspan="1" rowspan="1"><p>4</p></td><td colspan="1" rowspan="1"><p>Mostly correct, minor paraphrasing, no factual errors</p></td></tr><tr><td colspan="1" rowspan="1"><p>3</p></td><td colspan="1" rowspan="1"><p>Partially correct, missing minor legal conditions</p></td></tr><tr><td colspan="1" rowspan="1"><p>2</p></td><td colspan="1" rowspan="1"><p>Inaccurate or unsupported interpretation</p></td></tr><tr><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>Hallucinated or unrelated answer</p></td></tr></tbody></table>
+                </table-wrap>
+              
+              <p>Disagreements were adjudicated through discussion until consensus. Final scores were averaged across annotators to compute the reported mean faithfulness. This protocol ensures transparent, reproducible evaluation and provides statistically substantiated evidence for the performance of the proposed offline RAG chatbot.</p>
+            </sec>
+          
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>4. System architecture and specifications</title>
+      
+        <sec>
+          
+            <title>4.1. System architecture</title>
+          
+          <p>The system (<xref ref-type="fig" rid="fig_2">Figure 2</xref>) adopts a modular, layered, and fully offline architecture designed for local execution, low-latency retrieval, and easy maintenance in resource-constrained environments such as rural food safety offices in Vietnam. The design is inspired by best practices in legal RAG systems, see e.g. <xref ref-type="bibr" rid="ref_21">Rothman (2024)</xref>, but extends them to Vietnamese law, offline deployment, and delta synchronization.</p><p>(1) Document repository mb_documents/Stores raw legal texts in .txt, .pdf, .docx files. The files are loaded via DirectoryLoader (LangChain).</p><p>(2) The Chroma vector store (chroma_db/), a persistent vector database, generates stable chunk IDs by hashing (source | chunk_idx | chunk_hash) with SHA-256, ensuring that repeated updates do not create duplicate entries.</p><p>(3) Embedding model BAAI/bge-small-en-v1.5 (local model, 255 MB) from Hugging Face.</p><p>(4) Offline LLM: qwen2.5-7b-instruct-q4_0 (Ollama), a Qwen2.5 model with 7.61B parameters and a 131K-token context window, quantized to 4-bit for fitting in 7–8 GB VRAM, accessed via the ChatOllama wrapper.</p><p>(5) Application core InteractiveAssistant, central orchestrator with:</p><p>- initialize_session(): lazy load vector store + offline LLM;</p><p>- send_message(): intent → RAG → offline LLM model;</p><p>- process_response(): extracts answer + sources;</p><p>- maybe_reload_vector_store(): auto-reload on modification time change.</p><p>(6) User interfaces CLI chatbot + Flask admin:</p><p>- CLI: real-time chat with commands for exit, clear, user input;</p><p>- Flask admin: upload, delete, and sync files, uses subprocess.run() to execute vector_store.py sync-folder.</p>
+          
+            <fig id="fig_2">
+              <label>Figure 2</label>
+              <caption>
+                <title>System architecture overview</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/1/img_OTuK7eTSffF7xX0k.png"/>
+            </fig>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>4.2. System specifications</title>
+          
+          <p>The proposed offline RAG chatbot is implemented as a modular, fully local Python application designed for portability, privacy, and ease of deployment in low-connectivity environments. The system is built using Python 3.12.7 as the primary runtime. The embedding layer (BAAI/bge-small-en-v1.5) is loaded via Hugging Face Transformers in offline mode (HF_HUB_OFFLINE = 1) and wrapped in a custom LocalEmbedding class that implements masked mean pooling which is a dynamic batch processing and error-resilient inference (automatic batch size reduction from 16 to 1 when memory usage is high). The LLM backend is configurable: Qwen2.5:7b-instruct-q4_0 (GGUF format, ~4.7 GB) served locally via Ollama version 0.12.6 with base_url=http://localhost:11434. User interaction is implemented through a Flask v2.3.3 web application (app.py). The specifications are summarized in <xref ref-type="table" rid="table_6">Table 6</xref>.</p>
+          
+            <table-wrap id="table_6">
+              <label>Table 6</label>
+              <caption>
+                <title>Software stack and dependencies</title>
+              </caption>
+              <table><tbody><tr><td><p>Layer</p></td><td><p>Component</p></td><td><p>Version</p></td><td><p>Key Features</p></td></tr><tr><td><p>Runtime</p></td><td><p>Python</p></td><td><p>3.12.7</p></td><td><p>Runtime, asyncio</p></td></tr><tr><td><p>RAG framework</p></td><td><p>LangChain</p></td><td><p>0.3.25</p></td><td><p>RetrievalQA, chains</p></td></tr><tr><td><p>Vector DB</p></td><td><p>Chroma</p></td><td><p>1.0.12</p></td><td><p>Persistent</p></td></tr><tr><td><p>LLM</p></td><td><p>Qwen2.5:7b-instruct-q4_0</p></td><td></td><td><p>Ollama</p></td></tr><tr><td><p>Web framework</p></td><td><p>Flask</p></td><td><p>2.3.3</p></td><td><p>UI</p></td></tr><tr><td><p>LLM server</p></td><td><p>Ollama</p></td><td><p>0.12.6</p></td><td><p>Local model serving</p></td></tr></tbody></table>
+            </table-wrap>
+          
+        </sec>
+      
+    </sec>
+    <sec sec-type="results">
+      <title>5. Results</title>
+      <p>This section presents the system prototype, verified results, comparative experimental results, and comparison with existing tools, demonstrating the effectiveness of the proposed offline Vietnamese legal RAG chatbot for food safety consultation. All experiments were conducted on the 170-document corpus (1.8M tokens) on food safety of Vietnam using the LangChain-Chroma-Ollama pipeline.</p>
+      
+        <sec>
+          
+            <title>5.1. System prototype</title>
+          
+          <p>The final prototype is a fully functional, offline RAG system comprising two user-facing components:</p><p>(1) Interactive CLI chatbot with RAG,</p><p>(2) Fallback to LLM when RAG returns no relevant chunks,</p><p>(3) Flask web admin panel (app.py) that enables:</p><p>- Secure login,</p><p>- Upload/delete .pdf, .txt, .docx files to mb_documents/,</p><p>- One-click synchronization triggering vector_store.py sync-folder,</p><p>- Live feedback via flash messages with stdout/stderr.</p><p><xref ref-type="fig" rid="fig_3">Figure 3</xref> shows a typical user query interface. <xref ref-type="fig" rid="fig_4">Figure 4</xref> illustrates the legal document upload interface.</p>
+          
+            <fig id="fig_3">
+              <label>Figure 3</label>
+              <caption>
+                <title>Screenshot of the prototype interface for user query</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/1/img_CTWWwHsccW3tYsUF.png"/>
+            </fig>
+          
+          
+            <fig id="fig_4">
+              <label>Figure 4</label>
+              <caption>
+                <title>Screenshot of the prototype interface for legal document upload</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/1/img_BMh0wUzMGiBsD3r9.png"/>
+            </fig>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>5.2. Verification results</title>
+          
+          <p>To ensure a comprehensive evaluation, the experimental scenarios were designed to reflect practical user behaviors in legal consultation for Vietnamese food safety regulations. The queries were grouped into three categories: direct information retrieval questions (e.g., legal definitions, conditions, and requirements) to assess retrieval accuracy; context-dependent legal responsibility questions (e.g., competent authorities or sanctions) to evaluate legal understanding and reasoning; and integrative or advisory questions requiring synthesis across multiple legal provisions (e.g., licensing procedures or compliance requirements). This structured design ensures that the evaluation covers realistic usage scenarios and enables a holistic assessment of the system’s retrieval effectiveness, domain-specific comprehension, and faithfulness.</p><p>The system was evaluated across the scenarios described previously using 150 annotated query– answer pairs. The evaluation focused on retrieval quality, human faithfulness, citation reliability, synchronization performance, and overall responsiveness. The results are summarized in <xref ref-type="table" rid="table_7">Table 7</xref>.</p>
+          
+            <table-wrap id="table_7">
+              <label>Table 7</label>
+              <caption>
+                <title>Evaluation results</title>
+              </caption>
+              <table><tbody><tr><td colspan="1" rowspan="1"><p>Metric</p></td><td colspan="1" rowspan="1"><p>Value</p></td><td colspan="1" rowspan="1"><p>Target</p></td><td colspan="1" rowspan="1"><p>Achieved</p></td></tr><tr><td colspan="1" rowspan="1"><p>Recall@5</p></td><td colspan="1" rowspan="1"><p>0.88</p></td><td colspan="1" rowspan="1"><p>≥0.8</p></td><td colspan="1" rowspan="1"><p>Yes</p></td></tr><tr><td colspan="1" rowspan="1"><p>Human faithfulness</p></td><td colspan="1" rowspan="1"><p>4.3/5.0</p></td><td colspan="1" rowspan="1"><p>≥4.0</p></td><td colspan="1" rowspan="1"><p>Yes</p></td></tr><tr><td colspan="1" rowspan="1"><p>Citation accuracy</p></td><td colspan="1" rowspan="1"><p>98.2%</p></td><td colspan="1" rowspan="1"><p>≥95%</p></td><td colspan="1" rowspan="1"><p>Yes</p></td></tr><tr><td colspan="1" rowspan="1"><p>Synchronization time (10 files)</p></td><td colspan="1" rowspan="1"><p>18.2 s</p></td><td colspan="1" rowspan="1"><p>≤25 s</p></td><td colspan="1" rowspan="1"><p>Yes</p></td></tr><tr><td colspan="1" rowspan="1"><p>Average response latency</p></td><td colspan="1" rowspan="1"><p>3.8 s</p></td><td colspan="1" rowspan="1"><p>≤10 s</p></td><td colspan="1" rowspan="1"><p>Yes</p></td></tr></tbody></table>
+            </table-wrap>
+          
+          <p>Across all metrics, the system met or exceeded the defined performance targets.</p><p>- The Recall@5 score of 0.88 indicates strong retrieval effectiveness, ensuring most relevant document chunks were surfaced in the top-5 results.</p><p>- Citation accuracy reached 98.2%, demonstrating reliable source linking.</p><p>- Operationally, both synchronization time (18.2 s) and response latency (3.8 s) remained comfortably below target thresholds, highlighting efficient system design.</p><p>Overall, these results validate the system’s possibility, responsiveness, and practical readiness for real-world test in the food safety legal domain.</p><p>Despite potential overall performance, several limitations were observed. In cases where relevant legal provisions are distributed across multiple documents or involve indirect cross-references, retrieval coverage may be incomplete, leading to partially correct or overly cautious responses. The system also tends to prioritize precision over completeness, occasionally omitting applicable sub-clauses when retrieved context is limited. A prominent example of this behaviour occurs in authority and responsibility queries with hierarchical context. Query example: “Cơ quan nào chịu trách nhiệm thanh tra an toàn thực phẩm lưu thông trên thị trường?” which means “Which authority is responsible for inspecting the food safety of products circulating on the market?” in English. In cases where responsibility depends on product type or administrative level, the system occasionally produced overly cautious responses (e.g., “Tùy thuộc vào loại thực phẩm và địa bàn, cần tham khảo thêm văn bản liên quan” which means “Depending on the type of food and the locality, it may be necessary to consult additional relevant legal documents.” in English.) rather than providing the full hierarchical mapping (e.g., distinguishing responsibilities between Ministry of Health, Ministry of Agriculture and Rural Development, and local authorities as defined across Law on Food Safety 55/2010/QH12, Decree 15/2018/ND-CP, and related circulars). This reflects the model's tendency to prioritize precision over completeness when retrieved context is borderline or when cross-document links are not explicitly captured. These failure modes highlight the dependency of answer quality on retrieval coverage and motivate future improvements in query expansion, cross-document linking, and hierarchical retrieval techniques.</p>
+        </sec>
+      
+    </sec>
+    <sec sec-type="discussion">
+      <title>6. Discussion</title>
+      <p>The developed offline RAG chatbot for Vietnamese food safety regulations in low-connectivity environments represents a potential advancement in delivering verifiable, real-time legal consultation. By integrating delta synchronization, source-cited retrieval, and dual-interface usability, to some extent, the system would bridge the gap between complex statutory documents and non-technical end-users such as local food safety officers and SMEs. The results demonstrate acceptable retrieval accuracy, faithful response generation, and efficient knowledge base maintenance, all while preserving full data privacy and operational autonomy.</p>
+      
+        <sec>
+          
+            <title>6.1. Significance of results</title>
+          
+          <p>The experimental results demonstrate that the proposed system is not only technically functional but also practically suitable for real-world legal consultation scenarios. Good retrieval behavior indicates that relevant legal provisions are consistently surfaced early in the search process, which is essential for regulatory domains where missing a key clause can lead to incorrect guidance.</p><p>The high level of answer faithfulness reflects the system’s ability to preserve the intent and constraints of statutory language, an essential requirement for food safety enforcement where ambiguity or paraphrasing errors may have legal consequences. From an operational perspective, the system’s responsiveness supports interactive usage during on-site inspections or administrative consultations, where delayed responses would hinder workflow efficiency.</p><p>Moreover, fast and non-disruptive synchronization confirms that the architecture can accommodate frequent legal updates, which is an inherent characteristic of Vietnamese regulatory frameworks, without requiring full system downtime. Collectively, these outcomes suggest that RAG, when combined with offline deployment, is a viable alternative to cloud-based legal assistants in constrained or privacy-sensitive environments.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>6.2. Theoretical and practical contributions</title>
+          
+          <p>The system shows the possibility of the application of the RAG paradigm to Vietnamese-language legal consultation in food safety:</p><p>(1) Synchronization with stable chunk identifiers: Supports incremental and consistent updates of legal documents, which may be beneficial for managing frequently amended regulatory corpora.</p><p>(2) Hybrid RAG-offline LLM with contextual prompting:</p><p>- Introduces a two-tier response strategy that distinguishes between retrieval-grounded, source-cited answers and more conversational language model responses.</p><p>- This duality resolves the brittleness of pure retrieval and the hallucination risk of pure generation.</p><p>(3) Modification time-driven auto-reload in asynchronous environments: Enables timely knowledge base updates without relying on complex external orchestration mechanisms, which may be advantageous in resource-constrained deployments.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>6.3. Retrieval-side and generation-side design analysis</title>
+          
+          <p>On the retrieval side, the system adopts a lightweight embedding-based retriever operating over a locally indexed corpus of Vietnamese food safety regulations. Legal documents are segmented using a fixed-size chunking strategy with limited overlap, which is intended to preserve clause-level coherence while reducing unnecessary fragmentation. This design is chosen to balance semantic coverage and retrieval efficiency, particularly in offline deployment scenarios where computational resources may be limited.</p><p>The retriever returns a fixed top-k set (<italic>k</italic> = 5) based on cosine similarity between query and document embeddings. No explicit neural or LLM-based reranking stage is incorporated. While reranking mechanisms are often employed in contemporary RAG pipelines to enhance precision, they typically introduce additional computational overhead, increased latency, and potential variability in retrieval outcomes. In the context of this work, the absence of reranking is motivated by a preference for stable and predictable retrieval behavior, as well as a tendency to favor recall-oriented completeness in legal question-answering tasks, where overlooking relevant regulatory clauses could be undesirable. In addition, the system does not perform aggressive query rewriting or expansion. User queries are embedded with minimal transformation, with the aim of preserving original legal terminology and intent, thereby limiting the risk of semantic drift during retrieval.</p><p>On the generation side, the system is designed to encourage responses that remain grounded in the retrieved regulatory text. The prompt guides the language model to rely primarily on the provided legal excerpts when formulating answers, which may help reduce hallucination risks and support traceability to authoritative sources.</p><p>Citation awareness is incorporated at the prompt level by encouraging references to specific articles, clauses, or regulatory documents where applicable. In cases where the retrieved evidence is limited or ambiguous, the outputs are insufficient legal basis rather than engaging in speculative reasoning.</p><p>Relative to existing RAG-based legal assistants that prioritize generative richness, cloud-based reranking, or large-scale inference optimization, the proposed system reflects a more cautious, recall-oriented, and offline-compatible design orientation. Such an approach may be more suitable for regulatory and public safety contexts, where the potential cost of errors suggests that factual completeness and auditability are often more critical than stylistic expressiveness or maximal relevance scoring.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>6.4. Security and ethical analysis</title>
+          
+          <p>The system is designed with responsible AI principles at its core, ensuring privacy, transparency, and accountability in legal consultation:</p><p>- Data privacy:</p><p><p>Fully offline operation is enabled with no external API calls.</p><p>All documents, embeddings, and conversation history remain local on the user’s device.</p><p>No data transmission to third-party is required.</p></p><p>- Model integrity:</p><p><p>Embedding model (bge-small-en-v1.5) is loaded in read-only mode to prevent unauthorized modification.</p><p>Ollama server runs on localhost:11434 with no external network binding.</p></p><p>- Bias and fairness:</p><p><p>Responses are grounded in official legal texts, minimizing generative bias.</p><p>No training or fine-tuning on user queries which means zero risk of learning from sensitive inputs.</p><p>Output reflects statutory language, not subjective interpretation.</p></p><p>- Transparency:</p><p><p>Every factual response includes source filename(s) (e.g., Nghị định 15/2018/NĐ-CP which is Decree No. 15/2018/NĐ-CP in English).</p><p>Full audit trail of retrieved chunks available in debug logs.</p><p>Users can verify claims directly against original documents.</p></p><p>- Misuse prevention:</p><p><p>The system can not be used to generate legal documents, only interpret existing ones.</p><p>The system provides informational guidance only and is not a substitute for qualified legal counsel.</p><p>There is no impersonation of authority. Responses are clearly marked as AI-generated.</p><p>RAG chain returns “Không đủ căn cứ” which means “Insufficient evidence” in English when no relevant law is found.</p></p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>6.5. Limitations</title>
+          
+          <p>Despite its strengths, the system has bounded scope:</p><p><p>Corpus size: Limited to 170 documents.</p></p><p>Performance on larger or multi-domain legal archives remains untested.</p><p><p>Language scope: Optimized for Vietnamese statutory text.</p><p>Informal language, dialectal queries, or multilingual inputs may degrade accuracy.</p><p>Complex reasoning: While faithful, the system does not perform multi-hop legal reasoning (e.g., conflicting clause resolution).</p><p>Embedding model: Uses a general-purpose multilingual embedder.</p></p><p>A domain-tuned legal embedding model could improve precision.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>6.6. Future directions</title>
+          
+          <p>Domain-specific embedding fine-tuning:</p><p>Fine-tune bge-small-en-v1.5 on the full Vietnamese legal corpus to improve semantic precision in clause-level retrieval.Incorporate contrastive learning with hard negative mining from conflicting regulations.</p><p>Multi-hop legal reasoning engine:</p><p>Construct a knowledge graph of cross-references (e.g., “Điều 15 Nghị định 15/2018 tham chiếu Luật 55/2010” which means “Article 15 of Decree 15/2018 references Law 55/2010” in English).Implement graph-based RAG to resolve multi-clause dependencies and regulatory conflicts.</p><p>Mobile and edge deployment:</p><p>Package as a progressive web application (PWA) with service worker caching of vector store.Develop Android/iOS wrappers using Ollama Mobile and React Native.</p><p>User Feedback Loop and Continuous Learning:</p><p>Log user corrections (with consent) to refine retrieval ranking.Apply active learning to prioritize ambiguous queries for expert review.</p>
+        </sec>
+      
+    </sec>
+    <sec sec-type="conclusions">
+      <title>7. Conclusions</title>
+      <p>This work presents a fully offline, citation-grounded RAG chatbot developed for Vietnamese food safety law, successfully addressing critical barriers in rural and low-connectivity settings. The system achieves:</p><p><p>High retrieval accuracy (Recall@5 = 0.88) and faithful responses (4.3/5.0);</p><p>Real-time delta synchronization (&lt;20 s for 10 documents);</p><p>Dual user interfaces (CLI + Web) for end-users and administrators;</p><p>Complete data privacy and operational independence.</p></p><p>By combining stable chunk identifiers, hybrid RAG-offline LLM, and event-driven auto-reload, the prototype establishes a robust, maintainable architecture for evolving legal knowledge bases. It empowers local food safety officers, SMEs, and regulatory bodies with instant, verifiable access to complex statutes without reliance on internet or cloud services.</p><p>The design is modular, extensible, and ready for pilot deployment, offering a replicable model for AI-assisted governance in under-resourced regions. Future enhancements in reasoning depth, mobility, and federated collaboration will further transform how legal intelligence is delivered to the public. This study is expected to contribute directly to safer food systems and more equitable access to justice across Vietnam.</p><p>This work presents a fully offline, citation-grounded RAG chatbot developed for Vietnamese food safety law, effectively addressing key challenges in rural and low-connectivity environments. The system demonstrates strong retrieval reliability, faithful answer generation, efficient knowledge base synchronization, and complete operational autonomy, enabling practical legal consultation without dependence on cloud infrastructure.</p><p>Beyond the food safety domain, the proposed architecture is directly transferable to other Vietnamese legal domains such as labor law, environmental regulation, tax compliance, and administrative procedures. This transfer requires only domain-specific document ingestion and optional prompt adaptation, while the core components—including chunking strategy, stable hash-based identifiers, vector storage, offline embedding, and local LLM inference—remain unchanged. In particular, the delta synchronization mechanism is domain-agnostic and well-suited for legal areas characterized by frequent amendments and layered regulatory hierarchies.</p><p>The modular design allows domain owners to independently maintain their legal corpora without re-indexing or retraining, making the system suitable for decentralized governance contexts. As a result, the framework provides a practical blueprint for deploying trustworthy AI-assisted legal information systems across under-resourced regions. Future enhancements in multi-hop legal reasoning, mobile deployment, and cross-domain knowledge federation are expected to further extend the system’s applicability, contributing to improved regulatory compliance and more equitable access to justice in Vietnam.</p>
+    </sec>
+  </body>
+  <back>
+    <ack>
+      <title>Acknowledgments</title>
+      
+    </ack>
+    <app-group>
+      <app>
+        <title>Appendix</title>
+        
+      </app>
+    </app-group>
+    <notes>
+      <title>Author Contributions</title>
+      <p>Conceptualization, D.V.H. and T.T.N.; methodology, D.V.H. and T.T.N.; software, D.V.H.; validation, D.V.H. and T.T.N.; formal analysis, D.V.H.; investigation, D.V.H.; resources, D.V.H.; data curation, D.V.H.; writing—original draft preparation, D.V.H.; writing—review and editing, T.T.N.; visualization, D.V.H.; supervision, T.T.N.; project administration, T.T.N.; funding acquisition, T.T.N. All authors have read and agreed to the published version of the manuscript.</p>
+    </notes>
+    <notes>
+      <title>Funding</title>
+      
+    </notes>
+    <notes>
+      <title>Informed Consent Statement</title>
+      
+    </notes>
+    <notes>
+      <title>Data Availability Statement</title>
+      <p>The data used to support the research findings are available from the corresponding author upon request.</p>
+    </notes>
+    <notes notes-type="COI-statement">
+      <title>Conflicts of Interest</title>
+      <p>The authors declare no conflict of interest.</p>
+    </notes>
+    <ref-list>
+      <title>References</title>
+      <ref id="ref_1">
+        <label>1.</label>
+        <element-citation publication-type="book">
+          <person-group person-group-type="author">
+            <name>
+              <surname>Alto</surname>
+              <given-names>V.</given-names>
+            </name>
+          </person-group>
+          <source>Building LLM Powered Applications: Create Intelligent Apps and Agents with Large Language Models</source>
+          <publisher-name>Packt Publishing</publisher-name>
+          <year>2024</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_2">
+        <label>2.</label>
+        <element-citation publication-type="webpage">
+          <article-title>bge-small-en-v1.5 (model)</article-title>
+          <source>, https://huggingface.co/BAAI/bge-small-en-v1.5</source>
+          <year>2023</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_3">
+        <label>3.</label>
+        <element-citation publication-type="journal">
+          <page-range>arXiv:2502.20364</page-range>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Barron</surname>
+              <given-names>Ryan C.</given-names>
+            </name>
+            <name>
+              <surname>Eren</surname>
+              <given-names>Maksim E.</given-names>
+            </name>
+            <name>
+              <surname>Serafimova</surname>
+              <given-names>Olga M.</given-names>
+            </name>
+            <name>
+              <surname>Matuszek</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Alexandrov</surname>
+              <given-names>Boian S.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.48550/ARXIV.2502.20364</pub-id>
+          <article-title>Bridging legal knowledge and AI: Retrieval-augmented generation with vector stores, knowledge graphs, and hierarchical non-negative matrix factorization</article-title>
+          <source>arXiv Preprint</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_4">
+        <label>4.</label>
+        <element-citation publication-type="journal">
+          <volume>5</volume>
+          <page-range>11-34</page-range>
+          <issue>1</issue>
+          <year>2026</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Chakravartula</surname>
+              <given-names>K. N.</given-names>
+            </name>
+            <name>
+              <surname>Raghu</surname>
+              <given-names>A.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.56578/jimd050102</pub-id>
+          <article-title>Implementing AI-driven decision support in agricultural lending through predictive analytics for customer relationship management</article-title>
+          <source>Journal of Intelligent Management Decision</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_5">
+        <label>5.</label>
+        <element-citation publication-type="webpage">
+          <article-title>Chroma documentation: Chroma (vector store)</article-title>
+          <source>, https://docs.trychroma.com/docs/overview/getting-started</source>
+          <year>2023</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_6">
+        <label>6.</label>
+        <element-citation publication-type="journal">
+          <page-range>arXiv:2403.03883</page-range>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Colombo</surname>
+              <given-names>P.</given-names>
+            </name>
+            <name>
+              <surname>Pessoa Pires</surname>
+              <given-names>T.</given-names>
+            </name>
+            <name>
+              <surname>Boudiaf</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Culver</surname>
+              <given-names>D.</given-names>
+            </name>
+            <name>
+              <surname>Melo</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Corro</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Martins</surname>
+              <given-names>A. F. T.</given-names>
+            </name>
+            <name>
+              <surname>Esposito</surname>
+              <given-names>F.</given-names>
+            </name>
+            <name>
+              <surname>Raposo</surname>
+              <given-names>V. L. et al.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.48550/arXiv.2403.03883</pub-id>
+          <article-title>SaulLM-7B: A pioneering large language model for law</article-title>
+          <source>arXiv Preprint</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_7">
+        <label>7.</label>
+        <element-citation publication-type="webpage">
+          <article-title>Elaboration of some Articles of the Law on Food Safety</article-title>
+          <source>, https://thuvienphapluat.vn/van-ban/EN/The-thao-Y-te/Decree-15-2018-ND-CP-elaboration-law-of-food-safety/375807/tieng-anh.aspx</source>
+          <year>2018</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_8">
+        <label>8.</label>
+        <element-citation publication-type="journal">
+          <volume>13</volume>
+          <page-range>46171-46189</page-range>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Hindi</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Mohammed</surname>
+              <given-names>L.</given-names>
+            </name>
+            <name>
+              <surname>Maaz</surname>
+              <given-names>O.</given-names>
+            </name>
+            <name>
+              <surname>Alwarafy</surname>
+              <given-names>A.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/access.2025.3550145</pub-id>
+          <article-title>Enhancing the precision and interpretability of retrieval-augmented generation (RAG) in legal technology: A survey</article-title>
+          <source>IEEE Access</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_9">
+        <label>9.</label>
+        <element-citation publication-type="journal">
+          <page-range>1-26</page-range>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Italiani</surname>
+              <given-names>P.</given-names>
+            </name>
+            <name>
+              <surname>Moro</surname>
+              <given-names>G.</given-names>
+            </name>
+            <name>
+              <surname>Ragazzi</surname>
+              <given-names>L.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1007/s10506-025-09463-9</pub-id>
+          <article-title>Enhancing legal question answering with data generation and knowledge distillation from large language models</article-title>
+          <source>Artificial Intelligence and Law</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_10">
+        <label>10.</label>
+        <element-citation publication-type="journal">
+          <volume>4</volume>
+          <page-range>173-192</page-range>
+          <issue>2</issue>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Jonnala</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Swamy</surname>
+              <given-names>B.</given-names>
+            </name>
+            <name>
+              <surname>Thomas</surname>
+              <given-names>N. M.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.57017/jorit.v4.2(8).04</pub-id>
+          <article-title>Geopolitical bias in sovereign large language models: A comparative mixed-methods study</article-title>
+          <source>Journal of Research, Innovation and Technologies (JoRIT)</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_11">
+        <label>11.</label>
+        <element-citation publication-type="journal">
+          <volume>5</volume>
+          <page-range>181-196</page-range>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Lai</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Gan</surname>
+              <given-names>W.</given-names>
+            </name>
+            <name>
+              <surname>Wu</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Qi</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Yu</surname>
+              <given-names>Philip S.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.aiopen.2024.09.002</pub-id>
+          <article-title>Large language models in law: A survey</article-title>
+          <source>AI Open</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_12">
+        <label>12.</label>
+        <element-citation publication-type="journal">
+          <page-range>arXiv:2005.11401</page-range>
+          <year>2020</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Lewis</surname>
+              <given-names>P.</given-names>
+            </name>
+            <name>
+              <surname>Perez</surname>
+              <given-names>E.</given-names>
+            </name>
+            <name>
+              <surname>Piktus</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Petroni</surname>
+              <given-names>F.</given-names>
+            </name>
+            <name>
+              <surname>Karpukhin</surname>
+              <given-names>V.</given-names>
+            </name>
+            <name>
+              <surname>Goyal</surname>
+              <given-names>N.</given-names>
+            </name>
+            <name>
+              <surname>Küttler</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Lewis</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Yih</surname>
+              <given-names>W. et al.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.48550/ARXIV.2005.11401</pub-id>
+          <article-title>Retrieval-augmented generation for knowledge-intensive NLP tasks</article-title>
+          <source>arXiv Preprint</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_13">
+        <label>13.</label>
+        <element-citation publication-type="journal">
+          <volume>14</volume>
+          <page-range>742</page-range>
+          <issue>4</issue>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Ma</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Lu</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Xiao</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Feng</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Yu</surname>
+              <given-names>J.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3390/electronics14040742</pub-id>
+          <article-title>SDD-LawLLM: Advancing intelligent legal systems through synthetic data-driven fine-tuning of large language models</article-title>
+          <source>Electronics</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_14">
+        <label>14.</label>
+        <element-citation publication-type="journal">
+          <volume>22</volume>
+          <page-range>216-242</page-range>
+          <issue>2</issue>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Magesh</surname>
+              <given-names>V.</given-names>
+            </name>
+            <name>
+              <surname>Surani</surname>
+              <given-names>F.</given-names>
+            </name>
+            <name>
+              <surname>Dahl</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Suzgun</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Manning</surname>
+              <given-names>Christopher D.</given-names>
+            </name>
+            <name>
+              <surname>Ho</surname>
+              <given-names>Daniel E.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1111/jels.12413</pub-id>
+          <article-title>Hallucination‐free? Assessing the reliability of leading AI legal research tools</article-title>
+          <source>Journal of Empirical Legal Studies</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_15">
+        <label>15.</label>
+        <element-citation publication-type="journal">
+          <page-range>arXiv:2402.06196</page-range>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Minaee</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Mikolov</surname>
+              <given-names>T.</given-names>
+            </name>
+            <name>
+              <surname>Nikzad</surname>
+              <given-names>N.</given-names>
+            </name>
+            <name>
+              <surname>Chenaghlu</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Socher</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Amatriain</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Gao</surname>
+              <given-names>J.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.48550/ARXIV.2402.06196</pub-id>
+          <article-title>Large language models: A survey</article-title>
+          <source>arXiv Preprint</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_16">
+        <label>16.</label>
+        <element-citation publication-type="journal">
+          <volume>17</volume>
+          <page-range>633</page-range>
+          <issue>5</issue>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Mukund</surname>
+              <given-names>S. A.</given-names>
+            </name>
+            <name>
+              <surname>Easwarakumar</surname>
+              <given-names>K. S.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3390/sym17050633</pub-id>
+          <article-title>Optimizing legal text summarization through dynamic retrieval-augmented generation and domain-specific adaptation</article-title>
+          <source>Symmetry</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_17">
+        <label>17.</label>
+        <element-citation publication-type="webpage">
+          <article-title>Law on Food Safety No. 55/2010/QH12</article-title>
+          <source>, https://thuvienphapluat.vn/van-ban/Thuong-mai/Luat-an-toan-thuc-pham-2010-108074.aspx</source>
+          <year>2010</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_18">
+        <label>18.</label>
+        <element-citation publication-type="conference-proceedings">
+          <page-range>1037-1042</page-range>
+          <year>2020</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Nguyen</surname>
+              <given-names>D. Q.</given-names>
+            </name>
+            <name>
+              <surname>Nguyen</surname>
+              <given-names>A. T.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.18653/v1/2020.findings-emnlp.92</pub-id>
+          <article-title>PhoBERT: Pre-trained language models for Vietnamese</article-title>
+          <source>, http://dx.doi.org/10.18653/v1/2020.findings-emnlp.92</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_19">
+        <label>19.</label>
+        <element-citation publication-type="journal">
+          <volume>58</volume>
+          <page-range>106165</page-range>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Nguyen</surname>
+              <given-names>H. T.</given-names>
+            </name>
+            <name>
+              <surname>Fungwacharakorn</surname>
+              <given-names>W.</given-names>
+            </name>
+            <name>
+              <surname>Zin</surname>
+              <given-names>M. M.</given-names>
+            </name>
+            <name>
+              <surname>Goebel</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Toni</surname>
+              <given-names>F.</given-names>
+            </name>
+            <name>
+              <surname>Stathis</surname>
+              <given-names>K.</given-names>
+            </name>
+            <name>
+              <surname>Satoh</surname>
+              <given-names>K.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.clsr.2025.106165</pub-id>
+          <article-title>LLMs for legal reasoning: A unified framework and future perspectives</article-title>
+          <source>Computer Law &amp;amp; Security Review</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_20">
+        <label>20.</label>
+        <element-citation publication-type="webpage">
+          <article-title>Qwen2.5: A Party of Foundation Models! Qwen Blog</article-title>
+          <source>, https://qwenlm.github.io/blog/qwen2.5/</source>
+          <year>2024</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_21">
+        <label>21.</label>
+        <element-citation publication-type="book">
+          <person-group person-group-type="author">
+            <name>
+              <surname>Rothman</surname>
+              <given-names>D.</given-names>
+            </name>
+          </person-group>
+          <source>RAG-Driven Generative AI: Build Custom Retrieval Augmented Generation Pipelines with LlamaIndex, Deep Lake, and Pinecone</source>
+          <publisher-name>Packt Publishing</publisher-name>
+          <year>2024</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_22">
+        <label>22.</label>
+        <element-citation publication-type="conference-proceedings">
+          <page-range>4882-4889</page-range>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Shu</surname>
+              <given-names>D.</given-names>
+            </name>
+            <name>
+              <surname>Zhao</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Liu</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Demeter</surname>
+              <given-names>D.</given-names>
+            </name>
+            <name>
+              <surname>Du</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>Y.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1145/3627673.3680020</pub-id>
+          <article-title>LawLLM: Law large language model for the US legal system</article-title>
+          <source>, http://dx.doi.org/10.1145/3627673.3680020</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_23">
+        <label>23.</label>
+        <element-citation publication-type="journal">
+          <volume>14</volume>
+          <page-range>4212</page-range>
+          <issue>21</issue>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Sinkala</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Duan</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Yuan</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Shasha</surname>
+              <given-names>D.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3390/electronics14214212</pub-id>
+          <article-title>ContractNerd: An AI tool to find unenforceable, ambiguous, and prejudicial clauses in contracts</article-title>
+          <source>Electronics</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_24">
+        <label>24.</label>
+        <element-citation publication-type="journal">
+          <volume>4</volume>
+          <page-range>173-186</page-range>
+          <issue>3</issue>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Touza</surname>
+              <given-names>I.</given-names>
+            </name>
+            <name>
+              <surname>Emmanuel</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Etienne</surname>
+              <given-names>M. T.</given-names>
+            </name>
+            <name>
+              <surname>Urbain</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Kaladzavi</surname>
+              <given-names>G.</given-names>
+            </name>
+            <name>
+              <surname>Kolyang</surname>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.56578/jimd040301</pub-id>
+          <article-title>NDEMRI: An AI-driven SMS platform for equitable agricultural extension in rural Africa</article-title>
+          <source>Journal of Intelligent Management Decision</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_25">
+        <label>25.</label>
+        <element-citation publication-type="conference-proceedings">
+          <page-range>304-321</page-range>
+          <year>2024</year>
+          <publisher-name>Springer Nature Singapore</publisher-name>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Yue</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Liu</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Zhou</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Shen</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Xiao</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>B.</given-names>
+            </name>
+            <name>
+              <surname>Song</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Shen</surname>
+              <given-names>X. et al.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1007/978-981-97-5569-1_19</pub-id>
+          <article-title>LawLLM: Intelligent legal system with legal reasoning and verifiable retrieval</article-title>
+          <source>, http://dx.doi.org/10.1007/978-981-97-5569-1_19</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_26">
+        <label>26.</label>
+        <element-citation publication-type="journal">
+          <volume>19</volume>
+          <page-range>e0311410</page-range>
+          <issue>12</issue>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Yun</surname>
+              <given-names>L.</given-names>
+            </name>
+            <name>
+              <surname>Yun</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Xue</surname>
+              <given-names>H.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1371/journal.pone.0311410</pub-id>
+          <article-title>Improving citizen-government interactions with generative artificial intelligence: Novel human-computer interaction strategies for policy understanding through large language models</article-title>
+          <source>PLOS ONE</source>
+        </element-citation>
+      </ref>
+    </ref-list>
+  </back>
+</article>
