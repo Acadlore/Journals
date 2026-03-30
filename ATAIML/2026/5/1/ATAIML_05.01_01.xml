@@ -93,7 +93,7 @@
   <body>
     <sec sec-type="intro">
       <title>1. Introduction</title>
-      <p>Atmospheric turbulence is a common form of atmospheric motion that exerts long-term and severe impacts on optical imaging. Its irregular temporal and spatial fluctuations cause random phase distortions of the optical wavefront, leading to phenomena such as beam drift and spreading. These effects result in non-uniform distortion and blurring in images, significantly degrading imaging quality. Such impacts are prevalent in practical tasks, including facial recognition and long-range surveillance. Furthermore, compared with other types of image degradation, the irregularity of turbulent degradation makes it more difficult to model and mitigate [<xref ref-type="bibr" rid="ref_1">1</xref>]. Consequently, image restoration methods specifically designed to alleviate turbulent degradation have emerged. In the early stages of research, lucky frame imaging [<xref ref-type="bibr" rid="ref_2">2</xref>], [<xref ref-type="bibr" rid="ref_3">3</xref>], [<xref ref-type="bibr" rid="ref_4">4</xref>], [<xref ref-type="bibr" rid="ref_5">5</xref>], [<xref ref-type="bibr" rid="ref_6">6</xref>], [<xref ref-type="bibr" rid="ref_7">7</xref>], was one of the common approaches to mitigate turbulent degradation. This method captures a large number of short-exposure images, selects those least affected by atmospheric turbulence for stacking and synthesis, and typically yields high-resolution results close to the diffraction limit. However, lucky frame imaging is mainly suitable for weak turbulence distortion scenarios and struggles to achieve satisfactory outcomes under strong turbulence. Additionally, since this method takes sequential images as input, the reconstruction process usually incurs high time costs, which limits its application in many scenarios requiring real-time performance. With the vigorous development of deep learning methods, various neural network-based approaches for single-frame image restoration have emerged. Many researchers have focused on deterministic networks such as Convolutional Neural Networks (CNNs) and Transformers. For example, Mao et al. [<xref ref-type="bibr" rid="ref_8">8</xref>] proposed TurbNet, which utilizes self-attention mechanisms to extract dynamic turbulent distortion maps from degraded images, assisting the network in learning the spatial variation characteristics of turbulence and effectively alleviating turbulence effects in degraded images. Li et al. [<xref ref-type="bibr" rid="ref_9">9</xref>] designed Fourier Modulated Attention (FMA) and Dynamic Mixing Layers (DML) and proposed SRConvNet. By combining the capabilities of CNNs and Transformers, this network achieves excellent performance in tasks such as super-resolution imaging and motion deblurring. Further innovative architectures and methodologies in this domain are detailed [<xref ref-type="bibr" rid="ref_10">10</xref>], [<xref ref-type="bibr" rid="ref_11">11</xref>], [<xref ref-type="bibr" rid="ref_12">12</xref>], [<xref ref-type="bibr" rid="ref_13">13</xref>], [<xref ref-type="bibr" rid="ref_14">14</xref>], [<xref ref-type="bibr" rid="ref_15">15</xref>]. Leveraging the strong inductive bias and global dependency capture capabilities of CNNs and Transformers, researchers have developed numerous network architectures with outstanding restoration results. However, due to the lack of randomness, deterministic networks tend to suffer from the mean regression effect when addressing the ill-posed problem of image restoration, resulting in reconstructed images lacking fine details [<xref ref-type="bibr" rid="ref_12">12</xref>]. Generative models aim to learn the distribution of target images and then obtain restoration results through distribution sampling. The randomness introduced during sampling can avoid the mean regression effect. As one of the generative models, Generative Adversarial Networks (GANs) benefit from the adversarial game between the generator and the discriminator, which guides the generator to produce results close to the distribution of clear images, achieving excellent performance in single-frame image restoration tasks. For example, Awasthi and Sharma [<xref ref-type="bibr" rid="ref_16">16</xref>] proposed a comprehensive loss function combining perceptual consistency and pixel-level fidelity in GANs, improving the overall restoration quality. Further developments in this area have been documented [<xref ref-type="bibr" rid="ref_17">17</xref>], [<xref ref-type="bibr" rid="ref_18">18</xref>]. However, during the training of GANs, they may suffer from mode collapse, making it impossible to learn the complexity and diversity of real data. Recently, diffusion models have achieved exciting results in the field of image generation due to their powerful distribution learning capabilities. Researchers have extended the application of diffusion models to image restoration tasks and obtained promising restoration outcomes. Özdenizci and Legenstein [<xref ref-type="bibr" rid="ref_19">19</xref>] utilized diffusion models to achieve model restoration independent of image size, achieving favorable results in weather-degraded images. Nair et al. [<xref ref-type="bibr" rid="ref_20">20</xref>] started denoising from degraded images rather than Gaussian noise, reducing the inference time of diffusion models and improving the fidelity of restoration results. Considering that diffusion models usually require high computational costs, Zhu et al. [<xref ref-type="bibr" rid="ref_21">21</xref>] integrated traditional plug-and-play methods into the diffusion sampling framework, maintaining high reconstruction perceptual quality while achieving high computational efficiency. Several other single-frame image restoration methods based on diffusion models have been explored [<xref ref-type="bibr" rid="ref_22">22</xref>], [<xref ref-type="bibr" rid="ref_23">23</xref>], [<xref ref-type="bibr" rid="ref_24">24</xref>], [<xref ref-type="bibr" rid="ref_25">25</xref>]. Starting from the Gaussian distribution, diffusion models predict the true distribution of clear images and can output reasonable restoration results with rich details. Despite the great potential demonstrated by diffusion models, the limited information contained in single-frame degraded facial images (such as contours and facial feature positions) may lead the models to generate results that are seriously inconsistent with real images. Based on the above considerations, a conditional diffusion model integrated with high-frequency information, named HFDM, was proposed in this study. Super-resolution technology was utilized to capture high-frequency information from degraded images, which serves as a conditional constraint for the diffusion model, and the improved diffusion model was leveraged to restore single-frame turbulence-degraded facial images. Additionally, considering the complex inference steps of diffusion models, lightweight processing on the U-Net within the diffusion model was performed. Experiments demonstrate that HFDM achieves higher-quality restoration results while maintaining faster model inference efficiency. The main research contributions of this study are as follows:</p><p><p>Proposal of a conditional diffusion model with high-frequency information constraints to achieve high-fidelity restoration results.</p><p>Simplification of the U-Net, significantly reducing the model’s computational cost.</p><p>Full demonstration of the model’s restoration performance by conducting extensive experiments under scenarios with different turbulence degradation intensities.</p></p><p>The rest of this study is organized below. Section 2 details the proposed turbulence-degraded image restoration method, including the reconstruction of high-frequency information and the lightweight processing of the U-Net. Section 3 introduces the experimental data, implementation details, and various experimental results to demonstrate the restoration performance of the proposed method. Section 4 presents the conclusions of this study, summarizing its contributions.</p>
+      <p>Atmospheric turbulence is a common form of atmospheric motion that exerts long-term and severe impacts on optical imaging. Its irregular temporal and spatial fluctuations cause random phase distortions of the optical wavefront, leading to phenomena such as beam drift and spreading. These effects result in non-uniform distortion and blurring in images, significantly degrading imaging quality. Such impacts are prevalent in practical tasks, including facial recognition and long-range surveillance. Furthermore, compared with other types of image degradation, the irregularity of turbulent degradation makes it more difficult to model and mitigate [<xref ref-type="bibr" rid="ref_1">1</xref>]. Consequently, image restoration methods specifically designed to alleviate turbulent degradation have emerged. In the early stages of research, lucky frame imaging [<xref ref-type="bibr" rid="ref_2">2</xref>], [<xref ref-type="bibr" rid="ref_3">3</xref>], [<xref ref-type="bibr" rid="ref_4">4</xref>], [<xref ref-type="bibr" rid="ref_5">5</xref>], [<xref ref-type="bibr" rid="ref_6">6</xref>], [<xref ref-type="bibr" rid="ref_7">7</xref>], [<xref ref-type="bibr" rid="ref_8">8</xref>], was one of the common approaches to mitigate turbulent degradation. This method captures a large number of short-exposure images, selects those least affected by atmospheric turbulence for stacking and synthesis, and typically yields high-resolution results close to the diffraction limit. However, lucky frame imaging is mainly suitable for weak turbulence distortion scenarios and struggles to achieve satisfactory outcomes under strong turbulence. Additionally, since this method takes sequential images as input, the reconstruction process usually incurs high time costs, which limits its application in many scenarios requiring real-time performance. With the vigorous development of deep learning methods, various neural network-based approaches for single-frame image restoration have emerged. Many researchers have focused on deterministic networks such as Convolutional Neural Networks (CNNs) and Transformers. For example, Mao et al. [<xref ref-type="bibr" rid="ref_1">1</xref>] proposed TurbNet, which utilizes self-attention mechanisms to extract dynamic turbulent distortion maps from degraded images, assisting the network in learning the spatial variation characteristics of turbulence and effectively alleviating turbulence effects in degraded images. Li et al. [<xref ref-type="bibr" rid="ref_9">9</xref>] designed Fourier Modulated Attention (FMA) and Dynamic Mixing Layers (DML) and proposed SRConvNet. By combining the capabilities of CNNs and Transformers, this network achieves excellent performance in tasks such as super-resolution imaging and motion deblurring. Further innovative architectures and methodologies in this domain are detailed [<xref ref-type="bibr" rid="ref_10">10</xref>], [<xref ref-type="bibr" rid="ref_11">11</xref>], [<xref ref-type="bibr" rid="ref_12">12</xref>], [<xref ref-type="bibr" rid="ref_13">13</xref>], [<xref ref-type="bibr" rid="ref_14">14</xref>], [<xref ref-type="bibr" rid="ref_15">15</xref>]. Leveraging the strong inductive bias and global dependency capture capabilities of CNNs and Transformers, researchers have developed numerous network architectures with outstanding restoration results. However, due to the lack of randomness, deterministic networks tend to suffer from the mean regression effect when addressing the ill-posed problem of image restoration, resulting in reconstructed images lacking fine details [<xref ref-type="bibr" rid="ref_12">12</xref>]. Generative models aim to learn the distribution of target images and then obtain restoration results through distribution sampling. The randomness introduced during sampling can avoid the mean regression effect. As one of the generative models, Generative Adversarial Networks (GANs) benefit from the adversarial game between the generator and the discriminator, which guides the generator to produce results close to the distribution of clear images, achieving excellent performance in single-frame image restoration tasks. For example, Awasthi and Sharma [<xref ref-type="bibr" rid="ref_16">16</xref>] proposed a comprehensive loss function combining perceptual consistency and pixel-level fidelity in GANs, improving the overall restoration quality. Further developments in this area have been documented [<xref ref-type="bibr" rid="ref_17">17</xref>], [<xref ref-type="bibr" rid="ref_18">18</xref>]. However, during the training of GANs, they may suffer from mode collapse, making it impossible to learn the complexity and diversity of real data. Recently, diffusion models have achieved exciting results in the field of image generation due to their powerful distribution learning capabilities. Researchers have extended the application of diffusion models to image restoration tasks and obtained promising restoration outcomes. Özdenizci and Legenstein [<xref ref-type="bibr" rid="ref_19">19</xref>] utilized diffusion models to achieve model restoration independent of image size, achieving favorable results in weather-degraded images. Nair et al. [<xref ref-type="bibr" rid="ref_20">20</xref>] started denoising from degraded images rather than Gaussian noise, reducing the inference time of diffusion models and improving the fidelity of restoration results. Considering that diffusion models usually require high computational costs, Zhu et al. [<xref ref-type="bibr" rid="ref_21">21</xref>] integrated traditional plug-and-play methods into the diffusion sampling framework, maintaining high reconstruction perceptual quality while achieving high computational efficiency. Several other single-frame image restoration methods based on diffusion models have been explored [<xref ref-type="bibr" rid="ref_22">22</xref>], [<xref ref-type="bibr" rid="ref_23">23</xref>], [<xref ref-type="bibr" rid="ref_24">24</xref>], [<xref ref-type="bibr" rid="ref_25">25</xref>]. Starting from the Gaussian distribution, diffusion models predict the true distribution of clear images and can output reasonable restoration results with rich details. Despite the great potential demonstrated by diffusion models, the limited information contained in single-frame degraded facial images (such as contours and facial feature positions) may lead the models to generate results that are seriously inconsistent with real images. Based on the above considerations, a conditional diffusion model integrated with high-frequency information, named HFDM, was proposed in this study. Super-resolution technology was utilized to capture high-frequency information from degraded images, which serves as a conditional constraint for the diffusion model, and the improved diffusion model was leveraged to restore single-frame turbulence-degraded facial images. Additionally, considering the complex inference steps of diffusion models, lightweight processing on the U-Net within the diffusion model was performed. Experiments demonstrate that HFDM achieves higher-quality restoration results while maintaining faster model inference efficiency. The main research contributions of this study are as follows:</p><p><p>Proposal of a conditional diffusion model with high-frequency information constraints to achieve high-fidelity restoration results.</p><p>Simplification of the U-Net, significantly reducing the model’s computational cost.</p><p>Full demonstration of the model’s restoration performance by conducting extensive experiments under scenarios with different turbulence degradation intensities.</p></p><p>The rest of this study is organized below. Section 2 details the proposed turbulence-degraded image restoration method, including the reconstruction of high-frequency information and the lightweight processing of the U-Net. Section 3 introduces the experimental data, implementation details, and various experimental results to demonstrate the restoration performance of the proposed method. Section 4 presents the conclusions of this study, summarizing its contributions.</p>
     </sec>
     <sec sec-type="">
       <title>2. Method</title>
@@ -123,7 +123,7 @@
             </fig>
           
           <p>Let <inline-formula>
-  <mml:math id="mn6fygn5td">
+  <mml:math id="ms2evozwde">
     <mml:mrow>
       <mml:msub>
         <mml:mi>x</mml:mi>
@@ -137,11 +137,11 @@
     </mml:mrow>
   </mml:math>
 </inline-formula> denote a turbulence-degraded facial image. First, a 3 <inline-formula>
-  <mml:math id="m9cssi2144">
+  <mml:math id="mc1ar7j3hz">
     <mml:mo>×</mml:mo>
   </mml:math>
 </inline-formula> 3 convolution is used to extract preliminary facial features, and the result is denoted as <inline-formula>
-  <mml:math id="moltsw9upb">
+  <mml:math id="mm3xtuxzmk">
     <mml:mrow>
       <mml:msub>
         <mml:mi>f</mml:mi>
@@ -153,7 +153,7 @@
           
             <disp-formula>
               <label>(1)</label>
-              <mml:math id="m90kj6276b">
+              <mml:math id="m9l631wupd">
                 <mml:mrow>
                   <mml:msub>
                     <mml:mi>f</mml:mi>
@@ -186,7 +186,7 @@
             </disp-formula>
           
           <p>where, <inline-formula>
-  <mml:math id="m09h016fo3">
+  <mml:math id="mqujx4b470">
     <mml:mi>c</mml:mi>
     <mml:mi>o</mml:mi>
     <mml:mi>n</mml:mi>
@@ -198,7 +198,7 @@
     </mml:mrow>
   </mml:math>
 </inline-formula> denotes a convolutional operation. Subsequently, <inline-formula>
-  <mml:math id="mynx49h46v">
+  <mml:math id="mos1w73l94">
     <mml:mrow>
       <mml:msub>
         <mml:mi>f</mml:mi>
@@ -207,7 +207,7 @@
     </mml:mrow>
   </mml:math>
 </inline-formula> undergoes $M<inline-formula>
-  <mml:math id="m12q3e5x37">
+  <mml:math id="mv45epy2py">
     <mml:mi>A</mml:mi>
     <mml:mi>t</mml:mi>
     <mml:mi>t</mml:mi>
@@ -267,7 +267,7 @@
     <mml:mo>,</mml:mo>
   </mml:math>
 </inline-formula>{f_M}<inline-formula>
-  <mml:math id="m3dqdq0bsm">
+  <mml:math id="mf4f87cefn">
     <mml:mo>.</mml:mo>
     <mml:mi>A</mml:mi>
     <mml:mi>r</mml:mi>
@@ -308,7 +308,7 @@
     <mml:mi>n</mml:mi>
   </mml:math>
 </inline-formula>{f_M}<inline-formula>
-  <mml:math id="mdduizbqff">
+  <mml:math id="miljdblnsc">
     <mml:mi>a</mml:mi>
     <mml:mi>n</mml:mi>
     <mml:mi>d</mml:mi>
@@ -317,7 +317,7 @@
           
             <disp-formula>
               <label>(2)</label>
-              <mml:math id="m4cxg9ah3c">
+              <mml:math id="m2i58ytey8">
                 <mml:msub>
                   <mml:mi>f</mml:mi>
                   <mml:mi>m</mml:mi>
@@ -353,7 +353,7 @@
           
             <disp-formula>
               <label>(3)</label>
-              <mml:math id="md6cu7ar5w">
+              <mml:math id="mo5o6h08x3">
                 <mml:mrow>
                   <mml:msub>
                     <mml:mi>f</mml:mi>
@@ -378,7 +378,7 @@
             </disp-formula>
           
           <p>in the above formula, <inline-formula>
-  <mml:math id="mc8bdft9o8">
+  <mml:math id="mwt02khph8">
     <mml:mrow>
       <mml:msub>
         <mml:mi>f</mml:mi>
@@ -387,7 +387,7 @@
     </mml:mrow>
   </mml:math>
 </inline-formula> denotes the result of $m<inline-formula>
-  <mml:math id="mxhgynf7b6">
+  <mml:math id="mqlziikkhs">
     <mml:mi>r</mml:mi>
     <mml:mi>o</mml:mi>
     <mml:mi>u</mml:mi>
@@ -421,11 +421,11 @@
     <mml:mo>,</mml:mo>
   </mml:math>
 </inline-formula>{f_0} = {f_S}<inline-formula>
-  <mml:math id="mqrjd8hyeh">
+  <mml:math id="mx2wsqkeys">
     <mml:mo>.</mml:mo>
   </mml:math>
 </inline-formula>ACB\left( \cdot \right)<inline-formula>
-  <mml:math id="mh8d016meq">
+  <mml:math id="m9mw32pjt8">
     <mml:mi>r</mml:mi>
     <mml:mi>e</mml:mi>
     <mml:mi>p</mml:mi>
@@ -521,7 +521,7 @@
     <mml:mo>,</mml:mo>
   </mml:math>
 </inline-formula>{f_{m - 1}}<inline-formula>
-  <mml:math id="m4rt64a8f9">
+  <mml:math id="mwckhxwhhy">
     <mml:mi>i</mml:mi>
     <mml:mi>s</mml:mi>
     <mml:mi>p</mml:mi>
@@ -553,7 +553,7 @@
     <mml:mn>1</mml:mn>
   </mml:math>
 </inline-formula>\times<inline-formula>
-  <mml:math id="mhllfkoa13">
+  <mml:math id="mv2022sszd">
     <mml:mn>1</mml:mn>
     <mml:mi>c</mml:mi>
     <mml:mi>o</mml:mi>
@@ -679,7 +679,7 @@
     <mml:mo>)</mml:mo>
   </mml:math>
 </inline-formula>{f_{m - 1}}<inline-formula>
-  <mml:math id="mvyqszrxxb">
+  <mml:math id="mtc3qh168o">
     <mml:mi>t</mml:mi>
     <mml:mi>o</mml:mi>
     <mml:mi>e</mml:mi>
@@ -918,7 +918,7 @@
     <mml:mn>3</mml:mn>
   </mml:math>
 </inline-formula>\times<inline-formula>
-  <mml:math id="mhg6j1tgt4">
+  <mml:math id="mpfwu5q4vf">
     <mml:mn>3</mml:mn>
     <mml:mi>c</mml:mi>
     <mml:mi>o</mml:mi>
@@ -969,7 +969,7 @@
     <mml:mi>e</mml:mi>
   </mml:math>
 </inline-formula>{f_D}<inline-formula>
-  <mml:math id="mg2hedcgyn">
+  <mml:math id="mtw0tzpflw">
     <mml:mi>t</mml:mi>
     <mml:mi>o</mml:mi>
     <mml:mi>t</mml:mi>
@@ -1020,7 +1020,7 @@
     <mml:mo>−</mml:mo>
   </mml:math>
 </inline-formula>{x_{turb}}<inline-formula>
-  <mml:math id="mdxu6u52m2">
+  <mml:math id="mxuywbchh7">
     <mml:mo>,</mml:mo>
     <mml:mo>−</mml:mo>
     <mml:mi>y</mml:mi>
@@ -1056,7 +1056,7 @@
           
             <disp-formula>
               <label>(4)</label>
-              <mml:math id="mysskmgiqm">
+              <mml:math id="mgj9e695qj">
                 <mml:mrow>
                   <mml:msub>
                     <mml:mi>x</mml:mi>
@@ -1112,7 +1112,7 @@
             <title>2.2. Conditional diffusion model</title>
           
           <p>Compared with other generative models such as GANs and VAEs, diffusion models exhibit a more stable training process and higher fidelity. From a distribution perspective, our diffusion model maps the unknown distribution of clear facial images in the training set to a standard normal distribution through a noise addition process during training. Subsequently, it leverages a U-Net to perform a gradual denoising process starting from randomly generated Gaussian noise, predicts the distribution of clear facial images from the standard normal distribution, and obtains restored facial images by sampling from this distribution. In this process, the turbulence-degraded facial image to be restored and the corresponding high-frequency information serve as conditional inputs to guide the distribution in generating more realistic facial results.</p><p>The clear facial images in the training set are denoted as <inline-formula>
-  <mml:math id="mdy2ihe1as">
+  <mml:math id="mdh7of5b12">
     <mml:mrow>
       <mml:msub>
         <mml:mi>x</mml:mi>
@@ -1121,7 +1121,7 @@
     </mml:mrow>
   </mml:math>
 </inline-formula>, and the noise addition process for <inline-formula>
-  <mml:math id="mz0kb35rzz">
+  <mml:math id="miuebrnkas">
     <mml:mrow>
       <mml:msub>
         <mml:mi>x</mml:mi>
@@ -1133,7 +1133,7 @@
           
             <disp-formula>
               <label>(5)</label>
-              <mml:math id="m9mjx526v6">
+              <mml:math id="mpf48xt830">
                 <mml:mrow>
                   <mml:msub>
                     <mml:mi>x</mml:mi>
@@ -1192,7 +1192,7 @@
             </disp-formula>
           
           <p>where, <inline-formula>
-  <mml:math id="mu6xpafeb2">
+  <mml:math id="mrj62lvls1">
     <mml:mrow>
       <mml:msub>
         <mml:mi>x</mml:mi>
@@ -1201,7 +1201,7 @@
     </mml:mrow>
   </mml:math>
 </inline-formula> denotes the result after $t<inline-formula>
-  <mml:math id="map4bbbu36">
+  <mml:math id="mg0zt0j87k">
     <mml:mi>r</mml:mi>
     <mml:mi>o</mml:mi>
     <mml:mi>u</mml:mi>
@@ -1229,7 +1229,7 @@
     <mml:mo>,</mml:mo>
   </mml:math>
 </inline-formula>t<inline-formula>
-  <mml:math id="mp1mhrg3zm">
+  <mml:math id="mwfmb7iws5">
     <mml:mi>h</mml:mi>
     <mml:mi>e</mml:mi>
     <mml:mi>r</mml:mi>
@@ -1271,7 +1271,7 @@
     <mml:mo>.</mml:mo>
   </mml:math>
 </inline-formula>{\varepsilon _t}<inline-formula>
-  <mml:math id="mpqa613atg">
+  <mml:math id="mcsgzg1703">
     <mml:mi>i</mml:mi>
     <mml:mi>s</mml:mi>
     <mml:mi>r</mml:mi>
@@ -1312,13 +1312,13 @@
     <mml:mo>,</mml:mo>
   </mml:math>
 </inline-formula>{\bar \alpha _t}<inline-formula>
-  <mml:math id="mefctmuhdn">
+  <mml:math id="mqdvh9iyou">
     <mml:mi>a</mml:mi>
     <mml:mi>n</mml:mi>
     <mml:mi>d</mml:mi>
   </mml:math>
 </inline-formula>{\bar \beta _t}<inline-formula>
-  <mml:math id="mls4u8zs1d">
+  <mml:math id="m7aukku4qe">
     <mml:mi>a</mml:mi>
     <mml:mi>r</mml:mi>
     <mml:mi>e</mml:mi>
@@ -1365,7 +1365,7 @@
     <mml:mo>,</mml:mo>
   </mml:math>
 </inline-formula>{\bar \alpha _t}<inline-formula>
-  <mml:math id="msj31czwvq">
+  <mml:math id="maa2ri3ktd">
     <mml:mi>g</mml:mi>
     <mml:mi>r</mml:mi>
     <mml:mi>a</mml:mi>
@@ -1449,7 +1449,7 @@
             </fig>
           
           <p> The denoising process proceeds in the reverse direction, starting from the final noised result <inline-formula>
-  <mml:math id="mdf9u0xxo8">
+  <mml:math id="m7hur468hb">
     <mml:mrow>
       <mml:msub>
         <mml:mi>x</mml:mi>
@@ -1458,13 +1458,13 @@
     </mml:mrow>
   </mml:math>
 </inline-formula> and progressing step-by-step toward <inline-formula>
-  <mml:math id="mj35k1p7pp">
+  <mml:math id="m1ougttsl4">
     <mml:mi>T</mml:mi>
     <mml:mo accent="false">→</mml:mo>
     <mml:mn>0</mml:mn>
   </mml:math>
 </inline-formula>. Assuming that <inline-formula>
-  <mml:math id="m7z4zakk9s">
+  <mml:math id="mpr7ifsboz">
     <mml:mrow>
       <mml:msub>
         <mml:mi>x</mml:mi>
@@ -1473,13 +1473,13 @@
     </mml:mrow>
   </mml:math>
 </inline-formula> is obtained after <inline-formula>
-  <mml:math id="m8b9v5s2hv">
+  <mml:math id="mgf5dnudtu">
     <mml:mi>T</mml:mi>
     <mml:mi>t</mml:mi>
     <mml:mo>−</mml:mo>
   </mml:math>
 </inline-formula> denoising steps from <inline-formula>
-  <mml:math id="m2gl4ayfgw">
+  <mml:math id="mhveq1bopm">
     <mml:mrow>
       <mml:msub>
         <mml:mi>x</mml:mi>
@@ -1488,7 +1488,7 @@
     </mml:mrow>
   </mml:math>
 </inline-formula>, the process of denoising <inline-formula>
-  <mml:math id="mc44nll7du">
+  <mml:math id="m0fcrunjiv">
     <mml:mrow>
       <mml:msub>
         <mml:mi>x</mml:mi>
@@ -1497,7 +1497,7 @@
     </mml:mrow>
   </mml:math>
 </inline-formula> to get <inline-formula>
-  <mml:math id="mvct9qkmhh">
+  <mml:math id="mt5665632r">
     <mml:mrow>
       <mml:msub>
         <mml:mi>x</mml:mi>
@@ -1513,7 +1513,7 @@
           
             <disp-formula>
               <label>(6)</label>
-              <mml:math id="m85xnsjk7s">
+              <mml:math id="mc1w0jqji6">
                 <mml:mrow>
                   <mml:msub>
                     <mml:mi>x</mml:mi>
@@ -1555,11 +1555,11 @@
             </disp-formula>
           
           <p> where, <inline-formula>
-  <mml:math id="m3ju5gmqe9">
+  <mml:math id="mgthwuw8fw">
     <mml:mi>ε</mml:mi>
   </mml:math>
 </inline-formula> is a randomly sampled Gaussian noise, <inline-formula>
-  <mml:math id="mcvj7urypd">
+  <mml:math id="m5pjmgji3r">
     <mml:mrow>
       <mml:msub>
         <mml:mi>μ</mml:mi>
@@ -1568,7 +1568,7 @@
     </mml:mrow>
   </mml:math>
 </inline-formula> and <inline-formula>
-  <mml:math id="mvr1gxxng6">
+  <mml:math id="mp6jxpwxkc">
     <mml:msubsup>
       <mml:mi>σ</mml:mi>
       <mml:mi>t</mml:mi>
@@ -1576,7 +1576,7 @@
     </mml:msubsup>
   </mml:math>
 </inline-formula> denote the mean and variance of <inline-formula>
-  <mml:math id="mucwqf75at">
+  <mml:math id="mdzmccmzqw">
     <mml:mrow>
       <mml:msub>
         <mml:mi>x</mml:mi>
@@ -1592,7 +1592,7 @@
           
             <disp-formula>
               <label>(7)</label>
-              <mml:math id="megydk2s5t">
+              <mml:math id="mtxvtdkeff">
                 <mml:mrow>
                   <mml:msub>
                     <mml:mi>μ</mml:mi>
@@ -1667,7 +1667,7 @@
           
             <disp-formula>
               <label>(8)</label>
-              <mml:math id="mav6t0bxwr">
+              <mml:math id="mtm0spp1qb">
                 <mml:mfrac>
                   <mml:mn>1</mml:mn>
                   <mml:mrow>
@@ -1721,7 +1721,7 @@
             </disp-formula>
           
           <p> where, <inline-formula>
-  <mml:math id="m76zdkxocv">
+  <mml:math id="myse2fysqv">
     <mml:mrow>
       <mml:msub>
         <mml:mi>α</mml:mi>
@@ -1730,7 +1730,7 @@
     </mml:mrow>
   </mml:math>
 </inline-formula> and <inline-formula>
-  <mml:math id="mt8j21tre3">
+  <mml:math id="m9wkywkc2z">
     <mml:mrow>
       <mml:msub>
         <mml:mi>β</mml:mi>
@@ -1739,7 +1739,7 @@
     </mml:mrow>
   </mml:math>
 </inline-formula> are one-dimensional constants, and their relationships with <inline-formula>
-  <mml:math id="mx8tqnbgnp">
+  <mml:math id="mn2z02lplh">
     <mml:mrow>
       <mml:msub>
         <mml:mrow>
@@ -1753,7 +1753,7 @@
     </mml:mrow>
   </mml:math>
 </inline-formula> and <inline-formula>
-  <mml:math id="mr4or12bcf">
+  <mml:math id="m2bvjslb6b">
     <mml:mrow>
       <mml:msub>
         <mml:mrow>
@@ -1767,7 +1767,7 @@
     </mml:mrow>
   </mml:math>
 </inline-formula> are given by <inline-formula>
-  <mml:math id="mzpmxm63su">
+  <mml:math id="molcjyk43w">
     <mml:mrow>
       <mml:msub>
         <mml:mrow>
@@ -1807,7 +1807,7 @@
     <mml:mo>⋅</mml:mo>
   </mml:math>
 </inline-formula> and <inline-formula>
-  <mml:math id="m20umj0j1a">
+  <mml:math id="msbebrxsu3">
     <mml:mrow>
       <mml:msub>
         <mml:mrow>
@@ -1847,14 +1847,14 @@
     <mml:mo>⋅</mml:mo>
   </mml:math>
 </inline-formula>, respectively. <inline-formula>
-  <mml:math id="ms0d800e1k">
+  <mml:math id="mt7m2i52re">
     <mml:msup>
       <mml:mi>ε</mml:mi>
       <mml:mo>′</mml:mo>
     </mml:msup>
   </mml:math>
 </inline-formula> denotes the unknown Gaussian noise to be removed in this denoising step, which is predicted by feeding <inline-formula>
-  <mml:math id="mnq2s3spzt">
+  <mml:math id="mfhuep6ahx">
     <mml:mrow>
       <mml:msub>
         <mml:mi>x</mml:mi>
@@ -1863,7 +1863,7 @@
     </mml:mrow>
   </mml:math>
 </inline-formula> and the degraded facial image <inline-formula>
-  <mml:math id="m73wl4x27t">
+  <mml:math id="mewz3gxsl9">
     <mml:mrow>
       <mml:msub>
         <mml:mi>x</mml:mi>
@@ -1877,7 +1877,7 @@
     </mml:mrow>
   </mml:math>
 </inline-formula> into the U-Net as inputs. Additionally, to guide the denoising process in generating restored results that are more consistent with human visual perception and closer to the true facial distribution, we extract the corresponding high-frequency information <inline-formula>
-  <mml:math id="mqw4jd6oc3">
+  <mml:math id="m94hdem6w0">
     <mml:mrow>
       <mml:msub>
         <mml:mi>x</mml:mi>
@@ -1890,7 +1890,7 @@
     </mml:mrow>
   </mml:math>
 </inline-formula> from the degraded image <inline-formula>
-  <mml:math id="moxivl1i4c">
+  <mml:math id="mqutr5itm3">
     <mml:mrow>
       <mml:msub>
         <mml:mi>x</mml:mi>
@@ -1912,7 +1912,7 @@
             <title>2.3. U-net structure</title>
           
           <p>In our U-Net, the U-Net structure proposed by Nair et al. [<xref ref-type="bibr" rid="ref_20">20</xref>] is lightweighted to reduce inference costs. We retain the main residual block-based feature extraction structure while removing the self-attention mechanism. The core of self-attention lies in calculating global similarity, and its time complexity is proportional to the square of the spatial dimension (<inline-formula>
-  <mml:math id="mdh5l11app">
+  <mml:math id="mk2vkqkmwj">
     <mml:mi>O</mml:mi>
     <mml:mrow>
       <mml:mo>(</mml:mo>
@@ -1932,7 +1932,7 @@
     </mml:mrow>
   </mml:math>
 </inline-formula>), where $N<inline-formula>
-  <mml:math id="muybu32rbe">
+  <mml:math id="m3eywkvd15">
     <mml:mi>d</mml:mi>
     <mml:mi>e</mml:mi>
     <mml:mi>n</mml:mi>
@@ -2366,7 +2366,7 @@
     <mml:mn>5.</mml:mn>
   </mml:math>
 </inline-formula>X<inline-formula>
-  <mml:math id="mtri6b89mj">
+  <mml:math id="mejn70j4jj">
     <mml:mi>d</mml:mi>
     <mml:mi>e</mml:mi>
     <mml:mi>n</mml:mi>
@@ -2428,7 +2428,7 @@
     <mml:mo>,</mml:mo>
   </mml:math>
 </inline-formula>\left\{ {{x_{turb}},{{\bar x}_t},{x_{HFI}}} \right\}<inline-formula>
-  <mml:math id="m7fchfnjyo">
+  <mml:math id="ms2q0y2s6o">
     <mml:mi>a</mml:mi>
     <mml:mi>l</mml:mi>
     <mml:mi>o</mml:mi>
@@ -2469,7 +2469,7 @@
     <mml:mn>3</mml:mn>
   </mml:math>
 </inline-formula>\times<inline-formula>
-  <mml:math id="met8md1og6">
+  <mml:math id="mmv8qcx2cw">
     <mml:mn>3</mml:mn>
     <mml:mi>c</mml:mi>
     <mml:mi>o</mml:mi>
@@ -2550,7 +2550,7 @@
           
             <disp-formula>
               <label>(9)</label>
-              <mml:math id="mdtwefzz9y">
+              <mml:math id="m87ilu8i9o">
                 <mml:mi>f</mml:mi>
                 <mml:mi>c</mml:mi>
                 <mml:mi>o</mml:mi>
@@ -2575,7 +2575,7 @@
             </fig>
           
           <p> In the encoder path, a 6-layer feature extraction structure is designed, where each layer consists of two consecutive residual blocks. A downsampling operation is added between layers to reduce the spatial size of the feature maps and increase the depth. Eventually, the shallow features <inline-formula>
-  <mml:math id="m7ro48y3h7">
+  <mml:math id="m8nvi7ewwm">
     <mml:mrow>
       <mml:msub>
         <mml:mi>f</mml:mi>
@@ -2600,7 +2600,7 @@
           
             <disp-formula>
               <label>(10)</label>
-              <mml:math id="mp8sekzpsf">
+              <mml:math id="mqdmxux1rq">
                 <mml:mrow>
                   <mml:msub>
                     <mml:mi>f</mml:mi>
@@ -2698,7 +2698,7 @@
             </disp-formula>
           
           <p> where, <inline-formula>
-  <mml:math id="mp84nok2t1">
+  <mml:math id="miz11eis1d">
     <mml:mi>d</mml:mi>
     <mml:mi>o</mml:mi>
     <mml:mi>w</mml:mi>
@@ -2710,7 +2710,7 @@
     </mml:mrow>
   </mml:math>
 </inline-formula> denotes the downsampling operation, and the subscript of <inline-formula>
-  <mml:math id="mh1e23soz3">
+  <mml:math id="mfm4dj7d8b">
     <mml:mi>R</mml:mi>
     <mml:mi>e</mml:mi>
     <mml:mi>s</mml:mi>
@@ -2734,7 +2734,7 @@
           
             <disp-formula>
               <label>(11)</label>
-              <mml:math id="mbb3vlnbcg">
+              <mml:math id="my56vd4b1m">
                 <mml:mrow>
                   <mml:msub>
                     <mml:mi>f</mml:mi>
@@ -2777,7 +2777,7 @@
           
             <disp-formula>
               <label>(12)</label>
-              <mml:math id="m93zkpmwya">
+              <mml:math id="m1pv556mcv">
                 <mml:mrow>
                   <mml:msub>
                     <mml:mi>f</mml:mi>
@@ -2845,7 +2845,7 @@
           
             <disp-formula>
               <label>(13)</label>
-              <mml:math id="ma4o245ek2">
+              <mml:math id="mzideu2n9u">
                 <mml:mrow>
                   <mml:msub>
                     <mml:mi>f</mml:mi>
@@ -2933,7 +2933,7 @@
           
             <disp-formula>
               <label>(14)</label>
-              <mml:math id="meyocvj8kv">
+              <mml:math id="mzwpr0ebzq">
                 <mml:mrow>
                   <mml:msub>
                     <mml:mi>f</mml:mi>
@@ -2994,7 +2994,7 @@
             </disp-formula>
           
           <p> where, <inline-formula>
-  <mml:math id="mmn94s5msk">
+  <mml:math id="mcck1hix4c">
     <mml:mi>u</mml:mi>
     <mml:mi>p</mml:mi>
     <mml:mrow>
@@ -3004,7 +3004,7 @@
     </mml:mrow>
   </mml:math>
 </inline-formula> denotes the upsampling operation and <inline-formula>
-  <mml:math id="mk4bt82wr3">
+  <mml:math id="mud1vg0csv">
     <mml:mi>S</mml:mi>
     <mml:mi>C</mml:mi>
     <mml:mrow>
@@ -3014,14 +3014,14 @@
     </mml:mrow>
   </mml:math>
 </inline-formula> stands for skip connection. At the end of the U-Net, in the output module, normalization and an activation function are performed sequentially, and a 3 <inline-formula>
-  <mml:math id="m5zabozziz">
+  <mml:math id="mhhhyycela">
     <mml:mo>×</mml:mo>
   </mml:math>
 </inline-formula> 3 convolution is used to restore the result to 3 channels:</p>
           
             <disp-formula>
               <label>(15)</label>
-              <mml:math id="m5m2lh5kde">
+              <mml:math id="m1z5ncand4">
                 <mml:msup>
                   <mml:mi>ε</mml:mi>
                   <mml:mo>′</mml:mo>
@@ -3068,7 +3068,7 @@
             </disp-formula>
           
           <p> where, <inline-formula>
-  <mml:math id="mq4yvzd9cd">
+  <mml:math id="msjoqqs74l">
     <mml:mi>G</mml:mi>
     <mml:mi>N</mml:mi>
     <mml:mrow>
@@ -3078,7 +3078,7 @@
     </mml:mrow>
   </mml:math>
 </inline-formula> denotes the group normalization operation, and <inline-formula>
-  <mml:math id="mlqx8mhrnh">
+  <mml:math id="mku5w75nus">
     <mml:mi>S</mml:mi>
     <mml:mi>i</mml:mi>
     <mml:mi>L</mml:mi>
@@ -3104,7 +3104,7 @@
         </sec>
       
       <p>In this paper, the Flickr-Faces-High-Quality (FFHQ) dataset is used for all model training and experiments, with an image size of 256 × 256 × 3. The P2S method [<xref ref-type="bibr" rid="ref_26">26</xref>] is employed to generate turbulence-degraded facial images. In this simulation method, the ratio of the camera aperture $D<inline-formula>
-  <mml:math id="mef4roo6kz">
+  <mml:math id="mw7isupzbw">
     <mml:mi>t</mml:mi>
     <mml:mi>o</mml:mi>
     <mml:mi>t</mml:mi>
@@ -3169,7 +3169,7 @@
             <title>3.4. Restoration results comparison experiment</title>
           
           <p>We conducted comparative experiments on the FFHQ dataset with the turbulence intensity set to <inline-formula>
-  <mml:math id="mkn62li74d">
+  <mml:math id="m9re7onav9">
     <mml:mi>D</mml:mi>
     <mml:mrow>
       <mml:mo>/</mml:mo>
@@ -3210,7 +3210,7 @@
             <title>3.5. Mixed turbulence intensity restoration experiment</title>
           
           <p>We retrained the diffusion model on facial image data with mixed turbulence intensities. The training set consists of 1,600 facial images with weak turbulence degradation (<inline-formula>
-  <mml:math id="m9mqzzpm3x">
+  <mml:math id="mfs73b8z1b">
     <mml:mi>D</mml:mi>
     <mml:mrow>
       <mml:mo>/</mml:mo>
@@ -3225,7 +3225,7 @@
     <mml:mn>2</mml:mn>
   </mml:math>
 </inline-formula>), 1,600 facial images with moderate turbulence degradation (<inline-formula>
-  <mml:math id="m3g68o2sgs">
+  <mml:math id="mkpjkchmjk">
     <mml:mi>D</mml:mi>
     <mml:mrow>
       <mml:mo>/</mml:mo>
@@ -3240,7 +3240,7 @@
     <mml:mn>3.5</mml:mn>
   </mml:math>
 </inline-formula>), and 1,600 facial images with strong turbulence degradation (<inline-formula>
-  <mml:math id="mmayoy11vi">
+  <mml:math id="md9i1n76y3">
     <mml:mi>D</mml:mi>
     <mml:mrow>
       <mml:mo>/</mml:mo>
@@ -3511,30 +3511,22 @@
       <ref id="ref_8">
         <label>8.</label>
         <element-citation publication-type="conf-paper">
-          <page-range>430-446</page-range>
-          <publisher-place>Tel Aviv, Israel</publisher-place>
-          <year>2022</year>
+          <page-range>1694--1698</page-range>
+          <publisher-place>Anchorage, AK, USA</publisher-place>
+          <year>2021</year>
           <person-group person-group-type="author">
             <name>
-              <surname>Mao</surname>
-              <given-names>Z.</given-names>
+              <surname>Yasarla</surname>
+              <given-names>Raghav</given-names>
             </name>
             <name>
-              <surname>Jaiswal</surname>
-              <given-names>A.</given-names>
-            </name>
-            <name>
-              <surname>Wang</surname>
-              <given-names>Z.</given-names>
-            </name>
-            <name>
-              <surname>Stanley  Chan</surname>
-              <given-names>H.</given-names>
+              <surname>Patel</surname>
+              <given-names>Vishal M.</given-names>
             </name>
           </person-group>
-          <pub-id pub-id-type="doi">10.48550/arXiv.2207.10040</pub-id>
-          <article-title>Single-frame atmospheric turbulence mitigation: A benchmark study and a new physics-inspired transformer model</article-title>
-          <source>European Conference on Computer Vision, (ECCV 2022)</source>
+          <pub-id pub-id-type="doi">10.1109/ICIP42928.2021.9506614</pub-id>
+          <article-title>Learning to restore images degraded by atmospheric turbulence using uncertainty</article-title>
+          <source>2021 IEEE International Conference on Image Processing (ICIP 2021)</source>
         </element-citation>
       </ref>
       <ref id="ref_9">
