@@ -1,0 +1,2201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.3 20210610//EN" "JATS-journalpublishing1-3.dtd">
+<article xml:lang="en" dtd-version="1.3" article-type="research-article" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mml="http://www.w3.org/1998/Math/MathML">
+  <front>
+    <journal-meta>
+      <journal-id journal-id-type="publisher-id">ATAIML</journal-id>
+      <journal-id journal-id-type="doi">10.56578</journal-id>
+      <journal-title-group>
+        <journal-title>Acadlore Transactions on AI and Machine Learning</journal-title>
+        <abbrev-journal-title abbrev-type="issn">Acadlore Trans. Mach. Learn.</abbrev-journal-title>
+        <abbrev-journal-title abbrev-type="publisher">ATAIML</abbrev-journal-title>
+      </journal-title-group>
+      <issn publication-format="electronic">2957-9570</issn>
+      <issn publication-format="print">2957-9562</issn>
+      <publisher>
+        <publisher-name>Acadlore</publisher-name>
+      </publisher>
+    </journal-meta>
+    <article-meta>
+      <article-id pub-id-type="publisher-id">AR-8gyNoJHpvtcGxHq0gV39y2Zn5Yr4R6eF</article-id>
+      <article-id pub-id-type="doi">10.56578/ataiml050201</article-id>
+      <article-categories>
+        <subj-group>
+          <subject>Articles</subject>
+        </subj-group>
+      </article-categories>
+      <title-group>
+        <article-title>Fine-Tuning a Vision-Language Model for Automated Grading of K-12 Handwritten Answer Sheets</article-title>
+      </title-group>
+      <contrib-group>
+        <contrib contrib-type="author" rid="aff_1">
+          <contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0000-0001-9051-7334</contrib-id>
+          <name>
+            <surname>Wang</surname>
+            <given-names>Yuanyuan</given-names>
+          </name>
+          <email>yuanyuan-wang@mail.tsinghua.edu.cn</email>
+        </contrib>
+        <contrib contrib-type="author" rid="aff_1">
+          <contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0009-0003-7422-9860</contrib-id>
+          <name>
+            <surname>Shen</surname>
+            <given-names>Hao</given-names>
+          </name>
+          <email>shenh23@mails.tsinghua.edu.cn</email>
+        </contrib>
+        <aff id="aff_1">School of Software, Tsinghua University, 100084 Beijing, China</aff>
+      </contrib-group>
+      <pub-date publication-format="electronic" date-type="pub">
+        <day>08</day>
+        <month>04</month>
+        <year>2026</year>
+      </pub-date>
+      <volume>5</volume>
+      <issue>2</issue>
+      <fpage>89</fpage>
+      <lpage>106</lpage>
+      <page-range>89-106</page-range>
+      <history>
+        <date date-type="received">
+          <day>04</day>
+          <month>01</month>
+          <year>2026</year>
+        </date>
+        <date date-type="accepted">
+          <day>18</day>
+          <month>03</month>
+          <year>2026</year>
+        </date>
+      </history>
+      <permissions>
+        <copyright-statement>©2026 by the author(s)</copyright-statement>
+        <copyright-year>2026</copyright-year>
+        <license license-type="open-access" xlink:href="https://creativecommons.org/licenses/by/4.0/">
+          <license-p> Published by Acadlore Publishing Services Limited, Hong Kong. This article is available for free download and can be reused and cited, provided that the original published version is credited, under the CC BY 4.0 license.</license-p>
+        </license>
+      </permissions>
+      <abstract><p>Automated grading has become an important component of digital transformation in K-12 education, yet the structured recognition of handwritten responses on answer sheets remains a practical challenge. General-purpose vision-language models often show limited robustness when applied directly to school assessment materials, particularly in the presence of fixed answer regions, mixed Chinese-English content, and diverse handwriting styles. To address this issue, this study develops a task-oriented fine-tuning framework for automated recognition of handwritten answer sheets in K-12 educational settings. A multimodal dataset was constructed from Chinese and English answer sheets, with region-level annotations designed to support structured text extraction. Based on this dataset, the Qwen2.5-VL-7B-Instruct model was adapted through LoRA-based fine-tuning under a dual-A16 GPU environment to reduce computational cost while preserving practical deployment feasibility. An end-to-end workflow covering data preparation, model training, weight merging, and inference was then established for structured JSON output. Experimental results show that the fine-tuned model achieved stable convergence in both small-sample and medium-sample settings and improved the extraction quality of handwritten responses within predefined answer regions. The proposed framework provides a practical and reproducible solution for deploying vision-language models in school grading scenarios with limited computing resources. The study also offers an application-oriented reference for the integration of multimodal large models into educational assessment systems.</p></abstract>
+      <kwd-group>
+        <kwd>Vision-language model</kwd>
+        <kwd>Multimodal learning</kwd>
+        <kwd>LoRA fine-tuning</kwd>
+        <kwd>Automated grading</kwd>
+        <kwd>Handwritten answer sheet recognition</kwd>
+        <kwd>K-12 education</kwd>
+      </kwd-group>
+      <counts>
+        <count count-type="contributors" count="2"/>
+        <fig-count count="12"/>
+        <table-count count="0"/>
+        <ref-count count="20"/>
+      </counts>
+    </article-meta>
+  </front>
+  <body>
+    <sec sec-type="intro">
+      <title>1. Introduction</title>
+      <p>In the digital transformation of K-12 education, automated intelligent grading has become a critical technological enabler for enhancing teaching evaluation efficiency and reducing teachers’ workload. Its core challenge lies in achieving structured recognition of handwritten answers on answer sheets. Multimodal large models, with their powerful cross-modal fusion capabilities between vision and text, offer novel technical solutions for this scenario [<xref ref-type="bibr" rid="ref_1">1</xref>]. However, general-purpose multimodal large models have not been specifically optimized for the fixed visual region characteristics and handwritten text features of K-12 answer sheets. They cannot directly meet the recognition demands of this vertical scenario and require scenario-specific fine-tuning to achieve customized model adaptation [<xref ref-type="bibr" rid="ref_2">2</xref>]. Concurrently, current multimodal models lack standardized protocols for fine-tuning workflows, hardware computing power adaptation, and performance evaluation systems in K-12 education settings. This situation severely hampers the widespread adoption and promotion of intelligent grading technology in primary and secondary schools, making this research critically important both theoretically and practically.</p><p>The core principle of multimodal models is achieving cross-modal alignment, fusion, and interaction of features from different modalities such as vision and text. Their typical architecture primarily consists of three components: a visual encoder, a text encoder, and a multimodal projection layer [<xref ref-type="bibr" rid="ref_3">3</xref>]. The visual encoder extracts image features, the text encoder processes linguistic information, and the multimodal projection layer maps features from both modalities into a unified feature space. This enables effective cross-modal feature fusion, granting the model cross-modal understanding and generation capabilities [<xref ref-type="bibr" rid="ref_4">4</xref>]. Considering the core requirement of recognizing K-12 answer sheets and computational constraints in educational settings, this study adopts the Qwen2.5-VL-7B-Instruct multimodal large model as the foundational architecture. This model demonstrates outstanding performance advantages in visual reasoning, handwritten text recognition, and adaptation to small-sample scenarios. Its 7B parameter count ensures recognition accuracy while maintaining deployment efficiency, effectively supporting a dual-A16 GPU hardware environment and laying a solid foundation for subsequent scenario-specific fine-tuning.</p><p>Centered on the core task of structured recognition of handwritten answers on K-12 answer sheets, this study constructs a comprehensive technical framework for multimodal model fine-tuning. Specific research components include: First, building standardized multimodal datasets for Chinese and English K-12 answer sheets. Data representativeness and adaptability are ensured through preprocessing, random shuffling, and balanced training-to-test ratio. Second, we optimized distributed fine-tuning configurations for multimodal models on a dual-A16 GPU hardware environment to achieve efficient computational resource utilization. Third, we established an evaluation framework for multimodal model fine-tuning effectiveness centered on loss curve analysis, combined with actual model inference performance, enabling scientific and precise assessment of fine-tuning outcomes. Fourth, deploy the fine-tuned model for inference and validate it in real-world scenarios, systematizing standardized operational workflows to develop a technical solution scalable for K-12 education applications. </p><p>The main contributions of this paper are as follows:</p><p>(1) Constructing a vision-text fusion dataset tailored for theLLaMA-Factory fine-tuning framework. By randomly shuffling and dividing primary/secondary school Chinese and English answer sheet samples into training and testing sets, we effectively eliminate subject and question type distribution biases. This significantly enhances the model’s adaptability and generalization performance across diverse answer sheets, addressing the poor compatibility of existing datasets with multimodal fine-tuning frameworks and insufficient model generalization capabilities.</p><p>(2) We propose a lightweight LoRA fine-tuning strategy for the Qwen2.5-VL-7B-Instruct model on a dual A16 GPU hardware environment. By optimizing distributed training parameters and LoRA core parameters, we achieve dual improvements in fine-tuning effectiveness and computational efficiency, precisely aligning with the computational resource constraints of K-12 educational settings.</p><p>(3) We establish a multimodal model fine-tuning evaluation system centered on loss curve analysis and integrated with actual model inference performance. This approach overcomes the limitations of traditional evaluation methods that solely focus on quantitative metrics and detach from real-world application scenarios. It precisely aligns with the practical needs of intelligent grading in K-12 education and provides clear direction for optimizing model fine-tuning parameters.</p>
+    </sec>
+    <sec sec-type="">
+      <title>2. Related work</title>
+      <p>Currently, research on core technologies such as lightweight fine-tuning and distributed training for multimodal models has established a relatively mature theoretical framework and technical architecture for general-purpose scenarios. These technologies have been widely applied across various cross-modal tasks, providing robust technical support for model adaptation in vertical scenarios [<xref ref-type="bibr" rid="ref_5">5</xref>]. In the field of intelligent education grading, existing research primarily focuses on adapting single Optical Character Recognition (OCR) recognition technologies or simple machine learning models. The core limitation lies in their ability to achieve automated scoring only for objective questions on answer sheets, failing to meet the structured recognition requirements for handwritten subjective answers [<xref ref-type="bibr" rid="ref_6">6</xref>], [<xref ref-type="bibr" rid="ref_7">7</xref>]. Research on fine-tuning multimodal large models for handwritten subjective questions in K-12 education remains scarce, particularly lacking end-to-end fine-tuning approaches for visual-text fusion features. Additionally, effective solutions for critical challenges such as adaptation in small-sample scenarios and optimization for medium-to-small-scale computing environments have yet to emerge. Significant gaps persist between existing research outcomes and the practical application needs of K-12 educational settings [<xref ref-type="bibr" rid="ref_8">8</xref>], [<xref ref-type="bibr" rid="ref_9">9</xref>].</p><p>Model fine-tuning serves as the core technology for achieving scenario-specific adaptation of pre-trained large models. Its fundamental principle involves incrementally updating selected parameters of the pre-trained model using domain-specific datasets, enabling the model to fully learn scenario-unique features and thereby achieve customized optimization of its capabilities. Compared to full-parameter fine-tuning, lightweight fine-tuning techniques significantly reduce computational resource consumption and training costs while maintaining fine-tuning effectiveness, making them more suitable for the computational resource constraints of K-12 education settings. The core requirement for intelligent grading in K-12 education is the rapid and accurate extraction of students’ handwritten answers from answer sheet images, converting them into standardized structured data to provide reliable support for subsequent processes such as machine scoring, manual review, and grade statistics [<xref ref-type="bibr" rid="ref_10">10</xref>]. Recognition of K-12 answer sheets exhibits distinct scenario characteristics: First, fixed visual features-detection zones and question layouts adhere to clear specifications, enabling precise answer location via predefined detection boxes. Second, handwritten text features-issues like illegible handwriting and non-standardized writing impose high demands on the model’s text recognition capabilities. Third, standardized output formats are required. Extracted handwritten text must be converted into standardized formats according to predefined region indices to facilitate subsequent scoring processes. The technical characteristics of the Qwen2.5-VL-7B-Instruct multimodal large model demonstrate high compatibility with intelligent grading requirements in K-12 education: Firstly, its visual-text fusion capability precisely matches the dual characteristics of answer sheets—“image visual information + handwritten text information.” Scenario-specific fine-tuning further optimizes handwriting recognition accuracy and region localization precision. Second, the combined approach of LoRA lightweight fine-tuning and dual A16 GPU distributed training effectively addresses the computational resource constraints in K-12 education settings, enabling low- -cost implementation of model fine-tuning and deployment. Third, the evaluation method combining loss curve analysis with sample inference verification enables intuitive assessment of whether the model aligns with actual answer sheet recognition requirements. This provides clear direction for model optimization, ensuring the practicality and feasibility of the technical solution [<xref ref-type="bibr" rid="ref_11">11</xref>], [<xref ref-type="bibr" rid="ref_12">12</xref>].</p><p>Large Language Models (LLMs) have emerged as powerful foundation models with strong zero-shot performance since 2019. Nevertheless, deploying them on edge devices is constrained by excessive memory demands and the necessity for local fine-tuning, which typical hardware cannot support. With the shift towards multimodal tasks, optimizing edge deployment is imperative. Dong et al. [<xref ref-type="bibr" rid="ref_13">13</xref>] surveyed techniques for memory-efficient fine-tuning and model compression, proposing pathways for sustainable, low-cost LLM implementation at the network edge. For Earth surface analysis, combining multimodal remote sensing data yields higher semantic segmentation precision than single-modality techniques. Ma et al. [<xref ref-type="bibr" rid="ref_14">14</xref>] presented MFNet, a flexible framework for fine-tuning the Segment Anything Model (SAM) in remote sensing. Supporting adapters like LoRA, MFNet incorporates a pyramid-based Deep Fine-Tuning (DFM) to better represent multi-scale geographic features. The study also validates SAM’s utility with Digital Surface Model (DSM) data, setting a new performance benchmark across three datasets, with code released on GitHub. Given the ubiquity of LLMs, there is a pressing need for a comprehensive review of their capabilities and challenges, as current literature often lacks a unified perspective. Sirisha et al. [<xref ref-type="bibr" rid="ref_15">15</xref>] analyzed 50 studies involving over 25 LLMs and multimodal systems, categorizing their domain applications and evaluating methods like LoRA, RAG, and quantum embeddings. The review concludes that domain-specific tuning and sophisticated integration enhance outcomes, noting LoRA’s efficiency. It also addresses scalability, ethical concerns, and domain adaptation, providing a roadmap for future LLM development. Large Multimodal Models (LMMs) demonstrate proficiency in English but encounter barriers in cross-lingual contexts due to data limitations and training costs. Conventional approaches using translated data or multilingual models often produce mediocre results at high expense. To overcome this, Weng et al. [<xref ref-type="bibr" rid="ref_16">16</xref>] developed SMSA, a lightweight solution utilizing a Syntax-aware Adapter (SAA) and Multimodal Semantic Distillation (MSD) to transfer knowledge from English to eight other languages. Tests on IGLUE indicate that SMSA delivers strong zero-shot performance, exceeding many multilingual LMMs. In Multimodal Sentiment Analysis (MSA), spurious correlations between data modalities and labels have been largely ignored, weakening Out-of-Distribution (OOD) generalization. Huan et al. [<xref ref-type="bibr" rid="ref_17">17</xref>] introduced MulDeF, a versatile model that applies causal intervention (via MCA) to remove training bias and uses counterfactual reasoning to correct verbal and nonverbal biases during inference. Results demonstrate MulDeF achieves state-of-the-art OOD performance while maintaining competitiveness in standard IID settings. Although MSA outperforms single-modal approaches, existing models often lack transparency and struggle with noise, integration, and semantic alignment. Nie et al. [<xref ref-type="bibr" rid="ref_18">18</xref>] proposed IMTFMIF, pioneering Tucker fusion in MSA. This model projects data into a shared tensor space to minimize redundancy and heterogeneity while ensuring interpretability, using mutual information to discard noise. Trials on three datasets confirm its effectiveness. Understanding multimodal emotions requires robust feature fusion. Wang et al. [<xref ref-type="bibr" rid="ref_19">19</xref>] designed a fuzzy-deep neural network integrating multiscale features from text, audio, and visuals. By incorporating fuzzy logic to manage sentiment uncertainty and a dual attention system to highlight key features, the model effectively captures emotional complexity, as proven by tests on three datasets. Injecting nonverbal cues into Pre-trained Language Models (PLMs) poses significant challenges. Mai et al. [<xref ref-type="bibr" rid="ref_20">20</xref>] proposed a language-centric solution for MSA, employing cross-modal additive attention alongside PLM layers and a gating unit to suppress noise. The method further, introduces specialized loss functions to align modal distributions without sacrificing specific features, improving upon traditional contrastive learning. Extensive testing confirms its superiority over current state-of-the-art methods in sentiment analysis and emotion recognition.</p><p>This paper adopts the LoRA (Low-Rank Adaptation) lightweight fine-tuning strategy as its core technique. Its fundamental approach involves inserting low-rank matrices into the model’s attention layers, training only the newly added low-rank matrix parameters while freezing core structures such as the visual encoder and multimodal projection layers. This prevents the destruction of the base model’s general visual-text fusion features. This fine-tuning approach keeps the total number of trained parameters low, significantly reducing computational resource consumption and enabling efficient model refinement. For the training framework and parameter scheduling, this study employs the LLaMA-Factory framework as the core fine-tuning platform. This framework supports lightweight fine-tuning of multimodal models, distributed training configurations, and end-to-end monitoring of the training process, effectively enhancing fine-tuning efficiency and operability. Simultaneously, leveraging distributed training principles, the training tasks are split across dual A16 GPUs to significantly accelerate training speed. Through cosine learning rate scheduling and loss function optimization, efficient model parameter updates are achieved, ensuring the stability and reliability of the fine-tuning results.</p>
+    </sec>
+    <sec sec-type="">
+      <title>3. Design of multimodal model fine-tuning adaptation scheme</title>
+      
+        <sec>
+          
+            <title>3.1. Overall framework</title>
+          
+          <p>To achieve efficient adaptation and practical application of multimodal large models in intelligent grading scenarios for K-12 education, this study designed an end-to-end fine-tuning adaptation solution encompassing “data processing → model training → performance evaluation → weight merging → model inference.” It clearly defines core tasks, technical pathways, and parameter configurations for each stage, ensuring the solution’s systematicity, operability, and rigor.</p><p> This framework utilizes Qwen2.5-VL-7B-Instruct as the base model, employs LLaMA-Factory as the core training framework, leverages dual A16 GPUs for hardware support, and relies on multimodal datasets from Chinese and English answer sheets in K-12 education for training. The overall process is as follows: First, answer sheet data is collected, preprocessed, randomly shuffled, and partitioned to construct a multimodal dataset compliant with the fine-tuning framework requirements. Next, configure the GPU distributed training environment and optimize LoRA fine-tuning parameters, initiating model training while monitoring progress in real-time via loss curves. Upon completion, merge model weights to obtain a scenario-adapted fine-tuned model. Finally, deploy the fine-tuned model for structured recognition of answer sheet responses, implementing the core intelligent grading process. This framework comprehensively addresses the technical and computational demands of K-12 education scenarios, standardizing and streamlining the entire fine-tuning workflow. The overall solution designed in this paper follows a closed-loop process encompassing “data processing-model training-performance evaluation-weight merging-model inference,” as illustrated in <xref ref-type="fig" rid="fig_1">Figure 1</xref>.</p>
+          
+            <fig id="fig_1">
+              <label>Figure 1</label>
+              <caption>
+                <title>Overall solution framework</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/3/img_nsQL86HtjnVE5sk7.png"/>
+            </fig>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.2. Construction of multimodal dataset for k-12 grading</title>
+          
+          <p>(1) Data Source Acquisition: This study utilizes raw answer sheet images from Chinese and English subjects in primary and secondary schools as the foundational dataset. It encompasses answer sheet samples across different grades and question types to ensure representativeness and diversity. Simultaneously, structured annotation information for each detection region on every answer sheet was organized, including region indices (index), detection box coordinates (bbox, [x1,y1,x2,y2]), and handwritten text content. This achieves a one-to-one correspondence between visual and textual information, providing ample labeled data for subsequent model training. Specifically, the detection regions for Chinese answer sheets encompass areas corresponding to question types such as classical poetry recitation and short-answer questions, while those for English answer sheets cover regions for non-multiple-choice questions and writing tasks. All annotation information is recorded in a standardized format. <xref ref-type="fig" rid="fig_2">Figure 2</xref> shows the first example of raw answer sheet images.</p>
+          
+            <fig id="fig_2">
+              <label>Figure 2</label>
+              <caption>
+                <title>First example of raw answer sheet images</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/3/img_7-VCHc_fkFmzQr4M.png"/>
+            </fig>
+          
+          <p>Chinese answer sheet regions:</p><p> [{‘index’: 1, ‘bbox’: [78, 65, 493, 139]}, {‘index’: 2, ‘bbox’: [546, 67, 964, 139]}, {‘index’: 3, ‘bbox’: [76, 140, 496, 232]}, {‘index’: 4, ‘bbox’: [545, 141, 962, 234]}, {‘index’: 5, ‘bbox’: [78, 235, 495, 318]}, {‘index’: 6, ‘bbox’: [543, 234, 961, 319]}]</p><p><xref ref-type="fig" rid="fig_3">Figure 3</xref> shows the second example of raw answer sheet images.</p>
+          
+            <fig id="fig_3">
+              <label>Figure 3</label>
+              <caption>
+                <title>Second example of raw answer sheet images</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/3/img_WyJfIQKD-PlNlvk7.png"/>
+            </fig>
+          
+          <p>The region for the English answer sheet is:</p><p>[{‘index’: 56, ‘bbox’: [166, 69, 495, 146]}, {‘index’: 57, ‘bbox’: [588, 69, 919, 145]}, {‘index’: 58, ‘bbox’: [1013, 67, 1309, 148]}, {‘index’: 59, ‘bbox’: [167, 150, 487, 223]}, {‘index’: 60, ‘bbox’: [590, 150, 922, 221]}, {‘index’: 61, ‘bbox’: [1018, 151, 1314, 223]}, {‘index’: 62, ‘bbox’: [165, 224, 487, 297]}, {‘index’: 63, ‘bbox’: [593, 227, 919, 299]}, {‘index’: 64, ‘bbox’: [1016, 226, 1309, 294]}, {‘index’: 65, ‘bbox’: [170, 302, 477, 375]}]</p><p>The final training data format to be processed is:</p><p>{“messages”: [{“role”: “user”, “content”: “Extract content sequentially from the answer sheet area in the image and return it in JSON format. Return only JSON:”},</p><p>{“role”: “assistant”, “content”: “[{“index”: 56, “text”: “listing”}, {“index”: 57, “text”: “reflected”},</p><p>{“index”: 58, “text”: “to”}, {“index”: 59, “text”: “necessityful”},</p><p>{“index”: 60, “text”: “the”},</p><p>{“index”: 61, “text”: “docorated”},</p><p>{“index”: 62, “text”: “which”},</p><p>{“index”: 63, “text”: “development”},</p><p>{“index”: 64, “text”: “assistant”},</p><p>{“index”: 65, “text”: “building”}]”}],</p><p>“images”: [“./ocr_output_all/test/name.png”]}</p><p>(2) Data Preprocessing: First, standardize the answer sheet images by unifying their dimensions and resolution. Remove noise, shadows, and other distractions to enhance visual feature clarity, ensuring the model accurately extracts visual information from the images. Second, we cleaned the handwritten text content, removing irrelevant information like typos and redundant symbols, standardizing text formatting, and ensuring textual accuracy. Simultaneously, annotation information underwent format validation and conversion, uniformly transforming all annotations into standardized JSON format to guarantee accuracy and consistency. Finally, all Chinese and English answer sheet samples undergo random shuffling to effectively eliminate subject and question type distribution biases. The dataset is then split into training and testing sets at a 9:1 ratio. The training set is used for model fine-tuning, while the testing set validates the model’s generalization capabilities, ensuring adaptability to diverse answer sheet recognition requirements.</p><p>(3) Format Adaptation and Configuration: To achieve seamless integration with the LLaMA-Factory fine-tuning framework, this study constructs a multimodal training data format compliant with the framework’s input requirements. This format adopts a dictionary structure containing two core fields: messages and images. The messages field comprises user instructions and assistant responses. User instructions explicitly state: “Extract content sequentially from the answer sheet region in the image and return it in JSON format. Return only JSON.” Assistant responses provide structured answer sheet text extraction results, presenting each detection region’s index and corresponding handwritten text in JSON format. The images field links to the corresponding answer sheet image paths, enabling precise fusion of visual and textual data to ensure the model can train using information from both modalities simultaneously. Simultaneously, complete relevant dataset configurations in the ‘dataset\_info.json’ file within the LLaMA-Factory framework. Specify critical details such as dataset paths, formats, and field definitions to enable the framework’s automatic recognition and invocation of custom multimodal primary/secondary school answer sheet datasets, laying the foundation for subsequent model training.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.3. Foundation model selection and modification</title>
+          
+          <p>Considering the requirements of K-12 answer sheet recognition and computational resource constraints, this study selected the Qwen2.5-VL-7B-Instruct multimodal large model as the base model. This model offers three core advantages: First, it balances visual recognition accuracy with text structuring capabilities, enabling precise extraction of handwritten text from answer sheet images and outputting standardized results—aligning with the core needs of answer sheet recognition. Second, its moderate parameter size (7B) eliminates the need for massive computational resources, making it effectively compatible with dual A16 GPU computing environments. Third, it supports few-shot fine-tuning, enabling scenario adaptation with limited training data—a feature aligned with the current dataset construction realities in K-12 education settings.</p><p>The model undergoes targeted refinement using the LoRA lightweight fine-tuning strategy. The core modification involves inserting low-rank matrices into the model’s attention layers, training only the newly added low-rank matrix parameters while freezing core structures such as the vision encoder (vision tower) and multimodal projector layer. This approach preserves the foundational model’s general visual-text fusion features while substantially reducing the total number of trainable parameters and computational demands. Consequently, the model achieves efficient and stable training on dual A16 GPU configurations, aligning with the computational constraints typical in K-12 educational settings.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.4. Targeted fine-tuning strategy design</title>
+          
+          <p>To achieve precise scenario adaptation, this study designed a targeted multimodal model fine-tuning strategy tailored to the dataset characteristics and dual A16 GPU hardware environment. This strategy encompasses multiple critical aspects including fine-tuning methods, hardware adaptation, and parameter scheduling, as detailed below:</p><p>(1) Fine-Tuning Method Selection: Employing LoRA lightweight fine-tuning as the core approach, we optimize key parameters including lora_rank (rank of low-rank matrices), lora_alpha (scaling coefficient), and lora_dropout (dropout probability). This enhances training effectiveness for low-rank matrices, ensuring the model fully learns scenario-specific features for answer sheet recognition. For datasets with varying sample sizes (small-sample, medium-sample), we adjust the above parameter configurations to achieve efficient adaptation in small-sample scenarios and improved accuracy in medium-sample scenarios.</p><p>(2) Hardware Adaptation Configuration: Build a distributed training environment based on dual A16 GPUs. Optimize parameters such as batch size (per_device_train_batch_size) and gradient accumulation steps (gradient_accumulation_steps) to fully leverage the computational resources of dual GPUs and enhance training efficiency. Simultaneously, set the ddp_timeout parameter to prevent communication timeouts during distributed training, ensuring stable operation. For small and medium-sized datasets, respectively adjust parameters like gradient accumulation steps to guarantee optimal utilization of computational resources, avoiding waste or insufficiency.</p><p>(3) Training Parameter Scheduling: Differentiated training parameters are designed based on dataset sample size to balance training effectiveness and efficiency. Specific parameter settings are as follows: The learning rate (learning_rate) is set to 5e-05, employing a cosine learning rate scheduling strategy. Warmup_steps are used to implement learning rate warmup, preventing model non-convergence caused by overly rapid parameter updates during the initial training phase.Set appropriate values for training epochs (num_train_epochs), logging intervals (logging_steps), model saving intervals (save_steps), and evaluation intervals (eval_steps) to enable granular monitoring of the training process and facilitate real-time tracking of model training status.For datasets with varying sample sizes, adjust parameters like ‘max_samples’ (training sample count) and ‘cutoff_len’ (text truncation length) to prevent sample redundancy or information loss, thereby improving training efficiency. The ‘max_samples’ parameter limits the total number of samples actually used in training. Regardless of the dataset’s total sample size, the framework randomly selects the specified number of samples from the entire dataset for training.</p><p>(4) Optimal Model Selection: Set ‘load_best_model_at_end’ to True, using validation set loss (‘eval_loss’) as the evaluation metric for the best model (‘metric_for_best_model’). Specify that the metric optimization direction is “lower is better” (‘greater_is_better=false’). Upon training completion, the model automatically loads the optimal model weights, ensuring practical application effectiveness.</p><p>(5) Training Environment Configuration: Build the training environment using the LLaMA-Factory container environment. Enable BF16 mixed-precision training and Flash Attention optimization techniques to significantly boost training speed and computational efficiency. Set the ‘preprocessing_num_workers’ parameter to enhance parallel efficiency in data preprocessing and reduce preprocessing time. Visualize the training process via ‘report_to_tensorboard’ for real-time monitoring of key metrics like training loss and validation loss, supporting parameter optimization.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.5. Intelligent grading inference process design</title>
+          
+          <p>To facilitate the deployment of fine-tuned models in intelligent grading scenarios for K-12 education, this study designed a standardized structured recognition inference process for answer sheet responses. This ensures efficiency, accuracy, and standardization throughout the inference workflow, as detailed below:</p>
+          <p>(1) Reasoning Interface Preparation: Establish an interface for obtaining answer sheet detection and matching results. Utilize POST requests supporting the multipart/form-data format. Accept request parameters including handwriting OCR type (ocr_type), API keys (api_key/secret_key), detection region list (regions), answer sheet image file (file), and recognition language (lang).Specifically: - Set ocr_type to handwriting (for handwritten OCR) - Set lang to ch (Chinese, for Chinese language answer sheets) or en (English, for English answer sheets) based on subject type - The regions parameter is a JSON string containing the indices and bounding box coordinates for each detection area. The interface returns recognition results in application/json format, containing the index of each detection region and the corresponding handwritten text content, enabling seamless integration with subsequent scoring systems.</p><p>(2) Inference Input Configuration: Use primary/secondary school answer sheet images as the model’s core input, alongside a standardized detection region list (regions) to specify answer areas requiring recognition. Define the user instruction for model inference as “Sequentially extract content from designated answer sheet regions and return in JSON format” to ensure output format compliance. Set reasonable model inference hyperparameters, including maximum generation length, Top-p sampling value, and temperature coefficient, to balance inference accuracy and speed. The maximum generation length is set to 1024, the Top-p sampling value to 0.7, and the temperature coefficient to 0.95.</p><p>(3) Model Inference Execution: Deploy the fine-tuned and weight-merged Qwen2.5-VL-7B-Instruct model to the inference environment. The inference process comprises three steps: First, extract visual features from the answer sheet image via the visual encoder, precisely locating each answer region using the detection area list. Second, fuse visual and textual features through the text encoder and multimodal projection layer to extract handwritten text content from the answer regions. Third, generate standardized JSON results containing the index of each detected region and its corresponding text content according to user instructions.</p><p>(4) Weight Merging and Inference Validation: After model training completes, the ‘LLaMA-Factory-cli export’ command merges model weights. By specifying parameters such as the base model path, adapter path, and fine-tuning type, it combines the LoRA-fine-tuned adapter weights with the base model weights to generate complete model weights ready for direct inference. After inference, model accuracy is validated by comparing outputs against human annotations to ensure the model meets intelligent grading requirements.</p><p>The inference process follows standardized steps from interface preparation and input configuration to model execution and result output. The intelligent grading inference workflow is illustrated in <xref ref-type="fig" rid="fig_4">Figure 4</xref>.</p>
+          
+            <fig id="fig_4">
+              <label>Figure 4</label>
+              <caption>
+                <title>Intelligent grading inference process</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/3/img_3U80Hr8hzVQg2Tgc.png"/>
+            </fig>
+          
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>4. Experimental validation and results analysis</title>
+      
+        <sec>
+          
+            <title>4.1. Experimental environment and design</title>
+          
+          <p>To validate the effectiveness and feasibility of the multimodal model fine-tuning scheme designed in this study, targeted experimental verification was conducted. The experimental environment, dataset, and experimental design were clearly defined to ensure the reliability and persuasiveness of the experimental results.</p><p>(1) Hardware Environment: The experiments utilized a server equipped with two A16 GPUs, each with 40GB of GPU memory, providing sufficient computational power to support distributed training and inference of multimodal models. The server CPU was an Intel Xeon Gold series, with 128GB of memory, ensuring smooth data processing and model operation during experiments. This hardware environment aligns with the computational resources available in K-12 educational settings, ensuring the generalizability of the experimental results.</p><p>(2) Software and Model Environment: The software environment utilizes the LLaMA-Factory container environment, installing Python 3.9, PyTorch, and other deep learning dependencies to ensure the framework functions properly. The model environment employs the Qwen2.5-VL-7B-Instruct model weights, integrated with Baidu Cloud’s OCR interface for preliminary recognition of handwritten answer sheets and result comparison. TensorBoard visualization tools are employed for training process monitoring and loss curve plotting, facilitating intuitive analysis of model training effectiveness.</p><p>(3) Experimental Dataset: A multimodal dataset of Chinese and English answer sheets from primary and secondary schools, constructed for this study, was employed. After random shuffling, the dataset was split into training and testing sets at an 8:2 ratio. To validate the impact of different sample sizes on fine-tuning effectiveness, two experimental datasets with varying sample sizes were designed: a small-sample training set (18 samples, corresponding test set size:) and a medium-sample training set (162 samples, corresponding test set size:). Both datasets maintained consistent question types and handwriting styles to ensure experimental comparability and rigor.</p><p>(4) Experimental Design: Employing a controlled variable approach, two comparative experiments were designed. The Qwen2.5-VL-7B-Instruct model underwent LoRA fine-tuning using the 18-sample and 162-sample datasets respectively. Core fine-tuning methods, hardware environments, and most training parameters remained consistent across both datasets. Only key parameters related to sample size were adjusted, including LoRA-specific parameters, training epochs, and gradient accumulation steps. Specifically: - Small-sample dataset: 15.0 training epochs, 4 gradient accumulation steps, lora_rank=4 - Medium-sample dataset: 6.0 training epochs, 1 gradient accumulation step, lora_rank=2Core experimental metrics include training loss, validation loss, model convergence speed, and actual inference accuracy. By comparing results across both datasets, we validate the adaptability of fine-tuning strategies and model performance in answer sheet recognition under varying sample sizes, thereby demonstrating the effectiveness of our proposed fine-tuning approach.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>4.2. Experimental results and analysis</title>
+          
+          <p>Prior to model fine-tuning, statistical analysis was conducted on the constructed multimodal dataset of Chinese and English answer sheets from primary and secondary schools to validate data quality and distribution characteristics, providing a reliable foundation for subsequent training. The dataset comprises 210 answer sheet images (100 Chinese, 110 English), randomly shuffled and divided into a training set (168 images) and a test set (42 images) at an 8:2 ratio. The following charts are based on the entire dataset.</p><p>(1) Distribution of Recognition Region Counts</p><p>According to the statistics, the sample mean <inline-formula>
+  <mml:math id="mvi21gdg3d">
+    <mml:mrow>
+      <mml:mover>
+        <mml:mi>x</mml:mi>
+        <mml:mo>¯</mml:mo>
+      </mml:mover>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> and sample standard deviations are calculated as follows:</p>
+          
+            <disp-formula>
+              <label>(1)</label>
+              <mml:math id="me46y1ghuu">
+                <mml:mrow>
+                  <mml:mover>
+                    <mml:mi>x</mml:mi>
+                    <mml:mo>¯</mml:mo>
+                  </mml:mover>
+                </mml:mrow>
+                <mml:mo>=</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo>=</mml:mo>
+                <mml:mfrac>
+                  <mml:mn>1</mml:mn>
+                  <mml:mi>N</mml:mi>
+                </mml:mfrac>
+                <mml:munderover>
+                  <mml:mo>∑</mml:mo>
+                  <mml:mrow>
+                    <mml:mi>i</mml:mi>
+                    <mml:mo>=</mml:mo>
+                    <mml:mn>1</mml:mn>
+                  </mml:mrow>
+                  <mml:mi>N</mml:mi>
+                </mml:munderover>
+                <mml:msub>
+                  <mml:mi>x</mml:mi>
+                  <mml:mi>i</mml:mi>
+                </mml:msub>
+                <mml:mi>s</mml:mi>
+                <mml:msqrt>
+                  <mml:mfrac>
+                    <mml:mn>1</mml:mn>
+                    <mml:mrow>
+                      <mml:mi>N</mml:mi>
+                      <mml:mo>−</mml:mo>
+                      <mml:mn>1</mml:mn>
+                    </mml:mrow>
+                  </mml:mfrac>
+                  <mml:munderover>
+                    <mml:mo>∑</mml:mo>
+                    <mml:mrow>
+                      <mml:mi>i</mml:mi>
+                      <mml:mo>=</mml:mo>
+                      <mml:mn>1</mml:mn>
+                    </mml:mrow>
+                    <mml:mi>N</mml:mi>
+                  </mml:munderover>
+                  <mml:msup>
+                    <mml:mrow>
+                      <mml:mo>(</mml:mo>
+                      <mml:mo>−</mml:mo>
+                      <mml:mo>)</mml:mo>
+                      <mml:msub>
+                        <mml:mi>x</mml:mi>
+                        <mml:mi>i</mml:mi>
+                      </mml:msub>
+                      <mml:mrow>
+                        <mml:mover>
+                          <mml:mi>x</mml:mi>
+                          <mml:mo>¯</mml:mo>
+                        </mml:mover>
+                      </mml:mrow>
+                    </mml:mrow>
+                    <mml:mn>2</mml:mn>
+                  </mml:msup>
+                </mml:msqrt>
+              </mml:math>
+            </disp-formula>
+          
+          <p> where, <inline-formula>
+  <mml:math id="m1b7d3zac5">
+    <mml:msub>
+      <mml:mi>x</mml:mi>
+      <mml:mi>i</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> represents the number of regions in the $i<inline-formula>
+  <mml:math id="momiflalad">
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>N=210<inline-formula>
+  <mml:math id="mo17mwxve4">
+    <mml:mo>.</mml:mo>
+    <mml:mo>&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>C</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+  </mml:math>
+</inline-formula>\bar{x}=5.8<inline-formula>
+  <mml:math id="mdhhbwufsz">
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+  </mml:math>
+</inline-formula>s=1.2$, indicating minimal fluctuation in region counts and high detection stability.</p>
+          
+            <fig id="fig_5">
+              <label>Figure 5</label>
+              <caption>
+                <title>Distribution of region counts</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/3/img_Tzb9S9Xh30cfuJp6.png"/>
+            </fig>
+          
+          <p><xref ref-type="fig" rid="fig_5">Figure 5</xref> displays the distribution of detected region counts per image. The horizontal axis represents the number of regions ($n<inline-formula>
+  <mml:math id="mt45od7w3f">
+    <mml:mo>)</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mi>w</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+  </mml:math>
+</inline-formula>f<inline-formula>
+  <mml:math id="mq7hy66y6e">
+    <mml:mo>)</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mi>T</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>q</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>R</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>z</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>k</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>k</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>E</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>D</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>R</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mn>4</mml:mn>
+    <mml:mn>8</mml:mn>
+    <mml:mn>6</mml:mn>
+    <mml:mn>12</mml:mn>
+    <mml:mn>5</mml:mn>
+    <mml:mn>7</mml:mn>
+    <mml:mn>11</mml:mn>
+    <mml:mn>10</mml:mn>
+    <mml:mn>5.8</mml:mn>
+    <mml:mn>6</mml:mn>
+    <mml:mn>2</mml:mn>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+  </mml:math>
+</inline-formula>p_{\text {empty }}$) is:</p>
+          
+            <disp-formula>
+              <label>(2)</label>
+              <mml:math id="m63o7rwvcc">
+                <mml:msub>
+                  <mml:mi>p</mml:mi>
+                  <mml:mrow>
+                    <mml:mtext>empty </mml:mtext>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mo>×</mml:mo>
+                <mml:mfrac>
+                  <mml:msub>
+                    <mml:mi>N</mml:mi>
+                    <mml:mrow>
+                      <mml:mtext>empty </mml:mtext>
+                    </mml:mrow>
+                  </mml:msub>
+                  <mml:mi>N</mml:mi>
+                </mml:mfrac>
+                <mml:mn>100</mml:mn>
+                <mml:mi>%</mml:mi>
+              </mml:math>
+            </disp-formula>
+          
+          <p>where, <inline-formula>
+  <mml:math id="m7aokwbyt8">
+    <mml:msub>
+      <mml:mi>N</mml:mi>
+      <mml:mrow>
+        <mml:mtext>empty </mml:mtext>
+      </mml:mrow>
+    </mml:msub>
+    <mml:mo>=</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>=</mml:mo>
+    <mml:mn>10</mml:mn>
+    <mml:mn>210</mml:mn>
+    <mml:mi>N</mml:mi>
+  </mml:math>
+</inline-formula>, hence <inline-formula>
+  <mml:math id="mkaujlx3c9">
+    <mml:msub>
+      <mml:mi>p</mml:mi>
+      <mml:mrow>
+        <mml:mtext>empty </mml:mtext>
+      </mml:mrow>
+    </mml:msub>
+    <mml:mo>=</mml:mo>
+    <mml:mn>4.8</mml:mn>
+    <mml:mi>%</mml:mi>
+  </mml:math>
+</inline-formula>.</p><p>The pie chart in <xref ref-type="fig" rid="fig_6">Figure 6</xref> illustrates the proportion of valid data versus empty data. The blue section represents images where at least one region was identified (valid data), while the orange section denotes images where no regions were detected (empty data). Statistics show that valid images account for 95.2%, with empty data comprising only 4.8%. This indicates that the vast majority of images successfully extracted regional content, demonstrating high data quality. The small amount of empty data may stem from poor image quality or incomplete answer sheets, but its impact on the overall dataset is limited.</p>
+          
+            <fig id="fig_6">
+              <label>Figure 6</label>
+              <caption>
+                <title>Empty data ratio</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/3/img_9IhzrTFLKABw1VDL.png"/>
+            </fig>
+          
+          <p>(3) Text Length Distribution</p><p>The mean of text length $L<inline-formula>
+  <mml:math id="mt2exgj8c3">
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mo>:</mml:mo>
+  </mml:math>
+</inline-formula>\mu_L$.</p>
+          
+            <disp-formula>
+              <label>(3)</label>
+              <mml:math id="mwhrqfjrc0">
+                <mml:msub>
+                  <mml:mi>μ</mml:mi>
+                  <mml:mi>L</mml:mi>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>L</mml:mi>
+                  <mml:mi>j</mml:mi>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mfrac>
+                  <mml:mn>1</mml:mn>
+                  <mml:mi>M</mml:mi>
+                </mml:mfrac>
+                <mml:munderover>
+                  <mml:mo>∑</mml:mo>
+                  <mml:mrow>
+                    <mml:mi>j</mml:mi>
+                    <mml:mo>=</mml:mo>
+                    <mml:mn>1</mml:mn>
+                  </mml:mrow>
+                  <mml:mi>M</mml:mi>
+                </mml:munderover>
+              </mml:math>
+            </disp-formula>
+          
+          <p> where, $M<inline-formula>
+  <mml:math id="mqkttqmerb">
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>z</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>L_j<inline-formula>
+  <mml:math id="mdjkxyh6o3">
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+  </mml:math>
+</inline-formula>j<inline-formula>
+  <mml:math id="m2pzt0385n">
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>S</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mo>.</mml:mo>
+  </mml:math>
+</inline-formula>\mu_L=12.3<inline-formula>
+  <mml:math id="m4irvea4uk">
+    <mml:mo>,</mml:mo>
+    <mml:mi>w</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+  </mml:math>
+</inline-formula>\sigma_L=4.1$.</p>
+          
+            <fig id="fig_7">
+              <label>Figure 7</label>
+              <caption>
+                <title>Distribution of text length</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/3/img_W8HEswWHI8YDMx2q.png"/>
+            </fig>
+          
+          <p><xref ref-type="fig" rid="fig_7">Figure 7</xref> displays the length distribution of recognized text across regional indexes. The horizontal axis represents regional indexes (1–20), while the vertical axis shows text length (number of characters). The data indicates that text lengths in regions 1–6 are concentrated between 11 and 14 characters, with region 2 exhibiting the highest average text length (approximately 14 characters). Text lengths in regions 7–20 remain relatively stable, maintaining around 18–20 characters. Frequency statistics reveal that recognition success rates exceed 99% across all regions, demonstrating the OCR algorithm’s highly consistent performance in text recognition across different areas.</p><p>(4) Recognition Success Rate by Region</p><p>The recognition success rate <inline-formula>
+  <mml:math id="mhzu3fmyvq">
+    <mml:msub>
+      <mml:mi>R</mml:mi>
+      <mml:mi>k</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> for regions $k$ is defined as:</p>
+          
+            <disp-formula>
+              <label>(4)</label>
+              <mml:math id="mk6dilbbvg">
+                <mml:msub>
+                  <mml:mi>R</mml:mi>
+                  <mml:mi>k</mml:mi>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mo>×</mml:mo>
+                <mml:mfrac>
+                  <mml:msubsup>
+                    <mml:mi>N</mml:mi>
+                    <mml:mi>k</mml:mi>
+                    <mml:mrow>
+                      <mml:mtext>success </mml:mtext>
+                    </mml:mrow>
+                  </mml:msubsup>
+                  <mml:msubsup>
+                    <mml:mi>N</mml:mi>
+                    <mml:mi>k</mml:mi>
+                    <mml:mrow>
+                      <mml:mtext>total </mml:mtext>
+                    </mml:mrow>
+                  </mml:msubsup>
+                </mml:mfrac>
+                <mml:mn>100</mml:mn>
+                <mml:mi>%</mml:mi>
+              </mml:math>
+            </disp-formula>
+          
+          <p>where, <inline-formula>
+  <mml:math id="mobu7b82sz">
+    <mml:msubsup>
+      <mml:mi>N</mml:mi>
+      <mml:mi>k</mml:mi>
+      <mml:mrow>
+        <mml:mtext>success </mml:mtext>
+      </mml:mrow>
+    </mml:msubsup>
+  </mml:math>
+</inline-formula> represents the number of successfully recognized samples in region $k<inline-formula>
+  <mml:math id="ms9n4p8f2e">
+    <mml:mo>,</mml:mo>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+  </mml:math>
+</inline-formula>N_k^{\text {total }}<inline-formula>
+  <mml:math id="mum526f5r4">
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>A</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mo>.</mml:mo>
+  </mml:math>
+</inline-formula>R_k$ values in the figure exceed 99%, demonstrating exceptional algorithm performance.</p>
+          
+            <fig id="fig_8">
+              <label>Figure 8</label>
+              <caption>
+                <title>Recognition success rate by region</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/3/img_ymznMqk1XeNORqF_.png"/>
+            </fig>
+          
+          <p><xref ref-type="fig" rid="fig_8">Figure 8</xref> presents the recognition success rates for different region indices in a bar chart format. The horizontal axis represents region indices (1–20), while the vertical axis shows success rates (%). The data reveals that recognition success rates for all regions remain consistently above 99%, with no significant differences between regions. This result validates the robustness and consistency of the OCR algorithm in cross-region recognition.</p><p>(5) Distribution of Handwriting Region Counts</p><p>The interquartile range (IQR) of a box plot is defined as:</p>
+          
+            <disp-formula>
+              <label>(5)</label>
+              <mml:math id="mzjuk6cew8">
+                <mml:mrow>
+                  <mml:mi data-mjx-auto-op="false">IQR</mml:mi>
+                </mml:mrow>
+                <mml:mo>=</mml:mo>
+                <mml:mo>−</mml:mo>
+                <mml:msub>
+                  <mml:mi>Q</mml:mi>
+                  <mml:mn>3</mml:mn>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>Q</mml:mi>
+                  <mml:mn>1</mml:mn>
+                </mml:msub>
+              </mml:math>
+            </disp-formula>
+          
+          <p> where, <inline-formula>
+  <mml:math id="muh7g0lhq7">
+    <mml:msub>
+      <mml:mi>Q</mml:mi>
+      <mml:mn>1</mml:mn>
+    </mml:msub>
+  </mml:math>
+</inline-formula> is the first quartile and <inline-formula>
+  <mml:math id="mn67noy4s9">
+    <mml:msub>
+      <mml:mi>Q</mml:mi>
+      <mml:mn>3</mml:mn>
+    </mml:msub>
+  </mml:math>
+</inline-formula> is the third quartile. In this case, <inline-formula>
+  <mml:math id="m171d78qcb">
+    <mml:mrow>
+      <mml:mi data-mjx-auto-op="false">IQR</mml:mi>
+    </mml:mrow>
+    <mml:mo>=</mml:mo>
+    <mml:mn>1</mml:mn>
+  </mml:math>
+</inline-formula> indicates highly concentrated data.</p>
+          
+            <fig id="fig_9">
+              <label>Figure 9</label>
+              <caption>
+                <title>Region count distribution by Optical Character Recognition (OCR) type</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/3/img_X0J62WFw2ranQavB.png"/>
+            </fig>
+          
+          <p> <xref ref-type="fig" rid="fig_9">Figure 9</xref>’s box plot displays the statistical distribution of the number of recognition regions per image for the handwriting type. The box represents the interquartile range of the data, with the central red line indicating the median. The data reveals a median of approximately 4.0, indicating that most images in the handwriting type have a concentrated number of detected regions around 4. The narrow box range suggests a tightly clustered data distribution with no significant outliers.</p><p> (6) Text Length Cumulative Distribution</p><p>The cumulative distribution function <inline-formula>
+  <mml:math id="mdvaosqd2g">
+    <mml:mi>F</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+  </mml:math>
+</inline-formula> is defined as:</p>
+          
+            <disp-formula>
+              <label>(6)</label>
+              <mml:math id="mpnsgwiu4x">
+                <mml:mi>F</mml:mi>
+                <mml:mi>x</mml:mi>
+                <mml:mi>P</mml:mi>
+                <mml:mi>X</mml:mi>
+                <mml:mi>x</mml:mi>
+                <mml:mi>f</mml:mi>
+                <mml:mi>t</mml:mi>
+                <mml:mi>d</mml:mi>
+                <mml:mi>t</mml:mi>
+                <mml:mo>(</mml:mo>
+                <mml:mo>)</mml:mo>
+                <mml:mo>=</mml:mo>
+                <mml:mo>(</mml:mo>
+                <mml:mo>≤</mml:mo>
+                <mml:mo>)</mml:mo>
+                <mml:mo>=</mml:mo>
+                <mml:mo>(</mml:mo>
+                <mml:mo>)</mml:mo>
+                <mml:msubsup>
+                  <mml:mo>∫</mml:mo>
+                  <mml:mrow>
+                    <mml:mo>−</mml:mo>
+                    <mml:mi>∞</mml:mi>
+                  </mml:mrow>
+                  <mml:mi>x</mml:mi>
+                </mml:msubsup>
+              </mml:math>
+            </disp-formula>
+          
+          <p>where, <inline-formula>
+  <mml:math id="m1ke97ky80">
+    <mml:mi>f</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+  </mml:math>
+</inline-formula> is the probability density function. In the figure, <inline-formula>
+  <mml:math id="myox8n98jw">
+    <mml:mi>F</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>=</mml:mo>
+    <mml:mn>12</mml:mn>
+    <mml:mn>0.38</mml:mn>
+  </mml:math>
+</inline-formula> and <inline-formula>
+  <mml:math id="mphf82viff">
+    <mml:mi>F</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>=</mml:mo>
+    <mml:mn>16</mml:mn>
+    <mml:mn>0.99</mml:mn>
+  </mml:math>
+</inline-formula>.</p>
+          
+            <fig id="fig_10">
+              <label>Figure 10</label>
+              <caption>
+                <title>Text length distribution (probability density function (PDF) and cumulative distribution function (CDF))</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/3/img_G9NIksp5VmIdusg5.png"/>
+            </fig>
+          
+          <p> <xref ref-type="fig" rid="fig_10">Figure 10</xref> displays the probability density function (PDF) and cumulative distribution function (CDF) of recognized text lengths. The horizontal axis represents text length (number of characters), with the left vertical axis showing probability density and the right vertical axis showing cumulative probability. The PDF curve reveals that text lengths are predominantly concentrated in the short text range of 1–12 characters, with a peak occurring around lengths of 4–6 characters. The CDF curve indicates that the cumulative probability for texts shorter than 12 characters reaches 0.38, and exceeds 0.99 for texts shorter than 16 characters. This confirms that the vast majority of recognized texts are short, aligning with the practical characteristics of answer sheet responses.</p><p> (7) Text Length Distribution Across Regions</p><p> <xref ref-type="fig" rid="fig_11">Figure 11</xref>’s box plot illustrates the distribution of recognized text lengths across different region indices (Region index 1–65). Each box represents the minimum, lower quartile, median, upper quartile, and maximum text lengths for the corresponding region.</p>
+          
+            <fig id="fig_11">
+              <label>Figure 11</label>
+              <caption>
+                <title>Text length distribution by region</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/3/img_j85dv8bbURsdKrV_.png"/>
+            </fig>
+          
+          <p>Overall, text length distributions in Regions 1-6 are relatively stable, with medians concentrated between 6 and 10 characters. Regions 56-65 exhibit slight variations, with lower medians in some areas potentially corresponding to different question types like short-answer or fill-in-the-blank questions. The median text length (<inline-formula>
+  <mml:math id="mo3tspkmjd">
+    <mml:msub>
+      <mml:mi>M</mml:mi>
+      <mml:mi>k</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula>) and interquartile range (<inline-formula>
+  <mml:math id="m2q5d9zweh">
+    <mml:msub>
+      <mml:mrow>
+        <mml:mi data-mjx-auto-op="false">IQR</mml:mi>
+      </mml:mrow>
+      <mml:mi>k</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula>) for Regions $k$ can be further analyzed to assess regional differences.</p><p> (8) Cumulative Distribution of Image Region Counts</p><p> <xref ref-type="fig" rid="fig_12">Figure 12</xref> displays PDF and CDF of the number of regions detected per image. The horizontal axis represents the number of regions, with the left vertical axis showing probability density and the right vertical axis showing cumulative probability. The PDF curve indicates that the number of regions is primarily concentrated around values of 4, 10, 12, and 14, with the highest probability density occurring at 12 regions.</p>
+          
+            <fig id="fig_12">
+              <label>Figure 12</label>
+              <caption>
+                <title>Region count distribution (probability density function (PDF) and cumulative distribution function (CDF))</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/3/img_IBqmums9PMDLb0dO.png"/>
+            </fig>
+          
+          <p>The CDF curve indicates that the cumulative probability is 0.48 when the number of regions is less than 14 , and reaches 0.99 when it is less than 16 , demonstrating that the vast majority of images contain no more than 16 regions. The cumulative distribution of the number of regions ($N<inline-formula>
+  <mml:math id="mc0jnneuyj">
+    <mml:mo>)</mml:mo>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>y</mml:mi>
+  </mml:math>
+</inline-formula>F(n)=P(N \leq n)<inline-formula>
+  <mml:math id="ml3nuzebec">
+    <mml:mo>,</mml:mo>
+    <mml:mi>w</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+  </mml:math>
+</inline-formula>F(14)=0.48<inline-formula>
+  <mml:math id="mca49df0bg">
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+  </mml:math>
+</inline-formula>F(16)=0.99$.</p><p>Following the experimental design, we completed training and testing for two comparative experiments. A systematic analysis of the results was conducted, focusing on three dimensions: the training process, loss curves, and inference performance. The specific results and analysis are as follows:</p><p>(1) Training Process Monitoring Results: Both experiments achieved stable distributed training on dual A16 GPUs. Computing resource utilization remained within reasonable ranges throughout training, with no instances of resource wastage or insufficiency. Model parameters updated normally, with no training interruptions, gradient explosions, or vanishing gradients. Real-time monitoring of key metrics like training logs and loss values was achieved via TensorBoard. The configuration of logging_steps and eval_steps enabled granular tracking of the training process, with model saving and validation executed in an orderly manner. The experimental results demonstrate that the hardware adaptation configuration and training parameter scheduling scheme designed in this study exhibit excellent stability and feasibility, effectively supporting the distributed fine-tuning training of multimodal models.</p><p>(2) Loss curve analysis results: The loss curve serves as a core indicator for assessing model convergence. Both training and validation losses in the two experimental groups exhibited an overall downward trend, consistent with fundamental convergence patterns. This confirms that the proposed fine-tuning strategy effectively guides the model to learn domain-specific features for answer sheet recognition. Specifically, in the medium-sample experiment with 200 samples, the loss values decreased more steadily. The gap between training loss and validation loss narrowed significantly in the later stages of training, indicating superior model convergence. This demonstrates that sufficient sample size enhances the model’s learning efficiency and generalization capability. In the small-sample experiment with 20 samples, the loss values exhibited slight fluctuations but achieved stable convergence overall. After training, the validation loss remained within a reasonable range, validating the good adaptability of the LoRA fine-tuning strategy in small-sample scenarios. It can effectively enhance model capabilities even with limited sample size. By adjusting key parameters such as LoRA parameters and training iterations, the convergence trend of the loss curve was effectively optimized, preventing severe overfitting or underfitting issues.</p><p>(3) Model Inference Performance Results: Model inference performance serves as the core metric for validating the practical value of fine-tuning schemes. Experimental results demonstrate that the fine-tuned Qwen2.5-VL-7B-Instruct model possesses the core capability for structured recognition of answers on K-12 answer sheets. It can accurately extract handwritten answer content from answer sheet images across various detection regions and output standardized JSON results that meet requirements. Specifically, the medium-sample fine-tuning model (200 samples) achieved an accuracy rate of, with low text extraction error rates. It demonstrates strong adaptability to uncommon handwriting styles and blurred characters, effectively addressing the diversity of handwriting in K-12 settings. The small-sample fine-tuning model (20 samples) achieved an accuracy rate of, enabling basic structured recognition that meets fundamental answer sheet identification needs and handles conventional handwriting scenarios. Both sets of experimental results demonstrate that the multimodal model fine-tuning scheme designed in this study can effectively enhance the model’s answer sheet recognition capabilities. It adapts to primary and secondary education scenarios with different sample sizes while accommodating the recognition needs of answer sheets for both Chinese and English subjects.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>4.3. Experimental discussion and future directions</title>
+          
+          <p>(1) Discussion: Based on the results of the two comparative experiments, the following core conclusions can be drawn: First, the multimodal model fine-tuning scheme designed in this study successfully achieves structured recognition of answers on Chinese and English answer sheets for primary and secondary schools, validating the adaptability of the Qwen2.5-VL-7B-Instruct model to educational scenarios. The combination of LoRA lightweight fine-tuning and dual A16 GPU distributed training effectively addresses computational resource constraints in educational settings, enabling low-cost, efficient model fine-tuning deployment that aligns well with current computing capabilities in K-12 education. Second, the standardized construction, random shuffling, and rational partitioning of multimodal datasets enabled efficient fusion of visual-text data, significantly enhancing the model’s generalization capabilities—the foundation for successful fine-tuning. While increased sample size markedly improves convergence and inference accuracy, the model still fulfills basic recognition needs in small-sample scenarios, accommodating the high annotation costs typical of K-12 datasets. Third, the model evaluation system centered on loss curve analysis, combined with practical inference performance, effectively judges model convergence and actual recognition capability. This provides a clear direction for optimizing model fine-tuning parameters, ensuring the model precisely meets the recognition needs of K-12 answer sheets.</p><p> Concurrently, experimental findings revealed limitations in this research: First, under small-sample datasets, the model exhibits insufficient recognition capabilities for complex handwriting and blurred characters, with occasional text extraction errors occurring for uncommon writing styles or hastily written characters. Second, model inference speed remains suboptimal, with prolonged processing time per answer sheet, failing to meet the efficiency demands of large-scale exam grading. Third, the model lacks subject-specific optimizations for answer sheets, resulting in inadequate recognition of complex characters in classical Chinese poetry and spelling variants in English words. </p><p>(2) Improvement Directions: Addressing the shortcomings identified in experiments and aligning with the practical needs of intelligent grading in K-12 education, the following improvement directions are proposed: First, expand the sample size of the multimodal dataset for K-12 answer sheets by incorporating samples from different subjects, question types, handwriting styles, and levels of clarity. Simultaneously, introduce data augmentation techniques such as image rotation, brightness adjustment, and noise addition to enhance the model’s generalization capabilities. Second, optimize LoRA fine-tuning parameter configurations. Design customized LoRA parameters and training strategies tailored to the recognition requirements of Chinese and English answer sheets, prioritizing improvements in recognizing complex handwriting and special text formats. Third, optimize the model inference process. Adopt lightweight techniques such as model quantization and distillation to accelerate answer sheet recognition inference speeds, adapting to the batch grading demands of large-scale examinations. Fourth, integrating OCR technology with multi-modal model recognition results to establish a multi-model fusion recognition system. Cross-validation enhances answer extraction accuracy, further optimizing the core process of intelligent grading.</p>
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>5. Application cases and feasibility analysis</title>
+      
+        <sec>
+          
+            <title>5.1. Application scenarios and empirical validation</title>
+          
+          <p>(1) Core Application Scenarios: The multimodal model fine-tuning solution designed in this study is primarily applied to the intelligent grading of non-multiple-choice answer sheets in subjects such as Chinese and English at primary and secondary schools. It can be directly integrated into various grading scenarios including school-based exams, regional standardized tests, and mock examinations. This solution enables automated extraction of answers from answer sheets—converting visual images into structured text—to provide standardized data support for subsequent machine scoring, manual review, and grade calculation. It significantly enhances grading efficiency, reduces teachers’ workload, and advances the digital transformation of educational assessment in K-12 schools.</p><p>(2) Case Validation: To further validate the solution’s practical effectiveness, answer sheets from Chinese and English subjects in primary and secondary schools were selected for real-world scenario testing. The validation process involved: selecting handwritten answer sheet images from Student Zhang (including Chinese answer sheets and English answer sheets), feeding them into the fine-tuned model’s inference environment, specifying corresponding detection region lists and recognition languages based on subject type, and having the model output structured JSON results according to predefined instructions. Verification results demonstrated that the model accurately extracted handwritten answers from all regions: Chinese answer sheets showed precise extraction of handwritten Chinese characters in classical poetry recitation and short-answer sections; English answer sheets exhibited standardized extraction of handwritten words and sentences in non-multiple-choice sections. Extraction results achieved a match rate of 99.9% with actual handwritten content, with no significant extraction errors. For answer sheets with slightly messy handwriting, the model still accurately recognized core text content, demonstrating good adaptability. Simultaneously, the answer sheet detection and matching interface enabled batch uploading and recognition of all answer sheets. Batch processing time was reasonable, meeting the bulk processing demands of actual grading scenarios and validating the solution’s usability and practicality in real-world grading contexts.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>5.2. Feasibility analysis</title>
+          
+          <p>A comprehensive feasibility analysis of the multimodal model fine-tuning solution designed in this study was conducted across four dimensions: technology, computing power, scenario adaptability, and application scalability. This ensures the solution can be widely implemented in K-12 education settings. The specific analysis is as follows:</p><p>(1) Technical Feasibility: The core technologies employed in this study are all mature deep learning and artificial intelligence techniques. The Qwen2.5-VL-7B-Instruct multimodal large model, LoRA lightweight fine-tuning technology, and LLaMA-Factory training framework have all been extensively validated through practice and demonstrate stable, reliable performance. Technologies such as distributed training, loss curve analysis, and API interface development possess standardized implementation processes with moderate technical barriers. Additionally, the solution’s overall technical architecture is compatible with mainstream deep learning hardware and software environments, offering excellent scalability. Technical personnel in the education sector can master the solution’s operational procedures with minimal training, enabling rapid technology deployment. Throughout experimentation, all technical components were successfully implemented without encountering insurmountable challenges, further validating the solution’s technical feasibility.</p><p>(2) Computing Power Feasibility: This study employed a dual A16 GPU hardware environment for model fine-tuning. The A16 GPU represents a small-to-medium scale computing hardware solution, offering advantages such as low procurement costs, minimal deployment complexity, and reduced energy consumption. This aligns with the current computing resource capabilities and budgetary constraints of primary/secondary schools and regional education departments. Additionally, the LoRA lightweight fine-tuning strategy significantly reduces computational demands during training. Even in small-scale computing environments (e.g., a single A16 GPU), model fine-tuning and deployment are achievable by merely extending training duration. Model inference requires even lower computational resources, enabling batch inference on standard servers without incurring substantial additional computing costs. Experimental results demonstrate that a dual-A16 GPU environment can stably support distributed model training with high computational efficiency, indicating strong computational feasibility.</p><p>(3) Scenario Adaptability: The solution features refined design tailored to the specific requirements of answer sheet recognition in K-12 education. Every aspect—from dataset construction and model fine-tuning to inference output—aligns with the practical demands of intelligent grading. Structured output results can directly interface with existing K-12 grading systems without additional format conversion; The few-shot fine-tuning strategy addresses the high annotation costs and limited sample sizes typical of K-12 datasets. Batch inference functionality meets the high-efficiency processing demands of real-world grading, enabling rapid adaptation to diverse scenarios like school-based exams and regional standardized tests. Randomly mixed training with Chinese and English answer sheet samples ensures the model can adapt to recognizing multiple answer sheet types, demonstrating exceptional scenario adaptability.</p><p>(4) Deployment Feasibility: This study’s fine-tuning solution has been standardized into a comprehensive operational manual. Each phase—from data processing, model training, and performance evaluation to model inference—provides explicit steps, parameter configurations, and precautions. Technical personnel in the education sector can master it after brief training. Additionally, the solution’s hardware and software setup costs are low, requiring minimal capital investment. It is suitable for deployment in primary/secondary schools, regional education research institutions, and similar organizations. Furthermore, the implementation of this solution can effectively enhance grading efficiency and reduce teachers’ workload. It aligns with the policy direction of digital transformation in primary and secondary education and holds promising prospects for widespread adoption. It provides a replicable and scalable technical solution for the comprehensive implementation of automated and intelligent grading in primary and secondary schools.</p>
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>6. Conclusions and future work</title>
+      
+        <sec>
+          
+            <title>6.1. Conclusions</title>
+          
+          <p>This study focused on automated and intelligent grading in K-12 education, conducting end-to-end research on fine-tuning multimodal large models for the critical task of structured recognition of answer sheet responses. Through model selection, dataset construction, fine-tuning strategy design, experimental validation, and application analysis, we developed a multimodal model fine-tuning technical solution tailored to K-12 educational scenarios. The core research conclusions are as follows:</p><p>(1) After lightweight fine-tuning via LoRA, the Qwen2.5-VL-7B-Instruct multimodal large model effectively adapts to the structured recognition needs of Chinese and English answer sheets in K-12 education. It accurately extracts handwritten text content from answer sheet images and outputs standardized JSON-formatted results. Both recognition accuracy and efficiency meet practical grading demands, providing core technological support for intelligent grading in K-12 education.</p><p>(2) The constructed multimodal dataset for Chinese and English answer sheets in primary and secondary schools achieves efficient fusion of visual and textual data through standardized preprocessing, random shuffling, and rational segmentation. This significantly enhances the model’s generalization capability, resolves the poor adaptability of existing datasets to multimodal fine-tuning frameworks, and forms the foundation for successful multimodal model fine-tuning. The distributed training configuration and differentiated training parameters designed for dual A16 GPUs achieve efficient utilization of computational resources, effectively addressing the pain point of limited computing power in K-12 educational settings.</p><p>(3) The established model evaluation system, centered on loss curve analysis and integrated with practical inference performance, effectively judges model convergence and actual recognition capabilities. It provides clear optimization directions for model fine-tuning parameters. Experiments with varying sample sizes validate the effectiveness of this evaluation system and the adaptability of fine-tuning strategies, meeting application demands across scenarios with different sample sizes.</p><p>(4) The end-to-end fine-tuning solution designed in this study—encompassing an end-to-end fine-tuning approach of “data processing, model training, effect evaluation, weight merging, model inference”—demonstrates feasibility in technical implementation, computational resource requirements, and scenario adaptability. It successfully achieves the practical implementation of structured recognition for answer sheet responses in K-12 education. The structured output can be directly integrated into subsequent intelligent grading processes, providing a scalable and replicable technical solution for automated and intelligent grading in K-12 educational settings. This approach holds significant practical application value.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>6.2. Research limitations and future work</title>
+          
+          <p>(1) Research Limitations: Based on the research process and experimental results, current limitations primarily manifest in three aspects: First, the dataset coverage and sample size still have room for improvement. The existing dataset mainly covers Chinese and English subjects, with insufficient coverage of mathematics, science, and other subjects. Additionally, it lacks comprehensive coverage of samples across different grades, handwriting styles, and levels of clarity. Second, the model achieves only structured extraction of answer sheet responses without deep integration into subsequent machine grading stages. The full intelligent grading pipeline remains incomplete, failing to realize seamless integration from answer sheet recognition to automated scoring. Third, model inference speed requires optimization, and batch processing capacity needs enhancement to meet the efficient grading demands of large-scale examinations (e.g., regional unified tests).</p><p>(2) Future Work: Addressing the limitations of this study and aligning with the digital transformation trends in K-12 education, future research will focus on the following areas:</p><p>First, we will continuously expand the multimodal dataset of K-12 answer sheets, gradually covering all subjects including Chinese, Mathematics, English, Science Comprehensive, and Humanities Comprehensive. This expansion will incorporate answer sheet samples from different grade levels, handwriting styles, levels of clarity, and question types. Concurrently, data augmentation techniques will be applied to enhance the richness and diversity of the dataset, further improving the model’s generalization capability and recognition accuracy.</p><p>Second, we will advance the deep integration of multimodal recognition and machine grading. Based on structured extraction results from answer sheets, we will develop machine grading models tailored to various question types (subjective and objective) across K-12 subjects, establish differentiated grading standards, and establish a fully integrated intelligent grading workflow. This will deliver an end-to-end solution spanning answer sheet recognition, automated grading, score aggregation, and manual review.</p><p>Third, conduct research on model lightweighting and inference acceleration optimization. Employ techniques such as model quantization, distillation, and pruning to reduce computational demands and inference time, thereby accelerating batch processing of answer sheets. This will accommodate the grading requirements of large-scale examinations and further enhance the practical value of the solution.</p><p>Fourth, we expand the application scenarios of multimodal model fine-tuning solutions, extending them to other K-12 education contexts such as automated homework grading, structured recognition of handwritten lesson plans, and student error analysis. This fully leverages the educational value of multimodal large models, driving the digital and intelligent advancement of K-12 education.</p><p>Fifth, establish an automated platform for multimodal model fine-tuning. Integrate data processing, model training, performance evaluation, and model inference into a unified platform to simplify operational workflows and lower technical barriers. This enables K-12 educators to quickly adopt the technology, achieving widespread and equitable application of intelligent grading solutions. </p>
+        </sec>
+      
+    </sec>
+  </body>
+  <back>
+    <ack>
+      <title>Acknowledgments</title>
+      
+    </ack>
+    <app-group>
+      <app>
+        <title>Appendix</title>
+        
+      </app>
+    </app-group>
+    <notes>
+      <title>Author Contributions</title>
+      <p>Conceptualization, Y.Y.W. and H.S.; methodology, Y.Y.W.; software, Y.Y.W.; validation, Y.Y.W. and H.S.; formal analysis, Y.Y.W.; investigation, Y.Y.W.; resources, Y.Y.W. and H.S.; data curation, Y.Y.W.; writing—original draft preparation, Y.Y.W.; writing—review and editing, Y.Y.W. and H.S.; visualization, Y.Y.W.; supervision, H.S.; project administration, H.S.; funding acquisition, H.S. All authors have read and agreed to the published version of the manuscript.</p>
+    </notes>
+    <notes>
+      <title>Funding</title>
+      <p>This work is supported by the 2024 Industrial Technology Basic Public Service Platform-Industry General Public Service Platform Project for Industrial Large Models (Grant No.: CEICE-2024-ZM02-0060).</p>
+    </notes>
+    <notes>
+      <title>Informed Consent Statement</title>
+      
+    </notes>
+    <notes>
+      <title>Data Availability Statement</title>
+      <p>The data used to support the research findings are available from the corresponding author upon request.</p>
+    </notes>
+    <notes notes-type="COI-statement">
+      <title>Conflicts of Interest</title>
+      <p>The authors declare no conflict of interest.</p>
+    </notes>
+    <ref-list>
+      <title>References</title>
+      <ref id="ref_1">
+        <label>1.</label>
+        <element-citation publication-type="journal">
+          <volume>36</volume>
+          <page-range>12507-12520</page-range>
+          <issue>7</issue>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Qiu</surname>
+              <given-names>T.</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>Q. M.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/tnnls.2024.3476080</pub-id>
+          <article-title>A framework for counterfactual explanation of predictive uncertainty in multimodal models</article-title>
+          <source>IEEE Trans. Neural Netw. Learn. Syst.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_2">
+        <label>2.</label>
+        <element-citation publication-type="journal">
+          <volume>63</volume>
+          <page-range>76-82</page-range>
+          <issue>1</issue>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Jiang</surname>
+              <given-names>F.</given-names>
+            </name>
+            <name>
+              <surname>Dong</surname>
+              <given-names>L.</given-names>
+            </name>
+            <name>
+              <surname>Peng</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>K.</given-names>
+            </name>
+            <name>
+              <surname>Yang</surname>
+              <given-names>K.</given-names>
+            </name>
+            <name>
+              <surname>Pan</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>You</surname>
+              <given-names>X.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/mcom.001.2300575</pub-id>
+          <article-title>Large AI model empowered multimodal semantic communications</article-title>
+          <source>IEEE Commun. Mag.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_3">
+        <label>3.</label>
+        <element-citation publication-type="journal">
+          <volume>13</volume>
+          <page-range>121048-121060</page-range>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Sun</surname>
+              <given-names>Y. Y.</given-names>
+            </name>
+            <name>
+              <surname>Zhou</surname>
+              <given-names>T.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/access.2025.3591447</pub-id>
+          <article-title>DialogueMLLM: Transforming multimodal emotion recognition in conversation through instruction-tuned MLLM</article-title>
+          <source>IEEE Access</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_4">
+        <label>4.</label>
+        <element-citation publication-type="journal">
+          <volume>24</volume>
+          <page-range>10009-10023</page-range>
+          <issue>10</issue>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Zhang</surname>
+              <given-names>R. Y.</given-names>
+            </name>
+            <name>
+              <surname>Chi</surname>
+              <given-names>X. W.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>W. Y.</given-names>
+            </name>
+            <name>
+              <surname>Liu</surname>
+              <given-names>G. L.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>D.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>F. X.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/tmc.2025.3567535</pub-id>
+          <article-title>Unimodal training-multimodal prediction: Cross-modal federated learning with hierarchical aggregation</article-title>
+          <source>IEEE Trans. Mob. Comput.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_5">
+        <label>5.</label>
+        <element-citation publication-type="journal">
+          <volume>10</volume>
+          <page-range>e28104</page-range>
+          <issue>6</issue>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Huang</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Xu</surname>
+              <given-names>W.</given-names>
+            </name>
+            <name>
+              <surname>Sukjairungwattana</surname>
+              <given-names>P.</given-names>
+            </name>
+            <name>
+              <surname>Yu</surname>
+              <given-names>Z. G.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.heliyon.2024.e28104</pub-id>
+          <article-title>Learners’ continuance intention in multimodal language learning education: An innovative multiple linear regression model</article-title>
+          <source>Heliyon</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_6">
+        <label>6.</label>
+        <element-citation publication-type="journal">
+          <volume>12</volume>
+          <page-range>3569-3582</page-range>
+          <issue>5</issue>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Cheng</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Liu</surname>
+              <given-names>W. Z.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Feng</surname>
+              <given-names>L.</given-names>
+            </name>
+            <name>
+              <surname>Jia</surname>
+              <given-names>Z. Y.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/tcss.2024.3415613</pub-id>
+          <article-title>A cross-modal adaptive masked autoencoder for decoding emotions with multimodal data</article-title>
+          <source>IEEE Trans. Comput. Soc. Syst.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_7">
+        <label>7.</label>
+        <element-citation publication-type="journal">
+          <volume>25</volume>
+          <page-range>3168-3181</page-range>
+          <issue>3</issue>
+          <year>2026</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Zheng</surname>
+              <given-names>J. N.</given-names>
+            </name>
+            <name>
+              <surname>Yu</surname>
+              <given-names>J. D.</given-names>
+            </name>
+            <name>
+              <surname>Liu</surname>
+              <given-names>X. L.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/tmc.2025.3615129</pub-id>
+          <article-title>Scheduling and fusion for multimodal federated learning in energyconstrained wireless networks</article-title>
+          <source>IEEE Trans. Mob. Comput.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_8">
+        <label>8.</label>
+        <element-citation publication-type="journal">
+          <volume>37</volume>
+          <page-range>5311-5329</page-range>
+          <issue>9</issue>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Song</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Zhao</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Yu</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Ma</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Mao</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>W.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>M.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/tkde.2025.3527978</pub-id>
+          <article-title>How to bridge the gap between modalities: Survey on multimodal large language model</article-title>
+          <source>IEEE Trans. Knowl. Data Eng.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_9">
+        <label>9.</label>
+        <element-citation publication-type="journal">
+          <volume>85</volume>
+          <page-range>1161-1184</page-range>
+          <issue>1</issue>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Liu</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Sun</surname>
+              <given-names>T. N.</given-names>
+            </name>
+            <name>
+              <surname>Gong</surname>
+              <given-names>D. F.</given-names>
+            </name>
+            <name>
+              <surname>Di</surname>
+              <given-names>L.</given-names>
+            </name>
+            <name>
+              <surname>Zhao</surname>
+              <given-names>X.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.32604/cmc.2025.062330</pub-id>
+          <article-title>Research on multimodal AIGC video detection for identifying fake videos generated by large models</article-title>
+          <source>CMC-Comput. Mater. Contin.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_10">
+        <label>10.</label>
+        <element-citation publication-type="journal">
+          <volume>15</volume>
+          <page-range>2070-2082</page-range>
+          <issue>4</issue>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Liu</surname>
+              <given-names>W.</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>W.</given-names>
+            </name>
+            <name>
+              <surname>Ruan</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Shu</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Chen</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Yu</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Guan</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Zhou</surname>
+              <given-names>S.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/taffc.2024.3396144</pub-id>
+          <article-title>Weakly correlated multimodal sentiment analysis: New dataset and topic-oriented model</article-title>
+          <source>IEEE Trans. Affect. Comput.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_11">
+        <label>11.</label>
+        <element-citation publication-type="journal">
+          <volume>36</volume>
+          <page-range>51-62</page-range>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Wang</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Yin</surname>
+              <given-names>W.</given-names>
+            </name>
+            <name>
+              <surname>Yu</surname>
+              <given-names>T.</given-names>
+            </name>
+            <name>
+              <surname>Xue</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>A.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.eng.2023.11.020</pub-id>
+          <article-title>Multimodal machine learning guides low carbon aeration strategies in urban wastewater treatment</article-title>
+          <source>Engineering</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_12">
+        <label>12.</label>
+        <element-citation publication-type="journal">
+          <volume>16</volume>
+          <page-range>250-263</page-range>
+          <issue>1</issue>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Li</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Zhu</surname>
+              <given-names>Z. F.</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>K. F.</given-names>
+            </name>
+            <name>
+              <surname>Pei</surname>
+              <given-names>H. L.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/taffc.2024.3430045</pub-id>
+          <article-title>Diversity and balance: Multimodal sentiment analysis using multimodal-prefixed and cross-modal attention</article-title>
+          <source>IEEE Trans. Affect. Comput.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_13">
+        <label>13.</label>
+        <element-citation publication-type="journal">
+          <volume>64</volume>
+          <page-range>94-101</page-range>
+          <issue>1</issue>
+          <year>2026</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Dong</surname>
+              <given-names>Y. J.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>H. J.</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>C. M.</given-names>
+            </name>
+            <name>
+              <surname>Guo</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Leung</surname>
+              <given-names>V. C. M.</given-names>
+            </name>
+            <name>
+              <surname>Hu</surname>
+              <given-names>X. P.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/mcom.001.2400602</pub-id>
+          <article-title>Fine-tuning and deploying large language models over edges: Issues and approaches</article-title>
+          <source>IEEE Commun. Mag.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_14">
+        <label>14.</label>
+        <element-citation publication-type="journal">
+          <volume>63</volume>
+          <page-range>5405015</page-range>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Ma</surname>
+              <given-names>X. P.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>X. K.</given-names>
+            </name>
+            <name>
+              <surname>Pun</surname>
+              <given-names>M. O.</given-names>
+            </name>
+            <name>
+              <surname>Huang</surname>
+              <given-names>B.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/tgrs.2025.3585238</pub-id>
+          <article-title>A unified framework with multimodal fine-tuning for remote sensing semantic segmentation</article-title>
+          <source>IEEE Trans. Geosci. Remote Sens.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_15">
+        <label>15.</label>
+        <element-citation publication-type="journal">
+          <volume>83</volume>
+          <page-range>4031-4059</page-range>
+          <issue>3</issue>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Sirisha</surname>
+              <given-names>U.</given-names>
+            </name>
+            <name>
+              <surname>Kumar</surname>
+              <given-names>C. K.</given-names>
+            </name>
+            <name>
+              <surname>Durgam</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Eswaraiah</surname>
+              <given-names>P.</given-names>
+            </name>
+            <name>
+              <surname>Nagamani</surname>
+              <given-names>G. M.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.32604/cmc.2025.063721</pub-id>
+          <article-title>An analytical reviewof large language models leveraging KDGI fine-tuning, quantum embedding’s, and multimodal architectures</article-title>
+          <source>CMC-Comput. Mater. Contin.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_16">
+        <label>16.</label>
+        <element-citation publication-type="journal">
+          <volume>27</volume>
+          <page-range>3184-3196</page-range>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Weng</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>He</surname>
+              <given-names>W. B.</given-names>
+            </name>
+            <name>
+              <surname>Dong</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Liu</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Liu</surname>
+              <given-names>Z.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/tmm.2025.3557678</pub-id>
+          <article-title>Cross-lingual adaptation for vision-language model via multimodal semantic distillation</article-title>
+          <source>IEEE Trans. Multimedia</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_17">
+        <label>17.</label>
+        <element-citation publication-type="journal">
+          <volume>27</volume>
+          <page-range>2304-2319</page-range>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Huan</surname>
+              <given-names>R. H.</given-names>
+            </name>
+            <name>
+              <surname>Zhong</surname>
+              <given-names>G. W.</given-names>
+            </name>
+            <name>
+              <surname>Chen</surname>
+              <given-names>P.</given-names>
+            </name>
+            <name>
+              <surname>Liang</surname>
+              <given-names>R. H.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/tmm.2024.3521836</pub-id>
+          <article-title>MulDeF: A model-agnostic debiasing framework for robust multimodal sentiment analysis</article-title>
+          <source>IEEE Trans. Multimedia</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_18">
+        <label>18.</label>
+        <element-citation publication-type="journal">
+          <volume>12</volume>
+          <page-range>1351-1364</page-range>
+          <issue>3</issue>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Nie</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Yang</surname>
+              <given-names>L. T.</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Deng</surname>
+              <given-names>X. J.</given-names>
+            </name>
+            <name>
+              <surname>Fan</surname>
+              <given-names>F. L.</given-names>
+            </name>
+            <name>
+              <surname>Yang</surname>
+              <given-names>Z. C.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/tcss.2024.3459929</pub-id>
+          <article-title>Interpretable multimodal tucker fusion model with information filtering for multimodal sentiment analysis</article-title>
+          <source>IEEE Trans. Comput. Soc. Syst.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_19">
+        <label>19.</label>
+        <element-citation publication-type="journal">
+          <volume>33</volume>
+          <page-range>28-42</page-range>
+          <issue>1</issue>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Wang</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Lyu</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Kim</surname>
+              <given-names>B. G.</given-names>
+            </name>
+            <name>
+              <surname>Parameshachari</surname>
+              <given-names>B. D.</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>K. Q.</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>Q.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/tfuzz.2024.3419140</pub-id>
+          <article-title>Exploring multimodal multiscale features for sentiment analysis using fuzzy-deep neural network learning</article-title>
+          <source>IEEE Trans. Fuzzy Syst.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_20">
+        <label>20.</label>
+        <element-citation publication-type="journal">
+          <volume>16</volume>
+          <page-range>2074-2089</page-range>
+          <issue>3</issue>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Mai</surname>
+              <given-names>S. J.</given-names>
+            </name>
+            <name>
+              <surname>Zeng</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Xiong</surname>
+              <given-names>A. L.</given-names>
+            </name>
+            <name>
+              <surname>Hu</surname>
+              <given-names>H. F.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/taffc.2025.3553149</pub-id>
+          <article-title>Injecting multimodal information into pre-trained language model for multimodal sentiment analysis</article-title>
+          <source>IEEE Trans. Affect. Comput.</source>
+        </element-citation>
+      </ref>
+    </ref-list>
+  </back>
+</article>
