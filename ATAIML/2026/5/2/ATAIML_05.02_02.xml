@@ -1,0 +1,3086 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.3 20210610//EN" "JATS-journalpublishing1-3.dtd">
+<article xml:lang="en" dtd-version="1.3" article-type="research-article" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mml="http://www.w3.org/1998/Math/MathML">
+  <front>
+    <journal-meta>
+      <journal-id journal-id-type="publisher-id">ATAIML</journal-id>
+      <journal-id journal-id-type="doi">10.56578</journal-id>
+      <journal-title-group>
+        <journal-title>Acadlore Transactions on AI and Machine Learning</journal-title>
+        <abbrev-journal-title abbrev-type="issn">Acadlore Trans. Mach. Learn.</abbrev-journal-title>
+        <abbrev-journal-title abbrev-type="publisher">ATAIML</abbrev-journal-title>
+      </journal-title-group>
+      <issn publication-format="electronic">2957-9570</issn>
+      <issn publication-format="print">2957-9562</issn>
+      <publisher>
+        <publisher-name>Acadlore</publisher-name>
+      </publisher>
+    </journal-meta>
+    <article-meta>
+      <article-id pub-id-type="publisher-id">AR-L2Zg_tJuBf3tP_SWYiPn9_K0YMaq0GC4</article-id>
+      <article-id pub-id-type="doi">10.56578/ataiml050202</article-id>
+      <article-categories>
+        <subj-group>
+          <subject>Articles</subject>
+        </subj-group>
+      </article-categories>
+      <title-group>
+        <article-title>DRF-Net: Frequency-Guided Feature Reconstruction for Small Object Detection in Aerial Imagery</article-title>
+      </title-group>
+      <contrib-group>
+        <contrib contrib-type="author" rid="aff_1">
+          <contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0009-0001-5417-9494</contrib-id>
+          <name>
+            <surname>Tang</surname>
+            <given-names>Mingyao</given-names>
+          </name>
+          <email>212309611217@hyit.edu.cn</email>
+        </contrib>
+        <contrib contrib-type="author" rid="aff_1">
+          <contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0000-0003-3612-5051</contrib-id>
+          <name>
+            <surname>Ma</surname>
+            <given-names>Jialin</given-names>
+          </name>
+          <email>majl@hyit.edu.cn</email>
+        </contrib>
+        <contrib contrib-type="author" rid="aff_2">
+          <contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0000-0001-7715-3070</contrib-id>
+          <name>
+            <surname>Khadka</surname>
+            <given-names>Ashim</given-names>
+          </name>
+          <email>khadkaashim@gmail.com</email>
+        </contrib>
+        <aff id="aff_1">Faculty of Computer and Software Engineering, Huaiyin Institute of Technology, 223003 Huaian, China</aff>
+        <aff id="aff_2">Nepal College of Information Technology, Pokhara University, 44700 Lalitpur, Nepal</aff>
+      </contrib-group>
+      <pub-date publication-format="electronic" date-type="pub">
+        <day>15</day>
+        <month>04</month>
+        <year>2026</year>
+      </pub-date>
+      <volume>5</volume>
+      <issue>2</issue>
+      <fpage>107</fpage>
+      <lpage>118</lpage>
+      <page-range>107-118</page-range>
+      <history>
+        <date date-type="received">
+          <day>06</day>
+          <month>11</month>
+          <year>2025</year>
+        </date>
+        <date date-type="accepted">
+          <day>10</day>
+          <month>03</month>
+          <year>2026</year>
+        </date>
+      </history>
+      <permissions>
+        <copyright-statement>©2026 by the author(s)</copyright-statement>
+        <copyright-year>2026</copyright-year>
+        <license license-type="open-access" xlink:href="https://creativecommons.org/licenses/by/4.0/">
+          <license-p> Published by Acadlore Publishing Services Limited, Hong Kong. This article is available for free download and can be reused and cited, provided that the original published version is credited, under the CC BY 4.0 license.</license-p>
+        </license>
+      </permissions>
+      <abstract><p>Small object detection in aerial imagery remains challenging due to limited spatial resolution, background clutter, and severe scale variation. Existing deep learning–based detectors often suffer from weakened shallow representations and insufficient cross-scale feature interaction, leading to missed detections and unstable localization in dense scenes. This work presents Dynamic Reconstruction and Fusion Network (DRF-Net), a frequency-guided feature reconstruction framework for small object detection. Built upon a one-stage detection paradigm, the proposed method introduces three key components: a frequency-guided channel–spatial augmentation (FCSA) module to enhance fine-grained representations, a multi-frequency reconstruction block (MFRB) to restore cross-scale structural information, and a Dynamic Reconstruction Fusion Neck (DRF-Neck) to adaptively regulate multi-scale feature aggregation. By jointly modeling high- and low-frequency components and integrating saliency-aware fusion mechanisms, the framework improves the preservation of small-object contours while suppressing redundant background responses. Extensive experiments conducted on the VisDrone2019 benchmark demonstrate that DRF-Net consistently outperforms the baseline detector in terms of detection accuracy, particularly for small and densely distributed objects, while maintaining real-time inference efficiency. Ablation studies further verify the complementary contributions of the proposed modules to feature representation and fusion stability. The results indicate that frequency-guided reconstruction and dynamic fusion provide an effective learning strategy for enhancing small-object detection performance in complex visual scenes.</p></abstract>
+      <kwd-group>
+        <kwd>Small object detection</kwd>
+        <kwd>Deep learning</kwd>
+        <kwd>Feature reconstruction</kwd>
+        <kwd>Frequency-guided modeling</kwd>
+        <kwd>Attention-based fusion</kwd>
+      </kwd-group>
+      <counts>
+        <count count-type="contributors" count="3"/>
+        <fig-count count="7"/>
+        <table-count count="3"/>
+        <ref-count count="25"/>
+      </counts>
+    </article-meta>
+  </front>
+  <body>
+    <sec sec-type="intro">
+      <title>1. Introduction</title>
+      <p>With the rapid development of unmanned aerial vehicle (UAV) systems, UAV-based visual perception has been widely applied in intelligent transportation, urban management, and disaster emergency response [<xref ref-type="bibr" rid="ref_1">1</xref>]. As a core task in UAV visual perception, object detection plays a critical role in environmental perception, target recognition, and intelligent decision-making [<xref ref-type="bibr" rid="ref_2">2</xref>].</p><p>Existing object detection methods can be broadly categorized into two-stage and one-stage paradigms, represented by region-based approaches such as Faster Region-based Convolutional Neural Network (Faster R-CNN) [<xref ref-type="bibr" rid="ref_3">3</xref>] and Mask Region-based Convolutional Neural Network (Mask R-CNN) [<xref ref-type="bibr" rid="ref_4">4</xref>], and single-shot detectors such as Single Shot MultiBox Detector (SSD) [<xref ref-type="bibr" rid="ref_5">5</xref>] and the You Only Look Once (YOLO) series [<xref ref-type="bibr" rid="ref_6">6</xref>]. While these methods achieve satisfactory performance under clean backgrounds and large object scales, their effectiveness degrades significantly in UAV aerial imagery due to small object sizes, complex background clutter, and frequent occlusions, as well as stringent real-time constraints imposed by limited onboard computational resources. Consequently, extensive studies have explored improvement strategies from multiple perspectives, including network architecture design, feature enhancement, and multi-scale feature fusion.</p><p>Numerous studies have focused on improving YOLO-series models to balance detection accuracy and real-time performance. Representative methods such as Enhanced Multi-Feature Extraction YOLO (EMFE-YOLO) and Lightweight UAV-YOLO (LightUAV-YOLO) enhance feature extraction and multi-scale fusion through architectural optimization, while Efficient Lightweight Network (EL-Net), Lightweight Edge-Aware Feature YOLO (LEAF-YOLO), and Lightweight UAV Detection YOLO (LUD-YOLO) achieve efficient detection under edge-computing constraints by designing lightweight network structures [<xref ref-type="bibr" rid="ref_7">7</xref>], [<xref ref-type="bibr" rid="ref_8">8</xref>], [<xref ref-type="bibr" rid="ref_9">9</xref>], [<xref ref-type="bibr" rid="ref_10">10</xref>], [<xref ref-type="bibr" rid="ref_11">11</xref>], [<xref ref-type="bibr" rid="ref_12">12</xref>].</p><p>Another line of research focuses on module-level optimization by improving feature fusion strategies and introducing attention mechanisms to enhance small-object representation [<xref ref-type="bibr" rid="ref_13">13</xref>]. Representative methods, including Pixel-level Multi-Scale Enhancement (PMSE), Scale-Context Feature Pyramid Network (SCFPN), and attention mechanisms based on long-range dependencies, effectively alleviate the mismatch between shallow and deep features under complex backgrounds [<xref ref-type="bibr" rid="ref_14">14</xref>], [<xref ref-type="bibr" rid="ref_15">15</xref>]. In addition, YOLOv11-based methods such as Reconstruction-Enhanced Attention YOLO (REA-YOLO) and Dual-Attention UAV-YOLO (DAU-YOLO) optimize feature fusion and detection head structures to handle dense object distributions and severe occlusions [<xref ref-type="bibr" rid="ref_16">16</xref>], [<xref ref-type="bibr" rid="ref_17">17</xref>]. Knowledge distillation is also explored to improve detection performance while maintaining compact model sizes [<xref ref-type="bibr" rid="ref_18">18</xref>], [<xref ref-type="bibr" rid="ref_19">19</xref>].</p><p>Despite notable progress in UAV-based object detection, challenges such as insufficient feature representation and the trade-off between model complexity and detection performance in complex scenes remain. To address these issues, this paper proposes Dynamic Reconstruction and Fusion Network (DRF-Net), an improved object detection framework based on YOLOv11. The main contributions are summarized as follows:</p><p>(1) A frequency-guided channel–spatial attention (FCSA) module is designed to enhance the interaction between shallow fine-grained features and deep semantic representations. By leveraging high- and low-frequency feature decomposition, adaptive frequency-domain weight modeling, and cross-dimensional attention fusion, the proposed module effectively strengthens small-object feature representation while suppressing redundant background interference.</p><p>(2) A multi-frequency reconstruction block (MFRB) is proposed to reconstruct multi-scale features prior to feature fusion. By integrating multi-scale convolution, high-frequency structural compensation, and low-frequency context modeling, the proposed block enhances the structural integrity of cross-scale features and improves the network’s capability to capture fine-grained details of small objects as well as their contextual relationships.</p><p>(3) A dynamic reconstruction and fusion neck (DRF-Neck) structure, termed DRF-Neck, is constructed to enhance multi-scale feature aggregation. By incorporating deformable convolution, cross-layer dynamic feedback, and gated fusion mechanisms, the proposed neck adaptively regulates the feature fusion process, resulting in more sufficient and stable feature integration and further improving overall detection accuracy and feature propagation efficiency.</p>
+    </sec>
+    <sec sec-type="">
+      <title>2. Proposed method</title>
+      <p>In practical UAV vision systems, DRF-Net serves as a core perception module for real-time object detection and can be integrated into applications such as traffic monitoring, infrastructure/industrial inspection, and emergency response. It processes onboard video frames and outputs object labels, confidence scores, and bounding boxes for downstream tasks (e.g., tracking, risk assessment, warning generation, and decision support). With enhanced small-object representation while maintaining real-time inference efficiency, DRF-Net is suitable for integration into UAV edge or onboard visual perception pipelines.</p><p>To address weak small-object feature representation and insufficient cross-scale information interaction in UAV aerial imagery, this paper proposes an improved object detection model termed DRF-Net based on the YOLOv11 framework. The model enhances detection performance through frequency-guided feature enhancement, multi-frequency structural reconstruction, and saliency-driven dynamic feature fusion. The overall architecture of DRF-Net is illustrated in <xref ref-type="fig" rid="fig_1">Figure 1</xref>, consisting of the input layer, backbone network, neck network, and detection head.</p>
+      
+        <fig id="fig_1">
+          <label>Figure 1</label>
+          <caption>
+            <title>Framework of Dynamic Reconstruction and Fusion Network (DRF-Net)</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/3/img_DJ46qWOkxRNRm8lc.png"/>
+        </fig>
+      
+      <p>UAV aerial images pose distinctive challenges compared with ground-level images. Owing to high flight altitudes and wide fields of view, targets often occupy only a few pixels and are easily obscured by complex background textures (e.g., roads, buildings, and vegetation). As a result, spatial-domain convolutional features are frequently dominated by background responses, weakening small-object discrimination. From a frequency-domain viewpoint, small objects are primarily reflected in high-frequency components, whereas large-scale backgrounds are mainly distributed in low-frequency bands. This motivates frequency-guided feature enhancement to emphasize fine-grained target cues while suppressing redundant background information. Furthermore, large scale variations and cross-level structural inconsistencies call for multi-frequency reconstruction and dynamic fusion to restore cross-scale coherence and enable robust multi-scale representation.</p><p>The input UAV aerial images are resized to 640 × 640 × 3 and fed into the backbone network for hierarchical feature extraction. Let <inline-formula>
+  <mml:math id="m8vv2jvhyr">
+    <mml:msub>
+      <mml:mi>F</mml:mi>
+      <mml:mi>i</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> denote the feature map output by the i-th backbone layer. The backbone consists of basic convolutional layers and the proposed Frequency-Guided Feature Enhancement module, which facilitates effective interaction between shallow fine-grained features and deep semantic representations.</p><p>Before feature fusion, a MFRB is introduced to reconstruct and compensate multi-scale feature representations by integrating structural and contextual information across different feature levels. The reconstructed features are then fed into the DRF-Neck, which enables flexible and stable multi-scale feature aggregation through saliency-guided deformable convolution (SAR-DCN), adaptive sampling via simplified content-aware reassembly of features (S-CARAFE), gated fusion, and cross-layer dynamic feedback.</p><p>Furthermore, an adaptive hybrid Intersection over Union (IoU) loss, termed Autonomous Hybrid IoU loss (AHIoU), is incorporated to improve localization accuracy and training stability. AHIoU combines the geometric constraint of Efficient IoU (EIoU) [<xref ref-type="bibr" rid="ref_20">20</xref>] with the dynamic weighting mechanism of Focal IoU loss(FocalIOU) [<xref ref-type="bibr" rid="ref_21">21</xref>], enhancing the model’s sensitivity to small objects and low-IoU samples [<xref ref-type="bibr" rid="ref_22">22</xref>].</p>
+      
+        <sec>
+          
+            <title>2.1. Frequency-guided channel–spatial augmentation</title>
+          
+          <p>The FCSA module is designed to enhance the expressive capability of multi-scale features by introducing frequency-domain guidance and channel–spatial coupling mechanisms, thereby strengthening small-object features while suppressing background interference. The overall architecture of the FCSA module is illustrated in <xref ref-type="fig" rid="fig_2">Figure 2</xref>.</p>
+          
+            <fig id="fig_2">
+              <label>Figure 2</label>
+              <caption>
+                <title>Architecture of the proposed frequency-guided channel–spatial attention (FCSA) module</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/3/img_NEz1dADSm5GPd7GS.png"/>
+            </fig>
+          
+          <p>First, given the input feature Fin, FCSA constructs two parallel branches to capture complementary information, where the high-frequency branch focuses on local fine-grained details and the low-frequency branch models broader background context:</p>
+          
+            <disp-formula>
+              <label>(1)</label>
+              <mml:math id="mi297uh9rx">
+                <mml:msub>
+                  <mml:mi>F</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>h</mml:mi>
+                    <mml:mi>f</mml:mi>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mi>HPFConv</mml:mi>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:msub>
+                    <mml:mi>F</mml:mi>
+                    <mml:mrow>
+                      <mml:mi>i</mml:mi>
+                      <mml:mi>n</mml:mi>
+                    </mml:mrow>
+                  </mml:msub>
+                </mml:mrow>
+              </mml:math>
+            </disp-formula>
+          
+          
+            <disp-formula>
+              <label>(2)</label>
+              <mml:math id="m2k446jefh">
+                <mml:msub>
+                  <mml:mi>F</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>l</mml:mi>
+                    <mml:mi>f</mml:mi>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mi>DilatedConv</mml:mi>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:msub>
+                    <mml:mi>F</mml:mi>
+                    <mml:mrow>
+                      <mml:mi>i</mml:mi>
+                      <mml:mi>n</mml:mi>
+                    </mml:mrow>
+                  </mml:msub>
+                </mml:mrow>
+              </mml:math>
+            </disp-formula>
+          
+          <p>In the formulation, High-Pass Filter Convolution (HPFConv) denotes the high-pass convolution operation, Dilated Convolution (DilatedConv) denotes the dilated convolution with a specified dilation rate, and <inline-formula>
+  <mml:math id="mq844gxrn0">
+    <mml:msub>
+      <mml:mi>F</mml:mi>
+      <mml:mrow>
+        <mml:mi>h</mml:mi>
+        <mml:mi>f</mml:mi>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula> and <inline-formula>
+  <mml:math id="mkprhr02zz">
+    <mml:msub>
+      <mml:mi>F</mml:mi>
+      <mml:mrow>
+        <mml:mi>l</mml:mi>
+        <mml:mi>f</mml:mi>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula> represent the feature representations extracted from the high-frequency and low-frequency branches, respectively.</p><p>Subsequently, the two frequency-domain feature representations are concatenated along the channel dimension and fused through a 1 × 1 fusion convolution (FConv) for feature compression. A frequency-domain weight map <inline-formula>
+  <mml:math id="m988mixdvh">
+    <mml:msub>
+      <mml:mi>W</mml:mi>
+      <mml:mi>f</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> is then generated using the Sigmoid activation function to emphasize salient high-frequency regions while suppressing redundant background responses:</p>
+          
+            <disp-formula>
+              <label>(3)</label>
+              <mml:math id="m8tqbmd3f1">
+                <mml:msub>
+                  <mml:mi>W</mml:mi>
+                  <mml:mi>f</mml:mi>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mi>σ</mml:mi>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo fence="true"/>
+                  <mml:msub>
+                    <mml:mi>Conv</mml:mi>
+                    <mml:mrow>
+                      <mml:mn>1</mml:mn>
+                      <mml:mn>1</mml:mn>
+                      <mml:mo>×</mml:mo>
+                    </mml:mrow>
+                  </mml:msub>
+                  <mml:mrow>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:mi>Concat</mml:mi>
+                    <mml:mrow>
+                      <mml:mo>(</mml:mo>
+                      <mml:mo>,</mml:mo>
+                      <mml:mo>)</mml:mo>
+                      <mml:msub>
+                        <mml:mi>F</mml:mi>
+                        <mml:mrow>
+                          <mml:mi>h</mml:mi>
+                          <mml:mi>f</mml:mi>
+                        </mml:mrow>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mi>F</mml:mi>
+                        <mml:mrow>
+                          <mml:mi>l</mml:mi>
+                          <mml:mi>f</mml:mi>
+                        </mml:mrow>
+                      </mml:msub>
+                    </mml:mrow>
+                  </mml:mrow>
+                </mml:mrow>
+              </mml:math>
+            </disp-formula>
+          
+          <p>Based on the generated frequency-domain weight map <inline-formula>
+  <mml:math id="m25t0ma6q4">
+    <mml:msub>
+      <mml:mi>W</mml:mi>
+      <mml:mi>f</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula>, the input features are recalibrated to obtain the frequency-domain enhanced representation <inline-formula>
+  <mml:math id="ml3ag7d60g">
+    <mml:msub>
+      <mml:mi>F</mml:mi>
+      <mml:mi>f</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula>.</p>
+          
+            <disp-formula>
+              <label>(4)</label>
+              <mml:math id="m31n7drjm6">
+                <mml:msub>
+                  <mml:mi>F</mml:mi>
+                  <mml:mi>f</mml:mi>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>F</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>i</mml:mi>
+                    <mml:mi>n</mml:mi>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>W</mml:mi>
+                  <mml:mi>f</mml:mi>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mo>⊙</mml:mo>
+              </mml:math>
+            </disp-formula>
+          
+          <p>Here, Concat denotes the channel-wise concatenation operation, <inline-formula>
+  <mml:math id="mqovekyztl">
+    <mml:mi>σ</mml:mi>
+    <mml:mo>(</mml:mo>
+    <mml:mo>⋅</mml:mo>
+    <mml:mo>)</mml:mo>
+  </mml:math>
+</inline-formula> represents the activation function, Conv $1 \times 1<inline-formula>
+  <mml:math id="m6nrjrzf75">
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+  </mml:math>
+</inline-formula>1 \times 1<inline-formula>
+  <mml:math id="mnhywf3k3o">
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>W_f<inline-formula>
+  <mml:math id="mpckjz77na">
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>q</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mo>−</mml:mo>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>\odot$ indicates element-wise multiplication. Recalibrating features using frequency-domain weights effectively emphasizes salient highfrequency regions while suppressing background responses with low salience, thereby making the spatial distribution and response intensity of shallow features more suitable for small-object detection tasks.</p><p>Building upon the frequency-domain enhancement, FCSA introduces a channel–spatial coupling mechanism. Global pooling operations followed by a lightweight Multi-Layer Perceptron (MLP) are used to model spatial saliency and generate attention weights for adaptive feature recalibration:</p>
+          
+            <disp-formula>
+              <label>(5)</label>
+              <mml:math id="mzclbrkl6l">
+                <mml:msub>
+                  <mml:mi>W</mml:mi>
+                  <mml:mi>s</mml:mi>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mi>Conv</mml:mi>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:mi>DeCon</mml:mi>
+                  <mml:mrow>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:msub>
+                      <mml:mi>S</mml:mi>
+                      <mml:mi>c</mml:mi>
+                    </mml:msub>
+                  </mml:mrow>
+                </mml:mrow>
+              </mml:math>
+            </disp-formula>
+          
+          <p> where, <inline-formula>
+  <mml:math id="m556pz5yni">
+    <mml:msub>
+      <mml:mi>S</mml:mi>
+      <mml:mi>c</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> is defined as:</p>
+          
+            <disp-formula>
+              <label>(6)</label>
+              <mml:math id="mfcx0cqujv">
+                <mml:msub>
+                  <mml:mi>S</mml:mi>
+                  <mml:mi>c</mml:mi>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mi>M</mml:mi>
+                <mml:mi>L</mml:mi>
+                <mml:mi>P</mml:mi>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>,</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:mi>G</mml:mi>
+                  <mml:mi>A</mml:mi>
+                  <mml:mi>P</mml:mi>
+                  <mml:mi>G</mml:mi>
+                  <mml:mi>M</mml:mi>
+                  <mml:mi>P</mml:mi>
+                  <mml:mrow>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:msub>
+                      <mml:mi>F</mml:mi>
+                      <mml:mi>f</mml:mi>
+                    </mml:msub>
+                  </mml:mrow>
+                  <mml:mrow>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:msub>
+                      <mml:mi>F</mml:mi>
+                      <mml:mi>f</mml:mi>
+                    </mml:msub>
+                  </mml:mrow>
+                </mml:mrow>
+              </mml:math>
+            </disp-formula>
+          
+          <p>where, GAP and GMP denote Global Average Pooling and Global Max Pooling operations, respectively; MLP denotes a multilayer perceptron; Deformable Convolution (DEConv) represents the deconvolution mapping operation; and <inline-formula>
+  <mml:math id="mr28gkor0g">
+    <mml:msub>
+      <mml:mi>W</mml:mi>
+      <mml:mi>s</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> denotes the generated spatial saliency map, <inline-formula>
+  <mml:math id="mv0kb7afc2">
+    <mml:msub>
+      <mml:mi>S</mml:mi>
+      <mml:mi>c</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> denotes the channel-wise context descriptor obtained by aggregating GAP and GMP features. By integrating complementary statistical information from different pooling operations, this process effectively models spatial saliency and highlights regions with strong discriminative significance.</p><p>To achieve an adaptive balance between feature enhancement and information preservation, FCSA further incorporates a cross-scale dynamic gating unit. This unit first performs contextual modeling on features from adjacent scales to capture cross-layer semantic dependencies. The resulting contextual features are then fused with the output of the previous unit and the original input features through residual connections (RESs), producing the final output feature representation:</p>
+          
+            <disp-formula>
+              <label>(7)</label>
+              <mml:math id="m22drqorty">
+                <mml:msub>
+                  <mml:mi>F</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>f</mml:mi>
+                    <mml:mi>c</mml:mi>
+                    <mml:mi>s</mml:mi>
+                    <mml:mi>a</mml:mi>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mi>S</mml:mi>
+                <mml:mi>i</mml:mi>
+                <mml:mi>L</mml:mi>
+                <mml:mi>U</mml:mi>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:mi>B</mml:mi>
+                  <mml:mi>N</mml:mi>
+                  <mml:mrow>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:mi>R</mml:mi>
+                    <mml:mi>E</mml:mi>
+                    <mml:mi>S</mml:mi>
+                    <mml:mrow>
+                      <mml:mo>(</mml:mo>
+                      <mml:mo>,</mml:mo>
+                      <mml:mo>,</mml:mo>
+                      <mml:mo>)</mml:mo>
+                      <mml:msub>
+                        <mml:mi>F</mml:mi>
+                        <mml:mrow>
+                          <mml:mi>i</mml:mi>
+                          <mml:mi>n</mml:mi>
+                        </mml:mrow>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mi>F</mml:mi>
+                        <mml:mi>s</mml:mi>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mi>F</mml:mi>
+                        <mml:mi>n</mml:mi>
+                      </mml:msub>
+                    </mml:mrow>
+                  </mml:mrow>
+                </mml:mrow>
+              </mml:math>
+            </disp-formula>
+          
+          <p> where, <inline-formula>
+  <mml:math id="mg7c102dam">
+    <mml:msub>
+      <mml:mi>F</mml:mi>
+      <mml:mi>s</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> is defined as:</p>
+          
+            <disp-formula>
+              <label>(8)</label>
+              <mml:math id="mc5kr1vn3k">
+                <mml:msub>
+                  <mml:mi>F</mml:mi>
+                  <mml:mi>s</mml:mi>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>F</mml:mi>
+                  <mml:mi>f</mml:mi>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>W</mml:mi>
+                  <mml:mi>s</mml:mi>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mo>⊙</mml:mo>
+              </mml:math>
+            </disp-formula>
+          
+          <p>In the formulation, <inline-formula>
+  <mml:math id="m1vn23pxf3">
+    <mml:msub>
+      <mml:mi>F</mml:mi>
+      <mml:mrow>
+        <mml:mi>i</mml:mi>
+        <mml:mi>n</mml:mi>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula> denotes the input feature map of the FCSA module, <inline-formula>
+  <mml:math id="m7y9lbkxoa">
+    <mml:msub>
+      <mml:mi>F</mml:mi>
+      <mml:mi>s</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> denotes the saliency-enhanced feature after attention modulation, <inline-formula>
+  <mml:math id="m9204f4twu">
+    <mml:msub>
+      <mml:mi>F</mml:mi>
+      <mml:mi>n</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> represents the contextual feature from adjacent scales, <inline-formula>
+  <mml:math id="m8adjzw9kw">
+    <mml:msub>
+      <mml:mi>F</mml:mi>
+      <mml:mi>f</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> represents the frequency-domain enhanced feature, <inline-formula>
+  <mml:math id="mrjzod6pu9">
+    <mml:msub>
+      <mml:mi>W</mml:mi>
+      <mml:mi>s</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> is the spatial saliency weight map, Sigmoid Linear Unit (SiLU) denotes the activation function, Batch Normalization (BN) denotes the batch normalization operation, and RES denotes the residual connection structure, which helps mitigate potential information shifts introduced during feature enhancement and contributes to more stable network training.</p><p>Overall, FCSA enhances small-object representation by integrating frequency-guided reweighting with channel-spatial saliency modeling, thereby providing more informative features for subsequent reconstruction and multi-scale fusion.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>2.2. Multi-frequency reconstruction block</title>
+          
+          <p>The MFRB is designed to reconstruct feature representations by integrating multi-frequency information through parallel convolutional branches (<xref ref-type="fig" rid="fig_3">Figure 3</xref>).</p>
+          
+            <fig id="fig_3">
+              <label>Figure 3</label>
+              <caption>
+                <title>Architecture of the proposed multi-frequency reconstruction block (MFRB) module</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/3/img_zV-xyB78kDm2xO50.png"/>
+            </fig>
+          
+          <p>In the first stage of feature reconstruction, MFRB constructs five parallel multi-frequency convolutional branches for the input feature <inline-formula>
+  <mml:math id="mjjjgoc0wy">
+    <mml:msub>
+      <mml:mi>F</mml:mi>
+      <mml:mrow>
+        <mml:mi>f</mml:mi>
+        <mml:mi>c</mml:mi>
+        <mml:mi>s</mml:mi>
+        <mml:mi>a</mml:mi>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula> to capture complementary information across different frequency domains and receptive fields. The computational formulations of these branches are given as follows:</p>
+          
+            <disp-formula>
+              <label>(9)</label>
+              <mml:math id="mc8h1oc8xu">
+                <mml:msub>
+                  <mml:mi>F</mml:mi>
+                  <mml:mrow>
+                    <mml:mn>3</mml:mn>
+                    <mml:mn>3</mml:mn>
+                    <mml:mo>×</mml:mo>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>Conv</mml:mi>
+                  <mml:mrow>
+                    <mml:mn>3</mml:mn>
+                    <mml:mn>3</mml:mn>
+                    <mml:mo>×</mml:mo>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:msub>
+                    <mml:mi>F</mml:mi>
+                    <mml:mrow>
+                      <mml:mi>f</mml:mi>
+                      <mml:mi>s</mml:mi>
+                      <mml:mi>c</mml:mi>
+                      <mml:mi>a</mml:mi>
+                    </mml:mrow>
+                  </mml:msub>
+                </mml:mrow>
+              </mml:math>
+            </disp-formula>
+          
+          
+            <disp-formula>
+              <label>(10)</label>
+              <mml:math id="mwh17nm0vw">
+                <mml:msub>
+                  <mml:mi>F</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>d</mml:mi>
+                    <mml:mi>c</mml:mi>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mi>DilatedConv</mml:mi>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:msub>
+                    <mml:mi>F</mml:mi>
+                    <mml:mrow>
+                      <mml:mi>f</mml:mi>
+                      <mml:mi>s</mml:mi>
+                      <mml:mi>c</mml:mi>
+                      <mml:mi>a</mml:mi>
+                    </mml:mrow>
+                  </mml:msub>
+                </mml:mrow>
+              </mml:math>
+            </disp-formula>
+          
+          
+            <disp-formula>
+              <label>(11)</label>
+              <mml:math id="mr0q4qzy89">
+                <mml:msub>
+                  <mml:mi>F</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>l</mml:mi>
+                    <mml:mi>a</mml:mi>
+                    <mml:mi>p</mml:mi>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mi>Laplacian</mml:mi>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:msub>
+                    <mml:mi>F</mml:mi>
+                    <mml:mrow>
+                      <mml:mi>f</mml:mi>
+                      <mml:mi>s</mml:mi>
+                      <mml:mi>c</mml:mi>
+                      <mml:mi>a</mml:mi>
+                    </mml:mrow>
+                  </mml:msub>
+                </mml:mrow>
+              </mml:math>
+            </disp-formula>
+          
+          
+            <disp-formula>
+              <label>(12)</label>
+              <mml:math id="muywnvyiwt">
+                <mml:msub>
+                  <mml:mi>F</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>h</mml:mi>
+                    <mml:mi>f</mml:mi>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mi>Convhf</mml:mi>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:msub>
+                    <mml:mi>F</mml:mi>
+                    <mml:mrow>
+                      <mml:mi>f</mml:mi>
+                      <mml:mi>c</mml:mi>
+                      <mml:mi>s</mml:mi>
+                      <mml:mi>a</mml:mi>
+                    </mml:mrow>
+                  </mml:msub>
+                </mml:mrow>
+              </mml:math>
+            </disp-formula>
+          
+          
+            <disp-formula>
+              <label>(13)</label>
+              <mml:math id="m713eshxr1">
+                <mml:msub>
+                  <mml:mi>F</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>o</mml:mi>
+                    <mml:mi>r</mml:mi>
+                    <mml:mi>i</mml:mi>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>Conv</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>o</mml:mi>
+                    <mml:mi>r</mml:mi>
+                    <mml:mi>i</mml:mi>
+                    <mml:mi>_</mml:mi>
+                    <mml:mi>m</mml:mi>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:msub>
+                    <mml:mi>F</mml:mi>
+                    <mml:mrow>
+                      <mml:mi>f</mml:mi>
+                      <mml:mi>c</mml:mi>
+                      <mml:mi>s</mml:mi>
+                      <mml:mi>a</mml:mi>
+                    </mml:mrow>
+                  </mml:msub>
+                </mml:mrow>
+              </mml:math>
+            </disp-formula>
+          
+          <p>To achieve unified modeling across different frequency bands, the feature maps generated by the five parallel branches are concatenated along the channel dimension, forming a comprehensive feature representation with enhanced multi-frequency information <inline-formula>
+  <mml:math id="mf43j11b0b">
+    <mml:msub>
+      <mml:mi>F</mml:mi>
+      <mml:mrow>
+        <mml:mi>f</mml:mi>
+        <mml:mi>r</mml:mi>
+        <mml:mi>e</mml:mi>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula>:</p>
+          
+            <disp-formula>
+              <label>(14)</label>
+              <mml:math id="meejqmh7st">
+                <mml:msub>
+                  <mml:mi>F</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>f</mml:mi>
+                    <mml:mi>r</mml:mi>
+                    <mml:mi>e</mml:mi>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mi>Concat</mml:mi>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>,</mml:mo>
+                  <mml:mo>,</mml:mo>
+                  <mml:mo>,</mml:mo>
+                  <mml:mo>,</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:msub>
+                    <mml:mi>F</mml:mi>
+                    <mml:mrow>
+                      <mml:mn>3</mml:mn>
+                      <mml:mn>3</mml:mn>
+                      <mml:mo>×</mml:mo>
+                    </mml:mrow>
+                  </mml:msub>
+                  <mml:msub>
+                    <mml:mi>F</mml:mi>
+                    <mml:mrow>
+                      <mml:mi>d</mml:mi>
+                      <mml:mi>c</mml:mi>
+                    </mml:mrow>
+                  </mml:msub>
+                  <mml:msub>
+                    <mml:mi>F</mml:mi>
+                    <mml:mrow>
+                      <mml:mi>l</mml:mi>
+                      <mml:mi>a</mml:mi>
+                      <mml:mi>p</mml:mi>
+                    </mml:mrow>
+                  </mml:msub>
+                  <mml:msub>
+                    <mml:mi>F</mml:mi>
+                    <mml:mrow>
+                      <mml:mi>h</mml:mi>
+                      <mml:mi>f</mml:mi>
+                    </mml:mrow>
+                  </mml:msub>
+                  <mml:msub>
+                    <mml:mi>F</mml:mi>
+                    <mml:mrow>
+                      <mml:mi>o</mml:mi>
+                      <mml:mi>r</mml:mi>
+                      <mml:mi>i</mml:mi>
+                    </mml:mrow>
+                  </mml:msub>
+                </mml:mrow>
+              </mml:math>
+            </disp-formula>
+          
+          <p>Subsequently, the aligned feature <inline-formula>
+  <mml:math id="mdu9jm5j9w">
+    <mml:msub>
+      <mml:mi>F</mml:mi>
+      <mml:mrow>
+        <mml:mi>a</mml:mi>
+        <mml:mi>l</mml:mi>
+        <mml:mi>i</mml:mi>
+        <mml:mi>g</mml:mi>
+        <mml:mi>n</mml:mi>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula> produced by FCSA is concatenated with the input feature <inline-formula>
+  <mml:math id="mlvvmsf0tx">
+    <mml:msub>
+      <mml:mi>F</mml:mi>
+      <mml:mrow>
+        <mml:mi>f</mml:mi>
+        <mml:mi>r</mml:mi>
+        <mml:mi>e</mml:mi>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula> for crosslayer feature compensation. A self-attention mechanism is then applied to model the saliency of the fused features:</p>
+          
+            <disp-formula>
+              <label>(15)</label>
+              <mml:math id="mzj7yh7elh">
+                <mml:msub>
+                  <mml:mi>F</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>r</mml:mi>
+                    <mml:mi>e</mml:mi>
+                    <mml:mi>f</mml:mi>
+                    <mml:mi>i</mml:mi>
+                    <mml:mi>n</mml:mi>
+                    <mml:mi>e</mml:mi>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mi>SelfAttention</mml:mi>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:mi>Concat</mml:mi>
+                  <mml:mrow>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>,</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:msub>
+                      <mml:mi>F</mml:mi>
+                      <mml:mrow>
+                        <mml:mi>a</mml:mi>
+                        <mml:mi>l</mml:mi>
+                        <mml:mi>i</mml:mi>
+                        <mml:mi>g</mml:mi>
+                        <mml:mi>n</mml:mi>
+                      </mml:mrow>
+                    </mml:msub>
+                    <mml:msub>
+                      <mml:mi>F</mml:mi>
+                      <mml:mrow>
+                        <mml:mi>f</mml:mi>
+                        <mml:mi>r</mml:mi>
+                        <mml:mi>e</mml:mi>
+                      </mml:mrow>
+                    </mml:msub>
+                  </mml:mrow>
+                </mml:mrow>
+              </mml:math>
+            </disp-formula>
+          
+          <p> where, <inline-formula>
+  <mml:math id="mop0x2jf5a">
+    <mml:msub>
+      <mml:mi>F</mml:mi>
+      <mml:mrow>
+        <mml:mrow>
+          <mml:mi>r</mml:mi>
+          <mml:mi>e</mml:mi>
+          <mml:mi>f</mml:mi>
+          <mml:mi>i</mml:mi>
+          <mml:mi>n</mml:mi>
+          <mml:mi>e</mml:mi>
+        </mml:mrow>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula> denotes the refined feature map after self-attention modulation, which enhances salient structural information and suppresses redundant background responses.</p><p><inline-formula>
+  <mml:math id="m443eqh8jj">
+    <mml:msub>
+      <mml:mi>F</mml:mi>
+      <mml:mrow>
+        <mml:mrow>
+          <mml:mi>r</mml:mi>
+          <mml:mi>e</mml:mi>
+          <mml:mi>s</mml:mi>
+        </mml:mrow>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula> is obtained by combining the reconstructed features with the input features through residual connections:</p>
+          
+            <disp-formula>
+              <label>(16)</label>
+              <mml:math id="mn9p0i10yw">
+                <mml:msub>
+                  <mml:mi>F</mml:mi>
+                  <mml:mrow>
+                    <mml:mrow>
+                      <mml:mi>r</mml:mi>
+                      <mml:mi>e</mml:mi>
+                      <mml:mi>s</mml:mi>
+                    </mml:mrow>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>F</mml:mi>
+                  <mml:mrow>
+                    <mml:mrow>
+                      <mml:mi>r</mml:mi>
+                      <mml:mi>e</mml:mi>
+                      <mml:mi>f</mml:mi>
+                      <mml:mi>i</mml:mi>
+                      <mml:mi>n</mml:mi>
+                      <mml:mi>e</mml:mi>
+                    </mml:mrow>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>F</mml:mi>
+                  <mml:mrow>
+                    <mml:mrow>
+                      <mml:mi>f</mml:mi>
+                      <mml:mi>e</mml:mi>
+                      <mml:mi>s</mml:mi>
+                      <mml:mi>a</mml:mi>
+                    </mml:mrow>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mo>+</mml:mo>
+              </mml:math>
+            </disp-formula>
+          
+          <p>To further enhance feature representation, MFRB introduces a cross-layer dynamic feedback mechanism. GAP followed by an MLP is used to generate scale-adaptive gating coefficients, which are applied to reweight the multi-frequency features. The feature corresponding to the current scale is retained as the final output <inline-formula>
+  <mml:math id="mucnsnsqcu">
+    <mml:msub>
+      <mml:mi>F</mml:mi>
+      <mml:mrow>
+        <mml:mi>m</mml:mi>
+        <mml:mi>f</mml:mi>
+        <mml:mi>r</mml:mi>
+        <mml:mi>b</mml:mi>
+      </mml:mrow>
+    </mml:msub>
+    <mml:mo>:</mml:mo>
+  </mml:math>
+</inline-formula></p>
+          
+            <disp-formula>
+              <label>(17)</label>
+              <mml:math id="mxgvnbtmjx">
+                <mml:msub>
+                  <mml:mi>F</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>m</mml:mi>
+                    <mml:mi>f</mml:mi>
+                    <mml:mi>r</mml:mi>
+                    <mml:mi>b</mml:mi>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>W</mml:mi>
+                  <mml:mi>r</mml:mi>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>F</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>r</mml:mi>
+                    <mml:mi>e</mml:mi>
+                    <mml:mi>s</mml:mi>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mo>⊙</mml:mo>
+              </mml:math>
+            </disp-formula>
+          
+          <p> where, <inline-formula>
+  <mml:math id="mgb7wm34j6">
+    <mml:msub>
+      <mml:mi>W</mml:mi>
+      <mml:mi>r</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> is defined as:</p>
+          
+            <disp-formula>
+              <label>(18)</label>
+              <mml:math id="m1dfrs41bb">
+                <mml:msub>
+                  <mml:mi>W</mml:mi>
+                  <mml:mi>r</mml:mi>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mi>M</mml:mi>
+                <mml:mi>L</mml:mi>
+                <mml:mi>P</mml:mi>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:mi>G</mml:mi>
+                  <mml:mi>A</mml:mi>
+                  <mml:mi>P</mml:mi>
+                  <mml:mrow>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:msub>
+                      <mml:mi>F</mml:mi>
+                      <mml:mrow>
+                        <mml:mi>r</mml:mi>
+                        <mml:mi>e</mml:mi>
+                        <mml:mi>s</mml:mi>
+                      </mml:mrow>
+                    </mml:msub>
+                  </mml:mrow>
+                </mml:mrow>
+              </mml:math>
+            </disp-formula>
+          
+          <p>Overall, MFRB improves cross-scale feature consistency by integrating multi-frequency extraction, attention-based refinement, and dynamic feedback, thereby providing more robust representations for subsequent multi-scale fusion.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>2.3. Dynamic reconstruction fusion neck</title>
+          
+          <p>DRF-Neck serves as the core component of the feature fusion stage, enabling adaptive reconstruction and dynamic fusion of multi-scale features through saliency-aware modeling. The overall architecture of DRF-Neck is illustrated in <xref ref-type="fig" rid="fig_4">Figure 4</xref>.</p>
+          
+            <fig id="fig_4">
+              <label>Figure 4</label>
+              <caption>
+                <title>Architecture of the proposed Dynamic Reconstruction Fusion Neck (DRF-Neck)</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/3/img_W5VtsW2JTjXj8Uaf.png"/>
+            </fig>
+          
+          <p>First, given the input feature <inline-formula>
+  <mml:math id="mf1344ukxc">
+    <mml:msub>
+      <mml:mi>F</mml:mi>
+      <mml:mrow>
+        <mml:mi>m</mml:mi>
+        <mml:mi>f</mml:mi>
+        <mml:mi>r</mml:mi>
+        <mml:mi>b</mml:mi>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula>, DRF-Neck constructs a saliency map generation module to characterize the importance distribution across spatial regions. Channel compression via $1 \times 1<inline-formula>
+  <mml:math id="mumw2h0u0j">
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>G</mml:mi>
+    <mml:mi>A</mml:mi>
+    <mml:mi>P</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+  </mml:math>
+</inline-formula>S$ :</p>
+          
+            <disp-formula>
+              <label>(19)</label>
+              <mml:math id="mgolz30exz">
+                <mml:mi>S</mml:mi>
+                <mml:mi>G</mml:mi>
+                <mml:mi>A</mml:mi>
+                <mml:mi>P</mml:mi>
+                <mml:mo>=</mml:mo>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:msub>
+                    <mml:mi>Conv</mml:mi>
+                    <mml:mrow>
+                      <mml:mn>1</mml:mn>
+                      <mml:mn>1</mml:mn>
+                      <mml:mo>×</mml:mo>
+                    </mml:mrow>
+                  </mml:msub>
+                  <mml:mrow>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:msub>
+                      <mml:mi>F</mml:mi>
+                      <mml:mrow>
+                        <mml:mi>m</mml:mi>
+                        <mml:mi>f</mml:mi>
+                        <mml:mi>r</mml:mi>
+                        <mml:mi>b</mml:mi>
+                      </mml:mrow>
+                    </mml:msub>
+                  </mml:mrow>
+                </mml:mrow>
+              </mml:math>
+            </disp-formula>
+          
+          <p>The saliency vector $S<inline-formula>
+  <mml:math id="m0ruwnl41c">
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>W</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mo>.</mml:mo>
+  </mml:math>
+</inline-formula>\mathrm{S}&gt;\tau<inline-formula>
+  <mml:math id="mcwcf6erpa">
+    <mml:mo>,</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>;</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>S</mml:mi>
+    <mml:mi>A</mml:mi>
+    <mml:mi>R</mml:mi>
+    <mml:mi>D</mml:mi>
+    <mml:mi>C</mml:mi>
+    <mml:mi>N</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>S</mml:mi>
+    <mml:mi>C</mml:mi>
+    <mml:mi>A</mml:mi>
+    <mml:mi>R</mml:mi>
+    <mml:mi>A</mml:mi>
+    <mml:mi>F</mml:mi>
+    <mml:mi>E</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+  </mml:math>
+</inline-formula>F_x<inline-formula>
+  <mml:math id="mc1wt2i3m2">
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>F_{ {sar}}$ is the result obtained through calculation:</p>
+          
+            <disp-formula>
+              <label>(20)</label>
+              <mml:math id="md9k2isogq">
+                <mml:msub>
+                  <mml:mi>F</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>s</mml:mi>
+                    <mml:mi>a</mml:mi>
+                    <mml:mi>r</mml:mi>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mo>−</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo>&gt;</mml:mo>
+                <mml:mi>S</mml:mi>
+                <mml:mi>A</mml:mi>
+                <mml:mi>R</mml:mi>
+                <mml:mi>D</mml:mi>
+                <mml:mi>C</mml:mi>
+                <mml:mi>N</mml:mi>
+                <mml:mi>S</mml:mi>
+                <mml:mi>τ</mml:mi>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:msub>
+                    <mml:mi>F</mml:mi>
+                    <mml:mi>x</mml:mi>
+                  </mml:msub>
+                </mml:mrow>
+              </mml:math>
+            </disp-formula>
+          
+          
+            <disp-formula>
+              <label>(21)</label>
+              <mml:math id="m37yqbxucu">
+                <mml:msub>
+                  <mml:mi>F</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>s</mml:mi>
+                    <mml:mi>a</mml:mi>
+                    <mml:mi>r</mml:mi>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo>≤</mml:mo>
+                <mml:mi>Conv</mml:mi>
+                <mml:mi>S</mml:mi>
+                <mml:mi>τ</mml:mi>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:msub>
+                    <mml:mi>F</mml:mi>
+                    <mml:mi>x</mml:mi>
+                  </mml:msub>
+                </mml:mrow>
+              </mml:math>
+            </disp-formula>
+          
+          <p>SAR-DCN adaptively adjusts convolutional sampling locations according to saliency-aware offset information, thereby facilitating more accurate modeling of small-object regions and complex textures. The detailed formulation is given in Eqs. (22)–(25):</p>
+          
+            <disp-formula>
+              <label>(22)</label>
+              <mml:math id="mu20ixmnvm">
+                <mml:msub>
+                  <mml:mi>D</mml:mi>
+                  <mml:mi>k</mml:mi>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>Conv</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>d</mml:mi>
+                    <mml:mi>i</mml:mi>
+                    <mml:msub>
+                      <mml:mi>r</mml:mi>
+                      <mml:mi>k</mml:mi>
+                    </mml:msub>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mo>(</mml:mo>
+                <mml:mo>)</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo>∈</mml:mo>
+                <mml:mo fence="false">{</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo fence="false">}</mml:mo>
+                <mml:mi>X</mml:mi>
+                <mml:mi>k</mml:mi>
+                <mml:mi>h</mml:mi>
+                <mml:mi>v</mml:mi>
+                <mml:mi>d</mml:mi>
+              </mml:math>
+            </disp-formula>
+          
+          
+            <disp-formula>
+              <label>(23)</label>
+              <mml:math id="m6ou028eng">
+                <mml:msub>
+                  <mml:mi>α</mml:mi>
+                  <mml:mi>k</mml:mi>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mi>σ</mml:mi>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>+</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:msub>
+                    <mml:mi>λ</mml:mi>
+                    <mml:mn>1</mml:mn>
+                  </mml:msub>
+                  <mml:msub>
+                    <mml:mi>λ</mml:mi>
+                    <mml:mn>2</mml:mn>
+                  </mml:msub>
+                  <mml:mi>S</mml:mi>
+                  <mml:mrow>
+                    <mml:mo>|</mml:mo>
+                    <mml:mo>|</mml:mo>
+                    <mml:msub>
+                      <mml:mi>D</mml:mi>
+                      <mml:mi>k</mml:mi>
+                    </mml:msub>
+                  </mml:mrow>
+                </mml:mrow>
+              </mml:math>
+            </disp-formula>
+          
+          
+            <disp-formula>
+              <label>(24)</label>
+              <mml:math id="mpc7agk68p">
+                <mml:mi>Δ</mml:mi>
+                <mml:mi>Δ</mml:mi>
+                <mml:msubsup>
+                  <mml:mi>p</mml:mi>
+                  <mml:mi>k</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>′</mml:mi>
+                  </mml:mrow>
+                </mml:msubsup>
+                <mml:mo>=</mml:mo>
+                <mml:mo>⋅</mml:mo>
+                <mml:msub>
+                  <mml:mi>α</mml:mi>
+                  <mml:mi>k</mml:mi>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>p</mml:mi>
+                  <mml:mi>k</mml:mi>
+                </mml:msub>
+              </mml:math>
+            </disp-formula>
+          
+          
+            <disp-formula>
+              <label>(25)</label>
+              <mml:math id="mnb2fxrfxk">
+                <mml:mi>Y</mml:mi>
+                <mml:mi>w</mml:mi>
+                <mml:mi>X</mml:mi>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:msub>
+                    <mml:mi>p</mml:mi>
+                    <mml:mn>0</mml:mn>
+                  </mml:msub>
+                </mml:mrow>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:msub>
+                    <mml:mi>p</mml:mi>
+                    <mml:mi>k</mml:mi>
+                  </mml:msub>
+                </mml:mrow>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>+</mml:mo>
+                  <mml:mo>+</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:msub>
+                    <mml:mi>p</mml:mi>
+                    <mml:mn>0</mml:mn>
+                  </mml:msub>
+                  <mml:msub>
+                    <mml:mi>p</mml:mi>
+                    <mml:mi>k</mml:mi>
+                  </mml:msub>
+                  <mml:mi>Δ</mml:mi>
+                  <mml:msubsup>
+                    <mml:mi>p</mml:mi>
+                    <mml:mi>k</mml:mi>
+                    <mml:mrow>
+                      <mml:mi>′</mml:mi>
+                    </mml:mrow>
+                  </mml:msubsup>
+                </mml:mrow>
+                <mml:mo>=</mml:mo>
+                <mml:mo>⋅</mml:mo>
+                <mml:munder>
+                  <mml:mo>∑</mml:mo>
+                  <mml:mrow>
+                    <mml:msub>
+                      <mml:mi>p</mml:mi>
+                      <mml:mi>k</mml:mi>
+                    </mml:msub>
+                    <mml:mo>∈</mml:mo>
+                    <mml:mi>R</mml:mi>
+                  </mml:mrow>
+                </mml:munder>
+              </mml:math>
+            </disp-formula>
+          
+          <p>S-CARAFE is employed for saliency-aware adaptive sampling, where the saliency gain coefficient <inline-formula>
+  <mml:math id="mf7zrwzgdb">
+    <mml:mi>β</mml:mi>
+  </mml:math>
+</inline-formula> modulates the response intensity of salient regions:</p>
+          
+            <disp-formula>
+              <label>(26)</label>
+              <mml:math id="mrqfa8h6ot">
+                <mml:msub>
+                  <mml:mi>F</mml:mi>
+                  <mml:mi>S</mml:mi>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mo>(</mml:mo>
+                <mml:mo>(</mml:mo>
+                <mml:mo>)</mml:mo>
+                <mml:mo>)</mml:mo>
+                <mml:mo>⊗</mml:mo>
+                <mml:mo>(</mml:mo>
+                <mml:mo>(</mml:mo>
+                <mml:mo>)</mml:mo>
+                <mml:mo>⋅</mml:mo>
+                <mml:mo>)</mml:mo>
+                <mml:mi>Softmax</mml:mi>
+                <mml:mi>Conv</mml:mi>
+                <mml:mi>S</mml:mi>
+                <mml:mi>Conv</mml:mi>
+                <mml:mi>Y</mml:mi>
+                <mml:mi>β</mml:mi>
+              </mml:math>
+            </disp-formula>
+          
+          <p> where, $Y<inline-formula>
+  <mml:math id="m0f7qru1ov">
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>S</mml:mi>
+    <mml:mi>C</mml:mi>
+    <mml:mi>A</mml:mi>
+    <mml:mi>R</mml:mi>
+    <mml:mi>A</mml:mi>
+    <mml:mi>F</mml:mi>
+    <mml:mi>E</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mo>−</mml:mo>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>\beta<inline-formula>
+  <mml:math id="m8vsog7qw2">
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>F_s<inline-formula>
+  <mml:math id="mp37d5fmah">
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>A</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>k</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mo>.</mml:mo>
+    <mml:mo>&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+  </mml:math>
+</inline-formula>\tau<inline-formula>
+  <mml:math id="magbku2vr9">
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+  </mml:math>
+</inline-formula>\beta$ according to feature statistics, enhancing adaptive feature fusion:</p>
+          
+            <disp-formula>
+              <label>(27)</label>
+              <mml:math id="mwi37rz4ud">
+                <mml:msub>
+                  <mml:mi>τ</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>t</mml:mi>
+                    <mml:mo>+</mml:mo>
+                    <mml:mn>1</mml:mn>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>τ</mml:mi>
+                  <mml:mi>t</mml:mi>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mo>+</mml:mo>
+                <mml:mi>η</mml:mi>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>−</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:msubsup>
+                    <mml:mi>μ</mml:mi>
+                    <mml:mi>S</mml:mi>
+                    <mml:mi>t</mml:mi>
+                  </mml:msubsup>
+                  <mml:msubsup>
+                    <mml:mi>μ</mml:mi>
+                    <mml:mi>S</mml:mi>
+                    <mml:mrow>
+                      <mml:mi>t</mml:mi>
+                      <mml:mo>−</mml:mo>
+                      <mml:mn>1</mml:mn>
+                    </mml:mrow>
+                  </mml:msubsup>
+                </mml:mrow>
+              </mml:math>
+            </disp-formula>
+          
+          
+            <disp-formula>
+              <label>(28)</label>
+              <mml:math id="mm1wc3ony9">
+                <mml:msub>
+                  <mml:mi>β</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>t</mml:mi>
+                    <mml:mo>+</mml:mo>
+                    <mml:mn>1</mml:mn>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>β</mml:mi>
+                  <mml:mi>t</mml:mi>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mo>+</mml:mo>
+                <mml:mi>η</mml:mi>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>−</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:msubsup>
+                    <mml:mi>σ</mml:mi>
+                    <mml:mi>S</mml:mi>
+                    <mml:mi>t</mml:mi>
+                  </mml:msubsup>
+                  <mml:msubsup>
+                    <mml:mi>σ</mml:mi>
+                    <mml:mi>S</mml:mi>
+                    <mml:mrow>
+                      <mml:mi>t</mml:mi>
+                      <mml:mo>−</mml:mo>
+                      <mml:mn>1</mml:mn>
+                    </mml:mrow>
+                  </mml:msubsup>
+                </mml:mrow>
+              </mml:math>
+            </disp-formula>
+          
+          
+            <disp-formula>
+              <label>(29)</label>
+              <mml:math id="md203ui28a">
+                <mml:msub>
+                  <mml:mi>F</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>o</mml:mi>
+                    <mml:mi>u</mml:mi>
+                    <mml:mi>t</mml:mi>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>F</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>s</mml:mi>
+                    <mml:mi>a</mml:mi>
+                    <mml:mi>r</mml:mi>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+              </mml:math>
+            </disp-formula>
+          
+          <p>Overall, DRF-Neck achieves adaptive and stable multi-scale fusion via saliency-aware reconstruction and feedback modulation, producing the final fused feature representation <inline-formula>
+  <mml:math id="mqcemepis4">
+    <mml:msub>
+      <mml:mi>F</mml:mi>
+      <mml:mrow>
+        <mml:mrow>
+          <mml:mi>o</mml:mi>
+          <mml:mi>u</mml:mi>
+          <mml:mi>t</mml:mi>
+        </mml:mrow>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula>.</p>
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>3. Experiments and results</title>
+      
+        <sec>
+          
+            <title>3.1. Dataset and evaluation metrics</title>
+          
+          <p>The effectiveness of the proposed method is evaluated on one publicly available UAV aerial imagery dataset, namely VisDrone2019 [<xref ref-type="bibr" rid="ref_23">23</xref>], which is a widely adopted benchmark for UAV-based object detection under complex real-world scenarios.</p><p>VisDrone2019 is a large-scale benchmark designed for UAV-based object detection. It contains images captured from various UAV platforms under diverse urban scenes, covering complex backgrounds, dense object distributions, and significant scale variations. The dataset includes a large number of small and densely distributed objects, making it particularly suitable for evaluating detection performance in challenging UAV scenarios. In this work, the official training and validation splits are adopted for experimental evaluation.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.2. Implementation details</title>
+          
+          <p>The hardware and software configurations used in the experiments are summarized in <xref ref-type="table" rid="table_1">Table 1</xref>:</p>
+          
+            <table-wrap id="table_1">
+              <label>Table 1</label>
+              <caption>
+                <title>Experimental environment</title>
+              </caption>
+              <table><tbody><tr><th colspan="1" rowspan="1"><p>Item</p></th><th colspan="1" rowspan="1"><p>Specification</p></th></tr><tr><td colspan="1" rowspan="1"><p>Operating system</p></td><td colspan="1" rowspan="1"><p>Windows 11</p></td></tr><tr><td colspan="1" rowspan="1"><p>Programming language</p></td><td colspan="1" rowspan="1"><p>Python 3.10</p></td></tr><tr><td colspan="1" rowspan="1"><p>Deep learning framework</p></td><td colspan="1" rowspan="1"><p>Pytorch 2.2.2</p></td></tr><tr><td colspan="1" rowspan="1"><p>Compute Unified Device Architecture (CUDA)</p></td><td colspan="1" rowspan="1"><p>CUDA 12.1</p></td></tr><tr><td colspan="1" rowspan="1"><p>Central Processing Unit (CPU)</p></td><td colspan="1" rowspan="1"><p>Intel Core i7-14700KF</p></td></tr><tr><td colspan="1" rowspan="1"><p>Graphics Processing Unit (GPU)</p></td><td colspan="1" rowspan="1"><p>NVIDIA RTX 4070 Ti Super (16 GB)</p></td></tr><tr><td colspan="1" rowspan="1"><p>Memory</p></td><td colspan="1" rowspan="1"><p>32GB</p></td></tr></tbody></table>
+            </table-wrap>
+          
+          <p>The same set of hyperparameters is applied consistently throughout the training process. In addition, a cosine annealing learning rate schedule and the Stochastic Gradient Descent (SGD) optimizer are employed in the experiments. The detailed training hyperparameters are listed in <xref ref-type="table" rid="table_2">Table 2</xref>.</p>
+          
+            <table-wrap id="table_2">
+              <label>Table 2</label>
+              <caption>
+                <title>Training hyperparameters</title>
+              </caption>
+              <table><tbody><tr><th colspan="1" rowspan="1"><p>Parameter</p></th><th colspan="1" rowspan="1"><p>Value</p></th></tr><tr><td colspan="1" rowspan="1"><p>Learning rate</p></td><td colspan="1" rowspan="1"><p>0.01</p></td></tr><tr><td colspan="1" rowspan="1"><p>Image size</p></td><td colspan="1" rowspan="1"><p>640 $×$ 640</p></td></tr><tr><td colspan="1" rowspan="1"><p>Optimizer</p></td><td colspan="1" rowspan="1"><p>Stochastic Gradient Descent (SGD)</p></td></tr><tr><td colspan="1" rowspan="1"><p>Batch size</p></td><td colspan="1" rowspan="1"><p>32</p></td></tr><tr><td colspan="1" rowspan="1"><p>Epochs</p></td><td colspan="1" rowspan="1"><p>300</p></td></tr><tr><td colspan="1" rowspan="1"><p>Weight decay</p></td><td colspan="1" rowspan="1"><p>0.0005</p></td></tr></tbody></table>
+            </table-wrap>
+          
+          <p>To comprehensively evaluate the performance of the proposed method, we adopt commonly used metrics in object detection, including the number of parameters (Params), computational complexity measured by Giga Floating-Point Operations (GFLOPs), inference speed in frames per second (FPS), and detection accuracy measured by mean Average Precision (mAP).</p><p>Specifically, mAP is computed by averaging the Average Precision (AP) over all categories. We report mAP@0.5 (mAP@50) and mAP@0.5:0.95 (mAP@50–95) following the standard evaluation protocol. Precision and Recall are implicitly reflected in the AP computation.</p><p>These metrics jointly reflect the trade-off between detection accuracy and computational efficiency, which is particularly important for UAV-based real-time detection scenarios.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.3. Ablation study</title>
+          
+          <p>To verify the effectiveness of the three proposed modules, YOLOv11 is adopted as the baseline network for the ablation study. Ablation experiments are conducted on the VisDrone2019 dataset. The corresponding experimental results are summarized in <xref ref-type="table" rid="table_3">Table 3</xref>, where bold values indicate the best performance under the current comparison, and “<inline-formula>
+  <mml:math id="mm62pv54dp">
+    <mml:msqrt/>
+  </mml:math>
+</inline-formula>” denotes that the corresponding module is included in the model.</p><p><xref ref-type="table" rid="table_3">Table 3</xref> presents the ablation results of different components on the VisDrone2019 dataset. Starting from the YOLOv11 baseline, introducing FCSA leads to a noticeable improvement in detection accuracy, indicating its effectiveness in enhancing feature representation for small objects under complex backgrounds.</p><p>Further incorporating MFRB brings additional performance gains, demonstrating that multi-frequency feature reconstruction contributes to more robust multi-scale feature learning. When DRF-Neck is added, the model achieves further improvements, validating the role of dynamic feature reconstruction and feedback-driven fusion in improving cross-scale information aggregation.</p><p>With all proposed modules integrated, the complete DRF-Net achieves the best overall performance in terms of mAP@50 and mAP@50–95, while maintaining a reasonable increase in computational cost. These results indicate that FCSA, MFRB, and DRF-Neck are complementary and jointly contribute to the performance improvement on UAV-based small object detection tasks.</p>
+          
+            <table-wrap id="table_3">
+              <label>Table 3</label>
+              <caption>
+                <title>Ablation results on the VisDrone2019 dataset</title>
+              </caption>
+              <table><tbody><tr><th colspan="1" rowspan="1"><p>Model</p></th><th colspan="1" rowspan="1"><p>FCSA</p></th><th colspan="1" rowspan="1"><p>MFRB</p></th><th colspan="1" rowspan="1"><p>DRF-Neck</p></th><th colspan="1" rowspan="1"><p>mAP@50 (%)</p></th><th colspan="1" rowspan="1"><p>mAP@50–95 (%)</p></th><th colspan="1" rowspan="1"><p>Param (M)</p></th><th colspan="1" rowspan="1"><p>GFLOPs</p></th><th colspan="1" rowspan="1"><p>FPS/(f/s)</p></th></tr><tr><td colspan="1" rowspan="1"><p>YOLOv11</p></td><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"><p>33.0</p></td><td colspan="1" rowspan="1"><p>19.0</p></td><td colspan="1" rowspan="1"><p>2.58</p></td><td colspan="1" rowspan="1"><p>6.32</p></td><td colspan="1" rowspan="1"><p>214.0</p></td></tr><tr><td colspan="1" rowspan="1"><p>YOLOv11-F</p></td><td colspan="1" rowspan="1"><p>√</p></td><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"><p>33.8</p></td><td colspan="1" rowspan="1"><p>19.3</p></td><td colspan="1" rowspan="1"><p>2.76</p></td><td colspan="1" rowspan="1"><p>6.52</p></td><td colspan="1" rowspan="1"><p>215.3</p></td></tr><tr><td colspan="1" rowspan="1"><p>YOLOv11-M</p></td><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"><p>√</p></td><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"><p>33.2</p></td><td colspan="1" rowspan="1"><p>19.1</p></td><td colspan="1" rowspan="1"><p>2.76</p></td><td colspan="1" rowspan="1"><p>6.51</p></td><td colspan="1" rowspan="1"><p>215.1</p></td></tr><tr><td colspan="1" rowspan="1"><p>YOLOv11-D</p></td><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"><p>√</p></td><td colspan="1" rowspan="1"><p>32.9</p></td><td colspan="1" rowspan="1"><p>19.0</p></td><td colspan="1" rowspan="1"><p>2.76</p></td><td colspan="1" rowspan="1"><p>6.50</p></td><td colspan="1" rowspan="1"><p>211.4</p></td></tr><tr><td colspan="1" rowspan="1"><p>YOLOv11-F-M</p></td><td colspan="1" rowspan="1"><p>√</p></td><td colspan="1" rowspan="1"><p>√</p></td><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"><p>34.3</p></td><td colspan="1" rowspan="1"><p>19.5</p></td><td colspan="1" rowspan="1"><p>2.76</p></td><td colspan="1" rowspan="1"><p>6.50</p></td><td colspan="1" rowspan="1"><p>206.3</p></td></tr><tr><td colspan="1" rowspan="1"><p>YOLOv11-M-D</p></td><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"><p>√</p></td><td colspan="1" rowspan="1"><p>√</p></td><td colspan="1" rowspan="1"><p>33.6</p></td><td colspan="1" rowspan="1"><p>19.4</p></td><td colspan="1" rowspan="1"><p>2.76</p></td><td colspan="1" rowspan="1"><p>6.50</p></td><td colspan="1" rowspan="1"><p>213.9</p></td></tr><tr><td colspan="1" rowspan="1"><p>DRF-Net</p></td><td colspan="1" rowspan="1"><p>√</p></td><td colspan="1" rowspan="1"><p>√</p></td><td colspan="1" rowspan="1"><p>√</p></td><td colspan="1" rowspan="1"><p>34.5</p></td><td colspan="1" rowspan="1"><p>19.8</p></td><td colspan="1" rowspan="1"><p>2.76</p></td><td colspan="1" rowspan="1"><p>6.50</p></td><td colspan="1" rowspan="1"><p>215.1</p></td></tr></tbody></table>
+            </table-wrap>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.4. Comparison with baseline methods</title>
+          
+          <p>To further evaluate the detection performance of DRF-Net, comparative experiments are conducted on the VisDrone2019 dataset against the baseline YOLOv11.</p>
+          <p> <xref ref-type="fig" rid="fig_5">Figure 5</xref> shows the training performance comparison of different models on the VisDrone2019 dataset in terms of mAP@50 and loss. As illustrated by the mAP@50 curves, DRF-Net consistently achieves higher detection accuracy throughout the training process and converges to a superior performance compared with YOLOv11, indicating more effective feature learning for small objects. In addition, the loss curves demonstrate that DRF-Net exhibits faster and more stable convergence behavior, reflecting improved optimization stability during training. These results further confirm that the proposed architectural enhancements not only improve final detection accuracy but also facilitate more efficient and stable model training.</p>
+          
+            <fig id="fig_5">
+              <label>Figure 5</label>
+              <caption>
+                <title>Training curves of mAP@50 and loss for different models</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/3/img_52NtZ9GiaZ_x5SIp.png"/>
+            </fig>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.5. Visual analysis</title>
+          
+          <p>To provide an intuitive understanding of the detection behavior of DRF-Net, representative UAV aerial scenes from the VisDrone2019 dataset are visualized (<xref ref-type="fig" rid="fig_6">Figure 6</xref>). As shown in the detection results, DRF-Net produces more complete and accurate bounding box predictions in complex scenes, particularly for small and densely distributed objects. In contrast, YOLOv11 tends to miss small targets under challenging conditions such as severe occlusion, low illumination, and background clutter.</p>
+          
+            <fig id="fig_6">
+              <label>Figure 6</label>
+              <caption>
+                <title>Visualization of detection responses</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/3/img_IKMnJdA_IJgYD2wc.png"/>
+            </fig>
+          
+          <p>By incorporating the proposed FCSA, MFRB, and the dynamic fusion mechanism of DRF-Neck, DRF-Net demonstrates improved spatial localization accuracy and more stable confidence responses, resulting in fewer missed detections and reduced false positives. As illustrated in <xref ref-type="fig" rid="fig_7">Figure 7</xref>, the visualization results indicate that DRF-Net maintains robust detection performance across diverse scenarios, including dense daytime traffic scenes and low-visibility environments.</p>
+          
+            <fig id="fig_7">
+              <label>Figure 7</label>
+              <caption>
+                <title>Detection heatmap</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/3/img_Pt30K71GL-dh8HDd.png"/>
+            </fig>
+          
+          <p>To further analyze the feature representation capability, Gradient-weighted Class Activation Mapping (Grad-CAM) [<xref ref-type="bibr" rid="ref_24">24</xref>], [<xref ref-type="bibr" rid="ref_25">25</xref>] is employed to visualize the feature response maps of YOLOv11 and DRF-Net. As shown in the heatmaps, YOLOv11 exhibits relatively scattered activation regions with limited focus on target areas and increased background interference, especially in dense or low-contrast scenes.</p><p>In contrast, DRF-Net generates more concentrated activation responses around target regions with enhanced feature intensity and suppressed background activation. This observation suggests that the proposed architecture effectively strengthens fine-grained feature representation and multi-scale feature fusion, thereby improving discriminative capability and robustness under complex backgrounds.</p>
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>4. Conclusion</title>
+      <p>This study presented DRF-Net, an object detection framework designed for small targets in drone aerial imagery. The work focused on three technical aspects: enhancing shallow fine-grained features, reconstructing cross-scale structural information, and improving multi-scale fusion stability. The proposed FCSA module strengthened the interaction between high- and low-frequency components, the MFRB module compensated structural details across feature levels, and the DRF-Neck enabled adaptive aggregation of salient regions.</p><p>Experiments on the VisDrone2019 dataset showed that DRF-Net achieved higher mAP@50 and mAP@50–95 than the baseline YOLOv11 while preserving real-time performance. The model required only a slight increase in parameters and computational cost, yet provided more reliable localization of densely distributed and partially occluded objects. These results suggest that the combination of frequency-guided enhancement and dynamic fusion is beneficial for UAV scenarios where targets occupy limited pixels and backgrounds are complex.</p><p>From a practical perspective, the proposed model can be used as a perception component in UAV visual systems for tasks such as traffic observation, facility inspection, and emergency monitoring. However, the current evaluation relied on a single benchmark dataset. Variations in camera sensors, flight altitude, and weather conditions may affect the generalization of the method. Future work will examine cross-dataset transfer, lightweight deployment on embedded platforms, and the integration of temporal information from video streams.</p>
+    </sec>
+  </body>
+  <back>
+    <ack>
+      <title>Acknowledgments</title>
+      
+    </ack>
+    <app-group>
+      <app>
+        <title>Appendix</title>
+        
+      </app>
+    </app-group>
+    <notes>
+      <title>Author Contributions</title>
+      <p>Conceptualization, M.Y.T. and J.L.M.; methodology, M.Y.T.; investigation, M.Y.T.; data curation, M.Y.T. and A.K.; writing—original draft preparation, M.Y.T.; writing—review and editing, J.L.M. and A.K.; visualization, M.Y.T.; supervision, J.L.M. All authors have read and agreed to the published version of the manuscript.</p>
+    </notes>
+    <notes>
+      <title>Funding</title>
+      
+    </notes>
+    <notes>
+      <title>Informed Consent Statement</title>
+      
+    </notes>
+    <notes>
+      <title>Data Availability Statement</title>
+      <p>The data used to support the research findings are available from the corresponding author upon request.</p>
+    </notes>
+    <notes notes-type="COI-statement">
+      <title>Conflicts of Interest</title>
+      <p>The authors declare no conflict of interest.</p>
+    </notes>
+    <ref-list>
+      <title>References</title>
+      <ref id="ref_1">
+        <label>1.</label>
+        <element-citation publication-type="journal">
+          <volume>3</volume>
+          <page-range>8-22</page-range>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Laghari</surname>
+              <given-names>A. A.</given-names>
+            </name>
+            <name>
+              <surname>Jumani</surname>
+              <given-names>A. K.</given-names>
+            </name>
+            <name>
+              <surname>Laghari</surname>
+              <given-names>R. A.</given-names>
+            </name>
+            <name>
+              <surname>Nawaz</surname>
+              <given-names>H.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.cogr.2022.12.004</pub-id>
+          <article-title>Unmanned aerial vehicles: A review</article-title>
+          <source>Cognit. Robot.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_2">
+        <label>2.</label>
+        <element-citation publication-type="journal">
+          <volume>25</volume>
+          <page-range>7563</page-range>
+          <issue>24</issue>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Habash</surname>
+              <given-names>N.</given-names>
+            </name>
+            <name>
+              <surname>Alqumsan</surname>
+              <given-names>A. A.</given-names>
+            </name>
+            <name>
+              <surname>Zhou</surname>
+              <given-names>T.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3390/s25247563</pub-id>
+          <article-title>Recent real-time aerial object detection approaches, performance, optimization, and efficient design trends for onboard performance: A survey</article-title>
+          <source>Sensors</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_3">
+        <label>3.</label>
+        <element-citation publication-type="journal">
+          <volume>39</volume>
+          <page-range>1137-1149</page-range>
+          <issue>6</issue>
+          <year>2017</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Ren</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>He</surname>
+              <given-names>K.</given-names>
+            </name>
+            <name>
+              <surname>Girshick</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Sun</surname>
+              <given-names>J.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/tpami.2016.2577031</pub-id>
+          <article-title>Faster R-CNN: Towards real-time object detection with region proposal networks</article-title>
+          <source>IEEE Trans. Pattern Anal. Mach. Intell.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_4">
+        <label>4.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>2961-2969</page-range>
+          <publisher-place>Venice, Italy</publisher-place>
+          <year>2017</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>He</surname>
+              <given-names>K.</given-names>
+            </name>
+            <name>
+              <surname>Gkioxari</surname>
+              <given-names>G.</given-names>
+            </name>
+            <name>
+              <surname>Dollár</surname>
+              <given-names>P.</given-names>
+            </name>
+            <name>
+              <surname>Girshick</surname>
+              <given-names>R.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.48550/arXiv.1703.06870</pub-id>
+          <article-title>Mask R-CNN</article-title>
+          <source>Proceedings of the IEEE International Conference on Computer Vision</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_5">
+        <label>5.</label>
+        <element-citation publication-type="book">
+          <person-group person-group-type="author">
+            <name>
+              <surname>Liu</surname>
+              <given-names>W.</given-names>
+            </name>
+            <name>
+              <surname>Anguelov</surname>
+              <given-names>D.</given-names>
+            </name>
+            <name>
+              <surname>Erhan</surname>
+              <given-names>D.</given-names>
+            </name>
+            <name>
+              <surname>Szegedy</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Reed</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Fu</surname>
+              <given-names>C. Y.</given-names>
+            </name>
+            <name>
+              <surname>Berg</surname>
+              <given-names>A. C.</given-names>
+            </name>
+          </person-group>
+          <article-title>SSD: Single shot multibox detector</article-title>
+          <source>European Conference on Computer Vision</source>
+          <publisher-name>Springer, Cham</publisher-name>
+          <year>2016</year>
+          <page-range>21-37</page-range>
+          <pub-id pub-id-type="doi">10.1007/978-3-319-46448-0_2</pub-id>
+        </element-citation>
+      </ref>
+      <ref id="ref_6">
+        <label>6.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>779-788</page-range>
+          <publisher-place>Las Vegas, NV, USA</publisher-place>
+          <year>2016</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Redmon</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Divvala</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Girshick</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Farhadi</surname>
+              <given-names>A.</given-names>
+            </name>
+          </person-group>
+          <article-title>You only look once: Unified, real-time object detection</article-title>
+          <source>Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_7">
+        <label>7.</label>
+        <element-citation publication-type="journal">
+          <volume>22</volume>
+          <page-range>4339</page-range>
+          <issue>12</issue>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Oghaz</surname>
+              <given-names>H. M.</given-names>
+            </name>
+            <name>
+              <surname>Razaak</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Remagnino</surname>
+              <given-names>P.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3390/s22124339</pub-id>
+          <article-title>An enhanced single shot small object detector for aerial imagery</article-title>
+          <source>Sensors</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_8">
+        <label>8.</label>
+        <element-citation publication-type="journal">
+          <volume>19</volume>
+          <page-range>691-707</page-range>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Junos</surname>
+              <given-names>M. H.</given-names>
+            </name>
+            <name>
+              <surname>Kamsani</surname>
+              <given-names>N. A.</given-names>
+            </name>
+            <name>
+              <surname>Rahman</surname>
+              <given-names>T. A.</given-names>
+            </name>
+            <name>
+              <surname>Ramlee</surname>
+              <given-names>M. A.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.aej.2021.11.027</pub-id>
+          <article-title>Automated object detection on aerial images for limited capacity embedded device using a lightweight CNN model</article-title>
+          <source>J. Real-Time Image Process.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_9">
+        <label>9.</label>
+        <element-citation publication-type="journal">
+          <volume>17</volume>
+          <page-range>2096</page-range>
+          <issue>12</issue>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Li</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Ma</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>J.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3390/rs17122096</pub-id>
+          <article-title>ELNet: An efficient and lightweight network for small object detection in UAV imagery</article-title>
+          <source>Remote Sens.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_10">
+        <label>10.</label>
+        <element-citation publication-type="journal">
+          <volume>25</volume>
+          <page-range>200484</page-range>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Nghiem</surname>
+              <given-names>V. Q.</given-names>
+            </name>
+            <name>
+              <surname>Nguyen</surname>
+              <given-names>H. H.</given-names>
+            </name>
+            <name>
+              <surname>Hoang</surname>
+              <given-names>M. S.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.iswa.2025.200484</pub-id>
+          <article-title>LEAF-YOLO: Lightweight edge-real-time small object detection on aerial imagery</article-title>
+          <source>Intell. Syst. Appl.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_11">
+        <label>11.</label>
+        <element-citation publication-type="journal">
+          <volume>686</volume>
+          <page-range>121366</page-range>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Fan</surname>
+              <given-names>Q.</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Deveci</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Zhong</surname>
+              <given-names>K.</given-names>
+            </name>
+            <name>
+              <surname>Kadry</surname>
+              <given-names>S.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.ins.2024.121366</pub-id>
+          <article-title>LUD-YOLO: A novel lightweight object detection network for unmanned aerial vehicle</article-title>
+          <source>Inf. Sci.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_12">
+        <label>12.</label>
+        <element-citation publication-type="journal">
+          <volume>16</volume>
+          <page-range>2944</page-range>
+          <issue>16</issue>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Yu</surname>
+              <given-names>W.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Liu</surname>
+              <given-names>D.</given-names>
+            </name>
+            <name>
+              <surname>Xi</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Wu</surname>
+              <given-names>Y.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3390/rs16162944</pub-id>
+          <article-title>An effective and lightweight full-scale target detection network for UAV imagery</article-title>
+          <source>Remote Sens.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_13">
+        <label>13.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>3-19</page-range>
+          <publisher-place>Springer</publisher-place>
+          <year>2018</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Woo</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Park</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Lee</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Kweon</surname>
+              <given-names>I. S.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.48550/arXiv.1807.06521</pub-id>
+          <article-title>CBAM: Convolutional block attention module</article-title>
+          <source>Proceedings of the European Conference on Computer Vision (ECCV)</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_14">
+        <label>14.</label>
+        <element-citation publication-type="journal">
+          <volume>15</volume>
+          <page-range>15352</page-range>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Ma</surname>
+              <given-names>F.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Zhu</surname>
+              <given-names>B.</given-names>
+            </name>
+            <name>
+              <surname>Yang</surname>
+              <given-names>X.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1038/s41598-025-00341-7</pub-id>
+          <article-title>A lightweight UAV target detection algorithm based on improved YOLOv8s model</article-title>
+          <source>Sci. Rep.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_15">
+        <label>15.</label>
+        <element-citation publication-type="journal">
+          <volume>133</volume>
+          <page-range>108998</page-range>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Bosquet</surname>
+              <given-names>B.</given-names>
+            </name>
+            <name>
+              <surname>Cores</surname>
+              <given-names>D.</given-names>
+            </name>
+            <name>
+              <surname>Seidenari</surname>
+              <given-names>L.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.patcog.2022.108998</pub-id>
+          <article-title>A full data augmentation pipeline for small object detection based on generative adversarial</article-title>
+          <source>Pattern Recognit.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_16">
+        <label>16.</label>
+        <element-citation publication-type="journal">
+          <volume>117</volume>
+          <page-range>102152</page-range>
+          <year>2021</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Srivastava</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Narayan</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Mittal</surname>
+              <given-names>S.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.sysarc.2021.102152</pub-id>
+          <article-title>A survey of deep learning techniques for vehicle detection from UAV images</article-title>
+          <source>J. Syst. Archit.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_17">
+        <label>17.</label>
+        <element-citation publication-type="journal">
+          <volume>33</volume>
+          <page-range>6047-6067</page-range>
+          <issue>11</issue>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Bouguettaya</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Zarzour</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Kechida</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Taberkit</surname>
+              <given-names>A. M.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/TNNLS.2021.3080276</pub-id>
+          <article-title>Vehicle detection from UAV imagery with deep learning: A review</article-title>
+          <source>IEEE Trans. Neural Netw. Learn. Syst.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_18">
+        <label>18.</label>
+        <element-citation publication-type="journal">
+          <volume>13</volume>
+          <page-range>4027</page-range>
+          <issue>20</issue>
+          <year>2021</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Byun</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Shin</surname>
+              <given-names>I. K.</given-names>
+            </name>
+            <name>
+              <surname>Moon</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Kang</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Choi</surname>
+              <given-names>S.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3390/rs13204027</pub-id>
+          <article-title>Road traffic monitoring from UAV images using deep learning networks</article-title>
+          <source>Remote Sens.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_19">
+        <label>19.</label>
+        <element-citation publication-type="journal">
+          <volume>1503</volume>
+          <page-range>arXiv:1503.02531</page-range>
+          <year>2015</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Hinton</surname>
+              <given-names>G.</given-names>
+            </name>
+            <name>
+              <surname>Vinyals</surname>
+              <given-names>O.</given-names>
+            </name>
+            <name>
+              <surname>Dean</surname>
+              <given-names>J.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.48550/arXiv.1503.02531</pub-id>
+          <article-title>Distilling the knowledge in a neural network</article-title>
+          <source>arXiv Preprint</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_20">
+        <label>20.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>658-666</page-range>
+          <publisher-place>Long Beach, CA, USA</publisher-place>
+          <year>2019</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Rezatofighi</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Tsoi</surname>
+              <given-names>N.</given-names>
+            </name>
+            <name>
+              <surname>Gwak</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Sadeghian</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Reid</surname>
+              <given-names>I.</given-names>
+            </name>
+            <name>
+              <surname>Savarese</surname>
+              <given-names>S.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/CVPR.2019.00075</pub-id>
+          <article-title>Generalized intersection over union: A metric and a loss for bounding box regression</article-title>
+          <source>Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_21">
+        <label>21.</label>
+        <element-citation publication-type="journal">
+          <volume>10</volume>
+          <page-range>e2347</page-range>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Zhu</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Zheng</surname>
+              <given-names>W.</given-names>
+            </name>
+            <name>
+              <surname>Du</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Huang</surname>
+              <given-names>Q.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.7717/peerj-cs.2347</pub-id>
+          <article-title>Autonomous intersection over union loss: Adaptive dynamic nonmonotonic focal IoU loss</article-title>
+          <source>PeerJ Comput. Sci.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_22">
+        <label>22.</label>
+        <element-citation publication-type="journal">
+          <volume>2307</volume>
+          <page-range>arXiv:2307.09562</page-range>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Le Jeune</surname>
+              <given-names>P.</given-names>
+            </name>
+            <name>
+              <surname>Mokraoui</surname>
+              <given-names>A.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.48550/arXiv.2307.09562</pub-id>
+          <article-title>Rethinking intersection over union for small object detection in few-shot regime</article-title>
+          <source>arXiv Preprint</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_23">
+        <label>23.</label>
+        <element-citation publication-type="journal">
+          <volume>44</volume>
+          <page-range>7380-7399</page-range>
+          <issue>11</issue>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Zhu</surname>
+              <given-names>P.</given-names>
+            </name>
+            <name>
+              <surname>Wen</surname>
+              <given-names>L.</given-names>
+            </name>
+            <name>
+              <surname>Du</surname>
+              <given-names>D.</given-names>
+            </name>
+            <name>
+              <surname>Bian</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Fan</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Hu</surname>
+              <given-names>Q.</given-names>
+            </name>
+            <name>
+              <surname>Ling</surname>
+              <given-names>H.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/TPAMI.2021.3119563</pub-id>
+          <article-title>Detection and tracking meet drones challenge</article-title>
+          <source>IEEE Trans. Pattern Anal. Mach. Intell.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_24">
+        <label>24.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>618-626</page-range>
+          <publisher-place>Venice, Italy</publisher-place>
+          <year>2017</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Selvaraju</surname>
+              <given-names>R. R.</given-names>
+            </name>
+            <name>
+              <surname>Cogswell</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Das</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Vedantam</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Parikh</surname>
+              <given-names>D.</given-names>
+            </name>
+            <name>
+              <surname>Batra</surname>
+              <given-names>D.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/ICCV.2017.74</pub-id>
+          <article-title>Grad-CAM: Visual explanations from deep networks via gradient-based localization</article-title>
+          <source>Proceedings of the IEEE International Conference on Computer Vision</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_25">
+        <label>25.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>839-847</page-range>
+          <publisher-place>Lake Tahoe, NV, USA</publisher-place>
+          <year>2018</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Chattopadhay</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Sarkar</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Howlader</surname>
+              <given-names>P.</given-names>
+            </name>
+            <name>
+              <surname>Balasubramanian</surname>
+              <given-names>V. N.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/WACV.2018.00097</pub-id>
+          <article-title>Grad-CAM++: Improved visual explanations for deep convolutional networks</article-title>
+          <source>2018 IEEE Winter Conference on Applications of Computer Vision (WACV)</source>
+        </element-citation>
+      </ref>
+    </ref-list>
+  </back>
+</article>
