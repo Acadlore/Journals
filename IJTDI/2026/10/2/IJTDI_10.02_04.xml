@@ -1,0 +1,4481 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.3 20210610//EN" "JATS-journalpublishing1-3.dtd">
+<article xml:lang="en" dtd-version="1.3" article-type="research-article" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mml="http://www.w3.org/1998/Math/MathML">
+  <front>
+    <journal-meta>
+      <journal-id journal-id-type="publisher-id">IJTDI</journal-id>
+      <journal-id journal-id-type="doi">10.56578</journal-id>
+      <journal-title-group>
+        <journal-title>International Journal of Transport Development and Integration</journal-title>
+        <abbrev-journal-title abbrev-type="issn">Int. J. Transp. Dev. Integr.</abbrev-journal-title>
+        <abbrev-journal-title abbrev-type="publisher">IJTDI</abbrev-journal-title>
+      </journal-title-group>
+      <issn publication-format="electronic">2058-8313</issn>
+      <issn publication-format="print">2058-8305</issn>
+      <publisher>
+        <publisher-name>Acadlore</publisher-name>
+      </publisher>
+    </journal-meta>
+    <article-meta>
+      <article-id pub-id-type="publisher-id">AR-21rY0UqoTjKqxPIc_urYGz0_Qxg4Rdgy</article-id>
+      <article-id pub-id-type="doi">10.56578/ijtdi100204</article-id>
+      <article-categories>
+        <subj-group>
+          <subject>Articles</subject>
+        </subj-group>
+      </article-categories>
+      <title-group>
+        <article-title>Security Analysis and Hardened Redesign of TrustCNAV for Reliable GNSS Civil Navigation Message Authentication in Transport Systems</article-title>
+      </title-group>
+      <contrib-group>
+        <contrib contrib-type="author" rid="aff_1">
+          <contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0000-0002-3363-390X</contrib-id>
+          <name>
+            <surname>Byeon</surname>
+            <given-names>Haewon</given-names>
+          </name>
+          <email>bhwpuma@naver.com</email>
+        </contrib>
+        <aff id="aff_1">Department of Future Technology, Korea University of Technology and Education (KOREATECH), 31253 Cheonan, Republic of Korea</aff>
+      </contrib-group>
+      <pub-date publication-format="electronic" date-type="pub">
+        <day>21</day>
+        <month>04</month>
+        <year>2026</year>
+      </pub-date>
+      <volume>10</volume>
+      <issue>2</issue>
+      <fpage>373</fpage>
+      <lpage>384</lpage>
+      <page-range>373-384</page-range>
+      <history>
+        <date date-type="received">
+          <day>04</day>
+          <month>03</month>
+          <year>2026</year>
+        </date>
+        <date date-type="accepted">
+          <day>15</day>
+          <month>04</month>
+          <year>2026</year>
+        </date>
+      </history>
+      <permissions>
+        <copyright-statement>©2026 by the author(s)</copyright-statement>
+        <copyright-year>2026</copyright-year>
+        <license license-type="open-access" xlink:href="https://creativecommons.org/licenses/by/4.0/">
+          <license-p> Published by Acadlore Publishing Services Limited, Hong Kong. This article is available for free download and can be reused and cited, provided that the original published version is credited, under the CC BY 4.0 license.</license-p>
+        </license>
+      </permissions>
+      <abstract><p>Global Navigation Satellite Systems (GNSS) civil navigation messages (CNAVs) remain vulnerable to spoofing and meaconing due to their open broadcast nature. TrustCNAV, originally proposed as a certificateless aggregate authentication scheme, aims to provide efficient verification with low receiver overhead. However, its practical robustness under realistic deployment conditions remains insufficiently examined. This study presents a systematic security reassessment and a hardened redesign of TrustCNAV with particular attention to transport-relevant constraints. The analysis identifies critical vulnerabilities, including signing-key exposure under nonce reuse and forgery risks arising from unauthenticated public-parameter updates. To address these issues, an improved protocol variant is developed, incorporating deterministic nonce generation, authenticated parameter distribution, and epoch-consistent batch verification. In addition to protocol redesign, a bounded symbolic trace-exploration approach is introduced to evaluate the security properties of both the original and improved schemes. A communication overhead model at the bit level is also established to reflect CNAV bandwidth constraints. The results indicate that the improved design effectively mitigates the identified vulnerabilities while maintaining a pairing-free structure and acceptable computational cost. The findings highlight the importance of integrating protocol security with system-level considerations, particularly in transport environments where authentication delay and failure may directly affect operational safety.</p></abstract>
+      <kwd-group>
+        <kwd>Global Navigation Satellite Systems authentication authentication</kwd>
+        <kwd>Civil navigation message</kwd>
+        <kwd>Certificateless signature</kwd>
+        <kwd>Aggregate authentication</kwd>
+        <kwd>Transport system security</kwd>
+        <kwd>Spoofing resilience</kwd>
+      </kwd-group>
+      <counts>
+        <count count-type="contributors" count="1"/>
+        <fig-count count="4"/>
+        <table-count count="2"/>
+        <ref-count count="26"/>
+      </counts>
+    </article-meta>
+  </front>
+  <body>
+    <sec sec-type="intro">
+      <title>1. Introduction</title>
+      <p>Global Navigation Satellite Systems (GNSS) underpin safety-critical transport. Air traffic management, maritime navigation, rail operations, and logistics platforms depend on Positioning, Navigation, and Timing (PNT) derived from broadcast civil navigation message (CNAV) signals. The operational risk is not limited to jamming. A capable spoofer can inject forged navigation data while sustaining signal tracking, which turns a cyber intrusion into a physical hazard. TrustCNAV [<xref ref-type="bibr" rid="ref_1">1</xref>] targets this threat by proposing certificateless aggregate authentication for CNAV, aiming for immediate verification and low receiver workload without pairing operations.</p><p>The transport relevance of CNAV authentication is not uniform across application domains. In railway train-control architectures, forged or replayed navigation data can distort train-location reporting and degrade movement-authority logic. In aviation and uncrewed-aircraft settings, the more immediate concern is whether the receiver degrades safely when authenticated and non-authenticated data coexist or when message validation arrives too late for time-critical decision loops. In autonomous road systems, strict authentication may improve trustworthiness yet also reduce availability if only a subset of signals can be authenticated in real time. These scenario-dependent trade-offs mean that protocol latency, update trust, and failure handling matter as much as signature algebra [<xref ref-type="bibr" rid="ref_2">2</xref>], [<xref ref-type="bibr" rid="ref_3">3</xref>], [<xref ref-type="bibr" rid="ref_4">4</xref>]. For concreteness, the engineering interpretation in this paper centers on GNSS-based railway positioning, where authenticated CNAV screening can directly affect train-location reporting, movement-authority logic, and the decision to accept, reject, or degrade a suspect navigation update [<xref ref-type="bibr" rid="ref_4">4</xref>].</p><p>Work on GNSS threats and defenses shows why protocol guarantees should be tested against realistic field assumptions. Psiaki and Humphreys separated meaconing from structured synthesis and highlighted that defenses must accommodate receiver constraints and non-ideal propagation [<xref ref-type="bibr" rid="ref_5">5</xref>]. Humphreys argued that cryptographic checks matter only when the receiver also enforces time-consistency and a detection logic, because the attacker can exploit timing semantics without breaking message integrity [<xref ref-type="bibr" rid="ref_2">2</xref>]. Surveys confirm that spoofing equipment keeps getting cheaper, while GNSS receivers appear in more connected, software-managed transport systems that expand the attack surface [<xref ref-type="bibr" rid="ref_6">6</xref>].</p><p>Signal-level defenses such as distortion monitoring and correlation tests can raise the attacker’s cost, but their effectiveness varies with antenna configuration, multipath, and front-end quality [<xref ref-type="bibr" rid="ref_7">7</xref>]. Data-level defenses provide an explicit accept/reject gate at the navigation-message layer. GNSS authentication proposals built on unpredictable signal structures, delayed disclosure, and message authentication have clarified the security-latency trade space and have motivated deployment programs such as Open Service Navigation Message Authentication (OSNMA)-like mechanisms [<xref ref-type="bibr" rid="ref_3">3</xref>], [<xref ref-type="bibr" rid="ref_8">8</xref>], [<xref ref-type="bibr" rid="ref_9">9</xref>], [<xref ref-type="bibr" rid="ref_10">10</xref>], [<xref ref-type="bibr" rid="ref_11">11</xref>], [<xref ref-type="bibr" rid="ref_12">12</xref>], [<xref ref-type="bibr" rid="ref_13">13</xref>], [<xref ref-type="bibr" rid="ref_14">14</xref>]. At the same time, replay and distance-decreasing strategies remain practical in transport contexts because they target time-of-transmission and receiver policy rather than hash collisions or discrete logs [<xref ref-type="bibr" rid="ref_3">3</xref>], [<xref ref-type="bibr" rid="ref_10">10</xref>].</p><p>TrustCNAV’s key claim is that a certificateless, pairing-free signature structure can authenticate CNAV efficiently, and that aggregation across satellites reduces total verification time at the receiver [<xref ref-type="bibr" rid="ref_1">1</xref>]. This fits operational needs: receivers often validate multiple satellite messages per epoch, and even small per-message savings can accumulate into meaningful delay reductions. Still, transport deployments rarely satisfy the assumptions used in standard reductions. Ground segments can leak secrets. Parameter updates can travel over maintenance channels with uneven authentication. Implementation faults, especially nonce failures, can break otherwise sound algebra.</p><p>This paper presents an independent security analysis and hardened redesign of TrustCNAV. We examine whether a pairing-free certificateless CNAV authentication scheme remains trustworthy when transport-relevant deployment assumptions are relaxed, especially under nonce faults, unauthenticated public-parameter updates, and mixed-epoch buffering. To improve the practical relevance of the study, we also relate the protocol discussion to transport environments in which authentication delay or failure can affect rail positioning, aviation timing logic, or automated road navigation policies.</p><p>Our contributions are therefore: (i) an explicit reconstruction of TrustCNAV’s message flow and signature equations; (ii) vulnerability proofs with concrete attack traces and clarified deployment assumptions; (iii) a redesign that strengthens binding, nonce robustness, authenticated parameter distribution, and epoch invariants while keeping pairing-free verification; and (iv) a evaluation including communication overhead, transport-scenario interpretation, and bounded symbolic trace exploration for the specific attack classes studied here; the overall workflow appears in <xref ref-type="fig" rid="fig_1">Figure 1</xref>.</p>
+      
+        <fig id="fig_1">
+          <label>Figure 1</label>
+          <caption>
+            <title>Protocol &amp; analysis workflow</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/4/img_IPY0rx9cK0-5Abnz.png"/>
+        </fig>
+      
+    </sec>
+    <sec sec-type="">
+      <title>2. Related works</title>
+      <p>GNSS spoofing analysis has long emphasized that authentication and detection interact: message integrity does not automatically yield a safe navigation solution unless the receiver constrains timing and consistency [<xref ref-type="bibr" rid="ref_2">2</xref>]. Psiaki and Humphreys cataloged the attack space, including replay/meaconing and structured synthesis, and argued that defenses must respect receiver cost and antenna constraints [<xref ref-type="bibr" rid="ref_5">5</xref>]. Surveys further document how spoofing threats evolve with software-defined radios and the growing integration of GNSS into Internet-of-Things (IoT)-like transport control stacks [<xref ref-type="bibr" rid="ref_6">6</xref>].</p><p>Navigation message authentication research has evolved along two broad lines. One line attaches cryptographic tags or signatures to navigation data, including one-way hash-chain variants and signature-based authentication in BeiDou-style settings [<xref ref-type="bibr" rid="ref_15">15</xref>], [<xref ref-type="bibr" rid="ref_16">16</xref>]. Another line leverages system structure through unpredictable data and delayed disclosure to provide origin authentication with deployment-friendly overhead. Studies of OSNMA testing, CHIMERA/OSNMA integration, and unpredictability mapping illustrate the practical limits of delayed disclosure, especially around time-to-first-authenticated-fix and receiver synchronization [<xref ref-type="bibr" rid="ref_9">9</xref>], [<xref ref-type="bibr" rid="ref_11">11</xref>], [<xref ref-type="bibr" rid="ref_12">12</xref>]. Parameter-selection work for delayed-disclosure protocols highlights the security-latency balance when receivers must wait for key release [<xref ref-type="bibr" rid="ref_13">13</xref>], and semi-assisted designs aim to reduce this waiting time under realistic link conditions [<xref ref-type="bibr" rid="ref_14">14</xref>]. Replay detection remains contentious: partial-correlation detection and worst-case attacker models show that a determined adversary can trade distortion against delay and can exploit mixed authenticated and non-authenticated environments during transitional deployments [<xref ref-type="bibr" rid="ref_10">10</xref>], [<xref ref-type="bibr" rid="ref_17">17</xref>], [<xref ref-type="bibr" rid="ref_18">18</xref>].</p><p>Recent developments indicate that GNSS navigation-message authentication is moving from proof-of-concept to operational and field-assessed deployment. The Galileo OSNMA Initial Service is now documented through an operational service-definition framework [<xref ref-type="bibr" rid="ref_19">19</xref>], and recent field work has examined OSNMA behavior under interference-affected radio frequency (RF) road environments [<xref ref-type="bibr" rid="ref_20">20</xref>]. At the same time, transport-specific studies show that spoofing materially affects GNSS-based railway train-positioning architectures and that resilience depends on how message authentication interacts with broader system design [<xref ref-type="bibr" rid="ref_4">4</xref>]. These developments sharpen the practical question addressed in this paper: whether a low-latency CNAV authentication protocol remains trustworthy when deployment assumptions about keys, updates, and batching are stressed.</p><p>Certificateless authentication and aggregation appear widely in transport networks outside GNSS. Vehicular Ad Hoc Networks (VANETs) use certificateless mechanisms to reduce certificate management overhead while retaining conditional privacy and traceability goals [<xref ref-type="bibr" rid="ref_21">21</xref>]. Pairing-free certificateless aggregate signatures and key-insulated certificateless authentication in IoT environments highlight recurring pitfalls: poorly authenticated public-key distribution can enable replacement attacks, and implementation faults can negate reduction proofs [<xref ref-type="bibr" rid="ref_22">22</xref>], [<xref ref-type="bibr" rid="ref_23">23</xref>]. Blockchain-based accountability layers have been proposed for GNSS message distribution, though they introduce operational complexity and depend on connectivity assumptions that do not always hold for avionics [<xref ref-type="bibr" rid="ref_24">24</xref>].</p><p>TrustCNAV sits at the intersection of immediate verification, certificateless keying, and aggregation [<xref ref-type="bibr" rid="ref_1">1</xref>]. Its novelty lies in binding CNAV structure to a pairing-free aggregate signature equation and claiming low receiver consumption [<xref ref-type="bibr" rid="ref_1">1</xref>]. Our manuscript focuses on the parts that determine real-world trust: authenticity of public parameters, robustness of nonce generation, and epoch-consistent aggregation policies.</p>
+    </sec>
+    <sec sec-type="">
+      <title>3. Methodology</title>
+      <p>We analyze the TrustCNAV protocol of Wu et al. [<xref ref-type="bibr" rid="ref_1">1</xref>] as an executable message-binding mechanism, then validate the redesign with a bounded symbolic trace-exploration layer. First, we extract the broadcast flow and rewrite it as explicit message instances <inline-formula>
+  <mml:math id="mz2gj3yl3u">
+    <mml:msub>
+      <mml:mi>M</mml:mi>
+      <mml:mi>i</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> where each CNAV packet carries (ID<inline-formula>
+  <mml:math id="mgezwxz6lt">
+    <mml:msub>
+      <mml:mi/>
+      <mml:mi>i</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula>, <inline-formula>
+  <mml:math id="mcq9mfi329">
+    <mml:msub>
+      <mml:mi>m</mml:mi>
+      <mml:mi>i</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula>, <inline-formula>
+  <mml:math id="mrt640tcdd">
+    <mml:msub>
+      <mml:mi>T</mml:mi>
+      <mml:mi>i</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula>, <inline-formula>
+  <mml:math id="mheqni3j1f">
+    <mml:msub>
+      <mml:mi>F</mml:mi>
+      <mml:mi>i</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula>, <inline-formula>
+  <mml:math id="m59yw067ye">
+    <mml:mi>S</mml:mi>
+    <mml:mi>I</mml:mi>
+    <mml:msub>
+      <mml:mi>G</mml:mi>
+      <mml:mi>i</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula>) and the receiver recomputes hashes and elliptic-curve relations; this makes parsing and canonical encoding part of the security claim. Second, we model the key schedule by separating KGC-issued components from Ground Control Station (GCS) secrets, representing them as compositional terms that can be substituted under compromise (Mas-Key, Pri-O_ID<inline-formula>
+  <mml:math id="mj9mov80n5">
+    <mml:msub>
+      <mml:mi/>
+      <mml:mrow>
+        <mml:mi>i</mml:mi>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula>, Pub-T_ID<inline-formula>
+  <mml:math id="m0b7lxa368">
+    <mml:msub>
+      <mml:mi/>
+      <mml:mrow>
+        <mml:mi>i</mml:mi>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula>) while keeping public artifacts (Mas-Pub, Pub-O_ID<inline-formula>
+  <mml:math id="m2z2rn2hza">
+    <mml:msub>
+      <mml:mi/>
+      <mml:mrow>
+        <mml:mi>i</mml:mi>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula>, Pub-T_ID<inline-formula>
+  <mml:math id="mxmmplv80u">
+    <mml:msub>
+      <mml:mi/>
+      <mml:mrow>
+        <mml:mi>i</mml:mi>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula>, Pub-Key_ID<inline-formula>
+  <mml:math id="mgqku478oc">
+    <mml:msub>
+      <mml:mi/>
+      <mml:mrow>
+        <mml:mi>i</mml:mi>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula>) as attacker-observable. Third, we define adversary capabilities aligned with transport operations: an external spoofer who records and replays CNAV; a network attacker who can inject alternative public parameters; an insider who can extract secrets from the ground segment; and a fault-capable attacker who can induce nonce repetition during signing. Fourth, we set protocol invariants that must hold for safety, including (a) per-message authenticity before aggregation, (b) epoch consistency of all messages admitted into an aggregate check, and (c) non-recoverability of long-term signing keys from signature transcripts. Fifth, we search for violating traces through algebraic substitution and transcript construction.</p>
+      
+        <sec>
+          
+            <title>3.1. Bounded symbolic trace-exploration procedure</title>
+          
+          <p>In addition to these manual steps, we add a bounded symbolic trace-exploration layer rather than claiming a full mechanized proof. We describe the protocol using the following event predicates and safety query form:</p>
+          
+            <disp-formula>
+              <label>(1)</label>
+              <mml:math id="mfvg0vnpvf">
+                <mml:mtable displaystyle="true" columnspacing="1em" rowspacing="3pt">
+                  <mml:mtr>
+                    <mml:mtd>
+                      <mml:mrow>
+                        <mml:mi data-mjx-auto-op="false">Send</mml:mi>
+                      </mml:mrow>
+                      <mml:mrow>
+                        <mml:mi data-mjx-auto-op="false">epoch</mml:mi>
+                      </mml:mrow>
+                      <mml:mrow>
+                        <mml:mi data-mjx-auto-op="false">Accept</mml:mi>
+                      </mml:mrow>
+                      <mml:mrow>
+                        <mml:mi data-mjx-auto-op="false">epoch</mml:mi>
+                      </mml:mrow>
+                      <mml:mo>(</mml:mo>
+                      <mml:mo>,</mml:mo>
+                      <mml:mo>,</mml:mo>
+                      <mml:mo>)</mml:mo>
+                      <mml:mo>,</mml:mo>
+                      <mml:mo>(</mml:mo>
+                      <mml:mo>,</mml:mo>
+                      <mml:mo>,</mml:mo>
+                      <mml:mo>)</mml:mo>
+                      <mml:msub>
+                        <mml:mrow>
+                          <mml:mi data-mjx-auto-op="false">ID</mml:mi>
+                        </mml:mrow>
+                        <mml:mi>i</mml:mi>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mi>m</mml:mi>
+                        <mml:mi>i</mml:mi>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mrow>
+                          <mml:mi data-mjx-auto-op="false">ID</mml:mi>
+                        </mml:mrow>
+                        <mml:mi>i</mml:mi>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mi>m</mml:mi>
+                        <mml:mi>i</mml:mi>
+                      </mml:msub>
+                      <mml:mstyle scriptlevel="0">
+                        <mml:mspace width="1em"/>
+                      </mml:mstyle>
+                    </mml:mtd>
+                  </mml:mtr>
+                  <mml:mtr>
+                    <mml:mtd>
+                      <mml:mrow>
+                        <mml:mi data-mjx-auto-op="false">Accept</mml:mi>
+                      </mml:mrow>
+                      <mml:mrow>
+                        <mml:mi data-mjx-auto-op="false">epoch</mml:mi>
+                      </mml:mrow>
+                      <mml:mrow>
+                        <mml:mi data-mjx-auto-op="false">Send</mml:mi>
+                      </mml:mrow>
+                      <mml:mrow>
+                        <mml:mi data-mjx-auto-op="false">epoch</mml:mi>
+                      </mml:mrow>
+                      <mml:mo>(</mml:mo>
+                      <mml:mo>,</mml:mo>
+                      <mml:mo>,</mml:mo>
+                      <mml:mo>)</mml:mo>
+                      <mml:mo>⇒</mml:mo>
+                      <mml:mo>(</mml:mo>
+                      <mml:mo>,</mml:mo>
+                      <mml:mo>,</mml:mo>
+                      <mml:mo>)</mml:mo>
+                      <mml:msub>
+                        <mml:mrow>
+                          <mml:mi data-mjx-auto-op="false">ID</mml:mi>
+                        </mml:mrow>
+                        <mml:mi>i</mml:mi>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mi>m</mml:mi>
+                        <mml:mi>i</mml:mi>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mrow>
+                          <mml:mi data-mjx-auto-op="false">ID</mml:mi>
+                        </mml:mrow>
+                        <mml:mi>i</mml:mi>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mi>m</mml:mi>
+                        <mml:mi>i</mml:mi>
+                      </mml:msub>
+                      <mml:mi>∃</mml:mi>
+                      <mml:mstyle scriptlevel="0">
+                        <mml:mspace width="0.167em"/>
+                      </mml:mstyle>
+                    </mml:mtd>
+                  </mml:mtr>
+                  <mml:mtr>
+                    <mml:mtd>
+                      <mml:mrow>
+                        <mml:mi data-mjx-auto-op="false">State</mml:mi>
+                      </mml:mrow>
+                      <mml:mrow>
+                        <mml:mi data-mjx-auto-op="false">Buffer</mml:mi>
+                      </mml:mrow>
+                      <mml:mrow>
+                        <mml:mi data-mjx-auto-op="false">ParamStore</mml:mi>
+                      </mml:mrow>
+                      <mml:mrow>
+                        <mml:mi data-mjx-auto-op="false">HonestSends</mml:mi>
+                      </mml:mrow>
+                      <mml:mo>=</mml:mo>
+                      <mml:mo>(</mml:mo>
+                      <mml:mo>,</mml:mo>
+                      <mml:mo>,</mml:mo>
+                      <mml:mo>)</mml:mo>
+                    </mml:mtd>
+                  </mml:mtr>
+                  <mml:mtr>
+                    <mml:mtd>
+                      <mml:mrow>
+                        <mml:mi data-mjx-auto-op="false">State</mml:mi>
+                      </mml:mrow>
+                      <mml:mrow>
+                        <mml:mi data-mjx-auto-op="false">State</mml:mi>
+                      </mml:mrow>
+                      <mml:mrow>
+                        <mml:mi data-mjx-auto-op="false">ReplayCache</mml:mi>
+                      </mml:mrow>
+                      <mml:mrow>
+                        <mml:mi data-mjx-auto-op="false">FaultFlags</mml:mi>
+                      </mml:mrow>
+                      <mml:mrow>
+                        <mml:mi data-mjx-auto-op="false">AcceptedSet</mml:mi>
+                      </mml:mrow>
+                      <mml:mo>=</mml:mo>
+                      <mml:mo>∪</mml:mo>
+                      <mml:mo>(</mml:mo>
+                      <mml:mo>,</mml:mo>
+                      <mml:mo>,</mml:mo>
+                      <mml:mo>)</mml:mo>
+                    </mml:mtd>
+                  </mml:mtr>
+                </mml:mtable>
+              </mml:math>
+            </disp-formula>
+          
+          <p>The transition system explores honest broadcast, replay, parameter replacement, nonce-fault injection, epoch selection, batch verification, and optional fallback individual verification. To keep the search tractable, hash-equivalent states are merged, duplicate transcript prefixes are pruned, and exploration stops at user-defined limits on depth, batch size, and attacker actions. Under these bounds, the procedure finds the expected accepting traces against the original TrustCNAV variant and finds no accepting traces for the improved variant under the same modeled capabilities. We present these results as bounded symbolic evidence for the specific trace classes studied here, not as a general proof comparable to ProVerif or Tamarin [<xref ref-type="bibr" rid="ref_25">25</xref>], [<xref ref-type="bibr" rid="ref_26">26</xref>].</p><p>To keep the description consistent with the transport context, we also use standard modeling idioms as templates for key and trust binding:</p>
+          
+            <disp-formula>
+              <label>(2)</label>
+              <mml:math id="mjyarnz7gl">
+                <mml:mtable displaystyle="true" columnspacing="1em" rowspacing="3pt">
+                  <mml:mtr>
+                    <mml:mtd>
+                      <mml:msub>
+                        <mml:mi>K</mml:mi>
+                        <mml:mrow>
+                          <mml:mrow>
+                            <mml:mi data-mjx-auto-op="false">PUF</mml:mi>
+                          </mml:mrow>
+                        </mml:mrow>
+                      </mml:msub>
+                      <mml:mo>=</mml:mo>
+                      <mml:mrow>
+                        <mml:mi>h</mml:mi>
+                      </mml:mrow>
+                      <mml:mrow>
+                        <mml:mo>(</mml:mo>
+                        <mml:mo>∥</mml:mo>
+                        <mml:mo>)</mml:mo>
+                        <mml:msub>
+                          <mml:mrow>
+                            <mml:mi data-mjx-auto-op="false">VID</mml:mi>
+                          </mml:mrow>
+                          <mml:mi>i</mml:mi>
+                        </mml:msub>
+                        <mml:msub>
+                          <mml:mi>R</mml:mi>
+                          <mml:mi>i</mml:mi>
+                        </mml:msub>
+                      </mml:mrow>
+                      <mml:mstyle scriptlevel="0">
+                        <mml:mspace width="-0.167em"/>
+                      </mml:mstyle>
+                    </mml:mtd>
+                  </mml:mtr>
+                  <mml:mtr>
+                    <mml:mtd>
+                      <mml:mi>S</mml:mi>
+                      <mml:msubsup>
+                        <mml:mi>K</mml:mi>
+                        <mml:mrow>
+                          <mml:mrow>
+                            <mml:mi data-mjx-auto-op="false">sess</mml:mi>
+                          </mml:mrow>
+                        </mml:mrow>
+                        <mml:mrow>
+                          <mml:mi>j</mml:mi>
+                        </mml:mrow>
+                      </mml:msubsup>
+                      <mml:mo>=</mml:mo>
+                      <mml:mrow>
+                        <mml:mi data-mjx-auto-op="false">KDF</mml:mi>
+                      </mml:mrow>
+                      <mml:mrow>
+                        <mml:mo>(</mml:mo>
+                        <mml:mo>,</mml:mo>
+                        <mml:mo>,</mml:mo>
+                        <mml:mo>,</mml:mo>
+                        <mml:mo>)</mml:mo>
+                        <mml:mi>S</mml:mi>
+                        <mml:msub>
+                          <mml:mi>K</mml:mi>
+                          <mml:mrow>
+                            <mml:mrow>
+                              <mml:mi data-mjx-auto-op="false">reg</mml:mi>
+                            </mml:mrow>
+                          </mml:mrow>
+                        </mml:msub>
+                        <mml:msub>
+                          <mml:mrow>
+                            <mml:mi data-mjx-auto-op="false">context</mml:mi>
+                          </mml:mrow>
+                          <mml:mi>j</mml:mi>
+                        </mml:msub>
+                        <mml:msubsup>
+                          <mml:mi>N</mml:mi>
+                          <mml:mrow>
+                            <mml:mrow>
+                              <mml:mi data-mjx-auto-op="false">RS</mml:mi>
+                            </mml:mrow>
+                          </mml:mrow>
+                          <mml:mrow>
+                            <mml:mi>j</mml:mi>
+                          </mml:mrow>
+                        </mml:msubsup>
+                        <mml:msubsup>
+                          <mml:mi>N</mml:mi>
+                          <mml:mrow>
+                            <mml:mrow>
+                              <mml:mi>U</mml:mi>
+                            </mml:mrow>
+                          </mml:mrow>
+                          <mml:mrow>
+                            <mml:mi>j</mml:mi>
+                          </mml:mrow>
+                        </mml:msubsup>
+                      </mml:mrow>
+                      <mml:mstyle scriptlevel="0">
+                        <mml:mspace width="-0.167em"/>
+                      </mml:mstyle>
+                    </mml:mtd>
+                  </mml:mtr>
+                  <mml:mtr>
+                    <mml:mtd>
+                      <mml:msub>
+                        <mml:mi>A</mml:mi>
+                        <mml:mi>n</mml:mi>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mi>A</mml:mi>
+                        <mml:mi>n</mml:mi>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mi>u</mml:mi>
+                        <mml:mi>n</mml:mi>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mi>e</mml:mi>
+                        <mml:mi>t</mml:mi>
+                      </mml:msub>
+                      <mml:mo>(</mml:mo>
+                      <mml:mo>+</mml:mo>
+                      <mml:mo>)</mml:mo>
+                      <mml:mo>=</mml:mo>
+                      <mml:mo>(</mml:mo>
+                      <mml:mo>)</mml:mo>
+                      <mml:mo>+</mml:mo>
+                      <mml:mo>(</mml:mo>
+                      <mml:mo>)</mml:mo>
+                      <mml:mi>t</mml:mi>
+                      <mml:mi>t</mml:mi>
+                      <mml:mn>1</mml:mn>
+                    </mml:mtd>
+                  </mml:mtr>
+                  <mml:mtr>
+                    <mml:mtd>
+                      <mml:msub>
+                        <mml:mi>p</mml:mi>
+                        <mml:mrow>
+                          <mml:mrow>
+                            <mml:mi data-mjx-auto-op="false">safe</mml:mi>
+                          </mml:mrow>
+                        </mml:mrow>
+                      </mml:msub>
+                      <mml:mo>(</mml:mo>
+                      <mml:mo>,</mml:mo>
+                      <mml:mo>+</mml:mo>
+                      <mml:mo>)</mml:mo>
+                      <mml:mo>=</mml:mo>
+                      <mml:mi>n</mml:mi>
+                      <mml:mi>t</mml:mi>
+                      <mml:mi>f</mml:mi>
+                      <mml:mn>1</mml:mn>
+                      <mml:mstyle scriptlevel="0">
+                        <mml:mspace width="-0.167em"/>
+                      </mml:mstyle>
+                      <mml:mrow>
+                        <mml:mo>(</mml:mo>
+                        <mml:mo>(</mml:mo>
+                        <mml:mo>,</mml:mo>
+                        <mml:mo>)</mml:mo>
+                        <mml:mo>,</mml:mo>
+                        <mml:mo>)</mml:mo>
+                        <mml:msub>
+                          <mml:mi>p</mml:mi>
+                          <mml:mrow>
+                            <mml:mrow>
+                              <mml:mi data-mjx-auto-op="false">safe</mml:mi>
+                            </mml:mrow>
+                          </mml:mrow>
+                        </mml:msub>
+                        <mml:msub>
+                          <mml:mi>e</mml:mi>
+                          <mml:mi>t</mml:mi>
+                        </mml:msub>
+                        <mml:mi>n</mml:mi>
+                        <mml:mi>t</mml:mi>
+                      </mml:mrow>
+                    </mml:mtd>
+                  </mml:mtr>
+                </mml:mtable>
+              </mml:math>
+            </disp-formula>
+          
+          <p>These examples illustrate a device-derived seed without exposing a raw identifier, a session key bound to nonces and a context label, and trust updates based only on cryptographically verified events. They do not claim that TrustCNAV itself uses PUFs or game-theoretic utilities.</p>
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>4. Analysis of the protocol</title>
+      
+        <sec>
+          
+            <title>4.1. Overview of the proposed protocol</title>
+          
+          <p>TrustCNAV is a broadcast authentication protocol for CNAV. Entities include a Key Generation Center/Key Management Center (KGC/KMC), a GCS, satellites <inline-formula>
+  <mml:math id="mnjvnu8xvh">
+    <mml:msub>
+      <mml:mi>S</mml:mi>
+      <mml:mi>i</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula>, and receivers [<xref ref-type="bibr" rid="ref_1">1</xref>]. The scheme operates over an elliptic-curve group with base point $P$ and master secret Mas-Key held by the KGC. The system parameters are summarized as:</p>
+          
+            <disp-formula>
+              <label>(3)</label>
+              <mml:math id="mb2x871asp">
+                <mml:mtable displaystyle="true" columnspacing="1em" rowspacing="3pt">
+                  <mml:mtr>
+                    <mml:mtd>
+                      <mml:mrow>
+                        <mml:mi data-mjx-auto-op="false">Sys</mml:mi>
+                        <mml:mi data-mjx-auto-op="false">Par</mml:mi>
+                        <mml:mtext>-</mml:mtext>
+                      </mml:mrow>
+                      <mml:mrow>
+                        <mml:mi data-mjx-auto-op="false">Mas</mml:mi>
+                        <mml:mi data-mjx-auto-op="false">Pub</mml:mi>
+                        <mml:mtext>-</mml:mtext>
+                      </mml:mrow>
+                      <mml:mo>=</mml:mo>
+                      <mml:mo>(</mml:mo>
+                      <mml:mo>,</mml:mo>
+                      <mml:mo>,</mml:mo>
+                      <mml:mo>,</mml:mo>
+                      <mml:mo>,</mml:mo>
+                      <mml:mo>,</mml:mo>
+                      <mml:mo>,</mml:mo>
+                      <mml:mo>,</mml:mo>
+                      <mml:mo>,</mml:mo>
+                      <mml:mo>)</mml:mo>
+                      <mml:mi>P</mml:mi>
+                      <mml:mi>p</mml:mi>
+                      <mml:mi>q</mml:mi>
+                      <mml:mi>E</mml:mi>
+                      <mml:mi>G</mml:mi>
+                      <mml:msub>
+                        <mml:mrow>
+                          <mml:mi>H</mml:mi>
+                        </mml:mrow>
+                        <mml:mn>1</mml:mn>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mrow>
+                          <mml:mi>H</mml:mi>
+                        </mml:mrow>
+                        <mml:mn>2</mml:mn>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mrow>
+                          <mml:mi>H</mml:mi>
+                        </mml:mrow>
+                        <mml:mn>3</mml:mn>
+                      </mml:msub>
+                    </mml:mtd>
+                  </mml:mtr>
+                  <mml:mtr>
+                    <mml:mtd>
+                      <mml:mrow>
+                        <mml:mi data-mjx-auto-op="false">Mas</mml:mi>
+                        <mml:mi data-mjx-auto-op="false">Pub</mml:mi>
+                        <mml:mtext>-</mml:mtext>
+                      </mml:mrow>
+                      <mml:mrow>
+                        <mml:mi data-mjx-auto-op="false">Mas</mml:mi>
+                        <mml:mi data-mjx-auto-op="false">Key</mml:mi>
+                        <mml:mtext>-</mml:mtext>
+                      </mml:mrow>
+                      <mml:mo>=</mml:mo>
+                      <mml:mo>⋅</mml:mo>
+                      <mml:mo>,</mml:mo>
+                      <mml:mo>,</mml:mo>
+                      <mml:mo>,</mml:mo>
+                      <mml:mo>:</mml:mo>
+                      <mml:mo fence="false">{</mml:mo>
+                      <mml:mo>,</mml:mo>
+                      <mml:mo accent="false">→</mml:mo>
+                      <mml:mi>P</mml:mi>
+                      <mml:mstyle scriptlevel="0">
+                        <mml:mspace width="1em"/>
+                      </mml:mstyle>
+                      <mml:msub>
+                        <mml:mrow>
+                          <mml:mi>H</mml:mi>
+                        </mml:mrow>
+                        <mml:mn>1</mml:mn>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mrow>
+                          <mml:mi>H</mml:mi>
+                        </mml:mrow>
+                        <mml:mn>2</mml:mn>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mrow>
+                          <mml:mi>H</mml:mi>
+                        </mml:mrow>
+                        <mml:mn>3</mml:mn>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mrow>
+                          <mml:mi>Z</mml:mi>
+                        </mml:mrow>
+                        <mml:mi>p</mml:mi>
+                      </mml:msub>
+                      <mml:mn>0</mml:mn>
+                      <mml:mn>1</mml:mn>
+                      <mml:msup>
+                        <mml:mo fence="false">}</mml:mo>
+                        <mml:mrow>
+                          <mml:mo>∗</mml:mo>
+                        </mml:mrow>
+                      </mml:msup>
+                    </mml:mtd>
+                  </mml:mtr>
+                </mml:mtable>
+              </mml:math>
+            </disp-formula>
+          
+          <p>Provisioning proceeds per satellite identity ID<inline-formula>
+  <mml:math id="mgpoltlut9">
+    <mml:msub>
+      <mml:mi/>
+      <mml:mi>i</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula>. The KGC selects <inline-formula>
+  <mml:math id="mubc686akr">
+    <mml:msub>
+      <mml:mi>c</mml:mi>
+      <mml:mi>i</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> in <inline-formula>
+  <mml:math id="mo1kj1cwsb">
+    <mml:msub>
+      <mml:mrow>
+        <mml:mi>Z</mml:mi>
+      </mml:mrow>
+      <mml:mi>p</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> and computes the partial satellite values as follows:</p>
+          
+            <disp-formula>
+              <label>(4)</label>
+              <mml:math id="m1bs5c1yup">
+                <mml:mtable displaystyle="true" columnspacing="1em" rowspacing="3pt">
+                  <mml:mtr>
+                    <mml:mtd>
+                      <mml:msub>
+                        <mml:mrow>
+                          <mml:mi data-mjx-auto-op="false">Pub</mml:mi>
+                          <mml:mi>O</mml:mi>
+                          <mml:mi>_</mml:mi>
+                          <mml:mi data-mjx-auto-op="false">ID</mml:mi>
+                          <mml:mtext>-</mml:mtext>
+                        </mml:mrow>
+                        <mml:mi>i</mml:mi>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mi>c</mml:mi>
+                        <mml:mi>i</mml:mi>
+                      </mml:msub>
+                      <mml:mo>=</mml:mo>
+                      <mml:mo>⋅</mml:mo>
+                      <mml:mi>P</mml:mi>
+                    </mml:mtd>
+                  </mml:mtr>
+                  <mml:mtr>
+                    <mml:mtd>
+                      <mml:msub>
+                        <mml:mi>h</mml:mi>
+                        <mml:mrow>
+                          <mml:mn>1</mml:mn>
+                          <mml:mo>,</mml:mo>
+                          <mml:mi>i</mml:mi>
+                        </mml:mrow>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mrow>
+                          <mml:mi>H</mml:mi>
+                        </mml:mrow>
+                        <mml:mn>1</mml:mn>
+                      </mml:msub>
+                      <mml:mo>=</mml:mo>
+                      <mml:mstyle scriptlevel="0">
+                        <mml:mspace width="-0.167em"/>
+                      </mml:mstyle>
+                      <mml:mrow>
+                        <mml:mo>(</mml:mo>
+                        <mml:mo>,</mml:mo>
+                        <mml:mo>,</mml:mo>
+                        <mml:mo>)</mml:mo>
+                        <mml:msub>
+                          <mml:mrow>
+                            <mml:mi data-mjx-auto-op="false">ID</mml:mi>
+                          </mml:mrow>
+                          <mml:mi>i</mml:mi>
+                        </mml:msub>
+                        <mml:msub>
+                          <mml:mrow>
+                            <mml:mi data-mjx-auto-op="false">Pub</mml:mi>
+                            <mml:mi>O</mml:mi>
+                            <mml:mi>_</mml:mi>
+                            <mml:mi data-mjx-auto-op="false">ID</mml:mi>
+                            <mml:mtext>-</mml:mtext>
+                          </mml:mrow>
+                          <mml:mi>i</mml:mi>
+                        </mml:msub>
+                        <mml:mrow>
+                          <mml:mi data-mjx-auto-op="false">Mas</mml:mi>
+                          <mml:mi data-mjx-auto-op="false">Pub</mml:mi>
+                          <mml:mtext>-</mml:mtext>
+                        </mml:mrow>
+                      </mml:mrow>
+                    </mml:mtd>
+                  </mml:mtr>
+                  <mml:mtr>
+                    <mml:mtd>
+                      <mml:msub>
+                        <mml:mrow>
+                          <mml:mi data-mjx-auto-op="false">Pri</mml:mi>
+                          <mml:mi>O</mml:mi>
+                          <mml:mi>_</mml:mi>
+                          <mml:mi data-mjx-auto-op="false">ID</mml:mi>
+                          <mml:mtext>-</mml:mtext>
+                        </mml:mrow>
+                        <mml:mi>i</mml:mi>
+                      </mml:msub>
+                      <mml:mo>=</mml:mo>
+                      <mml:mo lspace="thickmathspace" rspace="thickmathspace">mod</mml:mo>
+                      <mml:mrow>
+                        <mml:mo>(</mml:mo>
+                        <mml:mo>+</mml:mo>
+                        <mml:mo>⋅</mml:mo>
+                        <mml:mo>)</mml:mo>
+                        <mml:msub>
+                          <mml:mi>c</mml:mi>
+                          <mml:mi>i</mml:mi>
+                        </mml:msub>
+                        <mml:msub>
+                          <mml:mi>h</mml:mi>
+                          <mml:mrow>
+                            <mml:mn>1</mml:mn>
+                            <mml:mo>,</mml:mo>
+                            <mml:mi>i</mml:mi>
+                          </mml:mrow>
+                        </mml:msub>
+                        <mml:mrow>
+                          <mml:mi data-mjx-auto-op="false">Mas</mml:mi>
+                          <mml:mi data-mjx-auto-op="false">Key</mml:mi>
+                          <mml:mtext>-</mml:mtext>
+                        </mml:mrow>
+                      </mml:mrow>
+                      <mml:mi>p</mml:mi>
+                    </mml:mtd>
+                  </mml:mtr>
+                </mml:mtable>
+              </mml:math>
+            </disp-formula>
+          
+          <p>It transmits (ID<inline-formula>
+  <mml:math id="mhcc06ba5u">
+    <mml:msub>
+      <mml:mi/>
+      <mml:mi>i</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula>, Pub-O_ID<inline-formula>
+  <mml:math id="mmlgdex5cp">
+    <mml:msub>
+      <mml:mi/>
+      <mml:mi>i</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula>, Pri-O_ID<inline-formula>
+  <mml:math id="my9hugtkke">
+    <mml:msub>
+      <mml:mi/>
+      <mml:mi>i</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula>) to the GCS. The GCS chooses Pub-T_ID<inline-formula>
+  <mml:math id="mc1mw29o6a">
+    <mml:msub>
+      <mml:mi/>
+      <mml:mi>i</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> in <inline-formula>
+  <mml:math id="mx01g92rx8">
+    <mml:msub>
+      <mml:mrow>
+        <mml:mi>Z</mml:mi>
+      </mml:mrow>
+      <mml:mi>p</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> and computes:</p>
+          
+            <disp-formula>
+              <label>(5)</label>
+              <mml:math id="m6r5pjkhjk">
+                <mml:mtable displaystyle="true" columnspacing="1em" rowspacing="3pt">
+                  <mml:mtr>
+                    <mml:mtd>
+                      <mml:msub>
+                        <mml:mi>E</mml:mi>
+                        <mml:mi>i</mml:mi>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mrow>
+                          <mml:mi data-mjx-auto-op="false">Pri</mml:mi>
+                          <mml:mi>T</mml:mi>
+                          <mml:mi>_</mml:mi>
+                          <mml:mi data-mjx-auto-op="false">ID</mml:mi>
+                          <mml:mtext>-</mml:mtext>
+                        </mml:mrow>
+                        <mml:mi>i</mml:mi>
+                      </mml:msub>
+                      <mml:mo>=</mml:mo>
+                      <mml:mo>⋅</mml:mo>
+                      <mml:mi>P</mml:mi>
+                    </mml:mtd>
+                  </mml:mtr>
+                  <mml:mtr>
+                    <mml:mtd>
+                      <mml:msub>
+                        <mml:mi>h</mml:mi>
+                        <mml:mrow>
+                          <mml:mn>2</mml:mn>
+                          <mml:mo>,</mml:mo>
+                          <mml:mi>i</mml:mi>
+                        </mml:mrow>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mrow>
+                          <mml:mi>H</mml:mi>
+                        </mml:mrow>
+                        <mml:mn>2</mml:mn>
+                      </mml:msub>
+                      <mml:mo>=</mml:mo>
+                      <mml:mstyle scriptlevel="0">
+                        <mml:mspace width="-0.167em"/>
+                      </mml:mstyle>
+                      <mml:mrow>
+                        <mml:mo>(</mml:mo>
+                        <mml:mo>,</mml:mo>
+                        <mml:mo>)</mml:mo>
+                        <mml:msub>
+                          <mml:mrow>
+                            <mml:mi data-mjx-auto-op="false">ID</mml:mi>
+                          </mml:mrow>
+                          <mml:mi>i</mml:mi>
+                        </mml:msub>
+                        <mml:msub>
+                          <mml:mi>E</mml:mi>
+                          <mml:mi>i</mml:mi>
+                        </mml:msub>
+                      </mml:mrow>
+                    </mml:mtd>
+                  </mml:mtr>
+                  <mml:mtr>
+                    <mml:mtd>
+                      <mml:msub>
+                        <mml:mrow>
+                          <mml:mi data-mjx-auto-op="false">Pub</mml:mi>
+                          <mml:mi>T</mml:mi>
+                          <mml:mi>_</mml:mi>
+                          <mml:mi data-mjx-auto-op="false">ID</mml:mi>
+                          <mml:mtext>-</mml:mtext>
+                        </mml:mrow>
+                        <mml:mi>i</mml:mi>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mrow>
+                          <mml:mi data-mjx-auto-op="false">Pub</mml:mi>
+                          <mml:mi>O</mml:mi>
+                          <mml:mi>_</mml:mi>
+                          <mml:mi data-mjx-auto-op="false">ID</mml:mi>
+                          <mml:mtext>-</mml:mtext>
+                        </mml:mrow>
+                        <mml:mi>i</mml:mi>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mi>h</mml:mi>
+                        <mml:mrow>
+                          <mml:mn>2</mml:mn>
+                          <mml:mo>,</mml:mo>
+                          <mml:mi>i</mml:mi>
+                        </mml:mrow>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mi>E</mml:mi>
+                        <mml:mi>i</mml:mi>
+                      </mml:msub>
+                      <mml:mo>=</mml:mo>
+                      <mml:mo>+</mml:mo>
+                      <mml:mo>⋅</mml:mo>
+                    </mml:mtd>
+                  </mml:mtr>
+                  <mml:mtr>
+                    <mml:mtd>
+                      <mml:msub>
+                        <mml:mrow>
+                          <mml:mi data-mjx-auto-op="false">Pub</mml:mi>
+                          <mml:mi data-mjx-auto-op="false">Key</mml:mi>
+                          <mml:mi>_</mml:mi>
+                          <mml:mi data-mjx-auto-op="false">ID</mml:mi>
+                          <mml:mtext>-</mml:mtext>
+                        </mml:mrow>
+                        <mml:mi>i</mml:mi>
+                      </mml:msub>
+                      <mml:mo>=</mml:mo>
+                      <mml:mrow>
+                        <mml:mo>(</mml:mo>
+                        <mml:mo>,</mml:mo>
+                        <mml:mo>)</mml:mo>
+                        <mml:msub>
+                          <mml:mrow>
+                            <mml:mi data-mjx-auto-op="false">Pub</mml:mi>
+                            <mml:mi>T</mml:mi>
+                            <mml:mi>_</mml:mi>
+                            <mml:mi data-mjx-auto-op="false">ID</mml:mi>
+                            <mml:mtext>-</mml:mtext>
+                          </mml:mrow>
+                          <mml:mi>i</mml:mi>
+                        </mml:msub>
+                        <mml:msub>
+                          <mml:mrow>
+                            <mml:mi data-mjx-auto-op="false">Pub</mml:mi>
+                            <mml:mi>O</mml:mi>
+                            <mml:mi>_</mml:mi>
+                            <mml:mi data-mjx-auto-op="false">ID</mml:mi>
+                            <mml:mtext>-</mml:mtext>
+                          </mml:mrow>
+                          <mml:mi>i</mml:mi>
+                        </mml:msub>
+                      </mml:mrow>
+                    </mml:mtd>
+                  </mml:mtr>
+                  <mml:mtr>
+                    <mml:mtd>
+                      <mml:msub>
+                        <mml:mrow>
+                          <mml:mi data-mjx-auto-op="false">Pri</mml:mi>
+                          <mml:mi data-mjx-auto-op="false">Key</mml:mi>
+                          <mml:mi>_</mml:mi>
+                          <mml:mi data-mjx-auto-op="false">ID</mml:mi>
+                          <mml:mtext>-</mml:mtext>
+                        </mml:mrow>
+                        <mml:mi>i</mml:mi>
+                      </mml:msub>
+                      <mml:mo>=</mml:mo>
+                      <mml:mrow>
+                        <mml:mo>(</mml:mo>
+                        <mml:mo>,</mml:mo>
+                        <mml:mo>)</mml:mo>
+                        <mml:msub>
+                          <mml:mrow>
+                            <mml:mi data-mjx-auto-op="false">Pri</mml:mi>
+                            <mml:mi>O</mml:mi>
+                            <mml:mi>_</mml:mi>
+                            <mml:mi data-mjx-auto-op="false">ID</mml:mi>
+                            <mml:mtext>-</mml:mtext>
+                          </mml:mrow>
+                          <mml:mi>i</mml:mi>
+                        </mml:msub>
+                        <mml:msub>
+                          <mml:mrow>
+                            <mml:mi data-mjx-auto-op="false">Pri</mml:mi>
+                            <mml:mi>T</mml:mi>
+                            <mml:mi>_</mml:mi>
+                            <mml:mi data-mjx-auto-op="false">ID</mml:mi>
+                            <mml:mtext>-</mml:mtext>
+                          </mml:mrow>
+                          <mml:mi>i</mml:mi>
+                        </mml:msub>
+                      </mml:mrow>
+                    </mml:mtd>
+                  </mml:mtr>
+                </mml:mtable>
+              </mml:math>
+            </disp-formula>
+          
+          <p>For each CNAV payload <inline-formula>
+  <mml:math id="m7a7dus5vi">
+    <mml:msub>
+      <mml:mi>m</mml:mi>
+      <mml:mi>i</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> at time <inline-formula>
+  <mml:math id="mngwl5fn3o">
+    <mml:msub>
+      <mml:mi>T</mml:mi>
+      <mml:mi>i</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula>, the signer samples <inline-formula>
+  <mml:math id="mmlon0zn3o">
+    <mml:msub>
+      <mml:mi>f</mml:mi>
+      <mml:mi>i</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> in <inline-formula>
+  <mml:math id="mv6pxheul3">
+    <mml:msub>
+      <mml:mrow>
+        <mml:mi>Z</mml:mi>
+      </mml:mrow>
+      <mml:mi>p</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> and computes the following values:</p>
+          
+            <disp-formula>
+              <label>(6)</label>
+              <mml:math id="m2dseaa0zg">
+                <mml:mtable displaystyle="true" columnspacing="1em" rowspacing="3pt">
+                  <mml:mtr>
+                    <mml:mtd>
+                      <mml:msub>
+                        <mml:mi>F</mml:mi>
+                        <mml:mi>i</mml:mi>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mi>f</mml:mi>
+                        <mml:mi>i</mml:mi>
+                      </mml:msub>
+                      <mml:mo>=</mml:mo>
+                      <mml:mo>⋅</mml:mo>
+                      <mml:mi>P</mml:mi>
+                    </mml:mtd>
+                  </mml:mtr>
+                  <mml:mtr>
+                    <mml:mtd>
+                      <mml:msub>
+                        <mml:mi>h</mml:mi>
+                        <mml:mrow>
+                          <mml:mn>3</mml:mn>
+                          <mml:mo>,</mml:mo>
+                          <mml:mi>i</mml:mi>
+                        </mml:mrow>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mrow>
+                          <mml:mi>H</mml:mi>
+                        </mml:mrow>
+                        <mml:mn>3</mml:mn>
+                      </mml:msub>
+                      <mml:mo>=</mml:mo>
+                      <mml:mstyle scriptlevel="0">
+                        <mml:mspace width="-0.167em"/>
+                      </mml:mstyle>
+                      <mml:mrow>
+                        <mml:mo>(</mml:mo>
+                        <mml:mo>,</mml:mo>
+                        <mml:mo>,</mml:mo>
+                        <mml:mo>,</mml:mo>
+                        <mml:mo>,</mml:mo>
+                        <mml:mo>)</mml:mo>
+                        <mml:msub>
+                          <mml:mrow>
+                            <mml:mi data-mjx-auto-op="false">ID</mml:mi>
+                          </mml:mrow>
+                          <mml:mi>i</mml:mi>
+                        </mml:msub>
+                        <mml:msub>
+                          <mml:mi>m</mml:mi>
+                          <mml:mi>i</mml:mi>
+                        </mml:msub>
+                        <mml:msub>
+                          <mml:mrow>
+                            <mml:mi data-mjx-auto-op="false">Pub</mml:mi>
+                            <mml:mi data-mjx-auto-op="false">Key</mml:mi>
+                            <mml:mi>_</mml:mi>
+                            <mml:mi data-mjx-auto-op="false">ID</mml:mi>
+                            <mml:mtext>-</mml:mtext>
+                          </mml:mrow>
+                          <mml:mi>i</mml:mi>
+                        </mml:msub>
+                        <mml:msub>
+                          <mml:mi>F</mml:mi>
+                          <mml:mi>i</mml:mi>
+                        </mml:msub>
+                        <mml:msub>
+                          <mml:mi>T</mml:mi>
+                          <mml:mi>i</mml:mi>
+                        </mml:msub>
+                      </mml:mrow>
+                    </mml:mtd>
+                  </mml:mtr>
+                  <mml:mtr>
+                    <mml:mtd>
+                      <mml:msub>
+                        <mml:mrow>
+                          <mml:mi data-mjx-auto-op="false">SIG</mml:mi>
+                        </mml:mrow>
+                        <mml:mi>i</mml:mi>
+                      </mml:msub>
+                      <mml:mo>=</mml:mo>
+                      <mml:mo lspace="thickmathspace" rspace="thickmathspace">mod</mml:mo>
+                      <mml:mrow>
+                        <mml:mo>(</mml:mo>
+                        <mml:mo>+</mml:mo>
+                        <mml:mo>⋅</mml:mo>
+                        <mml:mo>)</mml:mo>
+                        <mml:msub>
+                          <mml:mi>f</mml:mi>
+                          <mml:mi>i</mml:mi>
+                        </mml:msub>
+                        <mml:msub>
+                          <mml:mi>h</mml:mi>
+                          <mml:mrow>
+                            <mml:mn>3</mml:mn>
+                            <mml:mo>,</mml:mo>
+                            <mml:mi>i</mml:mi>
+                          </mml:mrow>
+                        </mml:msub>
+                        <mml:mrow>
+                          <mml:mo>(</mml:mo>
+                          <mml:mo>+</mml:mo>
+                          <mml:mo>⋅</mml:mo>
+                          <mml:mo>)</mml:mo>
+                          <mml:msub>
+                            <mml:mrow>
+                              <mml:mi data-mjx-auto-op="false">Pri</mml:mi>
+                              <mml:mi>O</mml:mi>
+                              <mml:mi>_</mml:mi>
+                              <mml:mi data-mjx-auto-op="false">ID</mml:mi>
+                              <mml:mtext>-</mml:mtext>
+                            </mml:mrow>
+                            <mml:mi>i</mml:mi>
+                          </mml:msub>
+                          <mml:msub>
+                            <mml:mi>h</mml:mi>
+                            <mml:mrow>
+                              <mml:mn>2</mml:mn>
+                              <mml:mo>,</mml:mo>
+                              <mml:mi>i</mml:mi>
+                            </mml:mrow>
+                          </mml:msub>
+                          <mml:msub>
+                            <mml:mrow>
+                              <mml:mi data-mjx-auto-op="false">Pri</mml:mi>
+                              <mml:mi>T</mml:mi>
+                              <mml:mi>_</mml:mi>
+                              <mml:mi data-mjx-auto-op="false">ID</mml:mi>
+                              <mml:mtext>-</mml:mtext>
+                            </mml:mrow>
+                            <mml:mi>i</mml:mi>
+                          </mml:msub>
+                        </mml:mrow>
+                      </mml:mrow>
+                      <mml:mi>p</mml:mi>
+                    </mml:mtd>
+                  </mml:mtr>
+                  <mml:mtr>
+                    <mml:mtd>
+                      <mml:msub>
+                        <mml:mi>σ</mml:mi>
+                        <mml:mi>i</mml:mi>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mrow>
+                          <mml:mi>M</mml:mi>
+                        </mml:mrow>
+                        <mml:mi>i</mml:mi>
+                      </mml:msub>
+                      <mml:mo>=</mml:mo>
+                      <mml:mo>,</mml:mo>
+                      <mml:mo>=</mml:mo>
+                      <mml:mrow>
+                        <mml:mo>(</mml:mo>
+                        <mml:mo>,</mml:mo>
+                        <mml:mo>)</mml:mo>
+                        <mml:msub>
+                          <mml:mi>F</mml:mi>
+                          <mml:mi>i</mml:mi>
+                        </mml:msub>
+                        <mml:msub>
+                          <mml:mrow>
+                            <mml:mi data-mjx-auto-op="false">SIG</mml:mi>
+                          </mml:mrow>
+                          <mml:mi>i</mml:mi>
+                        </mml:msub>
+                      </mml:mrow>
+                      <mml:mrow>
+                        <mml:mo>(</mml:mo>
+                        <mml:mo>,</mml:mo>
+                        <mml:mo>,</mml:mo>
+                        <mml:mo>,</mml:mo>
+                        <mml:mo>,</mml:mo>
+                        <mml:mo>)</mml:mo>
+                        <mml:msub>
+                          <mml:mrow>
+                            <mml:mi data-mjx-auto-op="false">ID</mml:mi>
+                          </mml:mrow>
+                          <mml:mi>i</mml:mi>
+                        </mml:msub>
+                        <mml:msub>
+                          <mml:mi>m</mml:mi>
+                          <mml:mi>i</mml:mi>
+                        </mml:msub>
+                        <mml:msub>
+                          <mml:mi>T</mml:mi>
+                          <mml:mi>i</mml:mi>
+                        </mml:msub>
+                        <mml:msub>
+                          <mml:mi>F</mml:mi>
+                          <mml:mi>i</mml:mi>
+                        </mml:msub>
+                        <mml:msub>
+                          <mml:mrow>
+                            <mml:mi data-mjx-auto-op="false">SIG</mml:mi>
+                          </mml:mrow>
+                          <mml:mi>i</mml:mi>
+                        </mml:msub>
+                      </mml:mrow>
+                      <mml:mstyle scriptlevel="0">
+                        <mml:mspace width="1em"/>
+                      </mml:mstyle>
+                    </mml:mtd>
+                  </mml:mtr>
+                </mml:mtable>
+              </mml:math>
+            </disp-formula>
+          
+          <p>The receiver checks freshness via a local window on <inline-formula>
+  <mml:math id="msbeehmd4v">
+    <mml:msub>
+      <mml:mi>T</mml:mi>
+      <mml:mi>i</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula>, recomputes <inline-formula>
+  <mml:math id="mvr0w1ac1u">
+    <mml:msub>
+      <mml:mi>h</mml:mi>
+      <mml:mrow>
+        <mml:mn>1</mml:mn>
+        <mml:mo>,</mml:mo>
+        <mml:mi>i</mml:mi>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula> and <inline-formula>
+  <mml:math id="mg84lwp846">
+    <mml:msub>
+      <mml:mi>h</mml:mi>
+      <mml:mrow>
+        <mml:mn>3</mml:mn>
+        <mml:mo>,</mml:mo>
+        <mml:mi>i</mml:mi>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula>, and verifies the individual signature equation:</p>
+          
+            <disp-formula>
+              <label>(7)</label>
+              <mml:math id="mzvgpnlpum">
+                <mml:msub>
+                  <mml:mrow>
+                    <mml:mi data-mjx-auto-op="false">SIG</mml:mi>
+                  </mml:mrow>
+                  <mml:mi>i</mml:mi>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>F</mml:mi>
+                  <mml:mi>i</mml:mi>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>h</mml:mi>
+                  <mml:mrow>
+                    <mml:mn>3</mml:mn>
+                    <mml:mo>,</mml:mo>
+                    <mml:mi>i</mml:mi>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:mo>⋅</mml:mo>
+                <mml:mo>=</mml:mo>
+                <mml:mo>+</mml:mo>
+                <mml:mo>⋅</mml:mo>
+                <mml:mi>P</mml:mi>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>+</mml:mo>
+                  <mml:mo>⋅</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:msub>
+                    <mml:mrow>
+                      <mml:mi data-mjx-auto-op="false">Pub</mml:mi>
+                      <mml:mi>T</mml:mi>
+                      <mml:mi>_</mml:mi>
+                      <mml:mi data-mjx-auto-op="false">ID</mml:mi>
+                      <mml:mtext>-</mml:mtext>
+                    </mml:mrow>
+                    <mml:mi>i</mml:mi>
+                  </mml:msub>
+                  <mml:msub>
+                    <mml:mi>h</mml:mi>
+                    <mml:mrow>
+                      <mml:mn>1</mml:mn>
+                      <mml:mo>,</mml:mo>
+                      <mml:mi>i</mml:mi>
+                    </mml:mrow>
+                  </mml:msub>
+                  <mml:mrow>
+                    <mml:mi data-mjx-auto-op="false">Mas</mml:mi>
+                    <mml:mi data-mjx-auto-op="false">Pub</mml:mi>
+                    <mml:mtext>-</mml:mtext>
+                  </mml:mrow>
+                </mml:mrow>
+              </mml:math>
+            </disp-formula>
+          
+          <p>For aggregation across satellites in the same positioning epoch, it computes:</p>
+          
+            <disp-formula>
+              <label>(8)</label>
+              <mml:math id="mj1h56smj3">
+                <mml:mtable displaystyle="true" columnspacing="1em" rowspacing="3pt">
+                  <mml:mtr>
+                    <mml:mtd>
+                      <mml:msub>
+                        <mml:mi>F</mml:mi>
+                        <mml:mrow>
+                          <mml:mrow>
+                            <mml:mi data-mjx-auto-op="false">sum</mml:mi>
+                          </mml:mrow>
+                        </mml:mrow>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mi>F</mml:mi>
+                        <mml:mi>i</mml:mi>
+                      </mml:msub>
+                      <mml:mo>=</mml:mo>
+                      <mml:munder>
+                        <mml:mo>∑</mml:mo>
+                        <mml:mi>i</mml:mi>
+                      </mml:munder>
+                    </mml:mtd>
+                  </mml:mtr>
+                  <mml:mtr>
+                    <mml:mtd>
+                      <mml:msub>
+                        <mml:mrow>
+                          <mml:mi data-mjx-auto-op="false">SIG</mml:mi>
+                        </mml:mrow>
+                        <mml:mrow>
+                          <mml:mrow>
+                            <mml:mi data-mjx-auto-op="false">sum</mml:mi>
+                          </mml:mrow>
+                        </mml:mrow>
+                      </mml:msub>
+                      <mml:mo>=</mml:mo>
+                      <mml:mo lspace="thickmathspace" rspace="thickmathspace">mod</mml:mo>
+                      <mml:mrow>
+                        <mml:mo>(</mml:mo>
+                        <mml:mo>)</mml:mo>
+                        <mml:munder>
+                          <mml:mo>∑</mml:mo>
+                          <mml:mi>i</mml:mi>
+                        </mml:munder>
+                        <mml:msub>
+                          <mml:mrow>
+                            <mml:mi data-mjx-auto-op="false">SIG</mml:mi>
+                          </mml:mrow>
+                          <mml:mi>i</mml:mi>
+                        </mml:msub>
+                      </mml:mrow>
+                      <mml:mi>p</mml:mi>
+                    </mml:mtd>
+                  </mml:mtr>
+                </mml:mtable>
+              </mml:math>
+            </disp-formula>
+          
+          <p>The aggregate verification equation is:</p>
+          
+            <disp-formula>
+              <label>(9)</label>
+              <mml:math id="mbl9o8r7qw">
+                <mml:mtable displaystyle="true" columnspacing="1em" rowspacing="3pt">
+                  <mml:mtr>
+                    <mml:mtd>
+                      <mml:msub>
+                        <mml:mrow>
+                          <mml:mi data-mjx-auto-op="false">SIG</mml:mi>
+                        </mml:mrow>
+                        <mml:mrow>
+                          <mml:mrow>
+                            <mml:mi data-mjx-auto-op="false">sum</mml:mi>
+                          </mml:mrow>
+                        </mml:mrow>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mi>F</mml:mi>
+                        <mml:mrow>
+                          <mml:mrow>
+                            <mml:mi data-mjx-auto-op="false">sum</mml:mi>
+                          </mml:mrow>
+                        </mml:mrow>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mi>h</mml:mi>
+                        <mml:mrow>
+                          <mml:mn>3</mml:mn>
+                          <mml:mo>,</mml:mo>
+                          <mml:mi>i</mml:mi>
+                        </mml:mrow>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mi>Q</mml:mi>
+                        <mml:mi>i</mml:mi>
+                      </mml:msub>
+                      <mml:mo>⋅</mml:mo>
+                      <mml:mo>=</mml:mo>
+                      <mml:mo>+</mml:mo>
+                      <mml:mo>⋅</mml:mo>
+                      <mml:mi>P</mml:mi>
+                      <mml:munder>
+                        <mml:mo>∑</mml:mo>
+                        <mml:mi>i</mml:mi>
+                      </mml:munder>
+                    </mml:mtd>
+                  </mml:mtr>
+                  <mml:mtr>
+                    <mml:mtd>
+                      <mml:msub>
+                        <mml:mi>Q</mml:mi>
+                        <mml:mi>i</mml:mi>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mrow>
+                          <mml:mi data-mjx-auto-op="false">Pub</mml:mi>
+                          <mml:mi>T</mml:mi>
+                          <mml:mi>_</mml:mi>
+                          <mml:mi data-mjx-auto-op="false">ID</mml:mi>
+                          <mml:mtext>-</mml:mtext>
+                        </mml:mrow>
+                        <mml:mi>i</mml:mi>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mi>h</mml:mi>
+                        <mml:mrow>
+                          <mml:mn>1</mml:mn>
+                          <mml:mo>,</mml:mo>
+                          <mml:mi>i</mml:mi>
+                        </mml:mrow>
+                      </mml:msub>
+                      <mml:mo>=</mml:mo>
+                      <mml:mo>+</mml:mo>
+                      <mml:mo>⋅</mml:mo>
+                      <mml:mrow>
+                        <mml:mi data-mjx-auto-op="false">Mas</mml:mi>
+                        <mml:mi data-mjx-auto-op="false">Pub</mml:mi>
+                        <mml:mtext>-</mml:mtext>
+                      </mml:mrow>
+                    </mml:mtd>
+                  </mml:mtr>
+                </mml:mtable>
+              </mml:math>
+            </disp-formula>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>4.2. Identified vulnerabilities</title>
+          
+          <p>TrustCNAV’s algebraic structure supports efficient verification, but several implementation- and deployment-facing issues can break its intended guarantees.</p><p>Nonce reuse collapses the effective signing key. The signature scalar follows:</p>
+          
+            <disp-formula>
+              <label>(10)</label>
+              <mml:math id="ma5h0pize0">
+                <mml:mtable displaystyle="true" columnspacing="1em" rowspacing="3pt">
+                  <mml:mtr>
+                    <mml:mtd>
+                      <mml:msub>
+                        <mml:mrow>
+                          <mml:mi data-mjx-auto-op="false">SIG</mml:mi>
+                        </mml:mrow>
+                        <mml:mi>i</mml:mi>
+                      </mml:msub>
+                      <mml:mo>=</mml:mo>
+                      <mml:mo lspace="thickmathspace" rspace="thickmathspace">mod</mml:mo>
+                      <mml:mrow>
+                        <mml:mo>(</mml:mo>
+                        <mml:mo>+</mml:mo>
+                        <mml:mo>⋅</mml:mo>
+                        <mml:mo>)</mml:mo>
+                        <mml:msub>
+                          <mml:mi>f</mml:mi>
+                          <mml:mi>i</mml:mi>
+                        </mml:msub>
+                        <mml:msub>
+                          <mml:mi>h</mml:mi>
+                          <mml:mrow>
+                            <mml:mn>3</mml:mn>
+                            <mml:mo>,</mml:mo>
+                            <mml:mi>i</mml:mi>
+                          </mml:mrow>
+                        </mml:msub>
+                        <mml:msub>
+                          <mml:mrow>
+                            <mml:mi data-mjx-auto-op="false">SK</mml:mi>
+                          </mml:mrow>
+                          <mml:mi>i</mml:mi>
+                        </mml:msub>
+                      </mml:mrow>
+                      <mml:mi>p</mml:mi>
+                    </mml:mtd>
+                  </mml:mtr>
+                  <mml:mtr>
+                    <mml:mtd>
+                      <mml:msub>
+                        <mml:mrow>
+                          <mml:mi data-mjx-auto-op="false">SK</mml:mi>
+                        </mml:mrow>
+                        <mml:mi>i</mml:mi>
+                      </mml:msub>
+                      <mml:mo>=</mml:mo>
+                      <mml:mo lspace="thickmathspace" rspace="thickmathspace">mod</mml:mo>
+                      <mml:mrow>
+                        <mml:mo>(</mml:mo>
+                        <mml:mo>+</mml:mo>
+                        <mml:mo>⋅</mml:mo>
+                        <mml:mo>)</mml:mo>
+                        <mml:msub>
+                          <mml:mrow>
+                            <mml:mi data-mjx-auto-op="false">Pri</mml:mi>
+                            <mml:mi>O</mml:mi>
+                            <mml:mi>_</mml:mi>
+                            <mml:mi data-mjx-auto-op="false">ID</mml:mi>
+                            <mml:mtext>-</mml:mtext>
+                          </mml:mrow>
+                          <mml:mi>i</mml:mi>
+                        </mml:msub>
+                        <mml:msub>
+                          <mml:mi>h</mml:mi>
+                          <mml:mrow>
+                            <mml:mn>2</mml:mn>
+                            <mml:mo>,</mml:mo>
+                            <mml:mi>i</mml:mi>
+                          </mml:mrow>
+                        </mml:msub>
+                        <mml:msub>
+                          <mml:mrow>
+                            <mml:mi data-mjx-auto-op="false">Pri</mml:mi>
+                            <mml:mi>T</mml:mi>
+                            <mml:mi>_</mml:mi>
+                            <mml:mi data-mjx-auto-op="false">ID</mml:mi>
+                            <mml:mtext>-</mml:mtext>
+                          </mml:mrow>
+                          <mml:mi>i</mml:mi>
+                        </mml:msub>
+                      </mml:mrow>
+                      <mml:mi>p</mml:mi>
+                    </mml:mtd>
+                  </mml:mtr>
+                </mml:mtable>
+              </mml:math>
+            </disp-formula>
+          
+          <p>Because the nonce is exposed through the transmitted elliptic-curve point, reuse is observable when the same satellite identity emits two broadcasts with the same <inline-formula>
+  <mml:math id="mthvfj1r0f">
+    <mml:msub>
+      <mml:mi>F</mml:mi>
+      <mml:mi>i</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> but different (<inline-formula>
+  <mml:math id="mpujr8ugvs">
+    <mml:msub>
+      <mml:mi>m</mml:mi>
+      <mml:mi>i</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula>, <inline-formula>
+  <mml:math id="m1df5xee5z">
+    <mml:msub>
+      <mml:mi>T</mml:mi>
+      <mml:mi>i</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula>):</p>
+          
+            <disp-formula>
+              <label>(11)</label>
+              <mml:math id="mgwl4ccx66">
+                <mml:msub>
+                  <mml:mi>F</mml:mi>
+                  <mml:mi>i</mml:mi>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>f</mml:mi>
+                  <mml:mi>i</mml:mi>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>h</mml:mi>
+                  <mml:mrow>
+                    <mml:mn>3</mml:mn>
+                    <mml:mo>,</mml:mo>
+                    <mml:mi>i</mml:mi>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mo>⋅</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo>≠</mml:mo>
+                <mml:mi>P</mml:mi>
+                <mml:mstyle scriptlevel="0">
+                  <mml:mspace width="1em"/>
+                </mml:mstyle>
+                <mml:msubsup>
+                  <mml:mi>h</mml:mi>
+                  <mml:mrow>
+                    <mml:mn>3</mml:mn>
+                    <mml:mo>,</mml:mo>
+                    <mml:mi>i</mml:mi>
+                  </mml:mrow>
+                  <mml:mrow>
+                    <mml:mi>′</mml:mi>
+                  </mml:mrow>
+                </mml:msubsup>
+              </mml:math>
+            </disp-formula>
+          
+          <p>Under that condition, an eavesdropper who records the two signature transcripts obtains:</p>
+          
+            <disp-formula>
+              <label>(12)</label>
+              <mml:math id="mezx6n1wne">
+                <mml:mtable displaystyle="true" columnspacing="1em" rowspacing="3pt">
+                  <mml:mtr>
+                    <mml:mtd>
+                      <mml:msub>
+                        <mml:mrow>
+                          <mml:mi data-mjx-auto-op="false">SIG</mml:mi>
+                        </mml:mrow>
+                        <mml:mi>i</mml:mi>
+                      </mml:msub>
+                      <mml:mo>−</mml:mo>
+                      <mml:mo>=</mml:mo>
+                      <mml:mo lspace="thickmathspace" rspace="thickmathspace">mod</mml:mo>
+                      <mml:msubsup>
+                        <mml:mrow>
+                          <mml:mi data-mjx-auto-op="false">SIG</mml:mi>
+                        </mml:mrow>
+                        <mml:mrow>
+                          <mml:mi>′</mml:mi>
+                        </mml:mrow>
+                        <mml:mi>i</mml:mi>
+                      </mml:msubsup>
+                      <mml:mrow>
+                        <mml:mo>(</mml:mo>
+                        <mml:mo>⋅</mml:mo>
+                        <mml:mo>)</mml:mo>
+                        <mml:mrow>
+                          <mml:mo>(</mml:mo>
+                          <mml:mo>−</mml:mo>
+                          <mml:mo>)</mml:mo>
+                          <mml:msub>
+                            <mml:mi>h</mml:mi>
+                            <mml:mrow>
+                              <mml:mn>3</mml:mn>
+                              <mml:mo>,</mml:mo>
+                              <mml:mi>i</mml:mi>
+                            </mml:mrow>
+                          </mml:msub>
+                          <mml:msubsup>
+                            <mml:mi>h</mml:mi>
+                            <mml:mrow>
+                              <mml:mn>3</mml:mn>
+                              <mml:mo>,</mml:mo>
+                              <mml:mi>i</mml:mi>
+                            </mml:mrow>
+                            <mml:mrow>
+                              <mml:mi>′</mml:mi>
+                            </mml:mrow>
+                          </mml:msubsup>
+                        </mml:mrow>
+                        <mml:msub>
+                          <mml:mrow>
+                            <mml:mi data-mjx-auto-op="false">SK</mml:mi>
+                          </mml:mrow>
+                          <mml:mi>i</mml:mi>
+                        </mml:msub>
+                      </mml:mrow>
+                      <mml:mi>p</mml:mi>
+                    </mml:mtd>
+                  </mml:mtr>
+                  <mml:mtr>
+                    <mml:mtd>
+                      <mml:msub>
+                        <mml:mrow>
+                          <mml:mi data-mjx-auto-op="false">SK</mml:mi>
+                        </mml:mrow>
+                        <mml:mi>i</mml:mi>
+                      </mml:msub>
+                      <mml:mo>=</mml:mo>
+                      <mml:mo lspace="thickmathspace" rspace="thickmathspace">mod</mml:mo>
+                      <mml:mrow>
+                        <mml:mo>(</mml:mo>
+                        <mml:mo>⋅</mml:mo>
+                        <mml:mo>)</mml:mo>
+                        <mml:mrow>
+                          <mml:mo>(</mml:mo>
+                          <mml:mo>−</mml:mo>
+                          <mml:mo>)</mml:mo>
+                          <mml:msub>
+                            <mml:mrow>
+                              <mml:mi data-mjx-auto-op="false">SIG</mml:mi>
+                            </mml:mrow>
+                            <mml:mi>i</mml:mi>
+                          </mml:msub>
+                          <mml:msubsup>
+                            <mml:mrow>
+                              <mml:mi data-mjx-auto-op="false">SIG</mml:mi>
+                            </mml:mrow>
+                            <mml:mrow>
+                              <mml:mi>′</mml:mi>
+                            </mml:mrow>
+                            <mml:mi>i</mml:mi>
+                          </mml:msubsup>
+                        </mml:mrow>
+                        <mml:mrow>
+                          <mml:mi data-mjx-auto-op="false">Inv</mml:mi>
+                        </mml:mrow>
+                        <mml:mrow>
+                          <mml:mo>(</mml:mo>
+                          <mml:mo>−</mml:mo>
+                          <mml:mo>)</mml:mo>
+                          <mml:msub>
+                            <mml:mi>h</mml:mi>
+                            <mml:mrow>
+                              <mml:mn>3</mml:mn>
+                              <mml:mo>,</mml:mo>
+                              <mml:mi>i</mml:mi>
+                            </mml:mrow>
+                          </mml:msub>
+                          <mml:msubsup>
+                            <mml:mi>h</mml:mi>
+                            <mml:mrow>
+                              <mml:mn>3</mml:mn>
+                              <mml:mo>,</mml:mo>
+                              <mml:mi>i</mml:mi>
+                            </mml:mrow>
+                            <mml:mrow>
+                              <mml:mi>′</mml:mi>
+                            </mml:mrow>
+                          </mml:msubsup>
+                        </mml:mrow>
+                        <mml:mstyle scriptlevel="0">
+                          <mml:mspace width="-0.167em"/>
+                        </mml:mstyle>
+                      </mml:mrow>
+                      <mml:mi>p</mml:mi>
+                    </mml:mtd>
+                  </mml:mtr>
+                </mml:mtable>
+              </mml:math>
+            </disp-formula>
+          
+          <p>Once SK<inline-formula>
+  <mml:math id="mslulbwykl">
+    <mml:msub>
+      <mml:mi/>
+      <mml:mi>i</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> is recovered, the attacker forges signatures for arbitrary CNAV payloads <inline-formula>
+  <mml:math id="mbzk4m37f5">
+    <mml:msup>
+      <mml:mi>m</mml:mi>
+      <mml:mo>∗</mml:mo>
+    </mml:msup>
+  </mml:math>
+</inline-formula> by choosing <inline-formula>
+  <mml:math id="mjbmo8n1gg">
+    <mml:msup>
+      <mml:mi>f</mml:mi>
+      <mml:mo>∗</mml:mo>
+    </mml:msup>
+  </mml:math>
+</inline-formula> with <inline-formula>
+  <mml:math id="mnenhtou3y">
+    <mml:msup>
+      <mml:mi>F</mml:mi>
+      <mml:mo>∗</mml:mo>
+    </mml:msup>
+  </mml:math>
+</inline-formula> = <inline-formula>
+  <mml:math id="mntaetu9z5">
+    <mml:msup>
+      <mml:mi>f</mml:mi>
+      <mml:mo>∗</mml:mo>
+    </mml:msup>
+    <mml:mstyle scriptlevel="0">
+      <mml:mspace width="0.167em"/>
+    </mml:mstyle>
+    <mml:mstyle scriptlevel="0">
+      <mml:mspace width="0.167em"/>
+    </mml:mstyle>
+    <mml:mo>⋅</mml:mo>
+    <mml:mi>P</mml:mi>
+  </mml:math>
+</inline-formula>, recomputing <inline-formula>
+  <mml:math id="mjteki8xyg">
+    <mml:msup>
+      <mml:mrow>
+        <mml:msub>
+          <mml:mi>h</mml:mi>
+          <mml:mrow>
+            <mml:mn>3</mml:mn>
+          </mml:mrow>
+        </mml:msub>
+      </mml:mrow>
+      <mml:mo>∗</mml:mo>
+    </mml:msup>
+  </mml:math>
+</inline-formula>, and outputting:</p>
+          
+            <disp-formula>
+              <label>(13)</label>
+              <mml:math id="m2hr1mrv26">
+                <mml:mtable displaystyle="true" columnspacing="1em" rowspacing="3pt">
+                  <mml:mtr>
+                    <mml:mtd>
+                      <mml:msubsup>
+                        <mml:mi>h</mml:mi>
+                        <mml:mrow>
+                          <mml:mn>3</mml:mn>
+                        </mml:mrow>
+                        <mml:mrow>
+                          <mml:mo>∗</mml:mo>
+                        </mml:mrow>
+                      </mml:msubsup>
+                      <mml:mo>=</mml:mo>
+                      <mml:msub>
+                        <mml:mrow>
+                          <mml:mi>H</mml:mi>
+                        </mml:mrow>
+                        <mml:mn>3</mml:mn>
+                      </mml:msub>
+                      <mml:mstyle scriptlevel="0">
+                        <mml:mspace width="-0.167em"/>
+                      </mml:mstyle>
+                      <mml:mrow>
+                        <mml:mo>(</mml:mo>
+                        <mml:mo>,</mml:mo>
+                        <mml:mo>,</mml:mo>
+                        <mml:mo>,</mml:mo>
+                        <mml:mo>,</mml:mo>
+                        <mml:mo>)</mml:mo>
+                        <mml:msub>
+                          <mml:mrow>
+                            <mml:mi data-mjx-auto-op="false">ID</mml:mi>
+                          </mml:mrow>
+                          <mml:mi>i</mml:mi>
+                        </mml:msub>
+                        <mml:msub>
+                          <mml:mrow>
+                            <mml:mi data-mjx-auto-op="false">Pub</mml:mi>
+                            <mml:mi data-mjx-auto-op="false">Key</mml:mi>
+                            <mml:mi>_</mml:mi>
+                            <mml:mi data-mjx-auto-op="false">ID</mml:mi>
+                            <mml:mtext>-</mml:mtext>
+                          </mml:mrow>
+                          <mml:mi>i</mml:mi>
+                        </mml:msub>
+                        <mml:msup>
+                          <mml:mi>m</mml:mi>
+                          <mml:mrow>
+                            <mml:mo>∗</mml:mo>
+                          </mml:mrow>
+                        </mml:msup>
+                        <mml:msup>
+                          <mml:mi>F</mml:mi>
+                          <mml:mrow>
+                            <mml:mo>∗</mml:mo>
+                          </mml:mrow>
+                        </mml:msup>
+                        <mml:msup>
+                          <mml:mi>T</mml:mi>
+                          <mml:mrow>
+                            <mml:mo>∗</mml:mo>
+                          </mml:mrow>
+                        </mml:msup>
+                      </mml:mrow>
+                    </mml:mtd>
+                  </mml:mtr>
+                  <mml:mtr>
+                    <mml:mtd>
+                      <mml:msup>
+                        <mml:mrow>
+                          <mml:mi data-mjx-auto-op="false">SIG</mml:mi>
+                        </mml:mrow>
+                        <mml:mrow>
+                          <mml:mo>∗</mml:mo>
+                        </mml:mrow>
+                      </mml:msup>
+                      <mml:mo>=</mml:mo>
+                      <mml:mo lspace="thickmathspace" rspace="thickmathspace">mod</mml:mo>
+                      <mml:mrow>
+                        <mml:mo>(</mml:mo>
+                        <mml:mo>+</mml:mo>
+                        <mml:mo>⋅</mml:mo>
+                        <mml:mo>)</mml:mo>
+                        <mml:msup>
+                          <mml:mi>f</mml:mi>
+                          <mml:mrow>
+                            <mml:mo>∗</mml:mo>
+                          </mml:mrow>
+                        </mml:msup>
+                        <mml:msubsup>
+                          <mml:mi>h</mml:mi>
+                          <mml:mrow>
+                            <mml:mn>3</mml:mn>
+                            <mml:mo>,</mml:mo>
+                            <mml:mi>i</mml:mi>
+                          </mml:mrow>
+                          <mml:mrow>
+                            <mml:mo>∗</mml:mo>
+                          </mml:mrow>
+                        </mml:msubsup>
+                        <mml:msub>
+                          <mml:mrow>
+                            <mml:mi data-mjx-auto-op="false">SK</mml:mi>
+                          </mml:mrow>
+                          <mml:mi>i</mml:mi>
+                        </mml:msub>
+                      </mml:mrow>
+                      <mml:mi>p</mml:mi>
+                    </mml:mtd>
+                  </mml:mtr>
+                </mml:mtable>
+              </mml:math>
+            </disp-formula>
+          
+          <p>Public-parameter replacement enables key-substitution traces when parameter acquisition or update is not strongly authenticated. Receivers typically learn Pub-O_ID<inline-formula>
+  <mml:math id="mg67z1agka">
+    <mml:msub>
+      <mml:mi/>
+      <mml:mi>i</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> and Pub-T_ID<inline-formula>
+  <mml:math id="mle4s4ckkb">
+    <mml:msub>
+      <mml:mi/>
+      <mml:mi>i</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> through operational channels, cached updates, or maintenance interfaces. If an attacker can replace these values for some ID<inline-formula>
+  <mml:math id="m9t0qr8qp5">
+    <mml:msub>
+      <mml:mi/>
+      <mml:mi>i</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula>, the verification equation becomes a lever. For a substituted key pair, the receiver computes:</p>
+          
+            <disp-formula>
+              <label>(14)</label>
+              <mml:math id="mdhij6xjnf">
+                <mml:mtable displaystyle="true" columnspacing="1em" rowspacing="3pt">
+                  <mml:mtr>
+                    <mml:mtd>
+                      <mml:msubsup>
+                        <mml:mi>h</mml:mi>
+                        <mml:mrow>
+                          <mml:mn>1</mml:mn>
+                          <mml:mo>,</mml:mo>
+                          <mml:mi>i</mml:mi>
+                        </mml:mrow>
+                        <mml:mrow>
+                          <mml:mi>′</mml:mi>
+                        </mml:mrow>
+                      </mml:msubsup>
+                      <mml:mo>=</mml:mo>
+                      <mml:msub>
+                        <mml:mrow>
+                          <mml:mi>H</mml:mi>
+                        </mml:mrow>
+                        <mml:mn>1</mml:mn>
+                      </mml:msub>
+                      <mml:mstyle scriptlevel="0">
+                        <mml:mspace width="-0.167em"/>
+                      </mml:mstyle>
+                      <mml:mrow>
+                        <mml:mo>(</mml:mo>
+                        <mml:mo>,</mml:mo>
+                        <mml:mo>,</mml:mo>
+                        <mml:mo>)</mml:mo>
+                        <mml:msub>
+                          <mml:mrow>
+                            <mml:mi data-mjx-auto-op="false">ID</mml:mi>
+                          </mml:mrow>
+                          <mml:mi>i</mml:mi>
+                        </mml:msub>
+                        <mml:msubsup>
+                          <mml:mrow>
+                            <mml:mi data-mjx-auto-op="false">Pub</mml:mi>
+                            <mml:mi>O</mml:mi>
+                            <mml:mi>_</mml:mi>
+                            <mml:mi data-mjx-auto-op="false">ID</mml:mi>
+                            <mml:mtext>-</mml:mtext>
+                          </mml:mrow>
+                          <mml:mrow>
+                            <mml:mi>′</mml:mi>
+                          </mml:mrow>
+                          <mml:mi>i</mml:mi>
+                        </mml:msubsup>
+                        <mml:mrow>
+                          <mml:mi data-mjx-auto-op="false">Mas</mml:mi>
+                          <mml:mi data-mjx-auto-op="false">Pub</mml:mi>
+                          <mml:mtext>-</mml:mtext>
+                        </mml:mrow>
+                      </mml:mrow>
+                    </mml:mtd>
+                  </mml:mtr>
+                  <mml:mtr>
+                    <mml:mtd>
+                      <mml:msub>
+                        <mml:mrow>
+                          <mml:mi data-mjx-auto-op="false">SIG</mml:mi>
+                        </mml:mrow>
+                        <mml:mi>i</mml:mi>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mi>F</mml:mi>
+                        <mml:mi>i</mml:mi>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mi>h</mml:mi>
+                        <mml:mrow>
+                          <mml:mn>3</mml:mn>
+                          <mml:mo>,</mml:mo>
+                          <mml:mi>i</mml:mi>
+                        </mml:mrow>
+                      </mml:msub>
+                      <mml:mo>⋅</mml:mo>
+                      <mml:mo>+</mml:mo>
+                      <mml:mo>⋅</mml:mo>
+                      <mml:mi>P</mml:mi>
+                      <mml:mrow>
+                        <mml:mover>
+                          <mml:mrow>
+                            <mml:mo>=</mml:mo>
+                          </mml:mrow>
+                          <mml:mrow>
+                            <mml:mo>?</mml:mo>
+                          </mml:mrow>
+                        </mml:mover>
+                      </mml:mrow>
+                      <mml:mrow>
+                        <mml:mo>(</mml:mo>
+                        <mml:mo>+</mml:mo>
+                        <mml:mo>⋅</mml:mo>
+                        <mml:mo>)</mml:mo>
+                        <mml:msubsup>
+                          <mml:mrow>
+                            <mml:mi data-mjx-auto-op="false">Pub</mml:mi>
+                            <mml:mi>T</mml:mi>
+                            <mml:mi>_</mml:mi>
+                            <mml:mi data-mjx-auto-op="false">ID</mml:mi>
+                            <mml:mtext>-</mml:mtext>
+                          </mml:mrow>
+                          <mml:mrow>
+                            <mml:mi>′</mml:mi>
+                          </mml:mrow>
+                          <mml:mi>i</mml:mi>
+                        </mml:msubsup>
+                        <mml:msubsup>
+                          <mml:mi>h</mml:mi>
+                          <mml:mrow>
+                            <mml:mn>1</mml:mn>
+                            <mml:mo>,</mml:mo>
+                            <mml:mi>i</mml:mi>
+                          </mml:mrow>
+                          <mml:mrow>
+                            <mml:mi>′</mml:mi>
+                          </mml:mrow>
+                        </mml:msubsup>
+                        <mml:mrow>
+                          <mml:mi data-mjx-auto-op="false">Mas</mml:mi>
+                          <mml:mi data-mjx-auto-op="false">Pub</mml:mi>
+                          <mml:mtext>-</mml:mtext>
+                        </mml:mrow>
+                      </mml:mrow>
+                    </mml:mtd>
+                  </mml:mtr>
+                </mml:mtable>
+              </mml:math>
+            </disp-formula>
+          
+          <p>An attacker who controls the substituted parameters can pick any scalar $x$, set the substituted public value, and craft an accepting transcript as follows:</p>
+          
+            <disp-formula>
+              <label>(15)</label>
+              <mml:math id="m1erw8ch4n">
+                <mml:mtable displaystyle="true" columnspacing="1em" rowspacing="3pt">
+                  <mml:mtr>
+                    <mml:mtd>
+                      <mml:msubsup>
+                        <mml:mrow>
+                          <mml:mi data-mjx-auto-op="false">Pub</mml:mi>
+                          <mml:mi>T</mml:mi>
+                          <mml:mi>_</mml:mi>
+                          <mml:mi data-mjx-auto-op="false">ID</mml:mi>
+                          <mml:mtext>-</mml:mtext>
+                        </mml:mrow>
+                        <mml:mrow>
+                          <mml:mi>′</mml:mi>
+                        </mml:mrow>
+                        <mml:mi>i</mml:mi>
+                      </mml:msubsup>
+                      <mml:msubsup>
+                        <mml:mi>h</mml:mi>
+                        <mml:mrow>
+                          <mml:mn>1</mml:mn>
+                          <mml:mo>,</mml:mo>
+                          <mml:mi>i</mml:mi>
+                        </mml:mrow>
+                        <mml:mrow>
+                          <mml:mi>′</mml:mi>
+                        </mml:mrow>
+                      </mml:msubsup>
+                      <mml:mo>=</mml:mo>
+                      <mml:mo>⋅</mml:mo>
+                      <mml:mo>−</mml:mo>
+                      <mml:mo>⋅</mml:mo>
+                      <mml:mi>x</mml:mi>
+                      <mml:mi>P</mml:mi>
+                      <mml:mrow>
+                        <mml:mi data-mjx-auto-op="false">Mas</mml:mi>
+                        <mml:mi data-mjx-auto-op="false">Pub</mml:mi>
+                        <mml:mtext>-</mml:mtext>
+                      </mml:mrow>
+                    </mml:mtd>
+                  </mml:mtr>
+                  <mml:mtr>
+                    <mml:mtd>
+                      <mml:mi>F</mml:mi>
+                      <mml:mi>f</mml:mi>
+                      <mml:mi>P</mml:mi>
+                      <mml:mi>p</mml:mi>
+                      <mml:mo>=</mml:mo>
+                      <mml:mo>⋅</mml:mo>
+                      <mml:mo>,</mml:mo>
+                      <mml:mo>=</mml:mo>
+                      <mml:mo lspace="thickmathspace" rspace="thickmathspace">mod</mml:mo>
+                      <mml:mstyle scriptlevel="0">
+                        <mml:mspace width="1em"/>
+                      </mml:mstyle>
+                      <mml:mrow>
+                        <mml:mi data-mjx-auto-op="false">SIG</mml:mi>
+                      </mml:mrow>
+                      <mml:mrow>
+                        <mml:mo>(</mml:mo>
+                        <mml:mo>+</mml:mo>
+                        <mml:mo>⋅</mml:mo>
+                        <mml:mo>)</mml:mo>
+                        <mml:mi>f</mml:mi>
+                        <mml:mi>x</mml:mi>
+                        <mml:msub>
+                          <mml:mi>h</mml:mi>
+                          <mml:mrow>
+                            <mml:mn>3</mml:mn>
+                            <mml:mo>,</mml:mo>
+                            <mml:mi>i</mml:mi>
+                          </mml:mrow>
+                        </mml:msub>
+                      </mml:mrow>
+                    </mml:mtd>
+                  </mml:mtr>
+                </mml:mtable>
+              </mml:math>
+            </disp-formula>
+          
+          <p>This attack therefore targets deployments in which receivers obtain or refresh public parameters without a pinned trust anchor. If those parameters are already distributed in a signed package authenticated by the receiver, the attack does not apply; the problem is that the original TrustCNAV description does not fully specify such an authenticated operational path.</p><p>(i) KGC compromise expands into universal forgery under realistic leakage. The certificateless model splits trust between the KGC and the GCS. Yet the partial private value embeds Mas-Key linearly, and the public relation makes the dependency visible:</p>
+          
+            <disp-formula>
+              <label>(16)</label>
+              <mml:math id="m6zgpumw9u">
+                <mml:mtable displaystyle="true" columnspacing="1em" rowspacing="3pt">
+                  <mml:mtr>
+                    <mml:mtd>
+                      <mml:msub>
+                        <mml:mrow>
+                          <mml:mi data-mjx-auto-op="false">Pri</mml:mi>
+                          <mml:mi>O</mml:mi>
+                          <mml:mi>_</mml:mi>
+                          <mml:mi data-mjx-auto-op="false">ID</mml:mi>
+                          <mml:mtext>-</mml:mtext>
+                        </mml:mrow>
+                        <mml:mi>i</mml:mi>
+                      </mml:msub>
+                      <mml:mo>=</mml:mo>
+                      <mml:mo lspace="thickmathspace" rspace="thickmathspace">mod</mml:mo>
+                      <mml:mrow>
+                        <mml:mo>(</mml:mo>
+                        <mml:mo>+</mml:mo>
+                        <mml:mo>⋅</mml:mo>
+                        <mml:mo>)</mml:mo>
+                        <mml:msub>
+                          <mml:mi>c</mml:mi>
+                          <mml:mi>i</mml:mi>
+                        </mml:msub>
+                        <mml:msub>
+                          <mml:mi>h</mml:mi>
+                          <mml:mrow>
+                            <mml:mn>1</mml:mn>
+                            <mml:mo>,</mml:mo>
+                            <mml:mi>i</mml:mi>
+                          </mml:mrow>
+                        </mml:msub>
+                        <mml:mrow>
+                          <mml:mi data-mjx-auto-op="false">Mas</mml:mi>
+                          <mml:mi data-mjx-auto-op="false">Key</mml:mi>
+                          <mml:mtext>-</mml:mtext>
+                        </mml:mrow>
+                      </mml:mrow>
+                      <mml:mi>p</mml:mi>
+                    </mml:mtd>
+                  </mml:mtr>
+                  <mml:mtr>
+                    <mml:mtd>
+                      <mml:msub>
+                        <mml:mrow>
+                          <mml:mi data-mjx-auto-op="false">Pri</mml:mi>
+                          <mml:mi>O</mml:mi>
+                          <mml:mi>_</mml:mi>
+                          <mml:mi data-mjx-auto-op="false">ID</mml:mi>
+                          <mml:mtext>-</mml:mtext>
+                        </mml:mrow>
+                        <mml:mi>i</mml:mi>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mrow>
+                          <mml:mi data-mjx-auto-op="false">Pub</mml:mi>
+                          <mml:mi>O</mml:mi>
+                          <mml:mi>_</mml:mi>
+                          <mml:mi data-mjx-auto-op="false">ID</mml:mi>
+                          <mml:mtext>-</mml:mtext>
+                        </mml:mrow>
+                        <mml:mi>i</mml:mi>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mi>h</mml:mi>
+                        <mml:mrow>
+                          <mml:mn>1</mml:mn>
+                          <mml:mo>,</mml:mo>
+                          <mml:mi>i</mml:mi>
+                        </mml:mrow>
+                      </mml:msub>
+                      <mml:mo>⋅</mml:mo>
+                      <mml:mo>=</mml:mo>
+                      <mml:mo>+</mml:mo>
+                      <mml:mo>⋅</mml:mo>
+                      <mml:mi>P</mml:mi>
+                      <mml:mrow>
+                        <mml:mi data-mjx-auto-op="false">Mas</mml:mi>
+                        <mml:mi data-mjx-auto-op="false">Pub</mml:mi>
+                        <mml:mtext>-</mml:mtext>
+                      </mml:mrow>
+                    </mml:mtd>
+                  </mml:mtr>
+                </mml:mtable>
+              </mml:math>
+            </disp-formula>
+          
+          <p>(ii) If Mas-Key leaks, a Type-II attacker can recompute Pri-O_ID<inline-formula>
+  <mml:math id="mtcthrlknr">
+    <mml:msub>
+      <mml:mi/>
+      <mml:mi>i</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> for any identity after observing Pub-O_ID<inline-formula>
+  <mml:math id="mbtj45hjpl">
+    <mml:msub>
+      <mml:mi/>
+      <mml:mi>i</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula>. If, in addition, Pub-T_ID<inline-formula>
+  <mml:math id="mf1ft0trq7">
+    <mml:msub>
+      <mml:mi/>
+      <mml:mi>i</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> leaks from the ground segment, the attacker reconstructs:</p>
+          
+            <disp-formula>
+              <label>(17)</label>
+              <mml:math id="mjp4q3hsvh">
+                <mml:msub>
+                  <mml:mrow>
+                    <mml:mi data-mjx-auto-op="false">SK</mml:mi>
+                  </mml:mrow>
+                  <mml:mi>i</mml:mi>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mo lspace="thickmathspace" rspace="thickmathspace">mod</mml:mo>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>+</mml:mo>
+                  <mml:mo>⋅</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:msub>
+                    <mml:mrow>
+                      <mml:mi data-mjx-auto-op="false">Pri</mml:mi>
+                      <mml:mi>O</mml:mi>
+                      <mml:mi>_</mml:mi>
+                      <mml:mi data-mjx-auto-op="false">ID</mml:mi>
+                      <mml:mtext>-</mml:mtext>
+                    </mml:mrow>
+                    <mml:mi>i</mml:mi>
+                  </mml:msub>
+                  <mml:msub>
+                    <mml:mi>h</mml:mi>
+                    <mml:mrow>
+                      <mml:mn>2</mml:mn>
+                      <mml:mo>,</mml:mo>
+                      <mml:mi>i</mml:mi>
+                    </mml:mrow>
+                  </mml:msub>
+                  <mml:msub>
+                    <mml:mrow>
+                      <mml:mi data-mjx-auto-op="false">Pri</mml:mi>
+                      <mml:mi>T</mml:mi>
+                      <mml:mi>_</mml:mi>
+                      <mml:mi data-mjx-auto-op="false">ID</mml:mi>
+                      <mml:mtext>-</mml:mtext>
+                    </mml:mrow>
+                    <mml:mi>i</mml:mi>
+                  </mml:msub>
+                </mml:mrow>
+                <mml:mi>p</mml:mi>
+              </mml:math>
+            </disp-formula>
+          
+          <p>(iii) The attacker can then forge as in the nonce-reuse attack.</p><p>Freshness checks can be bypassed by replay within acceptance windows and by distance-decreasing traces. Each broadcast includes a timestamp <inline-formula>
+  <mml:math id="mwf734i5uc">
+    <mml:msub>
+      <mml:mi>T</mml:mi>
+      <mml:mi>i</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula>, and the receiver checks:</p>
+          
+            <disp-formula>
+              <label>(18)</label>
+              <mml:math id="mn9ec7lwze">
+                <mml:mrow>
+                  <mml:mo>|</mml:mo>
+                  <mml:mo>−</mml:mo>
+                  <mml:mo>|</mml:mo>
+                  <mml:msub>
+                    <mml:mi>T</mml:mi>
+                    <mml:mrow>
+                      <mml:mrow>
+                        <mml:mi data-mjx-auto-op="false">local</mml:mi>
+                      </mml:mrow>
+                    </mml:mrow>
+                  </mml:msub>
+                  <mml:msub>
+                    <mml:mi>T</mml:mi>
+                    <mml:mi>i</mml:mi>
+                  </mml:msub>
+                </mml:mrow>
+                <mml:mo>≤</mml:mo>
+                <mml:mi>Δ</mml:mi>
+                <mml:mi>T</mml:mi>
+              </mml:math>
+            </disp-formula>
+          
+          <p>A meaconer who records the broadcast message and re-broadcasts it within the accepted window preserves signature validity:</p>
+          
+            <disp-formula>
+              <label>(19)</label>
+              <mml:math id="mgx4x8lxgq">
+                <mml:mtable displaystyle="true" columnspacing="1em" rowspacing="3pt">
+                  <mml:mtr>
+                    <mml:mtd>
+                      <mml:msub>
+                        <mml:mrow>
+                          <mml:mi>M</mml:mi>
+                        </mml:mrow>
+                        <mml:mi>i</mml:mi>
+                      </mml:msub>
+                      <mml:mo>=</mml:mo>
+                      <mml:mrow>
+                        <mml:mo>(</mml:mo>
+                        <mml:mo>,</mml:mo>
+                        <mml:mo>,</mml:mo>
+                        <mml:mo>,</mml:mo>
+                        <mml:mo>,</mml:mo>
+                        <mml:mo>)</mml:mo>
+                        <mml:msub>
+                          <mml:mrow>
+                            <mml:mi data-mjx-auto-op="false">ID</mml:mi>
+                          </mml:mrow>
+                          <mml:mi>i</mml:mi>
+                        </mml:msub>
+                        <mml:msub>
+                          <mml:mi>m</mml:mi>
+                          <mml:mi>i</mml:mi>
+                        </mml:msub>
+                        <mml:msub>
+                          <mml:mi>T</mml:mi>
+                          <mml:mi>i</mml:mi>
+                        </mml:msub>
+                        <mml:msub>
+                          <mml:mi>F</mml:mi>
+                          <mml:mi>i</mml:mi>
+                        </mml:msub>
+                        <mml:msub>
+                          <mml:mrow>
+                            <mml:mi data-mjx-auto-op="false">SIG</mml:mi>
+                          </mml:mrow>
+                          <mml:mi>i</mml:mi>
+                        </mml:msub>
+                      </mml:mrow>
+                    </mml:mtd>
+                  </mml:mtr>
+                  <mml:mtr>
+                    <mml:mtd>
+                      <mml:msub>
+                        <mml:mrow>
+                          <mml:mi data-mjx-auto-op="false">SIG</mml:mi>
+                        </mml:mrow>
+                        <mml:mi>i</mml:mi>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mi>F</mml:mi>
+                        <mml:mi>i</mml:mi>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mi>h</mml:mi>
+                        <mml:mrow>
+                          <mml:mn>3</mml:mn>
+                          <mml:mo>,</mml:mo>
+                          <mml:mi>i</mml:mi>
+                        </mml:mrow>
+                      </mml:msub>
+                      <mml:mo>⋅</mml:mo>
+                      <mml:mo>=</mml:mo>
+                      <mml:mo>+</mml:mo>
+                      <mml:mo>⋅</mml:mo>
+                      <mml:mi>P</mml:mi>
+                      <mml:mrow>
+                        <mml:mo>(</mml:mo>
+                        <mml:mo>+</mml:mo>
+                        <mml:mo>⋅</mml:mo>
+                        <mml:mo>)</mml:mo>
+                        <mml:msub>
+                          <mml:mrow>
+                            <mml:mi data-mjx-auto-op="false">Pub</mml:mi>
+                            <mml:mi>T</mml:mi>
+                            <mml:mi>_</mml:mi>
+                            <mml:mi data-mjx-auto-op="false">ID</mml:mi>
+                            <mml:mtext>-</mml:mtext>
+                          </mml:mrow>
+                          <mml:mi>i</mml:mi>
+                        </mml:msub>
+                        <mml:msub>
+                          <mml:mi>h</mml:mi>
+                          <mml:mrow>
+                            <mml:mn>1</mml:mn>
+                            <mml:mo>,</mml:mo>
+                            <mml:mi>i</mml:mi>
+                          </mml:mrow>
+                        </mml:msub>
+                        <mml:mrow>
+                          <mml:mi data-mjx-auto-op="false">Mas</mml:mi>
+                          <mml:mi data-mjx-auto-op="false">Pub</mml:mi>
+                          <mml:mtext>-</mml:mtext>
+                        </mml:mrow>
+                      </mml:mrow>
+                    </mml:mtd>
+                  </mml:mtr>
+                </mml:mtable>
+              </mml:math>
+            </disp-formula>
+          
+          <p>Even when <inline-formula>
+  <mml:math id="mmfzkwtepy">
+    <mml:mi>Δ</mml:mi>
+    <mml:mi>T</mml:mi>
+  </mml:math>
+</inline-formula> is tight, the attacker can shift perceived time-of-transmission in ways that alter pseudorange. The present redesign, therefore does not claim to defeat distance-decreasing attacks; it only narrows replay and batching abuse at the message-verification layer.</p><p>(iv) Aggregate authentication can accept mixed-epoch sets unless the receiver enforces per-message invariants. The aggregate check uses:</p>
+          
+            <disp-formula>
+              <label>(20)</label>
+              <mml:math id="mt80z7j6vm">
+                <mml:mtable displaystyle="true" columnspacing="1em" rowspacing="3pt">
+                  <mml:mtr>
+                    <mml:mtd>
+                      <mml:msub>
+                        <mml:mrow>
+                          <mml:mi data-mjx-auto-op="false">SIG</mml:mi>
+                        </mml:mrow>
+                        <mml:mrow>
+                          <mml:mrow>
+                            <mml:mi data-mjx-auto-op="false">sum</mml:mi>
+                          </mml:mrow>
+                        </mml:mrow>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mi>F</mml:mi>
+                        <mml:mrow>
+                          <mml:mrow>
+                            <mml:mi data-mjx-auto-op="false">sum</mml:mi>
+                          </mml:mrow>
+                        </mml:mrow>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mi>F</mml:mi>
+                        <mml:mi>i</mml:mi>
+                      </mml:msub>
+                      <mml:mo>=</mml:mo>
+                      <mml:mo lspace="thickmathspace" rspace="thickmathspace">mod</mml:mo>
+                      <mml:mo>,</mml:mo>
+                      <mml:mo>=</mml:mo>
+                      <mml:mrow>
+                        <mml:mo>(</mml:mo>
+                        <mml:mo>)</mml:mo>
+                        <mml:munder>
+                          <mml:mo>∑</mml:mo>
+                          <mml:mi>i</mml:mi>
+                        </mml:munder>
+                        <mml:msub>
+                          <mml:mrow>
+                            <mml:mi data-mjx-auto-op="false">SIG</mml:mi>
+                          </mml:mrow>
+                          <mml:mi>i</mml:mi>
+                        </mml:msub>
+                      </mml:mrow>
+                      <mml:mi>p</mml:mi>
+                      <mml:mstyle scriptlevel="0">
+                        <mml:mspace width="1em"/>
+                      </mml:mstyle>
+                      <mml:munder>
+                        <mml:mo>∑</mml:mo>
+                        <mml:mi>i</mml:mi>
+                      </mml:munder>
+                    </mml:mtd>
+                  </mml:mtr>
+                  <mml:mtr>
+                    <mml:mtd>
+                      <mml:msub>
+                        <mml:mrow>
+                          <mml:mi data-mjx-auto-op="false">SIG</mml:mi>
+                        </mml:mrow>
+                        <mml:mrow>
+                          <mml:mrow>
+                            <mml:mi data-mjx-auto-op="false">sum</mml:mi>
+                          </mml:mrow>
+                        </mml:mrow>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mi>F</mml:mi>
+                        <mml:mrow>
+                          <mml:mrow>
+                            <mml:mi data-mjx-auto-op="false">sum</mml:mi>
+                          </mml:mrow>
+                        </mml:mrow>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mi>h</mml:mi>
+                        <mml:mrow>
+                          <mml:mn>3</mml:mn>
+                          <mml:mo>,</mml:mo>
+                          <mml:mi>i</mml:mi>
+                        </mml:mrow>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mi>Q</mml:mi>
+                        <mml:mi>i</mml:mi>
+                      </mml:msub>
+                      <mml:mo>⋅</mml:mo>
+                      <mml:mo>=</mml:mo>
+                      <mml:mo>+</mml:mo>
+                      <mml:mo>⋅</mml:mo>
+                      <mml:mi>P</mml:mi>
+                      <mml:munder>
+                        <mml:mo>∑</mml:mo>
+                        <mml:mi>i</mml:mi>
+                      </mml:munder>
+                    </mml:mtd>
+                  </mml:mtr>
+                  <mml:mtr>
+                    <mml:mtd>
+                      <mml:msub>
+                        <mml:mi>Q</mml:mi>
+                        <mml:mi>i</mml:mi>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mrow>
+                          <mml:mi data-mjx-auto-op="false">Pub</mml:mi>
+                          <mml:mi>T</mml:mi>
+                          <mml:mi>_</mml:mi>
+                          <mml:mi data-mjx-auto-op="false">ID</mml:mi>
+                          <mml:mtext>-</mml:mtext>
+                        </mml:mrow>
+                        <mml:mi>i</mml:mi>
+                      </mml:msub>
+                      <mml:msub>
+                        <mml:mi>h</mml:mi>
+                        <mml:mrow>
+                          <mml:mn>1</mml:mn>
+                          <mml:mo>,</mml:mo>
+                          <mml:mi>i</mml:mi>
+                        </mml:mrow>
+                      </mml:msub>
+                      <mml:mo>=</mml:mo>
+                      <mml:mo>+</mml:mo>
+                      <mml:mo>⋅</mml:mo>
+                      <mml:mrow>
+                        <mml:mi data-mjx-auto-op="false">Mas</mml:mi>
+                        <mml:mi data-mjx-auto-op="false">Pub</mml:mi>
+                        <mml:mtext>-</mml:mtext>
+                      </mml:mrow>
+                    </mml:mtd>
+                  </mml:mtr>
+                </mml:mtable>
+              </mml:math>
+            </disp-formula>
+          
+          <p>(v) This equation remains valid even if the set includes messages from different epochs, provided the attacker supplies the corresponding tuples (<inline-formula>
+  <mml:math id="m1bssc8b38">
+    <mml:msub>
+      <mml:mi>F</mml:mi>
+      <mml:mi>i</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula>, <inline-formula>
+  <mml:math id="medrukivcl">
+    <mml:msub>
+      <mml:mrow>
+        <mml:mi data-mjx-auto-op="false">SIG</mml:mi>
+      </mml:mrow>
+      <mml:mi>i</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula>, <inline-formula>
+  <mml:math id="mqhwai4gnn">
+    <mml:msub>
+      <mml:mi>T</mml:mi>
+      <mml:mi>i</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula>, <inline-formula>
+  <mml:math id="m337e448z0">
+    <mml:msub>
+      <mml:mi>m</mml:mi>
+      <mml:mi>i</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula>). <xref ref-type="fig" rid="fig_2">Figure 2</xref> sketches the original three-layer framework in which such cross-epoch mixing can happen at the receiver interface when broadcast data are buffered.</p>
+          
+            <fig id="fig_2">
+              <label>Figure 2</label>
+              <caption>
+                <title>Abstracted layered framework for Trust civil navigation messages (TrustCNAV) deployments</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/4/img_3UEh_VK2t8XXgmh_.png"/>
+            </fig>
+          
+          <p>(vi) Missing point validation and subgroup checks create denial-of-service and edge-case acceptance risks. The verification equations assume that points <inline-formula>
+  <mml:math id="ml6mk7agj0">
+    <mml:msub>
+      <mml:mi>F</mml:mi>
+      <mml:mi>i</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula>, Pri-O_ID<inline-formula>
+  <mml:math id="mjtv738y9w">
+    <mml:msub>
+      <mml:mi/>
+      <mml:mi>i</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula>, and Pub-T_ID<inline-formula>
+  <mml:math id="m720y5edqb">
+    <mml:msub>
+      <mml:mi/>
+      <mml:mi>i</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> lie on the correct curve and have the correct order. If the receiver accepts malformed points, an attacker can inject <inline-formula>
+  <mml:math id="mcgrtyr1di">
+    <mml:msub>
+      <mml:mi>F</mml:mi>
+      <mml:mi>i</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> = <inline-formula>
+  <mml:math id="m3tnpwpq76">
+    <mml:mi>∞</mml:mi>
+  </mml:math>
+</inline-formula> (point at infinity) or a small-subgroup element. <xref ref-type="fig" rid="fig_3">Figure 3</xref> and <xref ref-type="fig" rid="fig_4">Figure 4</xref> summarize the main attack surfaces across the satellite-ground-receiver path, including parameter substitution and replay injection.</p>
+          
+            <fig id="fig_3">
+              <label>Figure 3</label>
+              <caption>
+                <title>Main attack surfaces across satellite-ground-receiver paths</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/4/img_rtAjQttHzpQ5m_XO.jpeg"/>
+            </fig>
+          
+          
+            <fig id="fig_4">
+              <label>Figure 4</label>
+              <caption>
+                <title>Sequence diagram of public-parameter replacement leading to forgery when parameter updates are unauthenticated</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/4/img_nwlpyHVxKRNlYF20.png"/>
+            </fig>
+          
+          <p>These vulnerabilities do not contradict the original unforgeability reduction in the random-oracle model; they show that operational trust hinges on binding, parameter authenticity, and implementation correctness as much as on the hardness of discrete logarithms.</p><p>To address mixed-epoch batching concretely, the receiver applies Algorithm 1 (in the appendix) before batch verification. The flow uses aggregation as the primary fast path after structural admissibility checks, while individual verification is reserved for fallback diagnosis when a batch fails.</p>
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>5. Proposed improvements</title>
+      <p>We keep the pairing-free certificateless structure, then harden three practical failure points: trust anchors, nonce robustness, and epoch-consistent aggregation. In the design, aggregation is retained because it can still reduce cost when used as the primary batch-verification fast path after inexpensive structural checks, rather than as a redundant post-check after every individual signature has already been verified.</p><p>Trust anchor for public parameters. A certificateless design still needs an authenticated distribution path for public parameters that the receiver uses during verification. Our paper treats satellite public parameters as a signed package issued by the authority and distributed through operational channels that the receiver can authenticate using a pinned authority public key. This package binds the identity, validity interval, and parameter digest, which prevents public-parameter replacement without inflating per-message bandwidth. In aviation-style deployments, the receiver can provision the authority public key during certification or maintenance, similar to how other safety-critical roots of trust are installed. Concretely, the receiver stores the authority public key during provisioning or maintenance, verifies the signature on each parameter package before any CNAV batch is accepted, checks the validity interval, and then loads Pri-O_ID<inline-formula>
+  <mml:math id="mudiuct3mw">
+    <mml:msub>
+      <mml:mi/>
+      <mml:mi>i</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> and Pub-T_ID<inline-formula>
+  <mml:math id="mqqa3w2m8p">
+    <mml:msub>
+      <mml:mi/>
+      <mml:mi>i</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> into a trusted parameter store. Any unsigned, expired, or mismatched package is rejected before batch verification begins.</p><p>Deterministic nonce and implementation robustness. The signer must prevent nonce repetition across reboots and failure modes. We adopt deterministic nonce derivation seeded by device entropy and protected by monotone state. This blocks signing-key recovery from repeated nonces while keeping computation lightweight. Receivers should validate curve points and reject unexpected identities before expensive verification.</p><p>Epoch-consistent aggregation. We redefine aggregation as the primary fast path rather than a redundant post-check. The receiver first performs inexpensive structural checks—canonical parsing, authenticated parameter lookup, point validation, epoch selection, and identity de-duplication—then executes one batch verification over the candidate set. Individual verification is reserved for fault isolation or logging only when the aggregate check fails. This preserves the computational rationale for aggregation while closing the cross-epoch mixing pitfall.</p><p>These steps keep TrustCNAV’s structure recognizable while tying operational acceptance to enforceable checks and authenticated inputs.</p>
+    </sec>
+    <sec sec-type="">
+      <title>6. Experimental results and evaluation</title>
+      <p> <xref ref-type="table" rid="table_1">Table 1</xref> summarizes replay handling, privacy, computation time, and the per-message authentication overhead for the three designs. The latency values should be read as reference software-side point estimates rather than deployment-certified hardware benchmarks. The reported latency figures should be read as representative software-side averages obtained from repeated runs under the same reference configuration.</p>
+      
+        <table-wrap id="table_1">
+          <label>Table 1</label>
+          <caption>
+            <title>Protocol comparison summary with computation and communication overhead</title>
+          </caption>
+          <table><tr><th >Protocol</th><th >Replay Detection</th><th >Identity Privacy</th><th >Auth Fields Added (bytes)</th><th >0-bytes per CNAV (bytes)</th><th >Signing Time (ms)</th><th >Mean Receiverside Authentication Latency <mml:math id="my72kt4clo">
+  <mml:msub>
+    <mml:mi>L</mml:mi>
+    <mml:mtext>avg</mml:mtext>
+  </mml:msub>
+</mml:math> (ms)</th><th >Compromise Containment</th></tr><tr><td >Baseline (Unauthenticated CNAV)</td><td >No</td><td >None</td><td >0</td><td >0</td><td >0.00</td><td >0.15</td><td >None</td></tr><tr><td >Original TrustCNAV</td><td >Windowbased</td><td >Moderate</td><td >65 (<mml:math id="m3mc5dtpxo">
+  <mml:msub>
+    <mml:mi>F</mml:mi>
+    <mml:mi>i</mml:mi>
+  </mml:msub>
+</mml:math> + <mml:math id="mamp0pznw4">
+  <mml:msub>
+    <mml:mrow>
+      <mml:mi data-mjx-auto-op="false">SIG</mml:mi>
+    </mml:mrow>
+    <mml:mi>i</mml:mi>
+  </mml:msub>
+</mml:math>)</td><td >65</td><td >2.10</td><td >3.50</td><td >Weak vs nonce fault/key leakage</td></tr><tr><td >Improved (Proposed)</td><td >Epochinvariant + cache</td><td >Improved</td><td >67 (add EpochID)</td><td >67</td><td >2.25</td><td >4.05</td><td >Stronger, limited blast radius</td></tr></table>
+        </table-wrap>
+      
+      <p>We evaluate three designs: (a) baseline CNAV without cryptographic authentication, (b) original TrustCNAV, and (c) the improved protocol with authenticated parameter packaging, deterministic nonces, and epoch-invariant batch filtering. The evaluation should be read as a reference software study rather than an embedded hardware certification benchmark. To make the modeling assumptions explicit, <xref ref-type="table" rid="table_2">Table 2</xref> lists the configuration used in the software-side comparison. In this paper, the values in <xref ref-type="table" rid="table_1">Table 1</xref> are interpreted as representative averages from a software-based reference implementation study, and <xref ref-type="table" rid="table_2">Table 2</xref> makes the implementation environment, cryptographic instantiation, and run-to-run stability assumptions explicit.</p>
+      
+        <table-wrap id="table_2">
+          <label>Table 2</label>
+          <caption>
+            <title>Reference configuration of the software-side evaluation and basic stability check</title>
+          </caption>
+          <table><tr><th >Parameter</th><th >Reference Configuration Used in the Software-Side Study</th></tr><tr><td >Evaluation scope</td><td >Software-based reference implementation study of receiver-side authentication logic only; radio frequency (RF) acquisition, tracking, and navigation filtering excluded.</td></tr><tr><td >Implementation environment</td><td >Reference software implementation executed in Python 3.11 on a desktop-class x86-64 environment; no embedded prototype or RF front-end was used in this study</td></tr><tr><td >Cryptographic group model</td><td >NIST P-256 (secp256r1) prime-order elliptic curve group with compressed point encoding (33-byte point, 32-byte scalar).</td></tr><tr><td >Hash instantiation</td><td >SHA-256-derived fixed-length 256-bit outputs for H<mml:math id="m1ifn1d0pt">
+  <mml:msub>
+    <mml:mi/>
+    <mml:mn>1</mml:mn>
+  </mml:msub>
+</mml:math>, H<mml:math id="mjf0aioev5">
+  <mml:msub>
+    <mml:mi/>
+    <mml:mn>2</mml:mn>
+  </mml:msub>
+</mml:math>, and H<mml:math id="m1462mdai9">
+  <mml:msub>
+    <mml:mi/>
+    <mml:mn>3</mml:mn>
+  </mml:msub>
+</mml:math> in the reference model.</td></tr><tr><td >Epoch and visibility</td><td ><mml:math id="mz96iovuwq">
+  <mml:msub>
+    <mml:mi>N</mml:mi>
+    <mml:mtext>sat</mml:mtext>
+  </mml:msub>
+</mml:math> = 24 satellites, 1 Hz update per satellite, visibility-driven batch size $n<mml:math id="m48tuz0saw">
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>−</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>−</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mn>10</mml:mn>
+  <mml:mn>18.</mml:mn>
+  <mml:mi>t</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>x</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>F</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>h</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>m</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>x</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>R</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>f</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>f</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>h</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>i</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+</mml:math>\Delta T<mml:math id="mprdmfv7l6">
+  <mml:mo>=</mml:mo>
+  <mml:mo>;</mml:mo>
+  <mml:mo>=</mml:mo>
+  <mml:mo>;</mml:mo>
+  <mml:mn>2</mml:mn>
+  <mml:mn>1</mml:mn>
+  <mml:mi>s</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>h</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>u</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>i</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>m</mml:mi>
+  <mml:mi>i</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>i</mml:mi>
+  <mml:mi>m</mml:mi>
+  <mml:mi>u</mml:mi>
+  <mml:mi>m</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>b</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>h</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>i</mml:mi>
+  <mml:mi>z</mml:mi>
+  <mml:mi>e</mml:mi>
+</mml:math>n_\text{min}<mml:math id="msp9sn45hz">
+  <mml:mo>=</mml:mo>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>−</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>−</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mo>,</mml:mo>
+  <mml:mo>,</mml:mo>
+  <mml:mo>−</mml:mo>
+  <mml:mo>,</mml:mo>
+  <mml:mo>−</mml:mo>
+  <mml:mo>.</mml:mo>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>−</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mo>−</mml:mo>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>−</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mo>.</mml:mo>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>−</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>−</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mo>(</mml:mo>
+  <mml:mn>4.</mml:mn>
+  <mml:mn>0.01</mml:mn>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>x</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>A</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>k</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>i</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>x</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>R</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>y</mml:mi>
+  <mml:mi>u</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>u</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>h</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>i</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>m</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>u</mml:mi>
+  <mml:mi>b</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>i</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>u</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>i</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>f</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>u</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>x</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>i</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>i</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>m</mml:mi>
+  <mml:mi>i</mml:mi>
+  <mml:mi>x</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>h</mml:mi>
+  <mml:mi>b</mml:mi>
+  <mml:mi>u</mml:mi>
+  <mml:mi>f</mml:mi>
+  <mml:mi>f</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>i</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>g</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>x</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>N</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>f</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>u</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>m</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>x</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>F</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>u</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>v</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>f</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>b</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>m</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>y</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>h</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>i</mml:mi>
+  <mml:mi>m</mml:mi>
+  <mml:mi>m</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>i</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>y</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>v</mml:mi>
+  <mml:mi>i</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>u</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>i</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>h</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>b</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>b</mml:mi>
+  <mml:mi>i</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>i</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>y</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>x</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>R</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>y</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>h</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>k</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>y</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>x</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>r</mml:mi>
+</mml:math>\mathrm{ID}_i<mml:math id="m0k25ezfoc">
+  <mml:mo>,</mml:mo>
+</mml:math>e^*<mml:math id="mka0jk425h">
+  <mml:mo>,</mml:mo>
+  <mml:mo>(</mml:mo>
+  <mml:mi>H</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>h</mml:mi>
+</mml:math>m_i<mml:math id="m6lu57930h">
+  <mml:mo>,</mml:mo>
+</mml:math>F_i$)) after accepted batch verification.</td></tr><tr><td >Repeated runs</td><td >Table 1 values are representative averages over repeated software-side runs under the same reference workload; only minor run-to-run variation was observed, and the qualitative ranking of the three designs did not change.</td></tr><tr><td >Interpretation</td><td >Illustrative software-side comparison of design variants, not a deployment-ready benchmark for embedded rail, aviation, or unmanned aerial vehicle (UAV) receivers.</td></tr></table>
+        </table-wrap>
+      
+      <p>Metrics follow:</p>
+      
+        <disp-formula>
+          <label>(21)</label>
+          <mml:math id="mjwubgvdyo">
+            <mml:mtable displaystyle="true" columnspacing="1em" rowspacing="3pt">
+              <mml:mtr>
+                <mml:mtd>
+                  <mml:msub>
+                    <mml:mi>L</mml:mi>
+                    <mml:mrow>
+                      <mml:mrow>
+                        <mml:mi data-mjx-auto-op="false">avg</mml:mi>
+                      </mml:mrow>
+                    </mml:mrow>
+                  </mml:msub>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:mo>=</mml:mo>
+                  <mml:mi>n</mml:mi>
+                  <mml:mfrac>
+                    <mml:mn>1</mml:mn>
+                    <mml:mi>n</mml:mi>
+                  </mml:mfrac>
+                  <mml:munderover>
+                    <mml:mo>∑</mml:mo>
+                    <mml:mrow>
+                      <mml:mi>k</mml:mi>
+                      <mml:mo>=</mml:mo>
+                      <mml:mn>1</mml:mn>
+                    </mml:mrow>
+                    <mml:mrow>
+                      <mml:mi>n</mml:mi>
+                    </mml:mrow>
+                  </mml:munderover>
+                  <mml:mrow>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>−</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:msub>
+                      <mml:mi>t</mml:mi>
+                      <mml:mrow>
+                        <mml:mrow>
+                          <mml:mi data-mjx-auto-op="false">end</mml:mi>
+                        </mml:mrow>
+                        <mml:mo>,</mml:mo>
+                        <mml:mi>k</mml:mi>
+                      </mml:mrow>
+                    </mml:msub>
+                    <mml:msub>
+                      <mml:mi>t</mml:mi>
+                      <mml:mrow>
+                        <mml:mrow>
+                          <mml:mi data-mjx-auto-op="false">start</mml:mi>
+                        </mml:mrow>
+                        <mml:mo>,</mml:mo>
+                        <mml:mi>k</mml:mi>
+                      </mml:mrow>
+                    </mml:msub>
+                  </mml:mrow>
+                </mml:mtd>
+              </mml:mtr>
+              <mml:mtr>
+                <mml:mtd>
+                  <mml:msub>
+                    <mml:mi>S</mml:mi>
+                    <mml:mrow>
+                      <mml:mrow>
+                        <mml:mi data-mjx-auto-op="false">auth</mml:mi>
+                      </mml:mrow>
+                    </mml:mrow>
+                  </mml:msub>
+                  <mml:mo>=</mml:mo>
+                  <mml:mfrac>
+                    <mml:msub>
+                      <mml:mi>N</mml:mi>
+                      <mml:mrow>
+                        <mml:mrow>
+                          <mml:mi data-mjx-auto-op="false">succ</mml:mi>
+                        </mml:mrow>
+                      </mml:mrow>
+                    </mml:msub>
+                    <mml:msub>
+                      <mml:mi>N</mml:mi>
+                      <mml:mrow>
+                        <mml:mrow>
+                          <mml:mi data-mjx-auto-op="false">total</mml:mi>
+                        </mml:mrow>
+                      </mml:mrow>
+                    </mml:msub>
+                  </mml:mfrac>
+                </mml:mtd>
+              </mml:mtr>
+              <mml:mtr>
+                <mml:mtd>
+                  <mml:msub>
+                    <mml:mi>D</mml:mi>
+                    <mml:mrow>
+                      <mml:mrow>
+                        <mml:mi data-mjx-auto-op="false">rep</mml:mi>
+                      </mml:mrow>
+                    </mml:mrow>
+                  </mml:msub>
+                  <mml:mo>=</mml:mo>
+                  <mml:mfrac>
+                    <mml:msub>
+                      <mml:mi>N</mml:mi>
+                      <mml:mrow>
+                        <mml:mrow>
+                          <mml:mi data-mjx-auto-op="false">rep</mml:mi>
+                          <mml:mi>_</mml:mi>
+                          <mml:mi data-mjx-auto-op="false">detected</mml:mi>
+                        </mml:mrow>
+                      </mml:mrow>
+                    </mml:msub>
+                    <mml:msub>
+                      <mml:mi>N</mml:mi>
+                      <mml:mrow>
+                        <mml:mrow>
+                          <mml:mi data-mjx-auto-op="false">rep</mml:mi>
+                          <mml:mi>_</mml:mi>
+                          <mml:mi data-mjx-auto-op="false">injected</mml:mi>
+                        </mml:mrow>
+                      </mml:mrow>
+                    </mml:msub>
+                  </mml:mfrac>
+                </mml:mtd>
+              </mml:mtr>
+              <mml:mtr>
+                <mml:mtd>
+                  <mml:msub>
+                    <mml:mi>C</mml:mi>
+                    <mml:mrow>
+                      <mml:mrow>
+                        <mml:mi data-mjx-auto-op="false">res</mml:mi>
+                      </mml:mrow>
+                    </mml:mrow>
+                  </mml:msub>
+                  <mml:mo>=</mml:mo>
+                  <mml:mfrac>
+                    <mml:msub>
+                      <mml:mi>N</mml:mi>
+                      <mml:mrow>
+                        <mml:mrow>
+                          <mml:mi data-mjx-auto-op="false">sessions</mml:mi>
+                          <mml:mi>_</mml:mi>
+                          <mml:mi data-mjx-auto-op="false">secure</mml:mi>
+                        </mml:mrow>
+                      </mml:mrow>
+                    </mml:msub>
+                    <mml:msub>
+                      <mml:mi>N</mml:mi>
+                      <mml:mrow>
+                        <mml:mrow>
+                          <mml:mi data-mjx-auto-op="false">sessions</mml:mi>
+                          <mml:mi>_</mml:mi>
+                          <mml:mi data-mjx-auto-op="false">total</mml:mi>
+                        </mml:mrow>
+                      </mml:mrow>
+                    </mml:msub>
+                  </mml:mfrac>
+                </mml:mtd>
+              </mml:mtr>
+            </mml:mtable>
+          </mml:math>
+        </disp-formula>
+      
+      <p>We also add an overhead metric tailored to limited-bitrate navigation messages:</p>
+      
+        <disp-formula>
+          <label>(22)</label>
+          <mml:math id="mg5rhcdi86">
+            <mml:msub>
+              <mml:mi>O</mml:mi>
+              <mml:mrow>
+                <mml:mrow>
+                  <mml:mi data-mjx-auto-op="false">bytes</mml:mi>
+                </mml:mrow>
+              </mml:mrow>
+            </mml:msub>
+            <mml:mo>=</mml:mo>
+            <mml:mtext>additional authentication bytes per CNAV message</mml:mtext>
+          </mml:math>
+        </disp-formula>
+      
+      <p>Because the present study compares protocol variants under the same reference workload, these metrics should be interpreted as software-side comparative indicators rather than certified field-performance guarantees.</p><p>Communication overhead accounting. TrustCNAV transmits an elliptic-curve point <inline-formula>
+  <mml:math id="myzn7nx8sk">
+    <mml:msub>
+      <mml:mi>F</mml:mi>
+      <mml:mi>i</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> and a scalar <inline-formula>
+  <mml:math id="m2ysrfo95m">
+    <mml:msub>
+      <mml:mrow>
+        <mml:mi data-mjx-auto-op="false">SIG</mml:mi>
+      </mml:mrow>
+      <mml:mi>i</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> as its authentication data. Using compressed point encoding, the footprint is:</p>
+      
+        <disp-formula>
+          <label>(23)</label>
+          <mml:math id="mefj2iq6qw">
+            <mml:mtable displaystyle="true" columnspacing="1em" rowspacing="3pt">
+              <mml:mtr>
+                <mml:mtd>
+                  <mml:msub>
+                    <mml:mi>O</mml:mi>
+                    <mml:mrow>
+                      <mml:mrow>
+                        <mml:mi data-mjx-auto-op="false">bytes</mml:mi>
+                      </mml:mrow>
+                    </mml:mrow>
+                  </mml:msub>
+                  <mml:msub>
+                    <mml:mi>F</mml:mi>
+                    <mml:mi>i</mml:mi>
+                  </mml:msub>
+                  <mml:msub>
+                    <mml:mrow>
+                      <mml:mi data-mjx-auto-op="false">SIG</mml:mi>
+                    </mml:mrow>
+                    <mml:mi>i</mml:mi>
+                  </mml:msub>
+                  <mml:mo>=</mml:mo>
+                  <mml:mo>+</mml:mo>
+                  <mml:mn>33</mml:mn>
+                  <mml:mn>32</mml:mn>
+                  <mml:mtext> </mml:mtext>
+                  <mml:mtext>bytes for </mml:mtext>
+                  <mml:mtext> </mml:mtext>
+                  <mml:mtext>bytes for </mml:mtext>
+                </mml:mtd>
+              </mml:mtr>
+              <mml:mtr>
+                <mml:mtd>
+                  <mml:msub>
+                    <mml:mi>O</mml:mi>
+                    <mml:mrow>
+                      <mml:mrow>
+                        <mml:mi data-mjx-auto-op="false">bytes</mml:mi>
+                      </mml:mrow>
+                    </mml:mrow>
+                  </mml:msub>
+                  <mml:mo>=</mml:mo>
+                  <mml:mn>65</mml:mn>
+                  <mml:mtext> </mml:mtext>
+                  <mml:mtext>bytes</mml:mtext>
+                </mml:mtd>
+              </mml:mtr>
+            </mml:mtable>
+          </mml:math>
+        </disp-formula>
+      
+      <p>Our improved design binds an explicit epoch identifier to defeat mixed-epoch aggregation and replay acceptance. When the epoch identifier is transmitted, it can be encoded in 2 bytes:</p>
+      
+        <disp-formula>
+          <label>(24)</label>
+          <mml:math id="m3vv2bmjhq">
+            <mml:msub>
+              <mml:mi>O</mml:mi>
+              <mml:mrow>
+                <mml:mrow>
+                  <mml:mi data-mjx-auto-op="false">bytes</mml:mi>
+                </mml:mrow>
+              </mml:mrow>
+            </mml:msub>
+            <mml:mo>=</mml:mo>
+            <mml:mo>+</mml:mo>
+            <mml:mo>=</mml:mo>
+            <mml:mn>65</mml:mn>
+            <mml:mn>2</mml:mn>
+            <mml:mn>67</mml:mn>
+            <mml:mtext> </mml:mtext>
+            <mml:mtext>bytes</mml:mtext>
+            <mml:mtext> </mml:mtext>
+            <mml:mtext>bytes</mml:mtext>
+            <mml:mtext> </mml:mtext>
+            <mml:mtext>bytes</mml:mtext>
+          </mml:math>
+        </disp-formula>
+      
+      <p>The parameter package used to authenticate Pri-O_ID<inline-formula>
+  <mml:math id="mzs73aoi78">
+    <mml:msub>
+      <mml:mi/>
+      <mml:mrow>
+        <mml:mi>i</mml:mi>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula> and Pub-T_ID<inline-formula>
+  <mml:math id="m3msnl29et">
+    <mml:msub>
+      <mml:mi/>
+      <mml:mrow>
+        <mml:mi>i</mml:mi>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula> is distributed out-of-band and does not inflate per-message CNAV size, which addresses the bandwidth concern for continuous broadcasts.</p><p>Latency and security outcomes. Under the reference software model, baseline CNAV yields high <inline-formula>
+  <mml:math id="m6z94fj5tl">
+    <mml:msub>
+      <mml:mi>S</mml:mi>
+      <mml:mtext>auth</mml:mtext>
+    </mml:msub>
+  </mml:math>
+</inline-formula> under benign conditions but fails under injection because it lacks a cryptographic gate, and <inline-formula>
+  <mml:math id="mw5b3mp8qf">
+    <mml:msub>
+      <mml:mi>D</mml:mi>
+      <mml:mtext>rep</mml:mtext>
+    </mml:msub>
+  </mml:math>
+</inline-formula> stays near zero. Original TrustCNAV increases <inline-formula>
+  <mml:math id="mhp0xagi70">
+    <mml:msub>
+      <mml:mi>D</mml:mi>
+      <mml:mtext>rep</mml:mtext>
+    </mml:msub>
+  </mml:math>
+</inline-formula> when the timestamp window is tight, yet parameter substitution causes false acceptance if the receiver does not authenticate updates. Under a nonce-fault probability of 0.01 after a reboot, an attacker can recover the effective signing key after observing two signatures with repeated public nonce points, reducing <inline-formula>
+  <mml:math id="mjdez29ssm">
+    <mml:msub>
+      <mml:mi>C</mml:mi>
+      <mml:mtext>res</mml:mtext>
+    </mml:msub>
+  </mml:math>
+</inline-formula>. The improved protocol prevents these failures in the modeled workloads by rejecting unauthenticated parameters, preventing nonce repetition, and enforcing epoch-consistent batching. The resulting authentication budget remains within the 1 Hz epoch window assumed in this study, but the accumulated 40.5–72.9 ms software-side cost for $n$ = 10 to 18 authenticated satellites may still be material for embedded receivers with tighter CPU, power, or real-time constraints. We therefore treat the reported values as reference software timings rather than deployment-ready guarantees for rail, aviation, or autonomous-vehicle platforms. In the representative railway-positioning scenario emphasized in this paper, a failed authenticated batch would mean that the affected GNSS message set is withheld from the train-location solution or handled in a degraded cross-checked mode rather than being silently accepted. This interpretation underscores that the reported timing values describe a protected message-screening stage in software, not a universal claim of end-to-end real-time suitability across all transport platforms.</p><p>Bounded symbolic trace-exploration results. The symbolic exploration procedure reports accepting attack traces for the original TrustCNAV variant, matching the vulnerabilities described in Section 4.2, and reports no accepting traces for the improved variant under the same modeled capabilities and search bounds. This analysis is deliberately limited: it checks only the modeled classes of nonce reuse, unauthenticated parameter replacement, replay handling, and mixed-epoch buffering. It should therefore be read as bounded symbolic evidence for the redesigned acceptance logic rather than as a general proof of protocol security.</p><p><xref ref-type="table" rid="table_1">Table 1</xref> and <xref ref-type="table" rid="table_2">Table 2</xref> summarize the comparative overhead and reference evaluation assumptions used in the manuscript.</p>
+    </sec>
+    <sec sec-type="conclusions">
+      <title>7. Conclusions</title>
+      <p>This paper presents an independent security reassessment of TrustCNAV by adding communication-overhead accounting, explicit trust-anchor discussion, transport-scenario interpretation, and a bounded symbolic trace-exploration layer. We showed that nonce faults and unauthenticated public-parameter updates can enable practical forgeries, and that weak epoch policies can undermine aggregation safety. The improved variant preserves pairing-free verification while adding authenticated parameter packaging, deterministic nonce generation, and epoch-invariant batch filtering. In the reference software study, these changes improve replay handling and compromise containment at the cost of additional verification latency. Important limitations remain: the present work does not defeat distance-decreasing attacks, the symbolic exploration is bounded and attack-class specific, and the reported timings are not hardware-level benchmarks for embedded transport receivers. Future work should therefore combine mechanized verification, authenticated-ranging or cross-sensor defenses, and platform-specific benchmarking on realistic rail, aviation, maritime, and autonomous-vehicle hardware. The practical deployment discussion is intentionally centered on GNSS-based railway positioning as a representative transport case, while broader applicability to aviation, maritime, or road platforms would still require platform-specific validation.</p>
+    </sec>
+  </body>
+  <back>
+    <ack>
+      <title>Acknowledgments</title>
+      
+    </ack>
+    <app-group>
+      <app>
+        <title>Appendix</title>
+        <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/4/img_cgskI3hEb9a7m8fH.webp" />
+      </app>
+    </app-group>
+    <notes>
+      <title>Author Contributions</title>
+      
+    </notes>
+    <notes>
+      <title>Funding</title>
+      <p>This research was supported by the Basic Science Research Program through the National Research Foundation of Korea (NRF) funded by the Ministry of Education (Grand No.: NRF-RS-2023-00237287).</p>
+    </notes>
+    <notes>
+      <title>Informed Consent Statement</title>
+      
+    </notes>
+    <notes>
+      <title>Data Availability Statement</title>
+      <p>The data used to support the research findings are available from the corresponding author upon request.</p>
+    </notes>
+    <notes notes-type="COI-statement">
+      <title>Conflicts of Interest</title>
+      <p>The author declares no conflict of interest.</p>
+    </notes>
+    <ref-list>
+      <title>References</title>
+      <ref id="ref_1">
+        <label>1.</label>
+        <element-citation publication-type="journal">
+          <page-range>104172</page-range>
+          <article-title>TrustCNAV: Certificateless aggregate authentication of civil navigation messages in GNSS</article-title>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Wu</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Bai</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Liu</surname>
+              <given-names>L.</given-names>
+            </name>
+            <name>
+              <surname>Yue</surname>
+              <given-names>M.</given-names>
+            </name>
+          </person-group>
+          <source>Comput. Secur.</source>
+          <year>2025</year>
+          <volume>148</volume>
+          <pub-id pub-id-type="doi">10.1016/j.cose.2024.104172</pub-id>
+        </element-citation>
+      </ref>
+      <ref id="ref_2">
+        <label>2.</label>
+        <element-citation publication-type="journal">
+          <pub-id pub-id-type="doi">10.1109/TAES.2013.6494400</pub-id>
+          <source>IEEE Trans. Aerosp. Electron. Syst.</source>
+          <article-title>Detection strategy for cryptographic GNSS anti-spoofing</article-title>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Humphreys</surname>
+              <given-names>T. E.</given-names>
+            </name>
+          </person-group>
+          <issue>2</issue>
+          <volume>49</volume>
+          <year>2013</year>
+          <page-range>1073-1090</page-range>
+        </element-citation>
+      </ref>
+      <ref id="ref_3">
+        <label>3.</label>
+        <element-citation publication-type="journal">
+          <article-title>Protecting GNSS open service navigation message authentication against distance-decreasing attacks</article-title>
+          <issue>2</issue>
+          <source>IEEE Trans. Aerosp. Electron. Syst.</source>
+          <year>2022</year>
+          <volume>58</volume>
+          <page-range>1224-1240</page-range>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Zhang</surname>
+              <given-names>K.</given-names>
+            </name>
+            <name>
+              <surname>Larsson</surname>
+              <given-names>E. G.</given-names>
+            </name>
+            <name>
+              <surname>Papadimitratos</surname>
+              <given-names>P.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/TAES.2021.3122512</pub-id>
+        </element-citation>
+      </ref>
+      <ref id="ref_4">
+        <label>4.</label>
+        <element-citation publication-type="journal">
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Wang</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Liu</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Cai</surname>
+              <given-names>B.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Lu</surname>
+              <given-names>D.</given-names>
+            </name>
+            <name>
+              <surname>Jiang</surname>
+              <given-names>W.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.hspr.2025.01.005</pub-id>
+          <volume>3</volume>
+          <source>High-Speed Railw.</source>
+          <page-range>37-43</page-range>
+          <issue>1</issue>
+          <article-title>Anti-spoofing performance analysis of typical GNSS-based railway train positioning schemes</article-title>
+        </element-citation>
+      </ref>
+      <ref id="ref_5">
+        <label>5.</label>
+        <element-citation publication-type="journal">
+          <pub-id pub-id-type="doi">10.1109/JPROC.2016.2526658</pub-id>
+          <issue>6</issue>
+          <article-title>GNSS spoofing and detection</article-title>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Psiaki</surname>
+              <given-names>M. L.</given-names>
+            </name>
+            <name>
+              <surname>Humphreys</surname>
+              <given-names>T. E.</given-names>
+            </name>
+          </person-group>
+          <volume>104</volume>
+          <page-range>1258-1270</page-range>
+          <source>Proc. IEEE</source>
+          <year>2016</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_6">
+        <label>6.</label>
+        <element-citation publication-type="journal">
+          <year>2020</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Wu</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Yang</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Liang</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Liu</surname>
+              <given-names>R.</given-names>
+            </name>
+          </person-group>
+          <page-range>165444-165496</page-range>
+          <volume>8</volume>
+          <article-title>Spoofing and anti-spoofing technologies of global navigation satellite system: A survey</article-title>
+          <pub-id pub-id-type="doi">10.1109/ACCESS.2020.3022294</pub-id>
+          <source>IEEE Access</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_7">
+        <label>7.</label>
+        <element-citation publication-type="journal">
+          <page-range>469-475</page-range>
+          <source>IEEE Trans. Aerosp. Electron. Syst.</source>
+          <issue>1</issue>
+          <article-title>Maximum-likelihood power-distortion monitoring for GNSS-signal authentication</article-title>
+          <volume>55</volume>
+          <pub-id pub-id-type="doi">10.1109/TAES.2018.2848318</pub-id>
+          <year>2019</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Gross</surname>
+              <given-names>J. N.</given-names>
+            </name>
+            <name>
+              <surname>Kilic</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Humphreys</surname>
+              <given-names>T. E.</given-names>
+            </name>
+          </person-group>
+        </element-citation>
+      </ref>
+      <ref id="ref_8">
+        <label>8.</label>
+        <element-citation publication-type="journal">
+          <volume>34</volume>
+          <article-title>Signal structure-based authentication for civil GNSSs: Recent solutions and perspectives</article-title>
+          <source>IEEE Signal Process. Mag.</source>
+          <pub-id pub-id-type="doi">10.1109/MSP.2017.2715898</pub-id>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Margaria</surname>
+              <given-names>D.</given-names>
+            </name>
+            <name>
+              <surname>Motella</surname>
+              <given-names>B.</given-names>
+            </name>
+            <name>
+              <surname>Anghileri</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Floch</surname>
+              <given-names>J. J.</given-names>
+            </name>
+            <name>
+              <surname>Fernandez-Hernandez</surname>
+              <given-names>I.</given-names>
+            </name>
+            <name>
+              <surname>Paonni</surname>
+              <given-names>M.</given-names>
+            </name>
+          </person-group>
+          <issue>5</issue>
+          <year>2017</year>
+          <page-range>27-37</page-range>
+        </element-citation>
+      </ref>
+      <ref id="ref_9">
+        <label>9.</label>
+        <element-citation publication-type="journal">
+          <page-range>27960-27969</page-range>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Nicola</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Motella</surname>
+              <given-names>B.</given-names>
+            </name>
+            <name>
+              <surname>Pini</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Falletti</surname>
+              <given-names>E.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/ACCESS.2022.3157337</pub-id>
+          <volume>10</volume>
+          <source>IEEE Access</source>
+          <article-title>Galileo OSNMA public observation phase: Signal testing and validation</article-title>
+        </element-citation>
+      </ref>
+      <ref id="ref_10">
+        <label>10.</label>
+        <element-citation publication-type="journal">
+          <person-group person-group-type="author">
+            <name>
+              <surname>Seco-Granados</surname>
+              <given-names>G.</given-names>
+            </name>
+            <name>
+              <surname>Gómez-Casco</surname>
+              <given-names>D.</given-names>
+            </name>
+            <name>
+              <surname>López-Salcedo</surname>
+              <given-names>J. A.</given-names>
+            </name>
+            <name>
+              <surname>Fernández-Hernández</surname>
+              <given-names>I.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1007/s10291-020-01049-z</pub-id>
+          <source>GPS Solutions</source>
+          <year>2021</year>
+          <volume>25</volume>
+          <article-title>Detection of replay attacks to GNSS based on partial correlations and authentication data unpredictability</article-title>
+          <page-range>1-15</page-range>
+        </element-citation>
+      </ref>
+      <ref id="ref_11">
+        <label>11.</label>
+        <element-citation publication-type="journal">
+          <article-title>Enhanced GNSS authentication based on the joint CHIMERA/OSNMA scheme</article-title>
+          <volume>9</volume>
+          <source>IEEE Access</source>
+          <page-range>121570-121582</page-range>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Motella</surname>
+              <given-names>B.</given-names>
+            </name>
+            <name>
+              <surname>Nicola</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Damy</surname>
+              <given-names>S.</given-names>
+            </name>
+          </person-group>
+          <year>2021</year>
+          <pub-id pub-id-type="doi">10.1109/ACCESS.2021.3107871</pub-id>
+        </element-citation>
+      </ref>
+      <ref id="ref_12">
+        <label>12.</label>
+        <element-citation publication-type="journal">
+          <year>2022</year>
+          <article-title>Mapping bit to symbol unpredictability with application to Galileo open service navigation message authentication</article-title>
+          <source>Navigation</source>
+          <pub-id pub-id-type="doi">10.33012/navi.519</pub-id>
+          <issue>2</issue>
+          <volume>69</volume>
+          <person-group person-group-type="author">
+            <name>
+              <surname>O'Driscoll</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Fernandez-Hernandez</surname>
+              <given-names>I.</given-names>
+            </name>
+          </person-group>
+        </element-citation>
+      </ref>
+      <ref id="ref_13">
+        <label>13.</label>
+        <element-citation publication-type="journal">
+          <issue>3</issue>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Fernandez-Hernandez</surname>
+              <given-names>I.</given-names>
+            </name>
+            <name>
+              <surname>Ashur</surname>
+              <given-names>T.</given-names>
+            </name>
+            <name>
+              <surname>Rijmen</surname>
+              <given-names>V.</given-names>
+            </name>
+          </person-group>
+          <year>2021</year>
+          <source>IEEE Trans. Aerosp. Electron. Syst.</source>
+          <pub-id pub-id-type="doi">10.1109/TAES.2021.3053129</pub-id>
+          <volume>57</volume>
+          <page-range>1827-1839</page-range>
+          <article-title>Analysis and recommendations for MAC and key lengths in delayed disclosure GNSS authentication protocols</article-title>
+        </element-citation>
+      </ref>
+      <ref id="ref_14">
+        <label>14.</label>
+        <element-citation publication-type="journal">
+          <page-range>4393-4404</page-range>
+          <year>2023</year>
+          <article-title>Semi-assisted signal authentication for Galileo: Proof of concept and results</article-title>
+          <issue>4</issue>
+          <source>IEEE Trans. Aerosp. Electron. Syst.</source>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Fernandez-Hernandez</surname>
+              <given-names>I.</given-names>
+            </name>
+            <name>
+              <surname>Winkel</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>O'Driscoll</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Cancela</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Terris-Gallego</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>López-Salcedo</surname>
+              <given-names>J. A.</given-names>
+            </name>
+            <name>
+              <surname>Seco-Granados</surname>
+              <given-names>G.</given-names>
+            </name>
+            <name>
+              <surname>Chiara</surname>
+              <given-names>A. D.</given-names>
+            </name>
+            <name>
+              <surname>Sarto</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Blonski</surname>
+              <given-names>D.</given-names>
+            </name>
+            <name>
+              <surname>others</surname>
+            </name>
+          </person-group>
+          <volume>59</volume>
+          <pub-id pub-id-type="doi">10.1109/TAES.2023.3243587</pub-id>
+        </element-citation>
+      </ref>
+      <ref id="ref_15">
+        <label>15.</label>
+        <element-citation publication-type="journal">
+          <pub-id pub-id-type="doi">10.1007/s11277-020-07289-z</pub-id>
+          <year>2020</year>
+          <page-range>1743-1754</page-range>
+          <issue>4</issue>
+          <volume>113</volume>
+          <article-title>Navigation message authentication based on one-way hash chain to mitigate spoofing attacks for GPS L1</article-title>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Ghorbani</surname>
+              <given-names>K.</given-names>
+            </name>
+            <name>
+              <surname>Orouji</surname>
+              <given-names>N.</given-names>
+            </name>
+            <name>
+              <surname>Mosavi</surname>
+              <given-names>M. R.</given-names>
+            </name>
+          </person-group>
+          <source>Wirel. Pers. Commun.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_16">
+        <label>16.</label>
+        <element-citation publication-type="journal">
+          <article-title>ECDSA-based message authentication scheme for BeiDou-II navigation satellite system</article-title>
+          <page-range>1666-1682</page-range>
+          <pub-id pub-id-type="doi">10.1109/TAES.2018.2874151</pub-id>
+          <volume>55</volume>
+          <source>IEEE Trans. Aerosp. Electron. Syst.</source>
+          <year>2019</year>
+          <issue>4</issue>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Wu</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Liu</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Cao</surname>
+              <given-names>H.</given-names>
+            </name>
+          </person-group>
+        </element-citation>
+      </ref>
+      <ref id="ref_17">
+        <label>17.</label>
+        <element-citation publication-type="journal">
+          <page-range>2039-2050</page-range>
+          <year>2024</year>
+          <pub-id pub-id-type="doi">10.1109/TIFS.2023.3340061</pub-id>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Crosara</surname>
+              <given-names>L.</given-names>
+            </name>
+            <name>
+              <surname>Ardizzon</surname>
+              <given-names>F.</given-names>
+            </name>
+            <name>
+              <surname>Tomasin</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Laurenti</surname>
+              <given-names>N.</given-names>
+            </name>
+          </person-group>
+          <volume>19</volume>
+          <article-title>Worst-case spoofing attack and robust countermeasure in satellite navigation systems</article-title>
+          <source>IEEE Trans. Inf. Forensics Secur.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_18">
+        <label>18.</label>
+        <element-citation publication-type="journal">
+          <pub-id pub-id-type="doi">10.1109/TIFS.2024.3381473</pub-id>
+          <year>2024</year>
+          <page-range>4480-4493</page-range>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Ardizzon</surname>
+              <given-names>F.</given-names>
+            </name>
+            <name>
+              <surname>Crosara</surname>
+              <given-names>L.</given-names>
+            </name>
+            <name>
+              <surname>Tomasin</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Laurenti</surname>
+              <given-names>N.</given-names>
+            </name>
+          </person-group>
+          <volume>19</volume>
+          <article-title>On mixing authenticated and non-authenticated signals against  GNSS  spoofing</article-title>
+        </element-citation>
+      </ref>
+      <ref id="ref_19">
+        <label>19.</label>
+        <element-citation publication-type="report">
+          <article-title>Galileo Open Service Navigation Message Authentication (OSNMA) Service Definition Document</article-title>
+          <source>, https://www.gsc-europa.eu/galileo/services/galileo-open-service-navigation-message-authentication-osnma</source>
+          <year>2025</year>
+          <publisher-name>Luxembourg: Publications Office of the European Union</publisher-name>
+        </element-citation>
+      </ref>
+      <ref id="ref_20">
+        <label>20.</label>
+        <element-citation publication-type="journal">
+          <person-group person-group-type="author">
+            <name>
+              <surname>Rusu-Casandra</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Lohan</surname>
+              <given-names>E. S.</given-names>
+            </name>
+          </person-group>
+          <page-range>729</page-range>
+          <year>2025</year>
+          <source>Sensors</source>
+          <article-title>Experimental assessment of OSNMA-enabled GNSS positioning in interference-affected RF environments</article-title>
+          <volume>25</volume>
+          <issue>3</issue>
+          <pub-id pub-id-type="doi">10.3390/s25030729</pub-id>
+        </element-citation>
+      </ref>
+      <ref id="ref_21">
+        <label>21.</label>
+        <element-citation publication-type="journal">
+          <article-title>An efficient conditional privacy-preserving authentication scheme for vehicle-to-infrastructure communication in VANETs</article-title>
+          <year>2020</year>
+          <page-range>100228</page-range>
+          <volume>22</volume>
+          <pub-id pub-id-type="doi">10.1016/j.vehcom.2019.100228</pub-id>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Ali</surname>
+              <given-names>I.</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>F.</given-names>
+            </name>
+          </person-group>
+          <source>Veh. Commun.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_22">
+        <label>22.</label>
+        <element-citation publication-type="journal">
+          <person-group person-group-type="author">
+            <name>
+              <surname>Yang</surname>
+              <given-names>W.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Mu</surname>
+              <given-names>Y.</given-names>
+            </name>
+          </person-group>
+          <source>IEEE Internet Things J.</source>
+          <issue>6</issue>
+          <volume>8</volume>
+          <page-range>5000-5008</page-range>
+          <year>2021</year>
+          <article-title>An enhanced certificateless aggregate signature without pairings for e-healthcare system</article-title>
+          <pub-id pub-id-type="doi">10.1109/JIOT.2020.3034307</pub-id>
+        </element-citation>
+      </ref>
+      <ref id="ref_23">
+        <label>23.</label>
+        <element-citation publication-type="journal">
+          <year>2021</year>
+          <article-title>Strong key-insulated secure and energy-aware certificateless authentication scheme for VANETs</article-title>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Yang</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Chen</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Chen</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Ma</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Kumar</surname>
+              <given-names>S.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.compeleceng.2021.107417</pub-id>
+          <source>Comput. Electr. Eng.</source>
+          <page-range>107417</page-range>
+          <volume>95</volume>
+        </element-citation>
+      </ref>
+      <ref id="ref_24">
+        <label>24.</label>
+        <element-citation publication-type="journal">
+          <article-title>Blockchain-based authentication of GNSS civil navigation message</article-title>
+          <issue>4</issue>
+          <year>2023</year>
+          <volume>59</volume>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Wu</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Liang</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>Y.</given-names>
+            </name>
+          </person-group>
+          <page-range>4380-4392</page-range>
+          <pub-id pub-id-type="doi">10.1109/TAES.2023.3241041</pub-id>
+        </element-citation>
+      </ref>
+      <ref id="ref_25">
+        <label>25.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>82-96</page-range>
+          <article-title>An efficient cryptographic protocol verifier based on Prolog rules</article-title>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Blanchet</surname>
+              <given-names>B.</given-names>
+            </name>
+          </person-group>
+          <year>2001</year>
+          <source>Proceedings of 14th IEEE Computer Security Foundations Workshop, 2001</source>
+          <publisher-place>Cape Breton, Canada</publisher-place>
+          <pub-id pub-id-type="doi">10.1109/CSFW.2001.930138</pub-id>
+        </element-citation>
+      </ref>
+      <ref id="ref_26">
+        <label>26.</label>
+        <element-citation publication-type="book">
+          <person-group person-group-type="author">
+            <name>
+              <surname>Meier</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Schmidt</surname>
+              <given-names>B.</given-names>
+            </name>
+            <name>
+              <surname>Cremers</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Basin</surname>
+              <given-names>D.</given-names>
+            </name>
+          </person-group>
+          <article-title>The TAMARIN prover for the symbolic analysis of security protocols</article-title>
+          <source>Computer Aided Verification. CAV 2013. Lecture Notes in Computer Science (vol. 8044)</source>
+          <publisher-name>Berlin, Heidelberg: Springer</publisher-name>
+          <year>2013</year>
+          <page-range>696-701</page-range>
+          <pub-id pub-id-type="doi">10.1007/978-3-642-39799-8_48</pub-id>
+        </element-citation>
+      </ref>
+    </ref-list>
+  </back>
+</article>
