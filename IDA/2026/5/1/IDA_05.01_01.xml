@@ -1,0 +1,2002 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.3 20210610//EN" "JATS-journalpublishing1-3.dtd">
+<article xml:lang="en" dtd-version="1.3" article-type="research-article" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mml="http://www.w3.org/1998/Math/MathML">
+  <front>
+    <journal-meta>
+      <journal-id journal-id-type="publisher-id">IDA</journal-id>
+      <journal-id journal-id-type="doi">10.56578</journal-id>
+      <journal-title-group>
+        <journal-title>Information Dynamics and Applications</journal-title>
+        <abbrev-journal-title abbrev-type="issn">Inf. Dyn. Appl.</abbrev-journal-title>
+        <abbrev-journal-title abbrev-type="publisher">IDA</abbrev-journal-title>
+      </journal-title-group>
+      <issn publication-format="electronic">2958-1494</issn>
+      <issn publication-format="print">2958-1486</issn>
+      <publisher>
+        <publisher-name>Acadlore</publisher-name>
+      </publisher>
+    </journal-meta>
+    <article-meta>
+      <article-id pub-id-type="publisher-id">AR-qMoSuglYVEf2ojiDocz54zf1hZQabHBH</article-id>
+      <article-id pub-id-type="doi">10.56578/ida050101</article-id>
+      <article-categories>
+        <subj-group>
+          <subject>Articles</subject>
+        </subj-group>
+      </article-categories>
+      <title-group>
+        <article-title>DeCo-Adapter: Enhancing Zero-Shot Robustness via Decoupled Negative Semantic Suppression</article-title>
+      </title-group>
+      <contrib-group>
+        <contrib contrib-type="author" rid="aff_1">
+          <contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0009-0001-6392-3801</contrib-id>
+          <name>
+            <surname>Chi</surname>
+            <given-names>Yiheng</given-names>
+          </name>
+          <email>1121304890@qdu.edu.cn</email>
+        </contrib>
+        <contrib contrib-type="author" rid="aff_1">
+          <contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0009-0003-1468-1417</contrib-id>
+          <name>
+            <surname>Zhang</surname>
+            <given-names>Peijian</given-names>
+          </name>
+          <email>zpj@qdu.edu.cn</email>
+        </contrib>
+        <aff id="aff_1">School of Computer Science and Technology, Qingdao University, 266071 Qingdao, China</aff>
+      </contrib-group>
+      <pub-date publication-format="electronic" date-type="pub">
+        <day>17</day>
+        <month>03</month>
+        <year>2026</year>
+      </pub-date>
+      <volume>5</volume>
+      <issue>1</issue>
+      <fpage>1</fpage>
+      <lpage>9</lpage>
+      <page-range>1-9</page-range>
+      <history>
+        <date date-type="received">
+          <day>04</day>
+          <month>02</month>
+          <year>2026</year>
+        </date>
+        <date date-type="accepted">
+          <day>11</day>
+          <month>03</month>
+          <year>2026</year>
+        </date>
+      </history>
+      <permissions>
+        <copyright-statement>©2026 by the author(s)</copyright-statement>
+        <copyright-year>2026</copyright-year>
+        <license license-type="open-access" xlink:href="https://creativecommons.org/licenses/by/4.0/">
+          <license-p> Published by Acadlore Publishing Services Limited, Hong Kong. This article is available for free download and can be reused and cited, provided that the original published version is credited, under the CC BY 4.0 license.</license-p>
+        </license>
+      </permissions>
+      <abstract><p>Large-scale Vision-Language Models (VLMs) like Contrastive Language-Image Pre-training (CLIP) have demonstrated their impressive zero-shot capabilities. However, adapting them to downstream tasks remains challenging, especially under domain shifts where visual features become unreliable. Existing training-free methods, such as Tip-Adapter, rely heavily on visual similarity, which often fails in out-of-distribution (OOD) scenarios. To address this, Decoupled Correction Adapter (DeCo-Adapter), a robust adaptation framework that integrates a Decoupled Knowledge Stream into the visual baseline, is proposed. Specifically, a novel Negative Semantic Suppression mechanism is introduced, leveraging Large Language Models (LLMs) to generate and penalize distractor descriptions. This mechanism effectively corrects visual ambiguities without requiring any training. Extensive experiments on ImageNet-Sketch, ImageNet-V2, and ImageNet-A demonstrate that DeCo-Adapter consistently outperforms state-of-the-art methods. Notably, it achieves a top-1 accuracy of 54.11% on ImageNet-Sketch, surpassing the strong Tip-Adapter baseline by leveraging negative knowledge for error correction.</p></abstract>
+      <kwd-group>
+        <kwd>Vision-Language Models</kwd>
+        <kwd>Zero-shot learning</kwd>
+        <kwd>Domain adaptation</kwd>
+        <kwd>Negative semantic suppression</kwd>
+        <kwd>Out-of-distribution robustness</kwd>
+      </kwd-group>
+      <counts>
+        <count count-type="contributors" count="2"/>
+        <fig-count count="3"/>
+        <table-count count="5"/>
+        <ref-count count="24"/>
+      </counts>
+    </article-meta>
+  </front>
+  <body>
+    <sec sec-type="intro">
+      <title>1. Introduction</title>
+      <p>The Vision-Language Models (VLMs), represented by Contrastive Language-Image Pre-training (CLIP) [<xref ref-type="bibr" rid="ref_1">1</xref>] and A Large-scale Image and Noisy-text Embedding (ALIGN) [<xref ref-type="bibr" rid="ref_2">2</xref>], have revolutionized computer vision by aligning images and texts into a unified embedding space through large-scale pre-training. This alignment enables remarkable zero-shot recognition capabilities, allowing the model to identify unseen categories by simply computing the similarity between images and their corresponding text prompts without additional training. Such a paradigm provides a natural advantage for open-vocabulary recognition tasks.</p><p>To further adapt VLMs to downstream tasks, training-free adaptation methods have emerged, with Tip-Adapter [<xref ref-type="bibr" rid="ref_3">3</xref>] being a prominent example. It constructs a key-value “Visual Cache” from few-shot training data to refine predictions via feature matching. However, a critical “Visual Dependency Trap” is identified in this mechanism: it implicitly assumes that test data follows the same distribution as the cache (InDomain). When facing out-of-distribution (OOD) scenarios [<xref ref-type="bibr" rid="ref_4">4</xref>], such as domain shifts [<xref ref-type="bibr" rid="ref_5">5</xref>] or adversarial attacks [<xref ref-type="bibr" rid="ref_6">6</xref>], visual matching often fails or introduces severe noise. As observed in preliminary experiments, when adapting from sketch data to real photos, the performance gain of pure visual adaptation drops to zero, highlighting its fragility.</p><p>To overcome this limitation, incorporating external semantic knowledge is proposed. Unlike visual features which are highly sensitive to domain shifts, the essential semantic concepts of objects remain relatively stable across domains (e.g., a “cat” is semantically consistent in both sketches and photos). Large Language Models (LLMs) [<xref ref-type="bibr" rid="ref_7">7</xref>] are leveraged to generate rich textual knowledge to assist recognition. More importantly, it is argued that effective recognition requires not only identifying “what an object is” but also explicitly ruling out “what it is not”. Therefore, a “Negative Semantic Suppression” mechanism is introduced to exclude confusing distractors. This plays a crucial role in correcting predictions when visual features are ambiguous.</p><p>To address these challenges, we propose the Decoupled Correction Adapter (DeCo-Adapter) framework, a robust, training-free adaptation architecture that integrates a Decoupled Knowledge Stream with the visual baseline. Furthermore, a Hybrid Sharpening Strategy is designed to ensure optimal alignment between visual and textual modalities.</p><p>In summary, the main contributions of this work are threefold:</p><p><inline-formula>
+  <mml:math id="mes9is2dc3">
+    <mml:mo>∙</mml:mo>
+  </mml:math>
+</inline-formula> We propose DeCo-Adapter, a robust training-free framework that systematically alleviates the “Visual Dependency Trap” by seamlessly integrating decoupled semantic knowledge with visual caches.</p><p><inline-formula>
+  <mml:math id="mgktht9mr3">
+    <mml:mo>∙</mml:mo>
+  </mml:math>
+</inline-formula> We introduce a novel Negative Semantic Suppression mechanism. Unlike existing knowledge-enhanced methods (e.g., Customized Prompts via Language models (CuPL)) that rely solely on entangled positive descriptions, our method explicitly penalizes visually similar but semantically distinct distractors, significantly refining the decision boundaries.</p><p><inline-formula>
+  <mml:math id="mkp6udlvs8">
+    <mml:mo>∙</mml:mo>
+  </mml:math>
+</inline-formula> Extensive experiments demonstrate that DeCo-Adapter consistently improves upon strong baselines. Notably, it exhibits superior cross-domain resilience on ImageNetV2 (+0.91%), proving its effectiveness in OOD scenarios where visual-only methods collapse.</p>
+    </sec>
+    <sec sec-type="">
+      <title>2. Related work</title>
+      
+        <sec>
+          
+            <title>2.1. Vision-language models and prompt tuning</title>
+          
+          <p>Recent years have witnessed the rise of VLMs trained on large-scale web data. These models utilize contrastive learning [<xref ref-type="bibr" rid="ref_8">8</xref>] to align multi-modal representations, extending to diverse architectures like Florence [<xref ref-type="bibr" rid="ref_9">9</xref>]. However, their performance heavily relies on the quality of prompts. To avoid manual design, Prompt Tuning methods like Context Optimization (CoOp) [<xref ref-type="bibr" rid="ref_10">10</xref>] replace hard prompts with learnable continuous vectors. Conditional Context Optimization (CoCoOp) [<xref ref-type="bibr" rid="ref_11">11</xref>] further improves this by conditioning prompts on visual features, while recent works explore deep multi-modal prompting strategies, such as Multimodal Prompt Learning (MaPLe) [<xref ref-type="bibr" rid="ref_12">12</xref>]. Despite their effectiveness, these methods re-quire gradient-based training, which is computationally expensive and prone to overfitting.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>2.2. Training-free adaptation and robustness</title>
+          
+          <p>To overcome the efficiency bottleneck of prompt tuning, training-free adaptation methods have gained significant attention. A prominent example is Tip-Adapter [<xref ref-type="bibr" rid="ref_3">3</xref>], which constructs a cache model to dynamically refine predictions. Similarly, CLIP-Adapter [<xref ref-type="bibr" rid="ref_13">13</xref>], DenseCLIP [<xref ref-type="bibr" rid="ref_14">14</xref>], Parameter Free Attention for CLIP (CALIP) [<xref ref-type="bibr" rid="ref_15">15</xref>], and SuSX [<xref ref-type="bibr" rid="ref_16">16</xref>] propose various parameter-free attention or feature blending mechanisms. While extremely efficient, they rely fundamentally on visual similarity. This dependency becomes a critical vulnerability under domain shifts [<xref ref-type="bibr" rid="ref_17">17</xref>], where visual features become unreliable. The proposed DeCo-Adapter addresses this fragility by supplementing visual features with domain invariant semantic knowledge.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>2.3. Knowledge-based prompting</title>
+          
+          <p>Another line of research seeks to enhance VLMs by incorporating rich external knowledge. CuPL [<xref ref-type="bibr" rid="ref_18">18</xref>] and Visual Classification via Description [<xref ref-type="bibr" rid="ref_19">19</xref>] leverage LLMs, such as Generative Pre-trained Transformer 3 (GPT-3), to generate detailed visual descriptions, creating customized prompts that capture fine-grained semantics. Other methods incorporate external knowledge bases like WordNet (e.g., K-Lite [<xref ref-type="bibr" rid="ref_20">20</xref>]) or hierarchical label sets (e.g., Zero-Shot Image Classification with Hierarchical Label Sets (CHiLS) [<xref ref-type="bibr" rid="ref_21">21</xref>], Radenovic et al. [<xref ref-type="bibr" rid="ref_22">22</xref>]) to enrich concept representations. While effective, they universally focus on integrating positive attributes into a single, coupled representation. Such an entangled representation often introduces noise and struggles to discriminate fine-grained interclass ambiguities. To overcome this limitation, the decoupled approach presented in this work separates semantic knowledge into distinct structural attributes and explicitly introduces a negative suppression mechanism, proving that subtracting incorrect semantics is critical for robust adaptation. Such robustness and adaptability have also been extensively explored in recent journal studies on test-time generalization [<xref ref-type="bibr" rid="ref_23">23</xref>] and video-language understanding [<xref ref-type="bibr" rid="ref_24">24</xref>], further highlighting the importance of refined prompt optimization.”</p>
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>3. Methodology</title>
+      
+        <sec>
+          
+            <title>3.1. Overall architecture</title>
+          
+          <p>The proposed DeCo-Adapter aims to enhance the robustness of zero-shot recognition by integrating decoupled semantic knowledge. As illustrated in <xref ref-type="fig" rid="fig_1">Figure 1</xref>, the method constructs three parallel information streams: (1) the zero-shot CLIP stream, (2) the visual cache stream, and (3) the decoupled knowledge stream. Specifically, the decoupled knowledge stream introduces a negative semantic suppression (NSS) mechanism that leverages negative knowledge from LLMs to explicitly penalize distracting categories. This process is conducted without any non-linear sharpening, thereby maintaining a broad suppression field to correct visual ambiguities. Finally, the prediction is obtained by adaptively fusing these streams without any parameter optimization.</p>
+          
+            <fig id="fig_1">
+              <label>Figure 1</label>
+              <caption>
+                <title>Schematic framework of the proposed Decoupled Correction Adapter (DeCo-Adapter)</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/2/img_3zBGG-yGPLc4pxjN.png"/>
+            </fig>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.2. Visual cache stream</title>
+          
+          <p>A key-value visual cache is constructed utilizing a few-shot training set. Let <inline-formula>
+  <mml:math id="mg1m7u2zno">
+    <mml:msub>
+      <mml:mi>F</mml:mi>
+      <mml:mrow>
+        <mml:mtext>test </mml:mtext>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula> denote the visual features of test images extracted by the vision encoder. The visual adaptation logits <inline-formula>
+  <mml:math id="mpxzubfqlr">
+    <mml:msub>
+      <mml:mi>L</mml:mi>
+      <mml:mrow>
+        <mml:mtext>vis </mml:mtext>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula> are computed via a sharp attention mechanism:</p>
+          
+            <disp-formula>
+              <label>(1)</label>
+              <mml:math id="myn3sz5ytu">
+                <mml:msub>
+                  <mml:mi>L</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>v</mml:mi>
+                    <mml:mi>i</mml:mi>
+                    <mml:mi>s</mml:mi>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>V</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>c</mml:mi>
+                    <mml:mi>a</mml:mi>
+                    <mml:mi>c</mml:mi>
+                    <mml:mi>h</mml:mi>
+                    <mml:mi>e</mml:mi>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mo>⁡</mml:mo>
+                <mml:mi>exp</mml:mi>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>−</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:msub>
+                    <mml:mi>β</mml:mi>
+                    <mml:mrow>
+                      <mml:mi>v</mml:mi>
+                      <mml:mi>i</mml:mi>
+                      <mml:mi>s</mml:mi>
+                    </mml:mrow>
+                  </mml:msub>
+                  <mml:mrow>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>−</mml:mo>
+                    <mml:mo>⋅</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:mn>1</mml:mn>
+                    <mml:msub>
+                      <mml:mi>F</mml:mi>
+                      <mml:mrow>
+                        <mml:mi>t</mml:mi>
+                        <mml:mi>e</mml:mi>
+                        <mml:mi>s</mml:mi>
+                        <mml:mi>t</mml:mi>
+                      </mml:mrow>
+                    </mml:msub>
+                    <mml:msubsup>
+                      <mml:mi>K</mml:mi>
+                      <mml:mrow>
+                        <mml:mi>c</mml:mi>
+                        <mml:mi>a</mml:mi>
+                        <mml:mi>c</mml:mi>
+                        <mml:mi>h</mml:mi>
+                        <mml:mi>e</mml:mi>
+                      </mml:mrow>
+                      <mml:mrow>
+                        <mml:mi>⊤</mml:mi>
+                      </mml:mrow>
+                    </mml:msubsup>
+                  </mml:mrow>
+                </mml:mrow>
+              </mml:math>
+            </disp-formula>
+          
+          <p>where, <inline-formula>
+  <mml:math id="my6wq02xq8">
+    <mml:msub>
+      <mml:mi>K</mml:mi>
+      <mml:mrow>
+        <mml:mi>c</mml:mi>
+        <mml:mi>a</mml:mi>
+        <mml:mi>c</mml:mi>
+        <mml:mi>h</mml:mi>
+        <mml:mi>e</mml:mi>
+      </mml:mrow>
+    </mml:msub>
+    <mml:mo>∈</mml:mo>
+    <mml:msup>
+      <mml:mrow>
+        <mml:mi>R</mml:mi>
+      </mml:mrow>
+      <mml:mrow>
+        <mml:mi>C</mml:mi>
+        <mml:mi>d</mml:mi>
+        <mml:mo>×</mml:mo>
+      </mml:mrow>
+    </mml:msup>
+  </mml:math>
+</inline-formula> and <inline-formula>
+  <mml:math id="mo3widhcyy">
+    <mml:msub>
+      <mml:mi>V</mml:mi>
+      <mml:mrow>
+        <mml:mi>c</mml:mi>
+        <mml:mi>a</mml:mi>
+        <mml:mi>c</mml:mi>
+        <mml:mi>h</mml:mi>
+        <mml:mi>e</mml:mi>
+      </mml:mrow>
+    </mml:msub>
+    <mml:mo>∈</mml:mo>
+    <mml:msup>
+      <mml:mrow>
+        <mml:mi>R</mml:mi>
+      </mml:mrow>
+      <mml:mrow>
+        <mml:mi>C</mml:mi>
+        <mml:mi>C</mml:mi>
+        <mml:mo>×</mml:mo>
+      </mml:mrow>
+    </mml:msup>
+  </mml:math>
+</inline-formula> represent the cached visual keys and one-hot labels for $C<inline-formula>
+  <mml:math id="m4u42lnlyb">
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mo>,</mml:mo>
+    <mml:mo>.</mml:mo>
+  </mml:math>
+</inline-formula>F_{test} \in \mathbb{R}^{1 \times d}<inline-formula>
+  <mml:math id="mrljz61izt">
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+  </mml:math>
+</inline-formula>d<inline-formula>
+  <mml:math id="mkqppl26ba">
+    <mml:mo>−</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+  </mml:math>
+</inline-formula>\beta_{vis}<inline-formula>
+  <mml:math id="mk21v0hhud">
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>I</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mo>.</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>(</mml:mo>
+  </mml:math>
+</inline-formula>\beta_{vis} = 1.0$) is employed for the sketch domain to accommodate visual variations.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.3. Decoupled knowledge stream</title>
+          
+          <p>To mitigate the ambiguity of visual features in OOD scenarios, a decoupled knowledge injection mechanism is introduced. Unlike previous methods that utilize holistic sentence descriptions, semantic knowledge is decoupled into distinct attributes:</p><p>\[ \mathit{Shape}\ (W_{shape}),\ \mathit{Texture}\ (W_{text}),\ \text{and}\ \mathit{Negative}\ (W_{neg}). \]</p><p>Positive Enhancement with Sharpening:</p><p>For positive attributes (Shape and Texture), a non-linear sharpening function is applied to filter out noisy semantic matches. The positive knowledge score <inline-formula>
+  <mml:math id="mowwmkgtlj">
+    <mml:msub>
+      <mml:mi>L</mml:mi>
+      <mml:mrow>
+        <mml:mi>n</mml:mi>
+        <mml:mi>o</mml:mi>
+        <mml:mi>s</mml:mi>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula> is calculated as:</p>
+          
+            <disp-formula>
+              <label>(2)</label>
+              <mml:math id="m4z5d38bep">
+                <mml:msub>
+                  <mml:mi>L</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>p</mml:mi>
+                    <mml:mi>o</mml:mi>
+                    <mml:mi>s</mml:mi>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mo>⁡</mml:mo>
+                <mml:mo>+</mml:mo>
+                <mml:mo>⁡</mml:mo>
+                <mml:mi>exp</mml:mi>
+                <mml:mi>exp</mml:mi>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>−</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:msub>
+                    <mml:mi>β</mml:mi>
+                    <mml:mrow>
+                      <mml:mi>k</mml:mi>
+                      <mml:mi>n</mml:mi>
+                      <mml:mi>w</mml:mi>
+                    </mml:mrow>
+                  </mml:msub>
+                  <mml:mrow>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>−</mml:mo>
+                    <mml:mo>⋅</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:mn>1</mml:mn>
+                    <mml:msub>
+                      <mml:mi>F</mml:mi>
+                      <mml:mrow>
+                        <mml:mi>t</mml:mi>
+                        <mml:mi>e</mml:mi>
+                        <mml:mi>s</mml:mi>
+                        <mml:mi>t</mml:mi>
+                      </mml:mrow>
+                    </mml:msub>
+                    <mml:msubsup>
+                      <mml:mi>W</mml:mi>
+                      <mml:mrow>
+                        <mml:mi>s</mml:mi>
+                        <mml:mi>h</mml:mi>
+                        <mml:mi>a</mml:mi>
+                        <mml:mi>p</mml:mi>
+                        <mml:mi>e</mml:mi>
+                      </mml:mrow>
+                      <mml:mrow>
+                        <mml:mi>⊤</mml:mi>
+                      </mml:mrow>
+                    </mml:msubsup>
+                  </mml:mrow>
+                </mml:mrow>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>−</mml:mo>
+                  <mml:mo>)</mml:mo>
+                  <mml:msub>
+                    <mml:mi>β</mml:mi>
+                    <mml:mrow>
+                      <mml:mi>k</mml:mi>
+                      <mml:mi>n</mml:mi>
+                      <mml:mi>w</mml:mi>
+                    </mml:mrow>
+                  </mml:msub>
+                  <mml:mrow>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>−</mml:mo>
+                    <mml:mo>⋅</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:mn>1</mml:mn>
+                    <mml:msub>
+                      <mml:mi>F</mml:mi>
+                      <mml:mrow>
+                        <mml:mi>t</mml:mi>
+                        <mml:mi>e</mml:mi>
+                        <mml:mi>s</mml:mi>
+                        <mml:mi>t</mml:mi>
+                      </mml:mrow>
+                    </mml:msub>
+                    <mml:msubsup>
+                      <mml:mi>W</mml:mi>
+                      <mml:mrow>
+                        <mml:mi>t</mml:mi>
+                        <mml:mi>e</mml:mi>
+                        <mml:mi>x</mml:mi>
+                        <mml:mi>t</mml:mi>
+                      </mml:mrow>
+                      <mml:mrow>
+                        <mml:mi>⊤</mml:mi>
+                      </mml:mrow>
+                    </mml:msubsup>
+                  </mml:mrow>
+                </mml:mrow>
+              </mml:math>
+            </disp-formula>
+          
+          <p>A high sharpening factor <inline-formula>
+  <mml:math id="msxsvwn5l7">
+    <mml:msub>
+      <mml:mi>β</mml:mi>
+      <mml:mrow>
+        <mml:mi>k</mml:mi>
+        <mml:mi>n</mml:mi>
+        <mml:mi>w</mml:mi>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula> = 5.5 is set to ensure that only highly confident semantic matches contribute to the prediction, preventing noise accumulation.</p><p>Negative Semantic Suppression:</p><p>A core contribution of this work is the explicit introduction of negative knowledge. For negative descriptions (e.g., “it is not a dog”), a linear penalty mechanism without sharpening is employed:</p>
+          
+            <disp-formula>
+              <label>(3)</label>
+              <mml:math id="msxy02fkqr">
+                <mml:msub>
+                  <mml:mi>L</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>n</mml:mi>
+                    <mml:mi>e</mml:mi>
+                    <mml:mi>g</mml:mi>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>F</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>t</mml:mi>
+                    <mml:mi>e</mml:mi>
+                    <mml:mi>s</mml:mi>
+                    <mml:mi>t</mml:mi>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mo>⋅</mml:mo>
+                <mml:msubsup>
+                  <mml:mi>W</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>n</mml:mi>
+                    <mml:mi>e</mml:mi>
+                    <mml:mi>g</mml:mi>
+                  </mml:mrow>
+                  <mml:mrow>
+                    <mml:mi>⊤</mml:mi>
+                  </mml:mrow>
+                </mml:msubsup>
+              </mml:math>
+            </disp-formula>
+          
+          <p>Keeping <inline-formula>
+  <mml:math id="m6lg3x4v65">
+    <mml:msub>
+      <mml:mi>L</mml:mi>
+      <mml:mrow>
+        <mml:mi>n</mml:mi>
+        <mml:mi>e</mml:mi>
+        <mml:mi>g</mml:mi>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula> linear ensures a broad suppression field, allowing the model to penalize any potential distractors even if the visual similarity is relatively low.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.4. Final fusion</title>
+          
+          <p>The final classification logits, represented by the vector <inline-formula>
+  <mml:math id="mba547jcx2">
+    <mml:msub>
+      <mml:mi>L</mml:mi>
+      <mml:mrow>
+        <mml:mi>f</mml:mi>
+        <mml:mi>i</mml:mi>
+        <mml:mi>n</mml:mi>
+        <mml:mi>a</mml:mi>
+        <mml:mi>l</mml:mi>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula>, are derived by fusing the three streams:</p>
+          
+            <disp-formula>
+              <label>(4)</label>
+              <mml:math id="mds84yxgne">
+                <mml:msub>
+                  <mml:mi>L</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>f</mml:mi>
+                    <mml:mi>i</mml:mi>
+                    <mml:mi>n</mml:mi>
+                    <mml:mi>a</mml:mi>
+                    <mml:mi>l</mml:mi>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>L</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>c</mml:mi>
+                    <mml:mi>l</mml:mi>
+                    <mml:mi>i</mml:mi>
+                    <mml:mi>p</mml:mi>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>α</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>v</mml:mi>
+                    <mml:mi>i</mml:mi>
+                    <mml:mi>s</mml:mi>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>L</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>v</mml:mi>
+                    <mml:mi>i</mml:mi>
+                    <mml:mi>s</mml:mi>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>α</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>p</mml:mi>
+                    <mml:mi>o</mml:mi>
+                    <mml:mi>s</mml:mi>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>L</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>p</mml:mi>
+                    <mml:mi>i</mml:mi>
+                    <mml:mi>s</mml:mi>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>γ</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>n</mml:mi>
+                    <mml:mi>e</mml:mi>
+                    <mml:mi>q</mml:mi>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>L</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>n</mml:mi>
+                    <mml:mi>e</mml:mi>
+                    <mml:mi>q</mml:mi>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mo>+</mml:mo>
+                <mml:mo>+</mml:mo>
+                <mml:mo>−</mml:mo>
+              </mml:math>
+            </disp-formula>
+          
+          <p>where, <inline-formula>
+  <mml:math id="mqqkzy0gir">
+    <mml:msub>
+      <mml:mi>α</mml:mi>
+      <mml:mrow>
+        <mml:mi>v</mml:mi>
+        <mml:mi>i</mml:mi>
+        <mml:mi>s</mml:mi>
+      </mml:mrow>
+    </mml:msub>
+    <mml:msub>
+      <mml:mi>α</mml:mi>
+      <mml:mrow>
+        <mml:mi>p</mml:mi>
+        <mml:mi>o</mml:mi>
+        <mml:mi>s</mml:mi>
+      </mml:mrow>
+    </mml:msub>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>, and <inline-formula>
+  <mml:math id="mghet4za80">
+    <mml:msub>
+      <mml:mi>γ</mml:mi>
+      <mml:mrow>
+        <mml:mi>n</mml:mi>
+        <mml:mi>e</mml:mi>
+        <mml:mi>g</mml:mi>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula> are hyperparameters balancing the contribution of visual adaptation, positive enhancement, and negative suppression, respectively.</p>
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>4. Experiments</title>
+      
+        <sec>
+          
+            <title>4.1. Experimental settings</title>
+          
+          <p>DeCo-Adapter is evaluated on three challenging datasets to verify its robustness: ImageNet-Sketch (strong domain shift), ImageNet-A (adversarial examples), and ImageNet-V2 (cross-domain generalization). The model utilizes CLIP-RN50 as the backbone, and the visual cache is con-structed using 16-shot samples from ImageNet-Sketch to simulate a realistic OOD adaptation scenario.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>4.2. Implementation details</title>
+          
+          <p>To ensure reproducibility, the experimental configurations are detailed. The pre-trained ResNet-50 version of CLIP is employed as both the vision and text encoder. For the visual cache construction, K = 16 images per class are randomly sampled from the ImageNet-Sketch dataset. To enhance the robustness of the visual keys, a 10-view augmentation strategy (e.g., random cropping and flipping) is applied during feature extraction, and the augmented features are averaged to represent each few-shot sample.</p><p>For the Decoupled Knowledge Stream, a LLM (GPT-4) is queried to construct the semantic knowledge base. To guarantee concise and structured representations, the prompt strictly restricts the output to a JSON format containing three distinct keys: “Shape” (keywords for geometric outlines or body parts), “Texture” (keywords for surface appearance, material, or colors), and exactly ONE “Negative” category (a visually similar but semantically distinct object that is easily confused with the target). For instance, given the category “clownfish”, the generated shape is “oval body, fins”, the texture is “shiny scales, orange and white stripes”, and the designated negative distractor is “goldfish”. This rigorous prompt constraint ensures that the suppression mechanism precisely targets the most highly confusing distractor without introducing irrelevant noise.</p><p>To find the optimal fusion weights without training, a coarse-to-fine grid search is conducted. The search spaces are defined as follows:</p><p><inline-formula>
+  <mml:math id="m4hy2acvew">
+    <mml:msub>
+      <mml:mi>α</mml:mi>
+      <mml:mrow>
+        <mml:mi>v</mml:mi>
+        <mml:mi>i</mml:mi>
+        <mml:mi>s</mml:mi>
+      </mml:mrow>
+    </mml:msub>
+    <mml:mo>∈</mml:mo>
+  </mml:math>
+</inline-formula> {0.0, 0.5, 1.0, 2.0, 3.0, 4.0, 5.0} for the visual stream,</p><p><inline-formula>
+  <mml:math id="mxla8y5tz7">
+    <mml:msub>
+      <mml:mi>α</mml:mi>
+      <mml:mrow>
+        <mml:mi>p</mml:mi>
+        <mml:mi>o</mml:mi>
+        <mml:mi>s</mml:mi>
+      </mml:mrow>
+    </mml:msub>
+    <mml:mo>∈</mml:mo>
+  </mml:math>
+</inline-formula> {0.0, 0.01, 0.05, 0.1, 0.2, 0.3, 0.5, 0.8, 1.0} for the positive knowledge,</p><p><inline-formula>
+  <mml:math id="m4xrbedjch">
+    <mml:msub>
+      <mml:mi>γ</mml:mi>
+      <mml:mrow>
+        <mml:mi>n</mml:mi>
+        <mml:mi>e</mml:mi>
+        <mml:mi>g</mml:mi>
+      </mml:mrow>
+    </mml:msub>
+    <mml:mo>∈</mml:mo>
+  </mml:math>
+</inline-formula> {0.0, 0.001, 0.005, 0.01, 0.05, 0.1} for the negative penalty.</p><p>The search process is extremely efficient as all visual and textual features are pre-calculated and cached in memory.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>4.3. Main results</title>
+          
+          <p>DeCo-Adapter is compared with the original zero-shot CLIP and the state-of-the-art Tip-Adapter-ZS across three benchmarks representing distinct adaptation scenarios. The overall performance is summarized in <xref ref-type="table" rid="table_1">Table 1</xref> and the robustness comparison is visualized in <xref ref-type="fig" rid="fig_2">Figure 2</xref>.</p>
+          
+            <table-wrap id="table_1">
+              <label>Table 1</label>
+              <caption>
+                <title>Performance comparison on ImageNet-Sketch, V2, and A (16-shot sketch cache)</title>
+              </caption>
+              <table><tbody><tr><th colspan="1" rowspan="1"><p>Method</p></th><th colspan="1" rowspan="1"><p>I-Sketch</p></th><th colspan="1" rowspan="1"><p>I-V2</p></th><th colspan="1" rowspan="1"><p>I-A</p></th></tr><tr><td colspan="1" rowspan="1"><p>CLIP (zero-shot)</p></td><td colspan="1" rowspan="1"><p>35.50%</p></td><td colspan="1" rowspan="1"><p>53.25%</p></td><td colspan="1" rowspan="1"><p>10.50%</p></td></tr><tr><td colspan="1" rowspan="1"><p>Tip-Adapter-ZS</p></td><td colspan="1" rowspan="1"><p>53.95%</p></td><td colspan="1" rowspan="1"><p>53.25%</p></td><td colspan="1" rowspan="1"><p>10.59%</p></td></tr><tr><td colspan="1" rowspan="1"><p>DeCo-Adapter (Ours)</p></td><td colspan="1" rowspan="1"><p>54.11%</p></td><td colspan="1" rowspan="1"><p>54.16%</p></td><td colspan="1" rowspan="1"><p>10.61%</p></td></tr><tr><td colspan="1" rowspan="1"><p>Improvement</p></td><td colspan="1" rowspan="1"><p>+0.16%</p></td><td colspan="1" rowspan="1"><p>+0.91%</p></td><td colspan="1" rowspan="1"><p>+0.02%</p></td></tr></tbody></table>
+            </table-wrap>
+          
+          
+            <fig id="fig_2">
+              <label>Figure 2</label>
+              <caption>
+                <title>Cross-domain robustness on ImageNet-V2</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/2/img_q5uNTL0rp02qTrjU.png"/>
+            </fig>
+          
+          <p>In-Domain Superiority (ImageNet-Sketch):</p><p>On ImageNet-Sketch, which shares the same domain as the visual cache, Tip-Adapter-ZS establishes a highly saturated baseline of 53.95%, improving upon zero-shot CLIP by over 18%. Despite encountering this performance bottleneck, DeCo-Adapter further pushes the limit to 54.11% (+0.16%). While the numerical gain appears marginal, it carries profound theoretical significance: in scenarios where, visual features have already exhausted almost all available structural cues, pure visual adaptation reaches an asymptote. The decoupled negative suppression proves capable of rectifying hard, ambiguous boundary cases (e.g., highly confusing fine-grained categories) that visual similarity alone cannot resolve, thereby enhancing the absolute robustness of the decision boundaries.</p><p>Cross-Domain Resilience (ImageNet-V2):</p><p>The most significant advantage of the proposed method is observed on ImageNet-V2. Here, the model is tested on real photos using a cache constructed from sketches, creating a severe domain shift. As a result, the pure visual stream fails completely, yielding zero gain over CLIP (53.25%). In stark contrast, DeCo-Adapter achieves a remarkable improvement of +0.91% (reaching 54.16%), demonstrating superior generalization capability. This proves that while visual features are sensitive to domain changes, semantic knowledge (e.g., “a cat has ears”) is domain-invariant. DeCo-Adapter effectively leverages this property to serve as a robust stabilizer when visual adaptation collapses.</p><p>Adversarial Robustness (ImageNet-A):</p><p>On the challenging ImageNet-A dataset, which contains naturally adversarial examples explicitly designed to fool visual classifiers, baseline adapters show extremely limited effectiveness (+0.09%). DeCo-Adapter outperforms them with a gain of +0.02% (10.61%). Consistent with the in-domain analysis, this indicates that explicit negative sup-pression helps the model resist severe, targeted visual perturbations. By anchoring predictions in high-level semantic reasoning rather than vulnerable visual textures, the method demonstrates enhanced stability under adversarial noise.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>4.4. Ablation study</title>
+          
+          <p>To dissect the specific contributions of the proposed components, a detailed ablation study is conducted on ImageNet-Sketch. The quantitative ablation results are shown in <xref ref-type="table" rid="table_2">Table 2</xref> and the corresponding trends are illustrated in <xref ref-type="fig" rid="fig_3">Figure 3</xref>. As observed, adding positive knowledge alone (+Pos) yields negligible gains, while introducing negative suppression (+Neg) significantly boosts performance (+0.16%). The full model achieves the best accuracy, validating the synergy of the decoupled streams.</p>
+          
+            <table-wrap id="table_2">
+              <label>Table 2</label>
+              <caption>
+                <title>Ablation study on ImageNet-Sketch</title>
+              </caption>
+              <table><tbody><tr><th colspan="1" rowspan="1"><p>Variant</p></th><th colspan="1" rowspan="1"><p>Accuracy (%)</p></th><th colspan="1" rowspan="1"><p>Gain</p></th></tr><tr><td colspan="1" rowspan="1"><p>Tip-Adapter (Visual Only)</p></td><td colspan="1" rowspan="1"><p>53.95</p></td><td colspan="1" rowspan="1"><p>-</p></td></tr><tr><td colspan="1" rowspan="1"><p>+ Positive Only</p></td><td colspan="1" rowspan="1"><p>53.97</p></td><td colspan="1" rowspan="1"><p>+0.02</p></td></tr><tr><td colspan="1" rowspan="1"><p>+ Negative Only</p></td><td colspan="1" rowspan="1"><p>54.11</p></td><td colspan="1" rowspan="1"><p>+0.16</p></td></tr><tr><td colspan="1" rowspan="1"><p>DeCo-Adapter (Full)</p></td><td colspan="1" rowspan="1"><p>54.11</p></td><td colspan="1" rowspan="1"><p>+0.16</p></td></tr></tbody></table>
+            </table-wrap>
+          
+          
+            <fig id="fig_3">
+              <label>Figure 3</label>
+              <caption>
+                <title>Ablation study on ImageNet-Sketch</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/2/img_OxdreubZtu-qaYQx.png"/>
+            </fig>
+          
+          <p>The Limited Role of Positive Knowledge:</p><p>When only positive knowledge is added (Visual + Positive), the performance gain is marginal (+0.02%) or even negligible. This indicates that in a strong visual baseline, positive semantic descriptions (e.g., shape and texture at-tributes) are largely redundant with the visual features al-ready captured. The model already “knows” what the object looks like, so reaffirming it provides little extra value.</p><p>The Critical Role of Negative Suppression:</p><p>However, when negative knowledge is introduced (Visual + Negative), a significant performance boost of +0.16% is observed. This finding is pivotal. It suggests that the primary bottleneck of current visual adapters is not the lack of positive features, but the inability to reject confusing distractors. By explicitly penalizing features that match negative descriptions (e.g., “this is not a tiger”), DeCo-Adapter effectively prunes the decision space.</p><p>Synergy in the Full Model:</p><p>Finally, the full model combines both streams to achieve the highest accuracy (54.11%). This confirms that while negative suppression is the primary driver of performance, positive enhancement still plays a supportive role, and the decoupled architecture successfully integrates them without conflict.</p><p>Superiority of Decoupling:</p><p>The benefit of decoupling positive knowledge is further investigated. In the cross-domain setting (ImageNet-V2), the decoupled positive stream is compared against a simulated CuPL baseline (coupled) in <xref ref-type="table" rid="table_3">Table 3</xref>. The decoupled approach achieves 54.16%, significantly outperforming the coupled baseline (53.68%) by 0.48%. This indicates that independently modeling shape and texture captures more transferrable semantics than holistic descriptions.</p>
+          
+            <table-wrap id="table_3">
+              <label>Table 3</label>
+              <caption>
+                <title>Comparison of coupled (CuPL) vs. decoupled knowledge on ImageNet-V2</title>
+              </caption>
+              <table><tbody><tr><th colspan="1" rowspan="1"><p>Method</p></th><th colspan="1" rowspan="1"><p>Accuracy (%)</p></th><th colspan="1" rowspan="1"><p>Gain</p></th></tr><tr><td colspan="1" rowspan="1"><p>Tip-Adapter (Visual Only)</p></td><td colspan="1" rowspan="1"><p>53.25</p></td><td colspan="1" rowspan="1"><p>+0.00</p></td></tr><tr><td colspan="1" rowspan="1"><p>CuPL (Simulated, Coupled)</p></td><td colspan="1" rowspan="1"><p>53.68</p></td><td colspan="1" rowspan="1"><p>+0.43</p></td></tr><tr><td colspan="1" rowspan="1"><p>DeCo (Decoupled Pos)</p></td><td colspan="1" rowspan="1"><p>54.16</p></td><td colspan="1" rowspan="1"><p>+0.91</p></td></tr></tbody></table>
+            </table-wrap>
+          
+          <p>Impact of Domain-Specific Knowledge Quality:</p><p>It is investigated whether the quality and domain-relevance of the external knowledge impact the adaptation performance. In <xref ref-type="table" rid="table_4">Table 4</xref>, the performance of DeCo-Adapter on ImageNet Sketch using two different knowledge bases is compared: a generic knowledge base (originally generated for standard ImageNet photos) and a domain-specific knowledge base (explicitly prompting the LLM to describe features typical of sketch drawings).</p>
+          
+            <table-wrap id="table_4">
+              <label>Table 4</label>
+              <caption>
+                <title>Impact of knowledge relevance on ImageNet-Sketch</title>
+              </caption>
+              <table><tbody><tr><th colspan="1" rowspan="1"><p>Knowledge Source</p></th><th colspan="1" rowspan="1"><p>Accuracy (%)</p></th></tr><tr><td colspan="1" rowspan="1"><p>Tip-Adapter (No Knowledge)</p></td><td colspan="1" rowspan="1"><p>53.95</p></td></tr><tr><td colspan="1" rowspan="1"><p>DeCo (Generic Photo Knowledge)</p></td><td colspan="1" rowspan="1"><p>53.96</p></td></tr><tr><td colspan="1" rowspan="1"><p>DeCo (Sketch-Specific Knowledge)</p></td><td colspan="1" rowspan="1"><p>54.11</p></td></tr></tbody></table>
+            </table-wrap>
+          
+          <p>The results show that while the generic knowledge base already provides a solid performance (53.96%), switching to the domain-specific knowledge base further pushes the accuracy to 54.11%. This indicates that while semantic concepts are largely domain-invariant, tailoring the textual descriptions to match the modality of the target domain (e.g., emphasizing outlines over colors for sketches) can lead to more precise feature alignment, highlighting the importance of thoughtful prompt engineering in multi-modal fusion.</p><p>Hyperparameter Sensitivity Analysis:</p><p>To validate the stability of the proposed mechanism, a sensitivity analysis on the crucial negative penalty weight <inline-formula>
+  <mml:math id="mzyoopuzuo">
+    <mml:msub>
+      <mml:mi>γ</mml:mi>
+      <mml:mrow>
+        <mml:mi>n</mml:mi>
+        <mml:mi>e</mml:mi>
+        <mml:mi>g</mml:mi>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula> is conducted on ImageNet-Sketch. While keeping other hyper-parameters fixed, we vary <inline-formula>
+  <mml:math id="mlddy3e82d">
+    <mml:msub>
+      <mml:mi>γ</mml:mi>
+      <mml:mrow>
+        <mml:mi>n</mml:mi>
+        <mml:mi>e</mml:mi>
+        <mml:mi>g</mml:mi>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula> across a predefined spectrum. As shown in <xref ref-type="table" rid="table_5">Table 5</xref>, the performance remains consistently superior to the visual-only baseline 53.95% across a broad range of <inline-formula>
+  <mml:math id="mzuv2t4t9r">
+    <mml:msub>
+      <mml:mi>γ</mml:mi>
+      <mml:mrow>
+        <mml:mi>n</mml:mi>
+        <mml:mi>e</mml:mi>
+        <mml:mi>g</mml:mi>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula>. The accuracy peaks at <inline-formula>
+  <mml:math id="mijl60kfxb">
+    <mml:msub>
+      <mml:mi>γ</mml:mi>
+      <mml:mrow>
+        <mml:mi>n</mml:mi>
+        <mml:mi>e</mml:mi>
+        <mml:mi>g</mml:mi>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula> = 0.05 (54.11%) and only exhibits a slight degradation when the penalty becomes excessively aggressive (e.g., <inline-formula>
+  <mml:math id="monphr3f05">
+    <mml:msub>
+      <mml:mi>γ</mml:mi>
+      <mml:mrow>
+        <mml:mi>n</mml:mi>
+        <mml:mi>e</mml:mi>
+        <mml:mi>g</mml:mi>
+      </mml:mrow>
+    </mml:msub>
+    <mml:mo>≥</mml:mo>
+  </mml:math>
+</inline-formula> 0.1). This demonstrates that the negative semantic suppression is not overly sensitive to hyperparameter tuning and provides stable robustness improvements.</p>
+          
+            <table-wrap id="table_5">
+              <label>Table 5</label>
+              <caption>
+                <title>Sensitivity analysis of $\gamma_{neg}$ on ImageNet-Sketch</title>
+              </caption>
+              <table><tbody><tr><th colspan="1" rowspan="1"><p><mml:math id="m0wj0dpfqf">
+  <mml:msub>
+    <mml:mi>γ</mml:mi>
+    <mml:mrow>
+      <mml:mi>n</mml:mi>
+      <mml:mi>e</mml:mi>
+      <mml:mi>g</mml:mi>
+    </mml:mrow>
+  </mml:msub>
+</mml:math></p></th><th colspan="1" rowspan="1"><p>Accuracy (%)</p></th></tr><tr><td colspan="1" rowspan="1"><p>0.001</p></td><td colspan="1" rowspan="1"><p>53.95</p></td></tr><tr><td colspan="1" rowspan="1"><p>0.005</p></td><td colspan="1" rowspan="1"><p>53.98</p></td></tr><tr><td colspan="1" rowspan="1"><p>0.010</p></td><td colspan="1" rowspan="1"><p>53.97</p></td></tr><tr><td colspan="1" rowspan="1"><p>0.050</p></td><td colspan="1" rowspan="1"><p>54.11</p></td></tr><tr><td colspan="1" rowspan="1"><p>0.100</p></td><td colspan="1" rowspan="1"><p>53.99</p></td></tr></tbody></table>
+            </table-wrap>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>4.5. Discussion: mechanisms of decoupling and suppression</title>
+          
+          <p>To intuitively understand why DeCo-Adapter succeeds where pure visual or holistic text adapters fail, the underlying mechanisms of the two core designs are discussed.</p><p>The Power of Negative Suppression (Boundary Shaping):</p><p>In domains with severe information dropout, such as sketches where color and fine-grained textures are missing, structural contours become highly ambiguous. Pure visual adapters often fall into geometric traps, assigning high confidences to visually similar but semantically distinct distractors. In such scenarios, injecting additional holistic positive descriptions provides negligible help, as visual features are already saturated with structural cues. Instead, Negative Semantic Suppression acts as a boundary-shaping regularizer. By explicitly evaluating the affinity between the ambiguous image features and negative distractors, DeCo-Adapter dynamically penalizes incorrect semantic clusters in the embedding space. This subtractive reasoning proves to be a highly efficient error correction mechanism, confirming that pushing the prediction away from known distractors is critical for fine-grained OOD recognition.</p><p>The Superiority of Positive Decoupling (Attribute Resilience):</p><p>Conversely, when evaluating cross-domain generalization, the visual stream collapses due to severe domain shift. Semantic knowledge becomes the sole reliable driver. Coupled methods employ holistic descriptions that entangle various object attributes (e.g., shape, texture, background). If a target image presents an atypical texture but a standard shape, a holistic text prompt might yield a low overall similarity score, leading to misclassification.</p><p>By decoupling the positive knowledge into independent “Shape” and “Texture” streams, these attributes are evaluated separately before late fusion. This structural unbinding ensures that as long as one essential attribute strongly aligns with the target, the model maintains high confidence. This decoupling strategy prevents the catastrophic score degradation seen in coupled prompts, making it significantly more robust against domain variations.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>4.6. Computational efficiency analysis</title>
+          
+          <p>A pivotal advantage of the proposed DeCo-Adapter is its extreme computational efficiency. As a purely trainingfree framework, it requires no gradient backpropagation or parameter updates. More importantly, similar to the construction of the visual cache, all textual embeddings for the decoupled semantic knowledge (<inline-formula>
+  <mml:math id="mjvf4kto89">
+    <mml:msub>
+      <mml:mi>W</mml:mi>
+      <mml:mrow>
+        <mml:mi>s</mml:mi>
+        <mml:mi>h</mml:mi>
+        <mml:mi>a</mml:mi>
+        <mml:mi>p</mml:mi>
+        <mml:mi>e</mml:mi>
+      </mml:mrow>
+    </mml:msub>
+    <mml:msub>
+      <mml:mi>W</mml:mi>
+      <mml:mrow>
+        <mml:mi>t</mml:mi>
+        <mml:mi>e</mml:mi>
+        <mml:mi>x</mml:mi>
+        <mml:mi>t</mml:mi>
+      </mml:mrow>
+    </mml:msub>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>, and <inline-formula>
+  <mml:math id="m8v92779hv">
+    <mml:msub>
+      <mml:mi>W</mml:mi>
+      <mml:mrow>
+        <mml:mi>n</mml:mi>
+        <mml:mi>e</mml:mi>
+        <mml:mi>g</mml:mi>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula>) are precalculated offline using the frozen text encoder and cached in memory prior to evaluation. During the inference phase, integrating the decoupled knowledge stream only introduces negligible overhead specifically, a few low-dimensional vector inner products and scalar additions (as formulated in Eq. (4)). Consequently, the multi-stream fusion achieves an <inline-formula>
+  <mml:math id="mg7mogjcaj">
+    <mml:mrow>
+      <mml:mi data-mjx-variant="-tex-calligraphic">O</mml:mi>
+    </mml:mrow>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mn>1</mml:mn>
+  </mml:math>
+</inline-formula> additional time complexity with respect to the feature dimension. In practice, DeCo-Adapter maintains identical inference latency to the baseline Tip-Adapter while significantly bolstering semantic robustness.</p>
+        </sec>
+      
+    </sec>
+    <sec sec-type="conclusions">
+      <title>5. Conclusions</title>
+      <p>In this paper, DeCo-Adapter, a robust training-free adaptation framework for VLMs, is proposed. By introducing a Decoupled Knowledge Stream with explicit Negative Semantic Suppression, the limitations of visual based methods in cross-domain and adversarial scenarios are addressed. Extensive experiments on ImageNet-Sketch, ImageNet-V2, and ImageNet-A demonstrate that the proposed method consistently outperforms state-of-the-art baselines. Specifically, it is revealed that while positive knowledge may be redundant in strong visual baselines, negative suppression serves as a critical error-correction mechanism. This work is expected to inspire future research into subtractive reasoning for multi-modal adaptation.</p>
+    </sec>
+  </body>
+  <back>
+    <ack>
+      <title>Acknowledgments</title>
+      
+    </ack>
+    <app-group>
+      <app>
+        <title>Appendix</title>
+        
+      </app>
+    </app-group>
+    <notes>
+      <title>Author Contributions</title>
+      <p>Conceptualization, Y.H.C. and P.J.Z.; methodology, Y.H.C.; software, Y.H.C.; validation, Y.H.C. and P.J.Z.; formal analysis, Y.H.C.; investigation, Y.H.C.; resources, P.J.Z.; data curation, Y.H.C.; writing—original draft preparation, Y.H.C.; writing—review and editing, Y.H.C. and P.J.Z.; visualization, Y.H.C.; supervision, P.J.Z.; project administration, P.J.Z.; funding acquisition, P.J.Z. All authors have read and agreed to the published version of the manuscript.</p>
+    </notes>
+    <notes>
+      <title>Funding</title>
+      
+    </notes>
+    <notes>
+      <title>Informed Consent Statement</title>
+      
+    </notes>
+    <notes>
+      <title>Data Availability Statement</title>
+      <p>The data used to support the research findings are available from the corresponding author upon request.</p>
+    </notes>
+    <notes notes-type="COI-statement">
+      <title>Conflicts of Interest</title>
+      <p>The authors declare no conflict of interest.</p>
+    </notes>
+    <ref-list>
+      <title>References</title>
+      <ref id="ref_1">
+        <label>1.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>8748-8763</page-range>
+          <year>2021</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Radford</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Kim</surname>
+              <given-names>J. W.</given-names>
+            </name>
+            <name>
+              <surname>Hallacy</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Ramesh</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Goh</surname>
+              <given-names>G.</given-names>
+            </name>
+            <name>
+              <surname>Agarwal</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Sastry</surname>
+              <given-names>G.</given-names>
+            </name>
+            <name>
+              <surname>Askell</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Mishkin</surname>
+              <given-names>P.</given-names>
+            </name>
+            <name>
+              <surname>Clark</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>others</surname>
+            </name>
+          </person-group>
+          <article-title>Learning transferable visual models from natural language supervision</article-title>
+          <source>International Conference on Machine Learning</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_2">
+        <label>2.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>4904-4916</page-range>
+          <year>2021</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Jia</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Yang</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Xia</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Chen</surname>
+              <given-names>Y. T.</given-names>
+            </name>
+            <name>
+              <surname>Parekh</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Pham</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Quoc  Le</surname>
+              <given-names>V.</given-names>
+            </name>
+            <name>
+              <surname>Sung</surname>
+              <given-names>Y. H.</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Duerig</surname>
+              <given-names>T.</given-names>
+            </name>
+          </person-group>
+          <article-title>Scaling up visual and vision-language representation learning with noisy text supervision</article-title>
+          <source>International Conference on Machine Learning</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_3">
+        <label>3.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>446-463</page-range>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Zhang</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Wei</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Fang</surname>
+              <given-names>P.</given-names>
+            </name>
+            <name>
+              <surname>Gao</surname>
+              <given-names>P.</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Qiao</surname>
+              <given-names>Y.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1007/978-3-031-19836-6_26</pub-id>
+          <article-title>Revisiting a kNN-based image classification system with high-capacity storage</article-title>
+          <source>Computer Vision – ECCV 2022</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_4">
+        <label>4.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>8340-8349</page-range>
+          <year>2021</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Hendrycks</surname>
+              <given-names>D.</given-names>
+            </name>
+            <name>
+              <surname>Basart</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Mu</surname>
+              <given-names>N.</given-names>
+            </name>
+            <name>
+              <surname>Kadakia</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>F.</given-names>
+            </name>
+            <name>
+              <surname>Baird</surname>
+              <given-names>E.</given-names>
+            </name>
+            <name>
+              <surname>Hoffer</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Estiot</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Zhu</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Wei</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>others</surname>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/ICCV48922.2021.00823</pub-id>
+          <article-title>The many faces of robustness: A critical analysis of out-of-distribution generalization</article-title>
+          <source>Proceedings of the IEEE/CVF International Conference on Computer Vision</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_5">
+        <label>5.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>5389-5400</page-range>
+          <publisher-place>Long Beach, CA, USA</publisher-place>
+          <year>2019</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Recht</surname>
+              <given-names>B.</given-names>
+            </name>
+            <name>
+              <surname>Roelofs</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Schmidt</surname>
+              <given-names>L.</given-names>
+            </name>
+            <name>
+              <surname>Shankar</surname>
+              <given-names>V.</given-names>
+            </name>
+          </person-group>
+          <article-title>Do ImageNet classifiers generalize to ImageNet?</article-title>
+          <source>International Conference on Machine Learning</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_6">
+        <label>6.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>15262-15271</page-range>
+          <year>2021</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Hendrycks</surname>
+              <given-names>D.</given-names>
+            </name>
+            <name>
+              <surname>Zhao</surname>
+              <given-names>K.</given-names>
+            </name>
+            <name>
+              <surname>Basart</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Steinhardt</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Song</surname>
+              <given-names>D.</given-names>
+            </name>
+          </person-group>
+          <article-title>Natural adversarial examples</article-title>
+          <source>Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_7">
+        <label>7.</label>
+        <element-citation publication-type="conf-paper">
+          <volume>33</volume>
+          <page-range>1877-1901</page-range>
+          <year>2020</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Tom  Brown</surname>
+              <given-names>B.</given-names>
+            </name>
+            <name>
+              <surname>Mann</surname>
+              <given-names>B.</given-names>
+            </name>
+            <name>
+              <surname>Ryder</surname>
+              <given-names>N.</given-names>
+            </name>
+            <name>
+              <surname>Subbiah</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Jared  Kaplan</surname>
+              <given-names>D.</given-names>
+            </name>
+            <name>
+              <surname>Dhariwal</surname>
+              <given-names>P.</given-names>
+            </name>
+            <name>
+              <surname>Neelakantan</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Shyam</surname>
+              <given-names>P.</given-names>
+            </name>
+            <name>
+              <surname>Sastry</surname>
+              <given-names>G.</given-names>
+            </name>
+            <name>
+              <surname>Askell</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>others</surname>
+            </name>
+          </person-group>
+          <article-title>Language models are few-shot learners</article-title>
+          <source>Advances in Neural Information Processing Systems</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_8">
+        <label>8.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>1597-1607</page-range>
+          <year>2020</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Chen</surname>
+              <given-names>T.</given-names>
+            </name>
+            <name>
+              <surname>Kornblith</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Norouzi</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Hinton</surname>
+              <given-names>G.</given-names>
+            </name>
+          </person-group>
+          <article-title>A simple framework for contrastive learning of visual representations</article-title>
+          <source>International Conference on Machine Learning</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_9">
+        <label>9.</label>
+        <element-citation publication-type="journal">
+          <year>2021</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Yuan</surname>
+              <given-names>Li</given-names>
+            </name>
+            <name>
+              <surname>Chen</surname>
+              <given-names>Dongdong</given-names>
+            </name>
+            <name>
+              <surname>Chen</surname>
+              <given-names>Yi Ling</given-names>
+            </name>
+            <name>
+              <surname>Codella</surname>
+              <given-names>Noel</given-names>
+            </name>
+            <name>
+              <surname>Dai</surname>
+              <given-names>Xiyang</given-names>
+            </name>
+            <name>
+              <surname>Gao</surname>
+              <given-names>Jianfeng</given-names>
+            </name>
+            <name>
+              <surname>Hu</surname>
+              <given-names>Han</given-names>
+            </name>
+            <name>
+              <surname>Huang</surname>
+              <given-names>Xuedong</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>Boyang</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>Chunyuan</given-names>
+            </name>
+            <name>
+              <surname>others</surname>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.48550/arXiv.2111.11432</pub-id>
+          <article-title>Florence: A new foundation model for computer vision</article-title>
+          <source>arXiv preprint arXiv:2111.11432</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_10">
+        <label>10.</label>
+        <element-citation publication-type="journal">
+          <volume>130</volume>
+          <page-range>2337-2348</page-range>
+          <issue>9</issue>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Zhou</surname>
+              <given-names>Kaiyang</given-names>
+            </name>
+            <name>
+              <surname>Yang</surname>
+              <given-names>Jingkang</given-names>
+            </name>
+            <name>
+              <surname>Loy</surname>
+              <given-names>Chen Change</given-names>
+            </name>
+            <name>
+              <surname>Liu</surname>
+              <given-names>Ziwei</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1007/s11263-022-01653-1</pub-id>
+          <article-title>Learning to prompt for vision-language models</article-title>
+          <source>Int. J. Comput. Vis.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_11">
+        <label>11.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>16816-16825</page-range>
+          <publisher-place>New Orleans, LA, USA</publisher-place>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Zhou</surname>
+              <given-names>K.</given-names>
+            </name>
+            <name>
+              <surname>Yang</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Loy</surname>
+              <given-names>C. C.</given-names>
+            </name>
+            <name>
+              <surname>Liu</surname>
+              <given-names>Z.</given-names>
+            </name>
+          </person-group>
+          <article-title>Conditional prompt learning for vision-language models</article-title>
+          <source>Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_12">
+        <label>12.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>19113-19122</page-range>
+          <publisher-place>Vancouver, BC, Canada</publisher-place>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Khattak</surname>
+              <given-names>M. U.</given-names>
+            </name>
+            <name>
+              <surname>Rasheed</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Maaz</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Khan</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Khan</surname>
+              <given-names>F. S.</given-names>
+            </name>
+          </person-group>
+          <article-title>MaPLe: Multi-modal prompt learning</article-title>
+          <source>Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_13">
+        <label>13.</label>
+        <element-citation publication-type="journal">
+          <volume>132</volume>
+          <page-range>581-595</page-range>
+          <issue>2</issue>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Gao</surname>
+              <given-names>Peng</given-names>
+            </name>
+            <name>
+              <surname>Geng</surname>
+              <given-names>Shiming</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>Renrui</given-names>
+            </name>
+            <name>
+              <surname>Ma</surname>
+              <given-names>Tiejun</given-names>
+            </name>
+            <name>
+              <surname>Fang</surname>
+              <given-names>Runpeng</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>Yonghong</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>Hongsheng</given-names>
+            </name>
+            <name>
+              <surname>Qiao</surname>
+              <given-names>Yu</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1007/s11263-023-01891-x</pub-id>
+          <article-title>CLIP-adapter: Better vision-language models with feature adapters</article-title>
+          <source>Int. J. Comput. Vis.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_14">
+        <label>14.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>18061-18070</page-range>
+          <publisher-place>New Orleans, LA, USA</publisher-place>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Rao</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Zhao</surname>
+              <given-names>W.</given-names>
+            </name>
+            <name>
+              <surname>Chen</surname>
+              <given-names>G.</given-names>
+            </name>
+            <name>
+              <surname>Tang</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Zhu</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Huang</surname>
+              <given-names>G.</given-names>
+            </name>
+            <name>
+              <surname>Zhou</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Lu</surname>
+              <given-names>J.</given-names>
+            </name>
+          </person-group>
+          <article-title>DenseCLIP: Language-guided dense prediction with context-aware prompting</article-title>
+          <source>Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_15">
+        <label>15.</label>
+        <element-citation publication-type="conf-paper">
+          <volume>37</volume>
+          <page-range>746-754</page-range>
+          <publisher-place>Washington, DC, USA</publisher-place>
+          <issue>1</issue>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Guo</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Qiu</surname>
+              <given-names>L.</given-names>
+            </name>
+            <name>
+              <surname>Ma</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Miao</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>He</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Cui</surname>
+              <given-names>B.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1609/aaai.v37i1.25152</pub-id>
+          <article-title>CALIP: Zero-shot enhancement of CLIP with parameter-free attention</article-title>
+          <source>Proceedings of the AAAI Conference on Artificial Intelligence</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_16">
+        <label>16.</label>
+        <element-citation publication-type="conf-paper">
+          <publisher-place>Paris, France</publisher-place>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Udandarao</surname>
+              <given-names>V.</given-names>
+            </name>
+            <name>
+              <surname>Gupta</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Albanie</surname>
+              <given-names>S.</given-names>
+            </name>
+          </person-group>
+          <article-title>SuS-X: Training-free name-only transfer of vision-language models</article-title>
+          <source>Proceedings of the IEEE/CVF International Conference on Computer Vision</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_17">
+        <label>17.</label>
+        <element-citation publication-type="conf-paper">
+          <volume>32</volume>
+          <year>2019</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Wang</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Ge</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Zachary  Lipton</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Eric  Xing</surname>
+              <given-names>P.</given-names>
+            </name>
+          </person-group>
+          <article-title>Learning robust global representations by penalizing local predictive power</article-title>
+          <source>Advances in Neural Information Processing Systems</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_18">
+        <label>18.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>15645-15655</page-range>
+          <publisher-place>Paris, France</publisher-place>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Pratt</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Covert</surname>
+              <given-names>I.</given-names>
+            </name>
+            <name>
+              <surname>Liu</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Farhadi</surname>
+              <given-names>A.</given-names>
+            </name>
+          </person-group>
+          <article-title>What does a platypus look like? Generating customized prompts for zero-shot image classification</article-title>
+          <source>Proceedings of the IEEE/CVF International Conference on Computer Vision</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_19">
+        <label>19.</label>
+        <element-citation publication-type="conf-paper">
+          <publisher-place>Kigali, Rwanda</publisher-place>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Menon</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Vondrick</surname>
+              <given-names>C.</given-names>
+            </name>
+          </person-group>
+          <article-title>Visual classification via description from large language models</article-title>
+          <source>International Conference on Learning Representations</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_20">
+        <label>20.</label>
+        <element-citation publication-type="conf-paper">
+          <volume>35</volume>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Shen</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Hu</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Xie</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Yang</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>P.</given-names>
+            </name>
+            <name>
+              <surname>Gan</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>L.</given-names>
+            </name>
+            <name>
+              <surname>Yuan</surname>
+              <given-names>L.</given-names>
+            </name>
+            <name>
+              <surname>Liu</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>others</surname>
+            </name>
+          </person-group>
+          <article-title>K-LITE: Learning transferable visual models with external knowledge</article-title>
+          <source>Advances in Neural Information Processing Systems</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_21">
+        <label>21.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>26342-26362</page-range>
+          <publisher-place>Honolulu, HI, USA</publisher-place>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Novack</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>McAuley</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Zachary  Lipton</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Garg</surname>
+              <given-names>S.</given-names>
+            </name>
+          </person-group>
+          <article-title>CHiLS: Zero-shot image classification with hierarchical label sets</article-title>
+          <source>International Conference on Machine Learning</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_22">
+        <label>22.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>6967-6977</page-range>
+          <publisher-place>Vancouver, BC, Canada</publisher-place>
+          <year>2023</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Radenovic</surname>
+              <given-names>F.</given-names>
+            </name>
+            <name>
+              <surname>Dubey</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Kadian</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Mihaylov</surname>
+              <given-names>T.</given-names>
+            </name>
+            <name>
+              <surname>Vandenhende</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Patel</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Wen</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Ramanathan</surname>
+              <given-names>V.</given-names>
+            </name>
+            <name>
+              <surname>Mahajan</surname>
+              <given-names>D.</given-names>
+            </name>
+          </person-group>
+          <article-title>Filtering, distillation, and hard negatives for vision-language pre-training</article-title>
+          <source>Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_23">
+        <label>23.</label>
+        <element-citation publication-type="conf-paper">
+          <volume>35</volume>
+          <page-range>14274-14289</page-range>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Shu</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Nie</surname>
+              <given-names>W.</given-names>
+            </name>
+            <name>
+              <surname>Huang</surname>
+              <given-names>D. A.</given-names>
+            </name>
+            <name>
+              <surname>Yu</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Goldstein</surname>
+              <given-names>T.</given-names>
+            </name>
+            <name>
+              <surname>Anandkumar</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Xiao</surname>
+              <given-names>C.</given-names>
+            </name>
+          </person-group>
+          <article-title>Test-time prompt tuning for zero-shot generalization in vision-language models</article-title>
+          <source>Advances in Neural Information Processing Systems</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_24">
+        <label>24.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>105-124</page-range>
+          <publisher-place>Tel Aviv, Israel</publisher-place>
+          <year>2022</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Ju</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Han</surname>
+              <given-names>T.</given-names>
+            </name>
+            <name>
+              <surname>Zheng</surname>
+              <given-names>K.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Xie</surname>
+              <given-names>W.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1007/978-3-031-19833-5_7</pub-id>
+          <article-title>Prompting visual-language models for efficient video understanding</article-title>
+          <source>Computer Vision – ECCV 2022</source>
+        </element-citation>
+      </ref>
+    </ref-list>
+  </back>
+</article>
