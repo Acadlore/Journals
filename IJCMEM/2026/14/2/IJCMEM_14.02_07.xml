@@ -1,0 +1,2594 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.3 20210610//EN" "JATS-journalpublishing1-3.dtd">
+<article xml:lang="en" dtd-version="1.3" article-type="research-article" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mml="http://www.w3.org/1998/Math/MathML">
+  <front>
+    <journal-meta>
+      <journal-id journal-id-type="publisher-id">IJCMEM</journal-id>
+      <journal-id journal-id-type="doi">10.56578</journal-id>
+      <journal-title-group>
+        <journal-title>International Journal of Computational Methods and Experimental Measurements</journal-title>
+        <abbrev-journal-title abbrev-type="issn">Int. J. Comput. Methods Exp. Meas.</abbrev-journal-title>
+        <abbrev-journal-title abbrev-type="publisher">IJCMEM</abbrev-journal-title>
+      </journal-title-group>
+      <issn publication-format="electronic">2046-0554</issn>
+      <issn publication-format="print">2046-0546</issn>
+      <publisher>
+        <publisher-name>Acadlore</publisher-name>
+      </publisher>
+    </journal-meta>
+    <article-meta>
+      <article-id pub-id-type="publisher-id">AR-mJuWaNkzXIBsqY-zHT2K9dkgChwlrP2A</article-id>
+      <article-id pub-id-type="doi">10.56578/ijcmem140207</article-id>
+      <article-categories>
+        <subj-group>
+          <subject>Articles</subject>
+        </subj-group>
+      </article-categories>
+      <title-group>
+        <article-title>A Trusted Provenance and Trusted Execution Environment-Based Reference Architecture for Intent-Execution Binding in Large Language Model Agents</article-title>
+      </title-group>
+      <contrib-group>
+        <contrib contrib-type="author" rid="aff_1">
+          <contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0000-0002-3363-390X</contrib-id>
+          <name>
+            <surname>Byeon</surname>
+            <given-names>Haewon</given-names>
+          </name>
+          <email>bhwpuma@naver.com</email>
+        </contrib>
+        <aff id="aff_1">Department of Future Technology, Korea University of Technology and Education (KOREA TECH), 31253 Cheonan, South Korea</aff>
+      </contrib-group>
+      <pub-date publication-format="electronic" date-type="pub">
+        <day>02</day>
+        <month>07</month>
+        <year>2026</year>
+      </pub-date>
+      <volume>14</volume>
+      <issue>2</issue>
+      <fpage>264</fpage>
+      <lpage>275</lpage>
+      <page-range>264-275</page-range>
+      <history>
+        <date date-type="received">
+          <day>15</day>
+          <month>02</month>
+          <year>2026</year>
+        </date>
+        <date date-type="accepted">
+          <day>19</day>
+          <month>05</month>
+          <year>2026</year>
+        </date>
+      </history>
+      <permissions>
+        <copyright-statement>©2026 by the author(s)</copyright-statement>
+        <copyright-year>2026</copyright-year>
+        <license license-type="open-access" xlink:href="https://creativecommons.org/licenses/by/4.0/">
+          <license-p> Published by Acadlore Publishing Services Limited, Hong Kong. This article is available for free download and can be reused and cited, provided that the original published version is credited, under the CC BY 4.0 license.</license-p>
+        </license>
+      </permissions>
+      <abstract><p>The rapid expansion of autonomous Large Language Model (LLM) agents introduces critical security risks, particularly the confused deputy problem caused by orchestrator compromise or indirect prompt injection (IPI). Traditional defenses rely on in-band filtering, which fails to prevent a subverted orchestrator from bypassing security checks. We propose Intent-Execution Integrity Binding (I-EIB), a reference architecture designed to enforce complete mediation by isolating execution capabilities within a Trusted Execution Environment (TEE). By leveraging Amazon Web Services (AWS) Nitro Enclaves and Key Management Service (KMS)-based capability sealing, I-EIB ensures that sensitive API keys and session tokens remain inaccessible to the host. These credentials are only released when a TEE-based verifier confirms that the processing provenance matches a user-signed domain-specific language (DSL) policy and a predefined chain layout. We formalize the system’s security invariants and provide a structured proof sketch demonstrating how I-EIB maintains intent-execution integrity even under full host compromise. Compared with a host-mediated baseline that performs policy checking without enclave isolation or attestation-gated capability release, the proposed architecture introduces a mean additional overhead of 14.2 ms. Experimental results show a 100% detection rate for bounded step-omission attacks and a false positive rate below 0.1% after normalization. A workflow-oriented case study and computational-path analysis further indicate that the architecture is feasible for high-stakes domains such as finance and healthcare, while still carrying deployment constraints associated with TEE availability, policy precision, and wrapper management.</p></abstract>
+      <kwd-group>
+        <kwd>Large Language Model agent security</kwd>
+        <kwd>Trusted execution environment</kwd>
+        <kwd>Provenance</kwd>
+        <kwd>Complete mediation</kwd>
+        <kwd>Indirect prompt injection</kwd>
+      </kwd-group>
+      <counts>
+        <count count-type="contributors" count="1"/>
+        <fig-count count="5"/>
+        <table-count count="4"/>
+        <ref-count count="37"/>
+      </counts>
+    </article-meta>
+  </front>
+  <body>
+    <sec sec-type="intro">
+      <title>1. Introduction</title>
+      <p>The rapid integration of Large Language Models (LLMs) into autonomous agent frameworks marks a transformative shift in artificial intelligence [<xref ref-type="bibr" rid="ref_1">1</xref>]. AI no longer merely summarizes text or answers queries; it executes code, manages financial transactions, and interacts with complex third-party Application Programming Interfaces (APIs) [<xref ref-type="bibr" rid="ref_2">2</xref>]. These “agentic” capabilities rely on an orchestrator—the central component responsible for planning, tool selection, and execution [<xref ref-type="bibr" rid="ref_3">3</xref>]. However, this increased autonomy introduces a fundamental security gap [<xref ref-type="bibr" rid="ref_4">4</xref>]. As agents consume data from untrusted external sources, they become vulnerable to indirect prompt injection (IPI) [<xref ref-type="bibr" rid="ref_5">5</xref>]. In such scenarios, an attacker embeds malicious instructions within a web page or a document, tricking the agent into performing unauthorized actions that deviate from the user’s original intent [<xref ref-type="bibr" rid="ref_6">6</xref>].</p><p>This vulnerability often manifests as the “Confused Deputy” problem [<xref ref-type="bibr" rid="ref_7">7</xref>]. Here, the agent possesses high-level privileges but lacks the internal logic to distinguish between a legitimate user command and a subverted instruction hidden in the context [<xref ref-type="bibr" rid="ref_8">8</xref>]. Traditional defense strategies, such as prompt engineering or output filtering, offer only a thin layer of protection [<xref ref-type="bibr" rid="ref_9">9</xref>]. We argue that these methods are insufficient because they operate “in-band”—meaning the security signals are part of the same text stream that an attacker can manipulate [<xref ref-type="bibr" rid="ref_10">10</xref>]. If a malicious input can override the system prompt, it can just as easily bypass a filter or a watermark [<xref ref-type="bibr" rid="ref_11">11</xref>].</p><p>Existing research has proposed mechanisms like Signed-Prompt or Prompt Fencing to create trust boundaries [<xref ref-type="bibr" rid="ref_12">12</xref>]. While these are steps in the right direction, they frequently fail when the orchestrator itself is compromised [<xref ref-type="bibr" rid="ref_13">13</xref>]. If an attacker gains control of the host environment or the orchestrator process, they can simply skip the validation steps or forge the logs [<xref ref-type="bibr" rid="ref_14">14</xref>]. Current architectures lack “Complete Mediation”—the security principle that every access to a sensitive resource must be checked for authority [<xref ref-type="bibr" rid="ref_15">15</xref>]. More specifically, the unresolved limitation in current prompt-level or Trusted Execution Environment (TEE)-adjacent defenses is that they still do not fully bind user-approved intent to the final privileged execution path once the orchestrator or host is subverted. Without a hardware-anchored mechanism that enforces this binding at execution time, the link between what the user intended and what the agent actually does remains fragile and easily severed [<xref ref-type="bibr" rid="ref_16">16</xref>].</p><p>A concrete example helps clarify how this failure unfolds in practice. A user may authorize an agent to summarize a financial report or prepare a healthcare workflow recommendation, but a malicious instruction embedded in retrieved content may try to redirect the agent toward a credential-bearing API call, an unauthorized transfer, or another unsafe downstream action. In a conventional architecture, the orchestrator may still invoke the privileged tool because it already holds the required token or key. In Intent-Execution Integrity Binding (I-EIB), such an attempt is blocked because the TEE-side verifier checks both whether the final action remains within the user-signed domain-specific language (DSL) policy and whether all required intermediate provenance steps were completed before any capability is released.</p><p>We propose I-EIB to address these systemic weaknesses [<xref ref-type="bibr" rid="ref_17">17</xref>]. I-EIB moves away from passive detection and toward hardware-enforced mediation [<xref ref-type="bibr" rid="ref_18">18</xref>]. By utilizing TEE, specifically Amazon Web Services (AWS) Nitro Enclaves, we isolate the execution logic and the underlying credentials from the potentially compromised host [<xref ref-type="bibr" rid="ref_19">19</xref>]. The core of our approach lies in “Capability Sealing.” We ensure that the API keys and session tokens required for tool use are cryptographically locked [<xref ref-type="bibr" rid="ref_20">20</xref>]. They are only released if a verifiable provenance chain—a digital record of every processing step—matches a pre-defined, user-signed policy [<xref ref-type="bibr" rid="ref_21">21</xref>].</p><p>This paper provides three primary contributions [<xref ref-type="bibr" rid="ref_22">22</xref>]. First, we define a reference architecture that establishes a “Closed System Boundary” through the use of Tool Wrappers and mutual Transport Layer Security (mTLS) pinning, preventing host-level bypasses [<xref ref-type="bibr" rid="ref_23">23</xref>]. Second, we formalize the security invariants of the system, providing a proof sketch that demonstrates why unauthorized execution is impossible under our defined threat model [<xref ref-type="bibr" rid="ref_24">24</xref>]. Finally, we implement a prototype on AWS Nitro Enclaves and evaluate its performance [<xref ref-type="bibr" rid="ref_25">25</xref>]. In addition to latency and attack-detection results, we also interpret the main computational path and present a workflow-oriented case study to make the operational meaning of the architecture more concrete. Our results indicate that I-EIB detects 100% of step-omission attacks while introducing a mean additional latency overhead of approximately 14.2 ms [<xref ref-type="bibr" rid="ref_26">26</xref>]. We suggest that this architecture provides a practical and robust foundation for deploying autonomous agents in high-stakes environments like finance and healthcare, where accountability and intent-integrity are non-negotiable [<xref ref-type="bibr" rid="ref_27">27</xref>]. <xref ref-type="fig" rid="fig_1">Figure 1</xref> also explicitly distinguishes the trusted and untrusted zones of the architecture, showing that all privileged execution must pass through the enclave-side verification path before capability release.</p>
+      
+        <fig id="fig_1">
+          <label>Figure 1</label>
+          <caption>
+            <title>Secure Identity-Execution Token (IET)-based interaction between acting as the final enforcement point</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/6/img_StUJSNO27RIiqpad.png"/>
+        </fig>
+      
+    </sec>
+    <sec sec-type="">
+      <title>2. System boundaries and trust model</title>
+      <p>Establishing a robust security posture for autonomous agents requires an explicit definition of trust perimeters [<xref ref-type="bibr" rid="ref_28">28</xref>]. In conventional LLM deployments, the orchestrator typically operates with unfettered access to the host environment, managing sensitive credentials in either plain text or volatile memory [<xref ref-type="bibr" rid="ref_29">29</xref>]. We argue that this design is fundamentally fragile; a single compromise at the host level grants an adversary full control over the agent’s capability set [<xref ref-type="bibr" rid="ref_30">30</xref>]. I-EIB addresses this vulnerability by defining a closed system boundary where the TEE runner acts as the sole, non-by passable gateway for all high-privilege operations [<xref ref-type="bibr" rid="ref_1">1</xref>].</p><p>Within this model, the host operating system, the orchestrator process, retrieved external content, and downstream third-party APIs are treated as untrusted. By contrast, the enclave verifier, attestation logic, nonce store, capability-release mechanism, and enclave-held ephemeral keys are treated as trusted. Tool Wrappers operate at the security perimeter: they are not part of the host trust base, but they enforce externally visible access decisions only after successful enclave-backed verification.</p>
+      
+        <sec>
+          
+            <title>2.1. Capability taxonomy and isolation</title>
+          
+          <p>We categorize the execution capabilities ($C$) required by the agent into two distinct tiers based on their cryptographic lifecycle and binding mechanisms [<xref ref-type="bibr" rid="ref_29">29</xref>]. This classification, detailed in <xref ref-type="table" rid="table_1">Table 1</xref>, allows us to apply the principle of least privilege while maintaining the operational flexibility required for complex agentic workflows [<xref ref-type="bibr" rid="ref_3">3</xref>].</p>
+          
+            <table-wrap id="table_1">
+              <label>Table 1</label>
+              <caption>
+                <title>Taxonomy of agent execution capabilities ($C$)</title>
+              </caption>
+              <table><tr><th >Feature</th><th >Tier 1: KMS-Sealed Secrets</th><th >Tier 2: Attestation-Aware Tokens</th></tr><tr><td >Primary examples</td><td >Static API keys, mTLS private keys</td><td >OAuth 2.0/OIDC session tokens</td></tr><tr><td >Storage mechanism</td><td >Cloud KMS (encrypted blobs)</td><td >TEE secure memory (ephemeral)</td></tr><tr><td >Access logic</td><td >KMS RecipientAttestation ImageSha384</td><td >IdP-verified attestation document</td></tr><tr><td >Binding level</td><td >PCR-based hardware identity</td><td >Dynamic enclave measurement</td></tr><tr><td >Revocation</td><td >Policy update/key rotation</td><td >Token expiry/session revocation</td></tr></table>
+            </table-wrap>
+          
+          <p>The first tier involves Key Management Service (KMS)-Sealed Secrets [<xref ref-type="bibr" rid="ref_6">6</xref>]. These represent long-lived assets stored as encrypted ciphertext within a cloud-managed KMS [<xref ref-type="bibr" rid="ref_4">4</xref>]. We utilize the KMS RecipientAttestation ImageSha384 condition key to bind these secrets to the Enclave’s identity [<xref ref-type="bibr" rid="ref_27">27</xref>]. This ensures that the KMS provider only releases the decrypted secret to a caller that presents a valid Nitro attestation document matching the expected Platform Configuration Register (PCR) values [<xref ref-type="bibr" rid="ref_27">27</xref>]. Notably, this mechanism prevents even a root-level host administrator from retrieving the secrets, as they cannot replicate the cryptographic identity provided by the Nitro hypervisor [<xref ref-type="bibr" rid="ref_10">10</xref>].</p><p>The second tier comprises Attestation-Aware Short-Lived Tokens [<xref ref-type="bibr" rid="ref_27">27</xref>]. For modern services utilizing dynamic authentication, the TEE runner generates an ephemeral key pair upon startup [<xref ref-type="bibr" rid="ref_12">12</xref>]. It then submits the public key along with its attestation document to an attestation-aware Identity Provider (IdP) [<xref ref-type="bibr" rid="ref_27">27</xref>]. The IdP verifies the Enclave’s integrity and issues a token cryptographically bound to that specific Enclave instance [<xref ref-type="bibr" rid="ref_27">27</xref>]. We suggest that this dual-tier approach effectively mitigates credential theft; even if a token is extracted from host memory, it remains useless without the associated private key isolated within the TEE [<xref ref-type="bibr" rid="ref_15">15</xref>].</p><p>This two-tier split is sufficient for the reference architecture because privileged execution reduces operationally to either long-lived sealed trust material or short-lived delegated access credentials. However, cross-tier interaction still introduces risk if not controlled carefully. For example, a weak Tier 1 policy could permit issuance of a valid Tier 2 token under an outdated measurement, or a Tier 2 token might remain usable briefly after a Tier 1 revocation event. To mitigate these cross-tier risks, token issuance is made dependent on successful enclave-side verification at the time of use, and policy updates are designed to prevent future token minting after revocation.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>2.2. Tool wrappers and non-bypassable gateways</title>
+          
+          <p>A primary hurdle in securing LLM agents is the inherent heterogeneity of third-party APIs [<xref ref-type="bibr" rid="ref_16">16</xref>]. Many legacy or SaaS-based tools lack the infrastructure to natively verify TEE-specific Identity-Execution Tokens (IETs) [<xref ref-type="bibr" rid="ref_29">29</xref>]. To address this without compromising the closed boundary, we introduce Tool Wrappers as security-hardened proxies [<xref ref-type="bibr" rid="ref_18">18</xref>].</p><p>We design these wrappers to reside between the TEE and the target API, acting as the final enforcement point [<xref ref-type="bibr" rid="ref_19">19</xref>]. The wrapper holds the actual downstream credentials, ensuring they never reside on the untrusted host [<xref ref-type="bibr" rid="ref_29">29</xref>]. To execute a tool, the TEE runner initiates a request via Address Family Virtual Socket (AF_VSOCK) [<xref ref-type="bibr" rid="ref_21">21</xref>]. This request must include an IET—a hardware-signed token containing the Enclave’s measurement, the current policy ID, and a digest of the provenance chain [<xref ref-type="bibr" rid="ref_28">28</xref>]. The Tool Wrapper performs a mandatory validation of the IET’s signature and expiration [<xref ref-type="bibr" rid="ref_23">23</xref>]. If the validation fails or the measurement is unrecognized, the wrapper denies the request [<xref ref-type="bibr" rid="ref_24">24</xref>]. In deployment, the Tool Wrapper operates as a hardened proxy service placed between the enclave and the downstream API endpoint. It validates the IET, terminates the enclave-authenticated channel, and forwards requests only after attestation and policy checks succeed. Although the wrapper is a critical enforcement component, it need not be a single point of failure: it may be replicated as a stateless service behind ordinary service-redundancy mechanisms, while downstream credentials remain inaccessible to the untrusted host. This interaction is illustrated in <xref ref-type="fig" rid="fig_1">Figure 1</xref>.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>2.3. Adversary model and root of trust</title>
+          
+          <p>Our model assumes a “Hostile Host” scenario, where an adversary has achieved full root access to the host operating system [<xref ref-type="bibr" rid="ref_27">27</xref>]. This allows the attacker to inspect network traffic, manipulate Virtual Socket (VSOCK) packets, and modify any orchestrator logic residing outside the Enclave [<xref ref-type="bibr" rid="ref_1">1</xref>]. We also assume the adversary may attempt “omission attacks” by skipping mandatory security steps in the agent’s planning phase [<xref ref-type="bibr" rid="ref_29">29</xref>].</p><p>Despite these capabilities, we define our Root of Trust based on three immutable pillars [<xref ref-type="bibr" rid="ref_2">2</xref>]:</p><p>1. Hardware Isolation: The AWS Nitro Enclaves provide a side-channel resistant, isolated memory space [<xref ref-type="bibr" rid="ref_1">1</xref>]. We consider the hypervisor-level attestation mechanism tamper-proof [<xref ref-type="bibr" rid="ref_27">27</xref>].</p><p>2. User-Signed Intent: The user’s private key, used to sign the initial DSL policy, remains isolated from the agent’s execution environment (e.g., on the user’s local device) [<xref ref-type="bibr" rid="ref_29">29</xref>].</p><p>3. KMS Integrity: The cloud provider’s KMS correctly enforces attestation-based access control policies [<xref ref-type="bibr" rid="ref_27">27</xref>].</p><p>We propose that by anchoring the agent’s execution in these pillars, we create a system where the orchestrator’s behavior is irrelevant to the security outcome [<xref ref-type="bibr" rid="ref_29">29</xref>]. The structural constraints of I-EIB ensure that no execution occurs unless the Enclave’s internal verifier confirms adherence to the user-signed intent and the predefined chain layout [<xref ref-type="bibr" rid="ref_29">29</xref>].</p><p>To make the evaluation section easier to interpret, it should be noted here that the simulated omission, replay-style misuse, and parameter-tampering attacks later reported in Section 5 are derived directly from this threat model. Omission attacks correspond to orchestrator-level skipping of required provenance stages, while parameter tampering represents host-side modification of chain inputs, policy-constrained values, or downstream tool arguments under hostile-host control.</p>
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>3. Formal security model and proof</title>
+      <p>The efficacy of I-EIB rests on its ability to transform abstract security goals into enforceable cryptographic invariants [<xref ref-type="bibr" rid="ref_7">7</xref>]. We move beyond heuristic-based defenses by formalizing the interaction between the user’s intent and the agent’s execution path [<xref ref-type="bibr" rid="ref_29">29</xref>]. This section defines the mathematical underpinnings of our “Complete Mediation” model and provides a proof sketch demonstrating why unauthorized executions remain impossible under our defined threat model [<xref ref-type="bibr" rid="ref_29">29</xref>].</p>
+      
+        <sec>
+          
+            <title>3.1. Formal specification of the chain layout</title>
+          
+          <p>To prevent omission attacks, where a compromised orchestrator might bypass intermediate safety filters, we define a Chain Layout ($L<inline-formula>
+  <mml:math id="m8jktwrpfi">
+    <mml:mo>)</mml:mo>
+    <mml:mo>[</mml:mo>
+    <mml:mo>]</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mn>10</mml:mn>
+    <mml:mi>W</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>z</mml:mi>
+    <mml:mi>e</mml:mi>
+  </mml:math>
+</inline-formula>L$ as a 4-tuple that dictates the permissible structure and participants of an agentic workflow [<xref ref-type="bibr" rid="ref_11">11</xref>]. The components of this layout are presented in <xref ref-type="table" rid="table_2">Table 2</xref> [<xref ref-type="bibr" rid="ref_12">12</xref>].</p>
+          
+            <table-wrap id="table_2">
+              <label>Table 2</label>
+              <caption>
+                <title>Formal definitions of chain layout elements ($L$)</title>
+              </caption>
+              <table><tr><th >Element</th><th >Symbol</th><th >Description</th><th >Formal Constraint</th></tr><tr><td >Steps</td><td >$S<mml:math id="mzjxquxymf">
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>−</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>−</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>x</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>T</mml:mi>
+  <mml:mi>h</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>q</mml:mi>
+  <mml:mi>u</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>f</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>i</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>g</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>x</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>r</mml:mi>
+</mml:math>S = \{s_1, s_2, \ldots, s_n\}<mml:math id="mlmd0f8g9s">
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>−</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>−</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>x</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>R</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>q</mml:mi>
+  <mml:mi>u</mml:mi>
+  <mml:mi>i</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>x</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>r</mml:mi>
+</mml:math>R<mml:math id="mgyexa78ge">
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>−</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mo>−</mml:mo>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>−</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>x</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>M</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>y</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>u</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>i</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>y</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>i</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>i</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>x</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>r</mml:mi>
+</mml:math>R \subseteq S<mml:math id="mzm17luxhb">
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>−</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>−</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>x</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>A</mml:mi>
+  <mml:mi>u</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>h</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>i</mml:mi>
+  <mml:mi>z</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>w</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>k</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>x</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>r</mml:mi>
+</mml:math>W<mml:math id="m6ihyphulg">
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>−</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mo>(</mml:mo>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>x</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>W</mml:mi>
+  <mml:mi>h</mml:mi>
+  <mml:mi>i</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>l</mml:mi>
+  <mml:mi>i</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>T</mml:mi>
+  <mml:mi>E</mml:mi>
+  <mml:mi>E</mml:mi>
+  <mml:mi>m</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>u</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>m</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>s</mml:mi>
+</mml:math>M<mml:math id="mzvz9yi1l6">
+  <mml:mo>)</mml:mo>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>−</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mi>f</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>h</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>x</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+</mml:math>\forall s_i \in S, \text{worker}(s_i) \in W<mml:math id="mkmv94hbyi">
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>−</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>−</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>x</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>T</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>i</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>i</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>x</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>r</mml:mi>
+</mml:math>T_{in}<mml:math id="mtxivsjpj7">
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>−</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mo>−</mml:mo>
+  <mml:mo>&amp;lt;</mml:mo>
+  <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+  <mml:mo>−</mml:mo>
+  <mml:mo>&amp;gt;</mml:mo>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mrow>
+    <mml:mo>/</mml:mo>
+  </mml:mrow>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>x</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>J</mml:mi>
+  <mml:mi>S</mml:mi>
+  <mml:mi>O</mml:mi>
+  <mml:mi>N</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>h</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>m</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>b</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>i</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>p</mml:mi>
+  <mml:mi>u</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>o</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>r</mml:mi>
+  <mml:mi>a</mml:mi>
+  <mml:mi>i</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>s</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>d</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>x</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>c</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>n</mml:mi>
+  <mml:mi>t</mml:mi>
+  <mml:mi>e</mml:mi>
+  <mml:mi>r</mml:mi>
+</mml:math>\text{Validate}(\text{input}_i, \text{Schema}_i) \rightarrow \text{True}$</td></tr></table>
+            </table-wrap>
+          
+          <p>To improve readability, the principal symbols used throughout the formal model are consolidated here. In particular, <inline-formula>
+  <mml:math id="m8h3zvus0z">
+    <mml:mi>S</mml:mi>
+    <mml:mi>S</mml:mi>
+    <mml:mi>S</mml:mi>
+  </mml:math>
+</inline-formula> denotes ordered workflow steps, <inline-formula>
+  <mml:math id="mgty6uwcgy">
+    <mml:mi>R</mml:mi>
+    <mml:mi>R</mml:mi>
+    <mml:mi>R</mml:mi>
+  </mml:math>
+</inline-formula> denotes required security-critical steps, <inline-formula>
+  <mml:math id="m81zjz0qw5">
+    <mml:mi>W</mml:mi>
+    <mml:mi>W</mml:mi>
+    <mml:mi>W</mml:mi>
+  </mml:math>
+</inline-formula> denotes authorized workers or enclave measurements, <inline-formula>
+  <mml:math id="m7vmq31wge">
+    <mml:mi>L</mml:mi>
+    <mml:mi>L</mml:mi>
+    <mml:mi>L</mml:mi>
+  </mml:math>
+</inline-formula> denotes the provenance chain or chain layout, <inline-formula>
+  <mml:math id="m0e6scbx5w">
+    <mml:mi>C</mml:mi>
+    <mml:mi>C</mml:mi>
+    <mml:mi>C</mml:mi>
+  </mml:math>
+</inline-formula> denotes an execution capability, <inline-formula>
+  <mml:math id="mq23gqt40i">
+    <mml:mi>M</mml:mi>
+    <mml:mi>M</mml:mi>
+    <mml:mi>M</mml:mi>
+  </mml:math>
+</inline-formula> denotes the enclave measurement, <inline-formula>
+  <mml:math id="mwxhr4s4mk">
+    <mml:mi>P</mml:mi>
+    <mml:mi>P</mml:mi>
+    <mml:mi>P</mml:mi>
+  </mml:math>
+</inline-formula> denotes the user-signed DSL policy, and <inline-formula>
+  <mml:math id="my7mi85pt6">
+    <mml:mi>T</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>T</mml:mi>
+  </mml:math>
+</inline-formula> denotes schema-based transition constraints.</p><p>We model the processing sequence as a linear chain [<xref ref-type="bibr" rid="ref_15">15</xref>]. Each link in the chain must point to the preceding link’s hash, creating an immutable sequence [<xref ref-type="bibr" rid="ref_16">16</xref>]. By defining $R<inline-formula>
+  <mml:math id="mrnbu2njue">
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+  </mml:math>
+</inline-formula>S$ that must be present in every valid provenance chain, we ensure that an orchestrator cannot skip a Safety_Check or a Planner_Validation step without breaking the integrity of the chain [<xref ref-type="bibr" rid="ref_27">27</xref>].</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.2. Core security invariants</title>
+          
+          <p>The security of I-EIB is anchored in three fundamental invariants [<xref ref-type="bibr" rid="ref_18">18</xref>]. These properties ensure that the system boundary remains closed even when the host environment is hostile [<xref ref-type="bibr" rid="ref_19">19</xref>].</p><p>• Invariant 1 (Capability Sealing): An execution capability $C<inline-formula>
+  <mml:math id="mvm5og1c3k">
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+  </mml:math>
+</inline-formula>M<inline-formula>
+  <mml:math id="mu6un9rf2j">
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>K</mml:mi>
+    <mml:mi>M</mml:mi>
+    <mml:mi>S</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>y</mml:mi>
+  </mml:math>
+</inline-formula>\Pi<inline-formula>
+  <mml:math id="mo1nu32cul">
+    <mml:msub>
+      <mml:mi/>
+      <mml:mi>K</mml:mi>
+    </mml:msub>
+    <mml:mi>M</mml:mi>
+    <mml:mi>S</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>E</mml:mi>
+    <mml:mi>E</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>I</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>C</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>C</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>A</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mo>[</mml:mo>
+    <mml:mo>]</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>[</mml:mo>
+    <mml:mo>]</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mo>•</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>:</mml:mo>
+    <mml:mn>29</mml:mn>
+    <mml:mn>21</mml:mn>
+    <mml:mn>2</mml:mn>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+  </mml:math>
+</inline-formula>E<inline-formula>
+  <mml:math id="mfun4j8eua">
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>z</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+  </mml:math>
+</inline-formula>L<inline-formula>
+  <mml:math id="mh9eu27n0h">
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>s</mml:mi>
+  </mml:math>
+</inline-formula>s \in R<inline-formula>
+  <mml:math id="mcr4wlfusp">
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>z</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>k</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+  </mml:math>
+</inline-formula>w \in W<inline-formula>
+  <mml:math id="ms4kbobnwg">
+    <mml:mo>[</mml:mo>
+    <mml:mo>]</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mo>•</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>:</mml:mo>
+    <mml:mn>28</mml:mn>
+    <mml:mn>3</mml:mn>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>I</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>A</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>V</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+  </mml:math>
+</inline-formula>C<inline-formula>
+  <mml:math id="m649ens4uy">
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>I</mml:mi>
+    <mml:mi>E</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>E</mml:mi>
+    <mml:mi>E</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>V</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mo>(</mml:mo>
+  </mml:math>
+</inline-formula>L<inline-formula>
+  <mml:math id="mn971gp4ri">
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>P$, Layout) returns Success [<xref ref-type="bibr" rid="ref_29">29</xref>].</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.3. Theorem of intent-execution integrity</title>
+          
+          <p>Based on these invariants, we propose the following theorem regarding the system’s resilience against orchestrator subversion [<xref ref-type="bibr" rid="ref_24">24</xref>].</p><p>Theorem 1 [<xref ref-type="bibr" rid="ref_25">25</xref>]: In an I-EIB compliant tool environment, where all execution capabilities C are governed by the TEE or an attestation-aware issuer, an execution E violating user policy P or chain layout L cannot occur within the defined system boundary [<xref ref-type="bibr" rid="ref_27">27</xref>].</p><p>Lemma 1 (Capability Non-Release): A privileged capability cannot be released unless enclave attestation satisfies the applicable sealing policy.</p><p>Lemma 2 (Gateway Non-Bypassability): A downstream tool invocation cannot succeed unless a valid IET is accepted by the Tool Wrapper.</p><p>Lemma 3 (Chain Incompleteness Rejection): Any provenance chain that omits a required step, includes an unauthorized worker, or violates the user-signed DSL policy fails enclave verification.</p><p>Proof Sketch: We prove this by contradiction [<xref ref-type="bibr" rid="ref_28">28</xref>]. Suppose an execution occurs that violates policy (e.g., an unauthorized bank transfer) [<xref ref-type="bibr" rid="ref_29">29</xref>].</p><p>1. Access Failure: For to execute, it requires capability [<xref ref-type="bibr" rid="ref_30">30</xref>]. By Invariant 1, is only available inside the TEE [<xref ref-type="bibr" rid="ref_1">1</xref>].</p><p>2. Bypass Failure: For to trigger at the tool endpoint, it must present a valid IET [<xref ref-type="bibr" rid="ref_2">2</xref>]. Since we utilize a Tool Wrapper that mandates IET verification, the host cannot bypass the TEE [<xref ref-type="bibr" rid="ref_3">3</xref>].</p><p>3. Verification Failure: Within the TEE, the verifier checks the provenance chain [<xref ref-type="bibr" rid="ref_28">28</xref>]. If the orchestrator modified the intent to initiate, the chain would fail the match against [<xref ref-type="bibr" rid="ref_5">5</xref>]. If the orchestrator omitted a security filter to hide the malicious intent, the chain would fail the completeness check against (Invariant 2) [<xref ref-type="bibr" rid="ref_6">6</xref>].</p><p>4. Conclusion: Since the TEE only releases and signs the IET upon a successful Verify call (Invariant 3), no valid capability or token can be generated for [<xref ref-type="bibr" rid="ref_7">7</xref>]. Thus, cannot occur [<xref ref-type="bibr" rid="ref_8">8</xref>].</p><p>This logic is visually summarized in the cryptographic sequence shown in <xref ref-type="fig" rid="fig_2">Figure 2</xref> [<xref ref-type="bibr" rid="ref_9">9</xref>]. By coupling the hardware-backed isolation of credentials with the strict schema-based validation of the processing steps, I-EIB creates an environment where “Complete Mediation” is a structural property of the architecture rather than a configuration option [<xref ref-type="bibr" rid="ref_10">10</xref>].</p>
+          
+            <fig id="fig_2">
+              <label>Figure 2</label>
+              <caption>
+                <title>The visually summarized in the cryptographic sequence</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/6/img_VCKjOJBM5OKzvw9P.png"/>
+            </fig>
+          
+          <p>This argument remains construction-based rather than a fully mechanized proof in ProVerif, Tamarin, or Burrows-Abadi-Needham (BAN) logic. The theorem therefore establishes architectural and cryptographic resistance under the stated model, not universal formal completeness.</p>
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>4. Architecture implementation and operation</title>
+      <p>We transitioned the theoretical framework of I-EIB into a functional prototype using the Rust programming language, chosen for its memory safety guarantees and low runtime overhead [<xref ref-type="bibr" rid="ref_14">14</xref>]. Our implementation targets AWS Nitro Enclaves, utilizing the AF_VSOCK protocol for secure communication between the untrusted host and the isolated enclave [<xref ref-type="bibr" rid="ref_29">29</xref>]. By minimizing the Trusted Computing Base (TCB) through the use of the NFA-based regex crate and the serde library for canonical JavaScript Object Notation (JSON) handling, we reduced the attack surface of the internal policy verifier [<xref ref-type="bibr" rid="ref_2">2</xref>]. To better reflect the engineering-critical aspects of the implementation, the runtime discussion here focuses less on language choice and more on the actual execution path and dominant computational stages.</p>
+      
+        <sec>
+          
+            <title>4.1. Cryptographic payload and link binding</title>
+          
+          <p>The integrity of the provenance chain relies on the rigorous definition of the cryptographic payload generated at each processing step [<xref ref-type="bibr" rid="ref_27">27</xref>]. Every worker participating in the agentic workflow must produce a signed link Li [<xref ref-type="bibr" rid="ref_18">18</xref>]. The structure of this signature payload, PLi, is designed to bind the step’s identity to its specific hardware execution context and the preceding state of the chain [<xref ref-type="bibr" rid="ref_29">29</xref>]. Reliable cryptographic implementation, fault-diagnosis, and LLM-agent risk-evaluation considerations further support the need for carefully specified payload fields and validation logic [<xref ref-type="bibr" rid="ref_31">31</xref>], [<xref ref-type="bibr" rid="ref_32">32</xref>], [<xref ref-type="bibr" rid="ref_33">33</xref>], [<xref ref-type="bibr" rid="ref_34">34</xref>], [<xref ref-type="bibr" rid="ref_35">35</xref>], [<xref ref-type="bibr" rid="ref_36">36</xref>], [<xref ref-type="bibr" rid="ref_37">37</xref>]. We define PLi as follows [<xref ref-type="bibr" rid="ref_20">20</xref>]:</p><p style="text-align: center"><inline-formula>
+  <mml:math id="mhl1vjgshn">
+    <mml:mi>P</mml:mi>
+    <mml:msub>
+      <mml:mi>L</mml:mi>
+      <mml:mi>i</mml:mi>
+    </mml:msub>
+    <mml:msub>
+      <mml:mi>M</mml:mi>
+      <mml:mi>i</mml:mi>
+    </mml:msub>
+    <mml:msub>
+      <mml:mi>P</mml:mi>
+      <mml:mrow>
+        <mml:mi>i</mml:mi>
+        <mml:mi>d</mml:mi>
+      </mml:mrow>
+    </mml:msub>
+    <mml:mo>=</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mtext> StepID_i, H(Input_i), H(Output_i), PrevLinkHash</mml:mtext>
+    <mml:mtext>Timestamp </mml:mtext>
+  </mml:math>
+</inline-formula></p><p>In this construction, Mi represents the hardware measurement (PCR values) of the TEE, while PrevLinkHash serves as the pointer to the entirety of the previous link Li-1, rather than just the prior output [<xref ref-type="bibr" rid="ref_22">22</xref>]. This deep binding ensures that any attempt to reorder steps or substitute a worker with an unauthorized measurement results in an immediate hash mismatch [<xref ref-type="bibr" rid="ref_23">23</xref>]. The specific fields of the link metadata are presented in <xref ref-type="table" rid="table_3">Table 3</xref>.</p>
+          
+            <table-wrap id="table_3">
+              <label>Table 3</label>
+              <caption>
+                <title>Specification of the provenance link payload ($PL_i$)</title>
+              </caption>
+              <table><tr><th >Field</th><th >Description</th><th >Security Function</th></tr><tr><td >StepID</td><td >Identifier of the current workflow stage</td><td >Ensures adherence to the linear sequence <mml:math id="m0pgwehezh">
+  <mml:mrow>
+    <mml:mi>S</mml:mi>
+  </mml:mrow>
+</mml:math></td></tr><tr><td >H(Input)</td><td >SHA-384 hash of the data received</td><td >Prevents "mid-flight" data manipulation</td></tr><tr><td >H(Output)</td><td >SHA-384 hash of the produced result</td><td >Fixes the state for the subsequent step</td></tr><tr><td >PrevLinkHash</td><td >Cryptographic pointer to <mml:math id="miekpatvpr">
+  <mml:msub>
+    <mml:mi>L</mml:mi>
+    <mml:mrow>
+      <mml:mi>i</mml:mi>
+      <mml:mo>−</mml:mo>
+      <mml:mn>1</mml:mn>
+    </mml:mrow>
+  </mml:msub>
+</mml:math></td><td >Enforces the immutable order of the chain</td></tr><tr><td ><mml:math id="msbm49dsxi">
+  <mml:msub>
+    <mml:mi>M</mml:mi>
+    <mml:mi>i</mml:mi>
+  </mml:msub>
+</mml:math></td><td >TEE measurement (PCR0)</td><td >Verifies the hardware-backed identity of the worker</td></tr><tr><td ><mml:math id="ma21g7palh">
+  <mml:msub>
+    <mml:mi>P</mml:mi>
+    <mml:mrow>
+      <mml:mi>i</mml:mi>
+      <mml:mi>d</mml:mi>
+    </mml:mrow>
+  </mml:msub>
+</mml:math></td><td >Current policy ID</td><td >Prevents mixing links from different user sessions</td></tr></table>
+            </table-wrap>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>4.2. The verification protocol</title>
+          
+          <p>Crucially, the TEE runner does not release execution capabilities until the Verify algorithm successfully validates the presented provenance chain against the user-signed policy and the system layout L [<xref ref-type="bibr" rid="ref_28">28</xref>]. We implemented a strict verification logic that prioritizes schema validation for each transition [<xref ref-type="bibr" rid="ref_28">28</xref>]. Unlike heuristic approaches, our verifier mandates that the input of each link Li conforms to the JSON Schema defined in the transition rules Tin [<xref ref-type="bibr" rid="ref_29">29</xref>]. This prevents semantic bypasses where the orchestrator might provide technically valid but logically malicious inputs to a tool [<xref ref-type="bibr" rid="ref_30">30</xref>]. The critical execution path consists of five stages: (1) attestation generation, (2) enclave-side policy and schema verification, (3) provenance-link signature verification, (4) attestation-gated capability release through KMS or attestation-aware token issuance, and (5) wrapper-mediated downstream invocation. The dominant cost lies in attestation-backed KMS decryption and provenance verification rather than in ordinary application processing.</p><p>The core verification logic, as executed within the enclave, is presented below:</p><p>Python</p><p><inline-formula>
+  <mml:math id="mi2kx6mqc5">
+    <mml:mstyle scriptlevel="0">
+      <mml:mspace width="0.167em"/>
+    </mml:mstyle>
+  </mml:math>
+</inline-formula>def verify_provenance(chain_L, user_policy_P, system_layout_L):</p><p># 1. Validation of Mandatory Steps (Omission Detection)</p><p><inline-formula>
+  <mml:math id="m9bvf24bda">
+    <mml:mstyle scriptlevel="0">
+      <mml:mspace width="0.167em"/>
+    </mml:mstyle>
+  </mml:math>
+</inline-formula>executed_steps = [link.step_id for link in chain_L]</p><p><inline-formula>
+  <mml:math id="m7y1jpnpup">
+    <mml:mstyle scriptlevel="0">
+      <mml:mspace width="0.167em"/>
+    </mml:mstyle>
+  </mml:math>
+</inline-formula>if not system_layout_L.required_steps.issubset(set(executed_steps)):</p><p><inline-formula>
+  <mml:math id="mutrp3vuub">
+    <mml:mstyle scriptlevel="0">
+      <mml:mspace width="0.167em"/>
+    </mml:mstyle>
+  </mml:math>
+</inline-formula>return REJECT(“Mandatory security steps missing from chain”)</p><p># 2. Sequential Integrity and Schema Verification</p><p><inline-formula>
+  <mml:math id="mx24xnwfl1">
+    <mml:mstyle scriptlevel="0">
+      <mml:mspace width="0.167em"/>
+    </mml:mstyle>
+  </mml:math>
+</inline-formula>prev_link_hash = SEED_HASH</p><p><inline-formula>
+  <mml:math id="mjutl0tt8u">
+    <mml:mstyle scriptlevel="0">
+      <mml:mspace width="0.167em"/>
+    </mml:mstyle>
+  </mml:math>
+</inline-formula>for link in chain_L:</p><p># (a) Identity and Measurement Verification (W)</p><p><inline-formula>
+  <mml:math id="m5886zn2ur">
+    <mml:mstyle scriptlevel="0">
+      <mml:mspace width="0.167em"/>
+    </mml:mstyle>
+  </mml:math>
+</inline-formula>if not is_authorized(link.worker_id, link.measurement, system_layout_L.W):</p><p><inline-formula>
+  <mml:math id="m67vjqzk2l">
+    <mml:mstyle scriptlevel="0">
+      <mml:mspace width="0.167em"/>
+    </mml:mstyle>
+  </mml:math>
+</inline-formula>return REJECT(“Worker identity or measurement unauthorized”)</p><p># (b) Hash Chain Consistency Check</p><p><inline-formula>
+  <mml:math id="m14qdjh3lk">
+    <mml:mstyle scriptlevel="0">
+      <mml:mspace width="0.167em"/>
+    </mml:mstyle>
+  </mml:math>
+</inline-formula>if link.prev_link_hash ! = prev_link_hash:</p><p><inline-formula>
+  <mml:math id="m6o48snnif">
+    <mml:mstyle scriptlevel="0">
+      <mml:mspace width="0.167em"/>
+    </mml:mstyle>
+  </mml:math>
+</inline-formula>return REJECT(“Provenance chain discontinuity detected”)</p><p># (c) Input Schema Enforcement (Tin)</p><p># We verify that the input for this step adheres to the formal layout</p><p><inline-formula>
+  <mml:math id="mejbheewsy">
+    <mml:mstyle scriptlevel="0">
+      <mml:mspace width="0.167em"/>
+    </mml:mstyle>
+  </mml:math>
+</inline-formula>if not validate_schema(link.input, system_layout_L.T_in[link.step_id]):</p><p><inline-formula>
+  <mml:math id="mnuf6csobt">
+    <mml:mstyle scriptlevel="0">
+      <mml:mspace width="0.167em"/>
+    </mml:mstyle>
+  </mml:math>
+</inline-formula>return REJECT(f“Schema violation at step: {link.step_id}”)</p><p># (d) Cryptographic Signature Validation</p><p><inline-formula>
+  <mml:math id="m4a78rhaw5">
+    <mml:mstyle scriptlevel="0">
+      <mml:mspace width="0.167em"/>
+    </mml:mstyle>
+  </mml:math>
+</inline-formula>if not crypt_verify(link.sig, link.payload, link.pubkey):</p><p><inline-formula>
+  <mml:math id="mywo8z7bmd">
+    <mml:mstyle scriptlevel="0">
+      <mml:mspace width="0.167em"/>
+    </mml:mstyle>
+  </mml:math>
+</inline-formula>return REJECT(“Cryptographic signature invalid”)</p><p># Update link pointer for the next iteration</p><p><inline-formula>
+  <mml:math id="mvgavyp5t9">
+    <mml:mstyle scriptlevel="0">
+      <mml:mspace width="0.167em"/>
+    </mml:mstyle>
+  </mml:math>
+</inline-formula>prev_link_hash = hash(link)</p><p># 3. Final Policy and User Intent Alignment</p><p><inline-formula>
+  <mml:math id="mvuuvqy8to">
+    <mml:mstyle scriptlevel="0">
+      <mml:mspace width="0.167em"/>
+    </mml:mstyle>
+  </mml:math>
+</inline-formula>return match_dsl_policy(user_policy_P, chain_L.last().final_request)</p><p>The connection between the DSL policy and the chain layout can be stated more explicitly as follows: the DSL policy constrains what final action is allowed, while the chain layout constrains how that action must be reached. During verification, the enclave first checks chain completeness and worker legitimacy, then validates schema-constrained transitions, and only afterward confirms that the final request remains within the user-signed DSL policy.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>4.3. Operational resilience and lifecycle management</title>
+          
+          <p>We designed the I-EIB operational model to handle the realities of distributed cloud environments, specifically addressing replay attacks and identity rotation [<xref ref-type="bibr" rid="ref_4">4</xref>]. The communication architecture between the host and the enclave is illustrated in <xref ref-type="fig" rid="fig_3">Figure 3</xref>.</p>
+          
+            <fig id="fig_3">
+              <label>Figure 3</label>
+              <caption>
+                <title>The communication architecture between the host and the enclave</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/6/img_ljrPG93AVitnC1Lr.png"/>
+            </fig>
+          
+          <p>To prevent the reuse of previously valid provenance chains, we implemented an anti-replay mechanism using a TEE-based Nonce Store [<xref ref-type="bibr" rid="ref_28">28</xref>]. By hosting the store within its own enclave, we ensure that the signing keys for nonce receipts are protected from host-level exfiltration [<xref ref-type="bibr" rid="ref_1">1</xref>]. We use DynamoDB with strong consistency for the underlying storage, employing conditional writes (attribute_not_exists) to guarantee the atomic consumption of nonces [<xref ref-type="bibr" rid="ref_4">4</xref>]. When a TEE runner consumes a nonce, it receives a receipt signed by the Nonce Store’s KMS-backed asymmetric key [<xref ref-type="bibr" rid="ref_6">6</xref>].</p><p>Furthermore, we manage the lifecycle of the worker whitelist () through a versioned, signed manifest [<xref ref-type="bibr" rid="ref_7">7</xref>]. When a new worker image is deployed, its measurement is added to the authorized list, while compromised or deprecated versions are moved to a revocation list [<xref ref-type="bibr" rid="ref_8">8</xref>]. This manifest is synchronized with the enclave upon startup, ensuring that the is authorized check in the verification algorithm remains current [<xref ref-type="bibr" rid="ref_1">1</xref>]. We also manage mTLS identities dynamically; client certificates are generated within the enclave, and the associated private keys never touch the host’s persistent storage, thereby maintaining a high-fidelity trust chain from the TEE to the Tool Wrapper [<xref ref-type="bibr" rid="ref_1">1</xref>].</p><p>To make the operational meaning of the architecture more concrete, we also consider a simple workflow case. A user authorizes an agent to review a healthcare billing document and submit a reimbursement request only after a safety-validation stage and a planner-validation stage. In the benign case, the chain includes retrieval, normalization, safety check, planner validation, and wrapper-mediated submission. In a hostile-host case, the orchestrator attempts to omit the safety step and directly generate the downstream submission request. The enclave-side verifier rejects the chain because a required step in RRR is missing, and no capability or IET is released. This illustrates that I-EIB constrains not only what action may be taken, but also how that action must be reached.</p>
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>5. Performance and security evaluation</title>
+      <p>To assess the practical viability of the I-EIB architecture, we conducted an empirical evaluation focused on two primary metrics: computational overhead and defensive efficacy [<xref ref-type="bibr" rid="ref_14">14</xref>]. We deployed our prototype on an AWS m5.xlarge instance (4 vCPUs, 16GB RAM) utilizing AWS Nitro Enclaves CLI 1.3.1. All measurements represent the aggregate of 1,000 independent runs to ensure statistical significance. We utilized a standard agentic workload consisting of a five-step provenance chain and a 12KB JSON-based DSL policy. To make the evaluation more interpretable from a computational and engineering perspective, we also compare the system against a host-mediated baseline that performs policy checking without enclave isolation or attestation-gated capability release.</p>
+      
+        <sec>
+          
+            <title>5.1. Latency analysis and scaling</title>
+          
+          <p>A critical concern in TEE-based security is the latency introduced by hardware attestation and cryptographic verification. We found that the I-EIB framework adds a mean end-to-end latency of 14.2ms to the agent’s execution cycle. While any security layer introduces delay, this overhead remains negligible—typically representing less than 2% of the total inference time for modern LLMs like GPT-4 or Claude 3.5.</p><p>Compared with the host-mediated baseline, the mean additional overhead attributable specifically to enclave isolation and attestation-gated capability release was 14.2 ms. This comparison indicates that the main cost of stronger complete mediation arises from enclave-backed secret release, provenance verification, and VSOCK context switching rather than from ordinary application execution.</p><p>The breakdown of this latency, as presented in <xref ref-type="table" rid="table_4">Table 4</xref>, reveals that the attestation-backed KMS decryption is the most significant contributor.</p>
+          
+            <table-wrap id="table_4">
+              <label>Table 4</label>
+              <caption>
+                <title>Latency breakdown of Intent-Execution Integrity Binding (I-EIB) security operations ($N = 1,000$)</title>
+              </caption>
+              <table><tr><th >Metric</th><th >Mean (ms)</th><th >P95 (ms)</th><th >P99 (ms)</th></tr><tr><td >KMS decrypt (attestation-gated)</td><td >7.9</td><td >9.2</td><td >11.5</td></tr><tr><td >Provenance chain verification</td><td >4.5</td><td >5.3</td><td >6.8</td></tr><tr><td >VSOCK context switching</td><td >1.8</td><td >2.5</td><td >3.2</td></tr><tr><td >Total security overhead</td><td >14.2</td><td >18.5</td><td >23.4</td></tr></table>
+            </table-wrap>
+          
+          <p>Notably, the provenance verification time scales linearly with the number of steps in the agentic workflow. Our data indicates an incremental cost of approximately 0.9ms per additional link. This suggests that even for complex, long-running agents involving twenty or more steps, the total security-induced delay would likely remain below 30ms, maintaining a high level of responsiveness for real-time applications. This trend is illustrated in <xref ref-type="fig" rid="fig_4">Figure 4</xref>.</p>
+          
+            <fig id="fig_4">
+              <label>Figure 4</label>
+              <caption>
+                <title>Latency scaling vs. provenance chain length</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/6/img_wo8M9g7bWFflTp1x.png"/>
+            </fig>
+          
+          <p>From a computational viewpoint, provenance verification scales as <inline-formula>
+  <mml:math id="mr1uuifxec">
+    <mml:mrow>
+      <mml:mi>O</mml:mi>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>|</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mi>L</mml:mi>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>|</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mi>O</mml:mi>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>|</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mi>L</mml:mi>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>|</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mi>O</mml:mi>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>|</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mi>L</mml:mi>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>|</mml:mo>
+    </mml:mrow>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+  </mml:math>
+</inline-formula> in the number of links in the chain, with per-link cost dominated by schema validation, hash-chain checking, and signature verification. The principal fixed-cost component remains attestation-gated capability release.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>5.2. Security effectiveness and taxonomy of attacks</title>
+          
+          <p>We evaluated I-EIB against a corpus of 500 malicious scenarios designed to simulate sophisticated orchestrator compromises. These were categorized into 200 “Omission Attacks”—where an attacker attempts to skip mandatory security filters—and 300 “Parameter Tamper” attempts.</p><p>The attack corpus was derived directly from the hostile-host adversary model defined in Section 2.3. The omission attacks were generated by removing one or more mandatory steps from otherwise valid workflows, while the parameter-tampering cases altered policy-constrained fields, encoded values, or downstream tool arguments at different points in the chain. The reported 100% detection rate should therefore be understood as applying to this bounded scenario set rather than to all imaginable attack variants.</p><p>Our results, summarized in <xref ref-type="fig" rid="fig_5">Figure 5</xref>, show that I-EIB achieved a 100% detection rate for omission attacks. This perfect score is a direct result of the mandatory Required_Steps constraint in our Chain Layout ($L$). Because the TEE runner refuses to release capabilities unless every mandatory link is cryptographically present and valid, an attacker cannot bypass a safety check without severing the chain.</p>
+          
+            <fig id="fig_5">
+              <label>Figure 5</label>
+              <caption>
+                <title>Attack detection rates by scenario type</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/6/img_Yld8dzVW2_tKWiWR.png"/>
+            </fig>
+          
+          <p>In the parameter tampering category, I-EIB blocked 98.4% of attempts (295 out of 300). We performed a failure analysis on the remaining 1.6% (5 cases) and identified two primary causes for these misses. Three cases involved “Schema Laxity,” where the DSL’s regex constraints were defined too broadly, allowing subtle Unicode encoding variants to pass through. The other two cases stemmed from normalization edge cases in tool outputs that bypassed the policy verifier’s current canonicalization rules.</p><p>More specifically, the first failure mode occurred when regular-expression constraints were permissive enough to admit semantically altered but syntactically valid values, including Unicode variants. The second occurred when legacy tool outputs were canonicalized inconsistently before hashing. These results suggest that the residual risk in deployment lies less in the core enclave architecture than in schema precision and normalization discipline.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>5.3. False positive mitigation via normalization</title>
+          
+          <p>Strict security enforcement often risks high False Positive Rates (FPR), particularly in LLM environments where text outputs are non-deterministic. Initially, we observed an FPR of 0.6%, primarily caused by minor encoding discrepancies (e.g., Normalization Form Canonical Composition (NFC) vs. Normalization Form Canonical Decomposition (NFD) normalization) in legacy tool outputs.</p><p>To address this, we implemented a Canonicalizer Adapter within the TEE. This adapter forces all incoming and outgoing data into a standard Unicode Transformation Format (UTF)-8 NFC format and strips non-essential whitespace before hashing. Following the introduction of this adapter, the FPR dropped to below 0.1%. This indicates that a rigorous approach to data canonicalization can effectively resolve the tension between strict integrity binding and operational availability.</p><p>For clarity, the canonicalization procedure can be summarized as follows:</p><p>Algorithm: Canonicalize(x);</p><p>First, decode xxx as UTF-8;</p><p>Second, normalize Unicode to NFC;</p><p>Third, collapse non-semantic whitespace;</p><p>Fourth, sort canonical JSON keys if structured;</p><p>Fifth, serialize in deterministic form;</p><p>Sixth, return canonicalized output for hashing and schema validation.</p><p>This shows that the reduction in false positives was achieved through a deterministic canonicalization path rather than ad hoc adjustment.</p><p>We suggest that I-EIB offers a highly practical tradeoff: it provides near-absolute protection against orchestrator subversion for a performance cost that is almost imperceptible to the end-user.</p>
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>6. Conclusion</title>
+      <p>The intent-execution gap in autonomous LLM agents represents a critical failure point. We addressed this vulnerability through I-EIB, a hardware-anchored architecture that binds user intent directly to execution. By coupling KMS-sealed capabilities with formalized provenance chains, we ensure that even a total orchestrator compromise cannot result in unauthorized tool execution. Our empirical results on AWS Nitro Enclaves show that this security layer is remarkably efficient, adding just 14.2 ms of mean latency. This negligible performance cost, paired with a 100% detection rate in omission attack simulations, suggests that I-EIB successfully enforces the principle of complete mediation within its defined boundaries.</p><p>Several limitations must also be acknowledged. I-EIB depends on the availability and correct configuration of TEE infrastructure, attestation-aware secret release, accurately specified DSL policies, and correctly deployed Tool Wrappers. In heterogeneous or multi-cloud settings, additional engineering work may be required to preserve the same closed-boundary property across provider-specific attestation and credential systems.</p><p>As agents assume higher-stakes roles in finance and healthcare, I-EIB offers the verifiable foundation necessary for maintaining intent-integrity. Future work should therefore extend this architecture through broader numerical simulation, richer workflow-based evaluations, stronger policy-authoring support, mechanized formal verification, and cross-cloud deployment support.</p>
+    </sec>
+  </body>
+  <back>
+    <ack>
+      <title>Acknowledgments</title>
+      
+    </ack>
+    <app-group>
+      <app>
+        <title>Appendix</title>
+        
+      </app>
+    </app-group>
+    <notes>
+      <title>Author Contributions</title>
+      <div></div>
+    </notes>
+    <notes>
+      <title>Funding</title>
+      <p>This research was supported by the Basic Science Research Program through the National Research Foundation of Korea (NRF) funded by the Ministry of Education (NRF-RS-2023-00237287).</p>
+    </notes>
+    <notes>
+      <title>Informed Consent Statement</title>
+      
+    </notes>
+    <notes>
+      <title>Data Availability Statement</title>
+      <p>The data used to support the findings of this study are available from the corresponding author upon request.</p>
+    </notes>
+    <notes notes-type="COI-statement">
+      <title>Conflicts of Interest</title>
+      <p>The author declares no conflicts of interest.</p>
+    </notes>
+    <ref-list>
+      <title>References</title>
+      <ref id="ref_1">
+        <label>1.</label>
+        <element-citation publication-type="journal">
+          <page-range>1-36</page-range>
+          <source>ACM Comput. Surv.</source>
+          <issue>6</issue>
+          <year>2021</year>
+          <volume>54</volume>
+          <article-title>Security vulnerabilities of SGX and countermeasures: A survey</article-title>
+          <pub-id pub-id-type="doi">10.1145/3456631</pub-id>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Fei</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Yan</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Ding</surname>
+              <given-names>W.</given-names>
+            </name>
+            <name>
+              <surname>Xie</surname>
+              <given-names>H.</given-names>
+            </name>
+          </person-group>
+        </element-citation>
+      </ref>
+      <ref id="ref_2">
+        <label>2.</label>
+        <element-citation publication-type="journal">
+          <person-group person-group-type="author">
+            <name>
+              <surname>Pinto</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Santos</surname>
+              <given-names>N.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1145/3291047</pub-id>
+          <volume>51</volume>
+          <page-range>1-36</page-range>
+          <source>ACM Comput. Surv.</source>
+          <issue>6</issue>
+          <article-title>Demystifying Arm TrustZone: A comprehensive survey</article-title>
+          <year>2019</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_3">
+        <label>3.</label>
+        <element-citation publication-type="journal">
+          <pub-id pub-id-type="doi">10.1145/360051.360056</pub-id>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Denning</surname>
+              <given-names>D. E.</given-names>
+            </name>
+          </person-group>
+          <issue>5</issue>
+          <page-range>236-243</page-range>
+          <article-title>A lattice model of secure information flow</article-title>
+          <source>Commun. ACM</source>
+          <year>1976</year>
+          <volume>19</volume>
+        </element-citation>
+      </ref>
+      <ref id="ref_4">
+        <label>4.</label>
+        <element-citation publication-type="journal">
+          <source>Commun. ACM</source>
+          <article-title>Time, clocks, and the ordering of events in a distributed system</article-title>
+          <issue>7</issue>
+          <year>1978</year>
+          <pub-id pub-id-type="doi">10.1145/3335772.3335934</pub-id>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Lamport</surname>
+              <given-names>L.</given-names>
+            </name>
+          </person-group>
+          <page-range>558-565</page-range>
+          <volume>21</volume>
+        </element-citation>
+      </ref>
+      <ref id="ref_5">
+        <label>5.</label>
+        <element-citation publication-type="webpage">
+          <article-title>Bitcoin: A peer-to-peer electronic cash system</article-title>
+          <source>, https://bitcoin.org/bitcoin.pdf</source>
+          <year>2008</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_6">
+        <label>6.</label>
+        <element-citation publication-type="journal">
+          <source>J. Cryptol.</source>
+          <volume>26</volume>
+          <pub-id pub-id-type="doi">10.1007/s00145-012-9129-2</pub-id>
+          <page-range>442-483</page-range>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Shacham</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Waters</surname>
+              <given-names>B.</given-names>
+            </name>
+          </person-group>
+          <year>2013</year>
+          <article-title>Compact proofs of retrievability</article-title>
+          <issue>3</issue>
+        </element-citation>
+      </ref>
+      <ref id="ref_7">
+        <label>7.</label>
+        <element-citation publication-type="conf-paper">
+          <publisher-place>Alexandria, Virginia, USA</publisher-place>
+          <year>2007</year>
+          <article-title>Provable data possession at untrusted stores</article-title>
+          <pub-id pub-id-type="doi">10.1145/1315245.1315318</pub-id>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Ateniese</surname>
+              <given-names>G.</given-names>
+            </name>
+            <name>
+              <surname>Burns</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Curtmola</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Herring</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Kissner</surname>
+              <given-names>L.</given-names>
+            </name>
+            <name>
+              <surname>Peterson</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Song</surname>
+              <given-names>D.</given-names>
+            </name>
+          </person-group>
+          <source>Proceedings of the 14th ACM Conference on Computer and Communications Security</source>
+          <page-range>598-609</page-range>
+        </element-citation>
+      </ref>
+      <ref id="ref_8">
+        <label>8.</label>
+        <element-citation publication-type="journal">
+          <volume>32</volume>
+          <issue>3</issue>
+          <pub-id pub-id-type="doi">10.1137/S0097539701398521</pub-id>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Boneh</surname>
+              <given-names>D.</given-names>
+            </name>
+            <name>
+              <surname>Franklin</surname>
+              <given-names>M.</given-names>
+            </name>
+          </person-group>
+          <year>2003</year>
+          <article-title>Identity-based encryption from the Weil pairing</article-title>
+          <source>SIAM J. Comput.</source>
+          <page-range>586-615</page-range>
+        </element-citation>
+      </ref>
+      <ref id="ref_9">
+        <label>9.</label>
+        <element-citation publication-type="journal">
+          <year>2015</year>
+          <issue>3</issue>
+          <volume>33</volume>
+          <source>ACM Trans. Comput. Syst.</source>
+          <article-title>Shielding applications from an untrusted cloud with Haven</article-title>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Baumann</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Peinado</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Hunt</surname>
+              <given-names>G.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1145/2799647</pub-id>
+          <page-range>1-26</page-range>
+        </element-citation>
+      </ref>
+      <ref id="ref_10">
+        <label>10.</label>
+        <element-citation publication-type="conf-paper">
+          <article-title>A digital signature based on a conventional encryption function</article-title>
+          <source>Advances in Cryptology–CRYPTO 1987</source>
+          <publisher-place>Berlin, Heidelberg</publisher-place>
+          <year>1988</year>
+          <pub-id pub-id-type="doi">10.1007/3-540-48184-2_32</pub-id>
+          <page-range>369-378</page-range>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Merkle</surname>
+              <given-names>R. C.</given-names>
+            </name>
+          </person-group>
+        </element-citation>
+      </ref>
+      <ref id="ref_11">
+        <label>11.</label>
+        <element-citation publication-type="journal">
+          <page-range>379-474</page-range>
+          <article-title>Provenance in databases: Why, how, and where</article-title>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Cheney</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Chiticariu</surname>
+              <given-names>L.</given-names>
+            </name>
+            <name>
+              <surname>Tan</surname>
+              <given-names>W. C.</given-names>
+            </name>
+          </person-group>
+          <volume>1</volume>
+          <year>2009</year>
+          <pub-id pub-id-type="doi">10.1561/1900000006</pub-id>
+          <issue>4</issue>
+          <source>Found. Trends Databases</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_12">
+        <label>12.</label>
+        <element-citation publication-type="journal">
+          <page-range>743-756</page-range>
+          <pub-id pub-id-type="doi">10.1016/j.future.2010.07.005</pub-id>
+          <source>Future Gener. Comput. Syst.</source>
+          <article-title>The open provenance model core specification (v1.1)</article-title>
+          <issue>6</issue>
+          <year>2011</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Moreau</surname>
+              <given-names>L.</given-names>
+            </name>
+            <name>
+              <surname>Clifford</surname>
+              <given-names>B.</given-names>
+            </name>
+            <name>
+              <surname>Freire</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Futrelle</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Gil</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Groth</surname>
+              <given-names>P.</given-names>
+            </name>
+            <name>
+              <surname>Kwasnikowska</surname>
+              <given-names>N.</given-names>
+            </name>
+            <name>
+              <surname>Miles</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Missier</surname>
+              <given-names>P.</given-names>
+            </name>
+            <name>
+              <surname>Myers</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Plale</surname>
+              <given-names>B.</given-names>
+            </name>
+            <name>
+              <surname>Simmhan</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Stephan</surname>
+              <given-names>E.</given-names>
+            </name>
+            <name>
+              <surname>Bussche</surname>
+              <given-names>J.</given-names>
+            </name>
+          </person-group>
+          <volume>27</volume>
+        </element-citation>
+      </ref>
+      <ref id="ref_13">
+        <label>13.</label>
+        <element-citation publication-type="journal">
+          <article-title>A survey on security and privacy issues of blockchain technology</article-title>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Joshi</surname>
+              <given-names>A. P.</given-names>
+            </name>
+            <name>
+              <surname>Han</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>Y.</given-names>
+            </name>
+          </person-group>
+          <year>2018</year>
+          <pub-id pub-id-type="doi">10.3934/mfc.2018007</pub-id>
+          <source>Math. Found. Comput.</source>
+          <page-range>121-147</page-range>
+          <issue>2</issue>
+          <volume>1</volume>
+        </element-citation>
+      </ref>
+      <ref id="ref_14">
+        <label>14.</label>
+        <element-citation publication-type="journal">
+          <issue>2</issue>
+          <year>1999</year>
+          <page-range>159-176</page-range>
+          <pub-id pub-id-type="doi">10.1145/317087.317089</pub-id>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Schneier</surname>
+              <given-names>B.</given-names>
+            </name>
+            <name>
+              <surname>Kelsey</surname>
+              <given-names>J.</given-names>
+            </name>
+          </person-group>
+          <volume>2</volume>
+          <source>ACM Trans. Inf. Syst. Secur.</source>
+          <article-title>Secure audit logs to support computer forensics</article-title>
+        </element-citation>
+      </ref>
+      <ref id="ref_15">
+        <label>15.</label>
+        <element-citation publication-type="conf-paper">
+          <source>Proceedings of 2016 USENIX Annual Technical Conference</source>
+          <publisher-place>Denver, USA</publisher-place>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Ali</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Nelson</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Shea</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Freedman</surname>
+              <given-names>M.</given-names>
+            </name>
+          </person-group>
+          <article-title>Blockstack: A global naming and storage system secured by blockchains</article-title>
+          <page-range>181-194</page-range>
+          <year>2016</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_16">
+        <label>16.</label>
+        <element-citation publication-type="journal">
+          <volume>22</volume>
+          <article-title>Data provenance to audit compliance with privacy policy in the internet of things</article-title>
+          <source>Pers. Ubiquitous Comput.</source>
+          <pub-id pub-id-type="doi">10.1007/s00779-017-1067-4</pub-id>
+          <page-range>333-344</page-range>
+          <year>2018</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Pasquier</surname>
+              <given-names>T.</given-names>
+            </name>
+            <name>
+              <surname>Singh</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Bacon</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Eyers</surname>
+              <given-names>D.</given-names>
+            </name>
+          </person-group>
+          <issue>2</issue>
+        </element-citation>
+      </ref>
+      <ref id="ref_17">
+        <label>17.</label>
+        <element-citation publication-type="conf-paper">
+          <person-group person-group-type="author">
+            <name>
+              <surname>Gentry</surname>
+              <given-names>C.</given-names>
+            </name>
+          </person-group>
+          <year>2009</year>
+          <source>Proceedings of the Forty-First Annual ACM Symposium on Theory of Computing</source>
+          <publisher-place>Bethesda, MD, USA</publisher-place>
+          <pub-id pub-id-type="doi">10.1145/1536414.1536440</pub-id>
+          <page-range>169-178</page-range>
+          <article-title>Fully homomorphic encryption using ideal lattices</article-title>
+        </element-citation>
+      </ref>
+      <ref id="ref_18">
+        <label>18.</label>
+        <element-citation publication-type="journal">
+          <person-group person-group-type="author">
+            <name>
+              <surname>Papernot</surname>
+              <given-names>N.</given-names>
+            </name>
+            <name>
+              <surname>McDaniel</surname>
+              <given-names>P.</given-names>
+            </name>
+            <name>
+              <surname>Goodfellow</surname>
+              <given-names>I.</given-names>
+            </name>
+          </person-group>
+          <source>arXiv Prepr. arXiv:1605.07277</source>
+          <page-range>437-455</page-range>
+          <year>2016</year>
+          <article-title>Transferability in machine learning: From phenomena to black-box attacks using adversarial samples</article-title>
+          <pub-id pub-id-type="doi">10.48550/arXiv.1605.07277</pub-id>
+        </element-citation>
+      </ref>
+      <ref id="ref_19">
+        <label>19.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>437-455</page-range>
+          <article-title>How to time-stamp a digital document</article-title>
+          <publisher-place>Santa Barbara, California, USA</publisher-place>
+          <pub-id pub-id-type="doi">10.1007/3-540-38424-3_32</pub-id>
+          <year>1991</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Haber</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Stornetta</surname>
+              <given-names>W. S.</given-names>
+            </name>
+          </person-group>
+          <source>Advances in Cryptology–CRYPTO 1990</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_20">
+        <label>20.</label>
+        <element-citation publication-type="conf-paper">
+          <publisher-place>San Jose, CA, USA</publisher-place>
+          <article-title>VC3: Trustworthy data analytics in the cloud</article-title>
+          <year>2015</year>
+          <source>Proceedings of the 2015 IEEE Symposium on Security and Privacy</source>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Schuster</surname>
+              <given-names>F.</given-names>
+            </name>
+            <name>
+              <surname>Costa</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Fournet</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Gkantsidis</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Peinado</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Mainar-Ruiz</surname>
+              <given-names>G.</given-names>
+            </name>
+            <name>
+              <surname>Russinovich</surname>
+              <given-names>M.</given-names>
+            </name>
+          </person-group>
+          <page-range>38-54</page-range>
+          <pub-id pub-id-type="doi">10.1109/SP.2015.10</pub-id>
+        </element-citation>
+      </ref>
+      <ref id="ref_21">
+        <label>21.</label>
+        <element-citation publication-type="journal">
+          <person-group person-group-type="author">
+            <name>
+              <surname>Menetrey</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Göttel</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Khurshid</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Pasin</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Felber</surname>
+              <given-names>P.</given-names>
+            </name>
+            <name>
+              <surname>Schiavoni</surname>
+              <given-names>V.</given-names>
+            </name>
+            <name>
+              <surname>Raza</surname>
+              <given-names>S.</given-names>
+            </name>
+          </person-group>
+          <source>arXiv Prepr. arXiv:2206.03780</source>
+          <article-title>Attestation mechanisms for trusted execution environments demystified</article-title>
+          <pub-id pub-id-type="doi">10.48550/arXiv.2206.03780</pub-id>
+          <year>2022</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_22">
+        <label>22.</label>
+        <element-citation publication-type="journal">
+          <source>ACM Trans. Comput. Syst.</source>
+          <issue>4</issue>
+          <pub-id pub-id-type="doi">10.1145/571637.571640</pub-id>
+          <volume>20</volume>
+          <year>2002</year>
+          <page-range>398-461</page-range>
+          <article-title>Practical Byzantine fault tolerance and proactive recovery</article-title>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Castro</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Liskov</surname>
+              <given-names>B.</given-names>
+            </name>
+          </person-group>
+        </element-citation>
+      </ref>
+      <ref id="ref_23">
+        <label>23.</label>
+        <element-citation publication-type="journal">
+          <page-range>31-42</page-range>
+          <pub-id pub-id-type="doi">10.1109/32.481515</pub-id>
+          <issue>1</issue>
+          <volume>22</volume>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Reiter</surname>
+              <given-names>M. K.</given-names>
+            </name>
+          </person-group>
+          <article-title>A secure group membership protocol</article-title>
+          <source>IEEE Trans. Software Eng.</source>
+          <year>1996</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_24">
+        <label>24.</label>
+        <element-citation publication-type="conf-paper">
+          <source>Proceedings of Peer-to-Peer Systems (IPTPS 2002)</source>
+          <pub-id pub-id-type="doi">10.1007/3-540-45748-8_24</pub-id>
+          <page-range>251-260</page-range>
+          <year>2002</year>
+          <publisher-place>Cambridge, MA, USA</publisher-place>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Douceur</surname>
+              <given-names>J. R.</given-names>
+            </name>
+          </person-group>
+          <article-title>The Sybil attack</article-title>
+        </element-citation>
+      </ref>
+      <ref id="ref_25">
+        <label>25.</label>
+        <element-citation publication-type="conf-paper">
+          <publisher-place>Santa Barbara, California, USA</publisher-place>
+          <source>Advances in Cryptology–CRYPTO 1984</source>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Shamir</surname>
+              <given-names>A.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1007/3-540-39568-7_5</pub-id>
+          <year>1984</year>
+          <page-range>47-53</page-range>
+          <article-title>Identity-based cryptosystems and signature schemes</article-title>
+        </element-citation>
+      </ref>
+      <ref id="ref_26">
+        <label>26.</label>
+        <element-citation publication-type="conf-paper">
+          <article-title>PORs: Proofs of retrievability for large files</article-title>
+          <publisher-place>Alexandria, Virginia, USA</publisher-place>
+          <year>2007</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Juels</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Kaliski Jr.</surname>
+              <given-names>B. S.</given-names>
+            </name>
+          </person-group>
+          <page-range>584-597</page-range>
+          <pub-id pub-id-type="doi">10.1145/1315245.1315317</pub-id>
+          <source>Proceedings of the 14th ACM Conference on Computer and Communications Security</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_27">
+        <label>27.</label>
+        <element-citation publication-type="conf-paper">
+          <year>2011</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Shi</surname>
+              <given-names>E.</given-names>
+            </name>
+            <name>
+              <surname>Chan</surname>
+              <given-names>H. T. H.</given-names>
+            </name>
+            <name>
+              <surname>Rieffel</surname>
+              <given-names>E.</given-names>
+            </name>
+            <name>
+              <surname>Chow</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Song</surname>
+              <given-names>D.</given-names>
+            </name>
+          </person-group>
+          <page-range>1-17</page-range>
+          <publisher-place>San Diego, California, USA</publisher-place>
+          <source>Proceedings of the 18th Annual Network and Distributed System Security Symposium (NDSS)</source>
+          <article-title>Privacy-preserving aggregation of time-series data</article-title>
+        </element-citation>
+      </ref>
+      <ref id="ref_28">
+        <label>28.</label>
+        <element-citation publication-type="journal">
+          <page-range>706-734</page-range>
+          <article-title>A calculus for access control in distributed systems</article-title>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Abadi</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Burrows</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Lampson</surname>
+              <given-names>B.</given-names>
+            </name>
+            <name>
+              <surname>Plotkin</surname>
+              <given-names>G.</given-names>
+            </name>
+          </person-group>
+          <year>1993</year>
+          <source>ACM Trans. Program. Lang. Syst.</source>
+          <pub-id pub-id-type="doi">10.1145/155183.155225</pub-id>
+          <issue>4</issue>
+          <volume>15</volume>
+        </element-citation>
+      </ref>
+      <ref id="ref_29">
+        <label>29.</label>
+        <element-citation publication-type="journal">
+          <issue>2</issue>
+          <year>1978</year>
+          <source>Commun. ACM</source>
+          <pub-id pub-id-type="doi">10.1145/359340.359342</pub-id>
+          <article-title>A method for obtaining digital signatures and public-key cryptosystems</article-title>
+          <page-range>120-126</page-range>
+          <volume>21</volume>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Rivest</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Shamir</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Adleman</surname>
+              <given-names>L.</given-names>
+            </name>
+          </person-group>
+        </element-citation>
+      </ref>
+      <ref id="ref_30">
+        <label>30.</label>
+        <element-citation publication-type="conf-paper">
+          <publisher-place>Yilan, Taiwan</publisher-place>
+          <source>Proceedings of 2016 IEEE Asian Hardware-Oriented Security and Trust (AsianHOST)</source>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Mozaffari-Kermani</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Azarderakhsh</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Xie</surname>
+              <given-names>J.</given-names>
+            </name>
+          </person-group>
+          <year>2017</year>
+          <page-range>1-6</page-range>
+          <article-title>Error detection reliable architectures of Camellia block cipher applicable to different variants of its substitution boxes</article-title>
+          <pub-id pub-id-type="doi">10.1109/AsianHOST.2016.7835560</pub-id>
+        </element-citation>
+      </ref>
+      <ref id="ref_31">
+        <label>31.</label>
+        <element-citation publication-type="conf-paper">
+          <article-title>A low-cost S-box for the advanced encryption standard using normal basis</article-title>
+          <page-range>52-55</page-range>
+          <source>Proceedings of 2009 IEEE International Conference on Electro/Information Technology</source>
+          <year>2009</year>
+          <pub-id pub-id-type="doi">10.1109/EIT.2009.5189583</pub-id>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Mozaffari-Kermani</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Reyhani-Masoleh</surname>
+              <given-names>A.</given-names>
+            </name>
+          </person-group>
+          <publisher-place>Windsor, ON, Canada</publisher-place>
+        </element-citation>
+      </ref>
+      <ref id="ref_32">
+        <label>32.</label>
+        <element-citation publication-type="journal">
+          <year>2013</year>
+          <pub-id pub-id-type="doi">10.1109/TIE.2012.2228144</pub-id>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Mozaffari-Kermani</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Azarderakhsh</surname>
+              <given-names>R.</given-names>
+            </name>
+          </person-group>
+          <page-range>5925-5932</page-range>
+          <source>IEEE Trans. Ind. Electron.</source>
+          <issue>12</issue>
+          <volume>60</volume>
+          <article-title>Efficient fault diagnosis schemes for reliable lightweight cryptographic ISO/IEC standard CLEFIA benchmarked on ASIC and FPGA</article-title>
+        </element-citation>
+      </ref>
+      <ref id="ref_33">
+        <label>33.</label>
+        <element-citation publication-type="conf-paper">
+          <article-title>Reliable hardware architectures for the third-round SHA-3 finalist Grostl benchmarked on FPGA platform</article-title>
+          <year>2011</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Mozaffari-Kermani</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Reyhani-Masoleh</surname>
+              <given-names>A.</given-names>
+            </name>
+          </person-group>
+          <page-range>325-331</page-range>
+          <source>Proceedings of 2011 IEEE International Symposium on Defect and Fault Tolerance in VLSI and Nanotechnology Systems</source>
+          <pub-id pub-id-type="doi">10.1109/DFT.2011.60</pub-id>
+          <publisher-place>Vancouver, BC, Canada</publisher-place>
+        </element-citation>
+      </ref>
+      <ref id="ref_34">
+        <label>34.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>215-231</page-range>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Jalali</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Azarderakhsh</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Mozaffari Kermani</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Jao</surname>
+              <given-names>D.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1007/978-3-030-16350-1_12</pub-id>
+          <source>Proceedings of Constructive Side-Channel Analysis and Secure Design (COSADE 2019)</source>
+          <year>2019</year>
+          <article-title>Towards optimized and constant-time CSIDH on embedded devices</article-title>
+          <publisher-place>Darmstadt, Germany</publisher-place>
+        </element-citation>
+      </ref>
+      <ref id="ref_35">
+        <label>35.</label>
+        <element-citation publication-type="journal">
+          <source>arXiv preprint arXiv:2302.12173</source>
+          <year>2023</year>
+          <article-title>Not what you have signed up for: Compromising real-world LLM-integrated applications with indirect prompt injection</article-title>
+          <pub-id pub-id-type="doi">10.48550/arXiv.2302.12173</pub-id>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Greshake</surname>
+              <given-names>K.</given-names>
+            </name>
+            <name>
+              <surname>Abdelnabi</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Mishra</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Endres</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Holz</surname>
+              <given-names>T.</given-names>
+            </name>
+            <name>
+              <surname>Fritz</surname>
+              <given-names>M.</given-names>
+            </name>
+          </person-group>
+        </element-citation>
+      </ref>
+      <ref id="ref_36">
+        <label>36.</label>
+        <element-citation publication-type="journal">
+          <year>2023</year>
+          <article-title>Identifying the risks of LM agents with an LM-emulated sandbox</article-title>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Ruan</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Dong</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Pitis</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Zhou</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Ba</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Dubois</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Maddison</surname>
+              <given-names>C. J.</given-names>
+            </name>
+            <name>
+              <surname>Hashimoto</surname>
+              <given-names>T.</given-names>
+            </name>
+          </person-group>
+          <source>arXiv preprint arXiv:2309.15817</source>
+          <pub-id pub-id-type="doi">10.48550/arXiv.2309.15817</pub-id>
+        </element-citation>
+      </ref>
+      <ref id="ref_37">
+        <label>37.</label>
+        <element-citation publication-type="journal">
+          <pub-id pub-id-type="doi">10.48550/arXiv.2308.03688</pub-id>
+          <source>arXiv preprint arXiv:2308.03688</source>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Liu</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Yu</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Xu</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Lei</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Lai</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Gu</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Ding</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Men</surname>
+              <given-names>K.</given-names>
+            </name>
+            <name>
+              <surname>Yang</surname>
+              <given-names>K.</given-names>
+            </name>
+            <name>
+              <surname>et al.</surname>
+            </name>
+          </person-group>
+          <article-title>AgentBench: Evaluating LLMs as agents</article-title>
+          <year>2023</year>
+        </element-citation>
+      </ref>
+    </ref-list>
+  </back>
+</article>
