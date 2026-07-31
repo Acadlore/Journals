@@ -1,0 +1,4915 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.3 20210610//EN" "JATS-journalpublishing1-3.dtd">
+<article xml:lang="en" dtd-version="1.3" article-type="research-article" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mml="http://www.w3.org/1998/Math/MathML">
+  <front>
+    <journal-meta>
+      <journal-id journal-id-type="publisher-id">ATAIML</journal-id>
+      <journal-id journal-id-type="doi">10.56578</journal-id>
+      <journal-title-group>
+        <journal-title>Acadlore Transactions on AI and Machine Learning</journal-title>
+        <abbrev-journal-title abbrev-type="issn">Acadlore Trans. Mach. Learn.</abbrev-journal-title>
+        <abbrev-journal-title abbrev-type="publisher">ATAIML</abbrev-journal-title>
+      </journal-title-group>
+      <issn publication-format="electronic">2957-9570</issn>
+      <issn publication-format="print">2957-9562</issn>
+      <publisher>
+        <publisher-name>Acadlore</publisher-name>
+      </publisher>
+    </journal-meta>
+    <article-meta>
+      <article-id pub-id-type="publisher-id">AR-iDc8J4gMj9ckzimYPxmuCrPfqVguAX7a</article-id>
+      <article-id pub-id-type="doi">10.56578/ataiml050303</article-id>
+      <article-categories>
+        <subj-group>
+          <subject>Articles</subject>
+        </subj-group>
+      </article-categories>
+      <title-group>
+        <article-title>A Dual-Graph Framework for Modelling and Analysis of Movements and Activities</article-title>
+      </title-group>
+      <contrib-group>
+        <contrib contrib-type="author" rid="aff_1">
+          <contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0000-0001-6846-7289</contrib-id>
+          <name>
+            <surname>Payandeh</surname>
+            <given-names>Shahram</given-names>
+          </name>
+          <email>payandeh@sfu.ca</email>
+        </contrib>
+        <aff id="aff_1">School of Engineering Science, Simon Fraser University, V5A 1S6 Burnaby, Canada</aff>
+      </contrib-group>
+      <pub-date publication-format="electronic" date-type="pub">
+        <day>30</day>
+        <month>07</month>
+        <year>2026</year>
+      </pub-date>
+      <volume>5</volume>
+      <issue>3</issue>
+      <fpage>234</fpage>
+      <lpage>243</lpage>
+      <page-range>234-243</page-range>
+      <history>
+        <date date-type="received">
+          <day>07</day>
+          <month>06</month>
+          <year>2026</year>
+        </date>
+        <date date-type="accepted">
+          <day>26</day>
+          <month>07</month>
+          <year>2026</year>
+        </date>
+      </history>
+      <permissions>
+        <copyright-statement>©2026 by the author(s)</copyright-statement>
+        <copyright-year>2026</copyright-year>
+        <license license-type="open-access" xlink:href="https://creativecommons.org/licenses/by/4.0/">
+          <license-p> Published by Acadlore Publishing Services Limited, Hong Kong. This article is available for free download and can be reused and cited, provided that the original published version is credited, under the CC BY 4.0 license.</license-p>
+        </license>
+      </permissions>
+      <abstract><p> Graph-based representations provide a useful systems-level framework for modelling interactions among structure, dynamics, and behaviour. This paper proposes a dual-graph framework for modelling indoor movements and activities. The first layer is a location graph that represents feasible movement through the spatial connectivity of an indoor environment. The second layer is a mixed causal/contextual activity graph that combines directed activity dependencies with undirected contextual associations. The two layers are coupled through an activity-to-location mapping, yielding a probability-preserving dynamical model in which spatial occupancy is jointly influenced by graph-constrained movement and activity-driven spatial expectations. Two features distinguish the proposed framework from conventional dual-graph models. First, the activity layer is explicitly constructed as a mixed directed/undirected network and second, a cross layer coupled mismatch residual framework is proposed to detect inconsistencies between semantic activity evolution and observed movement. The paper also establishes the probabilistic properties of the movement operator, discusses manual and data-driven construction of the interlayer mapping and introduces an optional reverse-coupling extension. Simulations in a six-location living environment examine the effects of the activity-mixture parameter, the mapping matrix, and the coupling gain. The results support the framework as an interpretable basis for indoor behaviour modelling and also highlight some of its limitations for future studies. </p></abstract>
+      <kwd-group>
+        <kwd>Dual-graph modelling</kwd>
+        <kwd>Activity dynamics</kwd>
+        <kwd>Movement modelling</kwd>
+        <kwd>Networked dynamical systems</kwd>
+        <kwd>Indoor behaviour analysis</kwd>
+        <kwd>Residual-based anomaly detection</kwd>
+      </kwd-group>
+      <counts>
+        <count count-type="contributors" count="1"/>
+        <fig-count count="2"/>
+        <table-count count="1"/>
+        <ref-count count="29"/>
+      </counts>
+    </article-meta>
+  </front>
+  <body>
+    <sec sec-type="intro">
+      <title>1. Introduction</title>
+      <p>Network and graph-based models are central to systems engineering because they provide a common mathematical representation for structure, connectivity, and interactions in complex engineered and natural systems. By abstracting system components as nodes and their relationships as edges, graph models support discrete mathematics, linear algebra, stochastic processes, and spectral analysis. A graph <inline-formula>
+  <mml:math id="mucisxpqb2">
+    <mml:mrow>
+      <mml:mi data-mjx-variant="-tex-calligraphic">G</mml:mi>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mi data-mjx-variant="-tex-calligraphic">V</mml:mi>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mi data-mjx-variant="-tex-calligraphic">E</mml:mi>
+    </mml:mrow>
+    <mml:mo data-mjx-variant="-tex-calligraphic">=</mml:mo>
+    <mml:mo data-mjx-variant="-tex-calligraphic">(</mml:mo>
+    <mml:mo data-mjx-variant="-tex-calligraphic">,</mml:mo>
+    <mml:mo data-mjx-variant="-tex-calligraphic">)</mml:mo>
+  </mml:math>
+</inline-formula> consists of a vertex set <inline-formula>
+  <mml:math id="m80qn59op9">
+    <mml:mrow>
+      <mml:mi data-mjx-variant="-tex-calligraphic">V</mml:mi>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> and an edge set <inline-formula>
+  <mml:math id="mnem0xco0v">
+    <mml:mrow>
+      <mml:mi data-mjx-variant="-tex-calligraphic">E</mml:mi>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> that encodes relations among the vertices [<xref ref-type="bibr" rid="ref_1">1</xref>].</p><p>Graph-based modelling has found widespread use in robotics, sensing, and networked systems. In multi-robot systems, graphs represent communication topologies, task dependencies, and coordination constraints [<xref ref-type="bibr" rid="ref_2">2</xref>], [<xref ref-type="bibr" rid="ref_3">3</xref>]. In robotic manipulation, graph structures capture relations among objects, contact regions, and end effectors [<xref ref-type="bibr" rid="ref_4">4</xref>], [<xref ref-type="bibr" rid="ref_5">5</xref>]. Sensor networks are similarly represented as graphs whose nodes are sensors and whose edges describe communication or spatial proximity, thereby supporting topology design, routing, and fault analysis [<xref ref-type="bibr" rid="ref_6">6</xref>], [<xref ref-type="bibr" rid="ref_7">7</xref>].</p><p>Graphs also support signal and data processing on irregular domains. An irregular domain does not possess a uniform Euclidean grid; nodes can have unequal numbers of neighbours and connectivity is determined by relationships rather than uniform spacing. Graph cuts and normalized cuts are established examples in image segmentation [<xref ref-type="bibr" rid="ref_8">8</xref>], [<xref ref-type="bibr" rid="ref_9">9</xref>]. Graph signal processing (GSP) generalizes filtering, spectral decomposition, and de-noising to signals supported on graph vertices [<xref ref-type="bibr" rid="ref_10">10</xref>], [<xref ref-type="bibr" rid="ref_11">11</xref>].</p><p>Graph models have increasingly been applied to human movement and activity. At the biomechanical level, the body can be represented as a skeletal graph for spatio-temporal action recognition [<xref ref-type="bibr" rid="ref_12">12</xref>], [<xref ref-type="bibr" rid="ref_13">13</xref>]. At an environmental level, locations can be represented as nodes and movements as edges, permitting trajectory clustering, routine discovery, and anomaly detection [<xref ref-type="bibr" rid="ref_14">14</xref>], [<xref ref-type="bibr" rid="ref_15">15</xref>], [<xref ref-type="bibr" rid="ref_16">16</xref>]. In multi-person settings, graphs can represent proximity and interaction patterns [<xref ref-type="bibr" rid="ref_17">17</xref>].</p>
+      
+        <sec>
+          
+            <title>1.1. Engineering motivation and application scenarios</title>
+          
+          <p>The principal application motivating this study is unobtrusive monitoring in the home of an older adult. A practical monitoring system may estimate a person's room-level location from ambient sensors, wireless sensing, wearable devices, or cameras and depth sensors, while activity-recognition modules estimate semantic states such as preparing a meal, eating, resting, bathing, or sleeping. Engineering value arises not only from estimating these states separately, but from checking whether they are mutually consistent. For example, an inferred bathing activity should be supported by bathroom occupancy, whereas a transition from the bedroom directly to the kitchen should be treated differently from a feasible path through connected rooms. The proposed model therefore targets activity-aware home monitoring, indoor abnormal-behaviour warning, localization-fault detection, and assistive-system decision support.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>1.2. Related work</title>
+          
+          
+            <sec>
+              
+                <title>1.2.1 Indoor activity, localization, and trajectory modelling</title>
+              
+              <p>Indoor sensing research often treats activity recognition and localization as separate tasks. Some studies have jointly inferred activity and location from wireless fingerprints or have coupled activity with orientation and other contextual variables [<xref ref-type="bibr" rid="ref_18">18</xref>], [<xref ref-type="bibr" rid="ref_19">19</xref>]. Recent graph-based localization work has used sensor fusion, dynamic edge construction, graph neural networks (GNNs), and meta-learning to improve adaptation across indoor environments [<xref ref-type="bibr" rid="ref_20">20</xref>]. These systems demonstrate the value of modelling semantic and spatial information jointly, but their principal objective is classification or localization accuracy rather than an interpretable networked dynamical model linking activity causality, feasible movement, graph filtering, and residual-based diagnosis.</p>
+            </sec>
+          
+          
+            <sec>
+              
+                <title>1.2.2 Dual-graph and multilayer models</title>
+              
+              <p>Dual-graph architectures have been reported in recommendation, spatio-temporal forecasting, electro encephalography (EEG) analysis, robotics, biomechanics, and computer vision. Session recommendation models combine intra-session and inter-session relations [<xref ref-type="bibr" rid="ref_21">21</xref>]; dynamic forecasting systems combine physical and learned connectivity [<xref ref-type="bibr" rid="ref_22">22</xref>]; and EEG models combine anatomical and functional graphs [<xref ref-type="bibr" rid="ref_23">23</xref>]. In robotics and movement analysis, different graphs may represent communication and task relations, kinematic and dynamic relations, or semantic and geometric structure [<xref ref-type="bibr" rid="ref_3">3</xref>], [<xref ref-type="bibr" rid="ref_24">24</xref>], [<xref ref-type="bibr" rid="ref_25">25</xref>]. Multilayer-network theory provides a general basis for representing several edge types and weighted interlayer couplings [<xref ref-type="bibr" rid="ref_26">26</xref>], [<xref ref-type="bibr" rid="ref_27">27</xref>].</p>
+            </sec>
+          
+          
+            <sec>
+              
+                <title>1.2.3 Graph filtering and anomaly detection</title>
+              
+              <p>GSP defines graph Fourier bases and graph filters from a graph operator, commonly an adjacency matrix or graph Laplacian [<xref ref-type="bibr" rid="ref_10">10</xref>], [<xref ref-type="bibr" rid="ref_11">11</xref>]. In indoor movement analysis, Markov models and graph-ranking methods have been used to characterize routine movement and detect deviations [<xref ref-type="bibr" rid="ref_15">15</xref>], [<xref ref-type="bibr" rid="ref_16">16</xref>]. However, anomaly scores are frequently based on a single movement graph or on prediction error without explicitly tracing disagreement between a semantic activity layer and a filtered spatial layer.</p><p><xref ref-type="table" rid="table_1">Table 1</xref> summarizes representative dual-graph modelling directions using common analytical dimensions.</p>
+              
+                <table-wrap id="table_1">
+                  <label>Table 1</label>
+                  <caption>
+                    <title>Comparison of representative dual-graph modelling directions using common analytical dimensions</title>
+                  </caption>
+                  <table><tbody><tr><th colspan="1" rowspan="1"><p>Application Area</p></th><th colspan="1" rowspan="1"><p>Dual-Graph Structure</p></th><th colspan="1" rowspan="1"><p>Interlayer Coupling</p></th><th colspan="1" rowspan="1"><p>Dynamic Modelling</p></th><th colspan="1" rowspan="1"><p> Anomaly Detection</p></th></tr><tr><td colspan="1" rowspan="1"><p>Recommendation and machine learning</p></td><td colspan="1" rowspan="1"><p>Behavioural and intention/semantic graphs</p></td><td colspan="1" rowspan="1"><p>Parallel message passing or feature fusion</p></td><td colspan="1" rowspan="1"><p>Learned latent-state updates</p></td><td colspan="1" rowspan="1"><p>Usually not an explicit objective</p></td></tr><tr><td colspan="1" rowspan="1"><p>Spatio-temporal forecasting</p></td><td colspan="1" rowspan="1"><p>Physical graph and adaptive functional graph</p></td><td colspan="1" rowspan="1"><p>Gating, attention, or learned fusion</p></td><td colspan="1" rowspan="1"><p>Recurrent or temporal GNN dynamics</p></td><td colspan="1" rowspan="1"><p>Prediction error may be used indirectly</p></td></tr><tr><td colspan="1" rowspan="1"><p>Neuroscience</p></td><td colspan="1" rowspan="1"><p>Anatomical and functional/similarity graphs</p></td><td colspan="1" rowspan="1"><p>Feature fusion between graph branches</p></td><td colspan="1" rowspan="1"><p>Windowed or recurrent signal evolution</p></td><td colspan="1" rowspan="1"><p>Usually classification-focused</p></td></tr><tr><td colspan="1" rowspan="1"><p>Robotics and computer vision</p></td><td colspan="1" rowspan="1"><p>Kinematic/geometric, semantic/spatial, or communication/task graphs</p></td><td colspan="1" rowspan="1"><p>Cross-graph message passing</p></td><td colspan="1" rowspan="1"><p>Task-dependent learned dynamics</p></td><td colspan="1" rowspan="1"><p>Often task failure rather than residual diagnosis</p></td></tr><tr><td colspan="1" rowspan="1"><p>Indoor activity and localization</p></td><td colspan="1" rowspan="1"><p>Activity labels and spatial observations</p></td><td colspan="1" rowspan="1"><p>Multi-task or sensor-feature fusion</p></td><td colspan="1" rowspan="1"><p>Classification, tracking, or sequence learning</p></td><td colspan="1" rowspan="1"><p>Limited explicit cross-layer traceability</p></td></tr><tr><td colspan="1" rowspan="1"><p>Proposed framework</p></td><td colspan="1" rowspan="1"><p>Mixed directed/undirected activity graph and spatial location graph</p></td><td colspan="1" rowspan="1"><p>Explicit matrices <mml:math id="m8gvikm4rv">
+  <mml:mrow>
+    <mml:mi>B</mml:mi>
+  </mml:mrow>
+</mml:math> and optional <mml:math id="mzck1eot1v">
+  <mml:mrow>
+    <mml:mi>C</mml:mi>
+  </mml:mrow>
+</mml:math></p></td><td colspan="1" rowspan="1"><p>Probability-preserving networked state model</p></td><td colspan="1" rowspan="1"><p>GSP-filtered cross-layer mismatch residual with traceability</p></td></tr></tbody></table>
+                </table-wrap>
+              
+            </sec>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>1.3. Research gaps and contributions</title>
+          
+          <p>The literature reveals some specific gaps. For example, a single-graph movement model cannot distinguish spatial feasibility from the semantic dependencies that motivate movement. Many dual-graph architectures use two graph branches that do not explicitly represent directed causal activity relations together with undirected contextual relations in one mixed activity layer. Through such mixed layers it is possible to construct a mechanism for detection and localization of inconsistencies between activity and movement. This paper contributes to the construction of a mixed causal-contextual activity operator combined with a spatial movement graph. It offers an explicit activity-to-location mapping with manual-prior and data-driven weight-assignment alternatives. It demonstrates how a probability-preserving coupled dynamical model and GSP framework can offer residual-based anomaly detection with quantitative performance metrics.</p>
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>2. Problem formulation and dual-graph model</title>
+      <p>In the following calligraphic symbols denote sets and graphs, bold upper-case symbols denote matrices, and bold lower-case symbols denote column vectors. Let <inline-formula>
+  <mml:math id="mxx9rlxsju">
+    <mml:msub>
+      <mml:mrow>
+        <mml:mi data-mjx-variant="-tex-calligraphic">G</mml:mi>
+      </mml:mrow>
+      <mml:mi data-mjx-variant="-tex-calligraphic">L</mml:mi>
+    </mml:msub>
+    <mml:msub>
+      <mml:mrow>
+        <mml:mi data-mjx-variant="-tex-calligraphic">V</mml:mi>
+      </mml:mrow>
+      <mml:mi data-mjx-variant="-tex-calligraphic">L</mml:mi>
+    </mml:msub>
+    <mml:msub>
+      <mml:mrow>
+        <mml:mi data-mjx-variant="-tex-calligraphic">E</mml:mi>
+      </mml:mrow>
+      <mml:mi data-mjx-variant="-tex-calligraphic">L</mml:mi>
+    </mml:msub>
+    <mml:mo data-mjx-variant="-tex-calligraphic">=</mml:mo>
+    <mml:mo data-mjx-variant="-tex-calligraphic">(</mml:mo>
+    <mml:mo data-mjx-variant="-tex-calligraphic">,</mml:mo>
+    <mml:mo data-mjx-variant="-tex-calligraphic">)</mml:mo>
+  </mml:math>
+</inline-formula> be the location graph with <inline-formula>
+  <mml:math id="mk9zld6255">
+    <mml:msub>
+      <mml:mi>N</mml:mi>
+      <mml:mi>L</mml:mi>
+    </mml:msub>
+    <mml:msub>
+      <mml:mrow>
+        <mml:mi data-mjx-variant="-tex-calligraphic">V</mml:mi>
+      </mml:mrow>
+      <mml:mi data-mjx-variant="-tex-calligraphic">L</mml:mi>
+    </mml:msub>
+    <mml:mo>=</mml:mo>
+    <mml:mo data-mjx-variant="-tex-calligraphic">|</mml:mo>
+    <mml:mrow>
+      <mml:mo>|</mml:mo>
+    </mml:mrow>
+  </mml:math>
+</inline-formula>, adjacency matrix <inline-formula>
+  <mml:math id="mcustxniab">
+    <mml:msub>
+      <mml:mrow>
+        <mml:mi>A</mml:mi>
+      </mml:mrow>
+      <mml:mi>L</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula>, degree matrix <inline-formula>
+  <mml:math id="mqvj5cy6i6">
+    <mml:msub>
+      <mml:mrow>
+        <mml:mi>D</mml:mi>
+      </mml:mrow>
+      <mml:mi>L</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula>, and the Laplacian as:</p>
+      
+        <disp-formula>
+          <label>(1)</label>
+          <mml:math id="mq8fks0o02">
+            <mml:msub>
+              <mml:mrow>
+                <mml:mi>L</mml:mi>
+              </mml:mrow>
+              <mml:mi>L</mml:mi>
+            </mml:msub>
+            <mml:msub>
+              <mml:mrow>
+                <mml:mi>D</mml:mi>
+              </mml:mrow>
+              <mml:mi>L</mml:mi>
+            </mml:msub>
+            <mml:msub>
+              <mml:mrow>
+                <mml:mi>A</mml:mi>
+              </mml:mrow>
+              <mml:mi>L</mml:mi>
+            </mml:msub>
+            <mml:mo>=</mml:mo>
+            <mml:mo>−</mml:mo>
+            <mml:mo>.</mml:mo>
+          </mml:math>
+        </disp-formula>
+      
+      <p>The location state <inline-formula>
+  <mml:math id="mmkjmul5si">
+    <mml:msub>
+      <mml:mrow>
+        <mml:mi>x</mml:mi>
+      </mml:mrow>
+      <mml:mi>t</mml:mi>
+    </mml:msub>
+    <mml:mo>∈</mml:mo>
+    <mml:msup>
+      <mml:mrow>
+        <mml:mi>R</mml:mi>
+      </mml:mrow>
+      <mml:mrow>
+        <mml:msub>
+          <mml:mi>N</mml:mi>
+          <mml:mi>L</mml:mi>
+        </mml:msub>
+      </mml:mrow>
+    </mml:msup>
+  </mml:math>
+</inline-formula> is a column probability vector satisfying <inline-formula>
+  <mml:math id="mt1wrehlol">
+    <mml:msub>
+      <mml:mrow>
+        <mml:mi>x</mml:mi>
+      </mml:mrow>
+      <mml:mi>t</mml:mi>
+    </mml:msub>
+    <mml:mo>≥</mml:mo>
+    <mml:mn>0</mml:mn>
+  </mml:math>
+</inline-formula> and <inline-formula>
+  <mml:math id="mttnb4jr63">
+    <mml:msup>
+      <mml:mrow>
+        <mml:mn>1</mml:mn>
+      </mml:mrow>
+      <mml:mi>⊤</mml:mi>
+    </mml:msup>
+    <mml:msub>
+      <mml:mrow>
+        <mml:mi>x</mml:mi>
+      </mml:mrow>
+      <mml:mi>t</mml:mi>
+    </mml:msub>
+    <mml:mo>=</mml:mo>
+    <mml:mn>1</mml:mn>
+  </mml:math>
+</inline-formula>.</p><p>Let the mixed activity graph be defined as:</p><p>\[ {\cal G}_A = ({\cal V}_A , {\cal E}_A^{(d)} , {\cal E}_A^{(u)} ). \]</p><p>Its directed and undirected weighted adjacency matrices are <inline-formula>
+  <mml:math id="mefeoj2zwi">
+    <mml:msub>
+      <mml:mrow>
+        <mml:mi>A</mml:mi>
+      </mml:mrow>
+      <mml:mi>A</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> and <inline-formula>
+  <mml:math id="mj72llserd">
+    <mml:msub>
+      <mml:mrow>
+        <mml:mi>U</mml:mi>
+      </mml:mrow>
+      <mml:mi>A</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula>, respectively. Under the adopted source-to-destination convention, entry <inline-formula>
+  <mml:math id="mkeb3gi6gq">
+    <mml:mo>(</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mi>i</mml:mi>
+    <mml:mi>j</mml:mi>
+  </mml:math>
+</inline-formula> represents influence or transition from node $i<inline-formula>
+  <mml:math id="m7pdnouko7">
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+  </mml:math>
+</inline-formula>j$.</p>
+      
+        <sec>
+          
+            <title>2.1. Mixed causal-contextual activity operator</title>
+          
+          <p>The adjacency activity matrices defined above are row-normalized so that every row has unit sum. We denote the resulting matrices by <inline-formula>
+  <mml:math id="ml6ctzvn7d">
+    <mml:msub>
+      <mml:mrow>
+        <mml:mover>
+          <mml:mrow>
+            <mml:mi>A</mml:mi>
+          </mml:mrow>
+          <mml:mo>¯</mml:mo>
+        </mml:mover>
+      </mml:mrow>
+      <mml:mi>A</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> and <inline-formula>
+  <mml:math id="mk4dx3d56u">
+    <mml:msub>
+      <mml:mrow>
+        <mml:mover>
+          <mml:mrow>
+            <mml:mi>U</mml:mi>
+          </mml:mrow>
+          <mml:mo>¯</mml:mo>
+        </mml:mover>
+      </mml:mrow>
+      <mml:mi>A</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula>. The composite activity interaction matrix is:</p>
+          
+            <disp-formula>
+              <label>(2)</label>
+              <mml:math id="ma7llztqrv">
+                <mml:msub>
+                  <mml:mrow>
+                    <mml:mi>M</mml:mi>
+                  </mml:mrow>
+                  <mml:mi>A</mml:mi>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mrow>
+                    <mml:mover>
+                      <mml:mrow>
+                        <mml:mi>A</mml:mi>
+                      </mml:mrow>
+                      <mml:mo>¯</mml:mo>
+                    </mml:mover>
+                  </mml:mrow>
+                  <mml:mi>A</mml:mi>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mrow>
+                    <mml:mover>
+                      <mml:mrow>
+                        <mml:mi>U</mml:mi>
+                      </mml:mrow>
+                      <mml:mo>¯</mml:mo>
+                    </mml:mover>
+                  </mml:mrow>
+                  <mml:mi>A</mml:mi>
+                </mml:msub>
+                <mml:mo>(</mml:mo>
+                <mml:mo>)</mml:mo>
+                <mml:mo>=</mml:mo>
+                <mml:mo>+</mml:mo>
+                <mml:mo>(</mml:mo>
+                <mml:mo>−</mml:mo>
+                <mml:mo>)</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo>≤</mml:mo>
+                <mml:mo>≤</mml:mo>
+                <mml:mi>β</mml:mi>
+                <mml:mi>β</mml:mi>
+                <mml:mi>β</mml:mi>
+                <mml:mi>β</mml:mi>
+                <mml:mn>1</mml:mn>
+                <mml:mn>0</mml:mn>
+                <mml:mn>1.</mml:mn>
+                <mml:mstyle scriptlevel="0">
+                  <mml:mspace width="2em"/>
+                </mml:mstyle>
+              </mml:math>
+            </disp-formula>
+          
+          <p>Because <inline-formula>
+  <mml:math id="m9bjuzmy9e">
+    <mml:msub>
+      <mml:mrow>
+        <mml:mi>M</mml:mi>
+      </mml:mrow>
+      <mml:mi>A</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> is a combination of non-negative row-stochastic matrices, it is also non-negative and row-stochastic:</p>
+          
+            <disp-formula>
+              <label>(3)</label>
+              <mml:math id="mgoys59u0e">
+                <mml:munderover>
+                  <mml:mo>∑</mml:mo>
+                  <mml:mrow>
+                    <mml:mi>j</mml:mi>
+                    <mml:mo>=</mml:mo>
+                    <mml:mn>1</mml:mn>
+                  </mml:mrow>
+                  <mml:mrow>
+                    <mml:msub>
+                      <mml:mi>N</mml:mi>
+                      <mml:mi>A</mml:mi>
+                    </mml:msub>
+                  </mml:mrow>
+                </mml:munderover>
+                <mml:munderover>
+                  <mml:mo>∑</mml:mo>
+                  <mml:mrow>
+                    <mml:mi>j</mml:mi>
+                    <mml:mo>=</mml:mo>
+                    <mml:mn>1</mml:mn>
+                  </mml:mrow>
+                  <mml:mrow>
+                    <mml:msub>
+                      <mml:mi>N</mml:mi>
+                      <mml:mi>A</mml:mi>
+                    </mml:msub>
+                  </mml:mrow>
+                </mml:munderover>
+                <mml:munderover>
+                  <mml:mo>∑</mml:mo>
+                  <mml:mrow>
+                    <mml:mi>j</mml:mi>
+                    <mml:mo>=</mml:mo>
+                    <mml:mn>1</mml:mn>
+                  </mml:mrow>
+                  <mml:mrow>
+                    <mml:msub>
+                      <mml:mi>N</mml:mi>
+                      <mml:mi>A</mml:mi>
+                    </mml:msub>
+                  </mml:mrow>
+                </mml:munderover>
+                <mml:mo>(</mml:mo>
+                <mml:mo>=</mml:mo>
+                <mml:mo>(</mml:mo>
+                <mml:mo>+</mml:mo>
+                <mml:mo>(</mml:mo>
+                <mml:mo>−</mml:mo>
+                <mml:mo>)</mml:mo>
+                <mml:mo>(</mml:mo>
+                <mml:mo>=</mml:mo>
+                <mml:mo>+</mml:mo>
+                <mml:mo>(</mml:mo>
+                <mml:mo>−</mml:mo>
+                <mml:mo>)</mml:mo>
+                <mml:mo>=</mml:mo>
+                <mml:msub>
+                  <mml:mi>M</mml:mi>
+                  <mml:mi>A</mml:mi>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mo>)</mml:mo>
+                  <mml:mrow>
+                    <mml:mi>i</mml:mi>
+                    <mml:mi>j</mml:mi>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mrow>
+                    <mml:mover>
+                      <mml:mi>A</mml:mi>
+                      <mml:mo>¯</mml:mo>
+                    </mml:mover>
+                  </mml:mrow>
+                  <mml:mi>A</mml:mi>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mo>)</mml:mo>
+                  <mml:mrow>
+                    <mml:mi>i</mml:mi>
+                    <mml:mi>j</mml:mi>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mrow>
+                    <mml:mover>
+                      <mml:mi>U</mml:mi>
+                      <mml:mo>¯</mml:mo>
+                    </mml:mover>
+                  </mml:mrow>
+                  <mml:mi>A</mml:mi>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mo>)</mml:mo>
+                  <mml:mrow>
+                    <mml:mi>i</mml:mi>
+                    <mml:mi>j</mml:mi>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:mi>β</mml:mi>
+                <mml:mi>β</mml:mi>
+                <mml:mi>β</mml:mi>
+                <mml:mi>β</mml:mi>
+                <mml:mn>1</mml:mn>
+                <mml:mn>1</mml:mn>
+                <mml:mn>1.</mml:mn>
+              </mml:math>
+            </disp-formula>
+          
+          <p>This weighted fusion follows the basis for multilayer-network principle that relation-specific operators can be combined through interpretable layer weights [<xref ref-type="bibr" rid="ref_26">26</xref>], [<xref ref-type="bibr" rid="ref_27">27</xref>].</p><p>The activity state <inline-formula>
+  <mml:math id="mfzcxvg04c">
+    <mml:msub>
+      <mml:mrow>
+        <mml:mi>a</mml:mi>
+      </mml:mrow>
+      <mml:mi>t</mml:mi>
+    </mml:msub>
+    <mml:mo>∈</mml:mo>
+    <mml:msup>
+      <mml:mrow>
+        <mml:mi>R</mml:mi>
+      </mml:mrow>
+      <mml:mrow>
+        <mml:msub>
+          <mml:mi>N</mml:mi>
+          <mml:mi>A</mml:mi>
+        </mml:msub>
+      </mml:mrow>
+    </mml:msup>
+  </mml:math>
+</inline-formula> evolves according to</p>
+          
+            <disp-formula>
+              <label>(4)</label>
+              <mml:math id="m30bmr4ebc">
+                <mml:msub>
+                  <mml:mrow>
+                    <mml:mi>a</mml:mi>
+                  </mml:mrow>
+                  <mml:mrow>
+                    <mml:mi>t</mml:mi>
+                    <mml:mo>+</mml:mo>
+                    <mml:mn>1</mml:mn>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mrow>
+                    <mml:mi>a</mml:mi>
+                  </mml:mrow>
+                  <mml:mi>t</mml:mi>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mrow>
+                    <mml:mi>η</mml:mi>
+                  </mml:mrow>
+                  <mml:mi>t</mml:mi>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mo>+</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mrow>
+                  <mml:msubsup>
+                    <mml:mrow>
+                      <mml:mi>M</mml:mi>
+                    </mml:mrow>
+                    <mml:mrow>
+                      <mml:mi>⊤</mml:mi>
+                    </mml:mrow>
+                    <mml:mi>A</mml:mi>
+                  </mml:msubsup>
+                </mml:mrow>
+              </mml:math>
+            </disp-formula>
+          
+          <p>Eq. (4) is a first-order networked dynamical approximation: the current activity distribution propagates through graph-defined influences, while <inline-formula>
+  <mml:math id="mzl9xspyee">
+    <mml:msub>
+      <mml:mrow>
+        <mml:mi>η</mml:mi>
+      </mml:mrow>
+      <mml:mi>t</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> can be interpreted as spontaneous choices, unmodelled context, and estimation uncertainty [<xref ref-type="bibr" rid="ref_28">28</xref>], [<xref ref-type="bibr" rid="ref_29">29</xref>].</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>2.2. Movement dynamics and construction of the transition matrix</title>
+          
+          <p>Let <inline-formula>
+  <mml:math id="m9lvzj2av3">
+    <mml:mrow>
+      <mml:mi data-mjx-variant="-tex-calligraphic">N</mml:mi>
+    </mml:mrow>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mi>i</mml:mi>
+  </mml:math>
+</inline-formula> be the set of locations adjacent to location $i<inline-formula>
+  <mml:math id="mpw9rbtcmd">
+    <mml:mo>,</mml:mo>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+  </mml:math>
+</inline-formula>d_i=|\mathcal{N}(i)|<inline-formula>
+  <mml:math id="m5g4w2ghmq">
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>s_i\in[ 0,1]$ be its dwell probability. Define</p>
+          
+            <disp-formula>
+              <label>(5)</label>
+              <mml:math id="mh5o6g30oi">
+                <mml:msub>
+                  <mml:mi>P</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>i</mml:mi>
+                    <mml:mi>j</mml:mi>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mrow>
+                  <mml:mo>{</mml:mo>
+                  <mml:mo fence="true"/>
+                  <mml:mtable columnalign="left left" columnspacing="1em" rowspacing="0.767em 0.767em 0.2em">
+                    <mml:mtr>
+                      <mml:mtd>
+                        <mml:msub>
+                          <mml:mi>s</mml:mi>
+                          <mml:mi>i</mml:mi>
+                        </mml:msub>
+                        <mml:mo>,</mml:mo>
+                      </mml:mtd>
+                      <mml:mtd>
+                        <mml:mi>j</mml:mi>
+                        <mml:mi>i</mml:mi>
+                        <mml:mo>=</mml:mo>
+                        <mml:mo>,</mml:mo>
+                      </mml:mtd>
+                    </mml:mtr>
+                    <mml:mtr>
+                      <mml:mtd>
+                        <mml:mstyle displaystyle="true" scriptlevel="0">
+                          <mml:mfrac>
+                            <mml:mrow>
+                              <mml:mn>1</mml:mn>
+                              <mml:mo>−</mml:mo>
+                              <mml:msub>
+                                <mml:mi>s</mml:mi>
+                                <mml:mi>i</mml:mi>
+                              </mml:msub>
+                            </mml:mrow>
+                            <mml:msub>
+                              <mml:mi>d</mml:mi>
+                              <mml:mi>i</mml:mi>
+                            </mml:msub>
+                          </mml:mfrac>
+                        </mml:mstyle>
+                        <mml:mo>,</mml:mo>
+                      </mml:mtd>
+                      <mml:mtd>
+                        <mml:mi>j</mml:mi>
+                        <mml:mi>i</mml:mi>
+                        <mml:mo>∈</mml:mo>
+                        <mml:mo>(</mml:mo>
+                        <mml:mo>)</mml:mo>
+                        <mml:mo>,</mml:mo>
+                        <mml:mrow>
+                          <mml:mi data-mjx-variant="-tex-calligraphic">N</mml:mi>
+                        </mml:mrow>
+                      </mml:mtd>
+                    </mml:mtr>
+                    <mml:mtr>
+                      <mml:mtd>
+                        <mml:mn>0</mml:mn>
+                        <mml:mo>,</mml:mo>
+                      </mml:mtd>
+                      <mml:mtd>
+                        <mml:mtext>otherwise</mml:mtext>
+                        <mml:mo>.</mml:mo>
+                      </mml:mtd>
+                    </mml:mtr>
+                  </mml:mtable>
+                </mml:mrow>
+              </mml:math>
+            </disp-formula>
+          
+          <p>For any row $i$,</p>
+          
+            <disp-formula>
+              <label>(6)</label>
+              <mml:math id="mmgzn2qzq8">
+                <mml:munderover>
+                  <mml:mo>∑</mml:mo>
+                  <mml:mrow>
+                    <mml:mi>j</mml:mi>
+                    <mml:mo>=</mml:mo>
+                    <mml:mn>1</mml:mn>
+                  </mml:mrow>
+                  <mml:mrow>
+                    <mml:msub>
+                      <mml:mi>N</mml:mi>
+                      <mml:mi>L</mml:mi>
+                    </mml:msub>
+                  </mml:mrow>
+                </mml:munderover>
+                <mml:msub>
+                  <mml:mi>P</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>i</mml:mi>
+                    <mml:mi>j</mml:mi>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>P</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>i</mml:mi>
+                    <mml:mi>i</mml:mi>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>P</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>i</mml:mi>
+                    <mml:mi>j</mml:mi>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>s</mml:mi>
+                  <mml:mi>i</mml:mi>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>d</mml:mi>
+                  <mml:mi>i</mml:mi>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mo>+</mml:mo>
+                <mml:mo>=</mml:mo>
+                <mml:mo>+</mml:mo>
+                <mml:mo>=</mml:mo>
+                <mml:munder>
+                  <mml:mo>∑</mml:mo>
+                  <mml:mrow>
+                    <mml:mi>j</mml:mi>
+                    <mml:mi>i</mml:mi>
+                    <mml:mo>∈</mml:mo>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:mrow>
+                      <mml:mi data-mjx-variant="-tex-calligraphic">N</mml:mi>
+                    </mml:mrow>
+                  </mml:mrow>
+                </mml:munder>
+                <mml:mfrac>
+                  <mml:mrow>
+                    <mml:mn>1</mml:mn>
+                    <mml:mo>−</mml:mo>
+                    <mml:msub>
+                      <mml:mi>s</mml:mi>
+                      <mml:mi>i</mml:mi>
+                    </mml:msub>
+                  </mml:mrow>
+                  <mml:msub>
+                    <mml:mi>d</mml:mi>
+                    <mml:mi>i</mml:mi>
+                  </mml:msub>
+                </mml:mfrac>
+                <mml:mn>1.</mml:mn>
+              </mml:math>
+            </disp-formula>
+          
+          <p>The probability-preserving movement update is:</p>
+          
+            <disp-formula>
+              <label>(7)</label>
+              <mml:math id="mtj7dcyrv7">
+                <mml:msub>
+                  <mml:mrow>
+                    <mml:mi>x</mml:mi>
+                  </mml:mrow>
+                  <mml:mrow>
+                    <mml:mi>t</mml:mi>
+                    <mml:mo>+</mml:mo>
+                    <mml:mn>1</mml:mn>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>x</mml:mi>
+                  <mml:mi>t</mml:mi>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mrow>
+                    <mml:mi>ϵ</mml:mi>
+                  </mml:mrow>
+                  <mml:mi>t</mml:mi>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mo>+</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mrow>
+                  <mml:msup>
+                    <mml:mrow>
+                      <mml:mi>P</mml:mi>
+                    </mml:mrow>
+                    <mml:mi>⊤</mml:mi>
+                  </mml:msup>
+                </mml:mrow>
+              </mml:math>
+            </disp-formula>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>2.3. Activity-to-location mapping</title>
+          
+          <p>The matrix <inline-formula>
+  <mml:math id="ms6kd4gixt">
+    <mml:mrow>
+      <mml:mi>B</mml:mi>
+    </mml:mrow>
+    <mml:mo>∈</mml:mo>
+    <mml:msup>
+      <mml:mrow>
+        <mml:mi>R</mml:mi>
+      </mml:mrow>
+      <mml:mrow>
+        <mml:msub>
+          <mml:mi>N</mml:mi>
+          <mml:mi>L</mml:mi>
+        </mml:msub>
+        <mml:msub>
+          <mml:mi>N</mml:mi>
+          <mml:mi>A</mml:mi>
+        </mml:msub>
+        <mml:mo>×</mml:mo>
+      </mml:mrow>
+    </mml:msup>
+  </mml:math>
+</inline-formula> maps activity states into spatial expectations. Its entries satisfy <inline-formula>
+  <mml:math id="m1w8jd1ghx">
+    <mml:msub>
+      <mml:mi>B</mml:mi>
+      <mml:mrow>
+        <mml:mi>i</mml:mi>
+        <mml:mi>j</mml:mi>
+      </mml:mrow>
+    </mml:msub>
+    <mml:mo>≥</mml:mo>
+    <mml:mn>0</mml:mn>
+  </mml:math>
+</inline-formula>, and each activity column is normalized so that <inline-formula>
+  <mml:math id="m03k9d1g8j">
+    <mml:munder>
+      <mml:mo>∑</mml:mo>
+      <mml:mi>i</mml:mi>
+    </mml:munder>
+    <mml:msub>
+      <mml:mi>B</mml:mi>
+      <mml:mrow>
+        <mml:mi>i</mml:mi>
+        <mml:mi>j</mml:mi>
+      </mml:mrow>
+    </mml:msub>
+    <mml:mo>=</mml:mo>
+    <mml:mn>1</mml:mn>
+  </mml:math>
+</inline-formula>. The activity-induced spatial distribution is:</p>
+          
+            <disp-formula>
+              <label>(8)</label>
+              <mml:math id="m9hufqvchg">
+                <mml:msubsup>
+                  <mml:mrow>
+                    <mml:mover>
+                      <mml:mrow>
+                        <mml:mi>x</mml:mi>
+                      </mml:mrow>
+                      <mml:mo>^</mml:mo>
+                    </mml:mover>
+                  </mml:mrow>
+                  <mml:mrow>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:mi>A</mml:mi>
+                  </mml:mrow>
+                  <mml:mi>t</mml:mi>
+                </mml:msubsup>
+                <mml:mo>=</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mfrac>
+                  <mml:mrow>
+                    <mml:mrow>
+                      <mml:mrow>
+                        <mml:mi>B</mml:mi>
+                      </mml:mrow>
+                    </mml:mrow>
+                    <mml:msub>
+                      <mml:mrow>
+                        <mml:mi>a</mml:mi>
+                      </mml:mrow>
+                      <mml:mi>t</mml:mi>
+                    </mml:msub>
+                  </mml:mrow>
+                  <mml:mrow>
+                    <mml:msup>
+                      <mml:mrow>
+                        <mml:mn>1</mml:mn>
+                      </mml:mrow>
+                      <mml:mi>⊤</mml:mi>
+                    </mml:msup>
+                    <mml:mrow>
+                      <mml:mrow>
+                        <mml:mi>B</mml:mi>
+                      </mml:mrow>
+                    </mml:mrow>
+                    <mml:msub>
+                      <mml:mrow>
+                        <mml:mi>a</mml:mi>
+                      </mml:mrow>
+                      <mml:mi>t</mml:mi>
+                    </mml:msub>
+                  </mml:mrow>
+                </mml:mfrac>
+              </mml:math>
+            </disp-formula>
+          
+          <p>provided the denominator is positive.</p><p>This framework can support two weight-assignment schemes. For example, in a manual/prior scheme, <inline-formula>
+  <mml:math id="mq0p0seuco">
+    <mml:msub>
+      <mml:mi>B</mml:mi>
+      <mml:mrow>
+        <mml:mi>i</mml:mi>
+        <mml:mi>j</mml:mi>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula> is assigned from room-function knowledge: a value of one can identify the primary room of an activity, while smaller values represent plausible secondary rooms. This approach is appropriate when data are scarce and domain knowledge is reliable (e.g. care-giver's knowledge). In a data-driven scheme, weights are estimated from synchronized activity and location observations.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>2.4. Cross-layer coupling</title>
+          
+          <p>The coupled location dynamics are defined as:</p>
+          
+            <disp-formula>
+              <label>(9)</label>
+              <mml:math id="m97zrtwoei">
+                <mml:msub>
+                  <mml:mrow>
+                    <mml:mi>x</mml:mi>
+                  </mml:mrow>
+                  <mml:mrow>
+                    <mml:mi>t</mml:mi>
+                    <mml:mo>+</mml:mo>
+                    <mml:mn>1</mml:mn>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mrow>
+                    <mml:mi>x</mml:mi>
+                  </mml:mrow>
+                  <mml:mi>t</mml:mi>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mrow>
+                    <mml:mi>ϵ</mml:mi>
+                  </mml:mrow>
+                  <mml:mi>t</mml:mi>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mo>(</mml:mo>
+                <mml:mo>−</mml:mo>
+                <mml:mo>)</mml:mo>
+                <mml:mo>+</mml:mo>
+                <mml:mo>+</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo>≤</mml:mo>
+                <mml:mo>≤</mml:mo>
+                <mml:mn>1</mml:mn>
+                <mml:mn>0</mml:mn>
+                <mml:mn>1.</mml:mn>
+                <mml:mi>λ</mml:mi>
+                <mml:mi>λ</mml:mi>
+                <mml:mi>λ</mml:mi>
+                <mml:mrow>
+                  <mml:msup>
+                    <mml:mrow>
+                      <mml:mi>P</mml:mi>
+                    </mml:mrow>
+                    <mml:mrow>
+                      <mml:mi>⊤</mml:mi>
+                    </mml:mrow>
+                  </mml:msup>
+                </mml:mrow>
+                <mml:msubsup>
+                  <mml:mrow>
+                    <mml:mover>
+                      <mml:mrow>
+                        <mml:mi>x</mml:mi>
+                      </mml:mrow>
+                      <mml:mo>^</mml:mo>
+                    </mml:mover>
+                  </mml:mrow>
+                  <mml:mrow>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:mi>A</mml:mi>
+                  </mml:mrow>
+                  <mml:mi>t</mml:mi>
+                </mml:msubsup>
+                <mml:mstyle scriptlevel="0">
+                  <mml:mspace width="2em"/>
+                </mml:mstyle>
+              </mml:math>
+            </disp-formula>
+          
+          <p>In the absence of noise, both terms are probability vectors, so their combination remains a probability vector. The gain <inline-formula>
+  <mml:math id="me6fs1lc1f">
+    <mml:mi>λ</mml:mi>
+  </mml:math>
+</inline-formula> has an interpretable meaning: <inline-formula>
+  <mml:math id="m5pb3wzbvg">
+    <mml:mi>λ</mml:mi>
+    <mml:mo>=</mml:mo>
+    <mml:mn>0</mml:mn>
+  </mml:math>
+</inline-formula> yields topology-driven movement, whereas <inline-formula>
+  <mml:math id="mtdgunj21j">
+    <mml:mi>λ</mml:mi>
+    <mml:mo>=</mml:mo>
+    <mml:mn>1</mml:mn>
+  </mml:math>
+</inline-formula> makes the next spatial state entirely activity-driven.</p><p>The baseline model assumes that activity influences location but location does not directly change activity. With the augmented state <inline-formula>
+  <mml:math id="m6wdtml0i1">
+    <mml:msub>
+      <mml:mrow>
+        <mml:mi>z</mml:mi>
+      </mml:mrow>
+      <mml:mi>t</mml:mi>
+    </mml:msub>
+    <mml:mo>=</mml:mo>
+    <mml:mo>[</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:msubsup>
+      <mml:mrow>
+        <mml:mi>a</mml:mi>
+      </mml:mrow>
+      <mml:mrow>
+        <mml:mi>⊤</mml:mi>
+      </mml:mrow>
+      <mml:mi>t</mml:mi>
+    </mml:msubsup>
+    <mml:msubsup>
+      <mml:mrow>
+        <mml:mi>x</mml:mi>
+      </mml:mrow>
+      <mml:mrow>
+        <mml:mi>⊤</mml:mi>
+      </mml:mrow>
+      <mml:mi>t</mml:mi>
+    </mml:msubsup>
+    <mml:msup>
+      <mml:mo>]</mml:mo>
+      <mml:mrow>
+        <mml:mi>⊤</mml:mi>
+      </mml:mrow>
+    </mml:msup>
+  </mml:math>
+</inline-formula>, a linearised, unnormalized representation is:</p>
+          
+            <disp-formula>
+              <label>(10)</label>
+              <mml:math id="mgjashdb90">
+                <mml:msub>
+                  <mml:mrow>
+                    <mml:mi>z</mml:mi>
+                  </mml:mrow>
+                  <mml:mrow>
+                    <mml:mi>t</mml:mi>
+                    <mml:mo>+</mml:mo>
+                    <mml:mn>1</mml:mn>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mrow>
+                    <mml:mi>z</mml:mi>
+                  </mml:mrow>
+                  <mml:mi>t</mml:mi>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mo>+</mml:mo>
+                <mml:mo>.</mml:mo>
+                <mml:mrow>
+                  <mml:mo>[</mml:mo>
+                  <mml:mo>]</mml:mo>
+                  <mml:mtable columnspacing="1em" rowspacing="4pt">
+                    <mml:mtr>
+                      <mml:mtd>
+                        <mml:msubsup>
+                          <mml:mrow>
+                            <mml:mi>M</mml:mi>
+                          </mml:mrow>
+                          <mml:mrow>
+                            <mml:mi>⊤</mml:mi>
+                          </mml:mrow>
+                          <mml:mi>A</mml:mi>
+                        </mml:msubsup>
+                      </mml:mtd>
+                      <mml:mtd>
+                        <mml:mrow>
+                          <mml:mn>0</mml:mn>
+                        </mml:mrow>
+                      </mml:mtd>
+                    </mml:mtr>
+                    <mml:mtr>
+                      <mml:mtd>
+                        <mml:mi>λ</mml:mi>
+                        <mml:mrow>
+                          <mml:mi>B</mml:mi>
+                        </mml:mrow>
+                      </mml:mtd>
+                      <mml:mtd>
+                        <mml:mo>(</mml:mo>
+                        <mml:mo>−</mml:mo>
+                        <mml:mo>)</mml:mo>
+                        <mml:mn>1</mml:mn>
+                        <mml:mi>λ</mml:mi>
+                        <mml:msup>
+                          <mml:mrow>
+                            <mml:mi>P</mml:mi>
+                          </mml:mrow>
+                          <mml:mrow>
+                            <mml:mi>⊤</mml:mi>
+                          </mml:mrow>
+                        </mml:msup>
+                      </mml:mtd>
+                    </mml:mtr>
+                  </mml:mtable>
+                </mml:mrow>
+                <mml:mrow>
+                  <mml:mo>[</mml:mo>
+                  <mml:mo>]</mml:mo>
+                  <mml:mtable columnspacing="1em" rowspacing="4pt">
+                    <mml:mtr>
+                      <mml:mtd>
+                        <mml:msub>
+                          <mml:mrow>
+                            <mml:mi>η</mml:mi>
+                          </mml:mrow>
+                          <mml:mi>t</mml:mi>
+                        </mml:msub>
+                      </mml:mtd>
+                    </mml:mtr>
+                    <mml:mtr>
+                      <mml:mtd>
+                        <mml:msub>
+                          <mml:mrow>
+                            <mml:mi>ϵ</mml:mi>
+                          </mml:mrow>
+                          <mml:mi>t</mml:mi>
+                        </mml:msub>
+                      </mml:mtd>
+                    </mml:mtr>
+                  </mml:mtable>
+                </mml:mrow>
+              </mml:math>
+            </disp-formula>
+          
+          <p>The zero upper-right block is a modelling baseline, not a universal behavioural claim. It is reasonable when the activity estimator already incorporates environmental context or when the study seeks to isolate semantic-to-spatial influence.</p><p>For settings in which location constrains activity selection, define <inline-formula>
+  <mml:math id="mq77ewrbgj">
+    <mml:mrow>
+      <mml:mi>C</mml:mi>
+    </mml:mrow>
+    <mml:mo>∈</mml:mo>
+    <mml:msup>
+      <mml:mrow>
+        <mml:mi>R</mml:mi>
+      </mml:mrow>
+      <mml:mrow>
+        <mml:msub>
+          <mml:mi>N</mml:mi>
+          <mml:mi>A</mml:mi>
+        </mml:msub>
+        <mml:msub>
+          <mml:mi>N</mml:mi>
+          <mml:mi>L</mml:mi>
+        </mml:msub>
+        <mml:mo>×</mml:mo>
+      </mml:mrow>
+    </mml:msup>
+  </mml:math>
+</inline-formula> and feedback gain <inline-formula>
+  <mml:math id="mm2lqcy7sm">
+    <mml:mi>γ</mml:mi>
+    <mml:mo>∈</mml:mo>
+    <mml:mo>[</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>]</mml:mo>
+    <mml:mn>0</mml:mn>
+    <mml:mn>1</mml:mn>
+  </mml:math>
+</inline-formula>:</p>
+          
+            <disp-formula>
+              <label>(11)</label>
+              <mml:math id="mdfh8eqetz">
+                <mml:msub>
+                  <mml:mi>a</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>t</mml:mi>
+                    <mml:mo>+</mml:mo>
+                    <mml:mn>1</mml:mn>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>a</mml:mi>
+                  <mml:mi>t</mml:mi>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>x</mml:mi>
+                  <mml:mi>t</mml:mi>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>η</mml:mi>
+                  <mml:mi>t</mml:mi>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mo>(</mml:mo>
+                <mml:mo>−</mml:mo>
+                <mml:mo>)</mml:mo>
+                <mml:mo>+</mml:mo>
+                <mml:mo>+</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mn>1</mml:mn>
+                <mml:mi>γ</mml:mi>
+                <mml:mi>γ</mml:mi>
+                <mml:mi>C</mml:mi>
+                <mml:msubsup>
+                  <mml:mi>M</mml:mi>
+                  <mml:mi>A</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>⊤</mml:mi>
+                  </mml:mrow>
+                </mml:msubsup>
+              </mml:math>
+            </disp-formula>
+          
+          
+            <disp-formula>
+              <label>(12)</label>
+              <mml:math id="mmo9v8x6st">
+                <mml:msub>
+                  <mml:mi>x</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>t</mml:mi>
+                    <mml:mo>+</mml:mo>
+                    <mml:mn>1</mml:mn>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>x</mml:mi>
+                  <mml:mi>t</mml:mi>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>a</mml:mi>
+                  <mml:mi>t</mml:mi>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>ϵ</mml:mi>
+                  <mml:mi>t</mml:mi>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mo>(</mml:mo>
+                <mml:mo>−</mml:mo>
+                <mml:mo>)</mml:mo>
+                <mml:mo>+</mml:mo>
+                <mml:mo>+</mml:mo>
+                <mml:mo>.</mml:mo>
+                <mml:mn>1</mml:mn>
+                <mml:mi>λ</mml:mi>
+                <mml:mi>λ</mml:mi>
+                <mml:mi>B</mml:mi>
+                <mml:msup>
+                  <mml:mi>P</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>⊤</mml:mi>
+                  </mml:mrow>
+                </mml:msup>
+              </mml:math>
+            </disp-formula>
+          
+          <p>The corresponding block matrix contains both off-diagonal blocks, <inline-formula>
+  <mml:math id="mx1z9fz5k6">
+    <mml:mi>γ</mml:mi>
+    <mml:mrow>
+      <mml:mi>C</mml:mi>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> and <inline-formula>
+  <mml:math id="mckvn78pvw">
+    <mml:mi>λ</mml:mi>
+    <mml:mrow>
+      <mml:mi>B</mml:mi>
+    </mml:mrow>
+  </mml:math>
+</inline-formula>. However, the baseline is easier to identify and analyse; the feedback model is more expressive but requires additional data and further analysis.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>2.5. Graph filtering</title>
+          
+          <p>The observed spatial signal is filtered before cross-layer comparison:</p>
+          
+            <disp-formula>
+              <label>(13)</label>
+              <mml:math id="mxlawqthid">
+                <mml:msub>
+                  <mml:mrow>
+                    <mml:mover>
+                      <mml:mrow>
+                        <mml:mi>x</mml:mi>
+                      </mml:mrow>
+                      <mml:mo>~</mml:mo>
+                    </mml:mover>
+                  </mml:mrow>
+                  <mml:mi>t</mml:mi>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mrow>
+                    <mml:mi>x</mml:mi>
+                  </mml:mrow>
+                  <mml:mi>t</mml:mi>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mo>.</mml:mo>
+                <mml:mrow>
+                  <mml:mrow>
+                    <mml:mi>H</mml:mi>
+                  </mml:mrow>
+                  <mml:mrow>
+                    <mml:mi>L</mml:mi>
+                  </mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mo>)</mml:mo>
+                </mml:mrow>
+              </mml:math>
+            </disp-formula>
+          
+          <p>For example, for the Laplacian <inline-formula>
+  <mml:math id="mq131kon5h">
+    <mml:msub>
+      <mml:mrow>
+        <mml:mi>L</mml:mi>
+      </mml:mrow>
+      <mml:mi>L</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> defined previously, the heat-kernel filter can be utilized:</p>
+          
+            <disp-formula>
+              <label>(14)</label>
+              <mml:math id="mx98kl0byu">
+                <mml:msub>
+                  <mml:mrow>
+                    <mml:mi>H</mml:mi>
+                  </mml:mrow>
+                  <mml:mi>c</mml:mi>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mrow>
+                    <mml:mi>L</mml:mi>
+                  </mml:mrow>
+                  <mml:mi>L</mml:mi>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mo>⁡</mml:mo>
+                <mml:mo>(</mml:mo>
+                <mml:mo>−</mml:mo>
+                <mml:mo>)</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo>&gt;</mml:mo>
+                <mml:mi>exp</mml:mi>
+                <mml:mi>τ</mml:mi>
+                <mml:mi>τ</mml:mi>
+                <mml:mstyle scriptlevel="0">
+                  <mml:mspace width="2em"/>
+                </mml:mstyle>
+                <mml:mn>0.</mml:mn>
+              </mml:math>
+            </disp-formula>
+          
+          <p>Additionally, one can also define a normalized alternative based on:</p>
+          
+            <disp-formula>
+              <label>(15)</label>
+              <mml:math id="mbmiudgake">
+                <mml:msub>
+                  <mml:mrow>
+                    <mml:mi>L</mml:mi>
+                  </mml:mrow>
+                  <mml:mrow>
+                    <mml:mrow>
+                      <mml:mi data-mjx-auto-op="false">sym</mml:mi>
+                    </mml:mrow>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mrow>
+                    <mml:mi>A</mml:mi>
+                  </mml:mrow>
+                  <mml:mi>L</mml:mi>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mrow>
+                    <mml:mi>H</mml:mi>
+                  </mml:mrow>
+                  <mml:mi>n</mml:mi>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mrow>
+                    <mml:mi>L</mml:mi>
+                  </mml:mrow>
+                  <mml:mrow>
+                    <mml:mrow>
+                      <mml:mi data-mjx-auto-op="false">sym</mml:mi>
+                    </mml:mrow>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mo>−</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo>=</mml:mo>
+                <mml:mo>⁡</mml:mo>
+                <mml:mo>(</mml:mo>
+                <mml:mo>−</mml:mo>
+                <mml:mo>)</mml:mo>
+                <mml:mo>.</mml:mo>
+                <mml:mrow>
+                  <mml:mi>I</mml:mi>
+                </mml:mrow>
+                <mml:msubsup>
+                  <mml:mrow>
+                    <mml:mi>D</mml:mi>
+                  </mml:mrow>
+                  <mml:mrow>
+                    <mml:mo>−</mml:mo>
+                    <mml:mn>1</mml:mn>
+                    <mml:mn>2</mml:mn>
+                    <mml:mrow>
+                      <mml:mo>/</mml:mo>
+                    </mml:mrow>
+                  </mml:mrow>
+                  <mml:mi>L</mml:mi>
+                </mml:msubsup>
+                <mml:msubsup>
+                  <mml:mrow>
+                    <mml:mi>D</mml:mi>
+                  </mml:mrow>
+                  <mml:mrow>
+                    <mml:mo>−</mml:mo>
+                    <mml:mn>1</mml:mn>
+                    <mml:mn>2</mml:mn>
+                    <mml:mrow>
+                      <mml:mo>/</mml:mo>
+                    </mml:mrow>
+                  </mml:mrow>
+                  <mml:mi>L</mml:mi>
+                </mml:msubsup>
+                <mml:mstyle scriptlevel="0">
+                  <mml:mspace width="2em"/>
+                </mml:mstyle>
+                <mml:mi>exp</mml:mi>
+                <mml:mi>τ</mml:mi>
+              </mml:math>
+            </disp-formula>
+          
+          <p>An interpretation of the normalized filter is to compensate for degree heterogeneity and prevent high-degree rooms, such as a central living room, from dominating spectral smoothing.</p><p>The vector residual and scalar mismatch residual can further be defined as:</p>
+          
+            <disp-formula>
+              <label>(16)</label>
+              <mml:math id="m1df5s75pm">
+                <mml:msub>
+                  <mml:mrow>
+                    <mml:mi>e</mml:mi>
+                  </mml:mrow>
+                  <mml:mi>t</mml:mi>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mrow>
+                    <mml:mover>
+                      <mml:mrow>
+                        <mml:mi>x</mml:mi>
+                      </mml:mrow>
+                      <mml:mo>~</mml:mo>
+                    </mml:mover>
+                  </mml:mrow>
+                  <mml:mi>t</mml:mi>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mi>r</mml:mi>
+                  <mml:mi>t</mml:mi>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mrow>
+                    <mml:mi>e</mml:mi>
+                  </mml:mrow>
+                  <mml:mi>t</mml:mi>
+                </mml:msub>
+                <mml:msub>
+                  <mml:mo fence="false">‖</mml:mo>
+                  <mml:mn>2</mml:mn>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mo>−</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mo>=</mml:mo>
+                <mml:mo fence="false">‖</mml:mo>
+                <mml:mo>.</mml:mo>
+                <mml:msubsup>
+                  <mml:mrow>
+                    <mml:mover>
+                      <mml:mrow>
+                        <mml:mi>x</mml:mi>
+                      </mml:mrow>
+                      <mml:mo>^</mml:mo>
+                    </mml:mover>
+                  </mml:mrow>
+                  <mml:mrow>
+                    <mml:mo>(</mml:mo>
+                    <mml:mo>)</mml:mo>
+                    <mml:mi>A</mml:mi>
+                  </mml:mrow>
+                  <mml:mi>t</mml:mi>
+                </mml:msubsup>
+                <mml:mstyle scriptlevel="0">
+                  <mml:mspace width="2em"/>
+                </mml:mstyle>
+              </mml:math>
+            </disp-formula>
+          
+          <p>A large <inline-formula>
+  <mml:math id="mg3v8n3xfo">
+    <mml:msub>
+      <mml:mi>r</mml:mi>
+      <mml:mi>t</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> indicates cross-layer (causal/temporal) inconsistency. The vector <inline-formula>
+  <mml:math id="mfbl1e4zic">
+    <mml:msub>
+      <mml:mrow>
+        <mml:mi>e</mml:mi>
+      </mml:mrow>
+      <mml:mi>t</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> provides traceability. For example, the normalized contribution of location $i$ is:</p>
+          
+            <disp-formula>
+              <label>(17)</label>
+              <mml:math id="mds7wjf56k">
+                <mml:msub>
+                  <mml:mi>q</mml:mi>
+                  <mml:mrow>
+                    <mml:mi>i</mml:mi>
+                    <mml:mi>t</mml:mi>
+                    <mml:mo>,</mml:mo>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:mo>=</mml:mo>
+                <mml:mo>,</mml:mo>
+                <mml:mfrac>
+                  <mml:msubsup>
+                    <mml:mi>e</mml:mi>
+                    <mml:mrow>
+                      <mml:mi>i</mml:mi>
+                      <mml:mi>t</mml:mi>
+                      <mml:mo>,</mml:mo>
+                    </mml:mrow>
+                    <mml:mn>2</mml:mn>
+                  </mml:msubsup>
+                  <mml:mrow>
+                    <mml:munderover>
+                      <mml:mo>∑</mml:mo>
+                      <mml:mrow>
+                        <mml:mi>k</mml:mi>
+                        <mml:mo>=</mml:mo>
+                        <mml:mn>1</mml:mn>
+                      </mml:mrow>
+                      <mml:mrow>
+                        <mml:msub>
+                          <mml:mi>N</mml:mi>
+                          <mml:mi>L</mml:mi>
+                        </mml:msub>
+                      </mml:mrow>
+                    </mml:munderover>
+                    <mml:msubsup>
+                      <mml:mi>e</mml:mi>
+                      <mml:mrow>
+                        <mml:mi>k</mml:mi>
+                        <mml:mi>t</mml:mi>
+                        <mml:mo>,</mml:mo>
+                      </mml:mrow>
+                      <mml:mn>2</mml:mn>
+                    </mml:msubsup>
+                  </mml:mrow>
+                </mml:mfrac>
+              </mml:math>
+            </disp-formula>
+          
+          <p>when <inline-formula>
+  <mml:math id="m2ptdeiucx">
+    <mml:msub>
+      <mml:mi>r</mml:mi>
+      <mml:mi>t</mml:mi>
+    </mml:msub>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mn>0</mml:mn>
+  </mml:math>
+</inline-formula>. Locations with the largest <inline-formula>
+  <mml:math id="mhpi99sugt">
+    <mml:msub>
+      <mml:mi>q</mml:mi>
+      <mml:mrow>
+        <mml:mi>i</mml:mi>
+        <mml:mi>t</mml:mi>
+        <mml:mo>,</mml:mo>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula> identify where the disagreement is concentrated. A positive <inline-formula>
+  <mml:math id="moeuxt0v6w">
+    <mml:msub>
+      <mml:mi>e</mml:mi>
+      <mml:mrow>
+        <mml:mi>i</mml:mi>
+        <mml:mi>t</mml:mi>
+        <mml:mo>,</mml:mo>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula> means observed occupancy exceeds the activity-based expectation; a negative value means the activity model expects more occupancy than is observed. This distinction helps separate a spatial jump or localization error from an activity-label conflict. Temporal persistence, topology violations, and the dominant positive/negative residual components are jointly inspected for case-level interpretation.</p>
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>3. Illustrative three-room example</title>
+      <p>Consider three locations, Kitchen ($K<inline-formula>
+  <mml:math id="mvjcp7qq77">
+    <mml:mo>)</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mi>L</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>R</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+  </mml:math>
+</inline-formula>L<inline-formula>
+  <mml:math id="myef86l3tk">
+    <mml:mo>)</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>B</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+  </mml:math>
+</inline-formula>B<inline-formula>
+  <mml:math id="mx94nvep9q">
+    <mml:mo>)</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+  </mml:math>
+</inline-formula>K$–$L$–$B<inline-formula>
+  <mml:math id="mn019ibemn">
+    <mml:mo>.</mml:mo>
+    <mml:mi>W</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+  </mml:math>
+</inline-formula>(K,L,B)<inline-formula>
+  <mml:math id="m0i9rkf9wf">
+    <mml:mo>,</mml:mo>
+    <mml:mo>&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mo>=</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>=</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>[</mml:mo>
+      <mml:mo>]</mml:mo>
+      <mml:mtable columnspacing="1em" rowspacing="4pt">
+        <mml:mtr>
+          <mml:mtd>
+            <mml:mn>0</mml:mn>
+          </mml:mtd>
+          <mml:mtd>
+            <mml:mi>a</mml:mi>
+            <mml:mi>m</mml:mi>
+            <mml:mi>p</mml:mi>
+            <mml:mo>;</mml:mo>
+            <mml:mn>1</mml:mn>
+          </mml:mtd>
+          <mml:mtd>
+            <mml:mi>a</mml:mi>
+            <mml:mi>m</mml:mi>
+            <mml:mi>p</mml:mi>
+            <mml:mo>;</mml:mo>
+            <mml:mn>0</mml:mn>
+          </mml:mtd>
+        </mml:mtr>
+        <mml:mtr>
+          <mml:mtd>
+            <mml:mn>1</mml:mn>
+          </mml:mtd>
+          <mml:mtd>
+            <mml:mi>a</mml:mi>
+            <mml:mi>m</mml:mi>
+            <mml:mi>p</mml:mi>
+            <mml:mo>;</mml:mo>
+            <mml:mn>0</mml:mn>
+          </mml:mtd>
+          <mml:mtd>
+            <mml:mi>a</mml:mi>
+            <mml:mi>m</mml:mi>
+            <mml:mi>p</mml:mi>
+            <mml:mo>;</mml:mo>
+            <mml:mn>1</mml:mn>
+          </mml:mtd>
+        </mml:mtr>
+        <mml:mtr>
+          <mml:mtd>
+            <mml:mn>0</mml:mn>
+          </mml:mtd>
+          <mml:mtd>
+            <mml:mi>a</mml:mi>
+            <mml:mi>m</mml:mi>
+            <mml:mi>p</mml:mi>
+            <mml:mo>;</mml:mo>
+            <mml:mn>1</mml:mn>
+          </mml:mtd>
+          <mml:mtd>
+            <mml:mi>a</mml:mi>
+            <mml:mi>m</mml:mi>
+            <mml:mi>p</mml:mi>
+            <mml:mo>;</mml:mo>
+            <mml:mn>0</mml:mn>
+          </mml:mtd>
+        </mml:mtr>
+      </mml:mtable>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>[</mml:mo>
+      <mml:mo>]</mml:mo>
+      <mml:mtable columnspacing="1em" rowspacing="4pt">
+        <mml:mtr>
+          <mml:mtd>
+            <mml:mn>1</mml:mn>
+          </mml:mtd>
+          <mml:mtd>
+            <mml:mi>a</mml:mi>
+            <mml:mi>m</mml:mi>
+            <mml:mi>p</mml:mi>
+            <mml:mo>;</mml:mo>
+            <mml:mo>−</mml:mo>
+            <mml:mn>1</mml:mn>
+          </mml:mtd>
+          <mml:mtd>
+            <mml:mi>a</mml:mi>
+            <mml:mi>m</mml:mi>
+            <mml:mi>p</mml:mi>
+            <mml:mo>;</mml:mo>
+            <mml:mn>0</mml:mn>
+          </mml:mtd>
+        </mml:mtr>
+        <mml:mtr>
+          <mml:mtd>
+            <mml:mo>−</mml:mo>
+            <mml:mn>1</mml:mn>
+          </mml:mtd>
+          <mml:mtd>
+            <mml:mi>a</mml:mi>
+            <mml:mi>m</mml:mi>
+            <mml:mi>p</mml:mi>
+            <mml:mo>;</mml:mo>
+            <mml:mn>2</mml:mn>
+          </mml:mtd>
+          <mml:mtd>
+            <mml:mi>a</mml:mi>
+            <mml:mi>m</mml:mi>
+            <mml:mi>p</mml:mi>
+            <mml:mo>;</mml:mo>
+            <mml:mo>−</mml:mo>
+            <mml:mn>1</mml:mn>
+          </mml:mtd>
+        </mml:mtr>
+        <mml:mtr>
+          <mml:mtd>
+            <mml:mn>0</mml:mn>
+          </mml:mtd>
+          <mml:mtd>
+            <mml:mi>a</mml:mi>
+            <mml:mi>m</mml:mi>
+            <mml:mi>p</mml:mi>
+            <mml:mo>;</mml:mo>
+            <mml:mo>−</mml:mo>
+            <mml:mn>1</mml:mn>
+          </mml:mtd>
+          <mml:mtd>
+            <mml:mi>a</mml:mi>
+            <mml:mi>m</mml:mi>
+            <mml:mi>p</mml:mi>
+            <mml:mo>;</mml:mo>
+            <mml:mn>1</mml:mn>
+          </mml:mtd>
+        </mml:mtr>
+      </mml:mtable>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>F</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mtext mathcolor="red">\[</mml:mtext>
+    <mml:mtext mathcolor="red">\]</mml:mtext>
+    <mml:msub>
+      <mml:mrow>
+        <mml:mi>A</mml:mi>
+      </mml:mrow>
+      <mml:mi>L</mml:mi>
+    </mml:msub>
+    <mml:msub>
+      <mml:mrow>
+        <mml:mi>L</mml:mi>
+      </mml:mrow>
+      <mml:mi>L</mml:mi>
+    </mml:msub>
+    <mml:mstyle scriptlevel="0">
+      <mml:mspace width="2em"/>
+    </mml:mstyle>
+  </mml:math>
+</inline-formula>s=0.6<inline-formula>
+  <mml:math id="mzaurbcfy3">
+    <mml:mo>,</mml:mo>
+    <mml:mo>&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mo>=</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mi>P</mml:mi>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>[</mml:mo>
+      <mml:mo>]</mml:mo>
+      <mml:mtable columnspacing="1em" rowspacing="4pt">
+        <mml:mtr>
+          <mml:mtd>
+            <mml:mn>0.6</mml:mn>
+          </mml:mtd>
+          <mml:mtd>
+            <mml:mi>a</mml:mi>
+            <mml:mi>m</mml:mi>
+            <mml:mi>p</mml:mi>
+            <mml:mo>;</mml:mo>
+            <mml:mn>0.4</mml:mn>
+          </mml:mtd>
+          <mml:mtd>
+            <mml:mi>a</mml:mi>
+            <mml:mi>m</mml:mi>
+            <mml:mi>p</mml:mi>
+            <mml:mo>;</mml:mo>
+            <mml:mn>0</mml:mn>
+          </mml:mtd>
+        </mml:mtr>
+        <mml:mtr>
+          <mml:mtd>
+            <mml:mn>0.2</mml:mn>
+          </mml:mtd>
+          <mml:mtd>
+            <mml:mi>a</mml:mi>
+            <mml:mi>m</mml:mi>
+            <mml:mi>p</mml:mi>
+            <mml:mo>;</mml:mo>
+            <mml:mn>0.6</mml:mn>
+          </mml:mtd>
+          <mml:mtd>
+            <mml:mi>a</mml:mi>
+            <mml:mi>m</mml:mi>
+            <mml:mi>p</mml:mi>
+            <mml:mo>;</mml:mo>
+            <mml:mn>0.2</mml:mn>
+          </mml:mtd>
+        </mml:mtr>
+        <mml:mtr>
+          <mml:mtd>
+            <mml:mn>0</mml:mn>
+          </mml:mtd>
+          <mml:mtd>
+            <mml:mi>a</mml:mi>
+            <mml:mi>m</mml:mi>
+            <mml:mi>p</mml:mi>
+            <mml:mo>;</mml:mo>
+            <mml:mn>0.4</mml:mn>
+          </mml:mtd>
+          <mml:mtd>
+            <mml:mi>a</mml:mi>
+            <mml:mi>m</mml:mi>
+            <mml:mi>p</mml:mi>
+            <mml:mo>;</mml:mo>
+            <mml:mn>0.6</mml:mn>
+          </mml:mtd>
+        </mml:mtr>
+      </mml:mtable>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>E</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>F</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>K</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mtext mathcolor="red">\[</mml:mtext>
+    <mml:mtext mathcolor="red">\]</mml:mtext>
+  </mml:math>
+</inline-formula>{x}_0=[ 1,0,0]^{\top}<inline-formula>
+  <mml:math id="mo6nebhall">
+    <mml:mi>g</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mo>&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mo>=</mml:mo>
+    <mml:mo>=</mml:mo>
+    <mml:mo>[</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:msup>
+        <mml:mrow>
+          <mml:mi>P</mml:mi>
+        </mml:mrow>
+        <mml:mrow>
+          <mml:mi>⊤</mml:mi>
+        </mml:mrow>
+      </mml:msup>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mtext mathcolor="red">\[</mml:mtext>
+    <mml:mtext mathcolor="red">\]</mml:mtext>
+    <mml:msub>
+      <mml:mrow>
+        <mml:mi>x</mml:mi>
+      </mml:mrow>
+      <mml:mn>1</mml:mn>
+    </mml:msub>
+    <mml:msub>
+      <mml:mrow>
+        <mml:mi>x</mml:mi>
+      </mml:mrow>
+      <mml:mn>0</mml:mn>
+    </mml:msub>
+    <mml:mn>0.6</mml:mn>
+    <mml:mn>0.4</mml:mn>
+    <mml:mn>0</mml:mn>
+    <mml:msup>
+      <mml:mo>]</mml:mo>
+      <mml:mrow>
+        <mml:mi>⊤</mml:mi>
+      </mml:mrow>
+    </mml:msup>
+  </mml:math>
+</inline-formula>0.4<inline-formula>
+  <mml:math id="mrtr9m3dyw">
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>K</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>L</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>R</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>L</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>P</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>P</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>C</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>C</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>R</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>R</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>W</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>V</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>V</mml:mi>
+    <mml:mi>S</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>S</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>D</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>D</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>F</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mo>.</mml:mo>
+    <mml:mo>&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+  </mml:math>
+</inline-formula>\beta=0.7<inline-formula>
+  <mml:math id="mqr4rstvhq">
+    <mml:mo>,</mml:mo>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>P</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+  </mml:math>
+</inline-formula>1.0<inline-formula>
+  <mml:math id="mtnd6j4s8t">
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>C</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+  </mml:math>
+</inline-formula>0.7<inline-formula>
+  <mml:math id="mimh2msc19">
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>R</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>R</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>z</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mo>.</mml:mo>
+  </mml:math>
+</inline-formula>0.588<inline-formula>
+  <mml:math id="mo3t73olm6">
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+  </mml:math>
+</inline-formula>0.412<inline-formula>
+  <mml:math id="mzfrtzye2n">
+    <mml:mo>.</mml:mo>
+    <mml:mi>I</mml:mi>
+    <mml:mi>f</mml:mi>
+  </mml:math>
+</inline-formula>{a}_0=[ 1,0,0,0,0,0]^{\top}<inline-formula>
+  <mml:math id="mwat4nfj6d">
+    <mml:mo>,</mml:mo>
+    <mml:mo>&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mo>=</mml:mo>
+    <mml:mo>=</mml:mo>
+    <mml:mo>[</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mo>&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mo>=</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mo>=</mml:mo>
+    <mml:mo>[</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mo>&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mo fence="false">‖</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>≈</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>W</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>q</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>I</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>B</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:msubsup>
+        <mml:mrow>
+          <mml:mi>M</mml:mi>
+        </mml:mrow>
+        <mml:mrow>
+          <mml:mi>⊤</mml:mi>
+        </mml:mrow>
+        <mml:mi>A</mml:mi>
+      </mml:msubsup>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mi>B</mml:mi>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>[</mml:mo>
+      <mml:mo>]</mml:mo>
+      <mml:mtable columnspacing="1em" rowspacing="4pt">
+        <mml:mtr>
+          <mml:mtd>
+            <mml:mn>1</mml:mn>
+          </mml:mtd>
+          <mml:mtd>
+            <mml:mi>a</mml:mi>
+            <mml:mi>m</mml:mi>
+            <mml:mi>p</mml:mi>
+            <mml:mo>;</mml:mo>
+            <mml:mn>1</mml:mn>
+          </mml:mtd>
+          <mml:mtd>
+            <mml:mi>a</mml:mi>
+            <mml:mi>m</mml:mi>
+            <mml:mi>p</mml:mi>
+            <mml:mo>;</mml:mo>
+            <mml:mn>0</mml:mn>
+          </mml:mtd>
+          <mml:mtd>
+            <mml:mi>a</mml:mi>
+            <mml:mi>m</mml:mi>
+            <mml:mi>p</mml:mi>
+            <mml:mo>;</mml:mo>
+            <mml:mn>0</mml:mn>
+          </mml:mtd>
+          <mml:mtd>
+            <mml:mi>a</mml:mi>
+            <mml:mi>m</mml:mi>
+            <mml:mi>p</mml:mi>
+            <mml:mo>;</mml:mo>
+            <mml:mn>0</mml:mn>
+          </mml:mtd>
+          <mml:mtd>
+            <mml:mi>a</mml:mi>
+            <mml:mi>m</mml:mi>
+            <mml:mi>p</mml:mi>
+            <mml:mo>;</mml:mo>
+            <mml:mn>0</mml:mn>
+          </mml:mtd>
+        </mml:mtr>
+        <mml:mtr>
+          <mml:mtd>
+            <mml:mn>0</mml:mn>
+          </mml:mtd>
+          <mml:mtd>
+            <mml:mi>a</mml:mi>
+            <mml:mi>m</mml:mi>
+            <mml:mi>p</mml:mi>
+            <mml:mo>;</mml:mo>
+            <mml:mn>0</mml:mn>
+          </mml:mtd>
+          <mml:mtd>
+            <mml:mi>a</mml:mi>
+            <mml:mi>m</mml:mi>
+            <mml:mi>p</mml:mi>
+            <mml:mo>;</mml:mo>
+            <mml:mn>1</mml:mn>
+          </mml:mtd>
+          <mml:mtd>
+            <mml:mi>a</mml:mi>
+            <mml:mi>m</mml:mi>
+            <mml:mi>p</mml:mi>
+            <mml:mo>;</mml:mo>
+            <mml:mn>1</mml:mn>
+          </mml:mtd>
+          <mml:mtd>
+            <mml:mi>a</mml:mi>
+            <mml:mi>m</mml:mi>
+            <mml:mi>p</mml:mi>
+            <mml:mo>;</mml:mo>
+            <mml:mn>0</mml:mn>
+          </mml:mtd>
+          <mml:mtd>
+            <mml:mi>a</mml:mi>
+            <mml:mi>m</mml:mi>
+            <mml:mi>p</mml:mi>
+            <mml:mo>;</mml:mo>
+            <mml:mn>0</mml:mn>
+          </mml:mtd>
+        </mml:mtr>
+        <mml:mtr>
+          <mml:mtd>
+            <mml:mn>0</mml:mn>
+          </mml:mtd>
+          <mml:mtd>
+            <mml:mi>a</mml:mi>
+            <mml:mi>m</mml:mi>
+            <mml:mi>p</mml:mi>
+            <mml:mo>;</mml:mo>
+            <mml:mn>0</mml:mn>
+          </mml:mtd>
+          <mml:mtd>
+            <mml:mi>a</mml:mi>
+            <mml:mi>m</mml:mi>
+            <mml:mi>p</mml:mi>
+            <mml:mo>;</mml:mo>
+            <mml:mn>0</mml:mn>
+          </mml:mtd>
+          <mml:mtd>
+            <mml:mi>a</mml:mi>
+            <mml:mi>m</mml:mi>
+            <mml:mi>p</mml:mi>
+            <mml:mo>;</mml:mo>
+            <mml:mn>0</mml:mn>
+          </mml:mtd>
+          <mml:mtd>
+            <mml:mi>a</mml:mi>
+            <mml:mi>m</mml:mi>
+            <mml:mi>p</mml:mi>
+            <mml:mo>;</mml:mo>
+            <mml:mn>1</mml:mn>
+          </mml:mtd>
+          <mml:mtd>
+            <mml:mi>a</mml:mi>
+            <mml:mi>m</mml:mi>
+            <mml:mi>p</mml:mi>
+            <mml:mo>;</mml:mo>
+            <mml:mn>1</mml:mn>
+          </mml:mtd>
+        </mml:mtr>
+      </mml:mtable>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mtext mathcolor="red">\[</mml:mtext>
+    <mml:mtext mathcolor="red">\]</mml:mtext>
+    <mml:mtext mathcolor="red">\[</mml:mtext>
+    <mml:mtext mathcolor="red">\]</mml:mtext>
+    <mml:mtext mathcolor="red">\[</mml:mtext>
+    <mml:mtext mathcolor="red">\]</mml:mtext>
+    <mml:mtext mathcolor="red">\[</mml:mtext>
+    <mml:mtext mathcolor="red">\]</mml:mtext>
+    <mml:msub>
+      <mml:mrow>
+        <mml:mi>a</mml:mi>
+      </mml:mrow>
+      <mml:mn>1</mml:mn>
+    </mml:msub>
+    <mml:msub>
+      <mml:mrow>
+        <mml:mi>a</mml:mi>
+      </mml:mrow>
+      <mml:mn>0</mml:mn>
+    </mml:msub>
+    <mml:msub>
+      <mml:mrow>
+        <mml:mi>x</mml:mi>
+      </mml:mrow>
+      <mml:mn>1</mml:mn>
+    </mml:msub>
+    <mml:msub>
+      <mml:mo fence="false">‖</mml:mo>
+      <mml:mn>2</mml:mn>
+    </mml:msub>
+    <mml:mn>0</mml:mn>
+    <mml:mn>0.588</mml:mn>
+    <mml:mn>0.412</mml:mn>
+    <mml:mn>0</mml:mn>
+    <mml:mn>0</mml:mn>
+    <mml:mn>0</mml:mn>
+    <mml:mn>0.588</mml:mn>
+    <mml:mn>0.412</mml:mn>
+    <mml:mn>0</mml:mn>
+    <mml:mn>0.017</mml:mn>
+    <mml:msup>
+      <mml:mo>]</mml:mo>
+      <mml:mrow>
+        <mml:mi>⊤</mml:mi>
+      </mml:mrow>
+    </mml:msup>
+    <mml:msup>
+      <mml:mo>]</mml:mo>
+      <mml:mrow>
+        <mml:mi>⊤</mml:mi>
+      </mml:mrow>
+    </mml:msup>
+    <mml:msubsup>
+      <mml:mrow>
+        <mml:mover>
+          <mml:mrow>
+            <mml:mi>x</mml:mi>
+          </mml:mrow>
+          <mml:mo>^</mml:mo>
+        </mml:mover>
+      </mml:mrow>
+      <mml:mrow>
+        <mml:mo>(</mml:mo>
+        <mml:mo>)</mml:mo>
+        <mml:mi>A</mml:mi>
+      </mml:mrow>
+      <mml:mn>1</mml:mn>
+    </mml:msubsup>
+    <mml:msubsup>
+      <mml:mrow>
+        <mml:mover>
+          <mml:mrow>
+            <mml:mi>x</mml:mi>
+          </mml:mrow>
+          <mml:mo>^</mml:mo>
+        </mml:mover>
+      </mml:mrow>
+      <mml:mrow>
+        <mml:mo>(</mml:mo>
+        <mml:mo>)</mml:mo>
+        <mml:mi>A</mml:mi>
+      </mml:mrow>
+      <mml:mn>1</mml:mn>
+    </mml:msubsup>
+  </mml:math>
+</inline-formula>{x}^{(\mathrm{obs})}_1=[ 0,0,1]^{\top}<inline-formula>
+  <mml:math id="m2d8azoyac">
+    <mml:mo>,</mml:mo>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+  </mml:math>
+</inline-formula>1.231$. The component residual attributes the disagreement primarily to unexpected Bedroom occupancy and missing Kitchen/Living-Room support, illustrating both detection and traceability.</p>
+      
+        <sec>
+          
+            <title>3.1. Illustrative simulation study</title>
+          
+          <p>The simulated home contains six locations: Kitchen, Dining Room, Living Room, Bedroom, Bathroom, and Patio. Edges are Kitchen-Dining Room, Kitchen-Bathroom, Dining Room-Living Room, Living Room-Bedroom, Living Room-Patio, and Bedroom-Bathroom. Fourteen activities are assigned: prepare meal, clean dishes, and make tea in the Kitchen; eat and read mail in the Dining Room; watch television, read a book, and rest in the Living Room; sleep and dress in the Bedroom; brush teeth and bathe in the Bathroom; and sit outside and water plants on the Patio.</p><p>All time-dependent plots report the discrete simulation step on the horizontal axis. The activity-state and location-state heatmaps use probability values on a fixed colour scale from (0) to (1). Unless a parameter is explicitly varied, the representative nominal simulation uses <inline-formula>
+  <mml:math id="meu347m2uv">
+    <mml:mo>(</mml:mo>
+    <mml:mo>=</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mi>T</mml:mi>
+    <mml:mn>150</mml:mn>
+  </mml:math>
+</inline-formula> time steps, stay probability <inline-formula>
+  <mml:math id="mfl5cny5x3">
+    <mml:mo>(</mml:mo>
+    <mml:mo>=</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mi>s</mml:mi>
+    <mml:mn>0.65</mml:mn>
+  </mml:math>
+</inline-formula>, activity-mixture weight <inline-formula>
+  <mml:math id="mw4ch1j121">
+    <mml:mo>(</mml:mo>
+    <mml:mo>=</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mi>β</mml:mi>
+    <mml:mn>0.60</mml:mn>
+  </mml:math>
+</inline-formula>, activity-to-location coupling gain <inline-formula>
+  <mml:math id="mp2nzwbp16">
+    <mml:mo>(</mml:mo>
+    <mml:mo>=</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mi>λ</mml:mi>
+    <mml:mn>0.50</mml:mn>
+  </mml:math>
+</inline-formula>, reverse-feedback gain <inline-formula>
+  <mml:math id="miw7xnrubz">
+    <mml:mo>(</mml:mo>
+    <mml:mo>=</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mi>γ</mml:mi>
+    <mml:mn>0</mml:mn>
+  </mml:math>
+</inline-formula>, heat-kernel parameter <inline-formula>
+  <mml:math id="m4uy5cf2iy">
+    <mml:mo>(</mml:mo>
+    <mml:mo>=</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mi>τ</mml:mi>
+    <mml:mn>0.60</mml:mn>
+  </mml:math>
+</inline-formula>, activity-noise standard deviation <inline-formula>
+  <mml:math id="m8ylbv3rpj">
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mn>0.010</mml:mn>
+  </mml:math>
+</inline-formula>, spatial process-noise standard deviation <inline-formula>
+  <mml:math id="mk7xkcr3vn">
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mn>0.010</mml:mn>
+  </mml:math>
+</inline-formula>, and sensor-noise standard deviation <inline-formula>
+  <mml:math id="mjx3316igm">
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mn>0.015</mml:mn>
+  </mml:math>
+</inline-formula>. The parameter-sweep and quantitative anomaly-detection experiments use <inline-formula>
+  <mml:math id="mbpk1nxuy6">
+    <mml:mo>(</mml:mo>
+    <mml:mo>=</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mi>T</mml:mi>
+    <mml:mn>120</mml:mn>
+  </mml:math>
+</inline-formula> time steps per trial.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.2. Effect of $\beta$</title>
+          
+          <p>The parameter <inline-formula>
+  <mml:math id="m24zli0v4p">
+    <mml:mi>β</mml:mi>
+    <mml:mo>∈</mml:mo>
+    <mml:mo>[</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>]</mml:mo>
+    <mml:mn>0</mml:mn>
+    <mml:mn>1</mml:mn>
+  </mml:math>
+</inline-formula> controls the relative contribution of directed causal transitions and undirected contextual associations in the mixed activity operator. Specifically, <inline-formula>
+  <mml:math id="meabcfmuld">
+    <mml:mi>β</mml:mi>
+    <mml:mo>=</mml:mo>
+    <mml:mn>0</mml:mn>
+  </mml:math>
+</inline-formula> produces an operator governed by contextual activity relationships, whereas <inline-formula>
+  <mml:math id="mwg23w6dsq">
+    <mml:mi>β</mml:mi>
+    <mml:mo>=</mml:mo>
+    <mml:mn>1</mml:mn>
+  </mml:math>
+</inline-formula> produces an operator governed by directed causal or sequential relationships. After adding the self-persistence term, the resulting operator is row-normalized to obtain a stochastic activity-transition matrix.</p><p> <xref ref-type="fig" rid="fig_1">Figure 1</xref>a reports the effect of <inline-formula>
+  <mml:math id="m9fh3rqmnb">
+    <mml:mi>β</mml:mi>
+  </mml:math>
+</inline-formula> on the semantic mismatch residual between the graph-filtered spatial observation and the activity-predicted spatial state. For each value of <inline-formula>
+  <mml:math id="m1dwww8yjf">
+    <mml:mi>β</mml:mi>
+  </mml:math>
+</inline-formula>, 12 independent simulations of 120 discrete time steps were performed. <xref ref-type="fig" rid="fig_1">Figure 1</xref>b complements this parameter study by illustrating the temporal evolution of the activity-state probabilities during one representative nominal simulation at <inline-formula>
+  <mml:math id="m7uy337ne6">
+    <mml:mi>β</mml:mi>
+    <mml:mo>=</mml:mo>
+    <mml:mn>0.60</mml:mn>
+  </mml:math>
+</inline-formula>. Thus, the heatmap should be interpreted as an illustrative baseline example rather than as a direct visualization of activity redistribution over all values of <inline-formula>
+  <mml:math id="m903f8jyef">
+    <mml:mi>β</mml:mi>
+  </mml:math>
+</inline-formula>.</p>
+          
+            <fig id="fig_1">
+              <label>Figure 1</label>
+              <caption>
+                <title>Variation in residual magnitude as a function of $\beta$ and example of activity state evolution. (a) Mean mismatch residual versus $\beta$. Horizontal axis: $\beta$; vertical axis: mean $r_t$ over 120 steps; (b) Activity-state probability over 120 simulation steps. The colour bar spans probability $0$ to $1$</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/6/img_M6XOtudWQjTXf7-5.png"/>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/6/img_B12GPC9pu1Yml1D2.png"/>
+            </fig>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.3. Effect of $\lambda$</title>
+          
+          <p>The coupling gain <inline-formula>
+  <mml:math id="m5btigagcu">
+    <mml:mi>λ</mml:mi>
+    <mml:mo>∈</mml:mo>
+    <mml:mo>[</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>]</mml:mo>
+    <mml:mn>0</mml:mn>
+    <mml:mn>1</mml:mn>
+  </mml:math>
+</inline-formula> controls the relative contributions of topology-driven movement and activity-driven spatial prediction to the location-state dynamics. In the probability-preserving coupled model, the term <inline-formula>
+  <mml:math id="m5uxmzkzqv">
+    <mml:msup>
+      <mml:mrow>
+        <mml:mi>P</mml:mi>
+      </mml:mrow>
+      <mml:mrow>
+        <mml:mrow>
+          <mml:mi>T</mml:mi>
+        </mml:mrow>
+      </mml:mrow>
+    </mml:msup>
+    <mml:msub>
+      <mml:mrow>
+        <mml:mi>x</mml:mi>
+      </mml:mrow>
+      <mml:mi>t</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> in the coupled-location equation represents the spatial state predicted from the location-transition topology, whereas <inline-formula>
+  <mml:math id="mugtx19vg2">
+    <mml:msubsup>
+      <mml:mrow>
+        <mml:mover>
+          <mml:mrow>
+            <mml:mi>x</mml:mi>
+          </mml:mrow>
+          <mml:mo>^</mml:mo>
+        </mml:mover>
+      </mml:mrow>
+      <mml:mrow>
+        <mml:mo>(</mml:mo>
+        <mml:mo>)</mml:mo>
+        <mml:mi>A</mml:mi>
+      </mml:mrow>
+      <mml:mi>t</mml:mi>
+    </mml:msubsup>
+  </mml:math>
+</inline-formula> represents the spatial state inferred from the current activity distribution through the activity-to-location mapping. <xref ref-type="fig" rid="fig_2">Figure 2</xref>a evaluates the effect of <inline-formula>
+  <mml:math id="m6juf46c5g">
+    <mml:mi>λ</mml:mi>
+  </mml:math>
+</inline-formula> using two complementary residual measures. The semantic mismatch residual, <inline-formula>
+  <mml:math id="m0v2utf0aq">
+    <mml:msubsup>
+      <mml:mi>r</mml:mi>
+      <mml:mi>t</mml:mi>
+      <mml:mrow>
+        <mml:mo>(</mml:mo>
+        <mml:mo>)</mml:mo>
+        <mml:mi>A</mml:mi>
+      </mml:mrow>
+    </mml:msubsup>
+    <mml:mo>=</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:msub>
+      <mml:mrow>
+        <mml:mo>‖</mml:mo>
+        <mml:mo>−</mml:mo>
+        <mml:mo>‖</mml:mo>
+        <mml:msub>
+          <mml:mrow>
+            <mml:mover>
+              <mml:mrow>
+                <mml:mi>x</mml:mi>
+              </mml:mrow>
+              <mml:mo>~</mml:mo>
+            </mml:mover>
+          </mml:mrow>
+          <mml:mi>t</mml:mi>
+        </mml:msub>
+        <mml:msubsup>
+          <mml:mrow>
+            <mml:mover>
+              <mml:mrow>
+                <mml:mi>x</mml:mi>
+              </mml:mrow>
+              <mml:mo>^</mml:mo>
+            </mml:mover>
+          </mml:mrow>
+          <mml:mrow>
+            <mml:mo>(</mml:mo>
+            <mml:mo>)</mml:mo>
+            <mml:mi>A</mml:mi>
+          </mml:mrow>
+          <mml:mi>t</mml:mi>
+        </mml:msubsup>
+      </mml:mrow>
+      <mml:mn>2</mml:mn>
+    </mml:msub>
+  </mml:math>
+</inline-formula> measures disagreement between the graph-filtered observed location state and the activity-predicted spatial state. The movement-innovation residual, <inline-formula>
+  <mml:math id="m29ez1volr">
+    <mml:msubsup>
+      <mml:mi>r</mml:mi>
+      <mml:mi>t</mml:mi>
+      <mml:mrow>
+        <mml:mo>(</mml:mo>
+        <mml:mo>)</mml:mo>
+        <mml:mi>M</mml:mi>
+      </mml:mrow>
+    </mml:msubsup>
+    <mml:mo>=</mml:mo>
+    <mml:msub>
+      <mml:mrow>
+        <mml:mo>‖</mml:mo>
+        <mml:mo>−</mml:mo>
+        <mml:mo>‖</mml:mo>
+        <mml:msub>
+          <mml:mrow>
+            <mml:mover>
+              <mml:mrow>
+                <mml:mi>x</mml:mi>
+              </mml:mrow>
+              <mml:mo>~</mml:mo>
+            </mml:mover>
+          </mml:mrow>
+          <mml:mi>t</mml:mi>
+        </mml:msub>
+        <mml:msub>
+          <mml:mrow>
+            <mml:mi>x</mml:mi>
+          </mml:mrow>
+          <mml:mi>t</mml:mi>
+        </mml:msub>
+        <mml:msup>
+          <mml:mrow>
+            <mml:mi>P</mml:mi>
+          </mml:mrow>
+          <mml:mrow>
+            <mml:mrow>
+              <mml:mi>T</mml:mi>
+            </mml:mrow>
+          </mml:mrow>
+        </mml:msup>
+      </mml:mrow>
+      <mml:mn>2</mml:mn>
+    </mml:msub>
+  </mml:math>
+</inline-formula> which measures disagreement between the filtered observation and the topology-only movement prediction. For each value of <inline-formula>
+  <mml:math id="mcvds00j9i">
+    <mml:mi>λ</mml:mi>
+  </mml:math>
+</inline-formula>, 12 independent simulations of 120 discrete time steps were performed using the baseline activity-mixture weight <inline-formula>
+  <mml:math id="m0x8z27u7o">
+    <mml:mi>β</mml:mi>
+    <mml:mo>=</mml:mo>
+    <mml:mn>0.60</mml:mn>
+  </mml:math>
+</inline-formula> and the soft activity-to-location mapping. <xref ref-type="fig" rid="fig_2">Figure 2</xref>b complements the parameter sweep by showing the temporal evolution of the sensor-observed location-state probabilities for one representative nominal simulation at the baseline value <inline-formula>
+  <mml:math id="ms49d64wlp">
+    <mml:mi>λ</mml:mi>
+    <mml:mo>=</mml:mo>
+    <mml:mn>0.50</mml:mn>
+  </mml:math>
+</inline-formula>.</p>
+          
+            <fig id="fig_2">
+              <label>Figure 2</label>
+              <caption>
+                <title>Spatial consistency and occupancy state under varying coupling gain $\lambda$</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/6/img_I8SVG8_1p97lq6ve.png"/>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/6/img_nsjtJ4e1z-yYf8Yv.png"/>
+            </fig>
+          
+          <p>(a) Effect of the activity-to-location coupling gain <inline-formula>
+  <mml:math id="m9qgqzl07s">
+    <mml:mi>λ</mml:mi>
+  </mml:math>
+</inline-formula> on semantic and movement consistency. The horizontal axis gives <inline-formula>
+  <mml:math id="m95a9h7vto">
+    <mml:mi>λ</mml:mi>
+  </mml:math>
+</inline-formula>, and the vertical axis gives the time-averaged residual. The activity-location mismatch curve reports <inline-formula>
+  <mml:math id="mu1xv9mdqu">
+    <mml:mo fence="false">‖</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:msub>
+      <mml:mrow>
+        <mml:mover>
+          <mml:mrow>
+            <mml:mi>x</mml:mi>
+          </mml:mrow>
+          <mml:mo>~</mml:mo>
+        </mml:mover>
+      </mml:mrow>
+      <mml:mi>t</mml:mi>
+    </mml:msub>
+    <mml:msub>
+      <mml:mo fence="false">‖</mml:mo>
+      <mml:mn>2</mml:mn>
+    </mml:msub>
+    <mml:msubsup>
+      <mml:mrow>
+        <mml:mover>
+          <mml:mrow>
+            <mml:mi>x</mml:mi>
+          </mml:mrow>
+          <mml:mo>^</mml:mo>
+        </mml:mover>
+      </mml:mrow>
+      <mml:mrow>
+        <mml:mo>(</mml:mo>
+        <mml:mo>)</mml:mo>
+        <mml:mi>A</mml:mi>
+      </mml:mrow>
+      <mml:mi>t</mml:mi>
+    </mml:msubsup>
+  </mml:math>
+</inline-formula>, whereas the movement-innovation curve reports <inline-formula>
+  <mml:math id="m5hy0vrje8">
+    <mml:mo fence="false">‖</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:msub>
+      <mml:mrow>
+        <mml:mover>
+          <mml:mrow>
+            <mml:mi>x</mml:mi>
+          </mml:mrow>
+          <mml:mo>~</mml:mo>
+        </mml:mover>
+      </mml:mrow>
+      <mml:mi>t</mml:mi>
+    </mml:msub>
+    <mml:msub>
+      <mml:mrow>
+        <mml:mi>x</mml:mi>
+      </mml:mrow>
+      <mml:mi>t</mml:mi>
+    </mml:msub>
+    <mml:msub>
+      <mml:mo fence="false">‖</mml:mo>
+      <mml:mn>2</mml:mn>
+    </mml:msub>
+    <mml:msup>
+      <mml:mrow>
+        <mml:mi>P</mml:mi>
+      </mml:mrow>
+      <mml:mrow>
+        <mml:mrow>
+          <mml:mi>T</mml:mi>
+        </mml:mrow>
+      </mml:mrow>
+    </mml:msup>
+  </mml:math>
+</inline-formula>. Each point is the mean of 12 independent simulations, each containing 120 discrete time steps. Error bars indicate one standard deviation across the trials; (b) Sensor-observed location-state probability during a representative nominal simulation of 150 discrete time steps at <inline-formula>
+  <mml:math id="mtyuc7f3yk">
+    <mml:mi>λ</mml:mi>
+    <mml:mo>=</mml:mo>
+    <mml:mn>0.50</mml:mn>
+  </mml:math>
+</inline-formula>. The horizontal axis gives the discrete simulation step, the vertical axis lists the six location nodes, and the colour scale represents location probability from $0<inline-formula>
+  <mml:math id="m3qf89s35v">
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+  </mml:math>
+</inline-formula>1$.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.4. Quantitative anomaly evaluation</title>
+          
+          <p>To evaluate the anomaly detector more objectively, the residual signals were tested using repeated Monte Carlo simulations rather than relying only on visual inspection of individual plots. The detector combines the semantic mismatch residual, which measures disagreement between the observed location and the activity-predicted location, with the movement residual, which measures disagreement with the expected transition over the location graph. A detection threshold of <inline-formula>
+  <mml:math id="mbgc38wam2">
+    <mml:mi>θ</mml:mi>
+    <mml:mo>=</mml:mo>
+    <mml:mn>0.3071</mml:mn>
+  </mml:math>
+</inline-formula> was estimated from 30 nominal simulations using the 99th percentile of the nominal anomaly scores. The independent test set contained 15 nominal sequences and 45 abnormal sequences, including semantic activity-location conflicts, non-adjacent spatial jumps, and localization-sensor corruptions. Each sequence contained 120 discrete time steps, and a time step was classified as abnormal when its combined residual exceeded the threshold. The detector achieved an accuracy of $0.9772<inline-formula>
+  <mml:math id="m4q4dr6bid">
+    <mml:mo>,</mml:mo>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+  </mml:math>
+</inline-formula>0.5941<inline-formula>
+  <mml:math id="mdv7i4diya">
+    <mml:mo>,</mml:mo>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+  </mml:math>
+</inline-formula>1.0000<inline-formula>
+  <mml:math id="m0e5fjau36">
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>F1<inline-formula>
+  <mml:math id="mqqhb24mow">
+    <mml:mi>s</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+  </mml:math>
+</inline-formula>0.7453<inline-formula>
+  <mml:math id="m6x05vyre5">
+    <mml:mo>,</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>R</mml:mi>
+    <mml:mi>O</mml:mi>
+    <mml:mi>C</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>R</mml:mi>
+    <mml:mi>O</mml:mi>
+    <mml:mi>C</mml:mi>
+    <mml:mi>A</mml:mi>
+    <mml:mi>U</mml:mi>
+    <mml:mi>C</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+  </mml:math>
+</inline-formula>0.9996<inline-formula>
+  <mml:math id="mzqwf6qxm8">
+    <mml:mo>.</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mi>R</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+  </mml:math>
+</inline-formula>F1<inline-formula>
+  <mml:math id="my74nmgdhx">
+    <mml:mi>s</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>R</mml:mi>
+    <mml:mi>O</mml:mi>
+    <mml:mi>C</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>R</mml:mi>
+    <mml:mi>O</mml:mi>
+    <mml:mi>C</mml:mi>
+    <mml:mi>A</mml:mi>
+    <mml:mi>U</mml:mi>
+    <mml:mi>C</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>z</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mo>.</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>−</mml:mo>
+  </mml:math>
+</inline-formula>0.5<inline-formula>
+  <mml:math id="mzik73ilzj">
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mo>−</mml:mo>
+  </mml:math>
+</inline-formula>1$ for perfect separation. The results show that all injected anomalies were detected in the controlled simulation, although some nominal samples produced false alarms. These results validate the internal operation of the proposed residual-based framework but should not be interpreted as expected performance in a real occupied home.</p>
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>4. Model limitations</title>
+      <p>The current study has several limitations. First, the main formulation assumes static location and activity graphs; architectural changes, temporary obstacles, and time-dependent routines are represented only through parameter variation. Second, the model describes one monitored person and does not include social interaction, shared-room occupancy, or identity ambiguity. Third, the activity graph and manual form of <inline-formula>
+  <mml:math id="m0bdp1nag8">
+    <mml:mrow>
+      <mml:mi>B</mml:mi>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> depend on expert prior knowledge and can encode incorrect assumptions. Fourth, the linear dynamics are first-order approximations and may not represent long-duration activities, non-Markovian routines, or abrupt context changes. Fifth, the quantitative evaluation uses synthetic data and controlled anomaly injection; real sensing systems will introduce missing observations, class imbalance, sensor drift, and uncertain ground truth. Finally, residual magnitude alone cannot establish clinical significance and must not be interpreted as a diagnosis.</p>
+    </sec>
+    <sec sec-type="">
+      <title>5. Conclusions and future work</title>
+      <p>This paper presented a dual-graph framework that separates indoor behaviour into a spatial movement layer and a mixed causal--contextual activity layer. The study formalized the matrix conventions, established stochasticity and probability preservation, distinguished manual and learned interlayer mappings, and introduced a feedback-coupled extension. The GSP component was expanded to compare combinatorial and normalized Laplacians, and the scalar mismatch residual was augmented by a location-level traceability measure.</p><p>Example parameter studies demonstrate how <inline-formula>
+  <mml:math id="mqoadbz9qz">
+    <mml:mi>β</mml:mi>
+  </mml:math>
+</inline-formula> and <inline-formula>
+  <mml:math id="mfdscg97k8">
+    <mml:mi>λ</mml:mi>
+  </mml:math>
+</inline-formula> regulate semantic evolution, spatial prediction, and cross-layer consistency. The Monte Carlo study provides an initial quantitative validation of residual-based anomaly detection under controlled semantic conflicts, topology violations, and sensing errors. The framework is therefore useful not merely as a trajectory simulator, but as an interpretable systems model linking activities, movements, filtering, and anomaly diagnosis.</p><p>Future work can follow four implementable routes. First, <inline-formula>
+  <mml:math id="mo0qphfkau">
+    <mml:msub>
+      <mml:mrow>
+        <mml:mi>M</mml:mi>
+      </mml:mrow>
+      <mml:mi>A</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> and <inline-formula>
+  <mml:math id="mnmdst0fec">
+    <mml:mrow>
+      <mml:mi>B</mml:mi>
+    </mml:mrow>
+  </mml:math>
+</inline-formula> will be learned from synchronized activity and location data. For example, a constrained GNN regression model can predict edge weights where the learned model can be compared with manual priors through likelihood and residual-detection performance. Second, static graphs will be replaced by temporal variational graph models. Time-indexed edges can be generated by a recurrent variational encoder, producing <inline-formula>
+  <mml:math id="m9qtdurlm8">
+    <mml:msub>
+      <mml:mrow>
+        <mml:mi>M</mml:mi>
+      </mml:mrow>
+      <mml:mrow>
+        <mml:mi>A</mml:mi>
+        <mml:mi>t</mml:mi>
+        <mml:mo>,</mml:mo>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula> and <inline-formula>
+  <mml:math id="m2igim6tf1">
+    <mml:msub>
+      <mml:mrow>
+        <mml:mi>P</mml:mi>
+      </mml:mrow>
+      <mml:mi>t</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> with uncertainty intervals. This would represent changing accessibility, daily routines, and context-dependent activity-location relations. Third, anomaly detection can be extended through statistically calibrated thresholds in which residual contributions in the residual-contribution expression can be combined with topology-violation and activity-confidence scores to distinguish behavioural deviations from sensor faults. Fourth, the model will be validated using synchronized smart-home sensors, wearable inertial measurements, wireless channel-state information (CSI), and RGB-D observations. Multi-person extensions will add an interaction graph and a data-association layer. These studies will test generalization across homes and residents and will examine privacy-preserving, edge-computing implementations suitable for older-adult monitoring.</p>
+    </sec>
+  </body>
+  <back>
+    <ack>
+      <title>Acknowledgments</title>
+      
+    </ack>
+    <app-group>
+      <app>
+        <title>Appendix</title>
+        
+      </app>
+    </app-group>
+    <notes>
+      <title>Author Contributions</title>
+      
+    </notes>
+    <notes>
+      <title>Funding</title>
+      
+    </notes>
+    <notes>
+      <title>Informed Consent Statement</title>
+      
+    </notes>
+    <notes>
+      <title>Data Availability Statement</title>
+      <p>Not applicable.</p>
+    </notes>
+    <notes notes-type="COI-statement">
+      <title>Conflicts of Interest</title>
+      <p>The author declares no conflicts of interest.</p>
+    </notes>
+    <ref-list>
+      <title>References</title>
+      <ref id="ref_1">
+        <label>1.</label>
+        <element-citation publication-type="book">
+          <person-group person-group-type="author">
+            <name>
+              <surname>Diestel</surname>
+              <given-names>R.</given-names>
+            </name>
+          </person-group>
+          <source>Graph Theory</source>
+          <publisher-name>Springer</publisher-name>
+          <year>2007</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_2">
+        <label>2.</label>
+        <element-citation publication-type="journal">
+          <volume>11</volume>
+          <pub-id pub-id-type="doi">10.1109/ACCESS.2023.3323220</pub-id>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Pistilli</surname>
+              <given-names>F.</given-names>
+            </name>
+            <name>
+              <surname>Averta</surname>
+              <given-names>G.</given-names>
+            </name>
+          </person-group>
+          <source>IEEE Access</source>
+          <year>2023</year>
+          <page-range>112664-112681</page-range>
+          <article-title>Graph learning in robotics: A survey</article-title>
+        </element-citation>
+      </ref>
+      <ref id="ref_3">
+        <label>3.</label>
+        <element-citation publication-type="journal">
+          <page-range>1079-1100</page-range>
+          <source>Auton. Robots</source>
+          <article-title>Distributed multi-robot formation control in dynamic environments</article-title>
+          <volume>43</volume>
+          <year>2019</year>
+          <pub-id pub-id-type="doi">10.1007/s10514-018-9783-9</pub-id>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Alonso-Mora</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Montijano</surname>
+              <given-names>E.</given-names>
+            </name>
+            <name>
+              <surname>Nägeli</surname>
+              <given-names>T.</given-names>
+            </name>
+            <name>
+              <surname>Hilliges</surname>
+              <given-names>O.</given-names>
+            </name>
+            <name>
+              <surname>Schwager</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Rus</surname>
+              <given-names>D.</given-names>
+            </name>
+          </person-group>
+        </element-citation>
+      </ref>
+      <ref id="ref_4">
+        <label>4.</label>
+        <element-citation publication-type="journal">
+          <person-group person-group-type="author">
+            <name>
+              <surname>Zuo</surname>
+              <given-names>G.</given-names>
+            </name>
+            <name>
+              <surname>Tong</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Liu</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Chen</surname>
+              <given-names>W.</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>J.</given-names>
+            </name>
+          </person-group>
+          <volume>15</volume>
+          <source>Front. Neurorobot.</source>
+          <pub-id pub-id-type="doi">10.3389/fnbot.2021.719731</pub-id>
+          <article-title>Graph-based visual manipulation relationship reasoning network for robotic grasping</article-title>
+          <year>2021</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_5">
+        <label>5.</label>
+        <element-citation publication-type="conf-paper">
+          <publisher-place>Xi'an, China</publisher-place>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Sundermeyer</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Mousavian</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Triebel</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Fox</surname>
+              <given-names>D.</given-names>
+            </name>
+          </person-group>
+          <source>2021 IEEE international conference on robotics and automation (ICRA)</source>
+          <year>2021</year>
+          <page-range>13438-13444</page-range>
+          <article-title>Contact-graspnet: Efficient 6-DoF grasp generation in cluttered scenes</article-title>
+          <pub-id pub-id-type="doi">10.1109/ICRA48506.2021.9561877</pub-id>
+        </element-citation>
+      </ref>
+      <ref id="ref_6">
+        <label>6.</label>
+        <element-citation publication-type="journal">
+          <year>2017</year>
+          <issue>2</issue>
+          <source>IEEE Trans. Multi-Scale Comput. Syst.</source>
+          <page-range>100-112</page-range>
+          <article-title>Load balanced coverage with graded node deployment in wireless sensor networks</article-title>
+          <volume>3</volume>
+          <pub-id pub-id-type="doi">10.1109/TMSCS.2017.2672553</pub-id>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Chatterjee</surname>
+              <given-names>P.</given-names>
+            </name>
+            <name>
+              <surname>Ghosh</surname>
+              <given-names>S. C.</given-names>
+            </name>
+            <name>
+              <surname>Das</surname>
+              <given-names>N.</given-names>
+            </name>
+          </person-group>
+        </element-citation>
+      </ref>
+      <ref id="ref_7">
+        <label>7.</label>
+        <element-citation publication-type="journal">
+          <person-group person-group-type="author">
+            <name>
+              <surname>Rasoulidanesh</surname>
+              <given-names>M. S.</given-names>
+            </name>
+            <name>
+              <surname>Payandeh</surname>
+              <given-names>S.</given-names>
+            </name>
+          </person-group>
+          <source>J. Vis. Commun. Image Represent.</source>
+          <volume>66</volume>
+          <year>2020</year>
+          <pub-id pub-id-type="doi">10.1016/j.jvcir.2019.102733</pub-id>
+          <article-title>A novel change-detection scheduler for a network of depth sensors</article-title>
+        </element-citation>
+      </ref>
+      <ref id="ref_8">
+        <label>8.</label>
+        <element-citation publication-type="conf-paper">
+          <person-group person-group-type="author">
+            <name>
+              <surname>Boykov</surname>
+              <given-names>Y. Y.</given-names>
+            </name>
+            <name>
+              <surname>Jolly</surname>
+              <given-names>M. P.</given-names>
+            </name>
+          </person-group>
+          <source>Proceedings Eighth IEEE International Conference on Computer Vision</source>
+          <year>2001</year>
+          <publisher-place>Vancouver, BC, Canada</publisher-place>
+          <pub-id pub-id-type="doi">10.1109/ICCV.2001.937505</pub-id>
+          <article-title>Interactive graph cuts for optimal boundary &amp; region segmentation of objects in n-d images</article-title>
+          <page-range>105-112</page-range>
+        </element-citation>
+      </ref>
+      <ref id="ref_9">
+        <label>9.</label>
+        <element-citation publication-type="journal">
+          <pub-id pub-id-type="doi">10.1109/34.868688</pub-id>
+          <year>2000</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Shi</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Malik</surname>
+              <given-names>J.</given-names>
+            </name>
+          </person-group>
+          <page-range>888-905</page-range>
+          <volume>22</volume>
+          <source>IEEE Trans. Pattern Anal. Mach. Intell.</source>
+          <article-title>Normalized cuts and image segmentation</article-title>
+          <issue>8</issue>
+        </element-citation>
+      </ref>
+      <ref id="ref_10">
+        <label>10.</label>
+        <element-citation publication-type="journal">
+          <page-range>83-98</page-range>
+          <source>IEEE Signal Process. Mag.</source>
+          <article-title>The emerging field of signal processing on graphs: Extending high-dimensional data analysis to networks and other irregular domains</article-title>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Shuman</surname>
+              <given-names>D. I.</given-names>
+            </name>
+            <name>
+              <surname>Narang</surname>
+              <given-names>S. K.</given-names>
+            </name>
+            <name>
+              <surname>Frossard</surname>
+              <given-names>P.</given-names>
+            </name>
+            <name>
+              <surname>Ortega</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Vandergheynst</surname>
+              <given-names>P.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/MSP.2012.2235192</pub-id>
+          <issue>3</issue>
+          <volume>30</volume>
+          <year>2013</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_11">
+        <label>11.</label>
+        <element-citation publication-type="journal">
+          <pub-id pub-id-type="doi">10.1109/JPROC.2018.2820126</pub-id>
+          <year>2018</year>
+          <article-title>Graph signal processing: Overview, challenges, and applications</article-title>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Ortega</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Frossard</surname>
+              <given-names>P.</given-names>
+            </name>
+            <name>
+              <surname>Kovačević</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Moura</surname>
+              <given-names>J. M. F.</given-names>
+            </name>
+            <name>
+              <surname>Vandergheynst</surname>
+              <given-names>P.</given-names>
+            </name>
+          </person-group>
+          <page-range>808-828</page-range>
+          <source>Proc. IEEE</source>
+          <volume>106</volume>
+          <issue>5</issue>
+        </element-citation>
+      </ref>
+      <ref id="ref_12">
+        <label>12.</label>
+        <element-citation publication-type="conf-paper">
+          <person-group person-group-type="author">
+            <name>
+              <surname>Yan</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Xiong</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Lin</surname>
+              <given-names>D.</given-names>
+            </name>
+          </person-group>
+          <article-title>Spatial temporal graph convolutional networks for skeleton-based action recognition</article-title>
+          <year>2018</year>
+          <page-range>7444-7452</page-range>
+          <pub-id pub-id-type="doi">10.48550/arXiv.1801.07455</pub-id>
+          <source>Proceedings of the AAAI conference on artificial intelligence</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_13">
+        <label>13.</label>
+        <element-citation publication-type="journal">
+          <article-title>Clustering and identification of key body extremities through topological analysis of multi-sensors 3D data</article-title>
+          <page-range>1097-1120</page-range>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Mohsin</surname>
+              <given-names>N.</given-names>
+            </name>
+            <name>
+              <surname>Payandeh</surname>
+              <given-names>S.</given-names>
+            </name>
+          </person-group>
+          <year>2022</year>
+          <pub-id pub-id-type="doi">10.1007/s00371-021-02070-0</pub-id>
+          <source>Vis. Comput.</source>
+          <volume>38</volume>
+        </element-citation>
+      </ref>
+      <ref id="ref_14">
+        <label>14.</label>
+        <element-citation publication-type="conference-proceedings">
+          <year>2007</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Lee</surname>
+              <given-names>J. G.</given-names>
+            </name>
+            <name>
+              <surname>Han</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Whang</surname>
+              <given-names>K.</given-names>
+            </name>
+          </person-group>
+          <source>, https://api.semanticscholar.org/CorpusID:18004950</source>
+          <article-title>Trajectory clustering: A partition-and-group framework</article-title>
+        </element-citation>
+      </ref>
+      <ref id="ref_15">
+        <label>15.</label>
+        <element-citation publication-type="journal">
+          <page-range>1-11</page-range>
+          <year>2022</year>
+          <volume>21</volume>
+          <issue>1</issue>
+          <source>Gerontechnology</source>
+          <pub-id pub-id-type="doi">10.4017/gt.2022.21.1.590.07</pub-id>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Payandeh</surname>
+              <given-names>S.</given-names>
+            </name>
+          </person-group>
+          <article-title>An overview of Markov chains for monitoring indoor movements and ambient motion detection</article-title>
+        </element-citation>
+      </ref>
+      <ref id="ref_16">
+        <label>16.</label>
+        <element-citation publication-type="journal">
+          <person-group person-group-type="author">
+            <name>
+              <surname>Payandeh</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Chiu</surname>
+              <given-names>E.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1155/2019/8612021</pub-id>
+          <article-title>Application of modified PageRank algorithm for anomaly detection in movements of older adults</article-title>
+          <source>Int. J. Telemed. Appl.</source>
+          <year>2019</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_17">
+        <label>17.</label>
+        <element-citation publication-type="conf-paper">
+          <source>Computer Vision—ECCV 2012, ser. Lecture Notes in Computer Science</source>
+          <year>2012</year>
+          <page-range>215-230</page-range>
+          <article-title>A unified framework for multi-target tracking and collective activity recognition</article-title>
+          <volume>7575</volume>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Choi</surname>
+              <given-names>W.</given-names>
+            </name>
+            <name>
+              <surname>Savarese</surname>
+              <given-names>S.</given-names>
+            </name>
+          </person-group>
+          <publisher-place>Berlin, Heidelberg: Springer</publisher-place>
+          <pub-id pub-id-type="doi">10.1007/978-3-642-33765-9_16</pub-id>
+        </element-citation>
+      </ref>
+      <ref id="ref_18">
+        <label>18.</label>
+        <element-citation publication-type="journal">
+          <pub-id pub-id-type="doi">10.1109/ACCESS.2019.2923743</pub-id>
+          <source>IEEE Access</source>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Wang</surname>
+              <given-names>F.</given-names>
+            </name>
+            <name>
+              <surname>Feng</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Zhao</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Han</surname>
+              <given-names>J.</given-names>
+            </name>
+          </person-group>
+          <volume>7</volume>
+          <year>2019</year>
+          <page-range>80058-80068</page-range>
+          <article-title>Joint activity recognition and indoor localization with WiFi fingerprints</article-title>
+        </element-citation>
+      </ref>
+      <ref id="ref_19">
+        <label>19.</label>
+        <element-citation publication-type="conf-paper">
+          <year>2023</year>
+          <source>2023 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP)</source>
+          <page-range>1-5</page-range>
+          <article-title>Joint human orientation-activity recognition using WiFi signals for human-machine interaction</article-title>
+          <pub-id pub-id-type="doi">10.1109/ICASSP49357.2023.10094880</pub-id>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Salehinejad</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Hasanzadeh</surname>
+              <given-names>N.</given-names>
+            </name>
+            <name>
+              <surname>Djogo</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Valaee</surname>
+              <given-names>S.</given-names>
+            </name>
+          </person-group>
+          <publisher-place>Rhodes Island, Greece</publisher-place>
+        </element-citation>
+      </ref>
+      <ref id="ref_20">
+        <label>20.</label>
+        <element-citation publication-type="journal">
+          <page-range>arXiv:2411.17781</page-range>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Etiabi</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Eldeeb</surname>
+              <given-names>E.</given-names>
+            </name>
+            <name>
+              <surname>Shehab</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Njima</surname>
+              <given-names>W.</given-names>
+            </name>
+            <name>
+              <surname>Alves</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Alouini</surname>
+              <given-names>M. S.</given-names>
+            </name>
+            <name>
+              <surname>Amhoud</surname>
+              <given-names>E. M.</given-names>
+            </name>
+          </person-group>
+          <source>arXiv Preprint</source>
+          <article-title>Metagraphloc: A graph-based meta-learning scheme for indoor localization via sensor fusion</article-title>
+          <pub-id pub-id-type="doi">10.48550/arXiv.2411.17781</pub-id>
+        </element-citation>
+      </ref>
+      <ref id="ref_21">
+        <label>21.</label>
+        <element-citation publication-type="journal">
+          <pub-id pub-id-type="doi">10.1007/s11280-025-01373-9</pub-id>
+          <volume>28</volume>
+          <page-range>61</page-range>
+          <year>2025</year>
+          <article-title>TiDGRec: Dual-graph modelling with target-intention filtering for session-based recommendation</article-title>
+          <source>World Wide Web</source>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Zhuo</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>B.</given-names>
+            </name>
+            <name>
+              <surname>Yu</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Xu</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Zhao</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Yuan</surname>
+              <given-names>G.</given-names>
+            </name>
+          </person-group>
+        </element-citation>
+      </ref>
+      <ref id="ref_22">
+        <label>22.</label>
+        <element-citation publication-type="journal">
+          <year>2025</year>
+          <source>Entropy</source>
+          <pub-id pub-id-type="doi">10.3390/e27020099</pub-id>
+          <page-range>99</page-range>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Wang</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Pi</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Pi</surname>
+              <given-names>J.</given-names>
+            </name>
+          </person-group>
+          <article-title>Dual-gated graph convolutional recurrent unit with integrated graph learning (DG3L): Anovel recurrent network architecture with dynamic graph learning for spatio-temporal predictions</article-title>
+          <volume>27</volume>
+          <issue>2</issue>
+        </element-citation>
+      </ref>
+      <ref id="ref_23">
+        <label>23.</label>
+        <element-citation publication-type="conf-paper">
+          <source>2024 4th International Conference on Industrial Automation, Robotics and Control Engineering (IARCE)</source>
+          <article-title>A dual-graph learning framework with sparse adaptive embedding for EEG emotion recognition</article-title>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Liu</surname>
+              <given-names>W.</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>F.</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>Y.</given-names>
+            </name>
+          </person-group>
+          <publisher-place>Chengdu, China</publisher-place>
+          <page-range>245-249</page-range>
+          <pub-id pub-id-type="doi">10.1109/IARCE64300.2024.00053</pub-id>
+          <year>2024</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_24">
+        <label>24.</label>
+        <element-citation publication-type="journal">
+          <pub-id pub-id-type="doi">10.3390/app15041897</pub-id>
+          <issue>4</issue>
+          <source>Appl. Sci.</source>
+          <article-title>A multiscale mixed-graph neural network based on kinematic and dynamic joint features for human motion prediction</article-title>
+          <volume>15</volume>
+          <year>2025</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Zhao</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Wei</surname>
+              <given-names>B.</given-names>
+            </name>
+            <name>
+              <surname>Han</surname>
+              <given-names>L.</given-names>
+            </name>
+            <name>
+              <surname>Cai</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Ma</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>C.</given-names>
+            </name>
+          </person-group>
+        </element-citation>
+      </ref>
+      <ref id="ref_25">
+        <label>25.</label>
+        <element-citation publication-type="journal">
+          <pub-id pub-id-type="doi">10.1007/s11263-016-0981-7</pub-id>
+          <page-range>32-73</page-range>
+          <volume>123</volume>
+          <source>Int. J. Comput. Vis.</source>
+          <article-title>Visual genome: Connecting language and vision using crowdsourced dense image annotations</article-title>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Krishna</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Zhu</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Groth</surname>
+              <given-names>O.</given-names>
+            </name>
+            <name>
+              <surname>Johnson</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Hata</surname>
+              <given-names>K.</given-names>
+            </name>
+            <name>
+              <surname>Kravitz</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Chen</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Kalantidis</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>L.</given-names>
+            </name>
+            <name>
+              <surname>David  Shamma et al.</surname>
+              <given-names>A.</given-names>
+            </name>
+          </person-group>
+          <year>2017</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_26">
+        <label>26.</label>
+        <element-citation publication-type="journal">
+          <volume>2</volume>
+          <pub-id pub-id-type="doi">10.1093/comnet/cnu016</pub-id>
+          <page-range>203-271</page-range>
+          <issue>3</issue>
+          <article-title>Multilayer networks</article-title>
+          <source>J. Complex Netw.</source>
+          <year>2014</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Kivelä</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Arenas</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Barthelemy</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Gleeson</surname>
+              <given-names>J. P.</given-names>
+            </name>
+            <name>
+              <surname>Moreno</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Porter</surname>
+              <given-names>M. A.</given-names>
+            </name>
+          </person-group>
+        </element-citation>
+      </ref>
+      <ref id="ref_27">
+        <label>27.</label>
+        <element-citation publication-type="journal">
+          <year>2014</year>
+          <article-title>The structure and dynamics of multilayer networks</article-title>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Boccaletti</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Bianconi</surname>
+              <given-names>G.</given-names>
+            </name>
+            <name>
+              <surname>Criado</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Del Genio</surname>
+              <given-names>C. I.</given-names>
+            </name>
+            <name>
+              <surname>Gómez-Gardenes</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Romance</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Sendiña-Nadal</surname>
+              <given-names>I.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Zanin</surname>
+              <given-names>M.</given-names>
+            </name>
+          </person-group>
+          <source>Phys. Rep.</source>
+          <page-range>1-122</page-range>
+          <issue>1</issue>
+          <volume>544</volume>
+          <pub-id pub-id-type="doi">10.1016/j.physrep.2014.07.001</pub-id>
+        </element-citation>
+      </ref>
+      <ref id="ref_28">
+        <label>28.</label>
+        <element-citation publication-type="book">
+          <person-group person-group-type="author">
+            <name>
+              <surname>Mesbahi</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Egerstedt</surname>
+              <given-names>M.</given-names>
+            </name>
+          </person-group>
+          <source>Graph Theoretic Methods in Multiagent Networks</source>
+          <publisher-name>Princeton University Press</publisher-name>
+          <year>2010</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_29">
+        <label>29.</label>
+        <element-citation publication-type="book">
+          <person-group person-group-type="author">
+            <name>
+              <surname>Kailath</surname>
+              <given-names>T.</given-names>
+            </name>
+          </person-group>
+          <source>Linear Systems</source>
+          <publisher-name>Prentice Hall</publisher-name>
+          <year>1980</year>
+        </element-citation>
+      </ref>
+    </ref-list>
+  </back>
+</article>
