@@ -1,0 +1,1643 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.3 20210610//EN" "JATS-journalpublishing1-3.dtd">
+<article xml:lang="en" dtd-version="1.3" article-type="research-article" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mml="http://www.w3.org/1998/Math/MathML">
+  <front>
+    <journal-meta>
+      <journal-id journal-id-type="publisher-id">ATAIML</journal-id>
+      <journal-id journal-id-type="doi">10.56578</journal-id>
+      <journal-title-group>
+        <journal-title>Acadlore Transactions on AI and Machine Learning</journal-title>
+        <abbrev-journal-title abbrev-type="issn">Acadlore Trans. Mach. Learn.</abbrev-journal-title>
+        <abbrev-journal-title abbrev-type="publisher">ATAIML</abbrev-journal-title>
+      </journal-title-group>
+      <issn publication-format="electronic">2957-9570</issn>
+      <issn publication-format="print">2957-9562</issn>
+      <publisher>
+        <publisher-name>Acadlore</publisher-name>
+      </publisher>
+    </journal-meta>
+    <article-meta>
+      <article-id pub-id-type="publisher-id">AR-bkTvx2i4vzXmq1Wzx1PrqoWlrR696s06</article-id>
+      <article-id pub-id-type="doi">10.56578/ataiml050305</article-id>
+      <article-categories>
+        <subj-group>
+          <subject>Articles</subject>
+        </subj-group>
+      </article-categories>
+      <title-group>
+        <article-title>Observability and Causal Tracing for Agentic Data Pipelines: Span Semantics, Replay, and Hops-To-Root-Cause</article-title>
+      </title-group>
+      <contrib-group>
+        <contrib contrib-type="author" rid="aff_1">
+          <contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0009-0007-2241-9928</contrib-id>
+          <name>
+            <surname>Dudaka</surname>
+            <given-names>Muralikrishna</given-names>
+          </name>
+          <email>reachmuralid@gmail.com</email>
+        </contrib>
+        <aff id="aff_1">Independent Researcher, United States</aff>
+      </contrib-group>
+      <pub-date publication-format="electronic" date-type="pub">
+        <day>02</day>
+        <month>09</month>
+        <year>2026</year>
+      </pub-date>
+      <volume>5</volume>
+      <issue>3</issue>
+      <fpage>262</fpage>
+      <lpage>269</lpage>
+      <page-range>262-269</page-range>
+      <history>
+        <date date-type="received">
+          <day>29</day>
+          <month>06</month>
+          <year>2026</year>
+        </date>
+        <date date-type="accepted">
+          <day>09</day>
+          <month>08</month>
+          <year>2026</year>
+        </date>
+      </history>
+      <permissions>
+        <copyright-statement>©2026 by the author(s)</copyright-statement>
+        <copyright-year>2026</copyright-year>
+        <license license-type="open-access" xlink:href="https://creativecommons.org/licenses/by/4.0/">
+          <license-p> Published by Acadlore Publishing Services Limited, Hong Kong. This article is available for free download and can be reused and cited, provided that the original published version is credited, under the CC BY 4.0 license.</license-p>
+        </license>
+      </permissions>
+      <abstract><p>Agentic data pipelines, in which large language models select and invoke tools through the Model Context Protocol, consume tool outputs, and iteratively execute multi-step analytical or operational workflows, are increasingly being deployed in production environments. However, the observability infrastructure required to diagnose failures in such systems remains underdeveloped. Conventional distributed tracing effectively captures service-to-service execution but often represents large language model invocations as opaque spans and fails to preserve causal relationships across large language model-tool boundaries. Consequently, incident diagnosis can require an agent's execution trajectory to be reconstructed manually from chronologically ordered spans. To address this limitation, causal span linking across large language model and tool invocations was defined as a first-class observability primitive for agentic data pipelines. Hops-to-root-cause was introduced as the directed acyclic graph distance between a symptom span—the earliest span tagged error=true—and the identified causal span, with deterministic tie-breaking applied. The proposed approach was evaluated on a synthetic corpus comprising 20 incidents generated using a fully disclosed construction protocol. Compared with a flat-span baseline, causally linked tracing reduced the mean hops-to-root-cause from 6.4 to 1.5, corresponding to a reduction by a factor of 4.3. The greatest improvements were observed for incidents involving multi-hop tool chains. Causal span linking was further complemented by deterministic replay and by a human-artificial intelligence collaborative diagnostic workflow. Together, causal span linking, deterministic replay, and human-artificial intelligence collaborative diagnosis were established as complementary observability primitives for improving the reproducibility, interpretability, and efficiency of root-cause analysis in agentic data pipelines.</p></abstract>
+      <kwd-group>
+        <kwd>Observability</kwd>
+        <kwd>Distributed tracing</kwd>
+        <kwd>Agentic systems</kwd>
+        <kwd>Large language models</kwd>
+        <kwd>Model context protocol</kwd>
+        <kwd>Root-cause analysis</kwd>
+        <kwd>Opentelemetry</kwd>
+        <kwd>Hops-to-root-cause</kwd>
+      </kwd-group>
+      <counts>
+        <count count-type="contributors" count="1"/>
+        <fig-count count="0"/>
+        <table-count count="4"/>
+        <ref-count count="22"/>
+      </counts>
+    </article-meta>
+  </front>
+  <body>
+    <sec sec-type="intro">
+      <title>1. Introduction</title>
+      <p>Agentic data pipelines interleave heterogeneous compute according to a fundamentally different configuration from traditional service-to-service architectures. A large language model call may take hundreds of milliseconds and produce a structured tool invocation through the Model Context Protocol [<xref ref-type="bibr" rid="ref_1">1</xref>]; the tool call returns a result; the large language model reasons over the result and may invoke another tool; the cycle continues until the agent produces a terminal answer. This pipeline shape—chains of large language model-tool pairs—imposes observability requirements that traditional tracing infrastructure, built around synchronous service-to-service request propagation, does not meet.</p><p>The distributed tracing literature traces its lineage to Dapper [<xref ref-type="bibr" rid="ref_2">2</xref>] and the X-Trace framework [<xref ref-type="bibr" rid="ref_3">3</xref>], with OpenTelemetry [<xref ref-type="bibr" rid="ref_4">4</xref>] consolidating the canonical model for the contemporary ecosystem. Pivot Tracing [<xref ref-type="bibr" rid="ref_5">5</xref>] established causal observation across service boundaries as a first-class tracing primitive; the same principle applies, with new urgency, at the large language model-tool boundary in agentic pipelines. A typical instrumented agentic pipeline produces a flat span list in which the large language model call is a single leaf span and each tool call is a sibling, with no causal link expressing that a particular tool call was caused by a specific large language model completion. Practitioner observability platforms, including LangSmith [<xref ref-type="bibr" rid="ref_6">6</xref>], LangFuse [<xref ref-type="bibr" rid="ref_7">7</xref>], and Phoenix [<xref ref-type="bibr" rid="ref_8">8</xref>], document that root-cause analysis on agentic incidents commonly takes hours, with the bottleneck being trajectory reconstruction rather than any individual span's lookup. While these platforms capture span data and provide basic lineage views, they share a common structural limitation: tool-call spans are recorded as siblings under an agent-loop parent rather than as causal children of the large language model completion that produced them. This means that trace visualizations present co-occurrence without causality, leaving the operator unable to answer the question ``which large language model completion triggered this tool failure?'' without manually reading every completion in sequence.</p><p>Three contributions are advanced. First, causal span linking across large language model and tool boundaries is defined: each tool-call span declares its parent as the large language model completion span whose reasoning produced the call. Second, hops-to-root-cause is defined as the directed acyclic graph distance from the symptom span to the causal span, with deterministic tie-breaking. Third, a 20-incident synthetic corpus with a fully disclosed construction protocol validates the metric, showing a 4.3<inline-formula>
+  <mml:math id="m5816g7du8">
+    <mml:mo>×</mml:mo>
+  </mml:math>
+</inline-formula> reduction in mean hops under causal tracing.</p>
+    </sec>
+    <sec sec-type="">
+      <title>2. Background</title>
+      
+        <sec>
+          
+            <title>2.1. Distributed tracing primitives</title>
+          
+          <p>The canonical tracing model introduced by Dapper [<xref ref-type="bibr" rid="ref_2">2</xref>] and X-Trace [<xref ref-type="bibr" rid="ref_3">3</xref>] establishes the span as the fundamental observability unit. Each span carries a unique trace identifier, a parent span identifier, start and end timestamps, a status, and a key-value attribute set. OpenTelemetry [<xref ref-type="bibr" rid="ref_4">4</xref>] consolidates this model across languages and vendors, with semantic conventions for generative artificial intelligence now evolving to standardize large language model-call attributes. Production tracing systems ingest OpenTelemetry-format traces; the underlying span model is uniform. The model handles fan-out at service boundaries well; it does not natively handle causality mediated by an opaque reasoning component—precisely the pattern that agentic pipelines introduce.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>2.2. Agentic pipeline anatomy</title>
+          
+          <p>An agentic data pipeline begins with a user prompt or external trigger. The agent constructs an initial prompt and issues a large language model call using the ReAct pattern [<xref ref-type="bibr" rid="ref_9">9</xref>]; the large language model returns a completion that may include a tool-call directive via the Model Context Protocol [<xref ref-type="bibr" rid="ref_1">1</xref>]; the agent invokes the tool and incorporates the result into the next large language model call. The pipeline is a sequence of large language model-tool pairs terminated by a final large language model call. Several structural features distinguish this pipeline from traditional distributed architectures: call depth is bounded by the agent's maximum-turn limit (commonly 10 to 50); branching is rare (the call tree is mostly a linear chain); non-determinism is endemic, complicating replay [<xref ref-type="bibr" rid="ref_10">10</xref>], [<xref ref-type="bibr" rid="ref_11">11</xref>]. The broader agent survey landscape [<xref ref-type="bibr" rid="ref_10">10</xref>], [<xref ref-type="bibr" rid="ref_12">12</xref>], [<xref ref-type="bibr" rid="ref_13">13</xref>] confirms that multi-step tool-using agents are now common in production, making observability infrastructure for these pipelines a pressing practical need.</p>
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>3. Span semantics for large language model and tool calls</title>
+      
+        <sec>
+          
+            <title>3.1. Large language model calls as first-class spans</title>
+          
+          <p>The large language model call is treated as a first-class span with a rich attribute set: model identifier, prompt content or hash, completion content or hash, input and output token counts, latency, finish reason, and sampling parameters. The span's attributes are sufficient to reconstruct, with the large language model provider, the exact call that was made. The OpenTelemetry semantic conventions for generative artificial intelligence [<xref ref-type="bibr" rid="ref_4">4</xref>] are evolving to standardize these attributes; the practitioner toolkit converges on a similar set across LangSmith [<xref ref-type="bibr" rid="ref_6">6</xref>], LangFuse [<xref ref-type="bibr" rid="ref_7">7</xref>], and Phoenix [<xref ref-type="bibr" rid="ref_8">8</xref>]. Chain-of-thought research [<xref ref-type="bibr" rid="ref_11">11</xref>] establishes that the reasoning content of large language model completions is the causal antecedent of subsequent tool calls—precisely the link that causal span instrumentation makes explicit. <xref ref-type="table" rid="table_1">Table 1</xref> provides a structured comparison of causal-link tracing against these platforms across four dimensions: trace structure (flat sibling list vs. causal directed acyclic graph), causal relationship modeling (none vs. explicit parent-child edges at the large language model-tool boundary), root-cause analysis capability (manual hop-by-hop vs. directed acyclic graph traversal), and replay support (absent vs. deterministic from captured attributes). The proposed framework is the only approach that provides all four capabilities in combination, addressing the specific gap identified in the introduction.</p>
+          
+            <table-wrap id="table_1">
+              <label>Table 1</label>
+              <caption>
+                <title>Comparison of causal-link tracing with existing observability platforms</title>
+              </caption>
+              <table><tr><th >Dimension</th><th >LangSmith</th><th >LangFuse</th><th >Phoenix</th><th >Proposed Framework</th></tr><tr><td >Trace structure</td><td >Flat sibling list</td><td >Flat sibling list</td><td >Flat sibling list</td><td >Causal directed acyclic graph</td></tr><tr><td >Causal relationship modeling</td><td >None</td><td >None</td><td >None</td><td >Explicit parent-child edges at the large language model-tool boundary</td></tr><tr><td >Root-cause analysis</td><td >Manual hop-by-hop</td><td >Manual hop-by-hop</td><td >Manual hop-by-hop</td><td >Directed acyclic graph traversal</td></tr><tr><td >Replay support</td><td >Absent</td><td >Absent</td><td >Absent</td><td >Deterministic from captured attributes</td></tr></table>
+            </table-wrap>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.2. Tool calls as causal children</title>
+          
+          <p>The central instrumentation design choice is to instrument each tool-call span as a causal child of the large language model completion span that produced it, rather than as a sibling under a common agent-loop parent. The agent loop must attach the context of the active large language model completion span as the parent for the tool call's instrumentation when dispatching the call through the Model Context Protocol client transport layer [<xref ref-type="bibr" rid="ref_1">1</xref>]. In Model Context Protocol-based deployments, both attachment points live in the client transport layer where tool dispatch already occurs. The Pivot Tracing discipline [<xref ref-type="bibr" rid="ref_5">5</xref>] advocates the same approach at the inter-service level; the same logic applies at the large language model-tool boundary. Multi-agent collaboration frameworks [<xref ref-type="bibr" rid="ref_14">14</xref>] and agentic tuning research [<xref ref-type="bibr" rid="ref_15">15</xref>] both confirm that causal linkage is necessary for meaningful trajectory analysis in complex agent systems.</p>
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>4. Hops-to-root-cause</title>
+      
+        <sec>
+          
+            <title>4.1. Definition and properties</title>
+          
+          <p>Hops-to-root-cause is defined precisely. Given a trace directed acyclic graph $T<inline-formula>
+  <mml:math id="mrx08avngs">
+    <mml:mi>w</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+  </mml:math>
+</inline-formula>S<inline-formula>
+  <mml:math id="mtsudue748">
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>p</mml:mi>
+  </mml:math>
+</inline-formula>P:S$ <inline-formula>
+  <mml:math id="mfhje2e1c1">
+    <mml:mo accent="false">→</mml:mo>
+  </mml:math>
+</inline-formula> $S$ <inline-formula>
+  <mml:math id="mahfoauex2">
+    <mml:mo>∪</mml:mo>
+  </mml:math>
+</inline-formula> {<inline-formula>
+  <mml:math id="mgfy44nni1">
+    <mml:mi>∅</mml:mi>
+  </mml:math>
+</inline-formula>}, the symptom span <inline-formula>
+  <mml:math id="mngtl7wa3u">
+    <mml:msub>
+      <mml:mi>S</mml:mi>
+      <mml:mrow>
+        <mml:mtext>sym</mml:mtext>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula> is the chronologically first span in $S<inline-formula>
+  <mml:math id="mzofxqrs6y">
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>k</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mo>=</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>.</mml:mo>
+  </mml:math>
+</inline-formula>S_{\text {cause}}<inline-formula>
+  <mml:math id="mk4qtjo4do">
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+  </mml:math>
+</inline-formula>S_{\text {sym}}<inline-formula>
+  <mml:math id="mrj45ha2f0">
+    <mml:mi>w</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+  </mml:math>
+</inline-formula>S_{\text {sym}}<inline-formula>
+  <mml:math id="m3i2h56lah">
+    <mml:mo>.</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>;</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mi>T</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>S</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>P</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>q</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>T</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+  </mml:math>
+</inline-formula>d$(<inline-formula>
+  <mml:math id="m445v4n395">
+    <mml:msub>
+      <mml:mi>S</mml:mi>
+      <mml:mrow>
+        <mml:mtext>sym</mml:mtext>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula>, <inline-formula>
+  <mml:math id="muwnekdlng">
+    <mml:msub>
+      <mml:mi>S</mml:mi>
+      <mml:mrow>
+        <mml:mtext>cause</mml:mtext>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula>), measured as the number of parent traversals required to reach <inline-formula>
+  <mml:math id="mo3kxnk1c6">
+    <mml:msub>
+      <mml:mi>S</mml:mi>
+      <mml:mrow>
+        <mml:mtext>cause</mml:mtext>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula> from <inline-formula>
+  <mml:math id="mq5f1ury0w">
+    <mml:msub>
+      <mml:mi>S</mml:mi>
+      <mml:mrow>
+        <mml:mtext>sym</mml:mtext>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula>. The metric is deterministic under the construction and workload-agnostic—it depends only on the trace structure and error annotations. Root cause identification research [<xref ref-type="bibr" rid="ref_16">16</xref>] establishes that causal-graph traversal substantially outperforms flat correlation on the same incident data.</p><p>Three practical pathways for causal annotation in production are proposed. First, automated detection: spans tagged error=true can be propagated upward through the directed acyclic graph using a lightweight static analysis pass; if a tool-call span is the chronologically first error, its parent large language model completion span is a candidate causal span. This heuristic is correct for the majority of single-fault incidents. Second, operator feedback: observability dashboards can surface the candidate causal span and prompt the on-call operator to confirm or redirect; this labeled signal can be stored in a causal annotation store keyed by trace identifier. Third, incident report integration: post-incident review documents typically identify root causes at the component level; a structured incident report template that includes a “causal span identifier” field bridges the gap between incident management and trace storage. Together, these pathways transform causal annotation from a purely manual task into a semi-automated workflow that scales with operational volume.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>4.2. Flat-span baseline and the combinatorial problem</title>
+          
+          <p>The natural baseline is the flat-span analysis pattern, in which the operator walks the chronological span list backward from the symptom span. The hops-to-root-cause for the flat-span baseline is the position of the causal span in the chronological list counted backward from the symptom. For a trace at directed acyclic graph depth $d<inline-formula>
+  <mml:math id="mbn9k3p2ky">
+    <mml:mi>w</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+  </mml:math>
+</inline-formula>b<inline-formula>
+  <mml:math id="m4zgd9qlef">
+    <mml:mo>,</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+  </mml:math>
+</inline-formula>k$ <inline-formula>
+  <mml:math id="m7x0nh5z44">
+    <mml:mo>≈</mml:mo>
+  </mml:math>
+</inline-formula> <inline-formula>
+  <mml:math id="mht5q2vaqe">
+    <mml:mi>Θ</mml:mi>
+  </mml:math>
+</inline-formula>($d$ <inline-formula>
+  <mml:math id="m2zdi7vn26">
+    <mml:mo>×</mml:mo>
+  </mml:math>
+</inline-formula> $b$). The search problem is that the operator cannot distinguish causal relationships from temporal coincidence without reading the large language model's completion text at each step. The Reflexion framework [<xref ref-type="bibr" rid="ref_17">17</xref>] highlights how this ambiguity compounds in self-correction loops, which are common in multi-step analytical agents.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>4.3. Limitations</title>
+          
+          <p>The hops-to-root-cause metric as defined does not account for retry spans: if an agent retries a failed tool call, the retry span may be the chronologically first error-tagged span while the original invocation is the true causal antecedent. A retry-aware variant would suppress spans tagged as retries when selecting ssym. This extension is left for future work. More broadly, the current evaluation is limited to a synthetic corpus, which cannot capture the full diversity of production failure modes. This limitation is explicitly acknowledged as the primary limitation of the present work. The corpus was constructed with five incident classes to demonstrate that the metric behaves consistently across qualitatively distinct failure types, but class diversity in production environments is substantially higher. The evaluation also does not address scenarios where the causal span is ambiguous or where multiple concurrent agent turns contribute to a compound failure.</p>
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>5. A synthetic 20-incident corpus</title>
+      
+        <sec>
+          
+            <title>5.1. Construction protocol</title>
+          
+          <p>A synthetic 20-incident corpus was constructed with five incident classes and four incidents per class, with pipeline depths drawn uniformly from {2, 3, 5, 8} large language model-tool turns. The corpus comprises five incident classes: timeout cascade (downstream tool exceeds time budget), schema drift (tool returns unexpected schema; large language model hallucinates column name), tool-argument malformation (large language model produces malformed arguments; tool returns structured error), downstream rate limit (high-frequency capability exceeds server-side rate limit), and large language model hallucination of nonexistent column. Faults were injected via Python decorators on synthetic tools; the ground-truth causal span was known by construction. Traces were emitted in both flat-span and causally linked form. The corpus was made reproducible from a fixed random seed. All results are outputs of the analytical model and simulator developed for this study; they are not measurements of any production system.</p><p>The corpus is sized for an existence proof of the metric’s reduction factor, not for statistical power; class sizes are uniform to prevent class imbalance from confounding the comparison. Specifically, the four pipeline depths {2, 3, 5, 8} were chosen to span the range from minimal (two large language model-tool turns, typical of simple lookup agents) to deep (eight turns, representative of analytical agents that iteratively refine queries). Each depth was paired with each incident class to ensure that the reduction factor is not an artifact of a single depth regime. The incident classes were selected to cover the three most common failure modes reported by practitioners using LangSmith and LangFuse: schema mismatches, timeout propagation, and large language model-introduced argument errors. A corpus of 20 incidents provides limited statistical power and is insufficient to support broad generalization; the validation is intended as a proof of metric existence, and a production-scale evaluation requires operator-labeled traces from live deployments. Future work will address this by partnering with enterprise deployments to collect real incident traces and evaluate the metric on datasets with hundreds of incidents across a wider class distribution. Additionally, experiments examining variations in the branching factor (fan-out $&gt;$ 1) and retry behavior are identified as important extensions.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>5.2. Results</title>
+          
+          <p>Hops-to-root-cause is computed for both trace forms. <xref ref-type="table" rid="table_2">Table 2</xref> reports the mean and 90th-percentile hops-to-root-cause per incident class. Mean hops-to-root-cause falls from 6.4 under flat-span analysis to 1.5 under causal-link traversal, a factor of 4.3 across the 20-incident corpus. The largest reductions occur in the rate-limit (4.7<inline-formula>
+  <mml:math id="ml5f56sg5n">
+    <mml:mo>×</mml:mo>
+  </mml:math>
+</inline-formula>) and large language model hallucination (4.5<inline-formula>
+  <mml:math id="m0cqmbmo40">
+    <mml:mo>×</mml:mo>
+  </mml:math>
+</inline-formula>) classes. All incident classes share the same four pipeline depths ({2, 3, 5, 8}) by design; the larger reductions in these two classes reflect the fact that their fault patterns tend to manifest later in the execution trace, increasing the flat-span hop count while the causal-link distance remains bounded by directed acyclic graph depth. The smallest reduction is in tool-argument malformation (3.1<inline-formula>
+  <mml:math id="meo5ytyp8n">
+    <mml:mo>×</mml:mo>
+  </mml:math>
+</inline-formula>) because that class has shallow trajectories. Recall is exact in both forms---the ground-truth causal span is found in every incident. The metric measures investigation efficiency, not correctness. <xref ref-type="table" rid="table_3">Table 3</xref> reports the causal-link instrumentation impact by pipeline depth.</p>
+          
+            <table-wrap id="table_2">
+              <label>Table 2</label>
+              <caption>
+                <title>Mean and 90th-percentile hops-to-root-cause by incident class</title>
+              </caption>
+              <table><tr><th >Incident Class</th><th >Flat Mean</th><th >Flat P90</th><th >Causal Mean</th><th >Causal P90</th><th >Reduction (Mean)</th></tr><tr><td >Timeout cascade</td><td >6.0</td><td >11</td><td >1.5</td><td >3</td><td >4.0<mml:math id="mcmmrzmcvl">
+  <mml:mo>×</mml:mo>
+</mml:math></td></tr><tr><td >Schema drift</td><td >7.5</td><td >13</td><td >1.8</td><td >3</td><td >4.2<mml:math id="m98czb3xf0">
+  <mml:mo>×</mml:mo>
+</mml:math></td></tr><tr><td >Tool-argument malformation</td><td >2.5</td><td >5</td><td >0.8</td><td >2</td><td >3.1<mml:math id="mglzwe8ytf">
+  <mml:mo>×</mml:mo>
+</mml:math></td></tr><tr><td >Downstream rate limit</td><td >7.0</td><td >13</td><td >1.5</td><td >3</td><td >4.7<mml:math id="mxyc7vt2dw">
+  <mml:mo>×</mml:mo>
+</mml:math></td></tr><tr><td >Large language model hallucination</td><td >9.0</td><td >14</td><td >2.0</td><td >4</td><td >4.5<mml:math id="movgt681pb">
+  <mml:mo>×</mml:mo>
+</mml:math></td></tr><tr><td >Aggregate (20 incidents)</td><td >6.4</td><td >14</td><td >1.5</td><td >3</td><td >4.3<mml:math id="mhs3bovn1o">
+  <mml:mo>×</mml:mo>
+</mml:math></td></tr></table>
+            </table-wrap>
+          
+          
+            <table-wrap id="table_3">
+              <label>Table 3</label>
+              <caption>
+                <title>Causal-link instrumentation impact by pipeline depth</title>
+              </caption>
+              <table><tbody><tr><th colspan="1" rowspan="1"><p>Pipeline Depth (Large Language Model-Tool Turns)</p></th><th colspan="1" rowspan="1"><p>Flat Mean Hops</p></th><th colspan="1" rowspan="1"><p>Causal Mean Hops</p></th><th colspan="1" rowspan="1"><p>Reduction (Mean)</p></th><th colspan="1" rowspan="1"><p>Directed Acyclic Graph Traversal Advantage</p></th></tr><tr><td colspan="1" rowspan="1"><p>2</p></td><td colspan="1" rowspan="1"><p>2.8</p></td><td colspan="1" rowspan="1"><p>0.9</p></td><td colspan="1" rowspan="1"><p>3.1<mml:math id="mht4mhrdm3">
+  <mml:mo>×</mml:mo>
+</mml:math></p></td><td colspan="1" rowspan="1"><p>Minimal—shallow trajectory</p></td></tr><tr><td colspan="1" rowspan="1"><p>3</p></td><td colspan="1" rowspan="1"><p>4.5</p></td><td colspan="1" rowspan="1"><p>1.2</p></td><td colspan="1" rowspan="1"><p>3.8<mml:math id="m0x6t49j4g">
+  <mml:mo>×</mml:mo>
+</mml:math></p></td><td colspan="1" rowspan="1"><p>Moderate</p></td></tr><tr><td colspan="1" rowspan="1"><p>5</p></td><td colspan="1" rowspan="1"><p>7.2</p></td><td colspan="1" rowspan="1"><p>1.5</p></td><td colspan="1" rowspan="1"><p>4.8<mml:math id="min9v7uab6">
+  <mml:mo>×</mml:mo>
+</mml:math></p></td><td colspan="1" rowspan="1"><p>Substantial</p></td></tr><tr><td colspan="1" rowspan="1"><p>8</p></td><td colspan="1" rowspan="1"><p>10.8</p></td><td colspan="1" rowspan="1"><p>1.8</p></td><td colspan="1" rowspan="1"><p>6.0<mml:math id="mbf3fh327y">
+  <mml:mo>×</mml:mo>
+</mml:math></p></td><td colspan="1" rowspan="1"><p>Largest—deep multi-hop chain</p></td></tr></tbody></table>
+            </table-wrap>
+          
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>6. Replay and operator workflow</title>
+      <p>Causal span linking supports a second observability primitive: deterministic replay. Given a captured trace with full large language model-call attributes and tool-call typed arguments and results, a replay engine reconstructs the agent's trajectory step by step and re-executes it against a non-production environment. The Toolformer study [<xref ref-type="bibr" rid="ref_18">18</xref>] and the ToolLLM benchmark [<xref ref-type="bibr" rid="ref_19">19</xref>] both highlight the importance of traceable tool invocations for agent debugging; replay provides the mechanism to verify remediation without exposing the production environment to a modified agent. The Voyager and Reflexion frameworks [<xref ref-type="bibr" rid="ref_17">17</xref>], [<xref ref-type="bibr" rid="ref_20">20</xref>] demonstrate that agent self-improvement loops require exactly this kind of replay capability to be operationally safe.</p><p>For replay to be deterministic—meaning exact trajectory reconstruction by replaying captured completions and tool outputs, rather than re-invoking the model (which may remain nondeterministic)—the following information must be stored at trace time: (i) the full large language model call record, including model identifier and version, sampling parameters (temperature, top-p, and max tokens), and the complete prompt and completion text, or a retrievable content-addressed object thereof (a hash alone is sufficient for content verification but cannot reconstruct the text; deterministic replay requires the full content or a content-addressed store from which it can be retrieved); (ii) all tool-call arguments and return values in their typed, serialized form; (iii) the wall-clock timestamp and monotonic timestamp of each span to support time-conditioned tool behavior. Model version changes are handled by recording the model identifier as a span attribute; a replay engine that detects a version mismatch can flag the replay as approximate and surface the discrepancy to the operator rather than silently producing incorrect results. Tool execution environment consistency is maintained by replaying against a snapshot of the external tool state taken at the time of the original trace; in practice, this means either mocking tool responses from the stored return values (the most common approach) or maintaining a versioned test environment that mirrors the production tool state at a specific timestamp.</p><p>As a concrete example, consider a timeout cascade incident: the replay engine loads the stored tool return values for each turn, re-invokes the agent with the original prompt and model version, and verifies that the same timeout is reproduced; the operator then modifies the timeout threshold in the agent configuration and re-runs the replay to confirm the fix. The human-artificial intelligence collaboration framing centers on the operator workflow enabled by these primitives. Faced with a production incident, the operator examines the visualization of the trace directed acyclic graph, follows parent pointers from the symptom span to the causal span, reads the causal span's attributes, and decides on a remediation. The replay primitive verifies the remediation by re-running the captured trace against the modified agent. The two primitives together transform the agent's behavior from an opaque process into an investigable one, placing the operator in the position of steering the agent's evolution rather than merely observing its failures. In enterprise deployments where agentic interfaces serve security-sensitive analytical workloads, this accountability infrastructure is operationally necessary.</p>
+    </sec>
+    <sec sec-type="">
+      <title>7. Validation via trace simulator</title>
+      <p>A Python trace simulator was constructed to generate the 20-incident corpus and compute the hops-to-root-cause metric for both trace forms. The simulator generates each incident by constructing a synthetic agent loop with the specified depth, injecting a fault at the specified causal span, and emitting the trace in both flat-sibling and causally linked form. The hops-to-root-cause computation traverses the trace in both forms and records the distance to the ground-truth causal span. The simulator is approximately 600 lines of Python, runs in under one minute, and is reproducible from a fixed random seed. Operators interested in evaluating the discipline on their own workloads can adapt the simulator by replacing the synthetic incident classes with real-incident replays extracted from production trace storage.</p>
+    </sec>
+    <sec sec-type="">
+      <title>8. Broader implications for agentic infrastructure</title>
+      <p>As agentic pipelines are deployed in regulated environments—financial analytics, healthcare data platforms, and compliance-critical operational workflows—the question of accountability becomes central. The augmented language models survey [<xref ref-type="bibr" rid="ref_21">21</xref>] identifies observability as a critical gap in the deployment of tool-using agents at scale; this research provides a concrete framework for closing that gap. The study on adaptive query execution [<xref ref-type="bibr" rid="ref_22">22</xref>] confirms that lakehouse-native analytical pipelines, which are a common deployment context for agentic data pipelines, benefit directly from the causal-link instrumentation proposed in this study.</p><p>To ground the proposed framework in concrete applied artificial intelligence scenarios, three representative use cases are described. In enterprise analytics agents, a multi-step agent that queries a lakehouse, applies transformations, and generates a business intelligence report may fail due to schema drift in an upstream table; causal span linking allows the analytics platform operator to identify the failing schema-fetch span directly rather than tracing through dozens of transformation steps. In automated data processing systems, pipelines that ingest, validate, transform, and route data using large language model-guided decision logic benefit from causal tracing when downstream validation failures must be traced to the upstream large language model routing decision that sent malformed records to the wrong schema validator. In decision-support applications, where a large language model agent synthesizes evidence from multiple retrieval tool calls and produces a recommendation, causal tracing enables auditors to verify exactly which retrieved evidence influenced the recommendation, supporting regulatory compliance requirements in healthcare and financial services contexts.</p><p>Multi-agent deployments—where one agent invokes another as a tool through the Model Context Protocol [<xref ref-type="bibr" rid="ref_1">1</xref>]—generalize naturally to the causal-link discipline. The sub-agent’s trigger span declares its parent as the invoking agent's large language model completion span that produced the invocation, and the trace directed acyclic graph spans both agents. The AgentVerse [<xref ref-type="bibr" rid="ref_14">14</xref>] and AgentTuning [<xref ref-type="bibr" rid="ref_15">15</xref>] frameworks both operate in this multi-agent regime; causal-link instrumentation is the prerequisite that makes their execution trajectories investigable. The OpenTelemetry generative artificial intelligence semantic conventions [<xref ref-type="bibr" rid="ref_4">4</xref>] are the natural standardization target for the span attribute schema proposed in this study. <xref ref-type="table" rid="table_4">Table 4</xref> presents the span attribute schema for large language model calls and tool calls in causally linked tracing.</p>
+      
+        <table-wrap id="table_4">
+          <label>Table 4</label>
+          <caption>
+            <title>Span attribute schema for large language model calls and tool calls in causally linked tracing</title>
+          </caption>
+          <table><tbody><tr><th colspan="1" rowspan="1"><p>Span Type</p></th><th colspan="1" rowspan="1"><p>Attribute Name</p></th><th colspan="1" rowspan="1"><p>Value/Type</p></th><th colspan="1" rowspan="1"><p>Purpose</p></th></tr><tr><td colspan="1" rowspan="1"><p>Large language model call</p></td><td colspan="1" rowspan="1"><p>gen_ai.model</p></td><td colspan="1" rowspan="1"><p>string</p></td><td colspan="1" rowspan="1"><p>Identifies model version for replay</p></td></tr><tr><td colspan="1" rowspan="1"><p>Large language model call</p></td><td colspan="1" rowspan="1"><p>gen_ai.prompt_hash</p></td><td colspan="1" rowspan="1"><p>Secure Hash Algorithm 256 (SHA-256)</p></td><td colspan="1" rowspan="1"><p>Enables content verification without exposure</p></td></tr><tr><td colspan="1" rowspan="1"><p>Large language model call</p></td><td colspan="1" rowspan="1"><p>gen_ai.completion_hash</p></td><td colspan="1" rowspan="1"><p>SHA-256 string</p></td><td colspan="1" rowspan="1"><p>Identifies completion for deterministic replay</p></td></tr><tr><td colspan="1" rowspan="1"><p>Large language model call</p></td><td colspan="1" rowspan="1"><p>gen_ai.input_tokens</p></td><td colspan="1" rowspan="1"><p>integer</p></td><td colspan="1" rowspan="1"><p>Cost tracking and anomaly detection</p></td></tr><tr><td colspan="1" rowspan="1"><p>Large language model call</p></td><td colspan="1" rowspan="1"><p>gen_ai.output_tokens</p></td><td colspan="1" rowspan="1"><p>integer</p></td><td colspan="1" rowspan="1"><p>Cost tracking and reasoning-depth indicator</p></td></tr><tr><td colspan="1" rowspan="1"><p>Large language model call</p></td><td colspan="1" rowspan="1"><p>gen_ai.finish_reason</p></td><td colspan="1" rowspan="1"><p>enum (stop/tool_call/length)</p></td><td colspan="1" rowspan="1"><p>Indicates terminal vs. tool-calling completion</p></td></tr><tr><td colspan="1" rowspan="1"><p>Tool call</p></td><td colspan="1" rowspan="1"><p>mcp.tool_name</p></td><td colspan="1" rowspan="1"><p>string</p></td><td colspan="1" rowspan="1"><p>Capability identifier for audit log</p></td></tr><tr><td colspan="1" rowspan="1"><p>Tool call</p></td><td colspan="1" rowspan="1"><p>mcp.tool_arguments_hash</p></td><td colspan="1" rowspan="1"><p>SHA-256 string</p></td><td colspan="1" rowspan="1"><p>Typed argument fingerprint for replay</p></td></tr><tr><td colspan="1" rowspan="1"><p>Tool call</p></td><td colspan="1" rowspan="1"><p>mcp.result_summary</p></td><td colspan="1" rowspan="1"><p>structured JavaScript Object Notation (JSON)</p></td><td colspan="1" rowspan="1"><p>Schema shape for filtering without raw data</p></td></tr><tr><td colspan="1" rowspan="1"><p>Tool call</p></td><td colspan="1" rowspan="1"><p>parent_span_id</p></td><td colspan="1" rowspan="1"><p>large language model completion span identifier</p></td><td colspan="1" rowspan="1"><p>Causal link—the core instrumentation change</p></td></tr><tr><td colspan="1" rowspan="1"><p>Tool call</p></td><td colspan="1" rowspan="1"><p>error</p></td><td colspan="1" rowspan="1"><p>boolean</p></td><td colspan="1" rowspan="1"><p>Symptom-span detection for hops metric</p></td></tr></tbody></table>
+        </table-wrap>
+      
+    </sec>
+    <sec sec-type="">
+      <title>9. Conclusion</title>
+      <p>Agentic data pipelines demand an observability discipline that existing distributed tracing infrastructure does not natively provide. Causal span linking across large language model and tool boundaries—instrumenting each tool-call span as a child of the large language model completion span that caused it—is a small implementation change with structurally large operational consequences. It transforms the trace from a flat list of co-occurring spans into a directed acyclic graph that expresses the agent's causal trajectory. In the synthesized 20-incident corpus with complete disclosure of the construction process, causal tracing decreases average hops-to-root-cause from 6.4 to 1.5—a ratio of 4.3—relative to flat-span investigation. The deterministic replay primitive verifies remediations against captured production traffic. Together, these primitives put the human operator in the position of steering the autonomous agent's evolution with evidence, accountability, and control.</p>
+    </sec>
+  </body>
+  <back>
+    <ack>
+      <title>Acknowledgments</title>
+      <p>The author thanks the open-source observability community for their work on OpenTelemetry and the practitioner documentation that informed this study.</p>
+    </ack>
+    <app-group>
+      <app>
+        <title>Appendix</title>
+        
+      </app>
+    </app-group>
+    <notes>
+      <title>Author Contributions</title>
+      
+    </notes>
+    <notes>
+      <title>Funding</title>
+      
+    </notes>
+    <notes>
+      <title>Informed Consent Statement</title>
+      
+    </notes>
+    <notes>
+      <title>Data Availability Statement</title>
+      <p>The results supporting the research findings are derived from the analytical model and trace simulator described in Section 5 and Section 7. The simulator and synthetic corpus are not publicly archived; the construction protocol and fixed random seed documented in Section 5 allow independent reproduction of the corpus and results.</p>
+    </notes>
+    <notes notes-type="COI-statement">
+      <title>Conflicts of Interest</title>
+      <p>The author declares no conflicts of interest.</p>
+    </notes>
+    <ref-list>
+      <title>References</title>
+      <ref id="ref_1">
+        <label>1.</label>
+        <element-citation publication-type="webpage">
+          <article-title>Model context protocol specification</article-title>
+          <source>, https://modelcontextprotocol.io/specification/2025-11-25</source>
+          <year>2024</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_2">
+        <label>2.</label>
+        <element-citation publication-type="report">
+          <article-title>Dapper, a large-scale distributed systems tracing infrastructure</article-title>
+          <source>, https://research.google/pubs/dapper-a-large-scale-distributed-systems-tracing-infrastructure/</source>
+          <year>2010</year>
+          <publisher-name>Google, Tech. Rep.</publisher-name>
+        </element-citation>
+      </ref>
+      <ref id="ref_3">
+        <label>3.</label>
+        <element-citation publication-type="conf-paper">
+          <article-title>X-Trace: A pervasive network tracing framework</article-title>
+          <year>2007</year>
+          <source>4th USENIX Symposium on Networked Systems Design &amp; Implementation (NSDI 2007)</source>
+          <publisher-place>Cambridge, MA</publisher-place>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Fonseca</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Porter</surname>
+              <given-names>G.</given-names>
+            </name>
+            <name>
+              <surname>Katz</surname>
+              <given-names>R. H.</given-names>
+            </name>
+            <name>
+              <surname>Shenker</surname>
+              <given-names>S.</given-names>
+            </name>
+          </person-group>
+        </element-citation>
+      </ref>
+      <ref id="ref_4">
+        <label>4.</label>
+        <element-citation publication-type="webpage">
+          <article-title>OpenTelemetry semantic conventions for generative AI</article-title>
+          <source>, https://opentelemetry.io/docs/specs/semconv/gen-ai/</source>
+          <year>2024</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_5">
+        <label>5.</label>
+        <element-citation publication-type="conf-paper">
+          <year>2015</year>
+          <article-title>Pivot tracing: Dynamic causal monitoring for distributed systems</article-title>
+          <page-range>378-393</page-range>
+          <pub-id pub-id-type="doi">10.1145/2815400.2815415</pub-id>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Mace</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Roelke</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Fonseca</surname>
+              <given-names>R.</given-names>
+            </name>
+          </person-group>
+          <source>Proceedings of the 25th Symposium on Operating Systems Principles</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_6">
+        <label>6.</label>
+        <element-citation publication-type="webpage">
+          <article-title>LangSmith documentation: Tracing and observability for LLM applications</article-title>
+          <source>, https://docs.smith.langchain.com/</source>
+          <year>2024</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_7">
+        <label>7.</label>
+        <element-citation publication-type="webpage">
+          <article-title>Langfuse documentation: Open source LLM engineering platform</article-title>
+          <source>, https://langfuse.com/docs</source>
+          <year>2024</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_8">
+        <label>8.</label>
+        <element-citation publication-type="webpage">
+          <article-title>Phoenix: Observability for LLM applications</article-title>
+          <source>, https://docs.arize.com/phoenix</source>
+          <year>2024</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_9">
+        <label>9.</label>
+        <element-citation publication-type="journal">
+          <pub-id pub-id-type="doi">10.48550/arXiv.2210.03629</pub-id>
+          <page-range>arXiv:2210.03629</page-range>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Yao</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Zhao</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Yu</surname>
+              <given-names>D.</given-names>
+            </name>
+            <name>
+              <surname>Du</surname>
+              <given-names>N.</given-names>
+            </name>
+            <name>
+              <surname>Shafran</surname>
+              <given-names>I.</given-names>
+            </name>
+            <name>
+              <surname>Narasimhan</surname>
+              <given-names>K.</given-names>
+            </name>
+            <name>
+              <surname>Cao</surname>
+              <given-names>Y.</given-names>
+            </name>
+          </person-group>
+          <article-title>ReAct: Synergizing reasoning and acting in language models</article-title>
+          <source>arXiv Preprint</source>
+          <year>2023</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_10">
+        <label>10.</label>
+        <element-citation publication-type="journal">
+          <pub-id pub-id-type="doi">10.1007/s11432-024-4222-0</pub-id>
+          <page-range>1-44</page-range>
+          <source>Sci. China Inf. Sci.</source>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Xi</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Chen</surname>
+              <given-names>W.</given-names>
+            </name>
+            <name>
+              <surname>Guo</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>He</surname>
+              <given-names>W.</given-names>
+            </name>
+            <name>
+              <surname>Ding</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Hong</surname>
+              <given-names>B.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Jin</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Zhou et al.</surname>
+              <given-names>E.</given-names>
+            </name>
+          </person-group>
+          <year>2025</year>
+          <volume>68</volume>
+          <article-title>The rise and potential of large language model based agents: A survey</article-title>
+          <issue>2</issue>
+        </element-citation>
+      </ref>
+      <ref id="ref_11">
+        <label>11.</label>
+        <element-citation publication-type="conf-paper">
+          <pub-id pub-id-type="doi">10.52202/068431-1800</pub-id>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Wei</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Schuurmans</surname>
+              <given-names>D.</given-names>
+            </name>
+            <name>
+              <surname>Bosma</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Ichter</surname>
+              <given-names>B.</given-names>
+            </name>
+            <name>
+              <surname>Xia</surname>
+              <given-names>F.</given-names>
+            </name>
+            <name>
+              <surname>Chi</surname>
+              <given-names>E.</given-names>
+            </name>
+            <name>
+              <surname>Le</surname>
+              <given-names>Q.</given-names>
+            </name>
+            <name>
+              <surname>Zhou</surname>
+              <given-names>D.</given-names>
+            </name>
+          </person-group>
+          <source>Advances in Neural Information Processing Systems</source>
+          <page-range>24824-24837</page-range>
+          <year>2022</year>
+          <article-title>Chain-of-thought prompting elicits reasoning in large language models</article-title>
+        </element-citation>
+      </ref>
+      <ref id="ref_12">
+        <label>12.</label>
+        <element-citation publication-type="conf-paper">
+          <source>Advances in Neural Information Processing Systems</source>
+          <volume>37</volume>
+          <pub-id pub-id-type="doi">10.52202/079017-4020</pub-id>
+          <page-range>126544-126565</page-range>
+          <year>2024</year>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Patil</surname>
+              <given-names>S. G.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>T.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Gonzalez</surname>
+              <given-names>J. E.</given-names>
+            </name>
+          </person-group>
+          <article-title>Gorilla: Large language model connected with massive APIs</article-title>
+        </element-citation>
+      </ref>
+      <ref id="ref_13">
+        <label>13.</label>
+        <element-citation publication-type="conference-proceedings">
+          <year>2024</year>
+          <source>, https://arxiv.org/abs/2308.03688</source>
+          <page-range>52989-53046</page-range>
+          <volume>2024</volume>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Liu</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Yu</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Xu</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Lei</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Lai</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Tang</surname>
+              <given-names>J.</given-names>
+            </name>
+          </person-group>
+          <article-title>Agentbench: Evaluating LLMs as agents</article-title>
+        </element-citation>
+      </ref>
+      <ref id="ref_14">
+        <label>14.</label>
+        <element-citation publication-type="conference-proceedings">
+          <person-group person-group-type="author">
+            <name>
+              <surname>Chen</surname>
+              <given-names>W.</given-names>
+            </name>
+            <name>
+              <surname>Su</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Zuo</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Yang</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Yuan</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Chan</surname>
+              <given-names>C. M.</given-names>
+            </name>
+            <name>
+              <surname>Zhou</surname>
+              <given-names>J.</given-names>
+            </name>
+          </person-group>
+          <article-title>AgentVerse: Facilitating multi-agent collaboration and exploring emergent behaviors</article-title>
+          <source>, undefined</source>
+          <year>2024</year>
+          <page-range>20094-20136</page-range>
+          <volume>2024</volume>
+        </element-citation>
+      </ref>
+      <ref id="ref_15">
+        <label>15.</label>
+        <element-citation publication-type="conf-paper">
+          <page-range>3053-3077</page-range>
+          <pub-id pub-id-type="doi">10.18653/v1/2024.findings-acl.181</pub-id>
+          <article-title>AgentTuning: Enabling generalized agent abilities for LLMs</article-title>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Zeng</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Liu</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Lu</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>B.</given-names>
+            </name>
+            <name>
+              <surname>Liu</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Dong</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Tang</surname>
+              <given-names>J.</given-names>
+            </name>
+          </person-group>
+          <source>Findings of the Association for Computational Linguistics: ACL 2024</source>
+          <year>2024</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_16">
+        <label>16.</label>
+        <element-citation publication-type="conf-paper">
+          <publisher-place>Washington, DC, USA</publisher-place>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Wang</surname>
+              <given-names>P.</given-names>
+            </name>
+            <name>
+              <surname>Xu</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Ma</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Lin</surname>
+              <given-names>W.</given-names>
+            </name>
+            <name>
+              <surname>Pan</surname>
+              <given-names>D.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Chen</surname>
+              <given-names>P.</given-names>
+            </name>
+          </person-group>
+          <source>2018 18th IEEE/ACM International Symposium on Cluster, Cloud and Grid Computing (CCGRID)</source>
+          <year>2018</year>
+          <pub-id pub-id-type="doi">10.1109/CCGRID.2018.00076</pub-id>
+          <article-title>Cloudranger: Root cause identification for cloud native systems</article-title>
+        </element-citation>
+      </ref>
+      <ref id="ref_17">
+        <label>17.</label>
+        <element-citation publication-type="conf-paper">
+          <pub-id pub-id-type="doi">10.52202/075280-0377</pub-id>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Shinn</surname>
+              <given-names>N.</given-names>
+            </name>
+            <name>
+              <surname>Cassano</surname>
+              <given-names>F.</given-names>
+            </name>
+            <name>
+              <surname>Gopinath</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Narasimhan</surname>
+              <given-names>K.</given-names>
+            </name>
+            <name>
+              <surname>Yao</surname>
+              <given-names>S.</given-names>
+            </name>
+          </person-group>
+          <source>Advances in Neural Information Processing Systems</source>
+          <year>2023</year>
+          <page-range>8634-8652</page-range>
+          <article-title>Reflexion: Language agents with verbal reinforcement learning</article-title>
+          <volume>36</volume>
+        </element-citation>
+      </ref>
+      <ref id="ref_18">
+        <label>18.</label>
+        <element-citation publication-type="journal">
+          <year>2023</year>
+          <volume>36</volume>
+          <source>Adv. NeurIPS</source>
+          <article-title>Toolformer: Language models can teach themselves to use tools</article-title>
+          <page-range>68539-68551</page-range>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Schick</surname>
+              <given-names>T.</given-names>
+            </name>
+            <name>
+              <surname>Dwivedi-Yu</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Dessì</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Raileanu</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Lomeli</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Hambro</surname>
+              <given-names>E.</given-names>
+            </name>
+            <name>
+              <surname>Zettlemoyer</surname>
+              <given-names>L.</given-names>
+            </name>
+            <name>
+              <surname>Cancedda</surname>
+              <given-names>N.</given-names>
+            </name>
+            <name>
+              <surname>Scialom</surname>
+              <given-names>T.</given-names>
+            </name>
+          </person-group>
+        </element-citation>
+      </ref>
+      <ref id="ref_19">
+        <label>19.</label>
+        <element-citation publication-type="conference-proceedings">
+          <person-group person-group-type="author">
+            <name>
+              <surname>Qin</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Liang</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Ye</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Zhu</surname>
+              <given-names>K.</given-names>
+            </name>
+            <name>
+              <surname>Yan</surname>
+              <given-names>L.</given-names>
+            </name>
+            <name>
+              <surname>Lu</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Sun</surname>
+              <given-names>M.</given-names>
+            </name>
+          </person-group>
+          <year>2024</year>
+          <page-range>9695-9717</page-range>
+          <article-title>ToolLLM: Facilitating large language models to master 16000+ real-world APIs</article-title>
+          <volume>2024</volume>
+          <source>, undefined</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_20">
+        <label>20.</label>
+        <element-citation publication-type="journal">
+          <page-range>arXiv:2305.16291</page-range>
+          <pub-id pub-id-type="doi">10.48550/arXiv.2305.16291</pub-id>
+          <article-title>Voyager: An open-ended embodied agent with large language models</article-title>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Wang</surname>
+              <given-names>G.</given-names>
+            </name>
+            <name>
+              <surname>Xie</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Jiang</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Mandlekar</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Xiao</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Zhu</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Anandkumar</surname>
+              <given-names>A.</given-names>
+            </name>
+          </person-group>
+          <year>2023</year>
+          <source>arXiv Preprint</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_21">
+        <label>21.</label>
+        <element-citation publication-type="journal">
+          <person-group person-group-type="author">
+            <name>
+              <surname>Mialon</surname>
+              <given-names>G.</given-names>
+            </name>
+            <name>
+              <surname>Dessì</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Lomeli</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Nalmpantis</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Pasunuru</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Raileanu</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Rozière</surname>
+              <given-names>B.</given-names>
+            </name>
+            <name>
+              <surname>Schick</surname>
+              <given-names>T.</given-names>
+            </name>
+            <name>
+              <surname>Dwivedi-Yu</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Celikyilmaz et al.</surname>
+              <given-names>A.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.48550/arXiv.2302.07842</pub-id>
+          <article-title>Augmented language models: A survey</article-title>
+          <source>arXiv Preprint</source>
+          <year>2023</year>
+          <page-range>arXiv:2302.07842</page-range>
+        </element-citation>
+      </ref>
+      <ref id="ref_22">
+        <label>22.</label>
+        <element-citation publication-type="conference-proceedings">
+          <pub-id pub-id-type="doi">10.14778/3685800.3685818</pub-id>
+          <article-title>Adaptive and robust query execution for lakehouses at scale</article-title>
+          <issue>12</issue>
+          <page-range>3947-3959</page-range>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Xue</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Bu</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Somani</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Fan</surname>
+              <given-names>W.</given-names>
+            </name>
+            <name>
+              <surname>Liu</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Chen</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Hovell</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Samwel</surname>
+              <given-names>B.</given-names>
+            </name>
+            <name>
+              <surname>Mokhtar</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Korlapati et al.</surname>
+              <given-names>R.</given-names>
+            </name>
+          </person-group>
+          <volume>17</volume>
+          <source>, https://doi.org/10.14778/3685800.3685818</source>
+          <year>2024</year>
+        </element-citation>
+      </ref>
+    </ref-list>
+  </back>
+</article>
