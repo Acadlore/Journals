@@ -107,7 +107,7 @@
     <sec sec-type="intro">
       <title>1. Introduction</title>
       <p>Signature-based network intrusion detection systems (NIDS) cannot detect zero-day vulnerabilities–unknown flaws exploited before patches exist [<xref ref-type="bibr" rid="ref_1">1</xref>]. Anomaly-based approaches address this by identifying novel attacks as deviations from learned normal behavior; autoencoders (AEs) detect zero-day attacks without labeled data but suffer elevated false-positive rates that impede security operations center (SOC) deployment [<xref ref-type="bibr" rid="ref_2">2</xref>], [<xref ref-type="bibr" rid="ref_3">3</xref>]. Convolutional Neural Network (CNN)-Gated Recurrent Unit (GRU) hybrids provide effective temporal-spatial feature extraction [<xref ref-type="bibr" rid="ref_4">4</xref>], while attention mechanisms further improve the model's ability to focus on relevant traffic patterns and generalize to unseen attack but fail on out-of-distribution events [<xref ref-type="bibr" rid="ref_5">5</xref>], while hybrid AE-supervised fusion consistently outperforms single-component systems [<xref ref-type="bibr" rid="ref_6">6</xref>], [<xref ref-type="bibr" rid="ref_7">7</xref>]. Recent researches confirm that deep learning architectures excel at complex hidden-pattern detection [<xref ref-type="bibr" rid="ref_8">8</xref>], [<xref ref-type="bibr" rid="ref_9">9</xref>], and SHapley Additive exPlanations (SHAP)-based eXplainable Artificial Intelligence (XAI) translates black-box decisions into interpretable feature attributions for analysts [<xref ref-type="bibr" rid="ref_10">10</xref>].</p><p>This paper proposes a hybrid CNN-GRU-Attention and convolutional AE framework for zero-day network attack detection on Canadian Institute for Cybersecurity Intrusion Detection System (CICIDS)2017, with three design contributions: (1) strict data-leakage prevention through temporal-logical dataset separation [<xref ref-type="bibr" rid="ref_11">11</xref>]; (2) deterministic reshaping of 64 selected features into 8 <inline-formula>
-  <mml:math id="m7yj22i1v6">
+  <mml:math id="mwe21cgbq8">
     <mml:mo>×</mml:mo>
   </mml:math>
 </inline-formula> 8 spatial images enabling CNN processing without manual feature engineering [<xref ref-type="bibr" rid="ref_12">12</xref>]; and (3) SHAP and reconstruction error explainability [<xref ref-type="bibr" rid="ref_10">10</xref>].</p>
@@ -115,7 +115,7 @@
     <sec sec-type="">
       <title>2. Related work</title>
       <p>Elshewey et al. [<xref ref-type="bibr" rid="ref_4">4</xref>] demonstrate that CNN layers for spatial feature extraction combined with GRU layers for temporal modeling achieves near-perfect Distributed Denial-of-Service (DDoS) classification, establishing the core insight motivating our architecture. Alashjaee [<xref ref-type="bibr" rid="ref_5">5</xref>] adds scaled dot-product self-attention to a CNN-Long Short-Term Memory (LSTM) pipeline, improving generalization to unseen patterns. Pearson–Spearman–Kendall (PSK)-based feature selection confirms that correlation-aware dimensionality reduction preserves accuracy while reducing computational load [<xref ref-type="bibr" rid="ref_13">13</xref>], [<xref ref-type="bibr" rid="ref_14">14</xref>].</p><p>Xue et al. [<xref ref-type="bibr" rid="ref_6">6</xref>] propose Hybrid AE–Hybrid Resnet-LSTM (HAE-HRL), fusing an AE with a hybrid LSTM-CNN residual network to capture both packet-level and flow-level statistics simultaneously. Torabi et al. [<xref ref-type="bibr" rid="ref_3">3</xref>] introduce feature-wise reconstruction error thresholds, outperforming scalar-threshold alternatives and establishing feature-level anomaly scoring as the preferred zero-day detection technique.</p><p>Babaey and Faragardi [<xref ref-type="bibr" rid="ref_2">2</xref>] train LSTM, GRU, and stacked AE ensembles on normal traffic, achieving low false positive rate (FPR) on zero-day web attacks. Megantara and Ahmad [<xref ref-type="bibr" rid="ref_1">1</xref>] combine Decision Tree feature elimination with Local Outlier Factor (LOF) filtering for strong Denial-of-Service (DoS) detection. Hybrid AE-supervised fusion consistently outperforms single-method systems [<xref ref-type="bibr" rid="ref_7">7</xref>], [<xref ref-type="bibr" rid="ref_15">15</xref>], supporting the hybrid fusion strategy.</p><p>Rigorous evaluation requires fitting all preprocessing exclusively on training data and transforming validation/test sets using training statistics [<xref ref-type="bibr" rid="ref_11">11</xref>]. Reshaping flow features into 2D spatial images enables CNN processing without manual feature engineering [<xref ref-type="bibr" rid="ref_12">12</xref>]. SHAP-based explainability enables analysts to trace decisions to specific features [<xref ref-type="bibr" rid="ref_10">10</xref>]. Baselines include Isolation Forest [<xref ref-type="bibr" rid="ref_16">16</xref>], LOF [<xref ref-type="bibr" rid="ref_17">17</xref>], One-Class Support Vector Machine (SVM) [<xref ref-type="bibr" rid="ref_18">18</xref>], and Elliptic Envelope [<xref ref-type="bibr" rid="ref_19">19</xref>].</p><p>Existing hybrid frameworks lack rigorous leakage prevention, use arbitrary feature engineering, and offer limited interpretability of component interactions. This work addresses these gaps through: strict temporal-logical data separation; 64-feature selection reshaped into 8 <inline-formula>
-  <mml:math id="mhn9p3p70h">
+  <mml:math id="mbjl4fdflj">
     <mml:mo>×</mml:mo>
   </mml:math>
 </inline-formula> 8 images; OR-logic fusion with per-pathway attribution; and SHAP explainability with mechanistic decomposition of detection pathways.</p>
@@ -123,14 +123,14 @@
     <sec sec-type="">
       <title>3. Methodology</title>
       <p>We integrate a binary CNN-GRU-Attention classifier with a skip-connection AE, fused via logical OR: a sample is flagged as zero-day if the CNN anomaly score exceeds <inline-formula>
-  <mml:math id="mwq0j9u2hn">
+  <mml:math id="mcieeci5h2">
     <mml:msub>
       <mml:mi>θ</mml:mi>
       <mml:mi>s</mml:mi>
     </mml:msub>
   </mml:math>
 </inline-formula> or reconstruction error exceeds <inline-formula>
-  <mml:math id="m3fjrwmg79">
+  <mml:math id="m0ymb7pn8n">
     <mml:msub>
       <mml:mi>θ</mml:mi>
       <mml:mi>a</mml:mi>
@@ -143,11 +143,11 @@
             <title>3.1. System overview</title>
           
           <p>Five phases: (1) Score-based Label Separation and Ordering (SLSO) data splitting; (2) feature selection and 8 <inline-formula>
-  <mml:math id="msp436fuzp">
+  <mml:math id="mi1ea0jqi7">
     <mml:mo>×</mml:mo>
   </mml:math>
 </inline-formula> 8 reshaping on <inline-formula>
-  <mml:math id="msw672gzn5">
+  <mml:math id="moehicbf2l">
     <mml:msub>
       <mml:mi>D</mml:mi>
       <mml:mrow>
@@ -156,7 +156,7 @@
     </mml:msub>
   </mml:math>
 </inline-formula>; (3) parallel CNN-GRU-Attention and AE training; (4) percentile threshold calibration on <inline-formula>
-  <mml:math id="mj5u426o1a">
+  <mml:math id="m18vq16wzh">
     <mml:msub>
       <mml:mi>D</mml:mi>
       <mml:mrow>
@@ -191,7 +191,7 @@
             <title>3.2. Data preparation and splitting</title>
           
           <p>To ensure unbiased model evaluation and prevent data leakage, we employ a rigorous splitting strategy with three distinct datasets:</p><p>Zero-day dataset. Each attack class $c<inline-formula>
-  <mml:math id="mm6ypfrjm0">
+  <mml:math id="mnwseg99e2">
     <mml:mi>r</mml:mi>
     <mml:mi>e</mml:mi>
     <mml:mi>c</mml:mi>
@@ -221,7 +221,7 @@
     <mml:mi>e</mml:mi>
   </mml:math>
 </inline-formula>S(c)<inline-formula>
-  <mml:math id="mjei6qw8jy">
+  <mml:math id="mxtpk84iep">
     <mml:mo>(</mml:mo>
     <mml:mo>.</mml:mo>
     <mml:mo>(</mml:mo>
@@ -338,7 +338,7 @@
           
             <disp-formula>
               <label>(1)</label>
-              <mml:math id="m3u4rbnlm2">
+              <mml:math id="maqkbo4n5g">
                 <mml:mi>S</mml:mi>
                 <mml:mi>c</mml:mi>
                 <mml:mi>arg</mml:mi>
@@ -432,14 +432,14 @@
             </disp-formula>
           
           <p> where, <inline-formula>
-  <mml:math id="mpp68kwdd4">
+  <mml:math id="mmj1gqryh2">
     <mml:msub>
       <mml:mi>μ</mml:mi>
       <mml:mi>c</mml:mi>
     </mml:msub>
   </mml:math>
 </inline-formula> is the centroid of class $c<inline-formula>
-  <mml:math id="mgz1uyhrpn">
+  <mml:math id="m0pxea4yqh">
     <mml:mi>i</mml:mi>
     <mml:mi>n</mml:mi>
     <mml:mi>t</mml:mi>
@@ -463,7 +463,7 @@
     <mml:mo>,</mml:mo>
   </mml:math>
 </inline-formula>d_{\cos}<inline-formula>
-  <mml:math id="m1uh64ghqn">
+  <mml:math id="mv7ghvv5u8">
     <mml:mi>d</mml:mi>
     <mml:mi>e</mml:mi>
     <mml:mi>n</mml:mi>
@@ -488,7 +488,7 @@
     <mml:mo>,</mml:mo>
   </mml:math>
 </inline-formula>\sigma_c<inline-formula>
-  <mml:math id="me9bqyg88h">
+  <mml:math id="mbhc4w6g69">
     <mml:mi>i</mml:mi>
     <mml:mi>s</mml:mi>
     <mml:mi>t</mml:mi>
@@ -540,7 +540,7 @@
     <mml:mo>,</mml:mo>
   </mml:math>
 </inline-formula>\varepsilon = 10^{-9}<inline-formula>
-  <mml:math id="mik6v3i98j">
+  <mml:math id="myo2gms9pc">
     <mml:mi>p</mml:mi>
     <mml:mi>r</mml:mi>
     <mml:mi>e</mml:mi>
@@ -608,7 +608,7 @@
     <mml:mo>−</mml:mo>
   </mml:math>
 </inline-formula>S(c) &gt; 1.0<inline-formula>
-  <mml:math id="ma9p34t5kf">
+  <mml:math id="mjpxzdn1yx">
     <mml:mo>;</mml:mo>
     <mml:mo>,</mml:mo>
     <mml:mo>.</mml:mo>
@@ -750,7 +750,7 @@
     <mml:mn>20</mml:mn>
   </mml:math>
 </inline-formula>D_{\text{train}}$/<inline-formula>
-  <mml:math id="momlvnqh46">
+  <mml:math id="mdg66k19vc">
     <mml:msub>
       <mml:mi>D</mml:mi>
       <mml:mrow>
@@ -759,7 +759,7 @@
     </mml:msub>
   </mml:math>
 </inline-formula>/<inline-formula>
-  <mml:math id="m31a64qq2x">
+  <mml:math id="mpdvab4ct4">
     <mml:msub>
       <mml:mi>D</mml:mi>
       <mml:mrow>
@@ -771,7 +771,7 @@
           
             <disp-formula>
               <label>(2)</label>
-              <mml:math id="m05hkyw09x">
+              <mml:math id="meoa5phasd">
                 <mml:mtable displaystyle="true" columnspacing="1em" rowspacing="3pt">
                   <mml:mtr>
                     <mml:mtd>
@@ -820,7 +820,7 @@
             </disp-formula>
           
           <p>Data leakage was prevented by fitting all preprocessing (StandardScaler, feature selection) exclusively on <inline-formula>
-  <mml:math id="mz9piyexzp">
+  <mml:math id="mtj7x5f1wo">
     <mml:msub>
       <mml:mi>D</mml:mi>
       <mml:mrow>
@@ -829,7 +829,7 @@
     </mml:msub>
   </mml:math>
 </inline-formula>, calibrating thresholds on <inline-formula>
-  <mml:math id="m0on2m8cgx">
+  <mml:math id="mio5td70xq">
     <mml:msub>
       <mml:mi>D</mml:mi>
       <mml:mrow>
@@ -838,7 +838,7 @@
     </mml:msub>
   </mml:math>
 </inline-formula> only, and isolating <inline-formula>
-  <mml:math id="maflury19i">
+  <mml:math id="msnaqlmxwk">
     <mml:msub>
       <mml:mi>D</mml:mi>
       <mml:mrow>
@@ -855,7 +855,7 @@
             <title>3.3. Feature selection and spatial reshaping</title>
           
           <p>Feature selection is performed using a Random Forest classifier (300 trees, max depth 20) fitted exclusively on <inline-formula>
-  <mml:math id="m50qhgznaj">
+  <mml:math id="mz00exrpz5">
     <mml:msub>
       <mml:mi>D</mml:mi>
       <mml:mrow>
@@ -864,7 +864,7 @@
     </mml:msub>
   </mml:math>
 </inline-formula>. Gini importance is used rather than permutation importance because of its computational efficiency on large datasets; L2 regularisation (<inline-formula>
-  <mml:math id="mr79lcq939">
+  <mml:math id="mfbwm0d76j">
     <mml:mi>λ</mml:mi>
     <mml:mo>=</mml:mo>
     <mml:msup>
@@ -876,17 +876,17 @@
     </mml:msup>
   </mml:math>
 </inline-formula>) on all dense layers mitigates any residual multicollinearity. A Variance Inflation Factor (VIF) analysis on the 64 selected features confirmed that high-VIF features do not materially degrade zero-day detection rate (Z-DR) when removed (<inline-formula>
-  <mml:math id="mm346qs63p">
+  <mml:math id="mz4in2dmlm">
     <mml:mi>Δ</mml:mi>
   </mml:math>
 </inline-formula>Z-DR <inline-formula>
-  <mml:math id="meqf3rqjvk">
+  <mml:math id="mgp3i0n2p2">
     <mml:mo>&amp;lt;</mml:mo>
     <mml:mn>3</mml:mn>
     <mml:mi>%</mml:mi>
   </mml:math>
 </inline-formula>), justifying retention of the full set. We deliberately select exactly <inline-formula>
-  <mml:math id="mfskfzv0qe">
+  <mml:math id="m5h4kvn1ke">
     <mml:mi>k</mml:mi>
     <mml:mo>=</mml:mo>
     <mml:mn>64</mml:mn>
@@ -895,7 +895,7 @@
           
             <disp-formula>
               <label>(3)</label>
-              <mml:math id="m2he09pjs5">
+              <mml:math id="mzq23ejgv1">
                 <mml:mi>k</mml:mi>
                 <mml:mo>=</mml:mo>
                 <mml:mo>=</mml:mo>
@@ -910,7 +910,7 @@
           
             <disp-formula>
               <label>(4)</label>
-              <mml:math id="mvwkt7m7fz">
+              <mml:math id="mcsp2pscjx">
                 <mml:msub>
                   <mml:mi>F</mml:mi>
                   <mml:mrow>
@@ -947,7 +947,7 @@
             </disp-formula>
           
           <p>All samples are normalised using StandardScaler fitted exclusively on <inline-formula>
-  <mml:math id="momx13rry1">
+  <mml:math id="mwjh4fipsu">
     <mml:msub>
       <mml:mi>D</mml:mi>
       <mml:mrow>
@@ -956,7 +956,7 @@
     </mml:msub>
   </mml:math>
 </inline-formula> (fit_transform) and applied via transform to <inline-formula>
-  <mml:math id="muquambj1q">
+  <mml:math id="mvaob650ix">
     <mml:msub>
       <mml:mi>D</mml:mi>
       <mml:mrow>
@@ -965,7 +965,7 @@
     </mml:msub>
   </mml:math>
 </inline-formula>, <inline-formula>
-  <mml:math id="mn6tw246g7">
+  <mml:math id="m5qc5mfgim">
     <mml:msub>
       <mml:mi>D</mml:mi>
       <mml:mrow>
@@ -974,7 +974,7 @@
     </mml:msub>
   </mml:math>
 </inline-formula> and <inline-formula>
-  <mml:math id="mv4lhc2rmm">
+  <mml:math id="moifhqpz10">
     <mml:msub>
       <mml:mi>D</mml:mi>
       <mml:mrow>
@@ -986,7 +986,7 @@
           
             <disp-formula>
               <label>(5)</label>
-              <mml:math id="ma46k6mqku">
+              <mml:math id="m198wg7vpp">
                 <mml:msubsup>
                   <mml:mi>x</mml:mi>
                   <mml:mi>i</mml:mi>
@@ -1016,14 +1016,14 @@
             </disp-formula>
           
           <p>Each 64-dimensional feature vector is deterministically reshaped into an 8 <inline-formula>
-  <mml:math id="m5mw0pimnq">
+  <mml:math id="mtvfsae4ru">
     <mml:mo>×</mml:mo>
   </mml:math>
 </inline-formula> 8 2D spatial image:</p>
           
             <disp-formula>
               <label>(6)</label>
-              <mml:math id="m0y96ycp7r">
+              <mml:math id="mo7b63uhjz">
                 <mml:mi>x</mml:mi>
                 <mml:mi>X</mml:mi>
                 <mml:mo>∈</mml:mo>
@@ -1051,11 +1051,11 @@
             </disp-formula>
           
           <p>This reshaping is bijective–no features are added, removed, or synthesized–and enables efficient power-of-2 pooling (8 <inline-formula>
-  <mml:math id="mxub4lzlsg">
+  <mml:math id="mda2j1e2e2">
     <mml:mo>→</mml:mo>
   </mml:math>
 </inline-formula> 4 <inline-formula>
-  <mml:math id="mbzszwr3yh">
+  <mml:math id="mxc6ws1tcl">
     <mml:mo>→</mml:mo>
   </mml:math>
 </inline-formula> 2) with standard CNN kernels.</p>
@@ -1067,24 +1067,24 @@
             <title>3.4. Supervised component: attack classification</title>
           
           <p>The architecture uses three residual CNN blocks with squeeze-and-excitation (SE) attention for spatial feature extraction, followed by Bidirectional GRU layers for temporal modelling, trained with Binary Focal Cross-Entropy (<inline-formula>
-  <mml:math id="m9p311ihwp">
+  <mml:math id="mac4ec5klp">
     <mml:mi>α</mml:mi>
     <mml:mo>=</mml:mo>
     <mml:mn>0.25</mml:mn>
   </mml:math>
 </inline-formula>, <inline-formula>
-  <mml:math id="m687ue6prs">
+  <mml:math id="ma31l1rrrz">
     <mml:mi>γ</mml:mi>
     <mml:mo>=</mml:mo>
     <mml:mn>2.0</mml:mn>
   </mml:math>
 </inline-formula>) and AdamW (<inline-formula>
-  <mml:math id="mg2ssvavi9">
+  <mml:math id="mivk20zzwy">
     <mml:mi>l</mml:mi>
     <mml:mi>r</mml:mi>
   </mml:math>
 </inline-formula> = 5 <inline-formula>
-  <mml:math id="myxvo7icvc">
+  <mml:math id="mjx50uqct1">
     <mml:mo>×</mml:mo>
   </mml:math>
 </inline-formula> $10^{-4}$) (<xref ref-type="fig" rid="fig_1">Figure 1</xref>a).</p>
@@ -1096,47 +1096,47 @@
             <title>3.5. Unsupervised component: anomaly detection</title>
           
           <p>The AE uses a skip-connection encoder-decoder (Dense 1024 <inline-formula>
-  <mml:math id="m3fkexorr5">
+  <mml:math id="mvyuf05uxp">
     <mml:mo>→</mml:mo>
   </mml:math>
 </inline-formula> 512 <inline-formula>
-  <mml:math id="mtni08gkxy">
+  <mml:math id="mj509x7h2w">
     <mml:mo>→</mml:mo>
   </mml:math>
 </inline-formula> 256 <inline-formula>
-  <mml:math id="mesdnpzmce">
+  <mml:math id="mq3lflixci">
     <mml:mo>→</mml:mo>
   </mml:math>
 </inline-formula> 16 <inline-formula>
-  <mml:math id="mrobzo1edc">
+  <mml:math id="m5hbbfs4po">
     <mml:mo>→</mml:mo>
   </mml:math>
 </inline-formula> 256 <inline-formula>
-  <mml:math id="maqaomxx12">
+  <mml:math id="mzzmhiyo37">
     <mml:mo>→</mml:mo>
   </mml:math>
 </inline-formula> 512 <inline-formula>
-  <mml:math id="ms2ms4rqbz">
+  <mml:math id="mv3bbc4biy">
     <mml:mo>→</mml:mo>
   </mml:math>
 </inline-formula> 1024 <inline-formula>
-  <mml:math id="mai2psltk8">
+  <mml:math id="m8w5n06wdl">
     <mml:mo>→</mml:mo>
   </mml:math>
 </inline-formula> 64) with skip connections from encoder to decoder layers, trained on all known classes with mean squared error (MSE) loss and AdamW (<inline-formula>
-  <mml:math id="mp5ub57mvj">
+  <mml:math id="m51dk2p0uv">
     <mml:mi>l</mml:mi>
     <mml:mi>r</mml:mi>
   </mml:math>
 </inline-formula> = 5 <inline-formula>
-  <mml:math id="mr9kk4jae6">
+  <mml:math id="mui5bjov08">
     <mml:mo>×</mml:mo>
   </mml:math>
 </inline-formula> $10^{-4}$) (<xref ref-type="fig" rid="fig_1">Figure 1</xref>b). Reconstruction error (Eq. (7)) serves as the zero-day anomaly signal:</p>
           
             <disp-formula>
               <label>(7)</label>
-              <mml:math id="mucpizwmus">
+              <mml:math id="m2qpio0fbn">
                 <mml:mi>e</mml:mi>
                 <mml:mi>x</mml:mi>
                 <mml:mi>x</mml:mi>
@@ -1192,7 +1192,7 @@
             <title>3.6. Hybrid decision framework</title>
           
           <p>The final detection decision combines both components through a logical OR rule on two independent thresholds (<xref ref-type="fig" rid="fig_2">Figure 2</xref>b). A network flow is flagged as a zero-day if either the CNN anomaly score $s<inline-formula>
-  <mml:math id="mh9rlxtjp0">
+  <mml:math id="m5ogtuqt5n">
     <mml:mi>e</mml:mi>
     <mml:mi>x</mml:mi>
     <mml:mi>c</mml:mi>
@@ -1211,7 +1211,7 @@
     <mml:mi>d</mml:mi>
   </mml:math>
 </inline-formula>\theta_s<inline-formula>
-  <mml:math id="m77ncnqnah">
+  <mml:math id="mbag2lj87g">
     <mml:mi>o</mml:mi>
     <mml:mi>r</mml:mi>
     <mml:mi>t</mml:mi>
@@ -1240,7 +1240,7 @@
     <mml:mi>r</mml:mi>
   </mml:math>
 </inline-formula>e<inline-formula>
-  <mml:math id="mq4e6zlhay">
+  <mml:math id="m8esdnawxv">
     <mml:mi>e</mml:mi>
     <mml:mi>x</mml:mi>
     <mml:mi>c</mml:mi>
@@ -1262,7 +1262,7 @@
           
             <disp-formula>
               <label>(8)</label>
-              <mml:math id="mq0f389xaw">
+              <mml:math id="mp1njxyzti">
                 <mml:msub>
                   <mml:mi>y</mml:mi>
                   <mml:mrow>
@@ -1315,21 +1315,21 @@
             </disp-formula>
           
           <p>Thresholds <inline-formula>
-  <mml:math id="msh5a8ti3s">
+  <mml:math id="mrnekve9yx">
     <mml:msub>
       <mml:mi>θ</mml:mi>
       <mml:mi>s</mml:mi>
     </mml:msub>
   </mml:math>
 </inline-formula> and <inline-formula>
-  <mml:math id="mq8f3n2snh">
+  <mml:math id="m3bins1w52">
     <mml:msub>
       <mml:mi>θ</mml:mi>
       <mml:mi>a</mml:mi>
     </mml:msub>
   </mml:math>
 </inline-formula> are calibrated on <inline-formula>
-  <mml:math id="mbcesesm3v">
+  <mml:math id="mijzf9vohr">
     <mml:msub>
       <mml:mi>D</mml:mi>
       <mml:mrow>
@@ -1338,11 +1338,11 @@
     </mml:msub>
   </mml:math>
 </inline-formula> only, via a percentile grid search (p88–p99) subject to FPR <inline-formula>
-  <mml:math id="m4nuqbcb0v">
+  <mml:math id="me0k7q474k">
     <mml:mo>≤</mml:mo>
   </mml:math>
 </inline-formula> 5%, maximising Z-DR on the validation set. <inline-formula>
-  <mml:math id="mucxqwocme">
+  <mml:math id="mng38a9r45">
     <mml:msub>
       <mml:mi>D</mml:mi>
       <mml:mrow>
@@ -1351,7 +1351,7 @@
     </mml:msub>
   </mml:math>
 </inline-formula> is never accessed during calibration; its role is reporting only. The selected operating point is p97, yielding calibrated values <inline-formula>
-  <mml:math id="m7jug4855u">
+  <mml:math id="mydl7227c7">
     <mml:msub>
       <mml:mi>θ</mml:mi>
       <mml:mi>s</mml:mi>
@@ -1360,7 +1360,7 @@
     <mml:mn>0.02104</mml:mn>
   </mml:math>
 </inline-formula> and <inline-formula>
-  <mml:math id="mhiwujojz0">
+  <mml:math id="mhgxdyha91">
     <mml:msub>
       <mml:mi>θ</mml:mi>
       <mml:mi>a</mml:mi>
@@ -1372,7 +1372,7 @@
           
             <disp-formula>
               <label>(9)</label>
-              <mml:math id="mtss28e6wq">
+              <mml:math id="mub20avgzu">
                 <mml:mrow>
                   <mml:mo>(</mml:mo>
                   <mml:mo>,</mml:mo>
@@ -1450,7 +1450,7 @@
     <sec sec-type="">
       <title>4. Experimental setup</title>
       <p>All experiments use the CICIDS2017 dataset [<xref ref-type="bibr" rid="ref_20">20</xref>], which contains 3,119,345 labeled network flows across 15 traffic classes generated in a realistic network environment over five days. After removing the degenerate Portscan class and applying the SLSO split (Section 3.2), the partitions contain: <inline-formula>
-  <mml:math id="m6rdcv7hgf">
+  <mml:math id="mw2i6fnpb6">
     <mml:msub>
       <mml:mi>D</mml:mi>
       <mml:mrow>
@@ -1459,7 +1459,7 @@
     </mml:msub>
   </mml:math>
 </inline-formula> = 1,198,586 flows (11 known classes, 60%); <inline-formula>
-  <mml:math id="mp4o9unmzv">
+  <mml:math id="mpg7c5ag72">
     <mml:msub>
       <mml:mi>D</mml:mi>
       <mml:mrow>
@@ -1468,7 +1468,7 @@
     </mml:msub>
   </mml:math>
 </inline-formula> = 399,528 flows (20%); <inline-formula>
-  <mml:math id="mnrvconnoq">
+  <mml:math id="my4mt1znzg">
     <mml:msub>
       <mml:mi>D</mml:mi>
       <mml:mrow>
@@ -1477,7 +1477,7 @@
     </mml:msub>
   </mml:math>
 </inline-formula> = 399,529 flows (20%); <inline-formula>
-  <mml:math id="mu760i41kt">
+  <mml:math id="m3czvq7nix">
     <mml:msub>
       <mml:mi>D</mml:mi>
       <mml:mrow>
@@ -1486,16 +1486,16 @@
     </mml:msub>
   </mml:math>
 </inline-formula> = 5,546 flows (DoS Slowhttptest: 5,499; Heartbleed: 11; Infiltration: 36). All models are implemented in TensorFlow 2.x and trained on an NVIDIA L4 Graphics Processing Unit (GPU) (24 GB Video Random-Access Memory (VRAM)) with mixed 16-bit Floating Point (FP16) precision and Accelerated Linear Algebra (XLA) Just-In-Time (JIT) compilation. CNN-GRU training uses AdamW (<inline-formula>
-  <mml:math id="mh03l4ne31">
+  <mml:math id="m23arg80uf">
     <mml:mi>l</mml:mi>
     <mml:mi>r</mml:mi>
   </mml:math>
 </inline-formula> = 5 <inline-formula>
-  <mml:math id="m0sm2cwtww">
+  <mml:math id="mey0lbo40k">
     <mml:mo>×</mml:mo>
   </mml:math>
 </inline-formula> $10^{-4}<inline-formula>
-  <mml:math id="muhah9rhjt">
+  <mml:math id="m4wj2w6epd">
     <mml:mo>,</mml:mo>
     <mml:mo>=</mml:mo>
     <mml:mi>w</mml:mi>
@@ -1511,7 +1511,7 @@
     <mml:mi>y</mml:mi>
   </mml:math>
 </inline-formula>10^{-4}<inline-formula>
-  <mml:math id="moge86qa94">
+  <mml:math id="myrj5jsf13">
     <mml:mo>)</mml:mo>
     <mml:mo>,</mml:mo>
     <mml:mo>,</mml:mo>
@@ -1589,12 +1589,12 @@
     <mml:mn>1.</mml:mn>
   </mml:math>
 </inline-formula>lr<inline-formula>
-  <mml:math id="mzfg4o4f8u">
+  <mml:math id="mvbgh8uo38">
     <mml:mo>=</mml:mo>
     <mml:mn>5</mml:mn>
   </mml:math>
 </inline-formula>\times$ $10^{-4}<inline-formula>
-  <mml:math id="mi1tbtip8x">
+  <mml:math id="mypy7nujkv">
     <mml:mo>)</mml:mo>
     <mml:mo>,</mml:mo>
     <mml:mo>,</mml:mo>
@@ -1699,7 +1699,7 @@
             <title>5.1. Feature selection and preprocessing validation</title>
           
           <p>Random Forest feature selection (300 trees, Gini importance) on <inline-formula>
-  <mml:math id="mrwq8zmcnv">
+  <mml:math id="m7c5ec5q3g">
     <mml:msub>
       <mml:mi>D</mml:mi>
       <mml:mrow>
@@ -1708,17 +1708,17 @@
     </mml:msub>
   </mml:math>
 </inline-formula> identified 64 features, confirmed non-redundant by VIF analysis (<inline-formula>
-  <mml:math id="mqnojl9npl">
+  <mml:math id="mj7kaqikx0">
     <mml:mi>Δ</mml:mi>
   </mml:math>
 </inline-formula>Z-DR <inline-formula>
-  <mml:math id="mncdlrzsl5">
+  <mml:math id="mhi5mgudbu">
     <mml:mo>&amp;lt;</mml:mo>
     <mml:mn>3</mml:mn>
     <mml:mi>%</mml:mi>
   </mml:math>
 </inline-formula> on high-VIF removal). <italic>t</italic>-distributed Stochastic Neighbor Embedding (<italic>t</italic>-SNE) visualization confirms that the three zero-day classes occupy distinct regions relative to known classes (heartbleed: score 74.6, DoS Slowhttptest: 5.09, infiltration: 1.43), validating the SLSO split. StandardScaler fitted on <inline-formula>
-  <mml:math id="mc1bxh1zj1">
+  <mml:math id="mfyy9q7a9d">
     <mml:msub>
       <mml:mi>D</mml:mi>
       <mml:mrow>
@@ -1735,7 +1735,7 @@
             <title>5.2. Zero-day detection performance</title>
           
           <p>The hybrid system was evaluated against three held-out zero-day attack classes: DoS Slowhttptest ($n<inline-formula>
-  <mml:math id="m6s2nq0g5u">
+  <mml:math id="m5ft2unml9">
     <mml:mo>=</mml:mo>
     <mml:mo>,</mml:mo>
     <mml:mo>)</mml:mo>
@@ -1760,7 +1760,7 @@
     <mml:mi>d</mml:mi>
   </mml:math>
 </inline-formula>n<inline-formula>
-  <mml:math id="mhk0y9r2qv">
+  <mml:math id="m7sqfmrq63">
     <mml:mo>=</mml:mo>
     <mml:mo>)</mml:mo>
     <mml:mo>,</mml:mo>
@@ -1798,7 +1798,7 @@
             </table-wrap>
           
           <p>Baseline hyperparameter settings: Isolation Forest–<inline-formula>
-  <mml:math id="mc7i9v06rk">
+  <mml:math id="mlpb7ko0e0">
     <mml:msub>
       <mml:mi>n</mml:mi>
       <mml:mrow>
@@ -1807,7 +1807,7 @@
     </mml:msub>
   </mml:math>
 </inline-formula> = 200, contamination = 0.05; LOF–<inline-formula>
-  <mml:math id="mvn5f355ib">
+  <mml:math id="mwwcp97o2j">
     <mml:msub>
       <mml:mi>n</mml:mi>
       <mml:mrow>
@@ -1816,14 +1816,14 @@
     </mml:msub>
   </mml:math>
 </inline-formula> = 20, contamination = 0.05, algorithm = ball_tree (novelty = True); Elliptic Envelope–contamination = 0.05, support_fraction = 0.9; Stochastic Gradient Descent-optimized One-Class Support Vector Machine (SGD-OCSVM)–<inline-formula>
-  <mml:math id="m1lejnmpho">
+  <mml:math id="m5qpxu9lze">
     <mml:msub>
       <mml:mi>n</mml:mi>
       <mml:mi>u</mml:mi>
     </mml:msub>
   </mml:math>
 </inline-formula> = 0.05, Nystroem radial basis function (RBF) kernel (gamma = scale, <inline-formula>
-  <mml:math id="mk04z4hww8">
+  <mml:math id="m294ojxbp5">
     <mml:msub>
       <mml:mi>n</mml:mi>
       <mml:mrow>
@@ -1832,7 +1832,7 @@
     </mml:msub>
   </mml:math>
 </inline-formula> = 300), max_iter = 1000. All baselines were fitted on the same training distribution as the AE (all known classes, 1,198,586 flows) and evaluated using the same 95th-percentile threshold on <inline-formula>
-  <mml:math id="mro7ouf4dg">
+  <mml:math id="mgm6s90ztk">
     <mml:msub>
       <mml:mi>D</mml:mi>
       <mml:mrow>
@@ -1849,7 +1849,7 @@
             <title>5.3. Auroc comparison</title>
           
           <p>Receiver Operating Characteristic (ROC) curves were computed for three configurations: AE reconstruction error alone (AUROC = 0.9221), CNN anomaly score alone (AUROC = 0.9556), and the hybrid composite using OR-fusion (AUROC = 0.9560). The hybrid strictly dominates both single-signal configurations. Critically, AUROC does not capture per-class complementarity: the AE alone detects Heartbleed at 100% while CNN alone achieves only 9.09%–a 90.9 pp gap invisible in aggregate ROC curves. The composite score <inline-formula>
-  <mml:math id="mckpcjncj9">
+  <mml:math id="mlrc0f27p0">
     <mml:mi>S</mml:mi>
     <mml:mo>=</mml:mo>
   </mml:math>
@@ -1862,14 +1862,14 @@
             <title>5.4. Ablation study</title>
           
           <p><xref ref-type="table" rid="table_2">Table 2</xref> reports ablation results across three configurations under identical thresholds (<inline-formula>
-  <mml:math id="m6cruqqxdh">
+  <mml:math id="mi5ad0jf0j">
     <mml:msub>
       <mml:mi>θ</mml:mi>
       <mml:mi>s</mml:mi>
     </mml:msub>
   </mml:math>
 </inline-formula>, <inline-formula>
-  <mml:math id="m0p4gm1n9s">
+  <mml:math id="mfslc0fum0">
     <mml:msub>
       <mml:mi>θ</mml:mi>
       <mml:mi>a</mml:mi>
@@ -1896,7 +1896,7 @@
             </fig>
           
           <p>Detection pathway analysis on <inline-formula>
-  <mml:math id="mxv6kvt995">
+  <mml:math id="mew6gv9ebt">
     <mml:msub>
       <mml:mi>D</mml:mi>
       <mml:mrow>
@@ -1913,14 +1913,14 @@
             <title>5.5. Threshold sensitivity</title>
           
           <p>Threshold calibration across percentiles p88–p99 (<xref ref-type="table" rid="table_3">Table 3</xref>) reveals three operating regions: a stability plateau (p88–p94) where Z-DR holds at 98.14% across a wide FPR range (12.71%–7.27%); a gradual trade-off zone (p94–p97) yielding a 3.07 pp FPR reduction at only 0.66 pp Z-DR cost; and a sharp cliff at p97–p98 where Z-DR collapses by 52.51 pp for a mere 0.99 pp FPR gain–an extremely unfavourable trade-off. Heartbleed remains at 100% throughout; Infiltration degrades steadily from 88.9% to 61.11%, reflecting its low anomaly signal. The selected p97 point (<inline-formula>
-  <mml:math id="methnxw06r">
+  <mml:math id="mzs8hfjk9n">
     <mml:msub>
       <mml:mi>θ</mml:mi>
       <mml:mi>s</mml:mi>
     </mml:msub>
   </mml:math>
 </inline-formula> = 0.02104, <inline-formula>
-  <mml:math id="mmgwdlgqqx">
+  <mml:math id="mld512njd9">
     <mml:msub>
       <mml:mi>θ</mml:mi>
       <mml:mi>a</mml:mi>
@@ -1933,17 +1933,17 @@
               <caption>
                 <title>Threshold sensitivity across percentiles p88–p99 on $D_{\text{zero}}$ ($n$ = 5,546)</title>
               </caption>
-              <table><tbody><tr><th colspan="1" rowspan="1"><p>Pct.</p></th><th colspan="1" rowspan="1"><p><mml:math id="mzw6v8mb05">
+              <table><tbody><tr><th colspan="1" rowspan="1"><p>Pct.</p></th><th colspan="1" rowspan="1"><p><mml:math id="mfvj9g5up1">
   <mml:msub>
     <mml:mi>θ</mml:mi>
     <mml:mi>s</mml:mi>
   </mml:msub>
-</mml:math></p></th><th colspan="1" rowspan="1"><p><mml:math id="m7q0q99kom">
+</mml:math></p></th><th colspan="1" rowspan="1"><p><mml:math id="m7lhex7982">
   <mml:msub>
     <mml:mi>θ</mml:mi>
     <mml:mi>a</mml:mi>
   </mml:msub>
-</mml:math></p></th><th colspan="1" rowspan="1"><p>FPR (%)</p></th><th colspan="1" rowspan="1"><p>Z-DR (%)</p></th><th colspan="1" rowspan="1"><p>DoS SH (%)</p></th><th colspan="1" rowspan="1"><p>HB (%)</p></th><th colspan="1" rowspan="1"><p>Inf. (%)</p></th></tr><tr><td colspan="1" rowspan="1"><p>p88</p></td><td colspan="1" rowspan="1"><p>0.01976</p></td><td colspan="1" rowspan="1"><p>0.00403</p></td><td colspan="1" rowspan="1"><p>12.71</p></td><td colspan="1" rowspan="1"><p>98.14</p></td><td colspan="1" rowspan="1"><p>98.20</p></td><td colspan="1" rowspan="1"><p>100.0</p></td><td colspan="1" rowspan="1"><p>88.9</p></td></tr><tr><td colspan="1" rowspan="1"><p>p90</p></td><td colspan="1" rowspan="1"><p>0.01991</p></td><td colspan="1" rowspan="1"><p>0.00467</p></td><td colspan="1" rowspan="1"><p>10.93</p></td><td colspan="1" rowspan="1"><p>98.14</p></td><td colspan="1" rowspan="1"><p>98.20</p></td><td colspan="1" rowspan="1"><p>100.0</p></td><td colspan="1" rowspan="1"><p>88.9</p></td></tr><tr><td colspan="1" rowspan="1"><p>p91</p></td><td colspan="1" rowspan="1"><p>0.01999</p></td><td colspan="1" rowspan="1"><p>0.00514</p></td><td colspan="1" rowspan="1"><p>9.88</p></td><td colspan="1" rowspan="1"><p>98.14</p></td><td colspan="1" rowspan="1"><p>98.20</p></td><td colspan="1" rowspan="1"><p>100.0</p></td><td colspan="1" rowspan="1"><p>88.9</p></td></tr><tr><td colspan="1" rowspan="1"><p>p92</p></td><td colspan="1" rowspan="1"><p>0.02006</p></td><td colspan="1" rowspan="1"><p>0.00561</p></td><td colspan="1" rowspan="1"><p>8.95</p></td><td colspan="1" rowspan="1"><p>98.14</p></td><td colspan="1" rowspan="1"><p>98.20</p></td><td colspan="1" rowspan="1"><p>100.0</p></td><td colspan="1" rowspan="1"><p>88.9</p></td></tr><tr><td colspan="1" rowspan="1"><p>p93</p></td><td colspan="1" rowspan="1"><p>0.02014</p></td><td colspan="1" rowspan="1"><p>0.00630</p></td><td colspan="1" rowspan="1"><p>8.17</p></td><td colspan="1" rowspan="1"><p>98.14</p></td><td colspan="1" rowspan="1"><p>98.20</p></td><td colspan="1" rowspan="1"><p>100.0</p></td><td colspan="1" rowspan="1"><p>88.9</p></td></tr><tr><td colspan="1" rowspan="1"><p>p94</p></td><td colspan="1" rowspan="1"><p>0.02029</p></td><td colspan="1" rowspan="1"><p>0.00711</p></td><td colspan="1" rowspan="1"><p>7.27</p></td><td colspan="1" rowspan="1"><p>98.14</p></td><td colspan="1" rowspan="1"><p>98.20</p></td><td colspan="1" rowspan="1"><p>100.0</p></td><td colspan="1" rowspan="1"><p>88.9</p></td></tr><tr><td colspan="1" rowspan="1"><p>p95</p></td><td colspan="1" rowspan="1"><p>0.02045</p></td><td colspan="1" rowspan="1"><p>0.00799</p></td><td colspan="1" rowspan="1"><p>6.43</p></td><td colspan="1" rowspan="1"><p>98.12</p></td><td colspan="1" rowspan="1"><p>98.20</p></td><td colspan="1" rowspan="1"><p>100.0</p></td><td colspan="1" rowspan="1"><p>86.1</p></td></tr><tr><td colspan="1" rowspan="1"><p>p96</p></td><td colspan="1" rowspan="1"><p>0.02069</p></td><td colspan="1" rowspan="1"><p>0.00902</p></td><td colspan="1" rowspan="1"><p>5.35</p></td><td colspan="1" rowspan="1"><p>97.78</p></td><td colspan="1" rowspan="1"><p>97.90</p></td><td colspan="1" rowspan="1"><p>100.0</p></td><td colspan="1" rowspan="1"><p>77.8</p></td></tr><tr><td colspan="1" rowspan="1"><p>p97 <mml:math id="mtve95re9o">
+</mml:math></p></th><th colspan="1" rowspan="1"><p>FPR (%)</p></th><th colspan="1" rowspan="1"><p>Z-DR (%)</p></th><th colspan="1" rowspan="1"><p>DoS SH (%)</p></th><th colspan="1" rowspan="1"><p>HB (%)</p></th><th colspan="1" rowspan="1"><p>Inf. (%)</p></th></tr><tr><td colspan="1" rowspan="1"><p>p88</p></td><td colspan="1" rowspan="1"><p>0.01976</p></td><td colspan="1" rowspan="1"><p>0.00403</p></td><td colspan="1" rowspan="1"><p>12.71</p></td><td colspan="1" rowspan="1"><p>98.14</p></td><td colspan="1" rowspan="1"><p>98.20</p></td><td colspan="1" rowspan="1"><p>100.0</p></td><td colspan="1" rowspan="1"><p>88.9</p></td></tr><tr><td colspan="1" rowspan="1"><p>p90</p></td><td colspan="1" rowspan="1"><p>0.01991</p></td><td colspan="1" rowspan="1"><p>0.00467</p></td><td colspan="1" rowspan="1"><p>10.93</p></td><td colspan="1" rowspan="1"><p>98.14</p></td><td colspan="1" rowspan="1"><p>98.20</p></td><td colspan="1" rowspan="1"><p>100.0</p></td><td colspan="1" rowspan="1"><p>88.9</p></td></tr><tr><td colspan="1" rowspan="1"><p>p91</p></td><td colspan="1" rowspan="1"><p>0.01999</p></td><td colspan="1" rowspan="1"><p>0.00514</p></td><td colspan="1" rowspan="1"><p>9.88</p></td><td colspan="1" rowspan="1"><p>98.14</p></td><td colspan="1" rowspan="1"><p>98.20</p></td><td colspan="1" rowspan="1"><p>100.0</p></td><td colspan="1" rowspan="1"><p>88.9</p></td></tr><tr><td colspan="1" rowspan="1"><p>p92</p></td><td colspan="1" rowspan="1"><p>0.02006</p></td><td colspan="1" rowspan="1"><p>0.00561</p></td><td colspan="1" rowspan="1"><p>8.95</p></td><td colspan="1" rowspan="1"><p>98.14</p></td><td colspan="1" rowspan="1"><p>98.20</p></td><td colspan="1" rowspan="1"><p>100.0</p></td><td colspan="1" rowspan="1"><p>88.9</p></td></tr><tr><td colspan="1" rowspan="1"><p>p93</p></td><td colspan="1" rowspan="1"><p>0.02014</p></td><td colspan="1" rowspan="1"><p>0.00630</p></td><td colspan="1" rowspan="1"><p>8.17</p></td><td colspan="1" rowspan="1"><p>98.14</p></td><td colspan="1" rowspan="1"><p>98.20</p></td><td colspan="1" rowspan="1"><p>100.0</p></td><td colspan="1" rowspan="1"><p>88.9</p></td></tr><tr><td colspan="1" rowspan="1"><p>p94</p></td><td colspan="1" rowspan="1"><p>0.02029</p></td><td colspan="1" rowspan="1"><p>0.00711</p></td><td colspan="1" rowspan="1"><p>7.27</p></td><td colspan="1" rowspan="1"><p>98.14</p></td><td colspan="1" rowspan="1"><p>98.20</p></td><td colspan="1" rowspan="1"><p>100.0</p></td><td colspan="1" rowspan="1"><p>88.9</p></td></tr><tr><td colspan="1" rowspan="1"><p>p95</p></td><td colspan="1" rowspan="1"><p>0.02045</p></td><td colspan="1" rowspan="1"><p>0.00799</p></td><td colspan="1" rowspan="1"><p>6.43</p></td><td colspan="1" rowspan="1"><p>98.12</p></td><td colspan="1" rowspan="1"><p>98.20</p></td><td colspan="1" rowspan="1"><p>100.0</p></td><td colspan="1" rowspan="1"><p>86.1</p></td></tr><tr><td colspan="1" rowspan="1"><p>p96</p></td><td colspan="1" rowspan="1"><p>0.02069</p></td><td colspan="1" rowspan="1"><p>0.00902</p></td><td colspan="1" rowspan="1"><p>5.35</p></td><td colspan="1" rowspan="1"><p>97.78</p></td><td colspan="1" rowspan="1"><p>97.90</p></td><td colspan="1" rowspan="1"><p>100.0</p></td><td colspan="1" rowspan="1"><p>77.8</p></td></tr><tr><td colspan="1" rowspan="1"><p>p97 <mml:math id="mwrhx8p214">
   <mml:mi>★</mml:mi>
 </mml:math></p></td><td colspan="1" rowspan="1"><p>0.02104</p></td><td colspan="1" rowspan="1"><p>0.01104</p></td><td colspan="1" rowspan="1"><p>4.20</p></td><td colspan="1" rowspan="1"><p>97.48</p></td><td colspan="1" rowspan="1"><p>97.71</p></td><td colspan="1" rowspan="1"><p>100.0</p></td><td colspan="1" rowspan="1"><p>61.11</p></td></tr><tr><td colspan="1" rowspan="1"><p>p98</p></td><td colspan="1" rowspan="1"><p>0.02145</p></td><td colspan="1" rowspan="1"><p>0.01386</p></td><td colspan="1" rowspan="1"><p>3.21</p></td><td colspan="1" rowspan="1"><p>44.97</p></td><td colspan="1" rowspan="1"><p>44.80</p></td><td colspan="1" rowspan="1"><p>100.0</p></td><td colspan="1" rowspan="1"><p>58.3</p></td></tr><tr><td colspan="1" rowspan="1"><p>p99</p></td><td colspan="1" rowspan="1"><p>0.02241</p></td><td colspan="1" rowspan="1"><p>0.02033</p></td><td colspan="1" rowspan="1"><p>1.70</p></td><td colspan="1" rowspan="1"><p>43.29</p></td><td colspan="1" rowspan="1"><p>43.10</p></td><td colspan="1" rowspan="1"><p>100.0</p></td><td colspan="1" rowspan="1"><p>55.6</p></td></tr></tbody></table>
             </table-wrap>
@@ -1956,7 +1956,7 @@
             <title>5.6. Inference efficiency</title>
           
           <p>Real-time deployability requires sub-millisecond per-flow inference latency. <xref ref-type="table" rid="table_4">Table 4</xref> reports GPU inference throughput for each component. All measurements were taken on an NVIDIA L4 GPU (24 GB VRAM) with mixed FP16 precision and XLA JIT compilation. The hybrid sequential pipeline achieves 14,201 samples/second (0.070 ms/sample), well within real-time requirements for typical enterprise traffic (10K–50K flows/minute). At 1 Gbps line rate (approx. 150K flows/minute), approximately 11 parallel GPU instances would be required; Central Processing Unit (CPU)-only inference is estimated at 3–5 <inline-formula>
-  <mml:math id="m6ube0fa7w">
+  <mml:math id="mg4yqy4j5a">
     <mml:mo>×</mml:mo>
   </mml:math>
 </inline-formula> slower.</p>
@@ -1993,7 +1993,7 @@
     <sec sec-type="">
       <title>6. Conclusion</title>
       <p>This paper presented a hybrid CNN-GRU-Attention and skip-connection AE framework for zero-day attack detection, evaluated on CICIDS2017 under strict data isolation. The system achieves 97.48% zero-day detection rate at 4.2% FPR and AUROC of 0.956, substantially outperforming all single-component and classical baselines (CNN-alone: 79.23%; AE-alone: 44.92%; best baseline SGD-OCSVM: 85.45%). SHAP analysis confirms mechanistic complementarity: CNN detections are driven by temporal flow features, while the AE contributes 1,012 exclusive detections via backward IAT statistics invisible to the supervised component. The 8 <inline-formula>
-  <mml:math id="mvq49gyioq">
+  <mml:math id="mc9dbq1npx">
     <mml:mo>×</mml:mo>
   </mml:math>
 </inline-formula> 8 spatial reshaping of 64 selected features enables efficient CNN processing without arbitrary feature engineering, and the system operates at 14,201 samples/second on GPU, supporting real-time enterprise deployment.</p><p>The primary limitation is the Infiltration class detection rate (61.11%, CI [44.4%, 75.0%]), reflecting its small evaluation sample ($n$ = 36) and low anomaly signal. The 4.2% FPR, while operationally acceptable given zero-day prevalence, warrants cost-sensitive threshold tuning for high-volume SOC environments. Generalizability beyond CICIDS2017 and robustness to adversarial evasion remain open questions.</p><p>Future work will validate the framework on CICIoT2023 (with adapted feature selection to accommodate different feature spaces), investigate adversarial robustness, and deploy in live SOC environments with telemetry feedback for continuous threshold adaptation.</p>
