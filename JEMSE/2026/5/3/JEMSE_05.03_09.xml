@@ -1,0 +1,1269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.3 20210610//EN" "JATS-journalpublishing1-3.dtd">
+<article xml:lang="en" dtd-version="1.3" article-type="research-article" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mml="http://www.w3.org/1998/Math/MathML">
+  <front>
+    <journal-meta>
+      <journal-id journal-id-type="publisher-id">JEMSE</journal-id>
+      <journal-id journal-id-type="doi">10.56578</journal-id>
+      <journal-title-group>
+        <journal-title>Journal of Engineering Management and Systems Engineering</journal-title>
+        <abbrev-journal-title abbrev-type="issn">J. Eng. Manag. Syst. Eng.</abbrev-journal-title>
+        <abbrev-journal-title abbrev-type="publisher">JEMSE</abbrev-journal-title>
+      </journal-title-group>
+      <issn publication-format="electronic">2958-3527</issn>
+      <issn publication-format="print">2958-3519</issn>
+      <publisher>
+        <publisher-name>Acadlore</publisher-name>
+      </publisher>
+    </journal-meta>
+    <article-meta>
+      <article-id pub-id-type="publisher-id">AR-rBF9z338tDLKpAtm8acB35EROtwYCpsQ</article-id>
+      <article-id pub-id-type="doi">10.56578/jemse050309</article-id>
+      <article-categories>
+        <subj-group>
+          <subject>Articles</subject>
+        </subj-group>
+      </article-categories>
+      <title-group>
+        <article-title>Bridging Design and Simulation: A Framework for Simulation Lifecycle Governance and Digital Thread Integration in Engineering Enterprises</article-title>
+      </title-group>
+      <contrib-group>
+        <contrib contrib-type="author" rid="aff_1">
+          <contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0009-0005-7898-2758</contrib-id>
+          <name>
+            <surname>Saha</surname>
+            <given-names>Prasun</given-names>
+          </name>
+          <email>psaha1@harsco.com</email>
+        </contrib>
+        <aff id="aff_1">Engineering Systems – IT, Harsco Rail, 29170 West Columbia, United States</aff>
+      </contrib-group>
+      <pub-date publication-format="electronic" date-type="pub">
+        <day>28</day>
+        <month>09</month>
+        <year>2026</year>
+      </pub-date>
+      <volume>5</volume>
+      <issue>3</issue>
+      <fpage>435</fpage>
+      <lpage>460</lpage>
+      <page-range>435-460</page-range>
+      <history>
+        <date date-type="received">
+          <day>13</day>
+          <month>08</month>
+          <year>2026</year>
+        </date>
+        <date date-type="accepted">
+          <day>14</day>
+          <month>09</month>
+          <year>2026</year>
+        </date>
+      </history>
+      <permissions>
+        <copyright-statement>©2026 by the author(s)</copyright-statement>
+        <copyright-year>2026</copyright-year>
+        <license license-type="open-access" xlink:href="https://creativecommons.org/licenses/by/4.0/">
+          <license-p> Published by Acadlore Publishing Services Limited, Hong Kong. This article is available for free download and can be reused and cited, provided that the original published version is credited, under the CC BY 4.0 license.</license-p>
+        </license>
+      </permissions>
+      <abstract><p>Despite the rapid expansion of simulation-driven design in discrete manufacturing, the governance of computer-aided engineering (CAE) data remains largely disconnected from enterprise product lifecycle management (PLM) systems, creating configuration traceability gaps, limiting validated model reuse, and impeding reproducibility. While simulation process and data management (SPDM) frameworks have been proposed architecturally, limited empirical evidence exists on end-to-end implementations reporting measurable outcomes across contrasting industrial domains. This paper presents PLM for CAE, a framework embedding simulation lifecycle management natively within the PLM data model and process engine. The architecture extends the PLM product structure with simulation-specific object types and integrates high-performance computing (HPC) environments through boundary-layer agents that enforce governed inputs and harvest execution metadata. Mandatory workflow review gates govern simulation progression from request to archival, establishing a continuous digital thread between design revision and simulation outcome. Evaluation across two industrial deployments—a global railway equipment manufacturer prioritizing regulatory compliance and multi-site traceability, and a global consumer goods manufacturer focused on model reuse velocity—showed observed improvements over a twelve-month post-implementation period. The deployments reported design-to-simulation traceability of 85–95%, model reuse rates of 30–65%, preparation time reductions of 20–40%, and a 50–75% reduction in simulation retrieval time. These results provide preliminary empirical support for the applicability of PLM-native simulation governance in large engineering enterprises, while recognizing that the observed improvements may also reflect concurrent organizational and process changes.</p></abstract>
+      <kwd-group>
+        <kwd>Product lifecycle management</kwd>
+        <kwd>Computer-aided engineering</kwd>
+        <kwd>Simulation data governance</kwd>
+        <kwd>Digital thread</kwd>
+        <kwd>High-performance computing integration</kwd>
+        <kwd>Simulation process and data management</kwd>
+      </kwd-group>
+      <counts>
+        <count count-type="contributors" count="1"/>
+        <fig-count count="12"/>
+        <table-count count="12"/>
+        <ref-count count="25"/>
+      </counts>
+    </article-meta>
+  </front>
+  <body>
+    <sec sec-type="intro">
+      <title>1. Introduction</title>
+      <p>Simulation-driven design has become central to modern product development, enabling engineers to evaluate structural, fluid, thermal, and dynamic behavior virtually before physical prototyping. The growing availability of high-performance computing (HPC), together with advances in finite element analysis (FEA), computational fluid dynamics (CFD), and multiphysics simulation, has significantly increased both the volume and complexity of computer-aided engineering (CAE) activity across discrete manufacturing industries [<xref ref-type="bibr" rid="ref_1">1</xref>], [<xref ref-type="bibr" rid="ref_2">2</xref>], [<xref ref-type="bibr" rid="ref_3">3</xref>]. As a result, simulation artifacts such as geometry packages, mesh definitions, solver input decks, boundary conditions, and result datasets have become strategically important engineering assets [<xref ref-type="bibr" rid="ref_3">3</xref>].</p><p>However, simulation capability has advanced faster than simulation data governance. A persistent gap remains between CAE execution environments and enterprise product lifecycle management (PLM) systems that govern product design data [<xref ref-type="bibr" rid="ref_4">4</xref>], [<xref ref-type="bibr" rid="ref_5">5</xref>]. In many industrial settings, CAE work is still performed on local workstations, HPC clusters, or shared directories outside the PLM environment. Requests are often communicated through emails or informal channels, geometry is exported manually, and results are archived in unstructured project folders. This creates a traceability deficit: organizations struggle to determine which design revision a simulation represents, whether results remain valid after design changes, or whether prior validated models can be reused [<xref ref-type="bibr" rid="ref_5">5</xref>], [<xref ref-type="bibr" rid="ref_6">6</xref>].</p><p>The operational impact is significant. Engineers spend time reconstructing prior analyses, rebuilding models that could have been reused, and assembling simulation evidence chains for audits rather than advancing design work [<xref ref-type="bibr" rid="ref_4">4</xref>]. In distributed organizations, the lack of unified governance also increases coordination challenges and configuration risk [<xref ref-type="bibr" rid="ref_7">7</xref>]. Reproducibility, which is essential for simulation-based validation in safety-critical industries, is weakened when prior inputs, assumptions, solver settings, and execution environments cannot be reliably recovered [<xref ref-type="bibr" rid="ref_8">8</xref>], [<xref ref-type="bibr" rid="ref_9">9</xref>].</p><p>Prior studies have addressed simulation data management (SDM) in PLM environments and computer-aided design (CAD)–CAE integration [<xref ref-type="bibr" rid="ref_5">5</xref>], [<xref ref-type="bibr" rid="ref_6">6</xref>], while established simulation process and data management (SPDM) literature has defined broader architectural and governance principles [<xref ref-type="bibr" rid="ref_1">1</xref>], [<xref ref-type="bibr" rid="ref_4">4</xref>]. More recent research has extended SDM toward digital-twin environments and lifecycle-oriented information models linking CAE models, simulation conditions, and simulation data [<xref ref-type="bibr" rid="ref_10">10</xref>], [<xref ref-type="bibr" rid="ref_11">11</xref>]. In parallel, recent studies on engineering digital threads have emphasized lifecycle-wide data connectivity, traceability, heterogeneous-system integration, and relational continuity among engineering information objects [<xref ref-type="bibr" rid="ref_12">12</xref>], [<xref ref-type="bibr" rid="ref_13">13</xref>], [<xref ref-type="bibr" rid="ref_14">14</xref>]. Research on model-based systems engineering (MBSE)–PLM integration has similarly highlighted the difficulty of maintaining consistent engineering information flows across systems and lifecycle stages [<xref ref-type="bibr" rid="ref_15">15</xref>].</p><p>Nevertheless, there are three gaps remaining. First, many existing approaches focus on individual elements such as simulation information modeling, geometry integration, digital thread architecture, or lifecycle connectivity rather than an integrated end-to-end CAE governance architecture. Second, quantified empirical evidence across multiple industrial contexts remains limited. Third, the challenge of embedding simulation governance within an existing PLM data model while limiting modification to the established product structure has received limited attention. Recent PLM-based digital-twin and simulation-data-management studies [<xref ref-type="bibr" rid="ref_16">16</xref>], [<xref ref-type="bibr" rid="ref_17">17</xref>], together with digital-thread studies [<xref ref-type="bibr" rid="ref_10">10</xref>], [<xref ref-type="bibr" rid="ref_11">11</xref>], [<xref ref-type="bibr" rid="ref_12">12</xref>], [<xref ref-type="bibr" rid="ref_13">13</xref>], [<xref ref-type="bibr" rid="ref_14">14</xref>], [<xref ref-type="bibr" rid="ref_15">15</xref>], provide important theoretical and architectural foundations, but limited evidence exists on implemented PLM-native CAE governance frameworks evaluated across contrasting industrial environments. <xref ref-type="table" rid="table_1">Table 1</xref> provides a structured comparison of the most relevant prior studies against the present work across four dimensions: integration scope, industrial validation, quantified metrics, and PLM-native implementation.</p><p>This paper presents PLM for CAE, a framework that embeds simulation lifecycle management within the enterprise PLM data model and process engine. The framework integrates simulation request management, CAD association, CAE model governance, HPC execution, result archival, and digital-thread traceability within a unified architecture. The specific contributions are:</p><p>1) A PLM-native simulation data model that extends the standard PLM product structure with CAE-specific object types and governed relationships, supporting traceability from product revision to simulation outcome.</p><p>2) An HPC–PLM integration architecture using boundary-layer agents to retrieve version-controlled inputs and capture execution metadata and result references after solver completion.</p><p>3) An end-to-end simulation workflow embedded within the PLM process engine, incorporating mandatory governance gates, change-driven re-analysis notification, and governed result archival.</p><p>4) Empirical evaluation across two contrasting industrial deployments: a railway equipment manufacturer operating under structural safety requirements and a consumer goods manufacturer operating under high-velocity product development cycles, with performance outcomes collected over a twelve-month post-implementation period.</p><p><xref ref-type="fig" rid="fig_1">Figure 1</xref> presents the overall CAE system integration strategy, showing the relationship among CAE application processes, the CAE digital workspace, SPDM/PLM for CAE, and the enterprise PLM application.</p>
+      
+        <fig id="fig_1">
+          <label>Figure 1</label>
+          <caption>
+            <title>CAE system integration strategy</title>
+          </caption>
+          <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/8/img_DMKsYu2PKUyCDFH4.jpeg"/>
+        </fig>
+      
+      
+        <table-wrap id="table_1">
+          <label>Table 1</label>
+          <caption>
+            <title>Structural comparison of prior studies against present study</title>
+          </caption>
+          <table><tbody><tr><td colspan="1" rowspan="1"><p>Reference</p></td><td colspan="1" rowspan="1"><p>Integration Scope</p></td><td colspan="1" rowspan="1"><p>Industrial Validation</p></td><td colspan="1" rowspan="1"><p>Quantified Metrics</p></td><td colspan="1" rowspan="1"><p>PLM-Native</p></td></tr><tr><td colspan="1" rowspan="1"><p>Saarelainen et al. [<xref ref-type="bibr" rid="ref_5">5</xref>]</p></td><td colspan="1" rowspan="1"><p>Simulation data model for PLM</p></td><td colspan="1" rowspan="1"><p>Conceptual only</p></td><td colspan="1" rowspan="1"><p>None</p></td><td colspan="1" rowspan="1"><p>Partial—data model only</p></td></tr><tr><td colspan="1" rowspan="1"><p>Hamri et al. [<xref ref-type="bibr" rid="ref_6">6</xref>]</p></td><td colspan="1" rowspan="1"><p>CAD–CAE geometry integration</p></td><td colspan="1" rowspan="1"><p>Lab prototype</p></td><td colspan="1" rowspan="1"><p>None</p></td><td colspan="1" rowspan="1"><p>No</p></td></tr><tr><td colspan="1" rowspan="1"><p>NAFEMS SDM [<xref ref-type="bibr" rid="ref_1">1</xref>]</p></td><td colspan="1" rowspan="1"><p>Broad SPDM characterization</p></td><td colspan="1" rowspan="1"><p>Industry survey</p></td><td colspan="1" rowspan="1"><p>Survey statistics</p></td><td colspan="1" rowspan="1"><p>Not addressed</p></td></tr><tr><td colspan="1" rowspan="1"><p>Mohanraj and Vaishnavi [<xref ref-type="bibr" rid="ref_2">2</xref>]</p></td><td colspan="1" rowspan="1"><p>Digital-twin data-enabling technologies and industrial data frameworks</p></td><td colspan="1" rowspan="1"><p>Literature-based industrial analysis</p></td><td colspan="1" rowspan="1"><p>Not CAE-specific operational metrics</p></td><td colspan="1" rowspan="1"><p>Partial—data-framework focused</p></td></tr><tr><td colspan="1" rowspan="1"><p>Röhm and Anderl [<xref ref-type="bibr" rid="ref_10">10</xref>]</p></td><td colspan="1" rowspan="1"><p>SDM across digital-twin lifecycle</p></td><td colspan="1" rowspan="1"><p>Illustrative case study</p></td><td colspan="1" rowspan="1"><p>Limited</p></td><td colspan="1" rowspan="1"><p>Partial</p></td></tr><tr><td colspan="1" rowspan="1"><p>Röhm et al. [<xref ref-type="bibr" rid="ref_11">11</xref>]</p></td><td colspan="1" rowspan="1"><p>CAE/simulation information model for digital twin</p></td><td colspan="1" rowspan="1"><p>3D-printing use case</p></td><td colspan="1" rowspan="1"><p>Limited</p></td><td colspan="1" rowspan="1"><p>Partial / information-model focused</p></td></tr><tr><td colspan="1" rowspan="1"><p>Abdel-Aty and Negri [<xref ref-type="bibr" rid="ref_12">12</xref>]</p></td><td colspan="1" rowspan="1"><p>Manufacturing digital-thread lifecycle framework</p></td><td colspan="1" rowspan="1"><p>Systematic literature review</p></td><td colspan="1" rowspan="1"><p>Literature synthesis</p></td><td colspan="1" rowspan="1"><p>Not implementation-specific</p></td></tr><tr><td colspan="1" rowspan="1"><p>Kasper et al. [<xref ref-type="bibr" rid="ref_13">13</xref>]</p></td><td colspan="1" rowspan="1"><p>Digital-thread graph connecting lifecycle data/models/systems</p></td><td colspan="1" rowspan="1"><p>Architecture-focused</p></td><td colspan="1" rowspan="1"><p>No operational CAE metrics</p></td><td colspan="1" rowspan="1"><p>PLM/lifecycle oriented</p></td></tr><tr><td colspan="1" rowspan="1"><p>Gurdal and Testik [<xref ref-type="bibr" rid="ref_16">16</xref>]</p></td><td colspan="1" rowspan="1"><p>PLM-based digital-twin implementation and simulation-data alignment</p></td><td colspan="1" rowspan="1"><p>Aerospace-oriented implementation framework</p></td><td colspan="1" rowspan="1"><p>Limited operational metrics</p></td><td colspan="1" rowspan="1"><p>Partial—PLM/digital-twin focused</p></td></tr><tr><td colspan="1" rowspan="1"><p>Ghosh and Singh [<xref ref-type="bibr" rid="ref_18">18</xref>]</p></td><td colspan="1" rowspan="1"><p>Integrated PLM infrastructure enabling digital twin/thread capabilities</p></td><td colspan="1" rowspan="1"><p>Manufacturing context</p></td><td colspan="1" rowspan="1"><p>Innovation and capability outcomes</p></td><td colspan="1" rowspan="1"><p>Yes—PLM infrastructure focused</p></td></tr><tr><td colspan="1" rowspan="1"><p>Schleich et al. [<xref ref-type="bibr" rid="ref_19">19</xref>]</p></td><td colspan="1" rowspan="1"><p>digital twin for design</p></td><td colspan="1" rowspan="1"><p>Conceptual</p></td><td colspan="1" rowspan="1"><p>None</p></td><td colspan="1" rowspan="1"><p>No</p></td></tr><tr><td colspan="1" rowspan="1"><p>Grieves and Vickers [<xref ref-type="bibr" rid="ref_7">7</xref>]</p></td><td colspan="1" rowspan="1"><p>digital twin theory</p></td><td colspan="1" rowspan="1"><p>Conceptual</p></td><td colspan="1" rowspan="1"><p>None</p></td><td colspan="1" rowspan="1"><p>No</p></td></tr><tr><td colspan="1" rowspan="1"><p>Present study</p></td><td colspan="1" rowspan="1"><p>End-to-end: request → HPC → archival</p></td><td colspan="1" rowspan="1"><p>Two industrial deployments</p></td><td colspan="1" rowspan="1"><p>Seven quantified operational/governance measures</p></td><td colspan="1" rowspan="1"><p>Yes—full PLM data model + workflow</p></td></tr></tbody></table>
+        </table-wrap>
+      
+      <p>This study is guided by the following research questions:</p><p>RQ1: How can CAE lifecycle governance be embedded within an existing enterprise PLM environment while limiting modification to the established product data structure?</p><p>RQ2: Which PLM-based governance mechanisms are associated with observed improvements in simulation traceability, model reuse, retrieval efficiency, and reproducibility?</p><p>RQ3: How should a PLM for CAE architecture be configured differently for compliance-driven and velocity-driven engineering organizations?</p><p>The remainder of this paper is structured as follows. Section 2 characterizes the current state of CAE workflow data management in industrial practice. Section 3 analyses the specific challenges arising from the disconnect between CAE environments and PLM systems. Section 4 describes the research methodology; Section 5 presents the PLM for CAE architecture, including the extended data model, workflow integration, and HPC connectivity framework. Sections 6 and 7 describe the two industrial case studies and document the implementation approach and measured outcomes in each deployment context. Section 8 discusses framework scalability, the simulation digital thread contribution, limitations, and future research directions. Section 9 presents conclusions.</p>
+    </sec>
+    <sec sec-type="">
+      <title>2. Current state of computer-aided engineering workflows</title>
+      <p>The management of simulation data in industrial engineering organizations has been extensively documented as a source of operational inefficiency and governance risk [<xref ref-type="bibr" rid="ref_1">1</xref>], [<xref ref-type="bibr" rid="ref_2">2</xref>]. While CAE workflows follow a broadly consistent sequence of activities across discrete manufacturing sectors—encompassing simulation request, geometry preparation, execution, post-processing, and archival—the data management practices underlying each stage are frequently fragmented, unstandardized, and disconnected from the enterprise systems that govern product design data [<xref ref-type="bibr" rid="ref_3">3</xref>], [<xref ref-type="bibr" rid="ref_4">4</xref>]. This section characterizes the current state of each workflow stage, drawing on published surveys and practitioner literature to establish the evidence base for the challenges formalized in Section 3.</p>
+      
+        <sec>
+          
+            <title>2.1. Simulation request and planning</title>
+          
+          <p>The simulation process typically originates with an engineering request initiated by a design engineer, project lead, or product development team. At this stage, critical information defining the intent and scope of the analysis must be established, including the objectives of the simulation, applicable load cases, boundary conditions, material assumptions, acceptance criteria, and the governing design revision against which the analysis is to be conducted.</p><p>In current industrial practice, this information is predominantly communicated through informal channels—emails, spreadsheets, verbal discussions, or meeting notes—rather than being captured within a structured, system-managed record [<xref ref-type="bibr" rid="ref_2">2</xref>], [<xref ref-type="bibr" rid="ref_5">5</xref>]. Therefore, the intent and assumptions underlying a simulation engagement are inconsistently documented, rendering them difficult to recover for audit purposes or to communicate reliably to successor engineers. This informality at the initiation stage propagates downstream, as subsequent simulation activities are conducted without a formally governed link to the product structure or design revision that motivated the analysis.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>2.2. Computer-aided design model preparation</title>
+          
+          <p>Following the definition of the simulation request, the relevant CAD geometry is retrieved—typically from the PLM system, where master product design data is managed under revision control. However, the geometry representation optimized for design and manufacturing purposes is rarely suitable for direct use in simulation [<xref ref-type="bibr" rid="ref_6">6</xref>]. CAE specialists perform a series of preprocessing operations to produce a simulation-ready geometric representation, commonly designated as CAD for CAE or a geometry package. These operations include defeaturing, removal of non-essential geometric details, suppression of thin-walled features below mesh resolution thresholds, and idealization of structural elements such as beams, shells, and connections [<xref ref-type="bibr" rid="ref_6">6</xref>].</p><p>In most industrial implementations, this preprocessing is conducted using local tools and desktop environments operating outside the PLM vault [<xref ref-type="bibr" rid="ref_3">3</xref>], [<xref ref-type="bibr" rid="ref_6">6</xref>]. The resulting CAD for CAE geometry is stored in project-specific directories or on individual workstations without formal version control or traceability linkage to the originating design revision. Hamri et al. [<xref ref-type="bibr" rid="ref_6">6</xref>] identify this disconnection between CAD and CAE environments as a foundational source of simulation governance risk, noting that the absence of a managed geometry handoff creates the conditions for simulation to be conducted against uncontrolled or superseded design states. As product designs undergo iterative revision during development, the probability of this mismatch increases without a governed geometry export mechanism.</p><p><xref ref-type="fig" rid="fig_2">Figure 2</xref> illustrates the typical CAE Request initiation and geometry preparation sequence in current industrial practice, highlighting the manual handoff points at which traceability is lost between the PLM-managed design state and the simulation-ready geometry.</p>
+          
+            <fig id="fig_2">
+              <label>Figure 2</label>
+              <caption>
+                <title>CAE Request initiation or proposal process</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/8/img_qSkHYje_nLmEHaj5.png"/>
+            </fig>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>2.3. Simulation execution</title>
+          
+          <p>Following geometry preparation, the simulation workflow proceeds to model assembly and execution, including mesh generation, solver input definition, boundary condition and load case application, and submission of the analysis job for computation. In industrial practice, these activities are typically executed on HPC platforms, including on-premises clusters, cloud-based HPC services, or hybrid environments, to support large-scale structural, fluid, and multiphysics analyses that exceed desktop computing capacity [<xref ref-type="bibr" rid="ref_2">2</xref>], [<xref ref-type="bibr" rid="ref_4">4</xref>].</p><p>Although HPC environments provide the required computational performance, they also introduce a governance discontinuity. Solver inputs, intermediate files, job records, and raw outputs are often stored in HPC file systems or user-specific directories outside enterprise data management controls [<xref ref-type="bibr" rid="ref_4">4</xref>]. As a result, these artifacts are rarely linked back to PLM in a structured manner. The HPC–PLM boundary is therefore a major point of traceability loss, particularly when key metadata such as solver version, execution timestamp, convergence history, and hardware environment is not captured or governed after job completion [<xref ref-type="bibr" rid="ref_4">4</xref>].</p><p><xref ref-type="fig" rid="fig_3">Figure 3</xref> illustrates the high-level CAE task flow from model preparation and solver execution through reporting and subsequent CAE maintenance activities.</p>
+          
+            <fig id="fig_3">
+              <label>Figure 3</label>
+              <caption>
+                <title>Computer-aided engineering (CAE) task flow</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/8/img_gN_t7Ol8lfsexR_-.png"/>
+            </fig>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>2.4. Post-processing and reporting</title>
+          
+          <p>Upon completion of the solver execution, simulation results are analyzed through post-processing activities. Engineers interrogate field output data—including stress and strain distributions, displacement fields, temperature profiles, flow characteristics, and modal responses—to assess product performance against the acceptance criteria defined at the request stage. Findings are documented in technical reports, which form the primary communication artifact between the simulation team and design engineering, program management, and regulatory stakeholders.</p><p>In current industrial practice, simulation reports are predominantly produced in desktop presentation or document formats and distributed via email or stored in shared network directories [<xref ref-type="bibr" rid="ref_2">2</xref>], [<xref ref-type="bibr" rid="ref_5">5</xref>]. Recent research on lifecycle data integration and digital-thread implementation similarly emphasizes that engineering artifacts must be managed through consistent lifecycle relationships if they are to remain reusable, traceable, and auditable across product-development stages [<xref ref-type="bibr" rid="ref_20">20</xref>]. This selective and inconsistent archival of reporting artifacts means that the formal record of simulation findings is frequently incomplete at the program level, creating risk for design decisions that depend on simulation evidence and for regulatory submissions that require a complete analysis evidence chain.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>2.5. Data archival</title>
+          
+          <p>The final stage of the simulation workflow is the archival of simulation artifacts for future reference, reuse, and audit. These artifacts include CAD-for-CAE geometry, mesh files, solver input decks, job execution records, result datasets, and technical reports. In well-governed workflows, they should be stored with sufficient metadata to support retrieval, reuse, and reproducibility.</p><p>In practice, however, simulation archival is often a manual, end-of-project activity with limited standardization [<xref ref-type="bibr" rid="ref_2">2</xref>], [<xref ref-type="bibr" rid="ref_3">3</xref>]. Simulation data is commonly distributed across local workstations, HPC directories, shared drives, and selective PLM uploads, without a unified repository or consistent metadata schema [<xref ref-type="bibr" rid="ref_5">5</xref>]. Recent studies on digital-twin and engineering data-management frameworks similarly emphasize that simulation-related data often remains distributed across heterogeneous systems unless governed through explicit data models and lifecycle relationships [<xref ref-type="bibr" rid="ref_2">2</xref>]. Consequently, validated simulation models from prior programs can become underutilized knowledge assets because the metadata needed for discovery, context, lifecycle association, and reuse is not systematically captured [<xref ref-type="bibr" rid="ref_1">1</xref>], [<xref ref-type="bibr" rid="ref_3">3</xref>], [<xref ref-type="bibr" rid="ref_10">10</xref>], [<xref ref-type="bibr" rid="ref_11">11</xref>]. Recent digital-thread and lifecycle information-model research identifies this as a persistent limitation of engineering data environments: knowledge capture and reuse require explicit object relationships and lifecycle-aware data models rather than file storage alone [<xref ref-type="bibr" rid="ref_14">14</xref>], [<xref ref-type="bibr" rid="ref_21">21</xref>]. Overall, the current-state workflow shows that simulation artifacts are generated across multiple systems and handoff points, while only selected outputs are formally captured in enterprise-managed repositories. The systems-engineering implications of this distributed workflow are analyzed in Section 3.</p>
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>3. Challenges in managing computer-aided engineering data</title>
+      <p>Building on the workflow characterization in Section 2, this section translates the observed current-state practices into four management and systems-engineering challenges: fragmented simulation data, limited design-to-simulation traceability, inconsistent governance, and constrained reuse of validated simulation knowledge. The emphasis is not on restating workflow steps, but on identifying the structural problems that prevent CAE data from functioning as governed enterprise knowledge.</p>
+      
+        <sec>
+          
+            <title>3.1. Fragmented simulation data</title>
+          
+          <p>The distributed storage practices described in Section 2.5 create a fragmented simulation-data environment in which artifacts are difficult to search, relate, and govern across programs. The primary management problem is not simply that files reside in different locations, but that simulation artifacts lack a consistent metadata structure and enterprise-level relationship model. As a result, engineers may reconstruct models that already exist but cannot be reliably discovered, consuming program resources without corresponding engineering advancement [<xref ref-type="bibr" rid="ref_1">1</xref>], [<xref ref-type="bibr" rid="ref_2">2</xref>], [<xref ref-type="bibr" rid="ref_3">3</xref>], [<xref ref-type="bibr" rid="ref_5">5</xref>].</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.2. Limited traceability between design and simulation</title>
+          
+          <p>Maintaining a formal, queryable linkage between CAD design revisions and corresponding simulation activities is among the most technically significant challenges in CAE data governance [<xref ref-type="bibr" rid="ref_7">7</xref>], [<xref ref-type="bibr" rid="ref_12">12</xref>], [<xref ref-type="bibr" rid="ref_13">13</xref>], [<xref ref-type="bibr" rid="ref_14">14</xref>]. Without a governed association mechanism, it is not possible to determine reliably whether a simulation result reflects the current product configuration or a superseded design state, introducing risk into design decisions that depend on simulation evidence [<xref ref-type="bibr" rid="ref_5">5</xref>], [<xref ref-type="bibr" rid="ref_6">6</xref>]. In regulated industries, the inability to demonstrate formally that all required analyses were conducted against the approved design configuration constitutes an audit risk and can delay certification submissions [<xref ref-type="bibr" rid="ref_22">22</xref>]. Grieves and Vickers [<xref ref-type="bibr" rid="ref_7">7</xref>] identify the absence of a governed design-to-simulation linkage as a fundamental gap in digital thread realization, noting that the value of simulation evidence is contingent on its traceability to a formally managed product state.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.3. Lack of governance and standardization</title>
+          
+          <p>Simulation activities in most industrial organizations are conducted without consistent governance processes or standardized data capture practices [<xref ref-type="bibr" rid="ref_2">2</xref>], [<xref ref-type="bibr" rid="ref_3">3</xref>]. Material property definitions, boundary condition specifications, solver parameters, and modeling assumptions are documented inconsistently across individual project files and informal report appendices that are not subject to version control or formal review. This variability makes it difficult to compare results across teams, enforce best practices, or audit simulation quality [<xref ref-type="bibr" rid="ref_3">3</xref>]. The National Agency for Finite Element Methods and Standards (NAFEMS) simulation governance and Process Maturity Benchmark Study [<xref ref-type="bibr" rid="ref_3">3</xref>] reports that a large proportion of engineering organizations operate at low maturity levels with respect to simulation governance, characterized by ad hoc processes and limited integration with enterprise workflow systems—representing both a governance risk and a barrier to scaling simulation-driven design effectively.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.4. Limited reuse of simulation knowledge</title>
+          
+          <p>Reuse of validated simulation models depends on preserving not only the model files, but also their governing design context, assumptions, simulation conditions, lifecycle relationships, and validation status [<xref ref-type="bibr" rid="ref_5">5</xref>], [<xref ref-type="bibr" rid="ref_10">10</xref>], [<xref ref-type="bibr" rid="ref_11">11</xref>]. In the absence of sufficient model characterization, contextual metadata, and searchable repositories, engineers may be unable to assess and adapt prior simulation models efficiently, contributing to unnecessary model reconstruction [<xref ref-type="bibr" rid="ref_2">2</xref>], [<xref ref-type="bibr" rid="ref_23">23</xref>].</p>
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>4. Research methodology</title>
+      
+        <sec>
+          
+            <title>4.1. Research design</title>
+          
+          <p>This study adopts a comparative industrial case-study design using a before-and-after evaluation of PLM for CAE implementation in two large engineering organizations. The purpose of the research design was not to isolate causal effects under controlled experimental conditions, but to evaluate how the framework was configured and what operational changes were observed after deployment in two contrasting industrial contexts. The study combines process audit evidence, historical project records, interview inputs, PLM system logs, workflow records, and program management dashboards.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>4.2. Case selection rationale</title>
+          
+          <p>The two case organizations were selected through purposive sampling [<xref ref-type="bibr" rid="ref_24">24</xref>] because they represented contrasting governance environments. Case Study 1 was selected as a compliance-driven engineering environment where regulatory evidence chains, formal design-change impact assessment, and multi-site traceability were primary concerns. Case Study 2 was selected as a velocity-driven development environment where short product cycles, high program volume, simulation request prioritization, and model reuse were primary concerns. This contrast enabled assessment of whether the same PLM for CAE architecture could be configured for different engineering-management priorities without requiring fundamental redesign.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>4.3. Study scope and observation period</title>
+          
+          <p> <xref ref-type="table" rid="table_2">Table 2</xref> summarizes the study scope, implementation duration, observation period, organizational scale, simulation activity volume, and interviewee roles for the two case-study deployments.</p><p>Exact calendar dates are withheld for confidentiality; however, both deployments were evaluated over a twelve-month post-implementation observation period.</p>
+          
+            <table-wrap id="table_2">
+              <label>Table 2</label>
+              <caption>
+                <title>Study scope and observation period for the two industrial deployments</title>
+              </caption>
+              <table><tbody><tr><td colspan="1" rowspan="1"><p>Study Element</p></td><td colspan="1" rowspan="1"><p>Case Study 1: Railway Manufacturer</p></td><td colspan="1" rowspan="1"><p>Case Study 2: Consumer Goods Manufacturer</p></td></tr><tr><td colspan="1" rowspan="1"><p>Primary driver</p></td><td colspan="1" rowspan="1"><p>Regulatory compliance and traceability</p></td><td colspan="1" rowspan="1"><p>Development velocity and model reuse</p></td></tr><tr><td colspan="1" rowspan="1"><p>Implementation period</p></td><td colspan="1" rowspan="1"><p>Approximately 4–5 months</p></td><td colspan="1" rowspan="1"><p>Approximately 6–8 months</p></td></tr><tr><td colspan="1" rowspan="1"><p>Post-implementation observation period</p></td><td colspan="1" rowspan="1"><p>12 months</p></td><td colspan="1" rowspan="1"><p>12 months</p></td></tr><tr><td colspan="1" rowspan="1"><p>Engineering sites involved</p></td><td colspan="1" rowspan="1"><p>3</p></td><td colspan="1" rowspan="1"><p>5</p></td></tr><tr><td colspan="1" rowspan="1"><p>Simulation teams involved</p></td><td colspan="1" rowspan="1"><p>2</p></td><td colspan="1" rowspan="1"><p>5</p></td></tr><tr><td colspan="1" rowspan="1"><p>Projects/programs reviewed</p></td><td colspan="1" rowspan="1"><p>27</p></td><td colspan="1" rowspan="1"><p>33</p></td></tr><tr><td colspan="1" rowspan="1"><p>Simulation tasks reviewed</p></td><td colspan="1" rowspan="1"><p>More than 500</p></td><td colspan="1" rowspan="1"><p>More than 600</p></td></tr><tr><td colspan="1" rowspan="1"><p>CAE model records included</p></td><td colspan="1" rowspan="1"><p><mml:math id="mghj1wg0nv">
+  <mml:mo>∼</mml:mo>
+</mml:math>1,400 migrated records</p></td><td colspan="1" rowspan="1"><p><mml:math id="mlyi7kzyqx">
+  <mml:mo>∼</mml:mo>
+</mml:math>2,100 records</p></td></tr><tr><td colspan="1" rowspan="1"><p>Interviewees</p></td><td colspan="1" rowspan="1"><p>Interviewees = 4: Chief Structural Analyst; Simulation Engineer; Program Manager; PLM/CAE process owner</p></td><td colspan="1" rowspan="1"><p>Interviewees = 4: Principal CAE Engineer; Structural Analyst; Program Manager; Simulation Resource Lead</p></td></tr></tbody></table>
+            </table-wrap>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>4.4. Data sources and comparability</title>
+          
+          <p>Pre-implementation baselines were reconstructed using process audits, interviews with simulation leads and program managers, and review of historical project records. Because pre-implementation workflows were not consistently governed in PLM, some baseline values are estimated ranges rather than direct system-extracted measurements. Post-implementation values were collected primarily from PLM object relationships, workflow records, system activity logs, dashboards, and simulation team records. Therefore, reported improvements should be interpreted as directional and order-of-magnitude operational changes rather than statistically isolated causal effects.</p><p>Metric-specific record counts were not consistently recoverable for the reconstructed pre-implementation baselines. Therefore, the overall task volumes reported in <xref ref-type="table" rid="table_2">Table 2</xref> should be interpreted as study-level population indicators, rather than as the exact denominator for every reported performance metric. The railway case reviewed approximately 500+ simulation tasks and included approximately 1,400 migrated CAE model records, while the consumer goods case reviewed approximately 600+ simulation tasks and included approximately 2,100 CAE-related records. Metric-specific denominators varied by indicator: traceability was assessed against active simulation activities with PLM product-revision linkage, reuse was assessed against new analyses initiated during the observation period, preparation and turnaround time were assessed from available workflow timestamps and audit samples, and retrieval-time measures were based on audit exercises and PLM search records. Where exact baseline record counts were unavailable, the values are reported as estimated ranges and interpreted as directional operational indicators rather than statistically precise sample estimates. <xref ref-type="table" rid="table_3">Table 3</xref> summarizes the pre-implementation and post-implementation data sources used for each reported performance metric and indicates the status of the corresponding baseline evidence.</p>
+          
+            <table-wrap id="table_3">
+              <label>Table 3</label>
+              <caption>
+                <title>Data sources and comparability of reported performance metrics</title>
+              </caption>
+              <table><tr><td >Metric</td><td >Pre-implementation Source</td><td >Post-implementation Source</td><td >Baseline Status</td></tr><tr><td >Design-to-simulation traceability</td><td >Process audits, historical records, selective product lifecycle management (PLM) uploads</td><td >PLM relationship records and workflow logs</td><td >Estimated baseline</td></tr><tr><td >Model reuse rate</td><td >Interviews, historical project records, archive review</td><td >PLM model reuse links, variant relationships, retrieval records</td><td >Estimated baseline</td></tr><tr><td >Simulation preparation time</td><td >Historical records and simulation team estimates</td><td >Workflow timestamps and program dashboards</td><td >Estimated baseline</td></tr><tr><td >Simulation turnaround time</td><td >Historical project records and team estimates</td><td >Request-to-result workflow timestamps</td><td >Estimated baseline</td></tr><tr><td >Retrieval time</td><td >Interview inputs and audit sampling</td><td >PLM search/retrieval records and program dashboards</td><td >Estimated baseline</td></tr><tr><td >Rework due to configuration mismatch</td><td >Historical rework/audit notes</td><td >Change-impact workflow records and rework logs</td><td >Estimated baseline</td></tr><tr><td >Governance maturity</td><td >Internal assessment against maturity dimensions</td><td >Post-deployment reassessment</td><td >Semi-quantitative</td></tr></table>
+            </table-wrap>
+          
+          <p> <xref ref-type="table" rid="table_4">Table 4</xref> defines the performance metrics, calculation rules, observation periods, and interpretation of the reported ranges used in the subsequent case-study evaluations.</p>
+          <p>Model adaptation is defined as initiation of a new CAE Analysis Revision through a formal variant relationship to a prior CAE Model Revision where mesh topology is substantially retained (greater than 50% mesh reuse) and only load cases, boundary conditions, or minor geometry modifications are applied. Adaptation of boundary conditions alone without mesh reuse is counted as full reconstruction. Where one simulation is associated with multiple product revisions in a parametric study, it is associated with the primary governing product revision and counted once in the traceability numerator.</p>
+        </sec>
+      
+      
+        <table-wrap id="table_4">
+          <label>Table 4</label>
+          <caption>
+            <title>Metric definitions, calculation rules, and range interpretation</title>
+          </caption>
+          <table><tbody><tr><td colspan="1" rowspan="1"><p>Metric</p></td><td colspan="1" rowspan="1"><p>Definition</p></td><td colspan="1" rowspan="1"><p>Numerator</p></td><td colspan="1" rowspan="1"><p>Denominator</p></td><td colspan="1" rowspan="1"><p>Observation Period</p></td><td colspan="1" rowspan="1"><p>Range Explanation</p></td></tr><tr><td colspan="1" rowspan="1"><p>Design–simulation traceability linkage</p></td><td colspan="1" rowspan="1"><p>Percentage of active simulation activities formally associated with a governed PLM product revision</p></td><td colspan="1" rowspan="1"><p>Simulation activity objects with formal PLM product revision association</p></td><td colspan="1" rowspan="1"><p>Total active simulation activity objects in PLM</p></td><td colspan="1" rowspan="1"><p>Monthly, 12 months</p></td><td colspan="1" rowspan="1"><p>Range reflects monthly variation across the observation period</p></td></tr><tr><td colspan="1" rowspan="1"><p>Model reuse rate</p></td><td colspan="1" rowspan="1"><p>Percentage of new program analyses initiated by adapting a prior validated PLM-registered model rather than full reconstruction</p></td><td colspan="1" rowspan="1"><p>New analyses initiated via formal variant/adaptation relationship</p></td><td colspan="1" rowspan="1"><p>Total new analysis activities initiated</p></td><td colspan="1" rowspan="1"><p>Monthly, 12 months</p></td><td colspan="1" rowspan="1"><p>Range reflects variation across program types</p></td></tr><tr><td colspan="1" rowspan="1"><p>Simulation preparation time</p></td><td colspan="1" rowspan="1"><p>Elapsed time from geometry package creation to solver input deck submission</p></td><td colspan="1" rowspan="1"><p>Workflow timestamp: geometry package check-in to solver deck submission</p></td><td colspan="1" rowspan="1"><p>N/A (absolute time, baseline normalized to 100%)</p></td><td colspan="1" rowspan="1"><p>Average across all analyses in period</p></td><td colspan="1" rowspan="1"><p>Range reflects variation across analysis types and program complexity</p></td></tr><tr><td colspan="1" rowspan="1"><p>Time to locate prior results</p></td><td colspan="1" rowspan="1"><p>Time from search query initiation to identification of a relevant prior simulation result</p></td><td colspan="1" rowspan="1"><p>Elapsed time from PLM search initiation to record access</p></td><td colspan="1" rowspan="1"><p>N/A (absolute time)</p></td><td colspan="1" rowspan="1"><p>Spot checks pre/post; PLM search logs post</p></td><td colspan="1" rowspan="1"><p>Case-specific range based on variation across monthly observation periods</p></td></tr><tr><td colspan="1" rowspan="1"><p>Rework–configuration mismatch</p></td><td colspan="1" rowspan="1"><p>Percentage reduction in analysis activities formally re-initiated following identification of geometry currency mismatch</p></td><td colspan="1" rowspan="1"><p>Re-analysis workflow initiations due to configuration mismatch</p></td><td colspan="1" rowspan="1"><p>Total analysis completions</p></td><td colspan="1" rowspan="1"><p>12-month period</p></td><td colspan="1" rowspan="1"><p>Case-specific range based on observed variation across projects, programs, or analysis categories.</p></td></tr><tr><td colspan="1" rowspan="1"><p>Governance maturity</p></td><td colspan="1" rowspan="1"><p>NAFEMS simulation governance and Process Maturity level</p></td><td colspan="1" rowspan="1"><p>N/A (ordinal assessment)</p></td><td colspan="1" rowspan="1"><p>N/A</p></td><td colspan="1" rowspan="1"><p>Pre- and post-implementation point assessment</p></td><td colspan="1" rowspan="1"><p>Per-dimension scores reported in Sections 6.3 and 7.3; overall progression discussed in Section 8.1</p></td></tr></tbody></table>
+        </table-wrap>
+      
+    </sec>
+    <sec sec-type="">
+      <title>5. Product lifecycle management for computer-aided engineering architecture</title>
+      <p>The PLM for CAE framework is founded on the principle that simulation data, workflows, and artifacts constitute integral components of the product lifecycle and must therefore be governed within the same enterprise data management environment that controls product design information. In traditional industrial practice, simulation outputs are produced and stored independently of PLM systems, resulting in the traceability deficits and governance failures documented in Section 3. The framework addresses this by positioning the PLM system as the authoritative backbone for simulation lifecycle governance—managing metadata, workflow state, and relational structure—while preserving the computational autonomy of HPC environments for solver execution. This separation of governance and computation is consistent with the architectural principles established in SPDM literature [<xref ref-type="bibr" rid="ref_1">1</xref>], [<xref ref-type="bibr" rid="ref_4">4</xref>] and with the digital thread concepts advanced by Grieves and Vickers [<xref ref-type="bibr" rid="ref_7">7</xref>] and the U.S. Department of Defense (DoD) Digital Engineering Strategy [<xref ref-type="bibr" rid="ref_22">22</xref>].</p><p>The framework architecture comprises four integrated components: an integration concept defining the governance boundary between PLM and HPC; a simulation workflow structure embedded within the PLM process engine; an extended PLM data model representing simulation lifecycle entities and their relationships; and an HPC connectivity layer implemented through boundary-layer integration agents. Each component is described in the subsections that follow.</p>
+      
+        <sec>
+          
+            <title>5.1. Integration concept</title>
+          
+          <p>The PLM for CAE integration concept establishes a clear boundary between two operational environments: the PLM system, which governs simulation metadata, workflow state, relational structure, and lifecycle traceability; and the HPC platform, which executes computationally intensive simulation workloads. This separation ensures that PLM remains the authoritative environment for governance, lifecycle relationships, traceability, and reuse, while dedicated computational environments manage numerical execution and transient simulation data [<xref ref-type="bibr" rid="ref_1">1</xref>], [<xref ref-type="bibr" rid="ref_10">10</xref>], [<xref ref-type="bibr" rid="ref_11">11</xref>].</p><p>Within this framework, PLM manages key simulation information, including analysis requests, CAD references, simulation metadata, technical reports, and result summaries. Analysis requests are captured as PLM-native objects linked to the governing design revision, while CAD references maintain version-controlled associations between simulation activities and source geometry. Simulation metadata, such as model definitions, solver settings, boundary conditions, and material assignments, is managed under PLM revision control and change processes [<xref ref-type="bibr" rid="ref_7">7</xref>], [<xref ref-type="bibr" rid="ref_9">9</xref>], [<xref ref-type="bibr" rid="ref_17">17</xref>].</p><p>HPC remains responsible for solver execution, including FEA, CFD, and multiphysics analysis using tools such as ANSYS, Abaqus, or OpenFOAM. Rather than storing raw computational datasets in PLM, the framework governs metadata, relationships, and result references. <xref ref-type="fig" rid="fig_4">Figure 4</xref> illustrates this PLM–CAE–HPC integration concept and the governed interface connecting the three operational layers [<xref ref-type="bibr" rid="ref_1">1</xref>], [<xref ref-type="bibr" rid="ref_4">4</xref>].</p>
+          
+            <fig id="fig_4">
+              <label>Figure 4</label>
+              <caption>
+                <title>High-level integration concept</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/8/img_95iGd79qtZEK8Kqq.png"/>
+            </fig>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>5.2. Simulation workflow integration</title>
+          
+          <p>The PLM for CAE framework integrates the simulation lifecycle into a structured, PLM-managed workflow that enforces governance through state management, notifications, approvals, and audit trails. The workflow consists of sequential stages with defined entry conditions, mandatory data capture, and exit criteria before progression [<xref ref-type="bibr" rid="ref_3">3</xref>].</p><p>The process begins with a formal CAE Request object in PLM, capturing the analysis purpose, scope, product structure node, design revision, load cases, and acceptance criteria. This replaces informal email- or spreadsheet-based requests and establishes the traceability anchor for all downstream simulation artifacts [<xref ref-type="bibr" rid="ref_2">2</xref>], [<xref ref-type="bibr" rid="ref_5">5</xref>].</p><p>After approval, the required CAD geometry is retrieved from the PLM vault at the referenced design revision, ensuring that simulation work is based on the controlled master design rather than unmanaged local copies. The geometry is then prepared for CAE use, with the simulation-ready representation stored in PLM or formally linked to the originating design revision [<xref ref-type="bibr" rid="ref_6">6</xref>].</p><p>Simulation execution is performed on the HPC platform, while PLM manages task definition and lifecycle tracking. After solver completion, results are post-processed, documented in technical reports, reviewed through a structured approval workflow, and archived with metadata and result references in PLM. <xref ref-type="fig" rid="fig_5">Figure 5</xref> illustrates the end-to-end workflow from request initiation to result archival, including the governance gates at each transition.</p>
+          
+            <fig id="fig_5">
+              <label>Figure 5</label>
+              <caption>
+                <title>Computer-aided engineering (CAE) and finite element analysis (FEA) approval workflow</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/8/img_seOdPc7QvpbII9Mj.jpeg"/>
+            </fig>
+          
+          <p>Embedding this workflow in PLM also enables automatic design-change notifications. When a Change Notice affects a product structure node, associated open simulations are flagged for review, ensuring that the impact of design changes is assessed before final disposition [<xref ref-type="bibr" rid="ref_3">3</xref>].</p><p> <xref ref-type="table" rid="table_5">Table 5</xref> summarizes the principal organizational roles involved in the PLM for CAE workflow and clarifies how technical and managerial responsibilities are distributed across the simulation lifecycle.</p>
+          
+            <table-wrap id="table_5">
+              <label>Table 5</label>
+              <caption>
+                <title>Roles and governance responsibilities in the PLM for CAE workflow</title>
+              </caption>
+              <table><tr><td >Role</td><td >Responsibility</td><td >Governance Function</td></tr><tr><td >Requester</td><td >Defines simulation need, design revision, load cases, and acceptance criteria</td><td >Initiates governed CAE Request</td></tr><tr><td >CAE engineer</td><td >Prepares geometry, model, mesh, solver input, and preliminary results</td><td >Executes technical simulation work</td></tr><tr><td >FEA/CAE gatekeeper</td><td >Reviews request completeness, resource fit, and methodology suitability</td><td >Prevents incomplete or inappropriate analyses</td></tr><tr><td >Technical reviewer</td><td >Reviews model assumptions, mesh quality, and result interpretation</td><td >Ensures technical adequacy</td></tr><tr><td >Approver</td><td >Approves simulation report and authorizes release of results</td><td >Converts results into formal evidence</td></tr><tr><td >Program manager</td><td >Monitors queue, schedule impact, and priority conflicts</td><td >Supports planning and resource allocation</td></tr><tr><td >Design/change owner</td><td >Initiates change impact review when design changes occur</td><td >Prevents reliance on stale simulation evidence</td></tr><tr><td >PLM/HPC administrator</td><td >Maintains workflow configuration, access, and integration health</td><td >Supports governance infrastructure</td></tr></table>
+            </table-wrap>
+          
+          <p>These roles distribute simulation governance across both technical and managerial responsibilities. The framework therefore does not treat CAE governance as a purely IT function; rather, it formalizes the interaction among requesters, simulation engineers, reviewers, approvers, program managers, and PLM/HPC administrators.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>5.3. Product lifecycle management for computer-aided engineering data model</title>
+          
+          <p>To support simulation lifecycle governance within PLM, the PLM for CAE framework introduces simulation-specific object types as an overlay to the standard product structure. As shown in <xref ref-type="fig" rid="fig_6">Figure 6</xref>, this data model extends existing PLM relationships without disturbing the established product data architecture, aligning with Principle P1 (Overlay-based limited modification) [<xref ref-type="bibr" rid="ref_9">9</xref>], [<xref ref-type="bibr" rid="ref_19">19</xref>].</p>
+          
+            <fig id="fig_6">
+              <label>Figure 6</label>
+              <caption>
+                <title>Basic architecture of computer-aided engineering (CAE) data model</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/8/img_9wkLww5Jrj4lEd6S.png"/>
+            </fig>
+          
+          <p>At the top of the hierarchy, the product revision serves as the authoritative reference object. It is linked to simulation-derived entities through bidirectional Source and Target relationships, ensuring that every simulation artifact remains associated with the governing design state. This provides the configuration provenance needed for traceable engineering analysis and enables queries in both directions: from a product revision to its related simulations, and from a simulation artifact back to the product configuration it represents [<xref ref-type="bibr" rid="ref_7">7</xref>], [<xref ref-type="bibr" rid="ref_17">17</xref>].</p><p>The CAE Model Revision represents the reusable simulation model asset within the PLM for CAE data model. It is associated with the governing Product/Design Revision through Source and Target relationships so that the model remains traceable to the controlled product configuration it represents. The CAE Analysis Revision represents an individual simulation analysis or execution instance and is linked to the CAE Model Revision through a formal Defining Relationship, ensuring that each analysis instance is associated with at least one managed simulation model. Where no dedicated CAE Geometry Revision exists, the CAE Model Revision connects directly to the Design Revision through the fallback Source/Target relationship, preserving design-to-simulation traceability while maintaining the overlay approach [<xref ref-type="bibr" rid="ref_9">9</xref>], [<xref ref-type="bibr" rid="ref_19">19</xref>].</p><p>The CAE Geometry Revision manages two geometry artifact types aligned with simulation preprocessing practice: neutral representations, such as standard for the exchange of product model data (STEP), for exchange across CAD and CAE systems, and simplified or defeatured geometry prepared specifically for meshing and numerical analysis [<xref ref-type="bibr" rid="ref_6">6</xref>], [<xref ref-type="bibr" rid="ref_25">25</xref>]. Managing these artifacts separately ensures that both the interoperable geometry and the simulation-specific idealization remain traceable to the originating design revision. Source and Target relationships link the CAE Geometry Revision to the Design Revision, while Made By relationships capture any child design parts created during CAE geometry instantiation, supporting assembly-level traceability.</p><p>The CAE Analysis Revision represents a specific simulation instance associated with CAE Model Revision. It governs the artifacts needed to execute and reproduce an analysis, including input files, solver parameters, and result datasets [<xref ref-type="bibr" rid="ref_1">1</xref>], [<xref ref-type="bibr" rid="ref_5">5</xref>]. Self-referencing Include relationships support sub-analyses and parametric variants, while relationships to CAE Technical Report, CAE Specification, and CAE Report objects ensure that reporting artifacts remain formally linked to the governing analysis record and controlled under the same revision framework.</p><p>Mesh files and solver parameter files are associated with the CAE Model Revision through Specification relationships, supporting repeatability and reproducibility in accordance with Verification and Validation (V&amp;amp;V) expectations [<xref ref-type="bibr" rid="ref_8">8</xref>], [<xref ref-type="bibr" rid="ref_9">9</xref>]. The CAE Results Revision captures formal simulation outputs and links them to the corresponding CAE Analysis Revision through a Result relationship. Result datasets, processed visualizations, and validation reports are managed as structured documents to support traceability, auditability, reuse, and long-term archival [<xref ref-type="bibr" rid="ref_1">1</xref>], [<xref ref-type="bibr" rid="ref_3">3</xref>].</p><p>Together, these relationships establish a governed PLM-based simulation data model linking product design, geometry preparation, model definition, analysis execution, and result archival. This enables traceability, querying, reproducibility, and reuse of simulation knowledge across the lifecycle [<xref ref-type="bibr" rid="ref_4">4</xref>], [<xref ref-type="bibr" rid="ref_5">5</xref>], [<xref ref-type="bibr" rid="ref_14">14</xref>], [<xref ref-type="bibr" rid="ref_21">21</xref>].</p><p>This relationship-oriented representation is consistent with recent lifecycle information-model and digital-thread research, in which explicit object relationships are used to maintain continuity among engineering models, lifecycle states, and heterogeneous information systems [<xref ref-type="bibr" rid="ref_11">11</xref>], [<xref ref-type="bibr" rid="ref_13">13</xref>].</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>5.4. Integration of high-performance computing within the governance framework</title>
+          
+          <p>A defining architectural principle of the PLM for CAE framework is the explicit preservation of the distributed computational model that characterizes industrial simulation practice. <xref ref-type="fig" rid="fig_4">Figure 4</xref> illustrates the PLM governance environment and the CAE-HPC execution layer. Although CAE and HPC are functionally distinct, they are grouped within a single execution region in the figure because both operate outside the PLM-controlled data-management layer. The framework does not conflate these tiers; rather, it establishes governed interfaces between them that enforce traceability without constraining computational throughput or workflow flexibility. This approach is consistent with the SPDM architectural principle of separating simulation governance from simulation execution, as documented by NAFEMS [<xref ref-type="bibr" rid="ref_1">1</xref>] and Siemens Digital Industries [<xref ref-type="bibr" rid="ref_4">4</xref>].</p><p> <xref ref-type="fig" rid="fig_7">Figure 7</xref> illustrates the integrated PLM–CAE–HPC digital thread architecture, including PLM-governed input retrieval, HPC solver execution, simulation result generation, and the return of execution metadata and result references to PLM.</p>
+          
+            <fig id="fig_7">
+              <label>Figure 7</label>
+              <caption>
+                <title>Integrated PLM–CAE–HPC digital thread architecture</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/8/img_JVPjV3NPMx-UY-xG.jpeg"/>
+            </fig>
+          
+          <p>Simulation execution remains on HPC infrastructure, including on-premises central processing unit/graphics processing unit (CPU/GPU) clusters, cloud-based services, and hybrid environments, because large-scale FEA, CFD, and multiphysics workloads require parallel storage and distributed execution capabilities that are not suitable for PLM-resident computation [<xref ref-type="bibr" rid="ref_1">1</xref>], [<xref ref-type="bibr" rid="ref_4">4</xref>]. The PLM for CAE framework therefore does not move solver execution into PLM; instead, it establishes a governed boundary between the PLM vault and the HPC execution environment.</p><p>This boundary is managed through lightweight integration agents. At job initiation, the agents retrieve version-controlled and approval-gated solver input decks and geometry packages from the PLM-managed vault, ensuring that simulations use only formally approved inputs. This reduces the risk of analyses being executed against uncontrolled or superseded geometry, a key traceability risk in unmanaged CAE workflows [<xref ref-type="bibr" rid="ref_6">6</xref>].</p><p>The agents also enforce configuration control at the simulation execution boundary. Only approved and versioned inputs are used, and deviations from the approved configuration must be recorded before execution. This extends established PLM configuration-management principles to HPC-based simulation workflows, where configuration mismatch is a common governance failure [<xref ref-type="bibr" rid="ref_5">5</xref>], [<xref ref-type="bibr" rid="ref_6">6</xref>], [<xref ref-type="bibr" rid="ref_8">8</xref>], [<xref ref-type="bibr" rid="ref_13">13</xref>].</p><p>Upon job completion, the agents harvest execution metadata, including solver version, execution timestamp, runtime, convergence status, HPC environment identifier (ID), and references to generated datasets, validation reports, and post-processed outputs. These records are registered against the originating CAE Analysis Revision in PLM, linking simulation outputs back to the governing product revision and closing the simulation digital thread [<xref ref-type="bibr" rid="ref_7">7</xref>], [<xref ref-type="bibr" rid="ref_12">12</xref>], [<xref ref-type="bibr" rid="ref_13">13</xref>], [<xref ref-type="bibr" rid="ref_14">14</xref>].</p><p>This bidirectional governance loop—PLM-controlled inputs to HPC and HPC-generated metadata back to PLM—forms the central integration principle of the PLM for CAE framework and directly addresses HPC–PLM traceability loss.</p><p><xref ref-type="table" rid="table_6">Table 6</xref> summarizes the HPC boundary-agent interface, including workflow triggers, inputs, agent actions, outputs returned to PLM, and failure-handling rules.</p>
+          
+            <table-wrap id="table_6">
+              <label>Table 6</label>
+              <caption>
+                <title>HPC boundary-agent interface and failure-handling logic</title>
+              </caption>
+              <table><tr><td >Stage</td><td >Trigger</td><td >Input</td><td >Agent Action</td><td >Output</td><td >Failure Handling</td></tr><tr><td >Job authorization</td><td >Approved CAE Analysis object</td><td >PLM analysis ID, approved geometry, solver deck</td><td >Authenticates to PLM using service credentials and retrieves version-controlled inputs</td><td >Input retrieval status and timestamp</td><td >Job blocked if required input is missing or not approved</td></tr><tr><td >File integrity check</td><td >Pre-submission validation</td><td >Geometry package, solver deck, checksum/hash</td><td >Confirms file completeness and version match</td><td >Integrity status</td><td >Failed check returns job to CAE engineer</td></tr><tr><td >Scheduler submission</td><td >Validated job package</td><td >Solver deck, job parameters, HPC queue</td><td >Submits job to HPC scheduler</td><td >HPC job ID and submission timestamp</td><td >Submission failure logged and routed to CAE owner/support</td></tr><tr><td >Job monitoring</td><td >Scheduler status update</td><td >HPC job ID</td><td >Polls or receives scheduler status</td><td >Running/completed/failed status</td><td >Interrupted jobs flagged for review</td></tr><tr><td >Metadata harvesting</td><td >Job completion</td><td >Solver logs, convergence status, runtime data</td><td >Extracts solver version, runtime, convergence, environment ID</td><td >Execution metadata object</td><td >Missing metadata prevents formal result release</td></tr><tr><td >Result registration</td><td >Post-processing completion</td><td >Result location, report, visualization references</td><td >Registers result references and managed report objects</td><td >CAE Results Revision and dataset references</td><td >Unregistered results remain outside formal approval</td></tr><tr><td >Archival</td><td >Report approval</td><td >Final report and result references</td><td >Links approved outputs to CAE Analysis Revision</td><td >Approved simulation evidence chain</td><td >Failed archival remains pending</td></tr></table>
+            </table-wrap>
+          
+          <p>Very large result files are not necessarily transferred into the PLM vault. Instead, the framework registers governed file-location references, metadata records, checksums, and lifecycle state information. Only formal reports, reduced datasets, validation evidence, and required archival artifacts are stored as managed PLM objects when full raw-result storage is impractical.</p><p>Agent authentication with the PLM system is managed through a dedicated service account with read access to the simulation document vault and write access to CAE Analysis Revision status fields. Authentication with the HPC scheduler uses the scheduler's native application programming interface (API), such as Simple Linux Utility for Resource Management (SLURM) Representational State Transfer (REST) API or Portable Batch System (PBS) Professional API, with credentials stored in an encrypted agent configuration file accessible only to the agent service process. Job status is synchronized through periodic polling at configurable intervals, with status updates written to the CAE Analysis Revision in PLM after each poll cycle. Result file integrity is maintained through 256-bit secure hash algorithm (SHA-256) checksum verification performed at registration and periodically thereafter, with any discrepancy flagged within the PLM record and routed to the responsible simulation engineer for resolution.</p><p> <xref ref-type="table" rid="table_7">Table 7</xref> maps the core PLM for CAE framework components to their governing PLM object types, governance functions, and the specific CAE data-management challenges addressed.</p>
+          
+            <table-wrap id="table_7">
+              <label>Table 7</label>
+              <caption>
+                <title>PLM for CAE framework core components, governing object types, functions, and challenges addressed</title>
+              </caption>
+              <table><tr><td >Framework Component</td><td >PLM Object Type</td><td >Governance Function</td><td >Challenge Addressed</td></tr><tr><td >Analysis Request</td><td >CAE Request Object</td><td >Formal initiation, mandatory metadata, design revision linkage</td><td >Sections 3.1, 3.3</td></tr><tr><td >Geometry Package</td><td >CAE Geometry Revision</td><td >Versioned CAD export, traceability to PLM revision</td><td >Section 3.2</td></tr><tr><td >CAE Model</td><td >CAE Model Revision</td><td >Meshed model governance, variant management, material traceability</td><td >Sections 3.1, 3.4</td></tr><tr><td >Solver Input Deck</td><td >Managed Document</td><td >Input file governance, version control, HPC retrieval</td><td >Sections 3.3</td></tr><tr><td >HPC Job Record</td><td >Execution Metadata Object</td><td >Job traceability, solver version, convergence status capture</td><td >Sections 3.2</td></tr><tr><td >Result Archive</td><td >CAE Results Revision</td><td >Output storage, metadata governance, lifecycle state management</td><td >Sections 3.1</td></tr><tr><td >Technical Report</td><td >CAE Technical Report Revision</td><td >Formal result documentation, approval workflow, archival</td><td >Sections 3.3</td></tr></table>
+            </table-wrap>
+          
+          <p>The PLM for CAE architecture is governed by four design principles that inform each component of the framework:</p><p>P1—Overlay-based limited modification: simulation governance extensions shall be implemented as an overlay to the existing PLM product structure, limiting modification to core product-revision entities and preserving established design data workflows. [<xref ref-type="bibr" rid="ref_9">9</xref>], [<xref ref-type="bibr" rid="ref_19">19</xref>].</p><p>P2—Separation of governance and computation: PLM governs metadata and workflow state; HPC executes simulation workloads. Neither environment shall assume the responsibilities of the other [<xref ref-type="bibr" rid="ref_1">1</xref>], [<xref ref-type="bibr" rid="ref_4">4</xref>].</p><p>P3—Mandatory traceability at initiation: Every simulation engagement shall be formally associated with a governed product revision before any analysis activity is authorized to proceed [<xref ref-type="bibr" rid="ref_3">3</xref>], [<xref ref-type="bibr" rid="ref_7">7</xref>].</p><p>P4—Closed digital thread for governed analyses: Each simulation activity used for formal design review, release, certification, or program decision-making shall return governed metadata and result references to the PLM environment upon completion. Exploratory, sensitivity, or transition-period analyses may be temporarily executed outside the formal workflow; however, they must be registered in PLM before being used as formal design evidence.</p><p>Exceptions to the governed workflow are limited to exploratory simulations, preliminary sensitivity studies, and transition-period activities. Such exceptions must be authorized by the responsible simulation lead or program engineering authority. Unregistered simulations may not be used for formal design release, certification evidence, or customer-facing technical approval unless they are subsequently registered in PLM with the required design revision linkage, execution metadata, and result references.</p>
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>6. Industry case study 1: global railway maintenance-of-way manufacturer</title>
+      
+        <sec>
+          
+            <title>6.1. Organizational context and pre-implementation state</title>
+          
+          <p>The first deployment was conducted at a global manufacturer of railway maintenance-of-way equipment with engineering sites in North America, Europe, and Asia. The organization operates in a regulated environment governed by structural safety standards such as EN 12663, UIC 566, and customer-specific technical requirements. As a result, formal simulation evidence chains are required for certification submissions and technical approvals. Simulation activities include static structural analysis, fatigue and fracture assessment, dynamic load evaluation, crash energy management, and thermal analysis of traction systems.</p><p>The pre-implementation baseline was established through process audits, interviews with simulation leads and program managers, and review of historical project records. Before PLM for CAE implementation, simulation data was highly fragmented. Analysis requests were managed through email, with no formal linkage to product structure nodes or design revisions. FEA models were stored in program-specific network folders using informal naming conventions, and results were archived at the program level, limiting cross-program retrieval and reuse.</p><p>This created significant challenges of governance and compliance. Regulatory audits required manual reconstruction of simulation evidence chains, consuming engineering effort and increasing audit risk [<xref ref-type="bibr" rid="ref_3">3</xref>], [<xref ref-type="bibr" rid="ref_22">22</xref>]. Design change notifications also did not systematically propagate to open simulation activities, creating the risk that analyses could continue against outdated configurations [<xref ref-type="bibr" rid="ref_7">7</xref>].</p><p>A pre-implementation maturity assessment using an internal maturity assessment informed by NAFEMS simulation governance guidance [<xref ref-type="bibr" rid="ref_3">3</xref>], conducted through structured interviews and project record review, placed the organization at Level 1 (Ad Hoc) for simulation request Governance, Model and Data Management, and Results and Knowledge Management, and at Level 2 (Repeatable) for Process Integration and Automation—reflecting established HPC operational processes but the absence of PLM integration. The assessment was conducted by the author in collaboration with the organization's simulation team lead and PLM administrator. Organization identity and program-specific details were anonymized for commercial confidentiality.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>6.2. Framework implementation</title>
+          
+          <p>The PLM for CAE framework was deployed within the organization’s existing PLM environment through a structured implementation program encompassing five domains: data model extension and change management integration, simulation request formalization, HPC integration, legacy data migration, and reference library governance. Implementation was conducted over a phased deployment period, with each domain reviewed against the governance requirements established in Section 5 before advancing to the subsequent phase.</p>
+          
+            <sec>
+              
+                <title>6.2.1 Data model extension and change management integration</title>
+              
+              <p>The product structure was extended with simulation-specific object types and configured within the existing PLM environment without modifying core item or document schemas. This overlay preserved established product data relationships while adding governed simulation objects for traceability and lifecycle control [<xref ref-type="bibr" rid="ref_9">9</xref>], [<xref ref-type="bibr" rid="ref_19">19</xref>].</p><p>Change management integration was a key focus. Formal Change Notices in PLM were configured to notify owners of open simulation activities linked to affected product structure nodes, ensuring configuration impact review before change disposition. This addressed the design–simulation traceability gap identified in Section 3.2 [<xref ref-type="bibr" rid="ref_3">3</xref>], [<xref ref-type="bibr" rid="ref_22">22</xref>].</p><p>A structured FEA Request object was introduced as the governed entry point. Mandatory metadata—including analysis scope, product structure node, design revision, load case, regulatory standard, and solver environment—are captured at request creation, replacing informal email-based requests [<xref ref-type="bibr" rid="ref_2">2</xref>], [<xref ref-type="bibr" rid="ref_5">5</xref>].</p><p>Upon submission, the request is reviewed by an FEA Gatekeeper for completeness, resource availability, and methodology fit. Once approved, PLM automatically creates a governed FEA Analysis process object, links it to the Engineering Design Assembly, CAE Model Revision, geometry artifacts, and result objects, and assigns it to the simulation workflow queue. <xref ref-type="fig" rid="fig_8">Figure 8</xref> illustrates the five-stage end-to-end digital thread from request initiation to result archival.</p>
+              
+                <fig id="fig_8">
+                  <label>Figure 8</label>
+                  <caption>
+                    <title>Five-stage end-to-end finite element analysis (FEA) process</title>
+                  </caption>
+                  <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/8/img_4p_R5nc8fQ4W2vb6.png"/>
+                </fig>
+              
+            </sec>
+          
+          
+            <sec>
+              
+                <title>6.2.2 High-performance computing integration</title>
+              
+              <p>Integration agents were deployed to interface the PLM environment with the organization’s on-premises solver cluster, implementing the boundary-layer governance mechanism described in Section 5.4. At job initiation, agents retrieve approved and version-controlled solver input decks and geometry packages from the PLM vault, ensuring that each analysis execution is conducted against formally governed inputs. Upon job completion, agents harvest execution metadata—including solver version, wall-clock time, convergence status, and HPC environment IDs together with references to the generated result artifacts and register these records against the originating FEA Analysis process object within the PLM data model. Structured workflow templates were configured to align with the organization’s standard simulation methodology, incorporating mandatory review gates for load case confirmation, mesh quality sign-off, and result approval prior to archival—ensuring that no simulation output advances to the formal knowledge archive without satisfying defined quality criteria.</p>
+            </sec>
+          
+          
+            <sec>
+              
+                <title>6.2.3 Legacy data migration</title>
+              
+              <p>A structured migration program was conducted to import simulation metadata from the organization’s prior program portfolio, encompassing approximately 1,400 validated CAE models accumulated across multiple product generations and regulatory submission cycles. Metadata records—including model purpose, analysis type, governing product revision, applicable regulatory standard, solver environment, and validation status—were ingested into the PLM data model, establishing a governed simulation knowledge base accessible through the PLM search and retrieval interface. This migration ensures that institutional simulation knowledge accumulated across prior programs is formally managed and discoverable within the same governance framework applied to new simulation activities, directly addressing the model reuse limitations identified in Section 3.4 [<xref ref-type="bibr" rid="ref_2">2</xref>], [<xref ref-type="bibr" rid="ref_5">5</xref>]. <xref ref-type="fig" rid="fig_9">Figure 9</xref> illustrates the streamlined FEA archival process enabled by the PLM for CAE framework for both new and migrated simulation records.</p>
+              
+                <fig id="fig_9">
+                  <label>Figure 9</label>
+                  <caption>
+                    <title>Quick process of FEA archival using PLM for CAE framework</title>
+                  </caption>
+                  <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/8/img_v7nbFFtAwHc8Zyf7.jpeg"/>
+                </fig>
+              
+            </sec>
+          
+          
+            <sec>
+              
+                <title>6.2.4 Reference library governance</title>
+              
+              <p>Material property libraries and standard load case specifications—including EN 12663 load case sets and organization-specific fatigue assessment parameters—were integrated into the PLM data model as governed reference objects. As illustrated in <xref ref-type="fig" rid="fig_10">Figure 10</xref>, simulation engineers reference approved material definitions and load specifications directly from within the PLM environment at the point of analysis setup, eliminating reliance on locally maintained or informally shared reference data. This integration ensures that simulation inputs remain traceable to formally approved reference sources and are subject to the same revision control and change management processes applied to product data, a governance capability identified as critical for compliance-driven simulation environments by the NAFEMS Governance Benchmark [<xref ref-type="bibr" rid="ref_3">3</xref>].</p><p> <xref ref-type="fig" rid="fig_10">Figure 10</xref> illustrates a separate but complementary governance capability: the controlled FEA report library within PLM. Released simulation reports are organized within governed folders and retained under PLM lifecycle control, improving report discoverability, revision management, and auditability of completed simulation evidence.</p>
+              
+                <fig id="fig_10">
+                  <label>Figure 10</label>
+                  <caption>
+                    <title>Governed finite element analysis (FEA) report library for released simulation reports</title>
+                  </caption>
+                  <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/8/img_WPiDMLwx2eUv9rc_.png"/>
+                </fig>
+              
+            </sec>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>6.3. Results and outcomes</title>
+          
+          <p>Post-implementation metrics were collected over twelve months using PLM reports, simulation activity records, and program management feedback. Baseline values were established from the pre-implementation process audit described in Section 6.1. The results are summarized in <xref ref-type="table" rid="table_8">Table 8</xref>.</p>
+          
+            <table-wrap id="table_8">
+              <label>Table 8</label>
+              <caption>
+                <title>Case Study 1: Pre- and post-implementation performance metrics</title>
+              </caption>
+              <table><tbody><tr><td colspan="1" rowspan="1"><p>Metric</p></td><td colspan="1" rowspan="1"><p>Pre-Implementation</p></td><td colspan="1" rowspan="1"><p>Post-Implementation</p></td><td colspan="1" rowspan="1"><p>Improvement</p></td><td colspan="1" rowspan="1"><p>Data Source</p></td></tr><tr><td colspan="1" rowspan="1"><p>Design–simulation traceability linkage</p></td><td colspan="1" rowspan="1"><p><mml:math id="mdovsd8c6j">
+  <mml:mo>∼</mml:mo>
+</mml:math>20–30%</p></td><td colspan="1" rowspan="1"><p><mml:math id="m05sza64h7">
+  <mml:mo>∼</mml:mo>
+</mml:math>90–95%</p></td><td colspan="1" rowspan="1"><p>+60–65 percentage points</p></td><td colspan="1" rowspan="1"><p>Pre: (E) Interview estimate; Post: (S) PLM Activity log</p></td></tr><tr><td colspan="1" rowspan="1"><p>Model reuse rate</p></td><td colspan="1" rowspan="1"><p><mml:math id="ma1b6d9e7z">
+  <mml:mo>∼</mml:mo>
+</mml:math>5–10%</p></td><td colspan="1" rowspan="1"><p><mml:math id="m7i5ery3sr">
+  <mml:mo>∼</mml:mo>
+</mml:math>30–40%</p></td><td colspan="1" rowspan="1"><p>+25–30 percentage points</p></td><td colspan="1" rowspan="1"><p>Pre: (E) Process audit estimate; Post: (S) Workflow records</p></td></tr><tr><td colspan="1" rowspan="1"><p>Simulation preparation time</p></td><td colspan="1" rowspan="1"><p>Not quantified (estimated from audit samples)</p></td><td colspan="1" rowspan="1"><p>Observed<mml:math id="moyy4dbyqc">
+  <mml:mo>∼</mml:mo>
+</mml:math>20–30% reduction</p></td><td colspan="1" rowspan="1"><p>20-30% reduction</p></td><td colspan="1" rowspan="1"><p>Pre: (E) Timed audit; Post: (S) Workflow timestamps</p></td></tr><tr><td colspan="1" rowspan="1"><p>Time to locate prior simulation results</p></td><td colspan="1" rowspan="1"><p>Several days (average)</p></td><td colspan="1" rowspan="1"><p>Same day (majority)</p></td><td colspan="1" rowspan="1"><p><mml:math id="m797658k8q">
+  <mml:mo>∼</mml:mo>
+</mml:math>50% reduction</p></td><td colspan="1" rowspan="1"><p>Pre: (E) Interview; Post: (S) PLM search logs</p></td></tr><tr><td colspan="1" rowspan="1"><p>Rework due to configuration mismatch</p></td><td colspan="1" rowspan="1"><p>Baseline occurrence rate</p></td><td colspan="1" rowspan="1"><p><mml:math id="mrnr9dqx3g">
+  <mml:mo>∼</mml:mo>
+</mml:math>30% lower than baseline</p></td><td colspan="1" rowspan="1"><p><mml:math id="m4k4thjjih">
+  <mml:mo>∼</mml:mo>
+</mml:math>30% reduction</p></td><td colspan="1" rowspan="1"><p>Pre: (E) Project record review; Post: (S) Re-analysis workflow records</p></td></tr><tr><td colspan="1" rowspan="1"><p>Governance maturity level</p></td><td colspan="1" rowspan="1"><p>Level 1–2 (Ad Hoc - Repeatable)</p></td><td colspan="1" rowspan="1"><p>Level 3–4 (Defined–Managed)</p></td><td colspan="1" rowspan="1"><p>+2–3 levels</p></td><td colspan="1" rowspan="1"><p>Pre/Post: (E) NAFEMS assessment</p></td></tr></tbody></table>
+            </table-wrap>
+          
+          <p>Design-to-simulation traceability improved from an estimated 20–30% to 90–95% after implementation. This improvement was associated with the introduction of mandatory metadata capture at request initiation and the requirement to link simulation activities to governed product revisions. Following implementation, simulation evidence chains could be assembled more directly from PLM records in most cases, reducing reliance on manual reconstruction for compliance purposes.</p><p>Model reuse increased from approximately 5–10% to 30–40% during the post-implementation period. This increase coincided with migration of the 1,400-model knowledge base and deployment of PLM search and retrieval capability. Simulation preparation time was reduced by 20–30%. This reduction was associated with governed geometry packaging, standardized workflows, and increased availability of reusable migrated models. The time required to locate prior simulation results decreased by approximately 50%, shifting from several days to same-day retrieval in most cases [<xref ref-type="bibr" rid="ref_2">2</xref>].</p><p>A post-implementation maturity reassessment using the same NAFEMS framework and methodology placed the organization at Level 3 (Defined) for simulation request Governance and Model and Data Management, and at Level 4 (Managed) for Results and Knowledge Management and Process Integration and Automation. The advancement of two to three levels across all four dimensions within twelve months is consistent with the progression expected when simulation-governance practices become increasingly formalized and managed [<xref ref-type="bibr" rid="ref_3">3</xref>]. The assessment was conducted by the author; independent verification would further strengthen the reliability of these ratings.</p><p> <xref ref-type="table" rid="table_8">Table 8</xref> presents the pre- and post-implementation metrics for Case Study 1, with primary data sources identified.</p>
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>7. Industry case study 2: global consumer goods manufacturer</title>
+      
+        <sec>
+          
+            <title>7.1. Organizational context</title>
+          
+          <p>The second deployment was conducted at a global consumer goods manufacturer with products spanning personal care, household appliances, and packaging-intensive lines. Unlike the railway case, this organization operated under compressed product development cycles, with some programs moving from concept to production within three to six months. Simulation activities included drop and impact analysis, packaging integrity, durability correlation, electronics thermal management, and injection molding simulation.</p><p>The pre-implementation baseline was established using the same methodology as Case Study 1: process audits, simulation team interviews, and historical project record review. The primary challenge was development velocity rather than regulatory compliance. Simulation teams faced tight timelines, but the absence of a structured model reuse framework forced engineers to rebuild models for minor design variations because prior validated models were difficult to locate in unstructured archives [<xref ref-type="bibr" rid="ref_2">2</xref>], [<xref ref-type="bibr" rid="ref_5">5</xref>].</p><p>Informal simulation request processes also limited resource planning and program prioritization. Urgent requests often disrupted planned analysis queues, reducing efficiency and limiting management visibility into simulation workload and status [<xref ref-type="bibr" rid="ref_2">2</xref>], [<xref ref-type="bibr" rid="ref_3">3</xref>]. A pre-implementation maturity assessment using the NAFEMS simulation governance and Process Maturity framework [<xref ref-type="bibr" rid="ref_3">3</xref>], conducted through structured interviews and project record review, placed the organization at Level 1 (Ad Hoc) across all four governance dimensions: simulation request Governance, Model and Data Management, Results and Knowledge Management, and Process Integration and Automation. The assessment was conducted by the author in collaboration with the organization's simulation team lead and PLM administrator. Program-specific details were anonymized for commercial confidentiality.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>7.2. Framework implementation</title>
+          
+          <p>The PLM for CAE implementation at this organization was configured with particular emphasis on three operational priorities: simulation request prioritization and resource planning visibility, model variant management for rapid design derivative analysis, and packaging simulation workflow automation. The implementation approach applied the same core architecture described in Section 5, with configuration choices reflecting the velocity-driven requirements of the consumer goods development environment rather than the compliance-driven requirements of the railway context—demonstrating the configurability of the framework across substantially different organizational profiles [<xref ref-type="bibr" rid="ref_1">1</xref>], [<xref ref-type="bibr" rid="ref_4">4</xref>].</p>
+          
+            <sec>
+              
+                <title>7.2.1 Integrated data model</title>
+              
+              <p>The PLM for CAE data model was implemented as a governed overlay on the organization’s existing part and design data model, introducing simulation-specific object types that integrate directly with established product structure entities without modifying the existing architecture. As illustrated in <xref ref-type="fig" rid="fig_11">Figure 11</xref>, the existing data model—comprising Part and Design objects with associated revisions, Drawing Revisions, General Design Revisions, Material Type and Material Grade Revisions, General Documents, and Specifications—was preserved without structural modification, consistent with the overlay principle described in Section 5.3 [<xref ref-type="bibr" rid="ref_8">8</xref>], [<xref ref-type="bibr" rid="ref_9">9</xref>]. More broadly, this approach is compatible with current efforts to integrate MBSE and PLM by maintaining structured information continuity between system-level engineering representations and downstream product-development data [<xref ref-type="bibr" rid="ref_15">15</xref>].</p>
+              
+                <fig id="fig_11">
+                  <label>Figure 11</label>
+                  <caption>
+                    <title>Integrated data model</title>
+                  </caption>
+                  <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/8/img_59v0HlMQBUxaGtd_.jpeg"/>
+                </fig>
+              
+              <p>The CAE Analysis Revision represents an individual simulation analysis or execution instance and is identified by a unique CAE Analysis ID that is passed to the HPC execution environment, linking the PLM-managed analysis record to its computational job. The CAE Analysis Revision is connected to the CAE Technical Report Revision through an Analysis Relation. The CAE Technical Report Revision, in turn, is linked to the CAE Report through an Attaches Relation and to the Specification Revision through the CAE Specification relationship, ensuring that reporting artifacts remain within the governed revision-control framework.</p><p>The CAE Model Revision represents the reusable simulation model asset and is linked to the CAE Analysis Revision through a Defining Relationship, ensuring each analysis is associated with at least one governed simulation model. The CAE Analysis Revision also maintains a governed relationship with the Material Grade Revision, which is associated with the corresponding Material Grade reference object. This enables the material configuration applied to a specific simulation analysis to be governed and traced to approved material reference data. The relationship allows different analysis revisions derived from the same CAE model to use different approved material configurations while preserving the material state associated with each analysis [<xref ref-type="bibr" rid="ref_1">1</xref>], [<xref ref-type="bibr" rid="ref_5">5</xref>].</p><p>The CAE Geometry Revision connects the CAE Model Revision and Design Revision through Source and Target relationships. It manages CAD Part/ CAD Product references, and Direct Model artifacts in Jupiter Tessellation (JT) format through Specification Relationships, supporting both native CAD and lightweight visualization formats. Where no dedicated CAE Geometry object exists, the CAE Model Revision connects directly to the Design Revision through the fallback relationship shown in <xref ref-type="fig" rid="fig_11">Figure 11</xref>, preserving design-to-simulation traceability, as described in Section 5.3.</p>
+            </sec>
+          
+          
+            <sec>
+              
+                <title>7.2.2 Simulation request prioritization and resource planning</title>
+              
+              <p>The analysis request workflow was extended with a resource planning integration module providing simulation team leadership with consolidated, real-time visibility into the queue of pending analysis requests, the associated program priorities, and the projected capacity utilization of the simulation team. This capability enables resource allocation decisions to be made proactively at the program level rather than reactively at the individual engineer level—replacing the informal, disruption-prone request management process characterizing the pre-implementation baseline. Supporting simulation throughput management across concurrent product development programs through PLM-managed visibility is consistent with the workflow governance principles established in the SPDM literature [<xref ref-type="bibr" rid="ref_1">1</xref>], [<xref ref-type="bibr" rid="ref_4">4</xref>] and with the program management integration requirements identified by the DoD Digital Engineering Strategy [<xref ref-type="bibr" rid="ref_22">22</xref>].</p>
+            </sec>
+          
+          
+            <sec>
+              
+                <title>7.2.3 Model variant management</title>
+              
+              <p>A simulation model variant management capability was implemented within the PLM data model, enabling simulation engineers to formally register a CAE model as a variant or derivative of a prior validated model through a governed variant relationship recorded in the PLM data structure. This capability—combined with the governed simulation knowledge base accessible through PLM search and retrieval—was intended to help simulation teams locate and adapt existing validated models for new product variants rather than initiating model preparation from a geometry baseline, addressing the redundant reconstruction pattern identified as the primary efficiency constraint in the pre-implementation assessment.</p><p>Variant relationships are formally recorded within the PLM data model, ensuring that the lineage between a new model and its validated predecessor is traceable and auditable—a governance requirement for organizations in which model adaptation decisions must be defensible during design reviews or product liability assessments. This capability addresses the CAE data-management and reuse challenges identified by Saarelainen et al. [<xref ref-type="bibr" rid="ref_5">5</xref>] by embedding model-variant traceability within the PLM relational structure rather than relying on informal documentation conventions.</p>
+            </sec>
+          
+          
+            <sec>
+              
+                <title>7.2.4 Computer-aided engineering technical report approval workflow</title>
+              
+              <p>The CAE Technical Report approval workflow, shown in <xref ref-type="fig" rid="fig_12">Figure 12</xref>, governs the formal review and release of simulation reports within PLM. At initiation, the workflow performs an automated completeness check. If required information is missing, an error notification is issued and the workflow stops, preventing incomplete reports from entering review. If validation passes, designated stakeholders receive an early notification.</p>
+              
+                <fig id="fig_12">
+                  <label>Figure 12</label>
+                  <caption>
+                    <title>Computer-aided engineering (CAE) technical report workflow</title>
+                  </caption>
+                  <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/8/img_TqMQjsCkKa3ZtK2z.jpeg"/>
+                </fig>
+              
+              <p>The workflow then checks whether a Reviewer is assigned. If present, the Reviewer Decision gate determines whether the report is rejected or marked as reviewed. If no Reviewer is assigned, the process moves directly to the Approver Decision gate, which serves as the primary control point. Rejection returns the report for correction and resubmission, while approval triggers a revision check. For non-initial revisions, the prior revision and attached dataset are formally superseded before approval.</p><p>After approval, completion notifications are sent to the document owner and nominated recipients. This structured sequence ensures that simulation reports are released only after meeting defined review and approval criteria, while prior revisions are superseded in a controlled and auditable manner [<xref ref-type="bibr" rid="ref_3">3</xref>]. The workflow applies product data management lifecycle principles to the simulation reporting context [<xref ref-type="bibr" rid="ref_8">8</xref>], [<xref ref-type="bibr" rid="ref_9">9</xref>].</p>
+            </sec>
+          
+          
+            <sec>
+              
+                <title>7.2.5 Packaging simulation workflow automation</title>
+              
+              <p>For packaging simulation workflows, the framework was integrated with the organization’s packaging CAD environment to enable automated geometry packaging triggered by packaging design freeze events within the PLM workflow. When a packaging design freeze milestone is reached and formally recorded within PLM, the integration automatically initiates a governed geometry export from the packaging CAD environment and registers the resulting geometry package within the PLM vault, associated with the frozen design revision and linked to the relevant simulation request objects. This automation eliminates the manual geometry handoff step that previously introduced latency and geometry version risk at the critical design-freeze-to-simulation transition—a vulnerability directly consistent with the geometry currency risk identified by Hamri et al. [<xref ref-type="bibr" rid="ref_6">6</xref>] and documented in Section 3.2. By coupling geometry exports to the PLM-managed design freeze event, the framework ensures that packaging simulation is consistently initiated against the correct, formally frozen geometry configuration for each product launch program.</p>
+            </sec>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>7.3. Results and outcomes</title>
+          
+          <p>Post-implementation metrics were collected over twelve months using the same methodology as Case Study 1. Baseline values were established from the pre-implementation process audit described in Section 7.1, and results are summarized in <xref ref-type="table" rid="table_9">Table 9</xref>.</p>
+          
+            <table-wrap id="table_9">
+              <label>Table 9</label>
+              <caption>
+                <title>Case Study 2—pre- and post-implementation performance metrics (consumer goods manufacturer)</title>
+              </caption>
+              <table><tr><td >Metric</td><td >Pre-Implementation</td><td >Post-Implementation</td><td >Improvement</td><td >Data Source</td></tr><tr><td >Design–simulation traceability linkage</td><td ><mml:math id="moi9ehfx1d">
+  <mml:mo>∼</mml:mo>
+</mml:math>15–25%</td><td ><mml:math id="ms2id5d20f">
+  <mml:mo>∼</mml:mo>
+</mml:math>85–90%</td><td >+60–65 percentage points</td><td >Pre: (E) interview estimate; Post: (S) PLM activity log</td></tr><tr><td >Model reuse rate</td><td ><mml:math id="mjyakj0xjk">
+  <mml:mo>∼</mml:mo>
+</mml:math>5–10%</td><td ><mml:math id="mne1j7zulh">
+  <mml:mo>∼</mml:mo>
+</mml:math>50–65%</td><td >+45–55 percentage points</td><td >Pre: (E) archive review; Post: (S) variant/reuse workflow records</td></tr><tr><td >Simulation preparation time</td><td >Not quantified (estimated from audit samples)</td><td >Observed <mml:math id="mz74rd7waq">
+  <mml:mo>∼</mml:mo>
+</mml:math>30–40% reduction</td><td ><mml:math id="mt5h2ymhfz">
+  <mml:mo>∼</mml:mo>
+</mml:math>30–40% reduction</td><td >Pre: (E) timed audit; Post: (S) workflow timestamps</td></tr><tr><td >Simulation turnaround time</td><td >Baseline average</td><td ><mml:math id="mw1v9lyy6f">
+  <mml:mo>∼</mml:mo>
+</mml:math>25–35% lower than baseline</td><td ><mml:math id="m439wpqydq">
+  <mml:mo>∼</mml:mo>
+</mml:math>25–35% reduction</td><td >Pre: (E) project record review; Post: (S) workflow timestamps</td></tr><tr><td >Time to locate prior simulation results</td><td >Several days (avg.)</td><td >Same day/hours</td><td ><mml:math id="msmaogeiap">
+  <mml:mo>∼</mml:mo>
+</mml:math>60–75% reduction</td><td >Pre: (E) interview/audit sampling; Post: (S) PLM search logs</td></tr><tr><td >Rework due to configuration mismatch</td><td >Baseline occurrence rate</td><td ><mml:math id="mekpe4573q">
+  <mml:mo>∼</mml:mo>
+</mml:math>20–25% lower than baseline</td><td ><mml:math id="mzbb9kyrjl">
+  <mml:mo>∼</mml:mo>
+</mml:math>20–25% reduction</td><td >Pre: (E) project review; Post: (S) rework/change-impact records</td></tr><tr><td >Governance maturity level</td><td >Level 1 (Ad Hoc)</td><td >Level 3–4 (Defined–Managed)</td><td >+2–3 levels</td><td >Pre/Post: (E) NAFEMS assessment</td></tr></table>
+            </table-wrap>
+          
+          <p>Design-to-simulation traceability improved from approximately 15–25% to 85–90% during the post-implementation period. This improvement was associated with mandatory metadata capture at FEA Request creation and increased use of PLM-based product-revision linkage. The remaining 10–15% gap reflects rapid exploratory analyses conducted outside the formal workflow during the transition period.</p><p>Model reuse increased from approximately 5–10% to 50–65%, the largest improvement across both case studies. This increase coincided with the introduction of model variant management, the governed knowledge base, and PLM search capability, which together improved engineers’ ability to locate and adapt prior validated models [<xref ref-type="bibr" rid="ref_1">1</xref>], [<xref ref-type="bibr" rid="ref_4">4</xref>].</p><p>Simulation preparation time was reduced by 30–40%, with the greatest gains observed in packaging workflows where automated geometry packaging was implemented. Turnaround time improved by 25–35%, and the time required to locate prior simulation results was reduced by 60–75%, a change associated with improved discoverability through the PLM-governed knowledge base [<xref ref-type="bibr" rid="ref_2">2</xref>].</p><p>PLM dashboards also provided program management with real-time visibility into simulation status, improving planning and gate review integration [<xref ref-type="bibr" rid="ref_4">4</xref>]. A post-implementation maturity reassessment using the same NAFEMS framework and methodology placed the organization at Level 3 (Defined) for simulation request Governance and Model and Data Management, and Level 4 (Managed) for Results and Knowledge Management and Process Integration and Automation—consistent with the advancement observed in Case Study 1 despite the different operating context [<xref ref-type="bibr" rid="ref_3">3</xref>]. The assessment was conducted by the author; independent verification would further strengthen the reliability of these ratings.</p><p><xref ref-type="table" rid="table_10">Table 10</xref> compares the two industrial deployment contexts, including their primary drivers, simulation domains, integration focus, HPC environments, key outcomes, knowledge-base structures, and governance maturity progression.</p>
+          
+            <table-wrap id="table_10">
+              <label>Table 10</label>
+              <caption>
+                <title>Comparative summary of case-study deployment contexts and outcomes</title>
+              </caption>
+              <table><tbody><tr><td colspan="1" rowspan="1"><p>Dimension</p></td><td colspan="1" rowspan="1"><p>Railway Manufacturer (Case Study 1)</p></td><td colspan="1" rowspan="1"><p>Consumer Goods Manufacturer (Case Study 2)</p></td></tr><tr><td colspan="1" rowspan="1"><p>Primary driver</p></td><td colspan="1" rowspan="1"><p>Regulatory compliance and traceability</p></td><td colspan="1" rowspan="1"><p>Development velocity and model reuse</p></td></tr><tr><td colspan="1" rowspan="1"><p>Simulation domains</p></td><td colspan="1" rowspan="1"><p>Structural, dynamic, fatigue, thermal</p></td><td colspan="1" rowspan="1"><p>Drop/impact, packaging, durability, thermal</p></td></tr><tr><td colspan="1" rowspan="1"><p>Key integration focus</p></td><td colspan="1" rowspan="1"><p>Change-driven re-analysis notification</p></td><td colspan="1" rowspan="1"><p>Model variant management and request prioritization</p></td></tr><tr><td colspan="1" rowspan="1"><p>HPC environment</p></td><td colspan="1" rowspan="1"><p>On-premises cluster</p></td><td colspan="1" rowspan="1"><p>Hybrid (on-premises and cloud burst)</p></td></tr><tr><td colspan="1" rowspan="1"><p>Key outcome</p></td><td colspan="1" rowspan="1"><p>Audit-ready evidence chain; 90–95% traceability</p></td><td colspan="1" rowspan="1"><p>50–65% model reuse rate; 30–40% reduction in simulation preparation time; 25-35% reduction in simulation turnaround time</p></td></tr><tr><td colspan="1" rowspan="1"><p>Knowledge base</p></td><td colspan="1" rowspan="1"><p><mml:math id="mevjht368x">
+  <mml:mo>∼</mml:mo>
+</mml:math>1,400 migrated CAE models</p></td><td colspan="1" rowspan="1"><p>Variant-linked model library</p></td></tr><tr><td colspan="1" rowspan="1"><p>Pre-implementation maturity</p></td><td colspan="1" rowspan="1"><p>Level 1–2 (Ad Hoc–Repeatable)</p></td><td colspan="1" rowspan="1"><p>Level 1 (Ad Hoc)</p></td></tr><tr><td colspan="1" rowspan="1"><p>Post-implementation maturity</p></td><td colspan="1" rowspan="1"><p>Level 3–4 (Defined–Managed)</p></td><td colspan="1" rowspan="1"><p>Level 3–4 (Defined–Managed)</p></td></tr></tbody></table>
+            </table-wrap>
+          
+        </sec>
+      
+    </sec>
+    <sec sec-type="discussion">
+      <title>8. Discussion</title>
+      <p>This section interprets the findings in relation to the three research questions introduced in Section 1. Because the study uses a before-and-after industrial case-study design rather than a controlled experimental design, the reported outcomes are interpreted as observed improvements associated with the PLM for CAE implementation, not as isolated causal effects of the framework alone.</p>
+      
+        <sec>
+          
+            <title>8.1. Response to rq1: product lifecycle management overlay and limited product-structure modification</title>
+          
+          <p>RQ1 asked how CAE lifecycle governance can be embedded within an existing enterprise PLM environment while limiting modification to the established product data structure. The two deployments indicate that the most practical approach is to extend the existing PLM structure through a governed simulation overlay rather than replacing the core product model. In this approach, established product revision, design revision, document, and material-reference structures remain authoritative, while CAE-specific objects are added to manage simulation requests, CAE models, geometry packages, solver inputs, execution metadata, results, and reports.</p><p>This overlay approach enabled simulation governance to be introduced with limited modification to the core product structure. However, it should not be described as “zero disruption,” since configuration work was still required. The implementation required new object types, metadata fields, workflow templates, approval roles, and HPC interface logic. The contribution is therefore best understood as a controlled PLM extension that preserves core product-data relationships while adding simulation lifecycle governance.</p><p>From an engineering-management perspective, this is important because the framework formalizes accountability for simulation evidence. Instead of treating simulation files as detached technical outputs, it links CAE activities to specific product revisions and workflow states. This makes simulation evidence more traceable, reviewable, and reusable within the enterprise digital thread. The findings are consistent with recent digital-thread research emphasizing relationship-based lifecycle information structures rather than the consolidation of all engineering data into a single monolithic repository [<xref ref-type="bibr" rid="ref_12">12</xref>], [<xref ref-type="bibr" rid="ref_13">13</xref>], [<xref ref-type="bibr" rid="ref_14">14</xref>].</p><p>No major PLM platform-version upgrade occurred during the twelve-month observation period in either deployment; therefore, the study confirms limited modification to the deployed product data structure but does not empirically verify upgrade compatibility across a major PLM platform release.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>8.2. Response to rq2: governance mechanisms and observed outcomes</title>
+          
+          <p>RQ2 asked which PLM-based governance mechanisms are associated with improvements in traceability, reuse, retrieval efficiency, and reproducibility. The results suggest that the observed improvements were associated with a combination of governance mechanisms rather than a single isolated intervention. The CAE Request object was associated with improved traceability because it required design revision, product structure node, analysis scope, load case, acceptance criteria, and solver environment information at initiation. Version-controlled CAD/CAE relationships were associated with reduced configuration-mismatch risk. Approval gates were associated with stronger review discipline and audit readiness. HPC boundary agents supported reproducibility by retrieving approved inputs and returning execution metadata to PLM. The simulation knowledge archive and variant relationships were associated with improved model reuse by making prior validated models more discoverable and traceable. The observed importance of structured model relationships and simulation metadata is also consistent with recent simulation data management in the digital twin (SDM-DT) research emphasizing explicit associations among CAE behavior models, simulation conditions, and lifecycle data [<xref ref-type="bibr" rid="ref_10">10</xref>], [<xref ref-type="bibr" rid="ref_11">11</xref>].</p><p><xref ref-type="table" rid="table_11">Table 11</xref> maps the principal PLM for CAE governance mechanisms to the actions introduced and the observed outcome measures associated with each mechanism.</p>
+          
+            <table-wrap id="table_11">
+              <label>Table 11</label>
+              <caption>
+                <title>Mechanism–action–outcome interpretation of PLM for CAE governance</title>
+              </caption>
+              <table><tr><td >Governance Mechanism</td><td >Action Introduced</td><td >Related Observed Measure</td></tr><tr><td >CAE Request object</td><td >Captures scope, design revision, load cases, and acceptance criteria</td><td >Traceability linkage</td></tr><tr><td >CAD/CAE relationships</td><td >Links CAE model and geometry to governed product revision</td><td >Configuration mismatch reduction</td></tr><tr><td >Approval gates</td><td >Enforces request, model, result, and report review</td><td >Governance maturity and audit readiness</td></tr><tr><td >HPC boundary agents</td><td >Retrieve approved inputs and return execution metadata</td><td >Reproducibility and retrieval efficiency</td></tr><tr><td >Simulation knowledge archive</td><td >Stores searchable models, reports, and result references</td><td >Model reuse and faster retrieval</td></tr></table>
+            </table-wrap>
+          
+          <p>This interpretation provides a more defensible explanation than attributing all gains to the framework. For example, model reuse in the consumer goods case likely reflected the combined influence of searchable model records, variant relationships, and a high proportion of derivative product programs. Similarly, preparation-time reduction likely reflected governed geometry packaging, model reuse, and workflow automation rather than PLM integration alone.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>8.3. Response to rq3: configuration across different industrial contexts</title>
+          
+          <p>RQ3 asked how the PLM for CAE architecture should be configured differently for compliance-driven and velocity-driven organizations. The two case studies show that the same core architecture can support different governance priorities.</p><p>In the railway case, the primary driver was compliance. The configuration emphasized design-revision linkage, regulatory standards, load-case governance, change-driven re-analysis notification, and formal result archival. The strongest observed outcome was design-to-simulation traceability, which reached approximately 90–95% after implementation.</p><p>In the consumer goods case, the primary driver was development velocity. The configuration emphasized request prioritization, model variant management, packaging simulation automation, and resource visibility. The strongest observed outcome was model reuse, which increased to approximately 50–65%, reflecting the greater number of derivative product programs.</p><p> <xref ref-type="table" rid="table_12">Table 12</xref> provides a structured comparison of PLM for CAE architectural components across both deployments.</p>
+          
+            <table-wrap id="table_12">
+              <label>Table 12</label>
+              <caption>
+                <title>Structured comparison of PLM for CAE architectural components</title>
+              </caption>
+              <table><tbody><tr><td colspan="1" rowspan="1"><p>Framework Component</p></td><td colspan="1" rowspan="1"><p>Case Study 1 (Railway)</p></td><td colspan="1" rowspan="1"><p>Case Study 2 (Consumer Goods)</p></td><td colspan="1" rowspan="1"><p>Status</p></td></tr><tr><td colspan="1" rowspan="1"><p>Core PLM object types (CAE Request, Model, Geometry, Analysis, Results, Report)</p></td><td colspan="1" rowspan="1"><p>Deployed</p></td><td colspan="1" rowspan="1"><p>Deployed</p></td><td colspan="1" rowspan="1"><p>Identical</p></td></tr><tr><td colspan="1" rowspan="1"><p>5-Stage simulation workflow with FEA Gatekeeper approval</p></td><td colspan="1" rowspan="1"><p>Deployed</p></td><td colspan="1" rowspan="1"><p>Deployed</p></td><td colspan="1" rowspan="1"><p>Identical</p></td></tr><tr><td colspan="1" rowspan="1"><p>Change-driven re-analysis notification</p></td><td colspan="1" rowspan="1"><p>Priority feature</p></td><td colspan="1" rowspan="1"><p>Implemented, lower priority</p></td><td colspan="1" rowspan="1"><p>Same mechanism, different emphasis</p></td></tr><tr><td colspan="1" rowspan="1"><p>HPC boundary-layer agents</p></td><td colspan="1" rowspan="1"><p>On-premises cluster integration</p></td><td colspan="1" rowspan="1"><p>Hybrid on premises + cloud burst</p></td><td colspan="1" rowspan="1"><p>Configured differently—HPC environment</p></td></tr><tr><td colspan="1" rowspan="1"><p>Legacy model migration</p></td><td colspan="1" rowspan="1"><p><mml:math id="mkohjn15rt">
+  <mml:mo>∼</mml:mo>
+</mml:math>1,400 models migrated</p></td><td colspan="1" rowspan="1"><p><mml:math id="mvlywtmpu8">
+  <mml:mo>∼</mml:mo>
+</mml:math>2,100 records, variant-linked</p></td><td colspan="1" rowspan="1"><p>Configured differently—scope and linking</p></td></tr><tr><td colspan="1" rowspan="1"><p>Reference library (load cases, materials)</p></td><td colspan="1" rowspan="1"><p>EN 12663, UIC 566 load sets</p></td><td colspan="1" rowspan="1"><p>Consumer product material grades</p></td><td colspan="1" rowspan="1"><p>Configured differently—domain content</p></td></tr><tr><td colspan="1" rowspan="1"><p>Model variant management</p></td><td colspan="1" rowspan="1"><p>Standard variant relationships</p></td><td colspan="1" rowspan="1"><p>Enhanced variant management module</p></td><td colspan="1" rowspan="1"><p>Configured differently—CS2 extended</p></td></tr><tr><td colspan="1" rowspan="1"><p>Resource planning integration</p></td><td colspan="1" rowspan="1"><p>Standard workflow queue</p></td><td colspan="1" rowspan="1"><p>Extended capacity planning module</p></td><td colspan="1" rowspan="1"><p>Configured differently—CS2 extended</p></td></tr><tr><td colspan="1" rowspan="1"><p>Packaging CAD automation</p></td><td colspan="1" rowspan="1"><p>Not applicable</p></td><td colspan="1" rowspan="1"><p>Automated design-freeze event</p></td><td colspan="1" rowspan="1"><p>Unique to CS2</p></td></tr><tr><td colspan="1" rowspan="1"><p>Approval levels</p></td><td colspan="1" rowspan="1"><p>Higher (regulatory requirement)</p></td><td colspan="1" rowspan="1"><p>Lower (velocity requirement)</p></td><td colspan="1" rowspan="1"><p>Configured differently</p></td></tr></tbody></table>
+            </table-wrap>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>8.4. Implementation effort and administrative workload</title>
+          
+          <p>The observed benefits were accompanied by implementation effort. In Case Study 1, the deployment was completed over approximately four to five months from initiation to full production rollout across three engineering sites. Legacy data migration covering approximately 1,400 CAE model records required a dedicated data-cleansing and ingestion effort over approximately six to eight weeks. Training was delivered to simulation engineers, FEA Gatekeepers, and program managers across all sites. User adoption—measured as the proportion of new simulation activities initiated through the formal PLM workflow—reached approximately 70% at three months, 85% at six months, and 90–95% at twelve months post-deployment, with the residual reflecting exploratory analyses managed under the authorized exception policy described in Section 5.4 (Principle P4).</p><p>In Case Study 2, the deployment covered five engineering sites over approximately six to eight months. The broader scope of simulation variant management configuration and packaging CAD integration required additional workflow setup time. User adoption followed a similar trajectory, reaching approximately 85–90% at twelve months.</p><p>In both cases, recurring administrative workload was introduced: mandatory metadata entry at request creation, approval-gate review, exception monitoring, and failed-job resolution. Average metadata entry time per simulation request was estimated at five to ten minutes above the pre-implementation baseline. These costs should be weighed against the governance value of traceability, reuse, audit readiness, and reproducibility. The framework is most suitable where simulation volume, compliance requirements, or program complexity justify the governance investment. Detailed implementation labor records were not retained in a form that allows precise person-month calculation by workstream. Based on retrospective implementation planning records and participant estimates, the railway deployment required an estimated 8–10 person-months across PLM configuration, CAE workflow design, HPC integration, legacy data migration, testing, training, and rollout support. The consumer goods deployment required an estimated 11–14 person-months, reflecting the broader scope of model variant management, resource-planning configuration, and packaging CAD automation. These values should be interpreted as approximate implementation-effort ranges rather than audited labor measurements.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>8.5. Limitations and future research</title>
+          
+          <p>Several limitations remain. First, this was a before-and-after case-study evaluation, not a controlled experiment. Second, both organizations experienced concurrent changes during the observation period, including team restructuring and program-management process changes. These factors may have influenced preparation time, turnaround time, reuse, and management visibility.</p><p>Third, some pre-implementation baselines were reconstructed from process audits, interviews, and historical records because earlier workflows were not consistently tracked in PLM. Post-implementation values were more system-generated. Therefore, part of the measured improvement may reflect improved measurement capability as well as operational improvement.</p><p>Fourth, both cases involved large engineering enterprises with established PLM environments and dedicated simulation teams. The findings should not be generalized automatically to small and medium-sized enterprises, organizations without mature PLM platforms, or sectors outside discrete manufacturing.</p><p>Fifth, upgrade compatibility was not directly tested during the observation period. Although the framework was implemented as an overlay with limited modification to core product-revision entities, neither deployment underwent a major PLM platform-version upgrade during the twelve-month evaluation window. Future work should evaluate whether the configured simulation objects, workflows, relationship rules, and HPC boundary agents remain stable across major PLM platform upgrades.</p><p>Future research should evaluate the framework across additional industries, smaller organizations, and controlled comparison settings. Further work should also develop a PLM for CAE-specific maturity model, investigate AI-assisted simulation retrieval and reuse, and extend the digital thread to include physical test data and field-performance feedback.</p><p>Overall, the two case studies suggest that CAE governance can be strengthened when simulation requests, design revisions, CAE models, HPC metadata, result artifacts, and approval workflows are managed as part of the enterprise PLM digital thread. The framework provides a structured path for moving simulation data from fragmented technical outputs toward governed enterprise knowledge.</p>
+        </sec>
+      
+    </sec>
+    <sec sec-type="">
+      <title>9. Conclusion</title>
+      <p>This paper presented PLM for CAE, a structured framework for integrating simulation lifecycle management with the enterprise PLM environment. The framework addresses the persistent disconnect between CAE and PLM environments by extending the PLM data model to represent simulation artifacts, embedding simulation workflows within the PLM process engine, and integrating HPC execution environments through governed interface agents.</p><p>Evaluation across two industrial deployments provided preliminary empirical evidence regarding the practical applicability of the framework in large, PLM-enabled engineering enterprises. The railway equipment case emphasized regulatory compliance and multi-site traceability, while the consumer goods case emphasized model reuse velocity and resource planning. Over the twelve-month post-implementation observation period, both deployments reported improvements in traceability, model reuse, preparation time, retrieval efficiency, and governance maturity indicators.</p><p>These findings should be interpreted as before-and-after observations rather than controlled causal evidence. The observed improvements may reflect the combined effect of the PLM for CAE framework, concurrent organizational changes, increased management attention, and improved measurement capability after system deployment. Further research across additional organizations, small and medium-sized enterprises, and controlled comparison settings is needed to assess generalizability and isolate the effect of individual framework components.</p><p>Overall, the study suggests that simulation data governance can be strengthened when CAE Requests, models, HPC execution metadata, result artifacts, and approval workflows are managed as part of the enterprise PLM digital thread.</p>
+    </sec>
+  </body>
+  <back>
+    <ack>
+      <title>Acknowledgments</title>
+      
+    </ack>
+    <app-group>
+      <app>
+        <title>Appendix</title>
+        
+      </app>
+    </app-group>
+    <notes>
+      <title>Author Contributions</title>
+      
+    </notes>
+    <notes>
+      <title>Funding</title>
+      
+    </notes>
+    <notes>
+      <title>Informed Consent Statement</title>
+      
+    </notes>
+    <notes>
+      <title>Data Availability Statement</title>
+      <p>The data supporting the findings of this study are available from the corresponding author upon reasonable request. Due to commercial confidentiality and organizational restrictions, the full industrial datasets, system logs, workflow records, interview notes, and program-level implementation data are not publicly available. Aggregated and anonymized data supporting the reported findings can be made available upon reasonable request, subject to approval by the participating organizations.</p>
+    </notes>
+    <notes notes-type="COI-statement">
+      <title>Conflicts of Interest</title>
+      <p>The author declares no conflicts of interest.</p>
+    </notes>
+    <ref-list>
+      <title>References</title>
+      <ref id="ref_1">
+        <label>1.</label>
+        <element-citation publication-type="report">
+          <article-title>What is Simulation Data Management?</article-title>
+          <source>, https://www.nafems.org/publications/resource_center/wt02/</source>
+          <year>2014</year>
+          <publisher-name>Publication WT02</publisher-name>
+        </element-citation>
+      </ref>
+      <ref id="ref_2">
+        <label>2.</label>
+        <element-citation publication-type="journal">
+          <person-group person-group-type="author">
+            <name>
+              <surname>Mohanraj</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Vaishnavi</surname>
+              <given-names>B. K.</given-names>
+            </name>
+          </person-group>
+          <year>2025</year>
+          <volume>44</volume>
+          <source>J. Ind. Inf. Integr.</source>
+          <page-range>100793</page-range>
+          <article-title>Data enabling technology in digital twin and its frameworks in different industrial applications</article-title>
+          <pub-id pub-id-type="doi">10.1016/j.jii.2025.100793</pub-id>
+        </element-citation>
+      </ref>
+      <ref id="ref_3">
+        <label>3.</label>
+        <element-citation publication-type="report">
+          <article-title>What is Simulation Governance and Management?</article-title>
+          <source>, https://www.nafems.org/publications/resource_center/wt11/</source>
+          <year>2019</year>
+          <publisher-name>Publication WT11</publisher-name>
+        </element-citation>
+      </ref>
+      <ref id="ref_4">
+        <label>4.</label>
+        <element-citation publication-type="report">
+          <article-title>Simulation Process and Data Management: Gaining control of simulation data, workflows and processes with Teamcenter</article-title>
+          <source>, https://static.sw.cdn.siemens.com/siemens-disw-assets/public/2E75uZ8EUCGXAX766Kv3EK/en-US/siemens-simulation-process-data-management-factsheet.pdf</source>
+          <year>2024</year>
+          <publisher-name>Doc. 10246-D17 3/24 H</publisher-name>
+        </element-citation>
+      </ref>
+      <ref id="ref_5">
+        <label>5.</label>
+        <element-citation publication-type="journal">
+          <volume>7</volume>
+          <source>Int. J. Prod. Lifecycle Manag.</source>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Saarelainen</surname>
+              <given-names>T.</given-names>
+            </name>
+            <name>
+              <surname>Buda</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Juhanko</surname>
+              <given-names>J.</given-names>
+            </name>
+          </person-group>
+          <article-title>Open loops in CAE data management and simulation-based design</article-title>
+          <page-range>318-339</page-range>
+          <issue>4</issue>
+          <pub-id pub-id-type="doi">10.1504/IJPLM.2014.066821</pub-id>
+          <year>2014</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_6">
+        <label>6.</label>
+        <element-citation publication-type="journal">
+          <article-title>Software environment for CAD/CAE integration</article-title>
+          <source>Adv. Eng. Softw.</source>
+          <pub-id pub-id-type="doi">10.1016/j.advengsoft.2010.07.003</pub-id>
+          <year>2010</year>
+          <volume>41</volume>
+          <page-range>1211-1222</page-range>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Hamri</surname>
+              <given-names>O.</given-names>
+            </name>
+            <name>
+              <surname>Léon</surname>
+              <given-names>J. C.</given-names>
+            </name>
+            <name>
+              <surname>Giannini</surname>
+              <given-names>F.</given-names>
+            </name>
+            <name>
+              <surname>Falcidieno</surname>
+              <given-names>B.</given-names>
+            </name>
+          </person-group>
+          <issue>10–11</issue>
+        </element-citation>
+      </ref>
+      <ref id="ref_7">
+        <label>7.</label>
+        <element-citation publication-type="book">
+          <person-group person-group-type="author">
+            <name>
+              <surname>Grieves</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Vickers</surname>
+              <given-names>J.</given-names>
+            </name>
+          </person-group>
+          <article-title>Digital twin: Mitigating unpredictable, undesirable emergent behavior in complex systems</article-title>
+          <source>Transdisciplinary Perspectives on Complex Systems</source>
+          <publisher-name>Cham: Springer</publisher-name>
+          <year>2017</year>
+          <page-range>85-113</page-range>
+          <pub-id pub-id-type="doi">10.1007/978-3-319-38756-7_4</pub-id>
+        </element-citation>
+      </ref>
+      <ref id="ref_8">
+        <label>8.</label>
+        <element-citation publication-type="book">
+          <person-group person-group-type="author">
+            <name>
+              <surname>Oberkampf</surname>
+              <given-names>W. L.</given-names>
+            </name>
+            <name>
+              <surname>Roy</surname>
+              <given-names>C. J.</given-names>
+            </name>
+          </person-group>
+          <source>Verification and Validation in Scientific Computing</source>
+          <publisher-name>Cambridge, UK: Cambridge University Press</publisher-name>
+          <year>2010</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_9">
+        <label>9.</label>
+        <element-citation publication-type="report">
+          <article-title>Standard for Verification and Validation in Computational Fluid Dynamics and Heat Transfer</article-title>
+          <source>, https://www.asme.org/codes-standards/find-codes-standards/standard-for-verification-and-validation-in-computational-fluid-dynamics-and-heat-transfer</source>
+          <year>2009</year>
+          <publisher-name>ASME V&amp;V 20-2009 (R2021), New York, NY, USA</publisher-name>
+        </element-citation>
+      </ref>
+      <ref id="ref_10">
+        <label>10.</label>
+        <element-citation publication-type="journal">
+          <year>2022</year>
+          <volume>105</volume>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Röhm</surname>
+              <given-names>B.</given-names>
+            </name>
+            <name>
+              <surname>Anderl</surname>
+              <given-names>R.</given-names>
+            </name>
+          </person-group>
+          <article-title>Simulation data management in the digital twin (SDM-DT)—Evolution of simulation data management along the product life cycle</article-title>
+          <page-range>847-850</page-range>
+          <source>Procedia CIRP</source>
+          <pub-id pub-id-type="doi">10.1016/j.procir.2022.02.140</pub-id>
+        </element-citation>
+      </ref>
+      <ref id="ref_11">
+        <label>11.</label>
+        <element-citation publication-type="journal">
+          <article-title>Development of an information model for simulation data management in the digital twin</article-title>
+          <year>2023</year>
+          <source>Procedia CIRP</source>
+          <volume>119</volume>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Röhm</surname>
+              <given-names>B.</given-names>
+            </name>
+            <name>
+              <surname>Anderl</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Schleich</surname>
+              <given-names>B.</given-names>
+            </name>
+          </person-group>
+          <page-range>681-686</page-range>
+          <pub-id pub-id-type="doi">10.1016/j.procir.2023.03.120</pub-id>
+        </element-citation>
+      </ref>
+      <ref id="ref_12">
+        <label>12.</label>
+        <element-citation publication-type="journal">
+          <person-group person-group-type="author">
+            <name>
+              <surname>Abdel-Aty</surname>
+              <given-names>T. A.</given-names>
+            </name>
+            <name>
+              <surname>Negri</surname>
+              <given-names>E.</given-names>
+            </name>
+          </person-group>
+          <issue>8</issue>
+          <article-title>Conceptualizing the digital thread for smart manufacturing: A systematic literature review</article-title>
+          <year>2024</year>
+          <page-range>3629-3653</page-range>
+          <source>J. Intell. Manuf.</source>
+          <volume>35</volume>
+          <pub-id pub-id-type="doi">10.1007/s10845-024-02407-1</pub-id>
+        </element-citation>
+      </ref>
+      <ref id="ref_13">
+        <label>13.</label>
+        <element-citation publication-type="journal">
+          <person-group person-group-type="author">
+            <name>
+              <surname>Kasper</surname>
+              <given-names>N.</given-names>
+            </name>
+            <name>
+              <surname>Pfenning</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Eigner</surname>
+              <given-names>M.</given-names>
+            </name>
+          </person-group>
+          <year>2024</year>
+          <source>Proc. Des. Soc.</source>
+          <volume>4</volume>
+          <page-range>2079-2088</page-range>
+          <pub-id pub-id-type="doi">10.1017/pds.2024.210</pub-id>
+          <article-title>The digital thread for system lifecycle management with a native graph database in a polyglot architecture</article-title>
+        </element-citation>
+      </ref>
+      <ref id="ref_14">
+        <label>14.</label>
+        <element-citation publication-type="journal">
+          <person-group person-group-type="author">
+            <name>
+              <surname>Wu</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>G.</given-names>
+            </name>
+            <name>
+              <surname>Lu</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Yan</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Gong</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Dong</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Kiritsis</surname>
+              <given-names>D.</given-names>
+            </name>
+          </person-group>
+          <volume>65</volume>
+          <page-range>103258</page-range>
+          <pub-id pub-id-type="doi">10.1016/j.aei.2025.103258</pub-id>
+          <article-title>Digital thread in engineering: Concept, state of art, and enabling framework</article-title>
+          <year>2025</year>
+          <source>Adv. Eng. Inform.</source>
+        </element-citation>
+      </ref>
+      <ref id="ref_15">
+        <label>15.</label>
+        <element-citation publication-type="journal">
+          <pub-id pub-id-type="doi">10.1504/IJPLM.2021.115701</pub-id>
+          <page-range>66-88</page-range>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Menshenin</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Moreno</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Brovar</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Fortin</surname>
+              <given-names>C.</given-names>
+            </name>
+          </person-group>
+          <issue>1</issue>
+          <year>2021</year>
+          <volume>13</volume>
+          <source>Int. J. Prod. Lifecycle Manag.</source>
+          <article-title>Integration of MBSE and PLM: Complexity and uncertainty</article-title>
+        </element-citation>
+      </ref>
+      <ref id="ref_16">
+        <label>16.</label>
+        <element-citation publication-type="journal">
+          <article-title>A framework for product life cycle management based digital twin implementation in the aerospace industry</article-title>
+          <year>2025</year>
+          <page-range>e70001</page-range>
+          <volume>41</volume>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Gurdal</surname>
+              <given-names>B. O.</given-names>
+            </name>
+            <name>
+              <surname>Testik</surname>
+              <given-names>O. M.</given-names>
+            </name>
+          </person-group>
+          <source>Appl. Stoch. Models Bus. Ind.</source>
+          <pub-id pub-id-type="doi">10.1002/asmb.70001</pub-id>
+        </element-citation>
+      </ref>
+      <ref id="ref_17">
+        <label>17.</label>
+        <element-citation publication-type="journal">
+          <year>2022</year>
+          <issue>8</issue>
+          <volume>10</volume>
+          <source>Processes</source>
+          <article-title>Structured development of digital twins—A cross-domain analysis towards a unified approach</article-title>
+          <page-range>1490</page-range>
+          <pub-id pub-id-type="doi">10.3390/pr10081490</pub-id>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Heindl</surname>
+              <given-names>W.</given-names>
+            </name>
+            <name>
+              <surname>Stary</surname>
+              <given-names>C.</given-names>
+            </name>
+          </person-group>
+        </element-citation>
+      </ref>
+      <ref id="ref_18">
+        <label>18.</label>
+        <element-citation publication-type="journal">
+          <article-title>From infrastructure to innovation: How integrated PLM systems enable digital twin and thread capabilities in business-to-business manufacturing</article-title>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Ghosh</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Singh</surname>
+              <given-names>S.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.technovation.2026.103579</pub-id>
+          <volume>155</volume>
+          <source>Technovation</source>
+          <page-range>103579</page-range>
+          <year>2026</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_19">
+        <label>19.</label>
+        <element-citation publication-type="journal">
+          <source>CIRP Ann.</source>
+          <pub-id pub-id-type="doi">10.1016/j.cirp.2017.04.040</pub-id>
+          <article-title>Shaping the digital twin for design and production engineering</article-title>
+          <year>2017</year>
+          <volume>66</volume>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Schleich</surname>
+              <given-names>B.</given-names>
+            </name>
+            <name>
+              <surname>Anwer</surname>
+              <given-names>N.</given-names>
+            </name>
+            <name>
+              <surname>Mathieu</surname>
+              <given-names>L.</given-names>
+            </name>
+            <name>
+              <surname>Wartzack</surname>
+              <given-names>S.</given-names>
+            </name>
+          </person-group>
+          <issue>1</issue>
+          <page-range>141-144</page-range>
+        </element-citation>
+      </ref>
+      <ref id="ref_20">
+        <label>20.</label>
+        <element-citation publication-type="journal">
+          <article-title>Model-based data integration along the product and service life cycle supported by digital twinning</article-title>
+          <year>2022</year>
+          <page-range>103648</page-range>
+          <volume>140</volume>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Woitsch</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Sumereder</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Falcioni</surname>
+              <given-names>D.</given-names>
+            </name>
+          </person-group>
+          <source>Comput. Ind.</source>
+          <pub-id pub-id-type="doi">10.1016/j.compind.2022.103648</pub-id>
+        </element-citation>
+      </ref>
+      <ref id="ref_21">
+        <label>21.</label>
+        <element-citation publication-type="journal">
+          <source>Comput. Ind. Eng.</source>
+          <year>2023</year>
+          <volume>179</volume>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Jiang</surname>
+              <given-names>L.</given-names>
+            </name>
+            <name>
+              <surname>Su</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Pei</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Chu</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Yuan</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>K.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.cie.2023.109168</pub-id>
+          <article-title>Product-part level digital twin modeling method for digital thread framework</article-title>
+          <page-range>109168</page-range>
+        </element-citation>
+      </ref>
+      <ref id="ref_22">
+        <label>22.</label>
+        <element-citation publication-type="report">
+          <article-title>Digital Engineering Strategy</article-title>
+          <source>, undefined</source>
+          <year>2018</year>
+          <publisher-name>Office of the Deputy Assistant Secretary of Defense for Systems Engineering, Washington, DC</publisher-name>
+        </element-citation>
+      </ref>
+      <ref id="ref_23">
+        <label>23.</label>
+        <element-citation publication-type="journal">
+          <source>SAE Int. J. Adv. Curr. Pract. Mobil.</source>
+          <page-range>1457-1471</page-range>
+          <year>2022</year>
+          <pub-id pub-id-type="doi">10.4271/2022-01-0355</pub-id>
+          <article-title>Approaches for simulation model reuse in systems design—A review</article-title>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Hussain</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Masoudi</surname>
+              <given-names>N.</given-names>
+            </name>
+            <name>
+              <surname>Mocko</surname>
+              <given-names>G.</given-names>
+            </name>
+            <name>
+              <surname>Paredis</surname>
+              <given-names>C.</given-names>
+            </name>
+          </person-group>
+          <issue>5</issue>
+          <volume>4</volume>
+        </element-citation>
+      </ref>
+      <ref id="ref_24">
+        <label>24.</label>
+        <element-citation publication-type="book">
+          <person-group person-group-type="author">
+            <name>
+              <surname>Yin</surname>
+              <given-names>R. K.</given-names>
+            </name>
+          </person-group>
+          <source>Case Study Research and Applications: Design and Methods, 6th ed.</source>
+          <publisher-name>Thousand Oaks, CA, USA: SAGE Publications</publisher-name>
+          <year>2018</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_25">
+        <label>25.</label>
+        <element-citation publication-type="book">
+          <person-group person-group-type="author">
+            <name>
+              <surname>International Organization for Standardization</surname>
+            </name>
+          </person-group>
+          <source>Industrial Automation Systems and Integration—Product Data Representation and Exchange—Part 1: Overview and Fundamental Principles, 3rd ed.</source>
+          <publisher-name>ISO 10303-1:2024, Geneva, Switzerland</publisher-name>
+          <year>2024</year>
+        </element-citation>
+      </ref>
+    </ref-list>
+  </back>
+</article>
