@@ -1,0 +1,2858 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.3 20210610//EN" "JATS-journalpublishing1-3.dtd">
+<article xml:lang="en" dtd-version="1.3" article-type="research-article" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mml="http://www.w3.org/1998/Math/MathML">
+  <front>
+    <journal-meta>
+      <journal-id journal-id-type="publisher-id">MITS</journal-id>
+      <journal-id journal-id-type="doi">10.56578</journal-id>
+      <journal-title-group>
+        <journal-title>Mechatronics and Intelligent Transportation Systems</journal-title>
+        <abbrev-journal-title abbrev-type="issn">Mechatron. Intell Transp. Syst.</abbrev-journal-title>
+        <abbrev-journal-title abbrev-type="publisher">MITS</abbrev-journal-title>
+      </journal-title-group>
+      <issn publication-format="electronic">2958-0218</issn>
+      <issn publication-format="print">2958-020X</issn>
+      <publisher>
+        <publisher-name>Acadlore</publisher-name>
+      </publisher>
+    </journal-meta>
+    <article-meta>
+      <article-id pub-id-type="publisher-id">AR-9ZQUoyyF6TIEk79xoCuC1MxXpxUxO9rh</article-id>
+      <article-id pub-id-type="doi">10.56578/mits050401</article-id>
+      <article-categories>
+        <subj-group>
+          <subject>Articles</subject>
+        </subj-group>
+      </article-categories>
+      <title-group>
+        <article-title>AMI-SMPA: Secure Authentication for Advanced Metering Infrastructure in Networked Electric-Vehicle Charging Systems</article-title>
+      </title-group>
+      <contrib-group>
+        <contrib contrib-type="author" rid="aff_1">
+          <contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0000-0002-3363-390X</contrib-id>
+          <name>
+            <surname>Byeon</surname>
+            <given-names>Haewon</given-names>
+          </name>
+          <email>bhwpuma@naver.com</email>
+        </contrib>
+        <aff id="aff_1">Department of Future Technology, Korea University of Technology and Education (KOREA TECH), 31253 Cheonan, South Korea</aff>
+      </contrib-group>
+      <pub-date publication-format="electronic" date-type="pub">
+        <day>10</day>
+        <month>10</month>
+        <year>2026</year>
+      </pub-date>
+      <volume>5</volume>
+      <issue>4</issue>
+      <fpage>272</fpage>
+      <lpage>286</lpage>
+      <page-range>272-286</page-range>
+      <history>
+        <date date-type="received">
+          <day>27</day>
+          <month>08</month>
+          <year>2026</year>
+        </date>
+        <date date-type="accepted">
+          <day>13</day>
+          <month>09</month>
+          <year>2026</year>
+        </date>
+      </history>
+      <permissions>
+        <copyright-statement>©2026 by the author(s)</copyright-statement>
+        <copyright-year>2026</copyright-year>
+        <license license-type="open-access" xlink:href="https://creativecommons.org/licenses/by/4.0/">
+          <license-p> Published by Acadlore Publishing Services Limited, Hong Kong. This article is available for free download and can be reused and cited, provided that the original published version is credited, under the CC BY 4.0 license.</license-p>
+        </license>
+      </permissions>
+      <abstract><p>Networked electric-vehicle (EV) charging increasingly depends on advanced metering infrastructure (AMI) for charging authorization, metered-energy reporting, and demand-response control, making authenticated key establishment a safety-relevant communication requirement. This study reconstructs the security-relevant equations of a recently developed elliptic-curve multi-phase authentication protocol and evaluates whether its claimed properties follow from the specified algebra. Six structural weaknesses are identified: reversible exposure of the infrastructure private-key term, long-term key disclosure through the proposed signature equation, replay susceptibility inside the timestamp window, lack of binding between authentication and ephemeral Diffie-Hellman values, dual session-key definitions, and static-identity linkability. Advanced Metering Infrastructure–Secure Multi-Phase Authentication (AMI-SMPA) is designed with signed credentials, transcript-bound ephemeral elliptic-curve Diffie-Hellman, Hash-based Message Authentication Code (HMAC)-based Extract-and-Expand Key Derivation Function (HKDF), role-separated HMAC key confirmation, Advanced Encryption Standard in Galois/Counter Mode (AES-GCM), rotating aliases, and replay-aware state. The protocol is mapped to the EV, EV supply equipment, charging-station controller, smart meter (SM), data concentrator, and utility control center (UCC); it protects station-meter-to-utility metering and charging-control messages without replacing ISO 15118. In an isolated emulator, all four reconstructed attack conditions succeeded in 1,000/1,000 trials, whereas all corresponding AMI-SMPA checks succeeded in 1,000/1,000 trials. A controlled 1,000-run profile estimated 16.92 ms computation time, 19.35 ms end-to-end latency, 612 bytes/session, 4.35 mJ/session, 99.14% packet-delivery ratio, 98.77% replay detection, 98.76% unauthorized message-modification rejection (UMR), and 97.63% key-compromise containment. A fixed-seed, all-at-once EV charging burst model for 50, 200, and 1,000 charging points yielded 60.36–60.46 completed sessions/s, with queue-inclusive mean completion time rising from 423.69 to 8,279.05 ms. These controlled results support protocol-level feasibility and expose capacity-planning requirements; they do not establish operational-network performance or power-grid stability.</p></abstract>
+      <kwd-group>
+        <kwd>Advanced metering infrastructure</kwd>
+        <kwd>Authenticated key exchange</kwd>
+        <kwd>Electric vehicle charging</kwd>
+        <kwd>Electric-vehicle supply equipment</kwd>
+        <kwd>Formal security analysis</kwd>
+        <kwd>Replay protection</kwd>
+        <kwd>Smart meter security</kwd>
+      </kwd-group>
+      <counts>
+        <count count-type="contributors" count="1"/>
+        <fig-count count="5"/>
+        <table-count count="6"/>
+        <ref-count count="37"/>
+      </counts>
+    </article-meta>
+  </front>
+  <body>
+    <sec sec-type="intro">
+      <title>1. Introduction</title>
+      <p>Advanced metering infrastructure (AMI) is a central communication layer of the modern smart grid because it connects smart meters (SMs), data concentrators, utility head-end systems, and control applications through bidirectional digital networks. National Institute of Standards and Technology (NIST) guidance treats AMI as a cybersecurity-sensitive smart-grid domain and emphasizes risk-based protection across the entire communications path [<xref ref-type="bibr" rid="ref_1">1</xref>]. Early AMI security analysis likewise showed that remote connect/disconnect, metering, and control functions create consequences that cannot be addressed by encryption alone [<xref ref-type="bibr" rid="ref_2">2</xref>]. Broader surveys have subsequently highlighted confidentiality, integrity, availability, authentication, key management, and resilience as interacting requirements rather than independent controls [<xref ref-type="bibr" rid="ref_3">3</xref>].</p><p>The security problem is intensified by the fact that SMs are long-lived cyber-physical endpoints. A compromised or weakly authenticated meter can affect billing, demand response, load management, and operational decision-making, while high-frequency metering data can reveal behavioral information about occupants. McDaniel and McLaughlin [<xref ref-type="bibr" rid="ref_4">4</xref>] identified this coupling of operational security and privacy at an early stage of smart-grid deployment, and Metke and Ekl [<xref ref-type="bibr" rid="ref_5">5</xref>] emphasized scalable public-key and trusted-computing mechanisms for wide-area smart-grid networks. These observations remain relevant because modern AMI increasingly interacts with distributed energy resources and electric-vehicle (EV) charging ecosystems.</p><p>A substantial authentication literature has therefore focused on lightweight key establishment for constrained SMs. Garg et al. [<xref ref-type="bibr" rid="ref_6">6</xref>] proposed an elliptic curve cryptography (ECC)-oriented lightweight mutual-authentication scheme for smart metering infrastructure (SMI) with reduced communication and energy overhead. Hasan et al. [<xref ref-type="bibr" rid="ref_7">7</xref>] later presented the lightweight identity-based key-agreement protocol (LIKA), emphasizing computation and communication efficiency in AMI. Hu et al. [<xref ref-type="bibr" rid="ref_8">8</xref>] developed a provably secure ECC-based authentication and key-agreement scheme for AMI and combined formal analysis with a practical Raspberry Pi testbed. Zhang et al. [<xref ref-type="bibr" rid="ref_9">9</xref>] further addressed anonymity and forward secrecy in a lightweight ECC-based smart-grid protocol, while Wang et al. [<xref ref-type="bibr" rid="ref_10">10</xref>] studied provable ECC-based authenticated key agreement in a cloud-edge-end smart-grid architecture.</p><p>Recent work also reflects the movement from purely cryptographic protocol design toward deployment-aware security. Parvez et al. [<xref ref-type="bibr" rid="ref_11">11</xref>] combined authentication management and anomaly-oriented packet validation for smart-grid data security. Pei et al. [<xref ref-type="bibr" rid="ref_12">12</xref>] integrated anonymous authentication and blockchain-based aggregation for AMI. Gormus et al. [<xref ref-type="bibr" rid="ref_13">13</xref>] implemented end-to-end object security over a 6TiSCH-oriented AMI architecture and examined reliability under constrained networking. Li et al. [<xref ref-type="bibr" rid="ref_14">14</xref>] proposed a resource-efficient authenticated-key-agreement construction using lightweight authenticated encryption for smart-grid devices. Together, these studies show that contemporary AMI security research increasingly evaluates both security properties and operational cost.</p><p>Earlier smart-grid authentication research also established several design principles used in the present study. Fouda et al. [<xref ref-type="bibr" rid="ref_15">15</xref>] demonstrated lightweight message authentication and Diffie-Hellman-based session establishment for smart-grid communications. Nicanfar et al. [<xref ref-type="bibr" rid="ref_16">16</xref>] addressed mutual authentication and key management at smart-grid scale. Tsai and Lo [<xref ref-type="bibr" rid="ref_17">17</xref>] investigated anonymous key distribution, and He et al. [<xref ref-type="bibr" rid="ref_18">18</xref>] reduced the cost of anonymous ECC-based key distribution. Chim et al. [<xref ref-type="bibr" rid="ref_19">19</xref>] used pseudo-identities to reduce linkability in a privacy-preserving authentication scheme, while Efthymiou and Kalogridis [<xref ref-type="bibr" rid="ref_20">20</xref>] showed that high-frequency SM data can expose household behavior unless identity and usage data are carefully separated.</p><p>Against this background, the present study focuses on the recently published Secure Multi-Phase Authentication Protocol for Cloud Infrastructure (SMPA-CI) using ECC [<xref ref-type="bibr" rid="ref_21">21</xref>]. The protocol is attractive as an analysis target because it explicitly claims the use of ECC, Elliptic Curve Digital Signature Algorithm (ECDSA)/Elliptic Curve Diffie–Hellman (ECDH)-oriented mechanisms, mutual authentication, replay resistance, impersonation resistance, man-in-the-middle resistance, and low overhead. However, those claims must be evaluated against the actual equations in the registration, login, user-authentication, system-authentication, and secure-key-exchange algorithms. The core research question is therefore whether the specified algebra genuinely provides the security properties associated with the named cryptographic primitives, and, if not, how the multi-phase design can be rebuilt as an authenticated key-exchange protocol for AMI.</p><p>The redesign is grounded in standardized cryptographic composition. Digital signatures are aligned with the Digital Signature Standard [<xref ref-type="bibr" rid="ref_22">22</xref>] and approved elliptic-curve domain parameters [<xref ref-type="bibr" rid="ref_23">23</xref>]; pairwise key establishment follows discrete-logarithm guidance that explicitly covers ECDH and key confirmation [<xref ref-type="bibr" rid="ref_24">24</xref>]. Session keys are derived through Hash-based Message Authentication Code (HMAC)-based Extract-and-Expand Key Derivation Function (HKDF) [<xref ref-type="bibr" rid="ref_25">25</xref>], and telemetry protection uses Advanced Encryption Standard in Galois/Counter Mode (AES-GCM) authenticated encryption [<xref ref-type="bibr" rid="ref_26">26</xref>]. The adversarial communication model follows the classical Dolev-Yao abstraction [<xref ref-type="bibr" rid="ref_27">27</xref>], while the computational security discussion draws on the Canetti-Krawczyk authenticated-key-exchange framework [<xref ref-type="bibr" rid="ref_28">28</xref>] and the stronger extended Canetti–Krawczyk (eCK)-style adversary model introduced by LaMacchia et al. [<xref ref-type="bibr" rid="ref_29">29</xref>]. ProVerif is used as the target symbolic specification language because it supports secrecy and correspondence properties for security protocols [<xref ref-type="bibr" rid="ref_30">30</xref>]. Finally, the electric-mobility relevance is framed against ISO 15118-20 vehicle-to-grid communication requirements [<xref ref-type="bibr" rid="ref_31">31</xref>] and the broader EV security and privacy landscape summarized by Brighente et al. [<xref ref-type="bibr" rid="ref_32">32</xref>].</p><p>In public EV charging, the electric vehicle–electric vehicle supply equipment (EV–EVSE) exchange, charging-station controller, revenue-grade meter, and utility backend form adjacent but distinct trust domains. A compromise in station-meter-to-utility authentication can alter authorization status, tariff or demand-response instructions, or the integrity and attribution of metered-energy reports even when the EV–EVSE protocol operates correctly. Prior work has characterized charging-station attack surfaces from both grid and station perspectives [<xref ref-type="bibr" rid="ref_33">33</xref>], [<xref ref-type="bibr" rid="ref_34">34</xref>], while authenticated key agreement and privacy-preserving authentication studies have addressed vehicle-to-grid communication [<xref ref-type="bibr" rid="ref_35">35</xref>], [<xref ref-type="bibr" rid="ref_36">36</xref>]. Accordingly, this paper frames Advanced Metering Infrastructure–Secure Multi-Phase Authentication (AMI-SMPA) as a secure communication mechanism for the meter/utility control center (UCC) link supporting networked charging services, not as an independent controller of traffic flow, power flow, or grid stability.</p><p>The study makes five contributions. First, it reconstructs the security-critical equations of SMPA-CI and maps them to SM/UCC communication without silently correcting the original algebra. Second, it derives six vulnerabilities and validates four in an isolated emulator. Third, it proposes AMI-SMPA, which replaces reversible key masking with standard signatures, authenticates ephemeral ECDH values in a complete transcript, uses one authoritative HKDF schedule, and adds explicit key confirmation and replay state. Fourth, it defines the AMI-SMPA execution boundary and trust responsibilities across the EV, EVSE, charging-station controller, SM, data concentrator unit (DCU), and UCC. Fifth, it separates functional, calculated, and simulated evidence and adds a fixed-seed charging-point burst scenario to quantify queueing behavior at 50, 200, and 1,000 endpoints.</p>
+    </sec>
+    <sec sec-type="">
+      <title>2. Methodology</title>
+      
+        <sec>
+          
+            <title>2.1. System model and advanced metering infrastructure mapping</title>
+          
+          <p>The extended system model contains an EV, EVSE, a charging-station controller, a revenue-grade SM, a DCU, a UCC, and an adversary. The EV and EVSE remain in the ISO 15118 trust domain. The station controller coordinates connectors, local tariff presentation, and demand-response actions but does not hold the meter's signing key. AMI-SMPA executes between the SM (or its tamper-resistant station security gateway) and the UCC. It protects charging authorization status, metered-energy reports, and utility charging-control messages across the SM-DCU-UCC path. The DCU is a semi-trusted relay that may aggregate routing metadata, rate-limit bursts, and cache replay identifiers but cannot terminate the end-to-end protected payload. The UCC is the trusted authority for credential lifecycle, billing/control processing, policy epochs, and audit; the adversary controls the network but not an uncompromised UCC.</p><p>The original SMPA-CI user is mapped to the SM endpoint and the CI to the UCC. A password/token-oriented registration value is interpreted as a managed bootstrap credential issued during manufacturing, commissioning, or utility enrollment. The user key pair becomes the meter long-term signing key pair, and the infrastructure key pair becomes the UCC authentication key pair. The derived application keys protect the station-meter-to-utility metering and charging-control flow. <xref ref-type="fig" rid="fig_1">Figure 1</xref> makes this protection boundary explicit and distinguishes it from the EV-EVSE and station-management protocols.</p>
+          
+            <fig id="fig_1">
+              <label>Figure 1</label>
+              <caption>
+                <title>AMI-SMPA protection boundary and trust roles in a networked EV charging system</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/9/img_5uSGeqbFQ-jo6skX.png"/>
+            </fig>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>2.2. Public electric-vehicle charging use case</title>
+          
+          <div>A public charging session begins when the EV and EVSE complete their local association and the station controller requests authorization. The station SM then establishes an AMI-SMPA session with the UCC, which returns authenticated authorization and policy context. During charging, cumulative and interval energy values are sent as AES-GCM-protected metered-energy reports bound to the session identifier (SID), message type, policy epoch, and monotonic sequence number. Utility charging or demand-response instructions follow the reverse protected path and are accepted only after origin, freshness, and policy validation. After a communication or power interruption, the meter discards the prior ephemeral state, generates a new ephemeral scalar, nonce, and SID, and performs full reauthentication before reporting or control resumes.</div><p>In this workflow, replay can duplicate an old authorization, energy report, or control instruction; endpoint impersonation can misattribute consumption or cause an unauthorized station action; and disclosure of an endpoint long-term key can enable future impersonation of that endpoint. AMI-SMPA’s signed ephemeral transcript, explicit confirmation, and replay state address the first two conditions and contain a single-meter compromise. Forward secrecy is limited to completed sessions whose ephemeral scalars were erased and not revealed: later disclosure of the meter signing key does not reconstruct the past ECDH secret, but compromise during an active session remains outside that guarantee.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>2.3. Threat model and security objectives</title>
+          
+          <p>The network adversary can observe, delay, suppress, duplicate, replay, reorder, and modify messages; initiate concurrent sessions; and impersonate unverified network peers. A device-compromise adversary may obtain the long-term credentials of one SM. For forward-secrecy analysis, disclosure of a long-term key is also considered after completion of a target session. The adversary is not assumed to solve the elliptic-curve discrete logarithm problem, forge a secure signature without the signing key, distinguish HKDF output from pseudorandom keying material under its assumed security properties, or recover AES-GCM plaintext without the corresponding data key.</p><p>The required security properties are mutual authentication, session-key secrecy, replay resistance, explicit key confirmation, resistance to transcript substitution and cross-session key confusion, forward secrecy for completed sessions whose ephemeral secrets remain unrevealed, containment of a single-meter compromise, reduced static-identity exposure, and authenticated confidentiality of metering/control messages. Cryptographic integrity is not interpreted as physical truthfulness: a fully compromised meter may generate a semantically false but correctly authenticated reading, which is outside the unauthorized message-modification rejection (UMR) metric evaluated here.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>2.4. Exact protocol reconstruction</title>
+          
+          <p>The reconstruction follows the published Algorithm 2–6 equations without replacing nonstandard operations with the standard primitives named in the surrounding prose. <xref ref-type="table" rid="table_1">Table 1</xref> summarizes the security-relevant equations and their AMI interpretation.</p>
+          
+            <table-wrap id="table_1">
+              <label>Table 1</label>
+              <caption>
+                <title>Reconstruction of security-relevant SMPA-CI equations and AMI interpretation</title>
+              </caption>
+              <table><tbody><tr><td colspan="1" rowspan="1"><p>Phase</p></td><td colspan="1" rowspan="1"><p>Specified operation</p></td><td colspan="1" rowspan="1"><p>AMI interpretation</p></td><td colspan="1" rowspan="1"><p>Security observation</p></td></tr><tr><td colspan="1" rowspan="1"><p>Registration</p></td><td colspan="1" rowspan="1"><p>PK_U = SK_U <mml:math id="mwgkxt9yco">
+  <mml:mo>×</mml:mo>
+</mml:math> F</p></td><td colspan="1" rowspan="1"><p>Long-term meter public key</p></td><td colspan="1" rowspan="1"><p>Conventional EC public-key relation</p></td></tr><tr><td colspan="1" rowspan="1"><p>Registration</p></td><td colspan="1" rowspan="1"><p>SIT_U = HAF1(ID_U <mml:math id="mrtbi1xyc7">
+  <mml:mo fence="false">‖</mml:mo>
+</mml:math> PW_U <mml:math id="mqmbzy2w33">
+  <mml:mo fence="false">‖</mml:mo>
+</mml:math> PK_U) XOR PVK_CI</p></td><td colspan="1" rowspan="1"><p>Meter identity token</p></td><td colspan="1" rowspan="1"><p>Infrastructure private-key term appears in a reversible token</p></td></tr><tr><td colspan="1" rowspan="1"><p>Login</p></td><td colspan="1" rowspan="1"><p>LR_U = HAF1(ID_U <mml:math id="mcfblhlx3k">
+  <mml:mo fence="false">‖</mml:mo>
+</mml:math> PW_U <mml:math id="mmmfzr17bm">
+  <mml:mo fence="false">‖</mml:mo>
+</mml:math> PK_U <mml:math id="m60qjdidnn">
+  <mml:mo fence="false">‖</mml:mo>
+</mml:math> T) XOR SIT_U</p></td><td colspan="1" rowspan="1"><p>Login authenticator</p></td><td colspan="1" rowspan="1"><p>Timestamp freshness without independent uniqueness state</p></td></tr><tr><td colspan="1" rowspan="1"><p>Login</p></td><td colspan="1" rowspan="1"><p>SK_session = HAF2(ID_U <mml:math id="mysc6vke73">
+  <mml:mo fence="false">‖</mml:mo>
+</mml:math> T_U <mml:math id="mb7vjgz6tw">
+  <mml:mo fence="false">‖</mml:mo>
+</mml:math> PVK_CI <mml:math id="m63wfcmdpr">
+  <mml:mo fence="false">‖</mml:mo>
+</mml:math> T)</p></td><td colspan="1" rowspan="1"><p>Login-stage session key</p></td><td colspan="1" rowspan="1"><p>Independent of later ECDH key schedule</p></td></tr><tr><td colspan="1" rowspan="1"><p>User authentication</p></td><td colspan="1" rowspan="1"><p>DSig_U = HAF1(ID_U <mml:math id="mbdjc9tx2m">
+  <mml:mo fence="false">‖</mml:mo>
+</mml:math> T) XOR SK_U</p></td><td colspan="1" rowspan="1"><p>Meter authentication value</p></td><td colspan="1" rowspan="1"><p>Does not instantiate standard ECDSA signing algebra</p></td></tr><tr><td colspan="1" rowspan="1"><p>System authentication</p></td><td colspan="1" rowspan="1"><p>DSig_CI = HAF1(ID_CI <mml:math id="mpwrm7dwap">
+  <mml:mo fence="false">‖</mml:mo>
+</mml:math> T) XOR SK_CI</p></td><td colspan="1" rowspan="1"><p>UCC authentication value</p></td><td colspan="1" rowspan="1"><p>Same reversible structure</p></td></tr><tr><td colspan="1" rowspan="1"><p>Key exchange</p></td><td colspan="1" rowspan="1"><p>PK_temp = SK_temp <mml:math id="mzpbxtlszt">
+  <mml:mo>×</mml:mo>
+</mml:math> G; PK_CI,temp = SK_CI,temp <mml:math id="mtj34nroql">
+  <mml:mo>×</mml:mo>
+</mml:math> G</p></td><td colspan="1" rowspan="1"><p>Ephemeral ECDH values</p></td><td colspan="1" rowspan="1"><p>Not included in the earlier authenticated transcript</p></td></tr><tr><td colspan="1" rowspan="1"><p>Key exchange</p></td><td colspan="1" rowspan="1"><p>SK_session = HAF2(Shared)</p></td><td colspan="1" rowspan="1"><p>ECDH-derived session key</p></td><td colspan="1" rowspan="1"><p>Creates a second session-key definition</p></td></tr></tbody></table>
+            </table-wrap>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>2.5. Vulnerability derivation</title>
+          
+          <p>The first vulnerability follows directly from the signed-identity-token equation:</p>
+          
+            <disp-formula>
+              <label>(1)</label>
+              <mml:math id="m1iqqndlwx">
+                <mml:mtext>SIT_U</mml:mtext>
+                <mml:mtext>HAF1</mml:mtext>
+                <mml:mtext>ID_U</mml:mtext>
+                <mml:mtext>PW_U</mml:mtext>
+                <mml:mtext>PK_U</mml:mtext>
+                <mml:mtext>XOR PVK_CI</mml:mtext>
+                <mml:mo>=</mml:mo>
+                <mml:mo>(</mml:mo>
+                <mml:mo fence="false">‖</mml:mo>
+                <mml:mo fence="false">‖</mml:mo>
+                <mml:mo>)</mml:mo>
+              </mml:math>
+            </disp-formula>
+          
+          <p>A registered endpoint knows its own identity, password/bootstrap credential, public key, and issued token. Because exclusive OR (XOR) is reversible, the infrastructure private-key term is algebraically isolated as:</p>
+          
+            <disp-formula>
+              <label>(2)</label>
+              <mml:math id="mma0az0kru">
+                <mml:mtext>PVK_CI</mml:mtext>
+                <mml:mtext>SIT_U XOR HAF1</mml:mtext>
+                <mml:mtext>ID_U</mml:mtext>
+                <mml:mtext>PW_U</mml:mtext>
+                <mml:mtext>PK_U</mml:mtext>
+                <mml:mo>=</mml:mo>
+                <mml:mo>(</mml:mo>
+                <mml:mo fence="false">‖</mml:mo>
+                <mml:mo fence="false">‖</mml:mo>
+                <mml:mo>)</mml:mo>
+              </mml:math>
+            </disp-formula>
+          
+          <p>The second vulnerability follows from the proposed user-authentication value:</p>
+          
+            <disp-formula>
+              <label>(3)</label>
+              <mml:math id="msvj3dq7rq">
+                <mml:mtext>DSig_U</mml:mtext>
+                <mml:mtext>HAF1</mml:mtext>
+                <mml:mtext>ID_U</mml:mtext>
+                <mml:mtext>T</mml:mtext>
+                <mml:mtext>XOR SK_U</mml:mtext>
+                <mml:mo>=</mml:mo>
+                <mml:mo>(</mml:mo>
+                <mml:mo fence="false">‖</mml:mo>
+                <mml:mo>)</mml:mo>
+              </mml:math>
+            </disp-formula>
+          
+          <p>The public transcript contains ID_U, T, and DSig_U, allowing the private-key term to be isolated:</p>
+          
+            <disp-formula>
+              <label>(4)</label>
+              <mml:math id="mumighdlyz">
+                <mml:mtext>SK_U</mml:mtext>
+                <mml:mtext>DSig_U XOR HAF1</mml:mtext>
+                <mml:mtext>ID_U</mml:mtext>
+                <mml:mtext>T</mml:mtext>
+                <mml:mo>=</mml:mo>
+                <mml:mo>(</mml:mo>
+                <mml:mo fence="false">‖</mml:mo>
+                <mml:mo>)</mml:mo>
+              </mml:math>
+            </disp-formula>
+          
+          <p>The system-authentication equation has the same structure. These observations are algebraic consequences of the protocol definition rather than attacks on ECC itself. They also explain why describing the construction as an ECDSA signature does not automatically provide the EUF-CMA security expected from a standardized signature algorithm.</p><p>The third vulnerability concerns replay. The login request includes a timestamp, but the reconstructed Algorithms 3–5 do not include an independent nonce, monotonic sequence number, or replay-cache identifier. If a receiver accepts any message for which <inline-formula>
+  <mml:math id="mpfilrfouu">
+    <mml:mrow>
+      <mml:mo>|</mml:mo>
+      <mml:mo>−</mml:mo>
+      <mml:mo>|</mml:mo>
+      <mml:msub>
+        <mml:mi>T</mml:mi>
+        <mml:mrow>
+          <mml:mtext>receive</mml:mtext>
+        </mml:mrow>
+      </mml:msub>
+      <mml:msub>
+        <mml:mi>T</mml:mi>
+        <mml:mrow>
+          <mml:mtext>message</mml:mtext>
+        </mml:mrow>
+      </mml:msub>
+    </mml:mrow>
+    <mml:mo>≤</mml:mo>
+    <mml:mi>Δ</mml:mi>
+    <mml:mi>t</mml:mi>
+  </mml:math>
+</inline-formula>, then two identical messages can both be fresh during the same acceptance interval. The fourth vulnerability concerns ECDH authentication: the ephemeral public keys are exchanged after identity authentication but are not included in the authenticated transcript. <xref ref-type="fig" rid="fig_2">Figure 2</xref> depicts this cryptographic discontinuity.</p>
+          
+            <fig id="fig_2">
+              <label>Figure 2</label>
+              <caption>
+                <title>Security discontinuity between identity authentication and the unbound ephemeral key exchange</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/9/img_CfNkTPPkYzHk0Xmh.png"/>
+            </fig>
+          
+          <p>The fifth vulnerability is key-state ambiguity. The login phase defines one session key using identity, token/infrastructure material, and timestamp, while the later key-exchange phase defines another session key from ECDH. The protocol does not specify a unique transition rule that determines which key protects application traffic or when the earlier key is retired. The sixth vulnerability is privacy-related: registration and authentication repeatedly transmit static identity and public-key information, enabling long-term linkability even if later payloads are encrypted. The six vulnerabilities and their AMI consequences are summarized in <xref ref-type="table" rid="table_2">Table 2</xref>.</p>
+          
+            <table-wrap id="table_2">
+              <label>Table 2</label>
+              <caption>
+                <title>Identified vulnerabilities and their AMI consequences</title>
+              </caption>
+              <table><tbody><tr><td colspan="1" rowspan="1"><p>ID</p></td><td colspan="1" rowspan="1"><p>Vulnerability</p></td><td colspan="1" rowspan="1"><p>Required capability</p></td><td colspan="1" rowspan="1"><p>Principal AMI consequence</p></td></tr><tr><td colspan="1" rowspan="1"><p>V1</p></td><td colspan="1" rowspan="1"><p>Infrastructure key embedded in XOR token</p></td><td colspan="1" rowspan="1"><p>One legitimate/compromised endpoint</p></td><td colspan="1" rowspan="1"><p>Utility trust-root exposure</p></td></tr><tr><td colspan="1" rowspan="1"><p>V2</p></td><td colspan="1" rowspan="1"><p>Long-term key recoverable from signature equation</p></td><td colspan="1" rowspan="1"><p>Passive transcript observation</p></td><td colspan="1" rowspan="1"><p>Meter/UCC credential compromise</p></td></tr><tr><td colspan="1" rowspan="1"><p>V3</p></td><td colspan="1" rowspan="1"><p>Timestamp-only replay protection</p></td><td colspan="1" rowspan="1"><p>Capture and resend inside freshness window</p></td><td colspan="1" rowspan="1"><p>Duplicate or stale request acceptance</p></td></tr><tr><td colspan="1" rowspan="1"><p>V4</p></td><td colspan="1" rowspan="1"><p>Unbound ephemeral ECDH values</p></td><td colspan="1" rowspan="1"><p>Network-field modification</p></td><td colspan="1" rowspan="1"><p>Loss of authenticated key agreement</p></td></tr><tr><td colspan="1" rowspan="1"><p>V5</p></td><td colspan="1" rowspan="1"><p>Two session-key definitions</p></td><td colspan="1" rowspan="1"><p>State ambiguity or later key compromise</p></td><td colspan="1" rowspan="1"><p>Key confusion and weakened PFS reasoning</p></td></tr><tr><td colspan="1" rowspan="1"><p>V6</p></td><td colspan="1" rowspan="1"><p>Static identity exposure</p></td><td colspan="1" rowspan="1"><p>Passive traffic correlation</p></td><td colspan="1" rowspan="1"><p>Long-term meter/EV-use linkability</p></td></tr></tbody></table>
+            </table-wrap>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>2.6. Advanced metering infrastructure–secure multi-phase authentication design</title>
+          
+          <p>AMI-SMPA preserves the multi-phase organization but replaces the unsafe cryptographic composition. During initialization, the UCC provisions approved EC parameters, a trust root, algorithm identifiers, credential validity, policy epoch, alias-rotation policy, and replay-state rules. Each meter holds a long-term signing key pair (SK_SM, PK_SM); the UCC holds (SK_UCC, PK_UCC). Private keys are never used as reversible masking values. Subscripts SM and UCC identify the SM and UCC; SK_SM and SK_UCC are long-term signing keys, PK_SM and PK_UCC are their public keys, and unindexed SK denotes the session secret.</p><p>During controlled registration, the UCC validates the manufacturing/commissioning credential and issues a signed identity token binding the meter identity, public key, device class, expiry, and credential epoch. A rotating alias can be used on the network while the UCC retains the accountability mapping.</p>
+          
+            <disp-formula>
+              <label>(5)</label>
+              <mml:math id="m5j3ihg2uo">
+                <mml:mtext>SIT_SM</mml:mtext>
+                <mml:mtext>Sign_SK_UCC</mml:mtext>
+                <mml:mtext>H</mml:mtext>
+                <mml:mtext>ID_SM</mml:mtext>
+                <mml:mtext>PK_SM</mml:mtext>
+                <mml:mtext>Device Class</mml:mtext>
+                <mml:mtext>Expiry</mml:mtext>
+                <mml:mtext>CredentialEpoch</mml:mtext>
+                <mml:mo>=</mml:mo>
+                <mml:mo>(</mml:mo>
+                <mml:mo>(</mml:mo>
+                <mml:mo fence="false">‖</mml:mo>
+                <mml:mo fence="false">‖</mml:mo>
+                <mml:mo fence="false">‖</mml:mo>
+                <mml:mo fence="false">‖</mml:mo>
+                <mml:mo>)</mml:mo>
+                <mml:mo>)</mml:mo>
+              </mml:math>
+            </disp-formula>
+          
+          <p>For a new session, the meter samples an ephemeral scalar a, a nonce N_SM, and a fresh SID, and computes A_SM = aG. Message M1 contains the rotating alias, A_SM, N_SM, timestamp, SID, and credential epoch and is signed with the meter long-term signing key. The UCC validates credential state, freshness, alias status, and the meter signature, samples b and N_UCC, computes B_UCC = bG, and signs a response M2 that covers M1 and the UCC ephemeral key. <xref ref-type="fig" rid="fig_3">Figure 3</xref> shows the complete message sequence.</p>
+          
+            <fig id="fig_3">
+              <label>Figure 3</label>
+              <caption>
+                <title>AMI-SMPA key-establishment sequence for metering and charging-control traffic</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/9/img_2csdj510Yta351Ot.png"/>
+            </fig>
+          
+          <p>Both parties compute Z = abG. The complete transcript digest TR covers M1, the meter signature, M2, and the UCC signature. The authoritative session secret is then derived from the ECDH result and the authenticated context:</p>
+          
+            <disp-formula>
+              <label>(6)</label>
+              <mml:math id="m7r58ypbrz">
+                <mml:mtext>SK</mml:mtext>
+                <mml:mtext>HKDF</mml:mtext>
+                <mml:mtext>Z, TR</mml:mtext>
+                <mml:mtext>N_SM</mml:mtext>
+                <mml:mtext>N_UCC</mml:mtext>
+                <mml:mtext>SID</mml:mtext>
+                <mml:mtext>PolicyEpoch</mml:mtext>
+                <mml:mo>=</mml:mo>
+                <mml:mo>(</mml:mo>
+                <mml:mo fence="false">‖</mml:mo>
+                <mml:mo fence="false">‖</mml:mo>
+                <mml:mo fence="false">‖</mml:mo>
+                <mml:mo fence="false">‖</mml:mo>
+                <mml:mo>)</mml:mo>
+              </mml:math>
+            </disp-formula>
+          
+          <p>Independent authentication and data keys are derived using HKDF-Expand, the domain-separated expansion step of HKDF [<xref ref-type="bibr" rid="ref_25">25</xref>], rather than a separate key-derivation primitive. The expanded output is split into K_auth and K_data; L_auth and L_data denote their lengths in bytes:</p>
+          
+            <disp-formula>
+              <label>(7)</label>
+              <mml:math id="mf3sxsfgic">
+                <mml:mtext>K_auth</mml:mtext>
+                <mml:mtext>K_data</mml:mtext>
+                <mml:mtext>HKDF-Expand</mml:mtext>
+                <mml:mtext>SK, “AMI-key-separation”, L_auth + L_data</mml:mtext>
+                <mml:mo fence="false">‖</mml:mo>
+                <mml:mo>=</mml:mo>
+                <mml:mo>(</mml:mo>
+                <mml:mo>)</mml:mo>
+              </mml:math>
+            </disp-formula>
+          
+          <p>Explicit key confirmation is performed before application traffic is accepted:</p>
+          
+            <disp-formula>
+              <label>(8)</label>
+              <mml:math id="msq25mkwuo">
+                <mml:mtext>Auth_SM</mml:mtext>
+                <mml:mtext>HMAC_K_auth</mml:mtext>
+                <mml:mtext>“SM”</mml:mtext>
+                <mml:mtext>TR</mml:mtext>
+                <mml:mtext>Auth_UCC</mml:mtext>
+                <mml:mtext>HMAC_K_auth</mml:mtext>
+                <mml:mtext>“UCC”</mml:mtext>
+                <mml:mtext>TR</mml:mtext>
+                <mml:mo>=</mml:mo>
+                <mml:mo>(</mml:mo>
+                <mml:mo fence="false">‖</mml:mo>
+                <mml:mo>)</mml:mo>
+                <mml:mo>;</mml:mo>
+                <mml:mo>=</mml:mo>
+                <mml:mo>(</mml:mo>
+                <mml:mo fence="false">‖</mml:mo>
+                <mml:mo>)</mml:mo>
+              </mml:math>
+            </disp-formula>
+          
+          <p>Telemetry and control messages are protected with AES-GCM. Associated data contains SID, sequence number, message type, and policy epoch. The UCC maintains authoritative replay state, while the DCU may maintain a coarse cache and rate-control state. This design binds identity, role, ephemeral key contributions, freshness, policy context, and the application key to one authenticated session transcript. In Eqs. (5)–(8), SIT_SM is the meter credential, Sign_SK_UCC denotes signing with SK_UCC, H is the hash function, TR is the authenticated transcript digest, N_SM/N_UCC are nonces, SID is the session identifier, PolicyEpoch is the current policy version, and Auth_SM/Auth_UCC are role-specific key-confirmation tags; <inline-formula>
+  <mml:math id="mmwb4x5oxr">
+    <mml:mo fence="false">‖</mml:mo>
+  </mml:math>
+</inline-formula> denotes concatenation.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>2.7. Formal security argument and symbolic specification</title>
+          
+          <p>The security argument treats a fresh accepted session as one in which the peer long-term signing key is not compromised before authentication completes and the target ephemeral secret is not revealed during the session. Under these conditions, modification of an accepted ephemeral public key, nonce, SID, or policy epoch requires either forging an endpoint signature or presenting a transcript that fails verification. Because the HKDF input includes both the ECDH result and the transcript digest, cross-session substitution of any authenticated field changes the derived session context.</p><p>For an eCK-style adversary, the qualitative reduction is expressed as Adv_A<inline-formula>
+  <mml:math id="mu10zbbgeo">
+    <mml:msup>
+      <mml:mi/>
+      <mml:mrow>
+        <mml:mi>A</mml:mi>
+        <mml:mi>K</mml:mi>
+        <mml:mi>E</mml:mi>
+      </mml:mrow>
+    </mml:msup>
+    <mml:mo>≤</mml:mo>
+  </mml:math>
+</inline-formula> Adv_ECDH + Adv_SIG<inline-formula>
+  <mml:math id="mf575yecbg">
+    <mml:msup>
+      <mml:mi/>
+      <mml:mrow>
+        <mml:mi>E</mml:mi>
+        <mml:mi>U</mml:mi>
+        <mml:mi>F</mml:mi>
+        <mml:mi>C</mml:mi>
+        <mml:mi>M</mml:mi>
+        <mml:mi>A</mml:mi>
+        <mml:mo>−</mml:mo>
+      </mml:mrow>
+    </mml:msup>
+  </mml:math>
+</inline-formula> + Adv<inline-formula>
+  <mml:math id="mdif5l79bg">
+    <mml:msub>
+      <mml:mi/>
+      <mml:mrow>
+        <mml:mi data-mjx-auto-op="false">HKDF</mml:mi>
+      </mml:mrow>
+    </mml:msub>
+  </mml:math>
+</inline-formula><inline-formula>
+  <mml:math id="mvhw4t4d31">
+    <mml:msup>
+      <mml:mi/>
+      <mml:mrow>
+        <mml:mi data-mjx-auto-op="false">PRF</mml:mi>
+      </mml:mrow>
+    </mml:msup>
+  </mml:math>
+</inline-formula> + <inline-formula>
+  <mml:math id="mv4sx6qiam">
+    <mml:msup>
+      <mml:mi>q</mml:mi>
+      <mml:mn>2</mml:mn>
+    </mml:msup>
+  </mml:math>
+</inline-formula>/$2^\lambda$, where the terms represent the adversary’s advantages against ECDH, the signature scheme, the KDF pseudorandomness assumption, and freshness collisions. The purpose of this bound is not to claim a concrete numerical security level; it identifies the primitive failures an adversary would need in order to distinguish a fresh AMI-SMPA session key.</p><p>A ProVerif model is supplied as a reproducibility artifact and defines queries for session-key/data secrecy and injective correspondence between SM/UCC start and accept events. The symbolic model was prepared but was not executed in the environment used to generate the present numerical results because ProVerif was not installed. Accordingly, this paper does not claim a tool-generated “no attack trace” result. The formal claims reported here are the equation-level derivations and the authenticated-key-exchange reduction argument. <xref ref-type="fig" rid="fig_4">Figure 4</xref> summarizes the analysis workflow.</p>
+          
+            <fig id="fig_4">
+              <label>Figure 4</label>
+              <caption>
+                <title>Formal security analysis and reproducibility workflow for the AMI/EV charging mapping</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/9/img_vK6LZrPVKtFQWm-A.png"/>
+            </fig>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>2.8. Isolated emulator and performance evaluation</title>
+          
+          <p>Functional validation was conducted in an isolated protocol emulator using synthetic messages only; no operational utility, production meter, charging station, or public network was targeted. The measured emulator outcomes were the accept/reject or key-recovery counts from 1,000 trials per condition. The reconstructed conditions were recovery of the infrastructure-key term, recovery of the endpoint long-term-key term, replay inside a 30 s freshness window, and substitution of an unauthenticated ephemeral ECDH value. Corresponding AMI-SMPA checks measured rejection of an altered authenticated field, duplicate-session rejection, bilateral key confirmation, and acceptance of legitimate AES-GCM application messages.</p><p>A separate controlled simulation estimated resource-constrained behavior. Four profiles were evaluated for 1,000 Monte Carlo runs each: reconstructed SMPA-CI, AMI-SMPA, and two literature-informed synthetic configurations labeled ECC-AKA-1 and ECC-AKA-2. The latter are comparison profiles with greater signature/message overhead; they do not reproduce a named protocol or published hardware testbed. The pseudorandom seed was fixed at 20260828. Thus, the emulator counts are measured within the implemented logic, message size is deterministically calculated from serialization, energy is calculated from simulated operation times and component power, and latency, throughput, reliability, and security-rate metrics are simulation outputs.</p><p>The metrics were authentication computation time, end-to-end latency, communication bytes/session, energy/session, throughput, PDR, replay detection, UMR, and key-compromise containment (KCC). Energy was calculated as E_session = sum(<inline-formula>
+  <mml:math id="m0e82e3zv9">
+    <mml:msub>
+      <mml:mi>P</mml:mi>
+      <mml:mi>j</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula> <inline-formula>
+  <mml:math id="may79xid5b">
+    <mml:msub>
+      <mml:mi>t</mml:mi>
+      <mml:mi>j</mml:mi>
+    </mml:msub>
+  </mml:math>
+</inline-formula>). Communication cost sums serialized EC points, signatures, nonces, aliases, timestamps, SIDs, policy metadata, and tags (612 bytes for AMI-SMPA). UMR = 100 <inline-formula>
+  <mml:math id="md0lozgjjl">
+    <mml:mo>×</mml:mo>
+  </mml:math>
+</inline-formula> N_rejected_unauthorized/N_injected_unauthorized, where unauthorized trials modify or inject protected messages without a valid K_data; it does not assess a semantically false reading signed by a compromised meter. In each KCC trial, one meter key is disclosed and KCC = 100 <inline-formula>
+  <mml:math id="mv8qs8d1cq">
+    <mml:mo>×</mml:mo>
+  </mml:math>
+</inline-formula> (1 - N_affected_uncompromised/N_uncompromised), where affected denotes an uncompromised identity/session that the adversary can successfully impersonate or derive under the modeled compromise rules.</p><p>Normality was evaluated using the Shapiro-Wilk test. Computation time, end-to-end latency, and throughput met the parametric criterion and were compared using one-way analysis of variance (ANOVA). Energy and PDR were compared using Kruskal-Wallis tests, as were replay detection, UMR, and KCC because of bounded/ceiling effects. Pairwise AMI-SMPA versus SMPA-CI comparisons used Welch’s $t<inline-formula>
+  <mml:math id="mvds4pfu7z">
+    <mml:mo>−</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>M</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>W</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>U</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>C</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:msup>
+      <mml:mi>n</mml:mi>
+      <mml:mo>′</mml:mo>
+    </mml:msup>
+  </mml:math>
+</inline-formula>d<inline-formula>
+  <mml:math id="mfu3wmrspx">
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>k</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>A</mml:mi>
+    <mml:mi>N</mml:mi>
+    <mml:mi>O</mml:mi>
+    <mml:mi>V</mml:mi>
+    <mml:mi>A</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>q</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mo>−</mml:mo>
+    <mml:mo>;</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>(</mml:mo>
+  </mml:math>
+</inline-formula>\eta^2<inline-formula>
+  <mml:math id="m3n14oagyu">
+    <mml:mo>)</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>K</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>k</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>W</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>H</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>q</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+  </mml:math>
+</inline-formula>\eta^2<inline-formula>
+  <mml:math id="mgssovellp">
+    <mml:msub>
+      <mml:mi/>
+      <mml:mi>H</mml:mi>
+    </mml:msub>
+    <mml:mo>=</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mi>H</mml:mi>
+  </mml:math>
+</inline-formula>k<inline-formula>
+  <mml:math id="mc97g64029">
+    <mml:mo>+</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mn>1</mml:mn>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mi>N</mml:mi>
+  </mml:math>
+</inline-formula>k<inline-formula>
+  <mml:math id="mf90ardmb7">
+    <mml:mo>)</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mi>w</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>H</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+  </mml:math>
+</inline-formula>k<inline-formula>
+  <mml:math id="mqcb3vax64">
+    <mml:mo>=</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>=</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mn>4</mml:mn>
+    <mml:mn>4</mml:mn>
+    <mml:mn>000</mml:mn>
+    <mml:mn>50</mml:mn>
+    <mml:mn>200</mml:mn>
+    <mml:mn>1</mml:mn>
+    <mml:mn>000</mml:mn>
+    <mml:mi>p</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>N</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>A</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>x</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>E</mml:mi>
+    <mml:mi>V</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>A</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>q</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+  </mml:math>
+</inline-formula>t$ = 0 to a single first-come-first-served verification worker. Service time followed a lower-bounded normal distribution with mean 1000/61 = 16.39 ms and SD 0.91 ms; a non-bottleneck 2.43 ms network delay, 0.9914 per-attempt success probability, one retry, and 612 bytes/attempt were applied. Each size was repeated 1,000 times with seed 20260828. Queue-inclusive mean and p95 completion time, ultimate success, completed sessions/s, and traffic/session including retries were recorded. This is a worst-case authentication-queue stress model, not a traffic-flow or power-flow simulation. <xref ref-type="fig" rid="fig_5">Figure 5</xref> summarizes the experimental evaluation framework and EV charging burst scenario.</p>
+          
+            <fig id="fig_5">
+              <label>Figure 5</label>
+              <caption>
+                <title>Experimental evaluation framework including the EV charging burst scenario</title>
+              </caption>
+              <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://media.acadlore.com/assets/media/2026/9/img_lJX7K_6ecaXBuj4S.png"/>
+            </fig>
+          
+        </sec>
+      
+    </sec>
+    <sec sec-type="results">
+      <title>3. Results</title>
+      
+        <sec>
+          
+            <title>3.1. Equation-level security findings</title>
+          
+          <p>The reconstruction produced six security findings summarized in <xref ref-type="table" rid="table_2">Table 2</xref>. V1 and V2 are deterministic algebraic disclosures: the relevant long-term key terms can be isolated from values that are intentionally available to a registered endpoint or transmitted in the authentication transcript. V3 follows from the absence of a uniqueness state inside the timestamp acceptance interval. V4 follows from the fact that the later ephemeral public values are not covered by the earlier authentication transcript. V5 is a state-machine defect caused by the existence of two independently defined session keys, and V6 is a privacy inconsistency caused by repeated static identity exposure.</p><p>These findings do not depend on breaking ECC, reversing a cryptographic hash, or predicting a random nonce. They arise from protocol composition. Consequently, increasing the elliptic-curve key size alone would not correct them. The redesign must instead change how private keys, signatures, ephemeral public values, freshness information, and session-key derivation are connected. <xref ref-type="table" rid="table_3">Table 3</xref> compares the corresponding security properties of SMPA-CI and AMI-SMPA.</p>
+          
+            <table-wrap id="table_3">
+              <label>Table 3</label>
+              <caption>
+                <title>Security-property comparison between reconstructed SMPA-CI and AMI-SMPA</title>
+              </caption>
+              <table><tbody><tr><th colspan="1" rowspan="1"><p>Security Property</p></th><th colspan="1" rowspan="1"><p>Reconstructed SMPA-CI</p></th><th colspan="1" rowspan="1"><p>AMI-SMPA</p></th></tr><tr><td colspan="1" rowspan="1"><p>Standard signature construction</p></td><td colspan="1" rowspan="1"><p>No</p></td><td colspan="1" rowspan="1"><p>Yes; standardized signature primitive</p></td></tr><tr><td colspan="1" rowspan="1"><p>Infrastructure private-key isolation</p></td><td colspan="1" rowspan="1"><p>No</p></td><td colspan="1" rowspan="1"><p>Yes; private key never masked into endpoint token</p></td></tr><tr><td colspan="1" rowspan="1"><p>Ephemeral-key authentication</p></td><td colspan="1" rowspan="1"><p>No explicit binding</p></td><td colspan="1" rowspan="1"><p>Signed transcript covers both ephemeral contributions</p></td></tr><tr><td colspan="1" rowspan="1"><p>Session-key uniqueness</p></td><td colspan="1" rowspan="1"><p>Two definitions</p></td><td colspan="1" rowspan="1"><p>Single HKDF schedule</p></td></tr><tr><td colspan="1" rowspan="1"><p>Explicit key confirmation</p></td><td colspan="1" rowspan="1"><p>Not specified</p></td><td colspan="1" rowspan="1"><p>Bilateral HMAC confirmation</p></td></tr><tr><td colspan="1" rowspan="1"><p>Replay protection</p></td><td colspan="1" rowspan="1"><p>Timestamp only</p></td><td colspan="1" rowspan="1"><p>Nonce + SID + sequence state</p></td></tr><tr><td colspan="1" rowspan="1"><p>Forward-secrecy-oriented establishment</p></td><td colspan="1" rowspan="1"><p>Ambiguous</p></td><td colspan="1" rowspan="1"><p>Ephemeral ECDH with long-term authentication</p></td></tr><tr><td colspan="1" rowspan="1"><p>Key separation</p></td><td colspan="1" rowspan="1"><p>Not specified</p></td><td colspan="1" rowspan="1"><p>Independent K_auth and K_data</p></td></tr><tr><td colspan="1" rowspan="1"><p>Authenticated data encryption</p></td><td colspan="1" rowspan="1"><p>Not integrated</p></td><td colspan="1" rowspan="1"><p>AES-GCM</p></td></tr><tr><td colspan="1" rowspan="1"><p>Static identity minimization</p></td><td colspan="1" rowspan="1"><p>No</p></td><td colspan="1" rowspan="1"><p>Rotating alias supported</p></td></tr></tbody></table>
+            </table-wrap>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.2. Isolated proof-of-concept validation</title>
+          
+          <p>All four reconstructed attack conditions succeeded in every injected trial. Specifically, the infrastructure key term was recovered from the token equation in 1,000/1,000 runs, the meter long-term key term was recovered from the proposed signature equation in 1,000/1,000 runs, a captured login request was accepted when replayed inside the configured freshness window in 1,000/1,000 runs, and the unauthenticated ECDH substitution condition was reproduced in 1,000/1,000 runs. These 100% rates reflect deterministic protocol equations and emulator acceptance logic rather than probabilistic cryptanalysis.</p><p>The corresponding AMI-SMPA mitigation mechanisms were validated through 1,000 independent functional trials per condition. Modification of either authenticated ephemeral-key contribution caused verification to fail in 1,000/1,000 trials. Reuse of a consumed session-initiation tuple was rejected in 1,000/1,000 trials. The SM and UCC derived identical keying material and verified bilateral role-separated HMAC values in all trials. Legitimate AES-GCM traffic generated with K_data was authenticated and decrypted in 1,000/1,000 trials, whereas an incorrect key or modified authenticated input was rejected. These are functional logic checks, not empirical proofs of cryptographic security; <xref ref-type="table" rid="table_4">Table 4</xref> summarizes the evidence.</p>
+          
+            <table-wrap id="table_4">
+              <label>Table 4</label>
+              <caption>
+                <title>Isolated emulator validation results</title>
+              </caption>
+              <table><tbody><tr><th colspan="1" rowspan="1"><p>Validation Item</p></th><th colspan="1" rowspan="1"><p>Trials</p></th><th colspan="1" rowspan="1"><p>Observed Result</p></th><th colspan="1" rowspan="1"><p>Interpretation</p></th></tr><tr><td colspan="1" rowspan="1"><p>SIT-based infrastructure-key recovery</p></td><td colspan="1" rowspan="1"><p>1,000</p></td><td colspan="1" rowspan="1"><p>1,000 successful (100%)</p></td><td colspan="1" rowspan="1"><p>Deterministic disclosure in reconstructed equation</p></td></tr><tr><td colspan="1" rowspan="1"><p>DSig-based user-key recovery</p></td><td colspan="1" rowspan="1"><p>1,000</p></td><td colspan="1" rowspan="1"><p>1,000 successful (100%)</p></td><td colspan="1" rowspan="1"><p>Deterministic disclosure in reconstructed equation</p></td></tr><tr><td colspan="1" rowspan="1"><p>Replay inside 30 s freshness window</p></td><td colspan="1" rowspan="1"><p>1,000</p></td><td colspan="1" rowspan="1"><p>1,000 accepted (100%)</p></td><td colspan="1" rowspan="1"><p>Timestamp alone did not provide uniqueness</p></td></tr><tr><td colspan="1" rowspan="1"><p>Unauthenticated ECDH substitution condition</p></td><td colspan="1" rowspan="1"><p>1,000</p></td><td colspan="1" rowspan="1"><p>1,000 reproduced (100%)</p></td><td colspan="1" rowspan="1"><p>Ephemeral values were not transcript-bound</p></td></tr><tr><td colspan="1" rowspan="1"><p>AMI-SMPA altered ephemeral field rejection</p></td><td colspan="1" rowspan="1"><p>1,000</p></td><td colspan="1" rowspan="1"><p>1,000 rejected (100%)</p></td><td colspan="1" rowspan="1"><p>Signed transcript detected modification</p></td></tr><tr><td colspan="1" rowspan="1"><p>AMI-SMPA duplicate session rejection</p></td><td colspan="1" rowspan="1"><p>1,000</p></td><td colspan="1" rowspan="1"><p>1,000 rejected (100%)</p></td><td colspan="1" rowspan="1"><p>Replay cache enforced session uniqueness</p></td></tr><tr><td colspan="1" rowspan="1"><p>AMI-SMPA bilateral key confirmation</p></td><td colspan="1" rowspan="1"><p>1,000</p></td><td colspan="1" rowspan="1"><p>1,000 valid (100%)</p></td><td colspan="1" rowspan="1"><p>Peers derived matching authenticated context</p></td></tr><tr><td colspan="1" rowspan="1"><p>AMI-SMPA AES-GCM legitimate telemetry</p></td><td colspan="1" rowspan="1"><p>1,000</p></td><td colspan="1" rowspan="1"><p>1,000 valid (100%)</p></td><td colspan="1" rowspan="1"><p>Peer-derived data key protected payload</p></td></tr></tbody></table>
+            </table-wrap>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.3. Simulation-based performance results</title>
+          
+          <p><xref ref-type="table" rid="table_5">Table 5</xref> reports the 1,000-run controlled simulation profile. Reconstructed SMPA-CI had the lowest authentication computation time (10.77 <inline-formula>
+  <mml:math id="mwaezdjsxb">
+    <mml:mo>±</mml:mo>
+  </mml:math>
+</inline-formula> 0.89 ms), as expected from its comparatively lightweight but insecure composition. AMI-SMPA required 16.92 <inline-formula>
+  <mml:math id="m84tqige40">
+    <mml:mo>±</mml:mo>
+  </mml:math>
+</inline-formula> 0.91 ms, an increase of 6.15 ms (57.1%) relative to SMPA-CI. Nevertheless, AMI-SMPA remained below the predefined 20 ms design target and was faster than ECC-AKA-1 (18.65 <inline-formula>
+  <mml:math id="mcyvdqn13w">
+    <mml:mo>±</mml:mo>
+  </mml:math>
+</inline-formula> 0.91 ms) and ECC-AKA-2 (20.33 <inline-formula>
+  <mml:math id="m2jcdevnv9">
+    <mml:mo>±</mml:mo>
+  </mml:math>
+</inline-formula> 0.91 ms). The 20 ms computation/latency and 5 mJ/session energy targets are study-selected engineering reference values, not requirements specified by ISO 15118 or another cited standard.</p>
+          
+            <table-wrap id="table_5">
+              <label>Table 5</label>
+              <caption>
+                <title>Controlled simulation-based performance and security results</title>
+              </caption>
+              <table><tbody><tr><th colspan="1" rowspan="1"><p>Metric</p></th><th colspan="1" rowspan="1"><p>SMPA-CI</p></th><th colspan="1" rowspan="1"><p>AMI-SMPA</p></th><th colspan="1" rowspan="1"><p>ECC-AKA-1</p></th><th colspan="1" rowspan="1"><p>ECC-AKA-2</p></th></tr><tr><td colspan="1" rowspan="1"><p>Authentication computation time (ms)</p></td><td colspan="1" rowspan="1"><p>10.77 <mml:math id="mpjij2s7aq">
+  <mml:mo>±</mml:mo>
+</mml:math> 0.89</p></td><td colspan="1" rowspan="1"><p>16.92 <mml:math id="mfxcxv3dd4">
+  <mml:mo>±</mml:mo>
+</mml:math> 0.91</p></td><td colspan="1" rowspan="1"><p>18.65 <mml:math id="mgev3f4fid">
+  <mml:mo>±</mml:mo>
+</mml:math> 0.91</p></td><td colspan="1" rowspan="1"><p>20.33 <mml:math id="mpaxkvmmin">
+  <mml:mo>±</mml:mo>
+</mml:math> 0.91</p></td></tr><tr><td colspan="1" rowspan="1"><p>End-to-end latency (ms)</p></td><td colspan="1" rowspan="1"><p>14.59 <mml:math id="mr6dgbkj2h">
+  <mml:mo>±</mml:mo>
+</mml:math> 1.32</p></td><td colspan="1" rowspan="1"><p>19.35 <mml:math id="m4jxwi3w1w">
+  <mml:mo>±</mml:mo>
+</mml:math> 1.35</p></td><td colspan="1" rowspan="1"><p>22.18 <mml:math id="mbvuhqki4i">
+  <mml:mo>±</mml:mo>
+</mml:math> 1.30</p></td><td colspan="1" rowspan="1"><p>24.03 <mml:math id="m08pr14aag">
+  <mml:mo>±</mml:mo>
+</mml:math> 1.32</p></td></tr><tr><td colspan="1" rowspan="1"><p>Communication cost (bytes/session)</p></td><td colspan="1" rowspan="1"><p>356</p></td><td colspan="1" rowspan="1"><p>612</p></td><td colspan="1" rowspan="1"><p>688</p></td><td colspan="1" rowspan="1"><p>736</p></td></tr><tr><td colspan="1" rowspan="1"><p>Energy/session (mJ)</p></td><td colspan="1" rowspan="1"><p>2.91 <mml:math id="m7u6fcfit6">
+  <mml:mo>±</mml:mo>
+</mml:math> 0.33</p></td><td colspan="1" rowspan="1"><p>4.35 <mml:math id="m7dfksiz7b">
+  <mml:mo>±</mml:mo>
+</mml:math> 0.32</p></td><td colspan="1" rowspan="1"><p>4.96 <mml:math id="m9gx8zklg0">
+  <mml:mo>±</mml:mo>
+</mml:math> 0.31</p></td><td colspan="1" rowspan="1"><p>5.47 <mml:math id="m50kvmhwdl">
+  <mml:mo>±</mml:mo>
+</mml:math> 0.33</p></td></tr><tr><td colspan="1" rowspan="1"><p>Throughput (sessions/s)</p></td><td colspan="1" rowspan="1"><p>85.04 <mml:math id="mchiwizo1i">
+  <mml:mo>±</mml:mo>
+</mml:math> 3.08</p></td><td colspan="1" rowspan="1"><p>61.00 <mml:math id="mtr181q3ab">
+  <mml:mo>±</mml:mo>
+</mml:math> 3.00</p></td><td colspan="1" rowspan="1"><p>55.48 <mml:math id="mrdmhohke7">
+  <mml:mo>±</mml:mo>
+</mml:math> 2.89</p></td><td colspan="1" rowspan="1"><p>51.36 <mml:math id="mqcj4fet3o">
+  <mml:mo>±</mml:mo>
+</mml:math> 3.06</p></td></tr><tr><td colspan="1" rowspan="1"><p>Packet-delivery ratio (%)</p></td><td colspan="1" rowspan="1"><p>98.80 <mml:math id="msgl2ell2u">
+  <mml:mo>±</mml:mo>
+</mml:math> 0.22</p></td><td colspan="1" rowspan="1"><p>99.14 <mml:math id="mwcer635xy">
+  <mml:mo>±</mml:mo>
+</mml:math> 0.22</p></td><td colspan="1" rowspan="1"><p>98.74 <mml:math id="mg0dpdvacz">
+  <mml:mo>±</mml:mo>
+</mml:math> 0.23</p></td><td colspan="1" rowspan="1"><p>98.45 <mml:math id="mcikgyxw76">
+  <mml:mo>±</mml:mo>
+</mml:math> 0.22</p></td></tr><tr><td colspan="1" rowspan="1"><p>Replay detection (%)</p></td><td colspan="1" rowspan="1"><p>71.46 <mml:math id="mb20ko5rgj">
+  <mml:mo>±</mml:mo>
+</mml:math> 1.80</p></td><td colspan="1" rowspan="1"><p>98.77 <mml:math id="mkquezjx8c">
+  <mml:mo>±</mml:mo>
+</mml:math> 0.81</p></td><td colspan="1" rowspan="1"><p>96.34 <mml:math id="mysv9l47r0">
+  <mml:mo>±</mml:mo>
+</mml:math> 1.65</p></td><td colspan="1" rowspan="1"><p>94.01 <mml:math id="mqqxv4mr8b">
+  <mml:mo>±</mml:mo>
+</mml:math> 1.79</p></td></tr><tr><td colspan="1" rowspan="1"><p>UMR (%)</p></td><td colspan="1" rowspan="1"><p>84.77 <mml:math id="m5e552jsri">
+  <mml:mo>±</mml:mo>
+</mml:math> 1.43</p></td><td colspan="1" rowspan="1"><p>98.76 <mml:math id="mgzm66woq9">
+  <mml:mo>±</mml:mo>
+</mml:math> 0.81</p></td><td colspan="1" rowspan="1"><p>97.10 <mml:math id="manvdxl9zl">
+  <mml:mo>±</mml:mo>
+</mml:math> 1.27</p></td><td colspan="1" rowspan="1"><p>95.60 <mml:math id="mxgglywkbk">
+  <mml:mo>±</mml:mo>
+</mml:math> 1.44</p></td></tr><tr><td colspan="1" rowspan="1"><p>Key-compromise containment (%)</p></td><td colspan="1" rowspan="1"><p>17.89 <mml:math id="mhu1s2khjr">
+  <mml:mo>±</mml:mo>
+</mml:math> 2.44</p></td><td colspan="1" rowspan="1"><p>97.63 <mml:math id="mqwstk36ln">
+  <mml:mo>±</mml:mo>
+</mml:math> 1.49</p></td><td colspan="1" rowspan="1"><p>94.39 <mml:math id="m9e1f8301s">
+  <mml:mo>±</mml:mo>
+</mml:math> 2.38</p></td><td colspan="1" rowspan="1"><p>91.24 <mml:math id="mid8kg6omh">
+  <mml:mo>±</mml:mo>
+</mml:math> 2.43</p></td></tr></tbody></table>
+            </table-wrap>
+          
+          <p>End-to-end authentication latency followed the same ordering. SMPA-CI required 14.59 <inline-formula>
+  <mml:math id="mmkzvutka0">
+    <mml:mo>±</mml:mo>
+  </mml:math>
+</inline-formula> 1.32 ms, whereas AMI-SMPA required 19.35 <inline-formula>
+  <mml:math id="mh9hlx1b9d">
+    <mml:mo>±</mml:mo>
+  </mml:math>
+</inline-formula> 1.35 ms (95% CI: 19.27–19.43 ms). The two reference profiles required 22.18 <inline-formula>
+  <mml:math id="ms3dnzh3gt">
+    <mml:mo>±</mml:mo>
+  </mml:math>
+</inline-formula> 1.30 and 24.03 <inline-formula>
+  <mml:math id="mdwo3f10bc">
+    <mml:mo>±</mml:mo>
+  </mml:math>
+</inline-formula> 1.32 ms. Thus, the strengthened transcript authentication and explicit key confirmation added latency but did not push the modeled AMI-SMPA session beyond the 20 ms target.</p><p>Communication overhead increased from 356 bytes/session for SMPA-CI to 612 bytes/session for AMI-SMPA because the strengthened exchange carries authenticated ephemeral material, nonces, a SID, signatures, and explicit confirmation values. Even with this additional 256-byte cost, AMI-SMPA remained below ECC-AKA-1 (688 bytes) and ECC-AKA-2 (736 bytes). The increase is therefore a bounded cost of converting a loosely connected multi-phase flow into a transcript-bound authenticated key exchange.</p><p>Energy consumption showed the same security-performance trade-off. AMI-SMPA consumed 4.35 <inline-formula>
+  <mml:math id="m9gur7sldb">
+    <mml:mo>±</mml:mo>
+  </mml:math>
+</inline-formula> 0.32 mJ/session (95% CI: 4.33–4.37 mJ), compared with 2.91 <inline-formula>
+  <mml:math id="m57pq6w597">
+    <mml:mo>±</mml:mo>
+  </mml:math>
+</inline-formula> 0.33 mJ for SMPA-CI. The modeled value remained below the 5 mJ/session design target and below ECC-AKA-1 (4.96 <inline-formula>
+  <mml:math id="mucckuuhv1">
+    <mml:mo>±</mml:mo>
+  </mml:math>
+</inline-formula> 0.31 mJ) and ECC-AKA-2 (5.47 <inline-formula>
+  <mml:math id="mj5vyxagqd">
+    <mml:mo>±</mml:mo>
+  </mml:math>
+</inline-formula> 0.33 mJ). AMI-SMPA throughput was 61.00 <inline-formula>
+  <mml:math id="mgot4g9g48">
+    <mml:mo>±</mml:mo>
+  </mml:math>
+</inline-formula> 3.00 sessions/s versus 85.04 <inline-formula>
+  <mml:math id="mx2sgmnv2p">
+    <mml:mo>±</mml:mo>
+  </mml:math>
+</inline-formula> 3.08 sessions/s for SMPA-CI, but exceeded both reference profiles (55.48 <inline-formula>
+  <mml:math id="mhstd2q93q">
+    <mml:mo>±</mml:mo>
+  </mml:math>
+</inline-formula> 2.89 and 51.36 <inline-formula>
+  <mml:math id="m44cok2t3m">
+    <mml:mo>±</mml:mo>
+  </mml:math>
+</inline-formula> 3.06 sessions/s).</p><p>Reliability did not deteriorate under the larger handshake. AMI-SMPA achieved a mean PDR of 99.14 <inline-formula>
+  <mml:math id="m35g4q00to">
+    <mml:mo>±</mml:mo>
+  </mml:math>
+</inline-formula> 0.22% (95% CI: 99.13–99.15%), compared with 98.80 <inline-formula>
+  <mml:math id="m7jaot7kqu">
+    <mml:mo>±</mml:mo>
+  </mml:math>
+</inline-formula> 0.22% for SMPA-CI, 98.74 <inline-formula>
+  <mml:math id="mcsrsm94ek">
+    <mml:mo>±</mml:mo>
+  </mml:math>
+</inline-formula> 0.23% for ECC-AKA-1, and 98.45 <inline-formula>
+  <mml:math id="mabeqxisc3">
+    <mml:mo>±</mml:mo>
+  </mml:math>
+</inline-formula> 0.22% for ECC-AKA-2. The improvement in the simulation profile reflects the assumed replay/state handling and bounded retransmission behavior rather than a claim that cryptography itself increases physical-layer reliability.</p><p>The largest gains were observed in security-oriented metrics. SMPA-CI detected 71.46 <inline-formula>
+  <mml:math id="ma21ohbc1v">
+    <mml:mo>±</mml:mo>
+  </mml:math>
+</inline-formula> 1.80% of injected replay events, whereas AMI-SMPA achieved 98.77 <inline-formula>
+  <mml:math id="mrbhwd5urd">
+    <mml:mo>±</mml:mo>
+  </mml:math>
+</inline-formula> 0.81%; ECC-AKA-1 and ECC-AKA-2 achieved 96.34 <inline-formula>
+  <mml:math id="myub8jwe42">
+    <mml:mo>±</mml:mo>
+  </mml:math>
+</inline-formula> 1.65% and 94.01 <inline-formula>
+  <mml:math id="mwv3vyd4zo">
+    <mml:mo>±</mml:mo>
+  </mml:math>
+</inline-formula> 1.79%. UMR reached 98.76 <inline-formula>
+  <mml:math id="mztf35mbj9">
+    <mml:mo>±</mml:mo>
+  </mml:math>
+</inline-formula> 0.81% for AMI-SMPA, compared with 84.77 <inline-formula>
+  <mml:math id="ml0e9y4w5r">
+    <mml:mo>±</mml:mo>
+  </mml:math>
+</inline-formula> 1.43% for SMPA-CI. As defined in Section 2.8, this metric covers only modification/injection without a valid data key and not a physically false measurement produced by a fully compromised meter.</p><p>Key-compromise containment showed the strongest separation. The reconstructed SMPA-CI profile retained only 17.89 <inline-formula>
+  <mml:math id="mtupvp31mo">
+    <mml:mo>±</mml:mo>
+  </mml:math>
+</inline-formula> 2.44% containment after endpoint-key exposure because the reconstructed token/signature equations permit trust propagation beyond a single meter. AMI-SMPA reached 97.63 <inline-formula>
+  <mml:math id="mxdvbjiluy">
+    <mml:mo>±</mml:mo>
+  </mml:math>
+</inline-formula> 1.49%, compared with 94.39 <inline-formula>
+  <mml:math id="mj5qe52kkf">
+    <mml:mo>±</mml:mo>
+  </mml:math>
+</inline-formula> 2.38% for ECC-AKA-1 and 91.24 <inline-formula>
+  <mml:math id="msrxmdxcip">
+    <mml:mo>±</mml:mo>
+  </mml:math>
+</inline-formula> 2.43% for ECC-AKA-2. This result is consistent with endpoint-specific long-term credentials and ephemeral session establishment that do not embed a UCC master private key into a meter-accessible token.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.4. Electric-vehicle charging burst scenario</title>
+          
+          <p><xref ref-type="table" rid="table_6">Table 6</xref> reports the all-at-once charging-point scenario. Throughput remained close to the configured single-worker service capacity (60.36–60.46 sessions/s), and one permitted retry raised ultimate success above 99.99%. Queue-inclusive mean completion time increased from 423.69 ms for 50 points to 1,664.87 ms for 200 and 8,279.05 ms for 1,000; the corresponding mean p95 values were 787.96, 3,145.55, and 15,712.80 ms. Traffic including retries remained 616.92-617.43 bytes/session.</p><p>The near-constant service rate shows that cryptographic processing is stable, whereas completion time scales with the queue when every endpoint reconnects simultaneously. This result supports DCU/UCC admission control, staggered reconnect timers, or parallel verification workers for large charging sites. It does not demonstrate operational charging-network performance.</p>
+          
+            <table-wrap id="table_6">
+              <label>Table 6</label>
+              <caption>
+                <title>Fixed-seed simultaneous EV charging authentication-burst results</title>
+              </caption>
+              <table><tbody><tr><th colspan="1" rowspan="1"><p>Charging Points</p></th><th colspan="1" rowspan="1"><p>Mean Completion (ms)</p></th><th colspan="1" rowspan="1"><p>Mean p95 (ms)</p></th><th colspan="1" rowspan="1"><p>Success (%)</p></th><th colspan="1" rowspan="1"><p>Sessions/s</p></th><th colspan="1" rowspan="1"><p>Traffic/Session (B)</p></th></tr><tr><td colspan="1" rowspan="1"><p>50</p></td><td colspan="1" rowspan="1"><p>423.69</p></td><td colspan="1" rowspan="1"><p>787.96</p></td><td colspan="1" rowspan="1"><p>99.9940</p></td><td colspan="1" rowspan="1"><p>60.36</p></td><td colspan="1" rowspan="1"><p>616.92</p></td></tr><tr><td colspan="1" rowspan="1"><p>200</p></td><td colspan="1" rowspan="1"><p>1,664.87</p></td><td colspan="1" rowspan="1"><p>3,145.55</p></td><td colspan="1" rowspan="1"><p>99.9945</p></td><td colspan="1" rowspan="1"><p>60.42</p></td><td colspan="1" rowspan="1"><p>617.43</p></td></tr><tr><td colspan="1" rowspan="1"><p>1,000</p></td><td colspan="1" rowspan="1"><p>8,279.05</p></td><td colspan="1" rowspan="1"><p>15,712.80</p></td><td colspan="1" rowspan="1"><p>99.9923</p></td><td colspan="1" rowspan="1"><p>60.46</p></td><td colspan="1" rowspan="1"><p>617.30</p></td></tr></tbody></table>
+            </table-wrap>
+          
+        </sec>
+      
+      
+        <sec>
+          
+            <title>3.5. Statistical analysis</title>
+          
+          <p>The Shapiro-Wilk test supported normality for computation time, latency, and throughput in all four protocol groups (<inline-formula>
+  <mml:math id="mughlhnz2u">
+    <mml:mi>p</mml:mi>
+    <mml:mo>&amp;gt;</mml:mo>
+  </mml:math>
+</inline-formula> 0.05). One-way ANOVA therefore showed significant between-profile differences for authentication computation time ($F<inline-formula>
+  <mml:math id="mlc12cq0q0">
+    <mml:mo>=</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mn>21</mml:mn>
+    <mml:mn>238.14</mml:mn>
+  </mml:math>
+</inline-formula>p &lt;<inline-formula>
+  <mml:math id="mpj1y04455">
+    <mml:mn>0.001</mml:mn>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>\eta^2<inline-formula>
+  <mml:math id="mbzplxrsi5">
+    <mml:mo>=</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mn>0.941</mml:mn>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>y</mml:mi>
+  </mml:math>
+</inline-formula>F<inline-formula>
+  <mml:math id="m5zjctd217">
+    <mml:mo>=</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mn>9</mml:mn>
+    <mml:mn>656.73</mml:mn>
+  </mml:math>
+</inline-formula>p &lt;<inline-formula>
+  <mml:math id="m0fku2hxie">
+    <mml:mn>0.001</mml:mn>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>\eta^2<inline-formula>
+  <mml:math id="mj83nsgo5l">
+    <mml:mo>=</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mn>0.879</mml:mn>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+  </mml:math>
+</inline-formula>F<inline-formula>
+  <mml:math id="mmfg0oj9p6">
+    <mml:mo>=</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mn>25</mml:mn>
+    <mml:mn>103.81</mml:mn>
+  </mml:math>
+</inline-formula>p &lt;<inline-formula>
+  <mml:math id="msata7apnf">
+    <mml:mn>0.001</mml:mn>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>\eta^2<inline-formula>
+  <mml:math id="mffp2q27c9">
+    <mml:mo>=</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mn>0.950</mml:mn>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>E</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>P</mml:mi>
+    <mml:mi>D</mml:mi>
+    <mml:mi>R</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>K</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>k</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>W</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>S</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>y</mml:mi>
+  </mml:math>
+</inline-formula>H<inline-formula>
+  <mml:math id="midr3qdtyo">
+    <mml:mo>=</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mn>3</mml:mn>
+    <mml:mn>423.91</mml:mn>
+  </mml:math>
+</inline-formula>p &lt;<inline-formula>
+  <mml:math id="mmy643fqf5">
+    <mml:mn>0.001</mml:mn>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>H<inline-formula>
+  <mml:math id="mf7uuofrv9">
+    <mml:mo>−</mml:mo>
+    <mml:mi>b</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+  </mml:math>
+</inline-formula>\eta<inline-formula>
+  <mml:math id="m3q4n0yor1">
+    <mml:mo>−</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mi>s</mml:mi>
+    <mml:mi>q</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+  </mml:math>
+</inline-formula>\eta^2_H<inline-formula>
+  <mml:math id="mlvisj1nb4">
+    <mml:mo>)</mml:mo>
+    <mml:mo>=</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mn>0.856</mml:mn>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>P</mml:mi>
+    <mml:mi>D</mml:mi>
+    <mml:mi>R</mml:mi>
+  </mml:math>
+</inline-formula>H<inline-formula>
+  <mml:math id="mlym3aabeu">
+    <mml:mo>=</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mn>2</mml:mn>
+    <mml:mn>200.41</mml:mn>
+  </mml:math>
+</inline-formula>p &lt;<inline-formula>
+  <mml:math id="msahtivnus">
+    <mml:mn>0.001</mml:mn>
+    <mml:mo>,</mml:mo>
+  </mml:math>
+</inline-formula>\eta^2_H<inline-formula>
+  <mml:math id="mztrq87fpk">
+    <mml:mo>=</mml:mo>
+    <mml:mo>)</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mn>0.550</mml:mn>
+    <mml:mi>R</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>U</mml:mi>
+    <mml:mi>M</mml:mi>
+    <mml:mi>R</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>K</mml:mi>
+    <mml:mi>C</mml:mi>
+    <mml:mi>C</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+  </mml:math>
+</inline-formula>H<inline-formula>
+  <mml:math id="mvc4nef8wq">
+    <mml:mo>=</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>;</mml:mo>
+    <mml:mn>3</mml:mn>
+    <mml:mn>360.32</mml:mn>
+    <mml:mn>3</mml:mn>
+    <mml:mn>203.59</mml:mn>
+    <mml:mn>3</mml:mn>
+    <mml:mn>287.16</mml:mn>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+  </mml:math>
+</inline-formula>p &lt;<inline-formula>
+  <mml:math id="mk6ykvrmxu">
+    <mml:mn>0.001</mml:mn>
+    <mml:mo>)</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mi>w</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+  </mml:math>
+</inline-formula>\eta^2_H<inline-formula>
+  <mml:math id="m293c6dmkl">
+    <mml:mi>v</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>P</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>w</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>A</mml:mi>
+    <mml:mi>M</mml:mi>
+    <mml:mi>I</mml:mi>
+    <mml:mi>S</mml:mi>
+    <mml:mi>M</mml:mi>
+    <mml:mi>P</mml:mi>
+    <mml:mi>A</mml:mi>
+    <mml:mi>v</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>S</mml:mi>
+    <mml:mi>M</mml:mi>
+    <mml:mi>P</mml:mi>
+    <mml:mi>A</mml:mi>
+    <mml:mi>C</mml:mi>
+    <mml:mi>I</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>W</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>C</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mn>0.840</mml:mn>
+    <mml:mn>0.801</mml:mn>
+    <mml:mn>0.822</mml:mn>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mo>&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;&amp;lt;</mml:mo>
+    <mml:mo>&amp;gt;</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mo>.</mml:mo>
+    <mml:mrow>
+      <mml:mo>/</mml:mo>
+    </mml:mrow>
+    <mml:msup>
+      <mml:mi>n</mml:mi>
+      <mml:mo>′</mml:mo>
+    </mml:msup>
+  </mml:math>
+</inline-formula>d<inline-formula>
+  <mml:math id="muj4jh8qua">
+    <mml:mo>=</mml:mo>
+    <mml:mn>6.83</mml:mn>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>p</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>m</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>d</mml:mi>
+  </mml:math>
+</inline-formula>d<inline-formula>
+  <mml:math id="m5lph10n54">
+    <mml:mo>=</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mn>3.57</mml:mn>
+    <mml:mi>f</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>c</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>h</mml:mi>
+  </mml:math>
+</inline-formula>p &lt;<inline-formula>
+  <mml:math id="mnfjdw5kdp">
+    <mml:mn>0.001</mml:mn>
+    <mml:mo>)</mml:mo>
+    <mml:mo>;</mml:mo>
+    <mml:mo>(</mml:mo>
+    <mml:mo>−</mml:mo>
+    <mml:mi>e</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>g</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>o</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>f</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>r</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>d</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>u</mml:mi>
+    <mml:mi>b</mml:mi>
+    <mml:mi>s</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>l</mml:mi>
+    <mml:mi>y</mml:mi>
+    <mml:mi>M</mml:mi>
+    <mml:mi>a</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>W</mml:mi>
+    <mml:mi>h</mml:mi>
+    <mml:mi>i</mml:mi>
+    <mml:mi>t</mml:mi>
+    <mml:mi>n</mml:mi>
+    <mml:mi>e</mml:mi>
+    <mml:mi>y</mml:mi>
+  </mml:math>
+</inline-formula>U<inline-formula>
+  <mml:math id="mf45x7bzb5">
+    <mml:mo>=</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mo>,</mml:mo>
+    <mml:mn>999</mml:mn>
+    <mml:mn>342</mml:mn>
+  </mml:math>
+</inline-formula>p &lt;$ 0.001; rank-biserial correlation = 0.999). Replay detection, UMR, and KCC favored AMI-SMPA with rank-biserial correlations of approximately 1.00 in the simulated profile.</p>
+        </sec>
+      
+    </sec>
+    <sec sec-type="discussion">
+      <title>4. Discussion</title>
+      
+        <sec>
+          
+            <title>4.1. Interpretation of the security findings</title>
+          
+          <p>The principal result is that protocol security cannot be inferred from the names of the primitives cited in a design. SMPA-CI is described using ECC, ECDSA, and ECDH terminology, yet the published equations use reversible XOR masking for values that are described as signatures or identity tokens. The resulting disclosures are therefore composition failures, not failures of ECC. This distinction is important for peer review and implementation because simply replacing curve parameters or increasing key size would leave V1 and V2 unchanged.</p><p>V4 illustrates a second general lesson: successful identity authentication in one phase does not automatically authenticate an ephemeral key sent later. Authenticated key exchange requires a cryptographic binding between the peer identity, role, fresh key contribution, and session context. AMI-SMPA creates this binding by signing M1/M2 and by feeding the authenticated transcript into HKDF. Explicit HMAC confirmation then demonstrates that both peers derived the same context-bound secret before data traffic is accepted.</p><p>The replay findings also show why freshness must be treated as a state-management property. Timestamps are useful for rejecting stale traffic, but a valid timestamp cannot prove that a message has not already been processed. The proposed use of nonces, SID values, sequence numbers, and replay cache state converts freshness from a purely temporal check into uniqueness that can be enforced per session.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>4.2. Performance-security trade-off</title>
+          
+          <p>The strengthened protocol is intentionally more expensive than the reconstructed SMPA-CI critical path. AMI-SMPA adds signature verification, authenticated ephemeral key material, HKDF processing, bilateral key confirmation, and authenticated encryption metadata. The 57.1% modeled increase in authentication computation time and 49.5% increase in energy relative to SMPA-CI therefore represent the cost of eliminating deterministic key disclosure and key-exchange ambiguity. The more relevant engineering question is whether that cost remains within the resource envelope of the target meter, not whether it is numerically smaller than an insecure baseline.</p><p>In the controlled profile, AMI-SMPA remained below the stated 20 ms single-session latency/computation target and below 5 mJ/session while using less computation, latency, communication, and energy than the two synthetic reference profiles. The simultaneous-arrival scenario adds a system-level qualification: cryptographic service remained approximately 60.4 sessions/s, but queue-inclusive completion rose sharply with 200 and 1,000 charging points. Large sites should therefore combine protocol deployment with parallel verifiers, admission control, or randomized backoff. These are reproducible simulation estimates, not substitutes for embedded measurement or operational-network validation.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>4.3. Advanced metering infrastructure privacy and electric-mobility implications</title>
+          
+          <p>AMI privacy is not solved by payload encryption alone. Static meter identifiers and public keys can remain linkable over long periods, and high-frequency traffic can be correlated with occupancy, appliance use, and charging behavior. Rotating aliases in AMI-SMPA are therefore intended to reduce unnecessary network-level linkability while preserving accountability at the UCC. They are not presented as absolute anonymity because the utility must still resolve the responsible meter for billing, incident response, and regulatory obligations.</p><p>The transportation relevance is operational and bounded. ISO 15118-20 governs EV-EVSE communication, whereas AMI-SMPA protects the adjacent station-meter-to-utility authentication path. Charging cybersecurity studies show that compromised stations and coordinated charging actions can affect authorization, billing, privacy, and grid-facing operations [<xref ref-type="bibr" rid="ref_33">33</xref>], [<xref ref-type="bibr" rid="ref_34">34</xref>]. Vehicle-to-grid authentication research similarly emphasizes authenticated key establishment and privacy protection across multi-party charging relationships [<xref ref-type="bibr" rid="ref_35">35</xref>], [<xref ref-type="bibr" rid="ref_36">36</xref>]. AMI-SMPA contributes signed meter/UCC identity binding, replay-resistant energy reporting, authenticated demand-response instructions, post-interruption reauthentication, and endpoint compromise containment. It neither replaces ISO 15118 nor, by itself, establishes power-system stability. Recent connected-vehicle research also examines AI-based anomaly detection and threat analysis [<xref ref-type="bibr" rid="ref_37">37</xref>], offering a complementary monitoring layer to authenticated protocol exchanges.</p>
+        </sec>
+      
+      
+        <sec>
+          
+            <title>4.4. Limitations</title>
+          
+          <p>This study has six limitations. First, the vulnerability analysis applies to the published SMPA-CI equations; an implementation that substitutes standard ECDSA/ECDH would be a different protocol. Second, the PoC is an isolated logical emulator rather than a complete utility/charging stack. Third, <xref ref-type="table" rid="table_5">Table 5</xref> values are controlled simulations, not direct MCU or secure-element power measurements. Fourth, the supplied ProVerif model was not executed in the manuscript environment, so no automated “no attack trace” claim is made. Fifth, UMR cannot detect a physically false value generated and authenticated by a compromised meter. Sixth, the EV-burst scenario uses a simplified single-worker FCFS queue, homogeneous endpoints, fixed service assumptions, and no mobility, station-management, traffic-flow, or power-flow model. Consequently, neither operational-network performance nor grid-stability improvement can be inferred.</p><p>Future work should port the meter path to representative embedded hardware, execute the symbolic model independently, assess credential revocation and alias resynchronization, and validate multi-worker DCU/UCC scaling under measured public-charging traffic. Field-oriented evaluation should preserve trust-domain separation among the meter, utility back end, EVSE, station controller, and charging-service provider and should report network, workload, and power-system outcomes separately.</p>
+        </sec>
+      
+    </sec>
+    <sec sec-type="conclusions">
+      <title>5. Conclusions</title>
+      <p>This study reconstructed a recently developed elliptic-curve multi-phase authentication protocol and evaluated its suitability for the AMI path supporting networked EV charging. Six structural weaknesses were identified: infrastructure private-key exposure, long-term key disclosure, replay within a timestamp window, unbound ephemeral ECDH values, dual session-key definitions, and static-identity linkability. Four conditions were reproduced deterministically in an isolated emulator.</p><p>AMI-SMPA replaces reversible private-key masking with signed credentials, binds both ephemeral contributions to the transcript, derives one HKDF session secret, separates authentication/data keys, confirms the key bilaterally, and protects messages with AES-GCM and replay state. The controlled profile produced 16.92 ms computation, 19.35 ms end-to-end latency, 612 bytes/session, 4.35 mJ/session, 99.14% PDR, 98.77% replay detection, 98.76% UMR, and 97.63% KCC. In the worst-case simultaneous burst, one verification worker sustained about 60.4 sessions/s; queue-inclusive mean completion rose from 423.69 ms at 50 charging points to 8,279.05 ms at 1,000 points.</p><p>The results support AMI-SMPA as a protocol-level secure communication mechanism for charging authorization, metered-energy reporting, demand-response control, and post-interruption reauthentication under the stated assumptions. They also show that burst capacity must be engineered separately from single-session cryptographic cost. Because all evidence derives from an isolated emulator and controlled simulations, the study makes no claim of operational deployment performance or improved power-grid stability.</p>
+    </sec>
+  </body>
+  <back>
+    <ack>
+      <title>Acknowledgments</title>
+      
+    </ack>
+    <app-group>
+      <app>
+        <title>Appendix</title>
+        
+      </app>
+    </app-group>
+    <notes>
+      <title>Author Contributions</title>
+      
+    </notes>
+    <notes>
+      <title>Funding</title>
+      
+    </notes>
+    <notes>
+      <title>Informed Consent Statement</title>
+      
+    </notes>
+    <notes>
+      <title>Data Availability Statement</title>
+      <p>The reconstructed equations, isolated-emulator configuration, fixed-seed simulation procedures (seed 20260828), EV charging burst parameters, statistical settings, and symbolic ProVerif specification are available from the corresponding author upon reasonable request. No operational utility or charging-system data were used.</p>
+    </notes>
+    <notes notes-type="COI-statement">
+      <title>Conflicts of Interest</title>
+      <p>The author declares no conflicts of interest.</p>
+    </notes>
+    <ref-list>
+      <title>References</title>
+      <ref id="ref_1">
+        <label>1.</label>
+        <element-citation publication-type="report">
+          <article-title>Guidelines for Smart Grid Cybersecurity</article-title>
+          <source>, https://doi.org/10.6028/NIST.IR.7628r1</source>
+          <year>2014</year>
+          <publisher-name>National Institute of Standards and Technology</publisher-name>
+        </element-citation>
+      </ref>
+      <ref id="ref_2">
+        <label>2.</label>
+        <element-citation publication-type="conference-proceedings">
+          <article-title>Cyber security issues for advanced metering infrastructure (AMI)</article-title>
+          <page-range>1-5</page-range>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Cleveland</surname>
+              <given-names>F. M.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/PES.2008.4596535</pub-id>
+          <publisher-name>Pittsburgh, PA, USA</publisher-name>
+          <source>, undefined</source>
+          <year>2008</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_3">
+        <label>3.</label>
+        <element-citation publication-type="journal">
+          <article-title>A survey on cyber security for smart grid communications</article-title>
+          <issue>4</issue>
+          <page-range>998-1010</page-range>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Yan</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Qian</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Sharif</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Tipper</surname>
+              <given-names>D.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/SURV.2012.010912.00035</pub-id>
+          <source>IEEE Commun. Surv. Tutor.</source>
+          <volume>14</volume>
+          <year>2012</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_4">
+        <label>4.</label>
+        <element-citation publication-type="journal">
+          <article-title>Security and privacy challenges in the smart grid</article-title>
+          <issue>3</issue>
+          <page-range>75-77</page-range>
+          <person-group person-group-type="author">
+            <name>
+              <surname>McDaniel</surname>
+              <given-names>P.</given-names>
+            </name>
+            <name>
+              <surname>McLaughlin</surname>
+              <given-names>S.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/MSP.2009.76</pub-id>
+          <source>IEEE Secur. Privacy</source>
+          <volume>7</volume>
+          <year>2009</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_5">
+        <label>5.</label>
+        <element-citation publication-type="journal">
+          <article-title>Security technology for smart grid networks</article-title>
+          <issue>1</issue>
+          <page-range>99-107</page-range>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Metke</surname>
+              <given-names>A. R.</given-names>
+            </name>
+            <name>
+              <surname>Ekl</surname>
+              <given-names>R. L.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/TSG.2010.2046347</pub-id>
+          <source>IEEE Trans. Smart Grid</source>
+          <volume>1</volume>
+          <year>2010</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_6">
+        <label>6.</label>
+        <element-citation publication-type="journal">
+          <article-title>Secure and lightweight authentication scheme for smart metering infrastructure in smart grid</article-title>
+          <issue>5</issue>
+          <page-range>3548-3557</page-range>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Garg</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Kaur</surname>
+              <given-names>K.</given-names>
+            </name>
+            <name>
+              <surname>Kaddoum</surname>
+              <given-names>G.</given-names>
+            </name>
+            <name>
+              <surname>Rodrigues</surname>
+              <given-names>J. J. P. C.</given-names>
+            </name>
+            <name>
+              <surname>Guizani</surname>
+              <given-names>M.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/TII.2019.2944880</pub-id>
+          <source>IEEE Trans. Ind. Inform.</source>
+          <volume>16</volume>
+          <year>2020</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_7">
+        <label>7.</label>
+        <element-citation publication-type="journal">
+          <article-title>LIKA: Lightweight identity based key agreement protocol for secure data transmission in advanced metering infrastructure of smart grid</article-title>
+          <issue>21</issue>
+          <page-range>8106</page-range>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Hasan</surname>
+              <given-names>M. M.</given-names>
+            </name>
+            <name>
+              <surname>Ariffin</surname>
+              <given-names>N. A. M.</given-names>
+            </name>
+            <name>
+              <surname>Sani</surname>
+              <given-names>N. F. M.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3390/en15218106</pub-id>
+          <source>Energies</source>
+          <volume>15</volume>
+          <year>2022</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_8">
+        <label>8.</label>
+        <element-citation publication-type="journal">
+          <article-title>Provably secure ECC-based authentication and key agreement scheme for advanced metering infrastructure in the smart grid</article-title>
+          <issue>4</issue>
+          <page-range>5985-5994</page-range>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Hu</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Chen</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Zheng</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Xing</surname>
+              <given-names>B.</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>L.</given-names>
+            </name>
+            <name>
+              <surname>Chen</surname>
+              <given-names>L.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/TII.2022.3191319</pub-id>
+          <source>IEEE Trans. Ind. Inform.</source>
+          <volume>19</volume>
+          <year>2023</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_9">
+        <label>9.</label>
+        <element-citation publication-type="journal">
+          <article-title>Lightweight anonymous authentication and key agreement protocol for a smart grid</article-title>
+          <issue>18</issue>
+          <page-range>4550</page-range>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Zhang</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Chen</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Ma</surname>
+              <given-names>K.</given-names>
+            </name>
+            <name>
+              <surname>Hu</surname>
+              <given-names>S.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.3390/en17184550</pub-id>
+          <source>Energies</source>
+          <volume>17</volume>
+          <year>2024</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_10">
+        <label>10.</label>
+        <element-citation publication-type="journal">
+          <article-title>A provable secure and lightweight ECC-based authenticated key agreement scheme for edge computing infrastructure in smart grid</article-title>
+          <page-range>2511-2537</page-range>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Wang</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Huo</surname>
+              <given-names>P.</given-names>
+            </name>
+            <name>
+              <surname>Ma</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Zhou</surname>
+              <given-names>T.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>Y.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1007/s00607-023-01188-4</pub-id>
+          <source>Computing</source>
+          <volume>105</volume>
+          <year>2023</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_11">
+        <label>11.</label>
+        <element-citation publication-type="journal">
+          <article-title>A novel authentication management for the data security of smart grid</article-title>
+          <page-range>218-230</page-range>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Parvez</surname>
+              <given-names>I.</given-names>
+            </name>
+            <name>
+              <surname>Aghili</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Riggs</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Sundararajan</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Sarwat</surname>
+              <given-names>A. I.</given-names>
+            </name>
+            <name>
+              <surname>Srivastava</surname>
+              <given-names>A. K.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/OAJPE.2024.3393971</pub-id>
+          <source>IEEE Open Access J. Power Energy</source>
+          <volume>11</volume>
+          <year>2024</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_12">
+        <label>12.</label>
+        <element-citation publication-type="journal">
+          <article-title>Blockchain-based anonymous authentication and data aggregation for advanced metering infrastructure in smart grid</article-title>
+          <page-range>100702</page-range>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Pei</surname>
+              <given-names>T.</given-names>
+            </name>
+            <name>
+              <surname>Hou</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Zhou</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Xiao</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Zou</surname>
+              <given-names>J.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.ijcip.2024.100702</pub-id>
+          <source>Int. J. Crit. Infrastruct. Prot.</source>
+          <volume>46</volume>
+          <year>2024</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_13">
+        <label>13.</label>
+        <element-citation publication-type="journal">
+          <article-title>Towards reliable and secure metering: Implementing OSCORE over 6TiSCH for smart grid advanced metering infrastructure systems</article-title>
+          <page-range>101892</page-range>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Gormus</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Aydin</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Aydin</surname>
+              <given-names>B.</given-names>
+            </name>
+            <name>
+              <surname>Dereli</surname>
+              <given-names>I. H.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1016/j.segan.2025.101892</pub-id>
+          <source>Sustain. Energy Grids Netw.</source>
+          <volume>43</volume>
+          <year>2025</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_14">
+        <label>14.</label>
+        <element-citation publication-type="journal">
+          <article-title>A resource-efficient authentication and key agreement protocol for smart grid</article-title>
+          <page-range>50</page-range>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Li</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Guo</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Song</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Wu</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Liu</surname>
+              <given-names>J.</given-names>
+            </name>
+            <name>
+              <surname>Han</surname>
+              <given-names>Y.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1186/s42400-025-00411-3</pub-id>
+          <source>Cybersecurity</source>
+          <volume>9</volume>
+          <year>2026</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_15">
+        <label>15.</label>
+        <element-citation publication-type="journal">
+          <article-title>A lightweight message authentication scheme for smart grid communications</article-title>
+          <issue>4</issue>
+          <page-range>675-685</page-range>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Fouda</surname>
+              <given-names>M. M.</given-names>
+            </name>
+            <name>
+              <surname>Fadlullah</surname>
+              <given-names>Z. M.</given-names>
+            </name>
+            <name>
+              <surname>Kato</surname>
+              <given-names>N.</given-names>
+            </name>
+            <name>
+              <surname>Lu</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Shen</surname>
+              <given-names>X. S.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/TSG.2011.2160661</pub-id>
+          <source>IEEE Trans. Smart Grid</source>
+          <volume>2</volume>
+          <year>2011</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_16">
+        <label>16.</label>
+        <element-citation publication-type="journal">
+          <article-title>Efficient authentication and key management mechanisms for smart grid communications</article-title>
+          <issue>2</issue>
+          <page-range>629-640</page-range>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Nicanfar</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Jokar</surname>
+              <given-names>P.</given-names>
+            </name>
+            <name>
+              <surname>Beznosov</surname>
+              <given-names>K.</given-names>
+            </name>
+            <name>
+              <surname>Leung</surname>
+              <given-names>V. C. M.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/JSYST.2013.2260942</pub-id>
+          <source>IEEE Syst. J.</source>
+          <volume>8</volume>
+          <year>2014</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_17">
+        <label>17.</label>
+        <element-citation publication-type="journal">
+          <article-title>Secure anonymous key distribution scheme for smart grid</article-title>
+          <issue>2</issue>
+          <page-range>906-914</page-range>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Tsai</surname>
+              <given-names>J.-L.</given-names>
+            </name>
+            <name>
+              <surname>Lo</surname>
+              <given-names>N.-W.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/TSG.2015.2440658</pub-id>
+          <source>IEEE Trans. Smart Grid</source>
+          <volume>7</volume>
+          <year>2016</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_18">
+        <label>18.</label>
+        <element-citation publication-type="journal">
+          <article-title>Lightweight anonymous key distribution scheme for smart grid using elliptic curve cryptography</article-title>
+          <issue>14</issue>
+          <page-range>1795-1802</page-range>
+          <person-group person-group-type="author">
+            <name>
+              <surname>He</surname>
+              <given-names>D.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Khan</surname>
+              <given-names>M. K.</given-names>
+            </name>
+            <name>
+              <surname>Wang</surname>
+              <given-names>L.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1049/iet-com.2016.0091</pub-id>
+          <volume>10</volume>
+          <year>2016</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_19">
+        <label>19.</label>
+        <element-citation publication-type="conf-paper">
+          <article-title>PASS: Privacy-preserving authentication scheme for smart grid network</article-title>
+          <page-range>196-201</page-range>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Chim</surname>
+              <given-names>T. W.</given-names>
+            </name>
+            <name>
+              <surname>Yiu</surname>
+              <given-names>S. M.</given-names>
+            </name>
+            <name>
+              <surname>Hui</surname>
+              <given-names>L. C. K.</given-names>
+            </name>
+            <name>
+              <surname>Li</surname>
+              <given-names>V. O. K.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/SmartGridComm.2011.6102316</pub-id>
+          <publisher-place>Brussels, Belgium</publisher-place>
+          <source>2011 IEEE International Conference on Smart Grid Communications (SmartGridComm)</source>
+          <year>2011</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_20">
+        <label>20.</label>
+        <element-citation publication-type="conf-paper">
+          <article-title>Smart grid privacy via anonymization of smart metering data</article-title>
+          <page-range>238-243</page-range>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Efthymiou</surname>
+              <given-names>C.</given-names>
+            </name>
+            <name>
+              <surname>Kalogridis</surname>
+              <given-names>G.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/SMARTGRID.2010.5622050</pub-id>
+          <publisher-place>Gaithersburg, MD, USA</publisher-place>
+          <source>2010 First IEEE International Conference on Smart Grid Communications</source>
+          <year>2010</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_21">
+        <label>21.</label>
+        <element-citation publication-type="journal">
+          <article-title>A secure multi phase authentication protocol for cloud infrastructure using elliptic curve cryptography</article-title>
+          <page-range>41205</page-range>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Sivasankar</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Marikkannan</surname>
+              <given-names>M.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1038/s41598-025-25117-x</pub-id>
+          <volume>15</volume>
+          <year>2025</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_22">
+        <label>22.</label>
+        <element-citation publication-type="report">
+          <article-title>Digital Signature Standard (DSS)</article-title>
+          <source>, https://doi.org/10.6028/NIST.FIPS.186-5</source>
+          <year>2023</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_23">
+        <label>23.</label>
+        <element-citation publication-type="report">
+          <article-title>Recommendations for Discrete Logarithm-based Cryptography: Elliptic Curve Domain Parameters</article-title>
+          <source>, https://doi.org/10.6028/NIST.SP.800-186</source>
+          <year>2023</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_24">
+        <label>24.</label>
+        <element-citation publication-type="report">
+          <article-title>Recommendation for Pair-Wise Key-Establishment Schemes Using Discrete Logarithm Cryptography</article-title>
+          <source>, https://doi.org/10.6028/NIST.SP.800-56Ar3</source>
+          <year>2018</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_25">
+        <label>25.</label>
+        <element-citation publication-type="report">
+          <article-title>HMAC-based Extract-and-Expand Key Derivation Function (HKDF)</article-title>
+          <source>, https://doi.org/10.17487/RFC5869</source>
+          <year>2010</year>
+          <publisher-name>IETF</publisher-name>
+        </element-citation>
+      </ref>
+      <ref id="ref_26">
+        <label>26.</label>
+        <element-citation publication-type="report">
+          <article-title>Recommendation for Block Cipher Modes of Operation: Galois/Counter Mode (GCM) and GMAC</article-title>
+          <source>, https://doi.org/10.6028/NIST.SP.800-38D</source>
+          <year>2007</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_27">
+        <label>27.</label>
+        <element-citation publication-type="journal">
+          <article-title>On the security of public key protocols</article-title>
+          <issue>2</issue>
+          <page-range>198-208</page-range>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Dolev</surname>
+              <given-names>D.</given-names>
+            </name>
+            <name>
+              <surname>Yao</surname>
+              <given-names>A. C.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/TIT.1983.1056650</pub-id>
+          <volume>29</volume>
+          <year>1983</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_28">
+        <label>28.</label>
+        <element-citation publication-type="conference-proceedings">
+          <article-title>Analysis of key-exchange protocols and their use for building secure channels</article-title>
+          <page-range>453-474</page-range>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Canetti</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Krawczyk</surname>
+              <given-names>H.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1007/3-540-44987-6_28</pub-id>
+          <publisher-name>Berlin, Heidelberg: Springer</publisher-name>
+          <source>, undefined</source>
+          <volume>2045</volume>
+          <year>2001</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_29">
+        <label>29.</label>
+        <element-citation publication-type="conference-proceedings">
+          <article-title>Stronger security of authenticated key exchange</article-title>
+          <page-range>1-16</page-range>
+          <person-group person-group-type="author">
+            <name>
+              <surname>LaMacchia</surname>
+              <given-names>B. A.</given-names>
+            </name>
+            <name>
+              <surname>Lauter</surname>
+              <given-names>K.</given-names>
+            </name>
+            <name>
+              <surname>Mityagin</surname>
+              <given-names>A.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1007/978-3-540-75670-5_1</pub-id>
+          <publisher-name>Berlin, Heidelberg: Springer</publisher-name>
+          <source>, undefined</source>
+          <volume>4784</volume>
+          <year>2007</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_30">
+        <label>30.</label>
+        <element-citation publication-type="journal">
+          <article-title>Modeling and verifying security protocols with the applied pi calculus and ProVerif</article-title>
+          <issue>1-2</issue>
+          <page-range>1-135</page-range>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Blanchet</surname>
+              <given-names>B.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1561/3300000004</pub-id>
+          <volume>1</volume>
+          <year>2016</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_31">
+        <label>31.</label>
+        <element-citation publication-type="report">
+          <article-title>ISO 15118-20:2022, Road vehicles–Vehicle to grid communication interface–Part 20: 2nd generation network layer and application layer requirements</article-title>
+          <source>, https://www.iso.org/standard/77845.html</source>
+          <year>2022</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_32">
+        <label>32.</label>
+        <element-citation publication-type="journal">
+          <article-title>Electric vehicles security and privacy: Challenges, solutions, and future needs</article-title>
+          <issue>3</issue>
+          <page-range>1-27</page-range>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Brighente</surname>
+              <given-names>A.</given-names>
+            </name>
+            <name>
+              <surname>Conti</surname>
+              <given-names>M.</given-names>
+            </name>
+            <name>
+              <surname>Donadel</surname>
+              <given-names>D.</given-names>
+            </name>
+            <name>
+              <surname>Poovendran</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Turrin</surname>
+              <given-names>F.</given-names>
+            </name>
+            <name>
+              <surname>Zhou</surname>
+              <given-names>J.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1145/3801968</pub-id>
+          <source>ACM Trans. Cyber-Phys. Syst.</source>
+          <volume>10</volume>
+          <year>2026</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_33">
+        <label>33.</label>
+        <element-citation publication-type="journal">
+          <article-title>Cybersecurity of smart electric vehicle charging: A power grid perspective</article-title>
+          <page-range>214434-214453</page-range>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Acharya</surname>
+              <given-names>S.</given-names>
+            </name>
+            <name>
+              <surname>Dvorkin</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Pandzic</surname>
+              <given-names>H.</given-names>
+            </name>
+            <name>
+              <surname>Karri</surname>
+              <given-names>R.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/ACCESS.2020.3041074</pub-id>
+          <volume>8</volume>
+          <year>2020</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_34">
+        <label>34.</label>
+        <element-citation publication-type="conf-paper">
+          <article-title>Electric vehicle charging station: Cyber security challenges and perspective</article-title>
+          <page-range>111-116</page-range>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Pourmirza</surname>
+              <given-names>Z.</given-names>
+            </name>
+            <name>
+              <surname>Walker</surname>
+              <given-names>S.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/SEGE52446.2021.9535052</pub-id>
+          <publisher-place>Oshawa, ON, Canada</publisher-place>
+          <source>2021 IEEE 9th International Conference on Smart Energy Grid Engineering (SEGE)</source>
+          <year>2021</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_35">
+        <label>35.</label>
+        <element-citation publication-type="journal">
+          <article-title>Authenticated key agreement protocol for secure communication establishment in vehicle-to-grid environment with FPGA implementation</article-title>
+          <issue>4</issue>
+          <page-range>3470-3479</page-range>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Sureshkumar</surname>
+              <given-names>V.</given-names>
+            </name>
+            <name>
+              <surname>Chinnaraj</surname>
+              <given-names>P.</given-names>
+            </name>
+            <name>
+              <surname>Saravanan</surname>
+              <given-names>P.</given-names>
+            </name>
+            <name>
+              <surname>Amin</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Rodrigues</surname>
+              <given-names>J. J. P. C.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/TVT.2022.3146409</pub-id>
+          <source>IEEE Trans. Veh. Technol.</source>
+          <volume>71</volume>
+          <year>2022</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_36">
+        <label>36.</label>
+        <element-citation publication-type="journal">
+          <article-title>Physically secure and privacy-preserving charging authentication framework with data aggregation in vehicle-to-grid networks</article-title>
+          <issue>11</issue>
+          <page-range>18831-18846</page-range>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Liang</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Liu</surname>
+              <given-names>Y.</given-names>
+            </name>
+            <name>
+              <surname>Zhang</surname>
+              <given-names>X.</given-names>
+            </name>
+            <name>
+              <surname>Liu</surname>
+              <given-names>G.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.1109/TITS.2024.3443171</pub-id>
+          <source>IEEE Trans. Intell. Transp. Syst.</source>
+          <volume>25</volume>
+          <year>2024</year>
+        </element-citation>
+      </ref>
+      <ref id="ref_37">
+        <label>37.</label>
+        <element-citation publication-type="journal">
+          <article-title>Cybersecurity in intelligent transportation systems: A comparative study on AI-based anomaly detection and threat analysis</article-title>
+          <issue>1</issue>
+          <page-range>11-30</page-range>
+          <person-group person-group-type="author">
+            <name>
+              <surname>Arslan</surname>
+              <given-names>R.</given-names>
+            </name>
+            <name>
+              <surname>Özseven</surname>
+              <given-names>T.</given-names>
+            </name>
+            <name>
+              <surname>Aydın</surname>
+              <given-names>M. M.</given-names>
+            </name>
+            <name>
+              <surname>Çelik</surname>
+              <given-names>Y.</given-names>
+            </name>
+          </person-group>
+          <pub-id pub-id-type="doi">10.56578/mits050102</pub-id>
+          <source>Mechatron. Intell. Transp. Syst.</source>
+          <volume>5</volume>
+          <year>2026</year>
+        </element-citation>
+      </ref>
+    </ref-list>
+  </back>
+</article>
